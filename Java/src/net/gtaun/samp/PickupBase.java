@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2011 MK124
+ * Copyright (C) 2011 JoJLlmAn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +19,14 @@ package net.gtaun.samp;
 
 import java.util.Vector;
 
+import net.gtaun.event.EventDispatcher;
+import net.gtaun.event.IEventDispatcher;
 import net.gtaun.samp.data.Point;
+import net.gtaun.samp.event.PlayerPickupEvent;
 
 /**
  * @author MK124
- *
+ * @author JoJLlmAn
  */
 
 public class PickupBase
@@ -33,16 +37,20 @@ public class PickupBase
 	}
 	
 	
-	public int id;
-	public int model, type;
-	public Point point;
+	int id;
+	int model, type;
+	Point position;
+	
+	public int model(){return this.model;}
+	public int type(){return this.type;}
+	public Point position(){return this.position;}
 	
 	
 	public PickupBase( int model, int type, float x, float y, float z )
 	{
 		this.model = model;
 		this.type = type;
-		this.point = new Point( x, y, z );
+		this.position = new Point( x, y, z );
 		
 		init();
 	}
@@ -51,14 +59,27 @@ public class PickupBase
 	{
 		this.model = model;
 		this.type = type;
-		this.point = point.clone();
+		this.position = point.clone();
 		
 		init();
 	}
 	
 	private void init()
 	{
-		id = NativeFunction.createPickup( model, type, point.x, point.y, point.z );
+		id = NativeFunction.createPickup( model, type, position.x, position.y, position.z );
+	}
+	
+	//-------------------------
+	
+	EventDispatcher<PlayerPickupEvent> eventPickup = new EventDispatcher<PlayerPickupEvent>();
+	
+	public IEventDispatcher<PlayerPickupEvent>	eventPickup()	{return eventPickup;}
+	
+	//-------------------------
+	
+	protected int onPickup( PlayerBase player )
+	{
+		return 1;
 	}
 	
 	public void destroy()
@@ -66,4 +87,5 @@ public class PickupBase
 		NativeFunction.destroyPickup( id );
 		GameModeBase.instance.pickupPool[ id ] = null;
 	}
+	
 }
