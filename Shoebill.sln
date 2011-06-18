@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Wrapper", "Source\Wrapper\Wrapper.vcproj", "{EB0C9632-CD7B-4AC8-A7A7-372CAC1F1F45}"
+	ProjectSection(ProjectDependencies) = postProject
+		{04D00F92-1756-4F0C-B78C-2B3A4B7EBA50} = {04D00F92-1756-4F0C-B78C-2B3A4B7EBA50}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{D2277CA2-29CF-4708-A3F9-F5495DCEBDD7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sampplugin", "Dependencies\sampplugin\sampplugin.vcproj", "{04D00F92-1756-4F0C-B78C-2B3A4B7EBA50}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JNI", "Source\JNI\JNI.vcproj", "{53FD1E62-CB2C-4977-9054-7065C0D2989E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EB0C9632-CD7B-4AC8-A7A7-372CAC1F1F45} = {EB0C9632-CD7B-4AC8-A7A7-372CAC1F1F45}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB0C9632-CD7B-4AC8-A7A7-372CAC1F1F45}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EB0C9632-CD7B-4AC8-A7A7-372CAC1F1F45}.Debug|Win32.Build.0 = Debug|Win32
+		{EB0C9632-CD7B-4AC8-A7A7-372CAC1F1F45}.Release|Win32.ActiveCfg = Release|Win32
+		{EB0C9632-CD7B-4AC8-A7A7-372CAC1F1F45}.Release|Win32.Build.0 = Release|Win32
+		{04D00F92-1756-4F0C-B78C-2B3A4B7EBA50}.Debug|Win32.ActiveCfg = Debug|Win32
+		{04D00F92-1756-4F0C-B78C-2B3A4B7EBA50}.Debug|Win32.Build.0 = Debug|Win32
+		{04D00F92-1756-4F0C-B78C-2B3A4B7EBA50}.Release|Win32.ActiveCfg = Release|Win32
+		{04D00F92-1756-4F0C-B78C-2B3A4B7EBA50}.Release|Win32.Build.0 = Release|Win32
+		{53FD1E62-CB2C-4977-9054-7065C0D2989E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{53FD1E62-CB2C-4977-9054-7065C0D2989E}.Debug|Win32.Build.0 = Debug|Win32
+		{53FD1E62-CB2C-4977-9054-7065C0D2989E}.Release|Win32.ActiveCfg = Release|Win32
+		{53FD1E62-CB2C-4977-9054-7065C0D2989E}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{04D00F92-1756-4F0C-B78C-2B3A4B7EBA50} = {D2277CA2-29CF-4708-A3F9-F5495DCEBDD7}
+	EndGlobalSection
+EndGlobal
