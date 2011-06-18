@@ -132,7 +132,7 @@ public class TextdrawBase
 		NativeFunction.textDrawSetProportional( id, set );
 	}
 	
-	public void setString( String text )
+	public void setText( String text )
 	{
 		this.text = text;
 		NativeFunction.textDrawSetString( id, text );
@@ -153,7 +153,7 @@ public class TextdrawBase
 	public void showForAll()
 	{
 		NativeFunction.textDrawShowForAll( id );
-		for( int i=0;i<GameModeBase.MAX_PLAYERS;i++ ) isPlayerShowed[i] = true;
+		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
 	}
 	
 	public void hideForAll()

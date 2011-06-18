@@ -136,9 +136,14 @@ public class PlayerBase
 	
 //---------------------------------------------------------
 	
-	public static <T> Vector<T> get(Class<T> cls)
+	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances( GameModeBase.instance.playerPool, cls );
+		return GameModeBase.getInstances(GameModeBase.instance.playerPool, cls);
+	}
+	
+	public static <T> T get( Class<T> cls, int id )
+	{
+		return GameModeBase.getInstance(GameModeBase.instance.playerPool, cls, id);
 	}
 	
 	public static void sendMessageToAll( int color, String message )
