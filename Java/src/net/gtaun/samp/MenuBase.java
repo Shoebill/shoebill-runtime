@@ -53,6 +53,7 @@ public class MenuBase
 	
 	EventDispatcher<MenuSelectedEvent> 	eventMenuSelected = new EventDispatcher<MenuSelectedEvent>();
 	EventDispatcher<MenuExitedEvent> 	eventMenuExited = new EventDispatcher<MenuExitedEvent>();
+	
 	public IEventDispatcher<MenuSelectedEvent>	eventMenuSelected()	{ return eventMenuSelected; }
 	public IEventDispatcher<MenuExitedEvent>	eventMenuExited()	{ return eventMenuExited; }
 	
@@ -71,16 +72,18 @@ public class MenuBase
 	
 	private void init()
 	{
-		id = NativeFunction.createMenu( title, columns, x, y, col1Width, col1Width );;
+		id = NativeFunction.createMenu( title, columns, x, y, col1Width, col1Width );
 	}
 	
 //---------------------------------------------------------
 	
-	protected int onPlayerSelectedMenuRow( PlayerBase player, int row ){
+	protected int onPlayerSelectedMenuRow( PlayerBase player, int row )
+	{
 		return 1;
 	}
 	
-	protected int onPlayerExitedMenu( PlayerBase player ){
+	protected int onPlayerExitedMenu( PlayerBase player )
+	{
 		return 1;
 	}
 	
@@ -93,31 +96,33 @@ public class MenuBase
 		GameModeBase.instance.menuPool[ id ] = null;
 	}
 	
-	public void addMenuItem( int column, String text ){
+	public void addItem( int column, String text )
+	{
 		NativeFunction.addMenuItem( id, column, text );
 	}
 	
-	public void setMenuColumnHeader( int column, String text ){
+	public void setColumnHeader( int column, String text )
+	{
 		NativeFunction.setMenuColumnHeader( id, column, text );
 	}
 	
-	public boolean isValidMenu(){
-		return NativeFunction.isValidMenu( id );
-	}
-	
-	public void disableMenu(){
+	public void disable()
+	{
 		NativeFunction.disableMenu( id );
 	}
 	
-	public void disableMenuRow( int row ){
+	public void disableRow( int row )
+	{
 		NativeFunction.disableMenuRow( id, row );
 	}
 	
-	public void show( PlayerBase player ){
-		NativeFunction.showMenuForPlayer(id, player.id);
+	public void show( PlayerBase player )
+	{
+		NativeFunction.showMenuForPlayer( id, player.id );
 	}
 	
-	public void hide( PlayerBase player ){
-		NativeFunction.hideMenuForPlayer(id, player.id);
+	public void hide( PlayerBase player )
+	{
+		NativeFunction.hideMenuForPlayer( id, player.id );
 	}
 }
