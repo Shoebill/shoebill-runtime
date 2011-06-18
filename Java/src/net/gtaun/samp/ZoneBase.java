@@ -33,18 +33,16 @@ public class ZoneBase
 		return GameModeBase.getInstances( GameModeBase.instance.zonePool, cls );
 	}
 	
-	private boolean[] showedPlayer = new boolean[500];
-	private boolean[] flashedPlayer = new boolean[500];
+	
+	private boolean[] isPlayerShowed = new boolean[500];
+	private boolean[] isPlayerFlashing = new boolean[500];
+	
 	
 	public int id;
-	public int color;
-	public int flashcolor;
 	public Area area;
 	
-	public int id(){return this.id;}
-	public int color(){return this.color;}
-	public int flashcolor(){return this.flashcolor;}
-	public Area area(){return this.area;}
+	public int id()				{return this.id;}
+	public Area area()			{return this.area;}
 
 
 	public ZoneBase( float minx, float miny, float maxx, float maxy )
@@ -66,107 +64,74 @@ public class ZoneBase
 		id = NativeFunction.gangZoneCreate( area.minX, area.minY, area.maxX, area.maxY );
 		
 		for(int i=0;i<500;i++){
-			showedPlayer[i] = false;
-			flashedPlayer[i] = false;
+			isPlayerShowed[i] = false;
+			isPlayerFlashing[i] = false;
 		}
 	}
+
 	
-	//---------------------------------
+//---------------------------------------------------------
 	
 	public void destroy()
 	{
 		NativeFunction.gangZoneDestroy( id );
-		GameModeBase.instance.zonePool[ id ] = null;
+		GameModeBase.instance.zonePool[id] = null;
 	}
 	
-	public void show()
+	
+	public void show( PlayerBase player, int color )
 	{
-		NativeFunction.gangZoneShowForAll(id, color);
+		NativeFunction.gangZoneShowForPlayer( player.id, id, color );
+		isPlayerShowed[player.id] = true;
+	}
+	
+	public void hide( PlayerBase player )
+	{
+		NativeFunction.gangZoneHideForPlayer( player.id, id );
 		
-		for(int i=0;i<500;i++)
-			showedPlayer[i] = true;
+		isPlayerShowed[player.id] = false;
+		isPlayerFlashing[player.id] = false;
 	}
 	
-	public void show(PlayerBase player)
+	public void flash( PlayerBase player, int color )
 	{
-		if(!showedPlayer[player.id]){
-			NativeFunction.gangZoneShowForPlayer(player.id, id, color);
-			showedPlayer[player.id] = true;
-		}
+		NativeFunction.gangZoneFlashForPlayer( player.id, id, color );
+		if( isPlayerShowed[player.id] ) isPlayerFlashing[player.id] = true;
 	}
 	
-	public void hide()
+	public void stopFlash( PlayerBase player )
 	{
-		NativeFunction.gangZoneHideForAll(id);
+		NativeFunction.gangZoneStopFlashForPlayer( player.id, id );
+		isPlayerFlashing[player.id] = false;
+	}
+	
+
+	public void showForAll( int color )
+	{
+		NativeFunction.gangZoneShowForAll( id, color );
+		for( int i=0;i<500;i++ ) isPlayerShowed[i] = true;
+	}
+	
+	public void hideForAll()
+	{
+		NativeFunction.gangZoneHideForAll( id );
 		
-		for(int i=0;i<500;i++){
-			showedPlayer[i] = false;
-			flashedPlayer[i] = false;
-		}
-	}
-	
-	public void hide(PlayerBase player)
-	{
-		NativeFunction.gangZoneHideForPlayer(player.id, id);
-		showedPlayer[player.id] = false;
-		flashedPlayer[player.id] = false;
-	}
-	
-	public void flash()
-	{
-		NativeFunction.gangZoneFlashForAll(id, flashcolor);
-		for(int i=0;i<500;i++)
+		for( int i=0; i<500; i++ )
 		{
-			if(showedPlayer[i])
-				flashedPlayer[i] = true;
+			isPlayerShowed[i] = false;
+			isPlayerFlashing[i] = false;
 		}
 	}
 	
-	public void flash(PlayerBase player)
+	public void flashForAll( int color )
 	{
-		if(showedPlayer[player.id])
-		{
-			NativeFunction.gangZoneFlashForPlayer(player.id, id, flashcolor);
-			flashedPlayer[player.id] = true;
-		}
+		NativeFunction.gangZoneFlashForAll( id, color );
+		for( int i=0;i<500;i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
 	}
-	
-	public void stopFlash()
+
+	public void stopFlashForAll()
 	{
-		NativeFunction.gangZoneStopFlashForAll(id);
-		for(int i=0;i<500;i++)
-			flashedPlayer[i] = false;
-	}
-	
-	public void stopFlash(PlayerBase player)
-	{
-		NativeFunction.gangZoneStopFlashForPlayer(player.id, id);
-		flashedPlayer[player.id] = false;
-	}
-	
-	public void setColor(int color)
-	{
-		this.color = color;
-		
-		for(int i=0;i<500;i++)
-		{
-			if(showedPlayer[i])
-			{
-				NativeFunction.gangZoneHideForPlayer(i, id);
-				NativeFunction.gangZoneShowForPlayer(i, id, color);
-				if(flashedPlayer[i])
-					NativeFunction.gangZoneFlashForPlayer(i, id, flashcolor);
-			}
-		}
-	}
-	
-	public void setFlashColor(int flashcolor)
-	{
-		this.flashcolor = flashcolor;
-		for(int i=0;i<500;i++)
-		{
-			if(flashedPlayer[i])
-				NativeFunction.gangZoneFlashForPlayer(i, id, flashcolor);
-		}
+		NativeFunction.gangZoneStopFlashForAll( id );
+		for( int i=0;i<500;i++ ) isPlayerFlashing[i] = false;
 	}
 }

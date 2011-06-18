@@ -40,9 +40,14 @@ public class PickupBase
 	int model, type;
 	Point position;
 	
-	public int model(){return this.model;}
-	public int type(){return this.type;}
-	public Point position(){return this.position;}
+	public int model()			{ return this.model; }
+	public int type()			{ return this.type; }
+	public Point position()		{ return this.position; }
+	
+	
+	EventDispatcher<PlayerPickupEvent>		eventPickup = new EventDispatcher<PlayerPickupEvent>();
+	
+	public IEventDispatcher<PlayerPickupEvent>		eventPickup()		{ return eventPickup; }
 	
 	
 	public PickupBase( int model, int type, float x, float y, float z )
@@ -68,23 +73,20 @@ public class PickupBase
 		id = NativeFunction.createPickup( model, type, position.x, position.y, position.z );
 	}
 	
-	//-------------------------
 	
-	EventDispatcher<PlayerPickupEvent> eventPickup = new EventDispatcher<PlayerPickupEvent>();
-	
-	public IEventDispatcher<PlayerPickupEvent>	eventPickup()	{return eventPickup;}
-	
-	//-------------------------
+//---------------------------------------------------------
 	
 	protected int onPickup( PlayerBase player )
 	{
 		return 1;
 	}
 	
+	
+//---------------------------------------------------------
+	
 	public void destroy()
 	{
 		NativeFunction.destroyPickup( id );
 		GameModeBase.instance.pickupPool[ id ] = null;
 	}
-	
 }
