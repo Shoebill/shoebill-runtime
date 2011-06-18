@@ -37,11 +37,11 @@ public class MenuBase
 	}
 	
 
-	public int id;
-	public String title;
-	public int columns;
-	public float x, y;
-	public float col1Width, col2Width;
+	int id;
+	String title;
+	int columns;
+	float x, y;
+	float col1Width, col2Width;
 	
 	public int id()				{ return id; }
 	public String title()		{ return title; }
