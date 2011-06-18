@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2011 MK124
+ * Copyright (C) 2011 JoJLlmAn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +19,13 @@ package net.gtaun.samp;
 
 import java.util.Vector;
 
+import net.gtaun.event.EventDispatcher;
+import net.gtaun.event.IEventDispatcher;
+import net.gtaun.samp.event.MenuExitedEvent;
+import net.gtaun.samp.event.MenuSelectedEvent;
+
 /**
- * @author MK124
+ * @author MK124, JoJLlmAn
  *
  */
 
@@ -36,6 +42,19 @@ public class MenuBase
 	public int columns;
 	public float x, y;
 	public float col1Width, col2Width;
+	
+	public int id()				{ return id; }
+	public String title()		{ return title; }
+	public int columns()		{ return columns; }
+	public float x()			{ return x; }
+	public float y()			{ return y; }
+	public float col1Width()	{ return col1Width; }
+	public float col2Width()	{ return col2Width; }
+	
+	EventDispatcher<MenuSelectedEvent> 	eventMenuSelected = new EventDispatcher<MenuSelectedEvent>();
+	EventDispatcher<MenuExitedEvent> 	eventMenuExited = new EventDispatcher<MenuExitedEvent>();
+	public IEventDispatcher<MenuSelectedEvent>	eventMenuSelected()	{ return eventMenuSelected; }
+	public IEventDispatcher<MenuExitedEvent>	eventMenuExited()	{ return eventMenuExited; }
 	
 	
 	public MenuBase( String title, int columns, float x, float y, float col1Width, float col2Width )
@@ -55,9 +74,50 @@ public class MenuBase
 		id = NativeFunction.createMenu( title, columns, x, y, col1Width, col1Width );;
 	}
 	
+//---------------------------------------------------------
+	
+	protected int onPlayerSelectedMenuRow( PlayerBase player, int row ){
+		return 1;
+	}
+	
+	protected int onPlayerExitedMenu( PlayerBase player ){
+		return 1;
+	}
+	
+	
+//---------------------------------------------------------
+	
 	public void destroy()
 	{
 		NativeFunction.destroyMenu( id );
 		GameModeBase.instance.menuPool[ id ] = null;
+	}
+	
+	public void addMenuItem( int column, String text ){
+		NativeFunction.addMenuItem( id, column, text );
+	}
+	
+	public void setMenuColumnHeader( int column, String text ){
+		NativeFunction.setMenuColumnHeader( id, column, text );
+	}
+	
+	public boolean isValidMenu(){
+		return NativeFunction.isValidMenu( id );
+	}
+	
+	public void disableMenu(){
+		NativeFunction.disableMenu( id );
+	}
+	
+	public void disableMenuRow( int row ){
+		NativeFunction.disableMenuRow( id, row );
+	}
+	
+	public void show( PlayerBase player ){
+		NativeFunction.showMenuForPlayer(id, player.id);
+	}
+	
+	public void hide( PlayerBase player ){
+		NativeFunction.hideMenuForPlayer(id, player.id);
 	}
 }
