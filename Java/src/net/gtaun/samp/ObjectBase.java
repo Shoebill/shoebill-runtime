@@ -38,6 +38,9 @@ public class ObjectBase
 	PointRot position;
 	float speed = 0;
 	
+	public int model()					{ return model; }
+	public float speed()				{ return speed; }
+	
 
 	protected ObjectBase()
 	{
@@ -90,12 +93,7 @@ public class ObjectBase
 		GameModeBase.instance.objectPool[ id ] = null;
 	}
 	
-	public int getModel()
-	{
-		return model;
-	}
-	
-	public Point getPosition()
+	public Point position()
 	{
 		if( speed == 0 ) return position.clone();
 		
@@ -104,20 +102,26 @@ public class ObjectBase
 		return position.clone();
 	}
 	
-	public float getSpeed()
-	{
-		return speed;
-	}
-	
 	public void setPosition( Point position )
 	{
 		this.position.set( position );
 		NativeFunction.setObjectPos( id, position.x, position.y, position.z );
 	}
 	
-	public void setPosition()
+	public void setPosition( PointRot position )
 	{
+		this.position = position.clone();
+		NativeFunction.setObjectPos( id, position.x, position.y, position.z );
+		NativeFunction.setObjectRot( id, position.rx, position.ry, position.rz );
+	}
+	
+	public void setRotate( float rx, float ry, float rz )
+	{
+		position.rx = rx;
+		position.ry = ry;
+		position.rz = rz;
 		
+		NativeFunction.setObjectRot( id, rx, ry, rz );
 	}
 	
 	public void move( float x, float y, float z, float speed )

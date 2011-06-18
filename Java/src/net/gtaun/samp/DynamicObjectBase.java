@@ -87,6 +87,54 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 	
 
 //---------------------------------------------------------
+
+	public void destroy()
+	{
+		streamer.remove( this );
+		
+		for( int i=0; i<500; i++ )
+			NativeFunction.destroyPlayerObject( i, id[i] );
+	}
+	
+	public Point position()
+	{
+		return position.clone();
+	}
+	
+	public void setPosition( Point position )
+	{
+		this.position.set( position );
+		for( int i=0; i<500; i++ )
+		{
+			if( id[i] < 0 ) continue;
+			NativeFunction.setPlayerObjectPos( i, id[i], position.x, position.y, position.z );
+		}
+	}
+	
+	public void setPosition( PointRot position )
+	{
+		this.position = position.clone();
+		for( int i=0; i<500; i++ )
+		{
+			if( id[i] < 0 ) continue;
+			
+			NativeFunction.setPlayerObjectPos( i, id[i], position.x, position.y, position.z );
+			NativeFunction.setPlayerObjectRot( i, id[i], position.rx, position.ry, position.rz );
+		}
+	}
+	
+	public void setRotate( float rx, float ry, float rz )
+	{
+		position.rx = rx;
+		position.ry = ry;
+		position.rz = rz;
+		
+		for( int i=0; i<500; i++ )
+		{
+			if( id[i] < 0 ) continue;
+			NativeFunction.setPlayerObjectRot( i, id[i], rx, ry, rz );
+		}
+	}
 	
 	public void move( float x, float y, float z, float speed )
 	{
@@ -101,14 +149,6 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 	public void attach( PlayerBase player, float x, float y, float z, float rx, float ry, float rz )
 	{
 		
-	}
-
-	public void destroy()
-	{
-		streamer.remove( this );
-		
-		for( int i=0; i<500; i++ )
-			NativeFunction.destroyPlayerObject( i, id[i] );
 	}
 
 	

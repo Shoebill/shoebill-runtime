@@ -25,8 +25,7 @@ import net.gtaun.samp.data.Point;
 import net.gtaun.samp.event.PlayerPickupEvent;
 
 /**
- * @author MK124
- * @author JoJLlmAn
+ * @author MK124, JoJLlmAn
  */
 
 public class PickupBase
