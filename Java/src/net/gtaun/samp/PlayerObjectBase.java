@@ -71,6 +71,43 @@ public class PlayerObjectBase extends ObjectBase
 	
 
 //---------------------------------------------------------
+
+	public void destroy()
+	{
+		NativeFunction.destroyObject( id );
+		GameModeBase.instance.objectPool[ id ] = null;
+	}
+	
+	public Point position()
+	{
+		if( speed == 0 ) return position.clone();
+		
+		NativeFunction.getPlayerObjectPos( player.id, id, position );
+		NativeFunction.getPlayerObjectRot( player.id, id, position );
+		return position.clone();
+	}
+	
+	public void setPosition( Point position )
+	{
+		this.position.set( position );
+		NativeFunction.setPlayerObjectPos( player.id, id, position.x, position.y, position.z );
+	}
+	
+	public void setPosition( PointRot position )
+	{
+		this.position = position.clone();
+		NativeFunction.setPlayerObjectPos( player.id, id, position.x, position.y, position.z );
+		NativeFunction.setPlayerObjectRot( player.id, id, position.rx, position.ry, position.rz );
+	}
+	
+	public void setRotate( float rx, float ry, float rz )
+	{
+		position.rx = rx;
+		position.ry = ry;
+		position.rz = rz;
+		
+		NativeFunction.setPlayerObjectRot( player.id, id, rx, ry, rz );
+	}
 	
 	public void move( float x, float y, float z, float speed )
 	{
@@ -86,11 +123,4 @@ public class PlayerObjectBase extends ObjectBase
 	{
 		NativeFunction.attachPlayerObjectToPlayer( player.id, id, player.id, x, y, z, rx, ry, rz );
 	}
-
-	public void destroy()
-	{
-		NativeFunction.destroyObject( id );
-		GameModeBase.instance.objectPool[ id ] = null;
-	}
-
 }
