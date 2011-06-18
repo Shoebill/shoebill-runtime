@@ -45,14 +45,8 @@ public class PointAngle extends Point
 
 	public PointAngle( Point point, float angle )
 	{
-		super( point );
+		super( point.x, point.y, point.z );
 		this.angle = angle;
-	}
-	
-	public PointAngle( PointAngle point )
-	{
-		super( point );
-		this.angle = point.angle;
 	}
 	
 	
@@ -61,8 +55,8 @@ public class PointAngle extends Point
 		x = point.x;
 		y = point.y;
 		z = point.z;
-		interiorId = point.interiorId;
-		worldId = point.worldId;
+		interior = point.interior;
+		world = point.world;
 		angle = point.angle;
 	}
 	
@@ -75,8 +69,8 @@ public class PointAngle extends Point
 		if( point.x != x )						return false;
 		if( point.y != y )						return false;
 		if( point.z != z )						return false;
-		if( point.interiorId != interiorId )	return false;
-		if( point.worldId != worldId )			return false;
+		if( point.interior != interior )	return false;
+		if( point.world != world )			return false;
 		if( point.angle != angle )				return false;
 		
 		return true;
@@ -84,6 +78,6 @@ public class PointAngle extends Point
 	
 	public PointAngle clone()
 	{
-		return new PointAngle(this);
+		return new PointAngle(x, y, z, interior, world, angle);
 	}
 }

@@ -77,15 +77,6 @@ public class SpawnInfo
 	
 	public SpawnInfo clone()
 	{
-		SpawnInfo info = new SpawnInfo();
-		
-		info.position = position.clone();
-		info.skin = skin;
-		info.team = team;
-		info.weapon1 = weapon1.clone();
-		info.weapon2 = weapon2.clone();
-		info.weapon3 = weapon3.clone();
-		
-		return info;
+		return new SpawnInfo(position.clone(), skin, team, weapon1.clone(), weapon2.clone(), weapon3.clone());
 	}
 }

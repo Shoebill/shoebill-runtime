@@ -219,8 +219,8 @@ public class PlayerBase
 		NativeFunction.getPlayerPos(id, position);
 		NativeFunction.getPlayerFacingAngle(id);
 		
-		position.interiorId = NativeFunction.getPlayerInterior(id);
-		position.worldId = NativeFunction.getPlayerVirtualWorld(id);
+		position.interior = NativeFunction.getPlayerInterior(id);
+		position.world = NativeFunction.getPlayerVirtualWorld(id);
 		
 		NativeFunction.getPlayerVelocity(id, speed);
 		
@@ -528,11 +528,11 @@ public class PlayerBase
 	{
 		NativeFunction.setPlayerPos( id, position.x, position.y, position.z );
 
-		if( position.interiorId != this.position.interiorId )
-			NativeFunction.setPlayerInterior( id, position.interiorId );
+		if( position.interior != this.position.interior )
+			NativeFunction.setPlayerInterior( id, position.interior );
 		
-		if( position.worldId != this.position.worldId )
-			NativeFunction.setPlayerVirtualWorld( id, position.worldId );
+		if( position.world != this.position.world )
+			NativeFunction.setPlayerVirtualWorld( id, position.world );
 		
 		this.position.set( position );
 	}
@@ -541,11 +541,11 @@ public class PlayerBase
 	{
 		NativeFunction.setPlayerPosFindZ( id, position.x, position.y, position.z );
 
-		if( position.interiorId != this.position.interiorId )
-			NativeFunction.setPlayerInterior( id, position.interiorId );
+		if( position.interior != this.position.interior )
+			NativeFunction.setPlayerInterior( id, position.interior );
 		
-		if( position.worldId != this.position.worldId )
-			NativeFunction.setPlayerVirtualWorld( id, position.worldId );
+		if( position.world != this.position.world )
+			NativeFunction.setPlayerVirtualWorld( id, position.world );
 		
 		this.position.set( position );
 	}
@@ -555,11 +555,11 @@ public class PlayerBase
 		NativeFunction.setPlayerPos( id, position.x, position.y, position.z );
 		NativeFunction.setPlayerFacingAngle( id, position.angle );
 
-		if( position.interiorId != this.position.interiorId )
-			NativeFunction.setPlayerInterior( id, position.interiorId );
+		if( position.interior != this.position.interior )
+			NativeFunction.setPlayerInterior( id, position.interior );
 		
-		if( position.worldId != this.position.worldId )
-			NativeFunction.setPlayerVirtualWorld( id, position.worldId );
+		if( position.world != this.position.world )
+			NativeFunction.setPlayerVirtualWorld( id, position.world );
 		
 		this.position.set( position );
 	}
@@ -569,11 +569,11 @@ public class PlayerBase
 		NativeFunction.setPlayerPosFindZ( id, position.x, position.y, position.z );
 		NativeFunction.setPlayerFacingAngle( id, position.angle );
 
-		if( position.interiorId != this.position.interiorId )
-			NativeFunction.setPlayerInterior( id, position.interiorId );
+		if( position.interior != this.position.interior )
+			NativeFunction.setPlayerInterior( id, position.interior );
 		
-		if( position.worldId != this.position.worldId )
-			NativeFunction.setPlayerVirtualWorld( id, position.worldId );
+		if( position.world != this.position.world )
+			NativeFunction.setPlayerVirtualWorld( id, position.world );
 		
 		this.position.set( position );
 	}
@@ -587,13 +587,13 @@ public class PlayerBase
 	public void setInteriorId( int interiorId )
 	{
 		NativeFunction.setPlayerInterior( id, interiorId );
-		position.interiorId = interiorId;
+		position.interior = interiorId;
 	}
 	
 	public void setWorldId( int worldId )
 	{
 		NativeFunction.setPlayerVirtualWorld( id, worldId );
-		position.worldId = worldId;
+		position.world = worldId;
 	}
 	
 	public void setWorldBound( Area bound )

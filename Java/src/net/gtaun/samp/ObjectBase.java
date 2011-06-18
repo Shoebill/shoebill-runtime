@@ -34,10 +34,9 @@ public class ObjectBase
 	}
 	
 	
-	int id;
-	int model;
+	int id, model;
 	PointRot position;
-	float speed;
+	float speed = 0;
 	
 
 	protected ObjectBase()
@@ -84,25 +83,57 @@ public class ObjectBase
 	
 
 //---------------------------------------------------------
+
+	public void destroy()
+	{
+		NativeFunction.destroyObject( id );
+		GameModeBase.instance.objectPool[ id ] = null;
+	}
+	
+	public int getModel()
+	{
+		return model;
+	}
+	
+	public Point getPosition()
+	{
+		if( speed == 0 ) return position.clone();
+		
+		NativeFunction.getObjectPos( id, position );
+		NativeFunction.getObjectRot( id, position );
+		return position.clone();
+	}
+	
+	public float getSpeed()
+	{
+		return speed;
+	}
+	
+	public void setPosition( Point position )
+	{
+		this.position.set( position );
+		NativeFunction.setObjectPos( id, position.x, position.y, position.z );
+	}
+	
+	public void setPosition()
+	{
+		
+	}
 	
 	public void move( float x, float y, float z, float speed )
 	{
+		this.speed = speed;
 		NativeFunction.moveObject( id, x, y, z, speed );
 	}
 	
 	public void stop()
 	{
+		speed = 0;
 		NativeFunction.stopObject( id );
 	}
 	
 	public void attach( PlayerBase player, float x, float y, float z, float rx, float ry, float rz )
 	{
 		NativeFunction.attachObjectToPlayer( id, player.id, x, y, z, rx, ry, rz );
-	}
-
-	public void destroy()
-	{
-		NativeFunction.destroyObject( id );
-		GameModeBase.instance.objectPool[ id ] = null;
 	}
 }

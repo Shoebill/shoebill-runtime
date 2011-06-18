@@ -45,14 +45,8 @@ public class PointRange extends Point
 	
 	public PointRange( Point point, float distance )
 	{
-		super( point );
+		super( point.x, point.y, point.z );
 		this.distance = distance;
-	}
-	
-	public PointRange( PointRange point )
-	{
-		super( point );
-		this.distance = point.distance;
 	}
 	
 	
@@ -61,8 +55,8 @@ public class PointRange extends Point
 		x = point.x;
 		y = point.y;
 		z = point.z;
-		interiorId = point.interiorId;
-		worldId = point.worldId;
+		interior = point.interior;
+		world = point.world;
 		distance = point.distance;
 	}
 	
@@ -75,8 +69,8 @@ public class PointRange extends Point
 		if( point.x != x )						return false;
 		if( point.y != y )						return false;
 		if( point.z != z )						return false;
-		if( point.interiorId != interiorId )	return false;
-		if( point.worldId != worldId )			return false;
+		if( point.interior != interior )	return false;
+		if( point.world != world )			return false;
 		if( point.distance != distance )		return false;
 		
 		return true;
@@ -84,6 +78,6 @@ public class PointRange extends Point
 	
 	public PointRange clone()
 	{
-		return new PointRange(this);
+		return new PointRange(x, y, z, distance, interior, world);
 	}
 }

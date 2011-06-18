@@ -36,13 +36,6 @@ public class Speed
 		
 	}
 	
-	public Speed( Speed spd )
-	{
-		x = spd.x;
-		y = spd.y;
-		z = spd.z;
-	}
-	
 	
 	public float speed2d()		{ return (float) Math.sqrt( x*x + y*y ); }
 	public float speed3d()		{ return (float) Math.sqrt( x*x + y*y + z*z ); }
@@ -73,6 +66,6 @@ public class Speed
 	
 	public Speed clone()
 	{
-		return new Speed(this);
+		return new Speed(x, y, z);
 	}
 }

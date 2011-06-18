@@ -60,20 +60,11 @@ public class PointRot extends Point
 
 	public PointRot( Point point, float rx, float ry, float rz )
 	{
-		super( point );
+		super( point.x, point.y, point.z );
 		
 		this.rx = rx;
 		this.ry = ry;
 		this.rz = rz;
-	}
-	
-	public PointRot( PointRot point )
-	{
-		super( point );
-		
-		this.rx = point.rx;
-		this.ry = point.ry;
-		this.rz = point.rz;
 	}
 	
 	
@@ -82,8 +73,8 @@ public class PointRot extends Point
 		x = point.x;
 		y = point.y;
 		z = point.z;
-		interiorId = point.interiorId;
-		worldId = point.worldId;
+		interior = point.interior;
+		world = point.world;
 		rx = point.rx;
 		ry = point.ry;
 		rz = point.rz;
@@ -98,8 +89,8 @@ public class PointRot extends Point
 		if( point.x != x )						return false;
 		if( point.y != y )						return false;
 		if( point.z != z )						return false;
-		if( point.interiorId != interiorId )	return false;
-		if( point.worldId != worldId )			return false;
+		if( point.interior != interior )	return false;
+		if( point.world != world )			return false;
 		if( point.rx != rx )					return false;
 		if( point.ry != ry )					return false;
 		if( point.rz != rz )					return false;
@@ -109,6 +100,6 @@ public class PointRot extends Point
 	
 	public PointRot clone()
 	{
-		return new PointRot(this);
+		return new PointRot(x, y, z, interior, world, rx, ry, rz);
 	}
 }

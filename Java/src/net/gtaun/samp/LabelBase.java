@@ -74,7 +74,7 @@ public class LabelBase
 	private void init()
 	{
 		id = NativeFunction.create3DTextLabel( text, color,
-				point.x, point.y, point.z, point.distance, point.worldId, testLOS );
+				point.x, point.y, point.z, point.distance, point.world, testLOS );
 	}
 	
 	public void destroy()

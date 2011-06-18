@@ -740,7 +740,7 @@ public abstract class GameModeBase
 		{
     		PlayerBase player = playerPool[playerid];
     		
-    		player.position.interiorId = newinteriorid;
+    		player.position.interior = newinteriorid;
     		
     		player.onInteriorChange( oldinteriorid );
     		player.eventInteriorChange.dispatchEvent( new PlayerInteriorChangeEvent(player, oldinteriorid) );

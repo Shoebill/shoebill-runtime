@@ -45,8 +45,8 @@ class BlockArea
 		x = point.x >= 0 ? (short)(point.x/size) : (short)(point.x/size-1);
 		y = point.y >= 0 ? (short)(point.y/size) : (short)(point.y/size-1);
 		z = point.z >= 0 ? (short)(point.z/size) : (short)(point.z/size-1);
-		interiorId = point.interiorId;
-		worldId = point.worldId;
+		interiorId = point.interior;
+		worldId = point.world;
 	}
 	
 	public boolean equals( Object object )

@@ -24,7 +24,7 @@ package net.gtaun.samp.data;
 public class Point
 {
 	public float x, y, z;
-	public int interiorId, worldId;
+	public int interior, world;
 	
 
 	public Point()
@@ -44,7 +44,7 @@ public class Point
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.worldId = worldId;
+		this.world = worldId;
 	}
 	
 	public Point( float x, float y, float z, int interiorId, int worldId )
@@ -52,17 +52,8 @@ public class Point
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.interiorId = interiorId;
-		this.worldId = worldId;
-	}
-
-	public Point( Point point )
-	{
-		this.x = point.x;
-    	this.y = point.y;
-    	this.z = point.z;
-    	this.interiorId = point.interiorId;
-    	this.worldId = point.worldId;
+		this.interior = interiorId;
+		this.world = worldId;
 	}
 	
 	
@@ -71,8 +62,8 @@ public class Point
 		x = point.x;
 		y = point.y;
 		z = point.z;
-		interiorId = point.interiorId;
-		worldId = point.worldId;
+		interior = point.interior;
+		world = point.world;
 	}
 	
 	public boolean equals( Object obj )
@@ -84,14 +75,14 @@ public class Point
 		if( point.x != x )						return false;
 		if( point.y != y )						return false;
 		if( point.z != z )						return false;
-		if( point.interiorId != interiorId )	return false;
-		if( point.worldId != worldId )			return false;
+		if( point.interior != interior )	return false;
+		if( point.world != world )			return false;
 		
 		return true;
 	}
 	
 	public Point clone()
 	{
-		return new Point(this);
+		return new Point(x, y, z, interior, world);
 	}
 }
