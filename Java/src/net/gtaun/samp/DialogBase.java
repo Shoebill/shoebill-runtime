@@ -30,7 +30,8 @@ public class DialogBase
 	public static final int STYLE_MSGBOX =		0;
 	public static final int STYLE_INPUT =		1;
 	public static final int STYLE_LIST =		2;
-	
+
+//----------------------------------------------------------
 	
 	private static int count = 0;
 	

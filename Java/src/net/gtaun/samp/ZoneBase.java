@@ -30,12 +30,12 @@ public class ZoneBase
 {
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances( GameModeBase.instance.zonePool, cls );
+		return GameModeBase.getInstances(GameModeBase.instance.zonePool, cls);
 	}
 	
 	
-	private boolean[] isPlayerShowed = new boolean[500];
-	private boolean[] isPlayerFlashing = new boolean[500];
+	private boolean[] isPlayerShowed = new boolean[GameModeBase.MAX_PLAYERS];
+	private boolean[] isPlayerFlashing = new boolean[GameModeBase.MAX_PLAYERS];
 	
 	
 	public int id;
@@ -48,14 +48,12 @@ public class ZoneBase
 	public ZoneBase( float minx, float miny, float maxx, float maxy )
 	{
 		this.area = new Area( minx, miny, maxx, maxy );
-		
 		init();
 	}
 	
 	public ZoneBase( Area area )
 	{
 		this.area = area;
-		
 		init();
 	}
 	
@@ -63,13 +61,14 @@ public class ZoneBase
 	{
 		id = NativeFunction.gangZoneCreate( area.minX, area.minY, area.maxX, area.maxY );
 		
-		for(int i=0;i<500;i++){
+		for(int i=0; i<GameModeBase.MAX_PLAYERS; i++)
+		{
 			isPlayerShowed[i] = false;
 			isPlayerFlashing[i] = false;
 		}
 	}
 
-	
+
 //---------------------------------------------------------
 	
 	public void destroy()
@@ -109,14 +108,14 @@ public class ZoneBase
 	public void showForAll( int color )
 	{
 		NativeFunction.gangZoneShowForAll( id, color );
-		for( int i=0;i<500;i++ ) isPlayerShowed[i] = true;
+		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
 	}
 	
 	public void hideForAll()
 	{
 		NativeFunction.gangZoneHideForAll( id );
 		
-		for( int i=0; i<500; i++ )
+		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ )
 		{
 			isPlayerShowed[i] = false;
 			isPlayerFlashing[i] = false;
@@ -126,12 +125,12 @@ public class ZoneBase
 	public void flashForAll( int color )
 	{
 		NativeFunction.gangZoneFlashForAll( id, color );
-		for( int i=0;i<500;i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
+		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
 	}
 
 	public void stopFlashForAll()
 	{
 		NativeFunction.gangZoneStopFlashForAll( id );
-		for( int i=0;i<500;i++ ) isPlayerFlashing[i] = false;
+		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) isPlayerFlashing[i] = false;
 	}
 }

@@ -32,6 +32,17 @@ import net.gtaun.samp.data.WeaponData;
 
 final class NativeFunction
 {
+    static final int INVALID_PLAYER_ID =				0xFFFF;
+    static final int INVALID_VEHICLE_ID	=				0xFFFF;
+    static final int NO_TEAM =							255;
+    static final int INVALID_OBJECT_ID =				0xFFFF;
+    static final int INVALID_MENU =						0xFF;
+    static final int INVALID_TEXT_DRAW =				0xFFFF;
+    static final int INVALID_GANG_ZONE =				-1;
+    static final int INVALID_3DTEXT_ID =				0xFFFF;
+    
+//----------------------------------------------------------
+    
 	static void loadLibrary()
 	{
 		System.loadLibrary( "plugins/Shoebill" );

@@ -27,7 +27,7 @@ public class MenuBase
 {
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances( GameModeBase.instance.menuPool, cls );
+		return GameModeBase.getInstances(GameModeBase.instance.menuPool, cls);
 	}
 	
 

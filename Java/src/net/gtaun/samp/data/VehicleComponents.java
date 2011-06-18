@@ -23,6 +23,22 @@ package net.gtaun.samp.data;
 
 public class VehicleComponents
 {
+	public static final int TYPE_SPOILER =			0;
+	public static final int TYPE_HOOD =				1;
+	public static final int TYPE_ROOF =				2;
+	public static final int TYPE_SIDESKIRT =		3;
+	public static final int TYPE_LAMPS =			4;
+	public static final int TYPE_NITRO =			5;
+	public static final int TYPE_EXHAUST =			6;
+	public static final int TYPE_WHEELS =			7;
+	public static final int TYPE_STEREO =			8;
+	public static final int TYPE_HYDRAULICS =		9;
+	public static final int TYPE_FRONT_BUMPER =		10;
+	public static final int TYPE_REAR_BUMPER =		11;
+	public static final int TYPE_VENT_RIGHT =		12;
+	public static final int TYPE_VENT_LEFT =		13;
+	
+	
 	public int spoiler, hood, roof, sideskirt, lamps, nitro, exhaust, wheels, stereo,
 		hydraulics, frontBumper, rearBumper, ventRight, ventLeft;
 	

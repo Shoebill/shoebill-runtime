@@ -45,14 +45,20 @@ import net.gtaun.samp.event.VehicleUpdateEvent;
 
 public class VehicleBase
 {
+	public static final int PARAMS_UNSET =			-1;
+	public static final int PARAMS_OFF =			0;
+	public static final int PARAMS_ON =				1;
+	
+//---------------------------------------------------------
+	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances( GameModeBase.instance.vehiclePool, cls );
+		return GameModeBase.getInstances(GameModeBase.instance.vehiclePool, cls);
 	}
 	
 	public static <T> T get( Class<T> cls, int id )
 	{
-		return GameModeBase.getInstance( GameModeBase.instance.vehiclePool, cls, id );
+		return GameModeBase.getInstance(GameModeBase.instance.vehiclePool, cls, id);
 	}
 	
 	public static void manualEngineAndLights()

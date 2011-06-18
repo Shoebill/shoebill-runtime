@@ -68,9 +68,22 @@ import net.gtaun.samp.event.VehicleUpdateDamageEvent;
 
 public abstract class GameModeBase
 {
+	public static final int MAX_PLAYER_NAME =						24;
+	public static final int MAX_PLAYERS =							500;
+    public static final int MAX_VEHICLES =							2000;
+    public static final int MAX_OBJECTS =							400;
+    public static final int MAX_ZONES =								1024;
+    public static final int MAX_TEXT_DRAWS =						2048;
+    public static final int MAX_MENUS =								128;
+    public static final int MAX_LABELS_GLOBAL =						1024;
+    public static final int MAX_LABELS_PLAYER =						1024;
+    public static final int MAX_PICKUPS =							2048;
+	
+//----------------------------------------------------------
+    
 	static GameModeBase instance = null;
 
-	static <T> Vector<T> getInstances( Object[] items, Class<T> cls )
+	static <T> Vector<T> getInstances(Object[] items, Class<T> cls)
 	{
 		Vector<T> list = new Vector<T>();
 		
@@ -92,17 +105,17 @@ public abstract class GameModeBase
 
 	private Class<?> playerCls = PlayerBase.class;
 	
-	PlayerBase[] playerPool						= new PlayerBase[500];
-	VehicleBase[] vehiclePool					= new VehicleBase[2000];
-	ObjectBase[] objectPool						= new ObjectBase[400];
-	ObjectBase[] playerObjectPool				= new ObjectBase[20000];
-	PickupBase[] pickupPool						= new PickupBase[2048];
-	LabelBase[] labelPool						= new LabelBase[1024];
-	LabelBase[] playerLabelPool					= new LabelBase[51200];
-	TextdrawBase[] textdrawPool					= new TextdrawBase[2048];
+	PlayerBase[] playerPool						= new PlayerBase[MAX_PLAYERS];
+	VehicleBase[] vehiclePool					= new VehicleBase[MAX_VEHICLES];
+	ObjectBase[] objectPool						= new ObjectBase[MAX_OBJECTS];
+	PlayerObjectBase[] playerObjectPool			= new PlayerObjectBase[MAX_OBJECTS*MAX_PLAYERS];
+	PickupBase[] pickupPool						= new PickupBase[MAX_PICKUPS];
+	LabelBase[] labelPool						= new LabelBase[MAX_LABELS_GLOBAL];
+	PlayerLabelBase[] playerLabelPool			= new PlayerLabelBase[MAX_LABELS_PLAYER*MAX_PLAYERS];
+	TextdrawBase[] textdrawPool					= new TextdrawBase[MAX_TEXT_DRAWS];
+	ZoneBase[] zonePool							= new ZoneBase[MAX_ZONES];
+	MenuBase[] menuPool							= new MenuBase[MAX_MENUS];
 	TimerBase[] timerPool						= new TimerBase[10000];
-	ZoneBase[] zonePool							= new ZoneBase[1024];
-	MenuBase[] menuPool							= new MenuBase[128];
 	
 	HashMap<Integer, DialogBase> dialogPool		= new HashMap<Integer, DialogBase> ();
 	// 需要弱引用

@@ -30,7 +30,7 @@ public class ObjectBase
 {
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances( GameModeBase.instance.objectPool, cls );
+		return GameModeBase.getInstances(GameModeBase.instance.objectPool, cls);
 	}
 	
 	
@@ -42,7 +42,7 @@ public class ObjectBase
 	public float speed()				{ return speed; }
 	
 
-	protected ObjectBase()
+	ObjectBase()
 	{
 		
 	}

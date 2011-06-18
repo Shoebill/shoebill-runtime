@@ -32,7 +32,7 @@ public class PickupBase
 {
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances( GameModeBase.instance.pickupPool, cls );
+		return GameModeBase.getInstances(GameModeBase.instance.pickupPool, cls);
 	}
 	
 	

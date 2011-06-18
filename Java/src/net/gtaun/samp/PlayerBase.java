@@ -70,7 +70,73 @@ import net.gtaun.samp.exception.IllegalLengthException;
 
 public class PlayerBase
 {
-	public static <T> Vector<T> get( Class<T> cls )
+	public static final int MARKERS_MODE_OFF =						0;
+	public static final int MARKERS_MODE_GLOBAL =					1;
+	public static final int MARKERS_MODE_STREAMED =					2;
+	
+	public static final int SPECIAL_ACTION_NONE =					0;
+	public static final int SPECIAL_ACTION_DUCK =					1;
+	public static final int SPECIAL_ACTION_USEJETPACK =				2;
+	public static final int SPECIAL_ACTION_ENTER_VEHICLE =			3;
+	public static final int SPECIAL_ACTION_EXIT_VEHICLE =			4;
+	public static final int SPECIAL_ACTION_DANCE1 =					5;
+	public static final int SPECIAL_ACTION_DANCE2 =					6;
+	public static final int SPECIAL_ACTION_DANCE3 =					7;
+	public static final int SPECIAL_ACTION_DANCE4 =					8;
+	public static final int SPECIAL_ACTION_HANDSUP =				10;
+	public static final int SPECIAL_ACTION_USECELLPHONE =			11;
+	public static final int SPECIAL_ACTION_SITTING =				12;
+	public static final int SPECIAL_ACTION_STOPUSECELLPHONE =		13;
+	public static final int SPECIAL_ACTION_DRINK_BEER =				20;
+	public static final int SPECIAL_ACTION_SMOKE_CIGGY =			21;
+	public static final int SPECIAL_ACTION_DRINK_WINE =				22;
+	public static final int SPECIAL_ACTION_DRINK_SPRUNK =			23;
+
+	public static final int FIGHT_STYLE_NORMAL =					4;
+	public static final int FIGHT_STYLE_BOXING =					5;
+	public static final int FIGHT_STYLE_KUNGFU =					6;
+	public static final int FIGHT_STYLE_KNEEHEAD =					7;
+	public static final int FIGHT_STYLE_GRABKICK =					15;
+	public static final int FIGHT_STYLE_ELBOW =						16;
+
+	public static final int WEAPONSKILL_PISTOL = 					0;
+	public static final int WEAPONSKILL_PISTOL_SILENCED =			1;
+	public static final int WEAPONSKILL_DESERT_EAGLE =				2;
+	public static final int WEAPONSKILL_SHOTGUN =					3;
+	public static final int WEAPONSKILL_SAWNOFF_SHOTGUN =			4;
+	public static final int WEAPONSKILL_SPAS12_SHOTGUN =			5;
+	public static final int WEAPONSKILL_MICRO_UZI =					6;
+	public static final int WEAPONSKILL_MP5 =						7;
+	public static final int WEAPONSKILL_AK47 =						8;
+	public static final int WEAPONSKILL_M4 =						9;
+	public static final int WEAPONSKILL_SNIPERRIFLE =				10;
+
+	public static final int WEAPONSTATE_UNKNOWN =					-1;
+	public static final int WEAPONSTATE_NO_BULLETS =				0;
+	public static final int WEAPONSTATE_LAST_BULLET =				1;
+	public static final int WEAPONSTATE_MORE_BULLETS =				2;
+	public static final int WEAPONSTATE_RELOADING =					3;
+	
+	public static final int MAPICON_LOCAL =							0;
+	public static final int MAPICON_GLOBAL =						1;
+	public static final int MAPICON_LOCAL_CHECKPOINT =				2;
+	public static final int MAPICON_GLOBAL_CHECKPOINT =				3;
+
+	public static final int SPECTATE_MODE_NORMAL =					1;
+	public static final int SPECTATE_MODE_FIXED =					2;
+	public static final int SPECTATE_MODE_SIDE =					3;
+
+	public static final int PLAYER_RECORDING_TYPE_NONE =			0;
+	public static final int PLAYER_RECORDING_TYPE_DRIVER =			1;
+	public static final int PLAYER_RECORDING_TYPE_ONFOOT =			2;
+	
+	public static final int MAX_PLAYER_ATTACHED_OBJECTS =			5;
+
+	public static final int MAX_CHATBUBBLE_LENGTH =					144;
+	
+//---------------------------------------------------------
+	
+	public static <T> Vector<T> get(Class<T> cls)
 	{
 		return GameModeBase.getInstances( GameModeBase.instance.playerPool, cls );
 	}
@@ -228,7 +294,7 @@ public class PlayerBase
 		NativeFunction.getPlayerKeys(id, keyState );
 	}
 
-	
+
 //---------------------------------------------------------
 	
 	protected int onDisconnect( int reason )
