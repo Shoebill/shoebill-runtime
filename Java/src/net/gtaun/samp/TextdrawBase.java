@@ -31,17 +31,17 @@ public class TextdrawBase
 		return GameModeBase.getInstances(GameModeBase.instance.textdrawPool, cls);
 	}
 	
-	private boolean[] isPlayerShowed = new boolean[500];
+	private boolean[] isPlayerShowed = new boolean[GameModeBase.MAX_PLAYERS];
 	
 	
-	private int id;
-	private float x, y;
-	private String text;
+	int id;
+	float x, y;
+	String text;
 	
 	public int id()			{ return id; }
 	public float x()		{ return x; }
 	public float y()		{ return y; }
-	public String text()	{ return text;}
+	public String text()	{ return text; }
 	
 	
 	public TextdrawBase( float x, float y, String text )
@@ -65,87 +65,100 @@ public class TextdrawBase
 	private void init()
 	{
 		id = NativeFunction.textDrawCreate( x, y, text );
-		for(int i=0;i<500;i++){
-			isPlayerShowed[i] = false;
-		}
+		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) isPlayerShowed[i] = false;
 	}
+	
 	
 //---------------------------------------------------------
 	
 	public void destroy()
 	{
 		NativeFunction.textDrawDestroy( id );
-		GameModeBase.instance.textdrawPool[ id ] = null;
+		GameModeBase.instance.textdrawPool[id] = null;
 	}
 	
-	public void setLetterSize(float x, float y){
-		NativeFunction.textDrawLetterSize(id, x, y);
+	public void setLetterSize( float x, float y )
+	{
+		NativeFunction.textDrawLetterSize( id, x, y );
 	}
 	
-	public void setTextSize(float x, float y){
-		NativeFunction.textDrawTextSize(id, x, y);
+	public void setTextSize( float x, float y )
+	{
+		NativeFunction.textDrawTextSize( id, x, y );
 	}
 	
-	public void setAlignment(int alignment){
-		NativeFunction.textDrawAlignment(id, alignment);
+	public void setAlignment( int alignment )
+	{
+		NativeFunction.textDrawAlignment( id, alignment );
 	}
 	
-	public void setColor(int color){
-		NativeFunction.textDrawColor(id, color);
+	public void setColor( int color )
+	{
+		NativeFunction.textDrawColor( id, color );
 	}
 	
-	public void useBox(boolean use){
-		NativeFunction.textDrawUseBox(id, use);
+	public void useBox( boolean use )
+	{
+		NativeFunction.textDrawUseBox( id, use );
 	}
 	
-	public void setBoxColor(int color){
-		NativeFunction.textDrawBoxColor(id, color);
+	public void setBoxColor( int color )
+	{
+		NativeFunction.textDrawBoxColor( id, color );
 	}
 	
-	public void setShadow(int size){
-		NativeFunction.textDrawSetShadow(id, size);
+	public void setShadow( int size )
+	{
+		NativeFunction.textDrawSetShadow( id, size );
 	}
 	
-	public void setOutline(int size){
-		NativeFunction.textDrawSetOutline(id, size);
+	public void setOutline( int size )
+	{
+		NativeFunction.textDrawSetOutline( id, size );
 	}
 	
-	public void setBackgroundColor(int color){
-		NativeFunction.textDrawBackgroundColor(id, color);
+	public void setBackgroundColor( int color )
+	{
+		NativeFunction.textDrawBackgroundColor( id, color );
 	}
 	
-	public void setFont(int font){
-		NativeFunction.textDrawFont(id, font);
+	public void setFont( int font )
+	{
+		NativeFunction.textDrawFont( id, font );
 	}
 	
-	public void setProportional(int set){
-		NativeFunction.textDrawSetProportional(id, set);
+	public void setProportional( int set )
+	{
+		NativeFunction.textDrawSetProportional( id, set );
 	}
 	
-	public void setString(String text){
+	public void setString( String text )
+	{
 		this.text = text;
-		NativeFunction.textDrawSetString(id, text);
+		NativeFunction.textDrawSetString( id, text );
 	}
 	
-	public void show(PlayerBase player){
-		NativeFunction.textDrawShowForPlayer(player.id, id);
+	public void show( PlayerBase player )
+	{
+		NativeFunction.textDrawShowForPlayer( player.id, id );
 		isPlayerShowed[player.id] = true;
 	}
 	
-	public void hide(PlayerBase player){
-		NativeFunction.textDrawHideForPlayer(player.id, id);
+	public void hide( PlayerBase player )
+	{
+		NativeFunction.textDrawHideForPlayer( player.id, id );
 		isPlayerShowed[player.id] = false;
 	}
 	
-	public void showForAll(){
-		NativeFunction.textDrawShowForAll(id);
-		for(int i=0;i<500;i++)
-			isPlayerShowed[i] = true;
+	public void showForAll()
+	{
+		NativeFunction.textDrawShowForAll( id );
+		for( int i=0;i<GameModeBase.MAX_PLAYERS;i++ ) isPlayerShowed[i] = true;
 	}
 	
-	public void hideForAll(){
-		NativeFunction.textDrawHideForAll(id);
-		for(int i=0;i<500;i++)
-			isPlayerShowed[i] = false;
+	public void hideForAll()
+	{
+		NativeFunction.textDrawHideForAll( id );
+		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) isPlayerShowed[i] = false;
 	}
 }
