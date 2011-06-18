@@ -778,6 +778,11 @@ public class PlayerBase
 		NativeFunction.setPlayerCameraPos( id, pos.x, pos.y, pos.z );
 		NativeFunction.setPlayerCameraLookAt( id, lookat.x, lookat.y, lookat.z );
 	}
+	
+	public MenuBase getMenu()
+	{
+		return GameModeBase.instance.menuPool[ NativeFunction.getPlayerMenu(id) ];
+	}
 }
 
 

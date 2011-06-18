@@ -45,7 +45,7 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 	}
 	
 	
-	int id[] = new int[500];
+	int id[] = new int[ GameModeBase.MAX_PLAYERS ];
 	
 	
 	public DynamicObjectBase( int model, float x, float y, float z, float rx, float ry, float rz )
@@ -75,6 +75,7 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 	private void init()
 	{
 		for( int i = 0; i < id.length; i++ ) id[i] = -1;
+		streamer.add( this );
 	}
 
 
@@ -129,7 +130,7 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 		position.ry = ry;
 		position.rz = rz;
 		
-		for( int i=0; i<500; i++ )
+		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ )
 		{
 			if( id[i] < 0 ) continue;
 			NativeFunction.setPlayerObjectRot( i, id[i], rx, ry, rz );

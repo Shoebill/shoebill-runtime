@@ -19,6 +19,7 @@ package net.gtaun.samp;
 import java.util.Vector;
 
 import net.gtaun.samp.data.Point;
+import net.gtaun.samp.data.PointAngle;
 import net.gtaun.samp.data.PointRange;
 
 /**
@@ -30,32 +31,38 @@ public class LabelBase
 {
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances( GameModeBase.instance.labelPool, cls );
+		return GameModeBase.getInstances(GameModeBase.instance.labelPool, cls);
 	}
 	
 	
-	public int id;
-	public String text;
-	public int color;
-	public PointRange point;
-	public boolean testLOS;
+	int id;
+	String text;
+	int color;
+	PointRange position;
+	boolean testLOS;
+	
+	float offsetX, offsetY, offsetZ;
+	PlayerBase attachedPlayer;
+	VehicleBase attachedVehicle;
+
+	public int id()					{ return id; }
+	public String text()			{ return text; }
+	public int color()				{ return color; }
+	
+	public PlayerBase attachedPlayer()		{ return attachedPlayer; }
+	public VehicleBase attachedVehicle()	{ return attachedVehicle; }
 	
 
-	public LabelBase( int color, Point point, float drawDistance, boolean testLOS )
+	LabelBase()
 	{
-		this.text = "";
-		this.color = color;
-		this.point = new PointRange( point, drawDistance );
-		this.testLOS = testLOS;
 		
-		init();
 	}
 	
 	public LabelBase( String text, int color, Point point, float drawDistance, boolean testLOS )
 	{
 		this.text = text;
 		this.color = color;
-		this.point = new PointRange( point, drawDistance );
+		this.position = new PointRange( point, drawDistance );
 		this.testLOS = testLOS;
 		
 		init();
@@ -65,7 +72,7 @@ public class LabelBase
 	{
 		this.text = text;
 		this.color = color;
-		this.point = point.clone();
+		this.position = point.clone();
 		this.testLOS = testLOS;
 		
 		init();
@@ -74,12 +81,59 @@ public class LabelBase
 	private void init()
 	{
 		id = NativeFunction.create3DTextLabel( text, color,
-				point.x, point.y, point.z, point.distance, point.world, testLOS );
+				position.x, position.y, position.z, position.distance, position.world, testLOS );
 	}
+	
+//---------------------------------------------------------
 	
 	public void destroy()
 	{
 		NativeFunction.delete3DTextLabel( id );
 		GameModeBase.instance.labelPool[ id ] = null;
+	}
+
+	public PointRange position()
+	{
+		PointAngle pos = null;
+		
+		if( attachedPlayer != null )	pos = attachedPlayer.position;
+		if( attachedVehicle != null )	pos = attachedVehicle.position;
+		
+		if( pos != null )
+		{
+			position.x = pos.x + offsetX;
+			position.y = pos.y + offsetY;
+			position.z = pos.z + offsetZ;
+			position.interior = pos.interior;
+			position.world = pos.world;
+		}
+		
+		return position.clone();
+	}
+	
+	public void attach( PlayerBase player, float x, float y, float z )
+	{
+		offsetX = x;
+		offsetY = y;
+		offsetZ = z;
+		
+		NativeFunction.attach3DTextLabelToPlayer( id, player.id, x, y, z );
+	}
+	
+	public void attach( VehicleBase vehicle, float x, float y, float z )
+	{
+		offsetX = x;
+		offsetY = y;
+		offsetZ = z;
+		
+		NativeFunction.attach3DTextLabelToVehicle( id, vehicle.id, x, y, z );
+	}
+	
+	public void update( int color, String text )
+	{
+		this.color = color;
+		this.text = text;
+		
+		NativeFunction.update3DTextLabelText( id, color, text );
 	}
 }

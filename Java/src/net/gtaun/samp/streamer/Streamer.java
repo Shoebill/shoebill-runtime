@@ -78,6 +78,8 @@ public class Streamer<O extends IStreamObject>
 	GameModeBase gamemode;
 	int range, blockSize, updateFrameTick = 100;
 	
+	public int range()		{ return range; }
+	
 	
 	public Streamer( GameModeBase gamemode, int range )
 	{
