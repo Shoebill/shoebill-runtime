@@ -75,12 +75,20 @@ public class VehicleBase
 	int color1, color2;
 	int respawnDelay;
 
-	float health;
-
 	VehicleState state = new VehicleState();
 	VehicleComponents components = new VehicleComponents();
 
-	PlayerBase driver;
+	public boolean isStatic()					{ return isStatic; }
+	public boolean isDestroyed()				{ return isDestroyed; }
+	
+	public int model()							{ return model; }
+	public PointAngle position()				{ return position.clone(); }
+	public int color1()							{ return color1; }
+	public int color2()							{ return color2; }
+	public int respawnDelay()					{ return respawnDelay; }
+
+	public VehicleState state()					{ return state.clone(); }
+	public VehicleComponents components()		{ return components; }
 	
 	
 	EventDispatcher<VehicleDestroyEvent>		eventDestroy;
@@ -238,6 +246,32 @@ public class VehicleBase
 		eventDestroy.dispatchEvent( new VehicleDestroyEvent(this) );
 	}
 	
+	public VehicleState getParamsEx()
+	{
+		VehicleState state = new VehicleState();
+		NativeFunction.getVehicleParamsEx( id, state );
+		
+		return state;
+	}
+	
+	public VehicleBase getTrailer()
+	{
+		return get( VehicleBase.class, NativeFunction.getVehicleTrailer(id) );
+	}
+	
+	public int getComponentInSlot( int slot )
+	{
+		return NativeFunction.getVehicleComponentInSlot(id, slot);
+	}
+	
+	public VehicleDamage getDamageStatus()
+	{
+		VehicleDamage damage = new VehicleDamage();
+		NativeFunction.getVehicleDamageStatus( id, damage );
+		
+		return damage;
+	}
+	
 	public void putPlayer( PlayerBase player, int seat )
 	{
 		NativeFunction.putPlayerInVehicle( player.id, id, seat );
@@ -269,25 +303,17 @@ public class VehicleBase
 				state.bonnet, state.boot, state.objective );
 	}
 	
-	public VehicleState getVehicleParamsEx()
-	{
-		VehicleState state = new VehicleState();
-		NativeFunction.getVehicleParamsEx( id, state );
-		
-		return state;
-	}
-	
 	public void respawn()
 	{
 		NativeFunction.setVehicleToRespawn( id );
 	}
 	
-	public void addVehicleComponent( int componentid )
+	public void addComponent( int componentid )
 	{
 		NativeFunction.addVehicleComponent( id, componentid );
 	}
 	
-	public void RemoveVehicleComponent( int componentid )
+	public void removeComponent( int componentid )
 	{
 		NativeFunction.removeVehicleComponent( id, componentid );
 	}
@@ -317,19 +343,9 @@ public class VehicleBase
 		return NativeFunction.isTrailerAttachedToVehicle(id);
 	}
 	
-	public VehicleBase getTrailer()
-	{
-		return get( VehicleBase.class, NativeFunction.getVehicleTrailer(id) );
-	}
-	
-	public void SetNumberPlate( String numberplate )
+	public void setNumberPlate( String numberplate )
 	{
 		NativeFunction.setVehicleNumberPlate( id, numberplate );
-	}
-	
-	public int getComponentInSlot( int slot )
-	{
-		return NativeFunction.getVehicleComponentInSlot(id, slot);
 	}
 	
 	public void repair()
@@ -352,14 +368,6 @@ public class VehicleBase
 		NativeFunction.updateVehicleDamageStatus( id, damage.panels, damage.doors, damage.lights, damage.tires );
 	}
 	
-	public VehicleDamage getDamageStatus()
-	{
-		VehicleDamage damage = new VehicleDamage();
-		NativeFunction.getVehicleDamageStatus( id, damage );
-		
-		return damage;
-	}
 	
-
-	//public void GetVehicleComponentType(int component);
+	//public static int getComponentType( int component );
 }
