@@ -38,8 +38,8 @@ public class ZoneBase
 	private boolean[] isPlayerFlashing = new boolean[GameModeBase.MAX_PLAYERS];
 	
 	
-	public int id;
-	public Area area;
+	int id;
+	Area area;
 	
 	public int id()				{return this.id;}
 	public Area area()			{return this.area;}
