@@ -16,7 +16,14 @@
 
 package net.gtaun.samp;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
 import java.util.Vector;
+
+import net.gtaun.event.EventDispatcher;
+import net.gtaun.event.IEventDispatcher;
+import net.gtaun.samp.event.TimerTickEvent;
 
 /**
  * @author MK124
@@ -25,23 +32,115 @@ import java.util.Vector;
 
 public class TimerBase
 {
+	public static final int COUNT_INFINITE = 0;
+	
+	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
 		return GameModeBase.getInstances(GameModeBase.instance.timerPool, cls);
 	}
 	
 	
-	public int id;
+	int interval, count;
 	
-	
-	public TimerBase()
-	{
+	boolean running;
+	int counting, realInterval;
 
+	public int interval()		{ return interval; }
+	public int count()			{ return count; }
+
+	public boolean running()	{ return running; }
+	
+	
+	EventDispatcher<TimerTickEvent>		eventTick = new EventDispatcher<TimerTickEvent>();
+	
+	public IEventDispatcher<TimerTickEvent>		eventTick()		{ return eventTick; }
+	
+
+	public TimerBase( int interval )
+	{
+		this.interval = interval;
+		this.count = COUNT_INFINITE;
+		
+		init();
+	}
+	
+	public TimerBase( int interval, int count )
+	{
+		this.interval = interval;
+		this.count = count;
+		
+		init();
+	}
+	
+	private void init()
+	{
+		GameModeBase.instance.timerPool.add( new WeakReference<TimerBase>(this) );
+	}
+	
+	public void finalize()
+	{
+		destroy();
+	}
+
+//---------------------------------------------------------
+	
+	public int onTick( int counting )
+	{
+		return 1;
 	}
 	
 	
-	public int onTick()
+//---------------------------------------------------------
+	
+	public void destroy()
 	{
-		return 1;
+		Iterator<Reference<TimerBase>> iterator = GameModeBase.instance.timerPool.iterator();
+		while( iterator.hasNext() )
+		{
+			Reference<TimerBase> reference = iterator.next();
+			if( reference.get() != this ) continue;
+			
+			GameModeBase.instance.timerPool.remove( reference );
+			return;
+		}
+	}
+	
+	public void setInterval( int interval )
+	{
+		this.interval = interval;
+	}
+	
+	public void setCount( int count )
+	{
+		this.count = count;
+	}
+	
+	public void start()
+	{
+		counting = count;
+		realInterval = 0;
+		running = true;
+	}
+	
+	public void stop()
+	{
+		running = false;
+	}
+
+//---------------------------------------------------------
+	
+	void tick( int realint )
+	{
+		if( running == false ) return;
+		
+		realInterval += realint;
+		if( realInterval < interval ) return;
+		
+		if( count > 0 ) counting--;
+		onTick( counting );
+		eventTick.dispatchEvent( new TimerTickEvent(this, realInterval) );
+		
+		if( count > 0 && counting == 0 ) stop();
 	}
 }

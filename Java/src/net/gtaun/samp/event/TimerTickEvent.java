@@ -17,16 +17,22 @@
 package net.gtaun.samp.event;
 
 import net.gtaun.event.Event;
+import net.gtaun.samp.TimerBase;
 
 /**
  * @author MK124
  *
  */
 
-public class TickEvent extends Event
+public class TimerTickEvent extends Event
 {
-	public TickEvent()
+	public TimerBase timer;
+	public int realInterval;
+	
+	
+	public TimerTickEvent( TimerBase timer, int realInterval )
 	{
-		
+		this.timer = timer;
+		this.realInterval = realInterval;
 	}
 }
