@@ -19,10 +19,8 @@ package net.gtaun.samp;
 import net.gtaun.samp.data.KeyState;
 import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointRot;
-import net.gtaun.samp.data.Speed;
+import net.gtaun.samp.data.Velocity;
 import net.gtaun.samp.data.Time;
-import net.gtaun.samp.data.VehicleDamage;
-import net.gtaun.samp.data.VehicleState;
 import net.gtaun.samp.data.WeaponData;
 
 /**
@@ -34,12 +32,12 @@ final class NativeFunction
 {
     static final int INVALID_PLAYER_ID =				0xFFFF;
     static final int INVALID_VEHICLE_ID	=				0xFFFF;
-    static final int NO_TEAM =							255;
     static final int INVALID_OBJECT_ID =				0xFFFF;
     static final int INVALID_MENU =						0xFF;
     static final int INVALID_TEXT_DRAW =				0xFFFF;
     static final int INVALID_GANG_ZONE =				-1;
     static final int INVALID_3DTEXT_ID =				0xFFFF;
+    static final int PLAYER_NO_TEAM =					255;
     
 //----------------------------------------------------------
     
@@ -231,7 +229,7 @@ final class NativeFunction
 	static native void setPlayerFightingStyle( int playerid, int style );
 	static native int getPlayerFightingStyle( int playerid );
 	static native void setPlayerVelocity( int playerid, float x, float y, float z );
-	static native void getPlayerVelocity( int playerid, Speed speed );
+	static native void getPlayerVelocity( int playerid, Velocity speed );
 	static native void playCrimeReportForPlayer( int playerid, int suspectid, int crime );
 	static native void setPlayerShopName( int playerid, String shopname );
 	static native void setPlayerSkillLevel( int playerid, int skill, int level );
@@ -315,7 +313,7 @@ final class NativeFunction
 	static native void setVehicleParamsForPlayer( int vehicleid, int playerid, boolean objective, boolean doorslocked );
 	static native void manualVehicleEngineAndLights();
 	static native void setVehicleParamsEx( int vehicleid, boolean engine, boolean lights, boolean alarm, boolean doors, boolean bonnet, boolean boot, boolean objective );
-	static native void getVehicleParamsEx( int vehicleid, VehicleState state );
+	static native void getVehicleParamsEx( int vehicleid, VehicleParam state );
 	static native void setVehicleToRespawn( int vehicleid );
 	static native void linkVehicleToInterior( int vehicleid, int interiorid );
 	static native void addVehicleComponent( int vehicleid, int componentid );
@@ -333,7 +331,7 @@ final class NativeFunction
 	static native int getVehicleComponentInSlot( int vehicleid, int slot ); // There is 1 slot for each CARMODTYPE_*
 	static native int getVehicleComponentType( int component ); // Find CARMODTYPE_* for component id
 	static native void repairVehicle( int vehicleid ); // Repairs the damage model and resets the health
-	static native void getVehicleVelocity( int vehicleid, Speed speed );
+	static native void getVehicleVelocity( int vehicleid, Velocity speed );
 	static native void setVehicleVelocity( int vehicleid, float x, float y, float z );
 	static native void setVehicleAngularVelocity( int vehicleid, float x, float y, float z );
 	static native void getVehicleDamageStatus( int vehicleid, VehicleDamage damage );

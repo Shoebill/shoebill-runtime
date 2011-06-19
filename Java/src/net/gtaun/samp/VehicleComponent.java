@@ -23,7 +23,7 @@ package net.gtaun.samp;
  *
  */
 
-class VehicleComponent
+public class VehicleComponent
 {
 	public static final int TYPE_SPOILER =			0;
 	public static final int TYPE_HOOD =				1;
@@ -40,76 +40,62 @@ class VehicleComponent
 	public static final int TYPE_VENT_RIGHT =		12;
 	public static final int TYPE_VENT_LEFT =		13;
 	public static final int TYPES =					14;
+
 	
-	
-	int id;
-	
-	int[] componentData = new int[TYPES];
-	
-	public VehicleComponent( int id)
+	public static int getComponentType( int componentid )
 	{
-		this.id = id;
+		return NativeFunction.getVehicleComponentType(componentid);
+	}
+	
+	
+	int vehicleId;
+	
+	int[] components = new int[TYPES];
+	
+	
+	VehicleComponent( int vehicleId )
+	{
+		this.vehicleId = vehicleId;
 		update();
 	}
 	
 //---------------------------------------------------------
 	
-	public void update()
-	{
-		for(int i=0;i<TYPES;i++)
-			componentData[i] = NativeFunction.getVehicleComponentInSlot(id, i);
-	}
-	
 	public void add( int componentid )
 	{
-		NativeFunction.addVehicleComponent(id, componentid);
+		NativeFunction.addVehicleComponent( vehicleId, componentid );
 		
 		int type = NativeFunction.getVehicleComponentType(componentid);
-		componentData[type] = NativeFunction.getVehicleComponentInSlot(id, type);
+		components[type] = NativeFunction.getVehicleComponentInSlot(vehicleId, type);
 	}
 	
 	public void remove( int componentid )
 	{
-		NativeFunction.removeVehicleComponent(id, componentid);
+		NativeFunction.removeVehicleComponent( vehicleId, componentid );
 		
 		int type = NativeFunction.getVehicleComponentType(componentid);
-		componentData[type] = NativeFunction.getVehicleComponentInSlot(id, type);
+		components[type] = NativeFunction.getVehicleComponentInSlot(vehicleId, type);
 	}
 	
 	public int getFromSlot( int type )
 	{
-		return NativeFunction.getVehicleComponentInSlot(id, type);
+		return NativeFunction.getVehicleComponentInSlot( vehicleId, type );
 	}
 	
 	public int[] toArray()
 	{
 		int[] data = new int[TYPES];
-		
-		System.arraycopy(componentData, 0, data, 0, TYPES);
+		System.arraycopy( components, 0, data, 0, TYPES );
 		
 		return data;
 	}
 	
 	
-	public boolean equals( Object obj )
-	{
-		if( obj == this )							return true;
-		if( !(obj instanceof VehicleComponent) )	return false;
-		
-		VehicleComponent component = (VehicleComponent) obj;
-		
-		for(int i=0;i<TYPES;i++){
-			if( component.componentData[i] != componentData[i])
-				return false;
-		}
-		
-		return true;
-	}
-	
 //---------------------------------------------------------
-	
-	public static int getComponentType( int componentid )
+		
+	void update()
 	{
-		return NativeFunction.getVehicleComponentType(componentid);
+		for( int i=0; i<TYPES; i++ )
+			components[i] = NativeFunction.getVehicleComponentInSlot(vehicleId, i);
 	}
 }

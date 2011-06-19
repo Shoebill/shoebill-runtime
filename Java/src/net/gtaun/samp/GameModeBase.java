@@ -16,7 +16,11 @@
 
 package net.gtaun.samp;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Vector;
 
 import net.gtaun.event.EventDispatcher;
@@ -49,7 +53,7 @@ import net.gtaun.samp.event.PlayerTextEvent;
 import net.gtaun.samp.event.PlayerUpdateEvent;
 import net.gtaun.samp.event.RconCommandEvent;
 import net.gtaun.samp.event.RconLoginEvent;
-import net.gtaun.samp.event.TickEvent;
+import net.gtaun.samp.event.TimerTickEvent;
 import net.gtaun.samp.event.VehicleDeathEvent;
 import net.gtaun.samp.event.VehicleEnterEvent;
 import net.gtaun.samp.event.VehicleExitEvent;
@@ -95,6 +99,20 @@ public abstract class GameModeBase
 		
 		return list;		
 	}
+	
+	static <T> Vector<T> getInstances(Vector<?> items, Class<T> cls)
+	{
+		Vector<T> list = new Vector<T>();
+		
+		Iterator<?> iterator = items.iterator();
+		while (iterator.hasNext())
+		{
+			Object object = iterator.next();
+			if( cls.isInstance(object) ) list.add( cls.cast(object) );
+		}
+		
+		return list;		
+	}
 
 	static <T> T getInstance( Object[] items, Class<T> cls, int id )
 	{
@@ -115,10 +133,10 @@ public abstract class GameModeBase
 	TextdrawBase[] textdrawPool					= new TextdrawBase[MAX_TEXT_DRAWS];
 	ZoneBase[] zonePool							= new ZoneBase[MAX_ZONES];
 	MenuBase[] menuPool							= new MenuBase[MAX_MENUS];
-	TimerBase[] timerPool						= new TimerBase[10000];
 	
-	HashMap<Integer, DialogBase> dialogPool		= new HashMap<Integer, DialogBase> ();
-	// 需要弱引用
+	Vector<Reference<TimerBase>> timerPool				= new Vector<Reference<TimerBase>>();
+	Map<Integer, WeakReference<DialogBase>> dialogPool	= new HashMap<Integer, WeakReference<DialogBase>>();
+	// 弱引用
 	
 	int currentPlayerId;
 	// PlayerBase() 需要用到
@@ -129,14 +147,14 @@ public abstract class GameModeBase
 	EventDispatcher<PlayerDisconnectEvent>	eventDisconnect = new EventDispatcher<PlayerDisconnectEvent>();
 	EventDispatcher<RconCommandEvent>		eventRconCommand = new EventDispatcher<RconCommandEvent>();
 	EventDispatcher<RconLoginEvent>			eventRconLogin = new EventDispatcher<RconLoginEvent>();
-	EventDispatcher<TickEvent>				eventTick = new EventDispatcher<TickEvent>();
+	EventDispatcher<TimerTickEvent>				eventTick = new EventDispatcher<TimerTickEvent>();
 	
 	public EventDispatcher<GameModeExitEvent>		eventExit()				{ return eventExit; }
 	public EventDispatcher<PlayerConnectEvent>		eventConnect()			{ return eventConnect; }
 	public EventDispatcher<PlayerDisconnectEvent>	eventDisconnect()		{ return eventDisconnect; }
 	public EventDispatcher<RconCommandEvent>		eventRconCommand()		{ return eventRconCommand; }
 	public EventDispatcher<RconLoginEvent>			eventRconLogin()		{ return eventRconLogin; }
-	public EventDispatcher<TickEvent>				eventTick()				{ return eventTick; }
+	public EventDispatcher<TimerTickEvent>				eventTick()				{ return eventTick; }
 	
 
 	protected GameModeBase()
@@ -358,12 +376,24 @@ public abstract class GameModeBase
 	
 //--------------------------------------------------------- 被JNI呼叫的玩意儿
 
+	long lastTick = System.nanoTime();
 	void onProcessTick()
-	{
+	{	
 		try
 		{
+			long nowTick = System.nanoTime();
+			int interval = (int) ((nowTick - lastTick) / 1000 / 1000);
+			lastTick = nowTick;
+			
+			Iterator<Reference<TimerBase>> iterator = timerPool.iterator();
+			while( iterator.hasNext()                                                                                                                                                                                                                                                                                                       )
+			{
+				TimerBase timer = iterator.next().get();
+				timer.tick( interval );
+			}
+			
 			onTick();
-			eventTick.dispatchEvent( new TickEvent() );
+			eventTick.dispatchEvent( new TimerTickEvent() );
 		}
 		catch( Exception e )
 		{
@@ -892,7 +922,13 @@ public abstract class GameModeBase
 		try
 		{
     		PlayerBase player = playerPool[playerid];
-    		DialogBase dialog = dialogPool.get(dialogid);
+    		DialogBase dialog = dialogPool.get(dialogid).get();
+    		
+    		if( dialog == null )
+    		{
+    			dialogPool.remove( dialogid );
+    			return 0;
+    		}
     		
     		DialogResponseEvent event = new DialogResponseEvent(dialog, player, response, listitem, inputtext);
     		

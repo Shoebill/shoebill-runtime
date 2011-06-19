@@ -23,11 +23,10 @@ import net.gtaun.event.EventDispatcher;
 import net.gtaun.event.IEventDispatcher;
 import net.gtaun.samp.data.Area;
 import net.gtaun.samp.data.KeyState;
-import net.gtaun.samp.data.PlayerState;
 import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointAngle;
 import net.gtaun.samp.data.SpawnInfo;
-import net.gtaun.samp.data.Speed;
+import net.gtaun.samp.data.Velocity;
 import net.gtaun.samp.event.DialogResponseEvent;
 import net.gtaun.samp.event.MenuExitedEvent;
 import net.gtaun.samp.event.MenuSelectedEvent;
@@ -172,7 +171,7 @@ public class PlayerBase
 
 	PointAngle position = new PointAngle();
 	Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
-	Speed speed = new Speed();
+	Velocity speed = new Velocity();
 	PlayerState state = new PlayerState();
 	KeyState keyState = new KeyState();
 	
@@ -198,7 +197,7 @@ public class PlayerBase
 	
 	public PointAngle position()	{ return position.clone(); }
 	public Area worldBound()		{ return worldBound.clone(); }
-	public Speed speed()			{ return speed.clone(); }
+	public Velocity speed()			{ return speed.clone(); }
 	public PlayerState state()		{ return state.clone(); }
 	public KeyState keyState()		{ return keyState.clone(); }
 	
@@ -673,7 +672,7 @@ public class PlayerBase
 		worldBound.set( bound );
 	}
 	
-	public void setSpeed( Speed spd )
+	public void setSpeed( Velocity spd )
 	{
 		NativeFunction.setPlayerVelocity( id, spd.x, spd.y, spd.z );
 		speed.set( spd );

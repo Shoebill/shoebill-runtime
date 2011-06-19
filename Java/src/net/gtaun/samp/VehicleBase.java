@@ -23,9 +23,7 @@ import net.gtaun.event.EventDispatcher;
 import net.gtaun.event.IEventDispatcher;
 import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointAngle;
-import net.gtaun.samp.data.Speed;
-import net.gtaun.samp.data.VehicleDamage;
-import net.gtaun.samp.data.VehicleState;
+import net.gtaun.samp.data.Velocity;
 import net.gtaun.samp.event.VehicleDeathEvent;
 import net.gtaun.samp.event.VehicleDestroyEvent;
 import net.gtaun.samp.event.VehicleEnterEvent;
@@ -46,12 +44,6 @@ import net.gtaun.samp.event.VehicleUpdateEvent;
 
 public class VehicleBase
 {
-	public static final int PARAMS_UNSET =			-1;
-	public static final int PARAMS_OFF =			0;
-	public static final int PARAMS_ON =				1;
-	
-//---------------------------------------------------------
-	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
 		return GameModeBase.getInstances(GameModeBase.instance.vehiclePool, cls);
@@ -70,41 +62,39 @@ public class VehicleBase
 	
 	boolean isStatic = false, isDestroyed = false;
 	
-	int id;
-	int model;
-	PointAngle position = new PointAngle();
+	int id, model;
+	int interior;
 	int color1, color2;
 	int respawnDelay;
-	int interior;
 
-	VehicleState state = new VehicleState();
-	VehicleComponent components;
+	VehicleParam param;
+	VehicleComponent component;
+	VehicleDamage damage;
 
 	public boolean isStatic()					{ return isStatic; }
 	public boolean isDestroyed()				{ return isDestroyed; }
 	
 	public int model()							{ return model; }
-	public PointAngle position()				{ return position.clone(); }
 	public int color1()							{ return color1; }
 	public int color2()							{ return color2; }
 	public int respawnDelay()					{ return respawnDelay; }
 
-	public VehicleState state()					{ return state.clone(); }
-	public VehicleComponent components()		{ return components; }
+	public VehicleParam state()					{ return param; }
+	public VehicleComponent component()			{ return component; }
 	
 	
-	EventDispatcher<VehicleDestroyEvent>		eventDestroy;
-	EventDispatcher<VehicleSpawnEvent>			eventSpawn;
-	EventDispatcher<VehicleDeathEvent>			eventDeath;
-	EventDispatcher<VehicleUpdateEvent>			eventUpdate;
-	EventDispatcher<VehicleEnterEvent>			eventEnter;
-	EventDispatcher<VehicleExitEvent>			eventExit;
-	EventDispatcher<VehicleModEvent>			eventMod;
-	EventDispatcher<VehiclePaintjobEvent>		eventPaintjob;
-	EventDispatcher<VehicleResprayEvent>		eventRespray;
-	EventDispatcher<VehicleUpdateDamageEvent>	eventUpdateDamage;
-	EventDispatcher<VehicleStreamInEvent>		eventStreamIn;
-	EventDispatcher<VehicleStreamOutEvent>		eventStreamOut;
+	EventDispatcher<VehicleDestroyEvent>		eventDestroy = new EventDispatcher<VehicleDestroyEvent>();
+	EventDispatcher<VehicleSpawnEvent>			eventSpawn = new EventDispatcher<VehicleSpawnEvent>();
+	EventDispatcher<VehicleDeathEvent>			eventDeath = new EventDispatcher<VehicleDeathEvent>();
+	EventDispatcher<VehicleUpdateEvent>			eventUpdate = new EventDispatcher<VehicleUpdateEvent>();
+	EventDispatcher<VehicleEnterEvent>			eventEnter = new EventDispatcher<VehicleEnterEvent>();
+	EventDispatcher<VehicleExitEvent>			eventExit = new EventDispatcher<VehicleExitEvent>();
+	EventDispatcher<VehicleModEvent>			eventMod = new EventDispatcher<VehicleModEvent>();
+	EventDispatcher<VehiclePaintjobEvent>		eventPaintjob = new EventDispatcher<VehiclePaintjobEvent>();
+	EventDispatcher<VehicleResprayEvent>		eventRespray = new EventDispatcher<VehicleResprayEvent>();
+	EventDispatcher<VehicleUpdateDamageEvent>	eventUpdateDamage = new EventDispatcher<VehicleUpdateDamageEvent>();
+	EventDispatcher<VehicleStreamInEvent>		eventStreamIn = new EventDispatcher<VehicleStreamInEvent>();
+	EventDispatcher<VehicleStreamOutEvent>		eventStreamOut = new EventDispatcher<VehicleStreamOutEvent>();
 
 	public IEventDispatcher<VehicleDestroyEvent>		eventDestroy()			{ return eventDestroy; }
 	public IEventDispatcher<VehicleSpawnEvent>			eventSpawn()			{ return eventSpawn; }
@@ -119,51 +109,55 @@ public class VehicleBase
 	public IEventDispatcher<VehicleStreamInEvent>		eventStreamIn()			{ return eventStreamIn; }
 	public IEventDispatcher<VehicleStreamOutEvent>		eventStreamOut()		{ return eventStreamOut; }
 	
-	
-	public VehicleBase( int model, float x, float y, float z, float angle, int color1, int color2, int respawnDelay )
+
+	public VehicleBase( int model, float x, float y, float z, int interior, int world, float angle, int color1, int color2, int respawnDelay )
 	{
-		this.model = model;
-		this.position.x = x;
-		this.position.y = y;
-		this.position.z = z;
-		this.position.angle = angle;
 		this.color1 = color1;
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
 		
-		init();
+		init( x, y, z, interior, world, angle );
+	}
+	
+	public VehicleBase( int model, float x, float y, float z, float angle, int color1, int color2, int respawnDelay )
+	{
+		this.model = model;
+		this.color1 = color1;
+		this.color2 = color2;
+		this.respawnDelay = respawnDelay;
+
+		init( x, y, z, 0, 0, angle );
 	}
 	
 	public VehicleBase( int model, Point point, float angle, int color1, int color2, int respawnDelay )
 	{
 		this.model = model;
-		this.position = new PointAngle( point, angle );
 		this.color1 = color1;
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
-		
-		init();
+
+		init( point.x, point.y, point.z, point.interior, point.world, angle );
 	}
 	
 	public VehicleBase( int model, PointAngle point, int color1, int color2, int respawnDelay )
 	{
 		this.model = model;
-		this.position = point.clone();
 		this.color1 = color1;
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
-		
-		init();
+
+		init( point.x, point.y, point.z, point.interior, point.world, point.angle );
 	}
 	
-	private void init()
+	private void init( float x, float y, float z, int interior, int world, float angle )
 	{
-		id = NativeFunction.createVehicle( model, position.x, position.y, position.z, position.angle, color1, color2, respawnDelay );
-		NativeFunction.linkVehicleToInterior( id, position.interior );
-		interior = position.interior;
-		
-		NativeFunction.getVehicleParamsEx(id, state);
-		components = new VehicleComponent(id);
+		id = NativeFunction.createVehicle( model, x, y, z, angle, color1, color2, respawnDelay );
+		NativeFunction.linkVehicleToInterior( id, interior );
+		NativeFunction.setVehicleVirtualWorld( id, world );
+
+		param = new VehicleParam( id );
+		component = new VehicleComponent( id );
+		damage = new VehicleDamage( id );
 	}
 	
 	
@@ -186,7 +180,6 @@ public class VehicleBase
 	
 	protected int onUpdate()
 	{
-		NativeFunction.getVehicleParamsEx(id, state);
 		return 1;
 	}
 	
@@ -202,9 +195,6 @@ public class VehicleBase
 	
 	protected int onMod( int componentid )
 	{
-		int type = NativeFunction.getVehicleComponentType(componentid);
-		this.components.componentData[type] = NativeFunction.getVehicleComponentInSlot(id, type);
-		
 		return 1;
 	}
 
@@ -257,26 +247,99 @@ public class VehicleBase
 		eventDestroy.dispatchEvent( new VehicleDestroyEvent(this) );
 	}
 	
-	public VehicleState getParamsEx()
-	{
-		VehicleState state = new VehicleState();
-		NativeFunction.getVehicleParamsEx( id, state );
-		
-		return state;
-	}
 	
-	public VehicleBase getTrailer()
+	public VehicleBase trailer()
 	{
 		return get( VehicleBase.class, NativeFunction.getVehicleTrailer(id) );
 	}
 	
-	public VehicleDamage getDamageStatus()
+	public PointAngle position()
 	{
-		VehicleDamage damage = new VehicleDamage();
-		NativeFunction.getVehicleDamageStatus( id, damage );
+		PointAngle position = new PointAngle();
+
+		NativeFunction.getVehiclePos( id, position );
+		position.angle = NativeFunction.getVehicleZAngle(id);
+		position.interior = interior;
+		position.world = NativeFunction.getVehicleVirtualWorld( id );
 		
-		return damage;
+		return position;
 	}
+	
+	public float angle()
+	{
+		return NativeFunction.getVehicleZAngle(id);
+	}
+	
+	public int interior()
+	{
+		return interior;
+	}
+	
+	public int world()
+	{
+		return NativeFunction.getVehicleVirtualWorld(id);
+	}
+	
+	public float health()
+	{
+		return NativeFunction.getVehicleHealth(id);
+	}
+
+	public Velocity velocity()
+	{
+		Velocity velocity = new Velocity();
+		NativeFunction.getVehicleVelocity( id, velocity );
+		
+		return velocity;
+	}
+	
+
+	public void setPosition( float x, float y, float z )
+	{
+		NativeFunction.setVehiclePos( id, x, y, z );
+	}
+	
+	public void setPosition( Point point )
+	{
+		NativeFunction.setVehiclePos( id, point.x, point.y, point.z );
+		NativeFunction.linkVehicleToInterior( id, point.interior );
+		NativeFunction.setVehicleVirtualWorld( id, point.world );
+	}
+	
+	public void setPosition( PointAngle point )
+	{
+		NativeFunction.setVehiclePos( id, point.x, point.y, point.z );
+		NativeFunction.setVehicleZAngle( id, point.angle );
+		NativeFunction.linkVehicleToInterior( id, point.interior );
+		NativeFunction.setVehicleVirtualWorld( id, point.world );
+	}
+	
+	public void setHealth( float health )
+	{
+		NativeFunction.setVehicleHealth( id, health );
+	}
+	
+	public void setVelocity( Velocity velocity )
+	{
+		NativeFunction.setVehicleVelocity( id, velocity.x, velocity.y, velocity.z );
+	}
+	
+	public void setAngle( float angle )
+	{
+		NativeFunction.setVehicleZAngle( id, angle );
+	}
+	
+	public void setInterior( int interior )
+	{
+		this.interior = interior;
+		NativeFunction.linkVehicleToInterior( id, interior );
+	}
+	
+	public void setWorld( int world )
+	{
+		NativeFunction.setVehicleVirtualWorld( id, world );
+	}
+
 	
 	public void putPlayer( PlayerBase player, int seat )
 	{
@@ -296,17 +359,6 @@ public class VehicleBase
 	public void setParamsForPlayer( PlayerBase player, boolean objective, boolean doorslocked )
 	{
 		NativeFunction.setVehicleParamsForPlayer( id, player.id, objective, doorslocked );
-	}
-	
-	public void setParamsEx( boolean engine, boolean lights, boolean alarm, boolean doors, boolean bonnet, boolean boot, boolean objective )
-	{
-		NativeFunction.setVehicleParamsEx( id, engine, lights, alarm, doors, bonnet, boot, objective );
-	}
-	
-	public void setParamsEx( VehicleState state )
-	{
-		NativeFunction.setVehicleParamsEx( id, state.engine, state.lights, state.alarm, state.doors,
-				state.bonnet, state.boot, state.objective );
 	}
 	
 	public void respawn()
@@ -353,99 +405,6 @@ public class VehicleBase
 	{
 		NativeFunction.setVehicleAngularVelocity( id, x, y, z );
 	}
-
-	public void setDamageStatus( int panels, int doors, int lights,int tires )
-	{
-		NativeFunction.updateVehicleDamageStatus( id, panels, doors, lights, tires );
-	}
-
-	public void setDamageStatus( VehicleDamage damage )
-	{
-		NativeFunction.updateVehicleDamageStatus( id, damage.panels, damage.doors, damage.lights, damage.tires );
-	}
-	
-	public Point getPos()
-	{
-		Point point = new Point();
-		NativeFunction.getVehiclePos(id, point);
-		return point;
-	}
-	
-	public PointAngle getPosAngle()
-	{
-		PointAngle point = new PointAngle();
-		NativeFunction.getVehiclePos(id, point);
-		point.angle = NativeFunction.getVehicleZAngle(id);
-		return point;
-	}
-	
-	public void setPos( Point point )
-	{
-		NativeFunction.setVehiclePos(id, point.x, point.y, point.z);
-		NativeFunction.linkVehicleToInterior(id, point.interior);
-		this.interior = point.interior;
-		NativeFunction.setVehicleVirtualWorld(id, point.world);
-	}
-	
-	public void setPos( PointAngle point )
-	{
-		NativeFunction.setVehiclePos(id, point.x, point.y, point.z);
-		NativeFunction.setVehicleZAngle(id, point.angle);
-		NativeFunction.linkVehicleToInterior(id, point.interior);
-		this.interior = point.interior;
-		NativeFunction.setVehicleVirtualWorld(id, point.world);
-	}
-	
-	public void setPos( float x, float y, float z )
-	{
-		NativeFunction.setVehiclePos(id, x, y, z);
-	}
-	
-	public float getAngle()
-	{
-		return NativeFunction.getVehicleZAngle(id);
-	}
-	
-	public void setAngle( float angle )
-	{
-		NativeFunction.setVehicleZAngle(id, angle);
-	}
-	
-	public void setInterior( int interior )
-	{
-		NativeFunction.linkVehicleToInterior(id, interior);
-		this.interior = interior;
-	}
-	
-	public int getInterior()
-	{
-		return interior;
-	}
-	
-	public void setHealth( float health )
-	{
-		NativeFunction.setVehicleHealth(id, health);
-	}
-	
-	public float getHealth()
-	{
-		return NativeFunction.getVehicleHealth(id);
-	}
-	
-	public void setVelocity(Speed speed)
-	{
-		NativeFunction.setVehicleVelocity(id, speed.x, speed.y, speed.z);
-	}
-	
-	public Speed getVelocity()
-	{
-		Speed speed = new Speed();
-		NativeFunction.getVehicleVelocity(id, speed);
-		return speed;
-	}
-	
-	
-	
 	
 	//public static int getComponentType( int component );
 }

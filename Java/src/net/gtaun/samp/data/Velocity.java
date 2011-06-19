@@ -21,17 +21,17 @@ package net.gtaun.samp.data;
  *
  */
 
-public class Speed
+public class Velocity
 {
 	public float x, y, z;
 	
 
-	public Speed()
+	public Velocity()
 	{
 		
 	}
 	
-	public Speed( float x, float y, float z )
+	public Velocity( float x, float y, float z )
 	{
 		
 	}
@@ -44,7 +44,7 @@ public class Speed
 	
 	
 
-	public void set( Speed spd )
+	public void set( Velocity spd )
 	{
 		x = spd.x;
 		y = spd.y;
@@ -54,9 +54,9 @@ public class Speed
 	public boolean equals( Object obj )
 	{
 		if( obj == this )						return true;
-		if( !(obj instanceof Speed) )			return false;
+		if( !(obj instanceof Velocity) )			return false;
 		
-		Speed speed = (Speed) obj;
+		Velocity speed = (Velocity) obj;
 		if( speed.x != x )						return false;
 		if( speed.y != y )						return false;
 		if( speed.z != z )						return false;
@@ -64,8 +64,8 @@ public class Speed
 		return true;
 	}
 	
-	public Speed clone()
+	public Velocity clone()
 	{
-		return new Speed(x, y, z);
+		return new Velocity(x, y, z);
 	}
 }

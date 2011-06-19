@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.samp.data;
+package net.gtaun.samp;
 
 /**
  * @author MK124
@@ -35,41 +35,12 @@ public class PlayerState
 	public static final int STATE_SPECTATING =					9;
 	
 	
-	public int state, vehicleSeat;
-	public boolean classSelected, dead, isPassenger;
+	int state, vehicleSeat;
+	boolean classSelected, dead, isPassenger;
 	
 	
-	public PlayerState()
+	PlayerState()
 	{
 		
-	}
-	
-	
-	public boolean equals( Object obj )
-	{
-		if( obj == this )									return true;
-		if( !(obj instanceof PlayerState) )					return false;
-		
-		PlayerState playerState = (PlayerState) obj;
-		if( playerState.state != state )					return false;
-		if( playerState.vehicleSeat != vehicleSeat )		return false;
-		if( playerState.classSelected != classSelected )	return false;
-		if( playerState.dead != dead )						return false;
-		if( playerState.isPassenger != isPassenger )		return false;
-		
-		return true;
-	}
-	
-	public PlayerState clone()
-	{
-		PlayerState playerState = new PlayerState();
-		
-		playerState.state = state;
-		playerState.vehicleSeat = vehicleSeat;
-		playerState.classSelected = classSelected;
-		playerState.dead = dead;
-		playerState.isPassenger = isPassenger;
-		
-		return playerState;
 	}
 }
