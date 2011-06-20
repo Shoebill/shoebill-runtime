@@ -2925,6 +2925,32 @@ int GetVehicleZAngle( int vehicleid, float &z_angle )
 	return ret;
 }
 
+int GetVehicleRotationQuat( int vehicleid, float &w, float &x, float &y, float &z )
+{
+	static amx_func_t func = amx_FindFunction(pAMX, "GetVehicleRotationQuat");
+	cell *w_phys, *x_phys, *y_phys, *z_phys;
+
+	cell args[6] =
+	{
+		sizeof(args)- sizeof(cell),
+		vehicleid, amx_Allot(pAMX, 1, &w_phys), amx_Allot(pAMX, 1, &x_phys), amx_Allot(pAMX, 1, &y_phys), amx_Allot(pAMX, 1, &z_phys)
+	};
+
+	int ret = func(pAMX, args);
+
+	w = *((float*)w_phys);
+	x = *((float*)x_phys);
+	y = *((float*)y_phys);
+	z = *((float*)z_phys);
+
+	amx_Release( pAMX, args[5] );
+	amx_Release( pAMX, args[4] );
+	amx_Release( pAMX, args[3] );
+	amx_Release( pAMX, args[2] );
+	return ret;
+
+}
+
 int SetVehicleZAngle( int vehicleid, float z_angle )
 {
 	static amx_func_t func = amx_FindFunction(pAMX, "SetVehicleZAngle");

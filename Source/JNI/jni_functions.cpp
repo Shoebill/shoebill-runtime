@@ -2595,6 +2595,29 @@ JNIEXPORT jfloat JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleZAngle
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
+ * Method:    getVehicleRotationQuat
+ * Signature: (ILnet/gtaun/samp/data/Quaternions;)V
+ */
+JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleRotationQuat
+  (JNIEnv *env, jclass jcls, jint vehicleid, jobject quat)
+{
+	static jclass cls = env->GetObjectClass(quat);
+	static jfieldID fidW = env->GetFieldID(cls, "w", "F");
+	static jfieldID fidX = env->GetFieldID(cls, "x", "F");
+	static jfieldID fidY = env->GetFieldID(cls, "y", "F");
+	static jfieldID fidZ = env->GetFieldID(cls, "z", "F");
+
+	float w, x, y, z;
+	GetVehicleRotationQuat( vehicleid, w, x, y, z );
+
+	env->SetFloatField( quat, fidW, w );
+	env->SetFloatField( quat, fidX, x );
+	env->SetFloatField( quat, fidY, y );
+	env->SetFloatField( quat, fidZ, z );
+}
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
  * Method:    setVehicleZAngle
  * Signature: (IF)V
  */

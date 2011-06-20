@@ -1218,7 +1218,7 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_setPlayerVelocity
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    getPlayerVelocity
- * Signature: (ILnet/gtaun/samp/data/Speed;)V
+ * Signature: (ILnet/gtaun/samp/data/Velocity;)V
  */
 JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerVelocity
   (JNIEnv *, jclass, jint, jobject);
@@ -1673,6 +1673,14 @@ JNIEXPORT jfloat JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleZAngle
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
+ * Method:    getVehicleRotationQuat
+ * Signature: (ILnet/gtaun/samp/data/Quaternions;)V
+ */
+JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleRotationQuat
+  (JNIEnv *, jclass, jint, jobject);
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
  * Method:    setVehicleZAngle
  * Signature: (IF)V
  */
@@ -1706,7 +1714,7 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_setVehicleParamsEx
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    getVehicleParamsEx
- * Signature: (ILnet/gtaun/samp/data/VehicleState;)V
+ * Signature: (ILnet/gtaun/samp/VehicleParam;)V
  */
 JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleParamsEx
   (JNIEnv *, jclass, jint, jobject);
@@ -1850,7 +1858,7 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_repairVehicle
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    getVehicleVelocity
- * Signature: (ILnet/gtaun/samp/data/Speed;)V
+ * Signature: (ILnet/gtaun/samp/data/Velocity;)V
  */
 JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleVelocity
   (JNIEnv *, jclass, jint, jobject);
@@ -1874,7 +1882,7 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_setVehicleAngularVeloc
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    getVehicleDamageStatus
- * Signature: (ILnet/gtaun/samp/data/VehicleDamage;)V
+ * Signature: (ILnet/gtaun/samp/VehicleDamage;)V
  */
 JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleDamageStatus
   (JNIEnv *, jclass, jint, jobject);
