@@ -1,5 +1,4 @@
 /**
- * Copyright (C) 2011 MK124
  * Copyright (C) 2011 JoJLlmAn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,29 +21,34 @@ package net.gtaun.samp.data;
  *
  */
 
-public class Quaternions {
-	
+public class Quaternions
+{
 	public float w,x,y,z;
+	
 
-	public Quaternions(){
+	public Quaternions()
+	{
 		
 	}
 	
-	public Quaternions(float w, float x, float y, float z){
+	public Quaternions( float w, float x, float y, float z )
+	{
 		this.w = w;
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 	
+	
 //---------------------------------------------------------
 	
-	public Quaternions getConjugate(){
+	public Quaternions getConjugate()
+	{
 		return new Quaternions(w,-x,-y,-z);
 	}
 	
-	public float[][] transformMatrix(){
-		
+	public float[][] transformMatrix()
+	{
 		float[][] matrix = new float[4][4];
 		
 		matrix[0][0] = 1 - 2 * (y*y + z*z);
@@ -70,8 +74,8 @@ public class Quaternions {
 		return matrix;
 	}
 	
-	public float[] rotatedMatrix(float dx, float dy, float dz, double angle){
-		
+	public float[] rotatedMatrix( float dx, float dy, float dz, double angle )
+	{
 		float w = (float) Math.cos(angle / 2);
 		
 		float[][] matrix = new float[3][3];

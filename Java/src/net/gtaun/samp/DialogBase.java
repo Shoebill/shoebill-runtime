@@ -16,6 +16,8 @@
 
 package net.gtaun.samp;
 
+import java.lang.ref.WeakReference;
+
 import net.gtaun.event.EventDispatcher;
 import net.gtaun.event.IEventDispatcher;
 import net.gtaun.samp.event.DialogResponseEvent;
@@ -68,7 +70,7 @@ public class DialogBase
 		id = count;
 		count++;
 		
-		GameModeBase.instance.dialogPool.put( id, this );
+		GameModeBase.instance.dialogPool.put( id, new WeakReference<DialogBase>(this) );
 	}
 	
 	

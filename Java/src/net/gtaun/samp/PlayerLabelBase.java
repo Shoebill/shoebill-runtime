@@ -101,7 +101,7 @@ public class PlayerLabelBase extends LabelBase
 	
 	private void init()
 	{
-		int playerId = NativeFunction.INVALID_PLAYER_ID, vehicleId = NativeFunction.INVALID_VEHICLE_ID;
+		int playerId = GameModeBase.INVALID_PLAYER_ID, vehicleId = GameModeBase.INVALID_VEHICLE_ID;
 		
 		if( attachedPlayer != null )	playerId = attachedPlayer.id;
 		if( attachedVehicle != null )	vehicleId = attachedVehicle.id;
@@ -129,14 +129,14 @@ public class PlayerLabelBase extends LabelBase
 	{
 		NativeFunction.deletePlayer3DTextLabel( this.player.id, id );
 		id = NativeFunction.createPlayer3DTextLabel( this.player.id, text, color, x, y, z, position.distance,
-				player.id, NativeFunction.INVALID_VEHICLE_ID, testLOS );
+				player.id, GameModeBase.INVALID_VEHICLE_ID, testLOS );
 	}
 
 	public void attach( VehicleBase vehicle, float x, float y, float z )
 	{
 		NativeFunction.deletePlayer3DTextLabel( this.player.id, id );
 		id = NativeFunction.createPlayer3DTextLabel( this.player.id, text, color, x, y, z, position.distance,
-				NativeFunction.INVALID_PLAYER_ID, vehicle.id, testLOS );
+				GameModeBase.INVALID_PLAYER_ID, vehicle.id, testLOS );
 	}
 	
 	public void update( int color, String text )

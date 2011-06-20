@@ -82,6 +82,15 @@ public abstract class GameModeBase
     public static final int MAX_LABELS_GLOBAL =						1024;
     public static final int MAX_LABELS_PLAYER =						1024;
     public static final int MAX_PICKUPS =							2048;
+    
+    static final int INVALID_PLAYER_ID =				0xFFFF;
+    static final int INVALID_VEHICLE_ID	=				0xFFFF;
+    static final int INVALID_OBJECT_ID =				0xFFFF;
+    static final int INVALID_MENU =						0xFF;
+    static final int INVALID_TEXT_DRAW =				0xFFFF;
+    static final int INVALID_GANG_ZONE =				-1;
+    static final int INVALID_3DTEXT_ID =				0xFFFF;
+    static final int PLAYER_NO_TEAM =					255;
 	
 //----------------------------------------------------------
     
@@ -391,9 +400,6 @@ public abstract class GameModeBase
 				TimerBase timer = iterator.next().get();
 				timer.tick( interval );
 			}
-			
-			onTick();
-			eventTick.dispatchEvent( new TimerTickEvent() );
 		}
 		catch( Exception e )
 		{

@@ -19,6 +19,7 @@ package net.gtaun.samp;
 import net.gtaun.samp.data.KeyState;
 import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointRot;
+import net.gtaun.samp.data.Quaternions;
 import net.gtaun.samp.data.Velocity;
 import net.gtaun.samp.data.Time;
 import net.gtaun.samp.data.WeaponData;
@@ -30,17 +31,6 @@ import net.gtaun.samp.data.WeaponData;
 
 final class NativeFunction
 {
-    static final int INVALID_PLAYER_ID =				0xFFFF;
-    static final int INVALID_VEHICLE_ID	=				0xFFFF;
-    static final int INVALID_OBJECT_ID =				0xFFFF;
-    static final int INVALID_MENU =						0xFF;
-    static final int INVALID_TEXT_DRAW =				0xFFFF;
-    static final int INVALID_GANG_ZONE =				-1;
-    static final int INVALID_3DTEXT_ID =				0xFFFF;
-    static final int PLAYER_NO_TEAM =					255;
-    
-//----------------------------------------------------------
-    
 	static void loadLibrary()
 	{
 		System.loadLibrary( "plugins/Shoebill" );
@@ -92,10 +82,10 @@ final class NativeFunction
 	static native void setDeathDropAmount( int amount );
 	static native void createExplosion( float x, float y, float z, int type, float radius );
 	static native void enableZoneNames( boolean enabled );
-	static native void usePlayerPedAnims();		// Will cause the players to use CJ running/walking animations
-	static native void disableInteriorEnterExits();  // will disable all interior enter/exits in the game.
-	static native void setNameTagDrawDistance( float distance ); // Distance at which nametags will start rendering on the client.
-	static native void disableNameTagLOS(); // Disables the nametag Line-Of-Sight checking
+	static native void usePlayerPedAnims();
+	static native void disableInteriorEnterExits();
+	static native void setNameTagDrawDistance( float distance );
+	static native void disableNameTagLOS();
 	static native void limitGlobalChatRadius( float chat_radius  );
 	static native void limitPlayerMarkerRadius( float marker_radius );
 
@@ -308,7 +298,7 @@ final class NativeFunction
 	static native void getVehiclePos( int vehicleid, Point point );
 	static native void setVehiclePos( int vehicleid, float x, float y, float z );
 	static native float getVehicleZAngle( int vehicleid );
-	//static native void getVehicleRotationQuat( int vehicleid, float &w, float &x, float &y, float &z );
+	static native void getVehicleRotationQuat( int vehicleid, Quaternions quaternions );
 	static native void setVehicleZAngle( int vehicleid, float angle );
 	static native void setVehicleParamsForPlayer( int vehicleid, int playerid, boolean objective, boolean doorslocked );
 	static native void manualVehicleEngineAndLights();

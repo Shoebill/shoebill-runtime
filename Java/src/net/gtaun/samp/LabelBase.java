@@ -97,7 +97,7 @@ public class LabelBase
 		PointAngle pos = null;
 		
 		if( attachedPlayer != null )	pos = attachedPlayer.position;
-		if( attachedVehicle != null )	pos = attachedVehicle.position;
+		if( attachedVehicle != null )	pos = attachedVehicle.position();
 		
 		if( pos != null )
 		{

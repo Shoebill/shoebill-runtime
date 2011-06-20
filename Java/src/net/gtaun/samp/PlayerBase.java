@@ -171,7 +171,7 @@ public class PlayerBase
 
 	PointAngle position = new PointAngle();
 	Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
-	Velocity speed = new Velocity();
+	Velocity velocity = new Velocity();
 	PlayerState state = new PlayerState();
 	KeyState keyState = new KeyState();
 	
@@ -197,8 +197,8 @@ public class PlayerBase
 	
 	public PointAngle position()	{ return position.clone(); }
 	public Area worldBound()		{ return worldBound.clone(); }
-	public Velocity speed()			{ return speed.clone(); }
-	public PlayerState state()		{ return state.clone(); }
+	public Velocity speed()			{ return velocity.clone(); }
+	public PlayerState state()		{ return state; }
 	public KeyState keyState()		{ return keyState.clone(); }
 	
 	public DialogBase dialog()		{ return dialog; }
@@ -292,7 +292,7 @@ public class PlayerBase
 		position.interior = NativeFunction.getPlayerInterior(id);
 		position.world = NativeFunction.getPlayerVirtualWorld(id);
 		
-		NativeFunction.getPlayerVelocity(id, speed);
+		NativeFunction.getPlayerVelocity(id, velocity);
 		
 		state.state = NativeFunction.getPlayerState(id);
 		NativeFunction.getPlayerKeys(id, keyState );
@@ -479,7 +479,7 @@ public class PlayerBase
 		money = NativeFunction.getPlayerMoney(id);
 		NativeFunction.getPlayerPos( id, position );
 		position.angle = NativeFunction.getPlayerFacingAngle(id);
-		NativeFunction.getPlayerVelocity( id, speed );
+		NativeFunction.getPlayerVelocity( id, velocity );
 		
 		frame++;
 		if( frame<0 ) frame = 0;
@@ -675,7 +675,7 @@ public class PlayerBase
 	public void setSpeed( Velocity spd )
 	{
 		NativeFunction.setPlayerVelocity( id, spd.x, spd.y, spd.z );
-		speed.set( spd );
+		velocity.set( spd );
 	}
 	
 	

@@ -24,15 +24,15 @@ package net.gtaun.samp;
 public class PlayerState
 {
 	public static final int STATE_NONE =							0;
-	public static final int STATE_ONFOOT =						1;
-	public static final int STATE_DRIVER =						2;
-	public static final int STATE_PASSENGER =					3;
+	public static final int STATE_ONFOOT =							1;
+	public static final int STATE_DRIVER =							2;
+	public static final int STATE_PASSENGER =						3;
 	public static final int STATE_EXIT_VEHICLE =					4;
 	public static final int STATE_ENTER_VEHICLE_DRIVER =			5;
-	public static final int STATE_ENTER_VEHICLE_PASSENGER =		6;
-	public static final int STATE_WASTED =						7;
-	public static final int STATE_SPAWNED =						8;
-	public static final int STATE_SPECTATING =					9;
+	public static final int STATE_ENTER_VEHICLE_PASSENGER =			6;
+	public static final int STATE_WASTED =							7;
+	public static final int STATE_SPAWNED =							8;
+	public static final int STATE_SPECTATING =						9;
 	
 	
 	int state, vehicleSeat;

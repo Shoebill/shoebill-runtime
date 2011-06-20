@@ -83,7 +83,7 @@ public class DynamicLabelBase extends LabelBase implements IStreamObject
 		PointAngle pos = null;
 		
 		if( attachedPlayer != null )	pos = attachedPlayer.position;
-		if( attachedVehicle != null )	pos = attachedVehicle.position;
+		if( attachedVehicle != null )	pos = attachedVehicle.position();
 		
 		if( pos != null )
 		{
@@ -108,7 +108,7 @@ public class DynamicLabelBase extends LabelBase implements IStreamObject
 			if( id[i] < 0 ) continue;
 			NativeFunction.deletePlayer3DTextLabel( i, id[i] );
 			id[i] = NativeFunction.createPlayer3DTextLabel( i, text, color, x, y, z, position.distance,
-					player.id, NativeFunction.INVALID_VEHICLE_ID, testLOS );
+					player.id, GameModeBase.INVALID_VEHICLE_ID, testLOS );
 		}
 	}
 	
@@ -123,7 +123,7 @@ public class DynamicLabelBase extends LabelBase implements IStreamObject
 			if( id[i] < 0 ) continue;
 			NativeFunction.deletePlayer3DTextLabel( i, id[i] );
 			id[i] = NativeFunction.createPlayer3DTextLabel( i, text, color, x, y, z, position.distance,
-					NativeFunction.INVALID_PLAYER_ID, vehicle.id, testLOS );
+					GameModeBase.INVALID_PLAYER_ID, vehicle.id, testLOS );
 		}
 	}
 	
@@ -148,7 +148,7 @@ public class DynamicLabelBase extends LabelBase implements IStreamObject
 		{
 			id[player.id] = NativeFunction.createPlayer3DTextLabel( player.id, text, color,
 					position.x, position.y, position.z, position.distance,
-					NativeFunction.INVALID_PLAYER_ID, NativeFunction.INVALID_VEHICLE_ID, testLOS );
+					GameModeBase.INVALID_PLAYER_ID, GameModeBase.INVALID_VEHICLE_ID, testLOS );
 		}
 	}
 
