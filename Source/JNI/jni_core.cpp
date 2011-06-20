@@ -63,13 +63,10 @@ int jni_jvm_create( const char* classpath )
 	options[1].optionString = "-Djava.compiler=NONE";
 	options[2].optionString = "-verbose:gc";
 
-	//options[3].optionString = "vfprintf";
-	//options[3].extraInfo = vfprintf;
-
 	vm_args.version = JNI_VERSION_1_6;
 	vm_args.options = options;
 	vm_args.nOptions = sizeof(options) / sizeof(JavaVMOption);
-	vm_args.ignoreUnrecognized = JNI_TRUE;
+	vm_args.ignoreUnrecognized = JNI_FALSE;
 
 	jint res = JNI_CreateJavaVM(&jvm, (void**)&env, &vm_args);
 	if (res < 0) return -3;

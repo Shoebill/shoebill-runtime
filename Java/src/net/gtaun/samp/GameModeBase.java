@@ -156,14 +156,14 @@ public abstract class GameModeBase
 	EventDispatcher<PlayerDisconnectEvent>	eventDisconnect = new EventDispatcher<PlayerDisconnectEvent>();
 	EventDispatcher<RconCommandEvent>		eventRconCommand = new EventDispatcher<RconCommandEvent>();
 	EventDispatcher<RconLoginEvent>			eventRconLogin = new EventDispatcher<RconLoginEvent>();
-	EventDispatcher<TimerTickEvent>				eventTick = new EventDispatcher<TimerTickEvent>();
+	EventDispatcher<TimerTickEvent>			eventTick = new EventDispatcher<TimerTickEvent>();
 	
 	public EventDispatcher<GameModeExitEvent>		eventExit()				{ return eventExit; }
 	public EventDispatcher<PlayerConnectEvent>		eventConnect()			{ return eventConnect; }
 	public EventDispatcher<PlayerDisconnectEvent>	eventDisconnect()		{ return eventDisconnect; }
 	public EventDispatcher<RconCommandEvent>		eventRconCommand()		{ return eventRconCommand; }
 	public EventDispatcher<RconLoginEvent>			eventRconLogin()		{ return eventRconLogin; }
-	public EventDispatcher<TimerTickEvent>				eventTick()				{ return eventTick; }
+	public EventDispatcher<TimerTickEvent>			eventTick()				{ return eventTick; }
 	
 
 	protected GameModeBase()
@@ -181,8 +181,6 @@ public abstract class GameModeBase
 	{
 		NativeFunction.loadLibrary();
 		instance = this;
-		
-		System.out.println( "Java: GameModeBase Inited." );
 	}
 	
 	

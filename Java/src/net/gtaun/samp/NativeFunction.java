@@ -16,6 +16,8 @@
 
 package net.gtaun.samp;
 
+import java.io.PrintStream;
+
 import net.gtaun.samp.data.KeyState;
 import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointRot;
@@ -31,9 +33,20 @@ import net.gtaun.samp.data.WeaponData;
 
 final class NativeFunction
 {
+	static PrintStream consoleStream = System.out;
+	
+	
 	static void loadLibrary()
 	{
-		System.loadLibrary( "plugins/Shoebill" );
+		try
+		{
+			System.loadLibrary( "plugins/Shoebill" );
+			System.setOut( new LogPrintStream("server_log.txt", consoleStream) );
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	
