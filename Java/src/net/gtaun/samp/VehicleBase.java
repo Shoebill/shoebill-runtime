@@ -23,6 +23,7 @@ import net.gtaun.event.EventDispatcher;
 import net.gtaun.event.IEventDispatcher;
 import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointAngle;
+import net.gtaun.samp.data.Quaternions;
 import net.gtaun.samp.data.Velocity;
 import net.gtaun.samp.event.VehicleDeathEvent;
 import net.gtaun.samp.event.VehicleDestroyEvent;
@@ -404,6 +405,13 @@ public class VehicleBase
 	public void setAngularVelocity( float x, float y, float z )
 	{
 		NativeFunction.setVehicleAngularVelocity( id, x, y, z );
+	}
+	
+	public Quaternions getRotationQuat()
+	{
+		Quaternions quaternions = new Quaternions();
+		NativeFunction.getVehicleRotationQuat(id, quaternions);
+		return quaternions;
 	}
 	
 	//public static int getComponentType( int component );
