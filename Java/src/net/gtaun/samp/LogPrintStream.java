@@ -1,5 +1,6 @@
 package net.gtaun.samp;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
@@ -10,18 +11,31 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class LogPrintStream extends PrintStream
+class LogPrintStream extends PrintStream
 {
-	static DateFormat format = new SimpleDateFormat("[HH:mm:ss] ");
+	static DateFormat fileFormat = new SimpleDateFormat("yyyy-MM-dd");
+	static DateFormat directoryFormat = new SimpleDateFormat("yyyy-MM");
+	static DateFormat timestampFormat = new SimpleDateFormat("[HH:mm:ss] ");
+	
+	static String makeFilePath()
+	{
+		Date date = new Date();
+		String path = "logs/" + directoryFormat.format(date);
+		File file = new File(path);
+		if( !file.exists() ) file.mkdirs();
+		
+		path += "/" + fileFormat.format(date) + ".log";
+		return path;
+	}
 	
 	
 	PrintStream consoleStream;
 	boolean timestamp = false;
 	
 	
-	public LogPrintStream( String file, PrintStream console ) throws FileNotFoundException, UnsupportedEncodingException
+	LogPrintStream( PrintStream console ) throws FileNotFoundException, UnsupportedEncodingException
 	{
-		super( new FileOutputStream(file, true), true, "UTF-8" );
+		super( new FileOutputStream(makeFilePath(), true), true, "UTF-8" );
 		this.consoleStream = console;
 	}
 	
@@ -29,7 +43,7 @@ public class LogPrintStream extends PrintStream
 	{
 		if( timestamp ) return;
 		
-		super.print( format.format(new Date()) );
+		super.print( timestampFormat.format(new Date()) );
 		timestamp = true;
 	}
 

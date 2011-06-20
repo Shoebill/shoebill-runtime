@@ -41,7 +41,7 @@ final class NativeFunction
 		try
 		{
 			System.loadLibrary( "plugins/Shoebill" );
-			System.setOut( new LogPrintStream("server_log.txt", consoleStream) );
+			System.setOut( new LogPrintStream(consoleStream) );
 		}
 		catch( Exception e )
 		{
