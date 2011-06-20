@@ -197,7 +197,7 @@ public class PlayerBase
 	
 	public PointAngle position()	{ return position.clone(); }
 	public Area worldBound()		{ return worldBound.clone(); }
-	public Velocity speed()			{ return velocity.clone(); }
+	public Velocity velocity()		{ return velocity.clone(); }
 	public PlayerState state()		{ return state; }
 	public KeyState keyState()		{ return keyState.clone(); }
 	

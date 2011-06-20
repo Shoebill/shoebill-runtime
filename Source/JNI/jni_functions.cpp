@@ -1920,12 +1920,12 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_setPlayerVelocity
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    getPlayerVelocity
- * Signature: (ILnet/gtaun/samp/data/Speed;)V
+ * Signature: (ILnet/gtaun/samp/data/Velocity;)V
  */
 JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerVelocity
-  (JNIEnv *env, jclass jcls, jint playerid, jobject speed)
+  (JNIEnv *env, jclass jcls, jint playerid, jobject velocity)
 {
-	static jclass cls = env->GetObjectClass(speed);
+	static jclass cls = env->GetObjectClass(velocity);
 	static jfieldID fidX = env->GetFieldID(cls, "x", "F");
 	static jfieldID fidY = env->GetFieldID(cls, "y", "F");
 	static jfieldID fidZ = env->GetFieldID(cls, "z", "F");
@@ -1933,9 +1933,9 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerVelocity
 	float x, y, z;
 	GetPlayerVelocity( playerid, x, y, z );
 
-	env->SetFloatField( speed, fidX, x );
-	env->SetFloatField( speed, fidY, y );
-	env->SetFloatField( speed, fidZ, z );
+	env->SetFloatField( velocity, fidX, x );
+	env->SetFloatField( velocity, fidY, y );
+	env->SetFloatField( velocity, fidZ, z );
 }
 
 /*
@@ -2887,12 +2887,12 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_repairVehicle
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    getVehicleVelocity
- * Signature: (ILnet/gtaun/samp/data/Speed;)V
+ * Signature: (ILnet/gtaun/samp/data/Velocity;)V
  */
 JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleVelocity
-  (JNIEnv *env, jclass jcls, jint vehicleid, jobject speed)
+  (JNIEnv *env, jclass jcls, jint vehicleid, jobject velocity)
 {
-	static jclass cls = env->GetObjectClass(speed);
+	static jclass cls = env->GetObjectClass(velocity);
 	static jfieldID fidX = env->GetFieldID(cls, "x", "F");
 	static jfieldID fidY = env->GetFieldID(cls, "y", "F");
 	static jfieldID fidZ = env->GetFieldID(cls, "z", "F");
@@ -2900,9 +2900,9 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleVelocity
 	float x, y, z;
 	GetVehicleVelocity( vehicleid, x, y, z );
 
-	env->SetFloatField( speed, fidX, x );
-	env->SetFloatField( speed, fidY, y );
-	env->SetFloatField( speed, fidZ, z );
+	env->SetFloatField( velocity, fidX, x );
+	env->SetFloatField( velocity, fidY, y );
+	env->SetFloatField( velocity, fidZ, z );
 }
 
 /*

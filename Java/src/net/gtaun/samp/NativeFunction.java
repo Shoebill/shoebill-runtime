@@ -219,7 +219,7 @@ final class NativeFunction
 	static native void setPlayerFightingStyle( int playerid, int style );
 	static native int getPlayerFightingStyle( int playerid );
 	static native void setPlayerVelocity( int playerid, float x, float y, float z );
-	static native void getPlayerVelocity( int playerid, Velocity speed );
+	static native void getPlayerVelocity( int playerid, Velocity velocity );
 	static native void playCrimeReportForPlayer( int playerid, int suspectid, int crime );
 	static native void setPlayerShopName( int playerid, String shopname );
 	static native void setPlayerSkillLevel( int playerid, int skill, int level );
@@ -321,7 +321,7 @@ final class NativeFunction
 	static native int getVehicleComponentInSlot( int vehicleid, int slot ); // There is 1 slot for each CARMODTYPE_*
 	static native int getVehicleComponentType( int component ); // Find CARMODTYPE_* for component id
 	static native void repairVehicle( int vehicleid ); // Repairs the damage model and resets the health
-	static native void getVehicleVelocity( int vehicleid, Velocity speed );
+	static native void getVehicleVelocity( int vehicleid, Velocity velocity );
 	static native void setVehicleVelocity( int vehicleid, float x, float y, float z );
 	static native void setVehicleAngularVelocity( int vehicleid, float x, float y, float z );
 	static native void getVehicleDamageStatus( int vehicleid, VehicleDamage damage );
