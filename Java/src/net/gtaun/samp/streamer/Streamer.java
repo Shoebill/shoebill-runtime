@@ -149,6 +149,7 @@ public class Streamer<O extends IStreamObject>
 		
 	}
 	
+	@SuppressWarnings("unused")
 	private void updateBlock( Vector<O> block )
 	{
 		

@@ -294,6 +294,14 @@ public class VehicleBase
 		return velocity;
 	}
 	
+	public Quaternions rotationQuat()
+	{
+		Quaternions quaternions = new Quaternions();
+		NativeFunction.getVehicleRotationQuat( id, quaternions );
+		
+		return quaternions;
+	}
+	
 
 	public void setPosition( float x, float y, float z )
 	{
@@ -405,13 +413,6 @@ public class VehicleBase
 	public void setAngularVelocity( float x, float y, float z )
 	{
 		NativeFunction.setVehicleAngularVelocity( id, x, y, z );
-	}
-	
-	public Quaternions getRotationQuat()
-	{
-		Quaternions quaternions = new Quaternions();
-		NativeFunction.getVehicleRotationQuat(id, quaternions);
-		return quaternions;
 	}
 	
 	//public static int getComponentType( int component );

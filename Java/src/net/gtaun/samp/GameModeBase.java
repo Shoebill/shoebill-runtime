@@ -72,16 +72,16 @@ import net.gtaun.samp.event.VehicleUpdateDamageEvent;
 
 public abstract class GameModeBase
 {
-	public static final int MAX_PLAYER_NAME =						24;
-	public static final int MAX_PLAYERS =							500;
-    public static final int MAX_VEHICLES =							2000;
-    public static final int MAX_OBJECTS =							400;
-    public static final int MAX_ZONES =								1024;
-    public static final int MAX_TEXT_DRAWS =						2048;
-    public static final int MAX_MENUS =								128;
-    public static final int MAX_LABELS_GLOBAL =						1024;
-    public static final int MAX_LABELS_PLAYER =						1024;
-    public static final int MAX_PICKUPS =							2048;
+	public static final int MAX_PLAYER_NAME =			24;
+	public static final int MAX_PLAYERS =				500;
+    public static final int MAX_VEHICLES =				2000;
+    public static final int MAX_OBJECTS =				400;
+    public static final int MAX_ZONES =					1024;
+    public static final int MAX_TEXT_DRAWS =			2048;
+    public static final int MAX_MENUS =					128;
+    public static final int MAX_LABELS_GLOBAL =			1024;
+    public static final int MAX_LABELS_PLAYER =			1024;
+    public static final int MAX_PICKUPS =				2048;
     
     static final int INVALID_PLAYER_ID =				0xFFFF;
     static final int INVALID_VEHICLE_ID	=				0xFFFF;
@@ -412,6 +412,8 @@ public abstract class GameModeBase
 			onExit();
 			eventExit.dispatchEvent( new GameModeExitEvent(this) );
 			
+			System.out.println( "--- Server Shutting Down." );
+			
 			instance = null;
 			return 1;
 		}
@@ -443,8 +445,9 @@ public abstract class GameModeBase
     			e.printStackTrace();
     			return 0;
     		}
-    		
+
     		playerPool[playerid] = player;
+    		System.out.println( "[join] " + player.name + " has joined the server (" + playerid + ":" + player.ip + ")" );
     		
     		onConnect( player );
     		eventConnect.dispatchEvent( new PlayerConnectEvent(player) );
@@ -462,6 +465,7 @@ public abstract class GameModeBase
 		try
 		{
     		PlayerBase player = playerPool[playerid];
+    		System.out.println( "[part] " + player.name + " has left the server (" + playerid + ":" + reason + ")" );
     		
     		PlayerDisconnectEvent event = new PlayerDisconnectEvent(player, reason);
     		
@@ -486,6 +490,7 @@ public abstract class GameModeBase
 		try
 		{
     		PlayerBase player = playerPool[playerid];
+    		System.out.println( "[spawn] " + player.name + " has spawned (" + playerid + ")" );
     			
     		player.onSpawn();
     		player.eventSpawn.dispatchEvent( new PlayerSpawnEvent(player) );
@@ -509,9 +514,13 @@ public abstract class GameModeBase
     		if( killerid != 0xFFFF )
     		{
     			killer = playerPool[killerid];
+    			System.out.println( "[kill] " + killer.name + " killed " + player.name +
+    					" (" + NativeFunction.getWeaponName(reason) + ")" );
+    			
     			killer.onKill( player, reason );
     			killer.eventKill.dispatchEvent( new PlayerKillEvent(killer, player, reason) );
     		}
+    		else System.out.println( "[death] " + player.name + " died (" + playerid + ":" + reason + ")" );
     		
     		player.onDeath( killer, reason );
     		player.eventDeath.dispatchEvent( new PlayerDeathEvent(player, killer, reason) );
@@ -530,6 +539,7 @@ public abstract class GameModeBase
 		try
 		{
     		PlayerBase player = playerPool[playerid];
+    		System.out.println( "[chat] [" + player.name + "]: " + text );
     		
     		PlayerTextEvent event = new PlayerTextEvent(player, text, player.onText(text));
     		player.eventText.dispatchEvent( event );
@@ -551,6 +561,7 @@ public abstract class GameModeBase
 		try
 		{
     		PlayerBase player = playerPool[playerid];
+    		System.out.println( "[cmd] [" + player.name + "] " + cmdtext );
     		
     		PlayerCommandEvent event = new PlayerCommandEvent(player, cmdtext, player.onCommand(cmdtext));
     		player.eventCommand.dispatchEvent( event );
@@ -730,6 +741,8 @@ public abstract class GameModeBase
 		{
     		PlayerBase player = playerPool[playerid];
     		PickupBase pickup = pickupPool[pickupid];
+
+    		System.out.println( "[pickup] " + player.name + " pickup " + pickup.model + " (" + pickup.type + ")" );
     		
     		player.onPickup( pickup );
     		player.eventPickup.dispatchEvent( new PlayerPickupEvent(player, pickup) );
@@ -786,6 +799,7 @@ public abstract class GameModeBase
 		try
 		{
     		PlayerBase player = playerPool[playerid];
+    		System.out.println( "[interior] " + player.name + " interior has changed to " + newinteriorid );
     		
     		player.position.interior = newinteriorid;
     		
@@ -885,6 +899,9 @@ public abstract class GameModeBase
 		{
     		PlayerBase player = playerPool[playerid];
     		PlayerBase clickedPlayer = playerPool[clickedplayerid];
+
+    		System.out.println( "[click] " + player.name + " has clicked " + clickedPlayer.name );
+    		
     		
     		PlayerClickPlayerEvent event = new PlayerClickPlayerEvent( player, clickedPlayer, source );
     		
@@ -959,6 +976,9 @@ public abstract class GameModeBase
     		PlayerBase player = playerPool[playerid];
     		VehicleBase vehicle = vehiclePool[vehicleid];
     		
+    		System.out.println( "[vehicle] " + player.name + " enter a vehicle (" + vehicle.model + ")" );
+    		
+    		
     		VehicleEnterEvent event = new VehicleEnterEvent(vehicle, player, ispassenger != 0);
     		
     		vehicle.onEnter( player, ispassenger != 0 );
@@ -982,6 +1002,9 @@ public abstract class GameModeBase
 		{
     		PlayerBase player = playerPool[playerid];
     		VehicleBase vehicle = vehiclePool[vehicleid];
+
+    		System.out.println( "[vehicle] " + player.name + " leave a vehicle (" + vehicle.model + ")" );
+    		
     		
     		VehicleExitEvent event = new VehicleExitEvent(vehicle, player);
     		
@@ -1185,6 +1208,9 @@ public abstract class GameModeBase
 	{
 		try
 		{
+    		System.out.println( "[rcon] " + " command: " + cmd );
+			
+    		
     		RconCommandEvent event = new RconCommandEvent(cmd, onRconCommand(cmd));
     		eventRconCommand.dispatchEvent( event );
     		
@@ -1201,6 +1227,11 @@ public abstract class GameModeBase
 	{
 		try
 		{
+			if( success == 0 )
+				 System.out.println( "[rcon] " + " bad rcon attempy by: " + ip + " (" + password + ")" );
+			else System.out.println( "[rcon] " + ip + " has logged." );
+    		
+    		
     		onRconLogin( ip, password, success != 0 );
     		eventRconLogin.dispatchEvent( new RconLoginEvent(ip, password, success!=0) );
     		

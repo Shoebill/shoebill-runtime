@@ -159,7 +159,7 @@ public class PlayerBase
 	
 	int id = -1, ping;
 	String ip;
-	String playerName;
+	String name;
 	SpawnInfo spawnInfo = new SpawnInfo();
 	int color;
 
@@ -182,7 +182,7 @@ public class PlayerBase
 	public int ping()				{ return ping; }
 	public int codepage()			{ return NativeFunction.getPlayerCodepage(id); };
 	public String ip()				{ return ip; }
-	public String name()			{ return playerName; }
+	public String name()			{ return name; }
 	public SpawnInfo spawnInfo()	{ return spawnInfo.clone(); }
 	public int color()				{ return color; }
 
@@ -277,7 +277,7 @@ public class PlayerBase
 	{
 		id = GameModeBase.instance.currentPlayerId;
 		ip = NativeFunction.getPlayerIp(id);
-		playerName = NativeFunction.getPlayerName(id);
+		name = NativeFunction.getPlayerName(id);
 		color = NativeFunction.getPlayerColor(id);
 		
 		health = NativeFunction.getPlayerHealth(id);
@@ -502,7 +502,7 @@ public class PlayerBase
 		if( ret == 0 )	throw new AlreadyExistException();
 		if( ret == -1 )	throw new IllegalArgumentException();
 		
-		playerName = name;
+		this.name = name;
 	}
 	
 	public void setSpawnInfo( float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 )
