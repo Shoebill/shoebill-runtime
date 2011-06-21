@@ -29,6 +29,8 @@ class LogPrintStream extends PrintStream
 	}
 	
 	
+//---------------------------------------------------------
+	
 	PrintStream consoleStream;
 	boolean timestamp = false;
 	
@@ -45,6 +47,16 @@ class LogPrintStream extends PrintStream
 		
 		super.print( timestampFormat.format(new Date()) );
 		timestamp = true;
+	}
+	
+	public void log( String s )
+	{
+		timestamp();
+		
+		super.print( s );
+		super.println();
+		
+		timestamp = false;
 	}
 
 	public void print( boolean b )
@@ -128,7 +140,7 @@ class LogPrintStream extends PrintStream
 		timestamp();
 		super.println();
 		
-		timestamp = true;
+		timestamp = false;
 	}
 
 	public void println( boolean x )
@@ -139,7 +151,7 @@ class LogPrintStream extends PrintStream
 		super.print( x );
 		super.println();
 		
-		timestamp = true;
+		timestamp = false;
 	}
 
 	public void println( char x )
@@ -150,7 +162,7 @@ class LogPrintStream extends PrintStream
 		super.print( x );
 		super.println();
 		
-		timestamp = true;
+		timestamp = false;
 	}
 
 	public void println( int x )
@@ -161,7 +173,7 @@ class LogPrintStream extends PrintStream
 		super.print( x );
 		super.println();
 		
-		timestamp = true;
+		timestamp = false;
 	}
 
 	public void println( long x )
@@ -172,7 +184,7 @@ class LogPrintStream extends PrintStream
 		super.print( x );
 		super.println();
 		
-		timestamp = true;
+		timestamp = false;
 	}
 
 	public void println( float x )
@@ -183,7 +195,7 @@ class LogPrintStream extends PrintStream
 		super.print( x );
 		super.println();
 		
-		timestamp = true;
+		timestamp = false;
 	}
 
 	public void println( double x )
@@ -194,7 +206,7 @@ class LogPrintStream extends PrintStream
 		super.print( x );
 		super.println();
 		
-		timestamp = true;
+		timestamp = false;
 	}
 
 	public void println( char[] x )
@@ -205,7 +217,7 @@ class LogPrintStream extends PrintStream
 		super.print( x );
 		super.println();
 		
-		timestamp = true;	}
+		timestamp = false;	}
 
 	public void println( String x )
 	{
@@ -215,7 +227,7 @@ class LogPrintStream extends PrintStream
 		super.print( x );
 		super.println();
 		
-		timestamp = true;
+		timestamp = false;
 	}
 
 	public void println( Object x )
@@ -226,7 +238,7 @@ class LogPrintStream extends PrintStream
 		super.print( x );
 		super.println();
 		
-		timestamp = true;
+		timestamp = false;
 	}
 
 	public PrintStream printf( String format, Object... args )

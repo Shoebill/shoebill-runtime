@@ -33,20 +33,9 @@ import net.gtaun.samp.data.WeaponData;
 
 final class NativeFunction
 {
-	static PrintStream consoleStream = System.out;
-	
-	
 	static void loadLibrary()
 	{
-		try
-		{
-			System.loadLibrary( "plugins/Shoebill" );
-			System.setOut( new LogPrintStream(consoleStream) );
-		}
-		catch( Exception e )
-		{
-			e.printStackTrace();
-		}
+		System.loadLibrary( "plugins/Shoebill" );
 	}
 	
 	

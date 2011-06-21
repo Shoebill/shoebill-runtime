@@ -16,6 +16,7 @@
 
 package net.gtaun.samp;
 
+import java.io.PrintStream;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -95,6 +96,11 @@ public abstract class GameModeBase
 //----------------------------------------------------------
     
 	static GameModeBase instance = null;
+
+	static PrintStream consoleStream = System.out;
+	static PrintStream errorStream = System.err;
+	static LogPrintStream logStream;
+	
 
 	static <T> Vector<T> getInstances(Object[] items, Class<T> cls)
 	{
@@ -179,8 +185,19 @@ public abstract class GameModeBase
 	
 	private void init()
 	{
-		NativeFunction.loadLibrary();
-		instance = this;
+		try
+		{
+			logStream = new LogPrintStream(consoleStream);
+			System.setOut( logStream );
+			System.setErr( logStream );
+			
+			NativeFunction.loadLibrary();
+			instance = this;
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -412,7 +429,7 @@ public abstract class GameModeBase
 			onExit();
 			eventExit.dispatchEvent( new GameModeExitEvent(this) );
 			
-			System.out.println( "--- Server Shutting Down." );
+			logStream.log( "--- Server Shutting Down." );
 			
 			instance = null;
 			return 1;
@@ -447,7 +464,7 @@ public abstract class GameModeBase
     		}
 
     		playerPool[playerid] = player;
-    		System.out.println( "[join] " + player.name + " has joined the server (" + playerid + ":" + player.ip + ")" );
+    		logStream.log( "[join] " + player.name + " has joined the server (" + playerid + ":" + player.ip + ")" );
     		
     		onConnect( player );
     		eventConnect.dispatchEvent( new PlayerConnectEvent(player) );
@@ -465,7 +482,7 @@ public abstract class GameModeBase
 		try
 		{
     		PlayerBase player = playerPool[playerid];
-    		System.out.println( "[part] " + player.name + " has left the server (" + playerid + ":" + reason + ")" );
+    		logStream.log( "[part] " + player.name + " has left the server (" + playerid + ":" + reason + ")" );
     		
     		PlayerDisconnectEvent event = new PlayerDisconnectEvent(player, reason);
     		
@@ -514,13 +531,13 @@ public abstract class GameModeBase
     		if( killerid != 0xFFFF )
     		{
     			killer = playerPool[killerid];
-    			System.out.println( "[kill] " + killer.name + " killed " + player.name +
+    			logStream.log( "[kill] " + killer.name + " killed " + player.name +
     					" (" + NativeFunction.getWeaponName(reason) + ")" );
     			
     			killer.onKill( player, reason );
     			killer.eventKill.dispatchEvent( new PlayerKillEvent(killer, player, reason) );
     		}
-    		else System.out.println( "[death] " + player.name + " died (" + playerid + ":" + reason + ")" );
+    		else logStream.log( "[death] " + player.name + " died (" + playerid + ":" + reason + ")" );
     		
     		player.onDeath( killer, reason );
     		player.eventDeath.dispatchEvent( new PlayerDeathEvent(player, killer, reason) );
@@ -539,7 +556,7 @@ public abstract class GameModeBase
 		try
 		{
     		PlayerBase player = playerPool[playerid];
-    		System.out.println( "[chat] [" + player.name + "]: " + text );
+    		logStream.log( "[chat] [" + player.name + "]: " + text );
     		
     		PlayerTextEvent event = new PlayerTextEvent(player, text, player.onText(text));
     		player.eventText.dispatchEvent( event );
@@ -1208,7 +1225,7 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		System.out.println( "[rcon] " + " command: " + cmd );
+			logStream.log( "[rcon] " + " command: " + cmd );
 			
     		
     		RconCommandEvent event = new RconCommandEvent(cmd, onRconCommand(cmd));
@@ -1228,8 +1245,8 @@ public abstract class GameModeBase
 		try
 		{
 			if( success == 0 )
-				 System.out.println( "[rcon] " + " bad rcon attempy by: " + ip + " (" + password + ")" );
-			else System.out.println( "[rcon] " + ip + " has logged." );
+				logStream.log( "[rcon] " + " bad rcon attempy by: " + ip + " (" + password + ")" );
+			else logStream.log( "[rcon] " + ip + " has logged." );
     		
     		
     		onRconLogin( ip, password, success != 0 );
