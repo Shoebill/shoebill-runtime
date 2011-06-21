@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2011 MK124
+ * Copyright (C) 2011 JoJLlmAn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +26,7 @@ import net.gtaun.samp.data.PointRot;
 import net.gtaun.samp.event.ObjectMovedEvent;
 
 /**
- * @author MK124
+ * @author MK124, JoJLlmAn
  *
  */
 
