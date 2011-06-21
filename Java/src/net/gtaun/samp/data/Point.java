@@ -21,9 +21,9 @@ package net.gtaun.samp.data;
  *
  */
 
-public class Point
+public class Point extends Vector3D
 {
-	public float x, y, z;
+	//public float x, y, z;
 	public int interior, world;
 	
 

@@ -21,11 +21,12 @@ package net.gtaun.samp.data;
  *
  */
 
-public class Quaternions
+public class Quaternions extends Vector3D
 {
-	public float w,x,y,z;
+	//public float w,x,y,z;
 	
-
+	public float w;
+	
 	public Quaternions()
 	{
 		

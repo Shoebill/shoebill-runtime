@@ -265,7 +265,7 @@ final class NativeFunction
 	static native void setCameraBehindPlayer( int playerid );
 	static native void getPlayerCameraPos( int playerid, Point point );
 	static native void getPlayerCameraFrontVector( int playerid, Point point );
-	static native void getPlayerCameraUpVector( int playerid, Point point );
+	//static native void getPlayerCameraUpVector( int playerid, Point point );
 
 	// Player conditionals
 	static native boolean isPlayerConnected( int playerid );

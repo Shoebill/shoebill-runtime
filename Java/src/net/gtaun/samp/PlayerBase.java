@@ -771,16 +771,27 @@ public class PlayerBase
 	{
 		NativeFunction.banEx( id, reason );
 	}
-
+	
+	public MenuBase getMenu()
+	{
+		return GameModeBase.instance.menuPool[ NativeFunction.getPlayerMenu(id) ];
+	}
+	
 	public void setCamera( Point pos, Point lookat )
 	{
 		NativeFunction.setPlayerCameraPos( id, pos.x, pos.y, pos.z );
 		NativeFunction.setPlayerCameraLookAt( id, lookat.x, lookat.y, lookat.z );
 	}
 	
-	public MenuBase getMenu()
+	public void setCameraBehind()
 	{
-		return GameModeBase.instance.menuPool[ NativeFunction.getPlayerMenu(id) ];
+		NativeFunction.setCameraBehindPlayer(id);
+	}
+	
+	public void getCamera( Point pos, Point lookvector )
+	{
+		NativeFunction.getPlayerCameraPos( id, pos );
+		NativeFunction.getPlayerCameraFrontVector( id, lookvector );
 	}
 }
 

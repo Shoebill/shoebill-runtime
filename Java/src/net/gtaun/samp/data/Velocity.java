@@ -21,9 +21,9 @@ package net.gtaun.samp.data;
  *
  */
 
-public class Velocity
+public class Velocity extends Vector3D
 {
-	public float x, y, z;
+	//public float x, y, z;
 	
 
 	public Velocity()
