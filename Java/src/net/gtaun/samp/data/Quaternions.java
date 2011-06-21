@@ -100,4 +100,9 @@ public class Quaternions
 		
 		return rotated;
 	}
+	
+	public Quaternions clone()
+	{
+		return new Quaternions(w,x,y,z);
+	}
 }
