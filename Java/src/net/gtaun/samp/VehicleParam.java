@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2011 JoJLlmAn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package net.gtaun.samp;
 
 /**
- * @author MK124
+ * @author JoJLlmAn
  *
  */
 
@@ -31,9 +31,28 @@ public class VehicleParam
 	int vehicleId;
 	int engine, lights, alarm, doors, bonnet, boot, objective;
 	
+	public int engine()			{ return engine; }
+	public int lights()			{ return lights; }
+	public int alarm()			{ return alarm; }
+	public int doors()			{ return doors; }
+	public int bonnet()			{ return bonnet; }
+	public int boot()			{ return boot; }
+	public int objective()		{ return objective; }
+	
 	
 	VehicleParam( int vehicleId )
 	{
 		this.vehicleId = vehicleId;
+	}
+	
+	public void refresh()
+	{
+		NativeFunction.getVehicleParamsEx( vehicleId, this );
+	}
+	
+	public void set( boolean engine, boolean lights, boolean alarm, boolean doors, boolean bonnet, boolean boot, boolean objective )
+	{
+		NativeFunction.setVehicleParamsEx( vehicleId, engine, lights, alarm, doors, bonnet, boot, objective );
+		NativeFunction.getVehicleParamsEx( vehicleId, this);
 	}
 }

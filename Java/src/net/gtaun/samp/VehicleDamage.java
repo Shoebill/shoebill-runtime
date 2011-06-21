@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2011 JoJLlmAn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package net.gtaun.samp;
 
 /**
- * @author MK124
+ * @author JoJLlmAn
  *
  */
 
@@ -26,9 +26,19 @@ public class VehicleDamage
 	int vehicleId;
 	int panels, doors, lights, tires;
 	
+	public int panels()		{ return panels; }
+	public int doors()		{ return doors; }
+	public int lights()		{ return lights; }
+	public int tires()		{ return tires; }
 	
 	VehicleDamage( int vehicleId )
 	{
 		this.vehicleId = vehicleId;
+	}
+	
+	public void set( int panels, int doors, int lights, int tires )
+	{
+		NativeFunction.updateVehicleDamageStatus(vehicleId, panels, doors, lights, tires);
+		NativeFunction.getVehicleDamageStatus(vehicleId, this);
 	}
 }

@@ -29,6 +29,9 @@ import net.gtaun.samp.data.Color;
 import net.gtaun.samp.data.SpawnInfo;
 import net.gtaun.samp.event.DialogResponseEvent;
 import net.gtaun.samp.event.GameModeExitEvent;
+import net.gtaun.samp.event.MenuExitedEvent;
+import net.gtaun.samp.event.MenuSelectedEvent;
+import net.gtaun.samp.event.ObjectMovedEvent;
 import net.gtaun.samp.event.PlayerClickPlayerEvent;
 import net.gtaun.samp.event.PlayerCommandEvent;
 import net.gtaun.samp.event.PlayerConnectEvent;
@@ -724,6 +727,11 @@ public abstract class GameModeBase
 	{
 		try
 		{
+			ObjectBase object = objectPool[objectid];
+			
+			object.onMoved();
+			object.eventMoved.dispatchEvent( new ObjectMovedEvent(object) );
+			
 			return 1;
 		}
 		catch( Exception e )
@@ -782,7 +790,18 @@ public abstract class GameModeBase
     		
     		//player.on();
     		//player.event.dispatchEvent( new Player(player) );
-    		
+			
+			PlayerBase player = playerPool[playerid];
+			MenuBase menu = menuPool[NativeFunction.getPlayerMenu(playerid)];
+			
+			MenuSelectedEvent event = new MenuSelectedEvent( menu, player, row );
+			
+			player.onMenuSelected( menu, row );
+			menu.onPlayerSelectedMenuRow( player, row );
+			
+			player.eventMenuSelected.dispatchEvent( event );
+    		menu.eventMenuSelected.dispatchEvent( event );
+			
     		return 1;
     	}
 		catch( Exception e )
@@ -801,6 +820,17 @@ public abstract class GameModeBase
     		
     		//player.on();
     		//player.event.dispatchEvent( new Player(player) );
+			
+			PlayerBase player = playerPool[playerid];
+			MenuBase menu = menuPool[NativeFunction.getPlayerMenu(playerid)];
+			
+			MenuExitedEvent event = new MenuExitedEvent( menu, player );
+			
+			player.onMenuExited( menu );
+			menu.onPlayerExitedMenu( player );
+			
+			player.eventMenuExited.dispatchEvent( event );
+    		menu.eventMenuExited.dispatchEvent( event );
     			
     		return 1;
     	}
@@ -1085,6 +1115,9 @@ public abstract class GameModeBase
     		VehicleBase vehicle = vehiclePool[vehicleid];
     		
     		VehicleModEvent event = new VehicleModEvent(vehicle, componentid);
+    		
+    		int type = NativeFunction.getVehicleComponentType(componentid);
+    		vehicle.component.components[type] = NativeFunction.getVehicleComponentInSlot(vehicleid, type);
     
     		vehicle.onMod( componentid );
     		vehicle.eventMod.dispatchEvent( event );
@@ -1155,6 +1188,8 @@ public abstract class GameModeBase
 		{
     		VehicleBase vehicle = vehiclePool[vehicleid];
     		PlayerBase player = playerPool[playerid];
+    		
+    		NativeFunction.getVehicleDamageStatus(vehicleid, vehicle.damage);
     		
     		VehicleUpdateDamageEvent event = new VehicleUpdateDamageEvent(vehicle, player);
     
@@ -1264,7 +1299,7 @@ public abstract class GameModeBase
 	int onTimer( int timerIndex )
 	{
 		try
-		{
+		{		
 			return 1;
 		}
 		catch( Exception e )

@@ -18,8 +18,11 @@ package net.gtaun.samp;
 
 import java.util.Vector;
 
+import net.gtaun.event.EventDispatcher;
+import net.gtaun.event.IEventDispatcher;
 import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointRot;
+import net.gtaun.samp.event.ObjectMovedEvent;
 
 /**
  * @author MK124
@@ -40,6 +43,10 @@ public class ObjectBase
 	
 	public int model()					{ return model; }
 	public float speed()				{ return speed; }
+	
+	EventDispatcher<ObjectMovedEvent> eventMoved = new EventDispatcher<ObjectMovedEvent>();
+	
+	public IEventDispatcher<ObjectMovedEvent> 	eventMoved()	{ return eventMoved;}
 	
 
 	ObjectBase()
