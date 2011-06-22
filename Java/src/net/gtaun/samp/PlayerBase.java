@@ -27,6 +27,7 @@ import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointAngle;
 import net.gtaun.samp.data.SpawnInfo;
 import net.gtaun.samp.data.Velocity;
+import net.gtaun.samp.enums.PlayerState;
 import net.gtaun.samp.event.DialogResponseEvent;
 import net.gtaun.samp.event.MenuExitedEvent;
 import net.gtaun.samp.event.MenuSelectedEvent;
@@ -98,18 +99,6 @@ public class PlayerBase
 	public static final int FIGHT_STYLE_GRABKICK =					15;
 	public static final int FIGHT_STYLE_ELBOW =						16;
 
-	public static final int WEAPONSKILL_PISTOL = 					0;
-	public static final int WEAPONSKILL_PISTOL_SILENCED =			1;
-	public static final int WEAPONSKILL_DESERT_EAGLE =				2;
-	public static final int WEAPONSKILL_SHOTGUN =					3;
-	public static final int WEAPONSKILL_SAWNOFF_SHOTGUN =			4;
-	public static final int WEAPONSKILL_SPAS12_SHOTGUN =			5;
-	public static final int WEAPONSKILL_MICRO_UZI =					6;
-	public static final int WEAPONSKILL_MP5 =						7;
-	public static final int WEAPONSKILL_AK47 =						8;
-	public static final int WEAPONSKILL_M4 =						9;
-	public static final int WEAPONSKILL_SNIPERRIFLE =				10;
-
 	public static final int WEAPONSTATE_UNKNOWN =					-1;
 	public static final int WEAPONSTATE_NO_BULLETS =				0;
 	public static final int WEAPONSTATE_LAST_BULLET =				1;
@@ -172,7 +161,7 @@ public class PlayerBase
 	PointAngle position = new PointAngle();
 	Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
 	Velocity velocity = new Velocity();
-	PlayerState state = new PlayerState();
+	PlayerState state = PlayerState.NONE;
 	KeyState keyState = new KeyState();
 	
 	DialogBase dialog;
@@ -189,13 +178,17 @@ public class PlayerBase
 	public int frame()				{ return frame; }
 	public float health()			{ return health; }
 	public float armour()			{ return armour; }
+	public int ammo()				{ return NativeFunction.getPlayerAmmo(id); }
 	public int money()				{ return money; }
 	public int score()				{ return score; }
 	public int weather()			{ return weather; }
 	public int fightingStyle()		{ return fightingStyle; }
 	public VehicleBase vehicle()	{ return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerVehicleID(id)); }
-	
+
 	public PointAngle position()	{ return position.clone(); }
+	public float angle()			{ return position.angle; }
+	public float interior()			{ return position.interior; }
+	public float world()			{ return position.world; }
 	public Area worldBound()		{ return worldBound.clone(); }
 	public Velocity velocity()		{ return velocity.clone(); }
 	public PlayerState state()		{ return state; }
@@ -260,7 +253,7 @@ public class PlayerBase
 	public IEventDispatcher<PlayerStreamInEvent>			eventStreamInEvent() 		{ return eventPlayerStreamIn; }
 	public IEventDispatcher<PlayerStreamOutEvent>			eventStreamOut() 			{ return eventPlayerStreamOut; }
 	public IEventDispatcher<PlayerClickPlayerEvent>			eventClickPlayer() 			{ return eventClickPlayer; }
-	public IEventDispatcher<PlayerClickPlayerEvent>			eventOthersClick() 				{ return eventOthersClick; }
+	public IEventDispatcher<PlayerClickPlayerEvent>			eventOthersClick() 			{ return eventOthersClick; }
 	public IEventDispatcher<VehicleEnterEvent>				eventEnterVehicle() 		{ return eventEnterVehicle; }
 	public IEventDispatcher<VehicleExitEvent>				eventExitVehicle() 			{ return eventExitVehicle; }
 	public IEventDispatcher<VehicleModEvent>				eventVehicleMod() 			{ return eventVehicleMod; }
@@ -286,16 +279,14 @@ public class PlayerBase
 		score = NativeFunction.getPlayerScore(id);
 		fightingStyle = NativeFunction.getPlayerFightingStyle(id);
 		
-		NativeFunction.getPlayerPos(id, position);
-		NativeFunction.getPlayerFacingAngle(id);
+		NativeFunction.getPlayerPos( id, position );
+		NativeFunction.getPlayerFacingAngle(id);;
 		
 		position.interior = NativeFunction.getPlayerInterior(id);
 		position.world = NativeFunction.getPlayerVirtualWorld(id);
 		
-		NativeFunction.getPlayerVelocity(id, velocity);
-		
-		state.state = NativeFunction.getPlayerState(id);
-		NativeFunction.getPlayerKeys(id, keyState );
+		NativeFunction.getPlayerVelocity( id, velocity);
+		NativeFunction.getPlayerKeys( id, keyState );
 	}
 
 
@@ -513,7 +504,7 @@ public class PlayerBase
 	
 	public void setSpawnInfo( SpawnInfo info )
 	{
-		NativeFunction.setSpawnInfo( id, info.team, info.skin, info.position.x, info.position.y, info.position.z, info.position.angle, info.weapon1.id, info.weapon1.ammo, info.weapon2.id, info.weapon2.ammo, info.weapon3.id, info.weapon3.ammo );
+		NativeFunction.setSpawnInfo( id, info.team, info.skin, info.position.x, info.position.y, info.position.z, info.position.angle, info.weapon1.id(), info.weapon1.ammo, info.weapon2.id(), info.weapon2.ammo, info.weapon3.id(), info.weapon3.ammo );
 		spawnInfo = info;
 	}
 	
@@ -533,6 +524,11 @@ public class PlayerBase
 	{
 		NativeFunction.setPlayerArmour( id, armour );
 		this.armour = armour;
+	}
+	
+	public void setAmmo( int weaponslot, int ammo )
+	{
+		NativeFunction.setPlayerAmmo( id, weaponslot, ammo );
 	}
 	
 	public void setMoney( int money )
@@ -654,7 +650,7 @@ public class PlayerBase
 		position.angle = angle;
 	}
 	
-	public void setInteriorId( int interiorId )
+	public void setInterior( int interiorId )
 	{
 		NativeFunction.setPlayerInterior( id, interiorId );
 		position.interior = interiorId;
@@ -678,8 +674,6 @@ public class PlayerBase
 		velocity.set( spd );
 	}
 	
-	
-//---------------------------------------------------------
 
 	public void sendMessage( int color, String message )
 	{
@@ -794,17 +788,3 @@ public class PlayerBase
 		NativeFunction.getPlayerCameraFrontVector( id, lookvector );
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

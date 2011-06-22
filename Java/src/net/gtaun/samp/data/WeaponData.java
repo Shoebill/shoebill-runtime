@@ -16,6 +16,8 @@
 
 package net.gtaun.samp.data;
 
+import net.gtaun.samp.enums.Weapon;
+
 /**
  * @author MK124
  *
@@ -23,53 +25,8 @@ package net.gtaun.samp.data;
 
 public class WeaponData
 {
-	public static final int WEAPON_BRASSKNUCKLE =				1;
-	public static final int WEAPON_GOLFCLUB =					2;
-	public static final int WEAPON_NITESTICK =					3;
-	public static final int WEAPON_KNIFE =						4;
-	public static final int WEAPON_BAT =						5;
-	public static final int WEAPON_SHOVEL =						6;
-	public static final int WEAPON_POOLSTICK =					7;
-	public static final int WEAPON_KATANA =						8;
-	public static final int WEAPON_CHAINSAW =					9;
-	public static final int WEAPON_DILDO =						10;
-	public static final int WEAPON_DILDO2 =						11;
-	public static final int WEAPON_VIBRATOR =					12;
-	public static final int WEAPON_VIBRATOR2 =					13;
-	public static final int WEAPON_FLOWER =						14;
-	public static final int WEAPON_CANE =						15;
-	public static final int WEAPON_GRENADE =					16;
-	public static final int WEAPON_TEARGAS =					17;
-	public static final int WEAPON_MOLTOV =						18;
-	public static final int WEAPON_COLT45 =						22;
-	public static final int WEAPON_SILENCED =					23;
-	public static final int WEAPON_DEAGLE =						24;
-	public static final int WEAPON_SHOTGUN =					25;
-	public static final int WEAPON_SAWEDOFF =					26;
-	public static final int WEAPON_SHOTGSPA =					27;
-	public static final int WEAPON_UZI =						28;
-	public static final int WEAPON_MP5 =						29;
-	public static final int WEAPON_AK47 =						30;
-	public static final int WEAPON_M4 =							31;
-	public static final int WEAPON_TEC9 =						32;
-	public static final int WEAPON_RIFLE =						33;
-	public static final int WEAPON_SNIPER =						34;
-	public static final int WEAPON_ROCKETLAUNCHER =				35;
-	public static final int WEAPON_HEATSEEKER =					36;
-	public static final int WEAPON_FLAMETHROWER =				37;
-	public static final int WEAPON_MINIGUN =					38;
-	public static final int WEAPON_SATCHEL =					39;
-	public static final int WEAPON_BOMB =						40;
-	public static final int WEAPON_SPRAYCAN =					41;
-	public static final int WEAPON_FIREEXTINGUISHER =			42;
-	public static final int WEAPON_CAMERA =						43;
-	public static final int WEAPON_PARACHUTE =					46;
-	public static final int WEAPON_VEHICLE =					49;
-	public static final int WEAPON_DROWN =						53;
-	public static final int WEAPON_COLLISION =					54;
-	
-	
-	public int id, ammo;
+	public Weapon weapon;
+	public int ammo;
 	
 
 	public WeaponData()
@@ -77,10 +34,21 @@ public class WeaponData
 		
 	}
 	
-	public WeaponData( int id, int ammo )
+	public WeaponData( int weapon, int ammo )
 	{
-		this.id = id;
+		this.weapon = Weapon.get(weapon);
 		this.ammo = ammo;
+	}
+	
+	public WeaponData( Weapon weapon, int ammo )
+	{
+		this.weapon = weapon;
+		this.ammo = ammo;
+	}
+	
+	public int id()
+	{
+		return weapon.id();
 	}
 	
 	
@@ -90,7 +58,7 @@ public class WeaponData
 		if( !(obj instanceof WeaponData) )	return false;
 		
 		WeaponData data = (WeaponData) obj;
-		if( data.id != id )					return false;
+		if( data.weapon != weapon )					return false;
 		if( data.ammo != ammo )				return false;
 		
 		return true;
@@ -98,6 +66,6 @@ public class WeaponData
 	
 	public WeaponData clone()
 	{
-		return new WeaponData(id, ammo);
+		return new WeaponData(weapon, ammo);
 	}
 }

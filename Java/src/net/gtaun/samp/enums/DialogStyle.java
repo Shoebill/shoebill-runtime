@@ -14,26 +14,16 @@
  * limitations under the License.
  */
 
-package net.gtaun.samp.event;
-
-import net.gtaun.event.Event;
-import net.gtaun.samp.PlayerBase;
-import net.gtaun.samp.enums.PlayerState;
+package net.gtaun.samp.enums;
 
 /**
  * @author MK124
  *
  */
 
-public class PlayerStateChangeEvent extends Event
+public enum DialogStyle
 {
-	public PlayerBase player;
-	public PlayerState oldstate;
-	
-	
-	public PlayerStateChangeEvent( PlayerBase player, PlayerState playerState )
-	{
-		this.player = player;
-		this.oldstate = playerState;
-	}
+	MSGBOX,
+	INPUT,
+	LIST;
 }

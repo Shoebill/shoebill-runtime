@@ -14,26 +14,24 @@
  * limitations under the License.
  */
 
-package net.gtaun.samp.event;
-
-import net.gtaun.event.Event;
-import net.gtaun.samp.PlayerBase;
-import net.gtaun.samp.enums.PlayerState;
+package net.gtaun.samp.enums;
 
 /**
  * @author MK124
  *
  */
 
-public class PlayerStateChangeEvent extends Event
+public enum WeaponSkill
 {
-	public PlayerBase player;
-	public PlayerState oldstate;
-	
-	
-	public PlayerStateChangeEvent( PlayerBase player, PlayerState playerState )
-	{
-		this.player = player;
-		this.oldstate = playerState;
-	}
+	PISTOL,
+	PISTOL_SILENCED,
+	DESERT_EAGLE,
+	SHOTGUN,
+	SAWNOFF_SHOTGUN,
+	SPAS12_SHOTGUN,
+	MICRO_UZI,
+	MP5,
+	AK47,
+	M4,
+	SNIPERRIFLE;
 }

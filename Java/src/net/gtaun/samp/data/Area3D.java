@@ -38,20 +38,12 @@ public class Area3D extends Area
 	
 	public Area3D( Area area, float minZ, float maxZ )
 	{
-		super( area );
-		
+		this.minX = area.minX;
+		this.maxX = area.maxX;
+		this.minY = area.minY;
+		this.maxY = area.maxY;
 		this.minZ = minZ;
 		this.maxZ = maxZ;
-	}
-	
-	public Area3D( Area3D area )
-	{
-		this.minX = area.minX;
-		this.minY = area.minY;
-		this.minZ = area.minZ;
-		this.maxX = area.maxX;
-		this.maxY = area.maxY;
-		this.maxZ = area.maxZ;
 	}
 	
 	
@@ -73,6 +65,6 @@ public class Area3D extends Area
 	
 	public Area3D clone()
 	{
-		return new Area3D(this);
+		return new Area3D(minX, minY, minZ, maxX, maxY, maxZ);
 	}
 }

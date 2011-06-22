@@ -28,6 +28,7 @@ import java.util.Vector;
 import net.gtaun.event.EventDispatcher;
 import net.gtaun.samp.data.Color;
 import net.gtaun.samp.data.SpawnInfo;
+import net.gtaun.samp.enums.PlayerState;
 import net.gtaun.samp.event.DialogResponseEvent;
 import net.gtaun.samp.event.GameModeExitEvent;
 import net.gtaun.samp.event.MenuExitedEvent;
@@ -269,16 +270,16 @@ public abstract class GameModeBase
 	{
 		return NativeFunction.addPlayerClass( model, 
 			spawninfo.position.x, spawninfo.position.y, spawninfo.position.z, spawninfo.position.angle,
-			spawninfo.weapon1.id, spawninfo.weapon1.ammo, spawninfo.weapon2.id, spawninfo.weapon2.ammo,
-			spawninfo.weapon3.id, spawninfo.weapon3.ammo );
+			spawninfo.weapon1.id(), spawninfo.weapon1.ammo, spawninfo.weapon2.id(), spawninfo.weapon2.ammo,
+			spawninfo.weapon3.id(), spawninfo.weapon3.ammo );
 	}
 	
 	public int addPlayerClassEx( int team, int model, SpawnInfo spawninfo )
 	{
 		return NativeFunction.addPlayerClassEx( team, model, 
 				spawninfo.position.x, spawninfo.position.y, spawninfo.position.z, spawninfo.position.angle,
-				spawninfo.weapon1.id, spawninfo.weapon1.ammo, spawninfo.weapon2.id, spawninfo.weapon2.ammo,
-				spawninfo.weapon3.id, spawninfo.weapon3.ammo );
+				spawninfo.weapon1.id(), spawninfo.weapon1.ammo, spawninfo.weapon2.id(), spawninfo.weapon2.ammo,
+				spawninfo.weapon3.id(), spawninfo.weapon3.ammo );
 	}
 
 	public void showNameTags( boolean enabled )
@@ -620,10 +621,11 @@ public abstract class GameModeBase
 		{
     		PlayerBase player = playerPool[playerid];
     		
-    		player.state.state = newstate;
+    		player.state = PlayerState.values()[ newstate ];
     		
     		player.onStateChange( oldstate );
-    		player.eventStateChange.dispatchEvent( new PlayerStateChangeEvent(player, oldstate) );
+    		player.eventStateChange.dispatchEvent(
+    				new PlayerStateChangeEvent(player, PlayerState.values()[ oldstate ]) );
     		
     		return 1;
 		}

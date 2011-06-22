@@ -20,6 +20,7 @@ import java.lang.ref.WeakReference;
 
 import net.gtaun.event.EventDispatcher;
 import net.gtaun.event.IEventDispatcher;
+import net.gtaun.samp.enums.DialogStyle;
 import net.gtaun.samp.event.DialogResponseEvent;
 
 /**
@@ -29,18 +30,14 @@ import net.gtaun.samp.event.DialogResponseEvent;
 
 public class DialogBase
 {
-	public static final int STYLE_MSGBOX =		0;
-	public static final int STYLE_INPUT =		1;
-	public static final int STYLE_LIST =		2;
-
-//----------------------------------------------------------
-	
 	private static int count = 0;
 	
 	
 	int id;
-	protected int style;
-	protected String caption, info, button1, button2;
+	DialogStyle style;
+	public String caption, info, button1, button2;
+	
+	public DialogStyle style()			{ return style; }
 	
 	
 	EventDispatcher<DialogResponseEvent>	eventResponse = new EventDispatcher<DialogResponseEvent>();
@@ -48,13 +45,13 @@ public class DialogBase
 	public IEventDispatcher<DialogResponseEvent>	eventResponse()		{ return eventResponse; }
 	
 	
-	public DialogBase( int style )
+	public DialogBase( DialogStyle style )
 	{
 		this.style = style;
 		init();
 	}
 	
-	public DialogBase( int style, String caption, String info, String button1, String button2 )
+	public DialogBase( DialogStyle style, String caption, String info, String button1, String button2 )
 	{
 		this.style = style;
 		this.caption = caption;
@@ -86,25 +83,25 @@ public class DialogBase
 
 	public void show( PlayerBase player )
 	{
-		NativeFunction.showPlayerDialog( player.id, id, style, caption, info, button1, button2 );
+		NativeFunction.showPlayerDialog( player.id, id, style.ordinal(), caption, info, button1, button2 );
 		player.dialog = this;
 	}
 	
 	public void show( PlayerBase player, String info )
 	{
-		NativeFunction.showPlayerDialog( player.id, id, style, caption, info, button1, button2 );
+		NativeFunction.showPlayerDialog( player.id, id, style.ordinal(), caption, info, button1, button2 );
 		player.dialog = this;
 	}
 	
 	public void show( PlayerBase player, String caption, String info )
 	{
-		NativeFunction.showPlayerDialog( player.id, id, style, caption, info, button1, button2 );
+		NativeFunction.showPlayerDialog( player.id, id, style.ordinal(), caption, info, button1, button2 );
 		player.dialog = this;
 	}
 	
 	public void show( PlayerBase player, String caption, String info, String button1, String button2 )
 	{
-		NativeFunction.showPlayerDialog( player.id, id, style, caption, info, button1, button2 );
+		NativeFunction.showPlayerDialog( player.id, id, style.ordinal(), caption, info, button1, button2 );
 		player.dialog = this;
 	}
 }
