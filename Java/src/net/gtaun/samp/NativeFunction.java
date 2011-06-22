@@ -16,6 +16,8 @@
 
 package net.gtaun.samp;
 
+import java.io.PrintStream;
+
 import net.gtaun.samp.data.KeyState;
 import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointRot;
@@ -302,7 +304,7 @@ final class NativeFunction
 	static native void setVehicleZAngle( int vehicleid, float angle );
 	static native void setVehicleParamsForPlayer( int vehicleid, int playerid, boolean objective, boolean doorslocked );
 	static native void manualVehicleEngineAndLights();
-	static native void setVehicleParamsEx( int vehicleid, int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective );
+	static native void setVehicleParamsEx( int vehicleid, boolean engine, boolean lights, boolean alarm, boolean doors, boolean bonnet, boolean boot, boolean objective );
 	static native void getVehicleParamsEx( int vehicleid, VehicleParam state );
 	static native void setVehicleToRespawn( int vehicleid );
 	static native void linkVehicleToInterior( int vehicleid, int interiorid );

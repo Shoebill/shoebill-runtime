@@ -45,7 +45,6 @@ public class ObjectBase
 	public int model()					{ return model; }
 	public float speed()				{ return speed; }
 	
-	
 	EventDispatcher<ObjectMovedEvent> eventMoved = new EventDispatcher<ObjectMovedEvent>();
 	
 	public IEventDispatcher<ObjectMovedEvent> 	eventMoved()	{ return eventMoved;}

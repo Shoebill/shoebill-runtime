@@ -39,6 +39,14 @@ public class Area
 		this.maxY = maxY;
 	}
 	
+	public Area( Area area )
+	{
+		this.minX = area.minX;
+		this.minY = area.minY;
+		this.maxX = area.maxX;
+		this.maxY = area.maxY;
+	}
+	
 	
 	public float area()
 	{
@@ -70,6 +78,6 @@ public class Area
 	
 	public Area clone()
 	{
-		return new Area(minX, minY, maxX, maxY);
+		return new Area(this);
 	}
 }

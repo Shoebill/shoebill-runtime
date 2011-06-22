@@ -17,8 +17,6 @@
 
 package net.gtaun.samp;
 
-import net.gtaun.samp.enums.VehicleComponentType;
-
 
 /**
  * @author MK124, JoJLlmAn
@@ -27,6 +25,23 @@ import net.gtaun.samp.enums.VehicleComponentType;
 
 public class VehicleComponent
 {
+	public static final int TYPE_SPOILER =			0;
+	public static final int TYPE_HOOD =				1;
+	public static final int TYPE_ROOF =				2;
+	public static final int TYPE_SIDESKIRT =		3;
+	public static final int TYPE_LAMPS =			4;
+	public static final int TYPE_NITRO =			5;
+	public static final int TYPE_EXHAUST =			6;
+	public static final int TYPE_WHEELS =			7;
+	public static final int TYPE_STEREO =			8;
+	public static final int TYPE_HYDRAULICS =		9;
+	public static final int TYPE_FRONT_BUMPER =		10;
+	public static final int TYPE_REAR_BUMPER =		11;
+	public static final int TYPE_VENT_RIGHT =		12;
+	public static final int TYPE_VENT_LEFT =		13;
+	public static final int TYPES =					14;
+
+	
 	public static int getComponentType( int componentid )
 	{
 		return NativeFunction.getVehicleComponentType(componentid);
@@ -35,7 +50,7 @@ public class VehicleComponent
 	
 	int vehicleId;
 	
-	int[] components = new int[ VehicleComponentType.values().length ];
+	int[] components = new int[TYPES];
 	
 	
 	VehicleComponent( int vehicleId )
@@ -62,15 +77,15 @@ public class VehicleComponent
 		components[type] = NativeFunction.getVehicleComponentInSlot(vehicleId, type);
 	}
 	
-	public int get( VehicleComponentType type )
+	public int getFromSlot( int type )
 	{
-		return components[ type.ordinal() ];
+		return NativeFunction.getVehicleComponentInSlot( vehicleId, type );
 	}
 	
 	public int[] toArray()
 	{
-		int[] data = new int[components.length];
-		System.arraycopy( components, 0, data, 0, components.length );
+		int[] data = new int[TYPES];
+		System.arraycopy( components, 0, data, 0, TYPES );
 		
 		return data;
 	}
@@ -80,7 +95,7 @@ public class VehicleComponent
 		
 	void update()
 	{
-		for( int i=0; i<components.length; i++ )
+		for( int i=0; i<TYPES; i++ )
 			components[i] = NativeFunction.getVehicleComponentInSlot(vehicleId, i);
 	}
 }

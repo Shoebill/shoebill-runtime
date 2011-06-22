@@ -50,7 +50,7 @@ public class VehicleParam
 		NativeFunction.getVehicleParamsEx( vehicleId, this );
 	}
 	
-	public void set( int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective )
+	public void set( boolean engine, boolean lights, boolean alarm, boolean doors, boolean bonnet, boolean boot, boolean objective )
 	{
 		NativeFunction.setVehicleParamsEx( vehicleId, engine, lights, alarm, doors, bonnet, boot, objective );
 		NativeFunction.getVehicleParamsEx( vehicleId, this);

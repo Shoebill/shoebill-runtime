@@ -31,7 +31,6 @@ public class VehicleDamage
 	public int lights()		{ return lights; }
 	public int tires()		{ return tires; }
 	
-	
 	VehicleDamage( int vehicleId )
 	{
 		this.vehicleId = vehicleId;
@@ -39,7 +38,7 @@ public class VehicleDamage
 	
 	public void set( int panels, int doors, int lights, int tires )
 	{
-		NativeFunction.updateVehicleDamageStatus( vehicleId, panels, doors, lights, tires );
-		NativeFunction.getVehicleDamageStatus( vehicleId, this );
+		NativeFunction.updateVehicleDamageStatus(vehicleId, panels, doors, lights, tires);
+		NativeFunction.getVehicleDamageStatus(vehicleId, this);
 	}
 }

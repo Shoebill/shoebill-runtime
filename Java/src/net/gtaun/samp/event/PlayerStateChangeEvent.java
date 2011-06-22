@@ -18,7 +18,6 @@ package net.gtaun.samp.event;
 
 import net.gtaun.event.Event;
 import net.gtaun.samp.PlayerBase;
-import net.gtaun.samp.enums.PlayerState;
 
 /**
  * @author MK124
@@ -28,12 +27,12 @@ import net.gtaun.samp.enums.PlayerState;
 public class PlayerStateChangeEvent extends Event
 {
 	public PlayerBase player;
-	public PlayerState oldstate;
+	public int oldstate;
 	
 	
-	public PlayerStateChangeEvent( PlayerBase player, PlayerState playerState )
+	public PlayerStateChangeEvent( PlayerBase player, int oldstate )
 	{
 		this.player = player;
-		this.oldstate = playerState;
+		this.oldstate = oldstate;
 	}
 }
