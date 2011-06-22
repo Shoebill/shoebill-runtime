@@ -1706,10 +1706,10 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_manualVehicleEngineAnd
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    setVehicleParamsEx
- * Signature: (IZZZZZZZ)V
+ * Signature: (IIIIIIII)V
  */
 JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_setVehicleParamsEx
-  (JNIEnv *, jclass, jint, jboolean, jboolean, jboolean, jboolean, jboolean, jboolean, jboolean);
+  (JNIEnv *, jclass, jint, jint, jint, jint, jint, jint, jint, jint);
 
 /*
  * Class:     net_gtaun_samp_NativeFunction

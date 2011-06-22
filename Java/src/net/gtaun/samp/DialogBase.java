@@ -38,9 +38,10 @@ public class DialogBase
 	private static int count = 0;
 	
 	
-	int id;
-	protected int style;
-	protected String caption, info, button1, button2;
+	int id, style;
+	public String caption, info, button1, button2;
+	
+	public int style()		{ return style; }
 	
 	
 	EventDispatcher<DialogResponseEvent>	eventResponse = new EventDispatcher<DialogResponseEvent>();

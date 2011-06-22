@@ -620,7 +620,7 @@ public abstract class GameModeBase
 		{
     		PlayerBase player = playerPool[playerid];
     		
-    		player.state.state = newstate;
+    		player.state = newstate;
     		
     		player.onStateChange( oldstate );
     		player.eventStateChange.dispatchEvent( new PlayerStateChangeEvent(player, oldstate) );

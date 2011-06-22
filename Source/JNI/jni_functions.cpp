@@ -2655,8 +2655,8 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_manualVehicleEngineAnd
  * Signature: (IZZZZZZZ)V
  */
 JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_setVehicleParamsEx
-  (JNIEnv *env, jclass jcls, jint vehicleid, jboolean engine, jboolean lights,
-  jboolean alarm, jboolean doors, jboolean bonnet, jboolean boot, jboolean objective)
+  (JNIEnv *env, jclass jcls, jint vehicleid, jint engine, jint lights,
+  jint alarm, jint doors, jint bonnet, jint boot, jint objective)
 {
 	SetVehicleParamsEx( vehicleid, engine, lights, alarm, doors, bonnet, boot, objective );
 }

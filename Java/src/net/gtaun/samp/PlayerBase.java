@@ -69,6 +69,17 @@ import net.gtaun.samp.exception.IllegalLengthException;
 
 public class PlayerBase
 {
+	public static final int STATE_NONE =							0;
+	public static final int STATE_ONFOOT =							1;
+	public static final int STATE_DRIVER =							2;
+	public static final int STATE_PASSENGER =						3;
+	public static final int STATE_EXIT_VEHICLE =					4;
+	public static final int STATE_ENTER_VEHICLE_DRIVER =			5;
+	public static final int STATE_ENTER_VEHICLE_PASSENGER =			6;
+	public static final int STATE_WASTED =							7;
+	public static final int STATE_SPAWNED =							8;
+	public static final int STATE_SPECTATING =						9;
+	
 	public static final int MARKERS_MODE_OFF =						0;
 	public static final int MARKERS_MODE_GLOBAL =					1;
 	public static final int MARKERS_MODE_STREAMED =					2;
@@ -172,7 +183,7 @@ public class PlayerBase
 	PointAngle position = new PointAngle();
 	Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
 	Velocity velocity = new Velocity();
-	PlayerState state = new PlayerState();
+	int state = STATE_NONE;
 	KeyState keyState = new KeyState();
 	
 	DialogBase dialog;
@@ -189,6 +200,7 @@ public class PlayerBase
 	public int frame()				{ return frame; }
 	public float health()			{ return health; }
 	public float armour()			{ return armour; }
+	public int ammo()				{ return NativeFunction.getPlayerAmmo(id); }
 	public int money()				{ return money; }
 	public int score()				{ return score; }
 	public int weather()			{ return weather; }
@@ -196,9 +208,12 @@ public class PlayerBase
 	public VehicleBase vehicle()	{ return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerVehicleID(id)); }
 	
 	public PointAngle position()	{ return position.clone(); }
+	public float angle()			{ return position.angle; }
+	public float interior()			{ return position.interior; }
+	public float world()			{ return position.world; }
 	public Area worldBound()		{ return worldBound.clone(); }
 	public Velocity velocity()		{ return velocity.clone(); }
-	public PlayerState state()		{ return state; }
+	public int state()				{ return state; }
 	public KeyState keyState()		{ return keyState.clone(); }
 	
 	public DialogBase dialog()		{ return dialog; }
@@ -294,7 +309,7 @@ public class PlayerBase
 		
 		NativeFunction.getPlayerVelocity(id, velocity);
 		
-		state.state = NativeFunction.getPlayerState(id);
+		state = NativeFunction.getPlayerState(id);
 		NativeFunction.getPlayerKeys(id, keyState );
 	}
 
@@ -535,6 +550,11 @@ public class PlayerBase
 		this.armour = armour;
 	}
 	
+	public void setAmmo( int weaponslot, int ammo )
+	{
+		NativeFunction.setPlayerAmmo( id, weaponslot, ammo );
+	}
+	
 	public void setMoney( int money )
 	{
 		NativeFunction.resetPlayerMoney( id );
@@ -654,16 +674,16 @@ public class PlayerBase
 		position.angle = angle;
 	}
 	
-	public void setInteriorId( int interiorId )
+	public void setInterior( int interior )
 	{
-		NativeFunction.setPlayerInterior( id, interiorId );
-		position.interior = interiorId;
+		NativeFunction.setPlayerInterior( id, interior );
+		position.interior = interior;
 	}
 	
-	public void setWorldId( int worldId )
+	public void setWorld( int world )
 	{
-		NativeFunction.setPlayerVirtualWorld( id, worldId );
-		position.world = worldId;
+		NativeFunction.setPlayerVirtualWorld( id, world );
+		position.world = world;
 	}
 	
 	public void setWorldBound( Area bound )
