@@ -813,6 +813,39 @@ public class PlayerBase
 		NativeFunction.getPlayerCameraPos( id, pos );
 		NativeFunction.getPlayerCameraFrontVector( id, lookvector );
 	}
+	
+//--------------------------------------------------------- Is Functions
+	
+	public boolean isInVehicle()
+	{
+		return NativeFunction.isPlayerInAnyVehicle( id );
+	}
+	
+	public boolean isInVehicle(VehicleBase vehicle)
+	{
+		return NativeFunction.isPlayerInVehicle( id, vehicle.id );
+	}
+	
+	public boolean isAdmin()
+	{
+		return NativeFunction.isPlayerAdmin(id);
+	}
+	
+	public boolean isInRangeOfPoint(Point point, int range)
+	{
+		return NativeFunction.isPlayerInRangeOfPoint(id, range, point.x, point.y, point.z);
+	}
+	
+	public boolean isStreamedIn(PlayerBase forplayer)
+	{
+		return NativeFunction.isPlayerStreamedIn(id, forplayer.id);
+	}
+	
+	//NPC
+	
+	//AttachedObject
+	
+	//Checkpoint
 }
 
 
