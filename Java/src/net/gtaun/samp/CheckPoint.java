@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2011 JoJLlmAn
+ * Copyright (C) 2011 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,35 +17,103 @@
 
 package net.gtaun.samp;
 
+import java.util.Iterator;
+import java.util.Vector;
+
+import net.gtaun.event.EventDispatcher;
+import net.gtaun.event.IEventDispatcher;
 import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.Vector3D;
+import net.gtaun.samp.event.CheckpointEnterEvent;
+import net.gtaun.samp.event.CheckpointLeaveEvent;
 
 /**
- * @author JoJLlmAn
+ * @author JoJLlmAn, MK124
  *
  */
 
-public class CheckPoint extends Vector3D{
+public class Checkpoint extends Vector3D
+{
 	public float size;
 	
-	public CheckPoint( Point point, float size )
+	
+	EventDispatcher<CheckpointEnterEvent>	eventEnter = new EventDispatcher<CheckpointEnterEvent>();
+	EventDispatcher<CheckpointLeaveEvent>	eventLeave = new EventDispatcher<CheckpointLeaveEvent>();
+
+	public IEventDispatcher<CheckpointEnterEvent>	eventEnter()	{ return eventEnter; }
+	public IEventDispatcher<CheckpointLeaveEvent>	eventLeave()	{ return eventLeave; }
+
+	
+	public Checkpoint( float x, float y, float z, float size )
+	{
+		super( x, y, z );
+		this.size = size;
+	}
+	
+	public Checkpoint( Point point, float size )
 	{
 		super( point.x, point.y, point.z );
 		this.size = size;
 	}
 	
+
+//---------------------------------------------------------
+
+	public int onEnter( PlayerBase player )
+	{
+		return 0;
+	}
+	
+	public int onLeave( PlayerBase player )
+	{
+		return 0;
+	}
+	
+	
+//---------------------------------------------------------
+	
 	public void set( PlayerBase player )
 	{
-		NativeFunction.setPlayerCheckpoint(player.id, this.x, this.y, this.z, size);
-		player.checkPoint = this;
+		NativeFunction.setPlayerCheckpoint( player.id, x, y, z, size );
+		player.checkpoint = this;
 	}
 	
 	public void disable( PlayerBase player )
 	{
-		if(player.checkPoint == this)
+		if( player.checkpoint != this ) return;
+
+		NativeFunction.disablePlayerCheckpoint( player.id );
+		player.checkpoint = null;
+	}
+	
+	public boolean inCheckpoint( PlayerBase player )
+	{
+		if( player.checkpoint != this ) return false;
+		return NativeFunction.isPlayerInCheckpoint(player.id);
+	}
+	
+	public void update()
+	{
+		for (int i = 0; i < GameModeBase.instance.playerPool.length; i++)
 		{
-			NativeFunction.disablePlayerCheckpoint(player.id);
-			player.checkPoint = null;
+			PlayerBase player = GameModeBase.instance.playerPool[i];
+			if( player == null ) continue;
+			
+			if( player.checkpoint == this ) set( player );
 		}
+	}
+	
+	public <T extends PlayerBase> Vector<T> usingPlayers( Class<T> cls )
+	{
+		Vector<T> players = new Vector<T>();
+		
+		Iterator<T> iterator = PlayerBase.get(cls).iterator();
+		while( iterator.hasNext() )
+		{
+			T player = iterator.next();
+			if( player.checkpoint == this ) players.add( player );
+		}
+		
+		return players;
 	}
 }

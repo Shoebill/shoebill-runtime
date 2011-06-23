@@ -34,14 +34,14 @@ import net.gtaun.samp.event.PlayerClickPlayerEvent;
 import net.gtaun.samp.event.PlayerCommandEvent;
 import net.gtaun.samp.event.PlayerDeathEvent;
 import net.gtaun.samp.event.PlayerDisconnectEvent;
-import net.gtaun.samp.event.PlayerEnterCheckpointEvent;
+import net.gtaun.samp.event.CheckpointEnterEvent;
 import net.gtaun.samp.event.PlayerEnterExitModShopEvent;
-import net.gtaun.samp.event.PlayerEnterRaceCheckpointEvent;
+import net.gtaun.samp.event.RaceCheckpointEnterEvent;
 import net.gtaun.samp.event.PlayerInteriorChangeEvent;
 import net.gtaun.samp.event.PlayerKeyStateChangeEvent;
 import net.gtaun.samp.event.PlayerKillEvent;
-import net.gtaun.samp.event.PlayerLeaveCheckpointEvent;
-import net.gtaun.samp.event.PlayerLeaveRaceCheckpointEvent;
+import net.gtaun.samp.event.CheckpointLeaveEvent;
+import net.gtaun.samp.event.RaceCheckpointLeaveEvent;
 import net.gtaun.samp.event.PlayerObjectMovedEvent;
 import net.gtaun.samp.event.PlayerPickupEvent;
 import net.gtaun.samp.event.PlayerRequestClassEvent;
@@ -185,9 +185,9 @@ public class PlayerBase
 	Velocity velocity = new Velocity();
 	int state = STATE_NONE;
 	KeyState keyState = new KeyState();
-	PlayerAttach playerAttach = new PlayerAttach(id);
-	CheckPoint checkPoint;
-	RaceCheckPoint raceCheckPoint;
+	PlayerAttach playerAttach;
+	Checkpoint checkpoint;
+	RaceCheckpoint raceCheckpoint;
 	
 	DialogBase dialog;
 	
@@ -219,8 +219,8 @@ public class PlayerBase
 	public int state()						{ return state; }
 	public KeyState keyState()				{ return keyState.clone(); }
 	public PlayerAttach playerAttach()		{ return playerAttach; }
-	public CheckPoint checkPoint()			{ return checkPoint; }
-	public RaceCheckPoint raceCheckPoint()	{ return raceCheckPoint; }
+	public Checkpoint checkpoint()			{ return checkpoint; }
+	public RaceCheckpoint raceCheckpoint()	{ return raceCheckpoint; }
 	
 	public DialogBase dialog()				{ return dialog; }
 	
@@ -235,10 +235,10 @@ public class PlayerBase
 	EventDispatcher<PlayerRequestClassEvent>		eventRequestClass = new EventDispatcher<PlayerRequestClassEvent>();
 	EventDispatcher<PlayerUpdateEvent>				eventUpdate = new EventDispatcher<PlayerUpdateEvent>();
 	EventDispatcher<PlayerStateChangeEvent>			eventStateChange = new EventDispatcher<PlayerStateChangeEvent>();
-	EventDispatcher<PlayerEnterCheckpointEvent>		eventEnterCheckpoint = new EventDispatcher<PlayerEnterCheckpointEvent>();
-	EventDispatcher<PlayerLeaveCheckpointEvent>		eventLeaveCheckpoint = new EventDispatcher<PlayerLeaveCheckpointEvent>();
-	EventDispatcher<PlayerEnterRaceCheckpointEvent>	eventEnterRaceCheckpoint = new EventDispatcher<PlayerEnterRaceCheckpointEvent>();
-	EventDispatcher<PlayerLeaveRaceCheckpointEvent>	eventLeaveRaceCheckpoint = new EventDispatcher<PlayerLeaveRaceCheckpointEvent>();
+	EventDispatcher<CheckpointEnterEvent>			eventEnterCheckpoint = new EventDispatcher<CheckpointEnterEvent>();
+	EventDispatcher<CheckpointLeaveEvent>			eventLeaveCheckpoint = new EventDispatcher<CheckpointLeaveEvent>();
+	EventDispatcher<RaceCheckpointEnterEvent>		eventEnterRaceCheckpoint = new EventDispatcher<RaceCheckpointEnterEvent>();
+	EventDispatcher<RaceCheckpointLeaveEvent>		eventLeaveRaceCheckpoint = new EventDispatcher<RaceCheckpointLeaveEvent>();
 	EventDispatcher<PlayerObjectMovedEvent>			eventObjectMoved = new EventDispatcher<PlayerObjectMovedEvent>();
 	EventDispatcher<PlayerPickupEvent>				eventPickup = new EventDispatcher<PlayerPickupEvent>();
 	EventDispatcher<PlayerEnterExitModShopEvent>	eventEnterExitModShop = new EventDispatcher<PlayerEnterExitModShopEvent>();
@@ -269,10 +269,10 @@ public class PlayerBase
 	public IEventDispatcher<PlayerRequestClassEvent>		eventRequestClass() 		{ return eventRequestClass; }
 	public IEventDispatcher<PlayerUpdateEvent>				eventUpdate() 				{ return eventUpdate; }
 	public IEventDispatcher<PlayerStateChangeEvent>			eventStateChange() 			{ return eventStateChange; }
-	public IEventDispatcher<PlayerEnterCheckpointEvent>		eventEnterCheckpoint() 		{ return eventEnterCheckpoint; }
-	public IEventDispatcher<PlayerLeaveCheckpointEvent>		eventLeaveCheckpoint() 		{ return eventLeaveCheckpoint; }
-	public IEventDispatcher<PlayerEnterRaceCheckpointEvent>	eventEnterRaceCheckpoint() 	{ return eventEnterRaceCheckpoint; }
-	public IEventDispatcher<PlayerLeaveRaceCheckpointEvent>	eventLeaveRaceCheckpoint() 	{ return eventLeaveRaceCheckpoint; }
+	public IEventDispatcher<CheckpointEnterEvent>		eventEnterCheckpoint() 		{ return eventEnterCheckpoint; }
+	public IEventDispatcher<CheckpointLeaveEvent>		eventLeaveCheckpoint() 		{ return eventLeaveCheckpoint; }
+	public IEventDispatcher<RaceCheckpointEnterEvent>	eventEnterRaceCheckpoint() 	{ return eventEnterRaceCheckpoint; }
+	public IEventDispatcher<RaceCheckpointLeaveEvent>	eventLeaveRaceCheckpoint() 	{ return eventLeaveRaceCheckpoint; }
 	public IEventDispatcher<PlayerObjectMovedEvent>			eventObjectMoved() 			{ return eventObjectMoved; }
 	public IEventDispatcher<PlayerPickupEvent>				eventPickup() 				{ return eventPickup; }
 	public IEventDispatcher<PlayerEnterExitModShopEvent>	eventEnterExitModShop() 	{ return eventEnterExitModShop; }
@@ -316,7 +316,9 @@ public class PlayerBase
 		NativeFunction.getPlayerVelocity(id, velocity);
 		
 		state = NativeFunction.getPlayerState(id);
-		NativeFunction.getPlayerKeys(id, keyState );
+		NativeFunction.getPlayerKeys(id, keyState);
+		
+		playerAttach = new PlayerAttach(id);
 	}
 
 
@@ -847,53 +849,25 @@ public class PlayerBase
 		return NativeFunction.isPlayerStreamedIn(id, forplayer.id);
 	}
 	
-	public void setCheckPoint(CheckPoint checkPoint)
+	public void setCheckpoint( Checkpoint checkpoint )
 	{
-		NativeFunction.setPlayerCheckpoint(id, checkPoint.x, checkPoint.y, checkPoint.z, checkPoint.size);
-		this.checkPoint = checkPoint;
+		checkpoint.set( this );
 	}
 	
-	public void disableCheckPoint()
+	public void disableCheckpoint()
 	{
-		if(checkPoint != null)
-		{
-			NativeFunction.disablePlayerCheckpoint(id);
-			checkPoint = null;
-		}
+		NativeFunction.disablePlayerCheckpoint( id );
+		checkpoint = null;
 	}
 	
-	public void setRaceCheckPoint(RaceCheckPoint checkPoint)
+	public void setRaceCheckpoint( RaceCheckpoint checkpoint )
 	{
-		NativeFunction.setPlayerRaceCheckpoint(id, checkPoint.type, checkPoint.x, checkPoint.y, checkPoint.z, checkPoint.nextx, checkPoint.nexty, checkPoint.nextz, checkPoint.size);
-		this.raceCheckPoint = checkPoint;
+		checkpoint.set( this );
 	}
 	
-	public void disableRaceCheckPoint()
+	public void disableRaceCheckpoint()
 	{
-		if(raceCheckPoint != null)
-		{
-			NativeFunction.disablePlayerRaceCheckpoint(id);
-			raceCheckPoint = null;
-		}
+		NativeFunction.disablePlayerRaceCheckpoint( id );
+		raceCheckpoint = null;
 	}
-	
-	//NPC
-	
-	//AttachedObject
-	
-	//Checkpoint
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

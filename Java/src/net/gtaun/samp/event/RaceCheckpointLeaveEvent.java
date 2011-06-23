@@ -18,19 +18,22 @@ package net.gtaun.samp.event;
 
 import net.gtaun.event.Event;
 import net.gtaun.samp.PlayerBase;
+import net.gtaun.samp.RaceCheckpoint;
 
 /**
  * @author MK124
  *
  */
 
-public class PlayerLeaveCheckpointEvent extends Event
+public class RaceCheckpointLeaveEvent extends Event
 {
 	public PlayerBase player;
+	public RaceCheckpoint checkpoint;
 	
 	
-	public PlayerLeaveCheckpointEvent( PlayerBase player )
+	public RaceCheckpointLeaveEvent( PlayerBase player )
 	{
 		this.player = player;
+		this.checkpoint = player.raceCheckpoint();
 	}
 }

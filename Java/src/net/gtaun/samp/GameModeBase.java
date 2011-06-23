@@ -38,14 +38,14 @@ import net.gtaun.samp.event.PlayerCommandEvent;
 import net.gtaun.samp.event.PlayerConnectEvent;
 import net.gtaun.samp.event.PlayerDeathEvent;
 import net.gtaun.samp.event.PlayerDisconnectEvent;
-import net.gtaun.samp.event.PlayerEnterCheckpointEvent;
+import net.gtaun.samp.event.CheckpointEnterEvent;
 import net.gtaun.samp.event.PlayerEnterExitModShopEvent;
-import net.gtaun.samp.event.PlayerEnterRaceCheckpointEvent;
+import net.gtaun.samp.event.RaceCheckpointEnterEvent;
 import net.gtaun.samp.event.PlayerInteriorChangeEvent;
 import net.gtaun.samp.event.PlayerKeyStateChangeEvent;
 import net.gtaun.samp.event.PlayerKillEvent;
-import net.gtaun.samp.event.PlayerLeaveCheckpointEvent;
-import net.gtaun.samp.event.PlayerLeaveRaceCheckpointEvent;
+import net.gtaun.samp.event.CheckpointLeaveEvent;
+import net.gtaun.samp.event.RaceCheckpointLeaveEvent;
 import net.gtaun.samp.event.PlayerObjectMovedEvent;
 import net.gtaun.samp.event.PlayerPickupEvent;
 import net.gtaun.samp.event.PlayerRequestClassEvent;
@@ -644,8 +644,13 @@ public abstract class GameModeBase
 		{
     		PlayerBase player = playerPool[playerid];
     		
+    		CheckpointEnterEvent event = new CheckpointEnterEvent( player );
+    		
+    		player.checkpoint.onEnter( player );
+    		player.checkpoint.eventEnter.dispatchEvent( event );
+    		
     		player.onEnterCheckpoint();
-    		player.eventEnterCheckpoint.dispatchEvent( new PlayerEnterCheckpointEvent(player) );
+    		player.eventEnterCheckpoint.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -662,8 +667,13 @@ public abstract class GameModeBase
 		{
     		PlayerBase player = playerPool[playerid];
     		
+    		CheckpointLeaveEvent event = new CheckpointLeaveEvent(player);
+
+    		player.checkpoint.onLeave( player );
+    		player.checkpoint.eventLeave.dispatchEvent( event );
+    		
     		player.onLeaveCheckpoint();
-    		player.eventLeaveCheckpoint.dispatchEvent( new PlayerLeaveCheckpointEvent(player) );
+    		player.eventLeaveCheckpoint.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -680,8 +690,13 @@ public abstract class GameModeBase
 		{
     		PlayerBase player = playerPool[playerid];
     		
+    		RaceCheckpointEnterEvent event = new RaceCheckpointEnterEvent(player);
+    		
+    		player.raceCheckpoint.onEnter( player );
+    		player.raceCheckpoint.eventEnter.dispatchEvent( event );
+    		
     		player.onEnterRaceCheckpoint();
-    		player.eventEnterRaceCheckpoint.dispatchEvent( new PlayerEnterRaceCheckpointEvent(player) );
+    		player.eventEnterRaceCheckpoint.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -698,8 +713,13 @@ public abstract class GameModeBase
 		{
     		PlayerBase player = playerPool[playerid];
     		
+    		RaceCheckpointLeaveEvent event = new RaceCheckpointLeaveEvent(player);
+    		
+    		player.raceCheckpoint.onLeave( player );
+    		player.raceCheckpoint.eventLeave.dispatchEvent( event );
+    		
     		player.onLeaveRaceCheckpoint();
-    		player.eventLeaveRaceCheckpoint.dispatchEvent( new PlayerLeaveRaceCheckpointEvent(player) );
+    		player.eventLeaveRaceCheckpoint.dispatchEvent( event );
     		
     		return 1;
     	}
