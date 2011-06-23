@@ -186,6 +186,8 @@ public class PlayerBase
 	int state = STATE_NONE;
 	KeyState keyState = new KeyState();
 	PlayerAttach playerAttach = new PlayerAttach(id);
+	CheckPoint checkPoint;
+	RaceCheckPoint raceCheckPoint;
 	
 	DialogBase dialog;
 	
@@ -217,6 +219,8 @@ public class PlayerBase
 	public int state()						{ return state; }
 	public KeyState keyState()				{ return keyState.clone(); }
 	public PlayerAttach playerAttach()		{ return playerAttach; }
+	public CheckPoint checkPoint()			{ return checkPoint; }
+	public RaceCheckPoint raceCheckPoint()	{ return raceCheckPoint; }
 	
 	public DialogBase dialog()				{ return dialog; }
 	
@@ -841,6 +845,36 @@ public class PlayerBase
 	public boolean isStreamedIn(PlayerBase forplayer)
 	{
 		return NativeFunction.isPlayerStreamedIn(id, forplayer.id);
+	}
+	
+	public void setCheckPoint(CheckPoint checkPoint)
+	{
+		NativeFunction.setPlayerCheckpoint(id, checkPoint.x, checkPoint.y, checkPoint.z, checkPoint.size);
+		this.checkPoint = checkPoint;
+	}
+	
+	public void disableCheckPoint()
+	{
+		if(checkPoint != null)
+		{
+			NativeFunction.disablePlayerCheckpoint(id);
+			checkPoint = null;
+		}
+	}
+	
+	public void setRaceCheckPoint(RaceCheckPoint checkPoint)
+	{
+		NativeFunction.setPlayerRaceCheckpoint(id, checkPoint.type, checkPoint.x, checkPoint.y, checkPoint.z, checkPoint.nextx, checkPoint.nexty, checkPoint.nextz, checkPoint.size);
+		this.raceCheckPoint = checkPoint;
+	}
+	
+	public void disableRaceCheckPoint()
+	{
+		if(raceCheckPoint != null)
+		{
+			NativeFunction.disablePlayerRaceCheckpoint(id);
+			raceCheckPoint = null;
+		}
 	}
 	
 	//NPC
