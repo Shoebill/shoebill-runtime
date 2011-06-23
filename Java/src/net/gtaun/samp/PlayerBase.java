@@ -185,38 +185,40 @@ public class PlayerBase
 	Velocity velocity = new Velocity();
 	int state = STATE_NONE;
 	KeyState keyState = new KeyState();
+	PlayerAttach playerAttach = new PlayerAttach(id);
 	
 	DialogBase dialog;
 	
 
-	public int id()					{ return id; }
-	public int ping()				{ return ping; }
-	public int codepage()			{ return NativeFunction.getPlayerCodepage(id); };
-	public String ip()				{ return ip; }
-	public String name()			{ return name; }
-	public SpawnInfo spawnInfo()	{ return spawnInfo.clone(); }
-	public int color()				{ return color; }
+	public int id()							{ return id; }
+	public int ping()						{ return ping; }
+	public int codepage()					{ return NativeFunction.getPlayerCodepage(id); };
+	public String ip()						{ return ip; }
+	public String name()					{ return name; }
+	public SpawnInfo spawnInfo()			{ return spawnInfo.clone(); }
+	public int color()						{ return color; }
 
-	public int frame()				{ return frame; }
-	public float health()			{ return health; }
-	public float armour()			{ return armour; }
-	public int ammo()				{ return NativeFunction.getPlayerAmmo(id); }
-	public int money()				{ return money; }
-	public int score()				{ return score; }
-	public int weather()			{ return weather; }
-	public int fightingStyle()		{ return fightingStyle; }
-	public VehicleBase vehicle()	{ return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerVehicleID(id)); }
+	public int frame()						{ return frame; }
+	public float health()					{ return health; }
+	public float armour()					{ return armour; }
+	public int ammo()						{ return NativeFunction.getPlayerAmmo(id); }
+	public int money()						{ return money; }
+	public int score()						{ return score; }
+	public int weather()					{ return weather; }
+	public int fightingStyle()				{ return fightingStyle; }
+	public VehicleBase vehicle()			{ return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerVehicleID(id)); }
 	
-	public PointAngle position()	{ return position.clone(); }
-	public float angle()			{ return position.angle; }
-	public float interior()			{ return position.interior; }
-	public float world()			{ return position.world; }
-	public Area worldBound()		{ return worldBound.clone(); }
-	public Velocity velocity()		{ return velocity.clone(); }
-	public int state()				{ return state; }
-	public KeyState keyState()		{ return keyState.clone(); }
+	public PointAngle position()			{ return position.clone(); }
+	public float angle()					{ return position.angle; }
+	public float interior()					{ return position.interior; }
+	public float world()					{ return position.world; }
+	public Area worldBound()				{ return worldBound.clone(); }
+	public Velocity velocity()				{ return velocity.clone(); }
+	public int state()						{ return state; }
+	public KeyState keyState()				{ return keyState.clone(); }
+	public PlayerAttach playerAttach()		{ return playerAttach; }
 	
-	public DialogBase dialog()		{ return dialog; }
+	public DialogBase dialog()				{ return dialog; }
 	
 	
 	EventDispatcher<PlayerDisconnectEvent>			eventDisconnect = new EventDispatcher<PlayerDisconnectEvent>();

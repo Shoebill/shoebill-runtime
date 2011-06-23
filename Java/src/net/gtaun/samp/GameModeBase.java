@@ -512,6 +512,8 @@ public abstract class GameModeBase
 		{
     		PlayerBase player = playerPool[playerid];
     		System.out.println( "[spawn] " + player.name + " has spawned (" + playerid + ")" );
+    		
+    		player.playerAttach = new PlayerAttach(playerid);
     			
     		player.onSpawn();
     		player.eventSpawn.dispatchEvent( new PlayerSpawnEvent(player) );
@@ -542,6 +544,8 @@ public abstract class GameModeBase
     			killer.eventKill.dispatchEvent( new PlayerKillEvent(killer, player, reason) );
     		}
     		else logStream.log( "[death] " + player.name + " died (" + playerid + ":" + reason + ")" );
+    		
+    		player.playerAttach = new PlayerAttach(playerid);
     		
     		player.onDeath( killer, reason );
     		player.eventDeath.dispatchEvent( new PlayerDeathEvent(player, killer, reason) );
