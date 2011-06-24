@@ -339,6 +339,15 @@ public abstract class GameModeBase
 	public void enableStuntBonus( boolean enabled )
 	{
 		NativeFunction.enableStuntBonusForAll( enabled );
+		
+		Vector<PlayerBase> players = PlayerBase.get(PlayerBase.class);
+		Iterator<PlayerBase> iterator = players.iterator();
+		PlayerBase player;
+		while( iterator.hasNext() )
+		{
+			player = iterator.next();
+			player.stuntBonus = enabled;
+		}
 	}
 	
 	public void enableZoneNames( boolean enabled )
@@ -512,6 +521,9 @@ public abstract class GameModeBase
 		{
     		PlayerBase player = playerPool[playerid];
     		System.out.println( "[spawn] " + player.name + " has spawned (" + playerid + ")" );
+    		
+    		player.team = NativeFunction.getPlayerTeam(player.id);
+    		player.skin = NativeFunction.getPlayerSkin(player.id);
     		
     		player.playerAttach = new PlayerAttach(playerid);
     			

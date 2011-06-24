@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2011 MK124
+ * Copyright (C) 2011 JoJLlmAn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +17,11 @@
 
 package net.gtaun.samp;
 
+import java.awt.Color;
 import java.util.Iterator;
 import java.util.Vector;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import net.gtaun.event.EventDispatcher;
 import net.gtaun.event.IEventDispatcher;
@@ -26,6 +30,8 @@ import net.gtaun.samp.data.KeyState;
 import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointAngle;
 import net.gtaun.samp.data.SpawnInfo;
+import net.gtaun.samp.data.Time;
+import net.gtaun.samp.data.Vector3D;
 import net.gtaun.samp.data.Velocity;
 import net.gtaun.samp.event.DialogResponseEvent;
 import net.gtaun.samp.event.MenuExitedEvent;
@@ -63,7 +69,7 @@ import net.gtaun.samp.exception.AlreadyExistException;
 import net.gtaun.samp.exception.IllegalLengthException;
 
 /**
- * @author MK124
+ * @author MK124, JoJLlmAn
  *
  */
 
@@ -109,18 +115,6 @@ public class PlayerBase
 	public static final int FIGHT_STYLE_GRABKICK =					15;
 	public static final int FIGHT_STYLE_ELBOW =						16;
 
-	public static final int WEAPONSKILL_PISTOL = 					0;
-	public static final int WEAPONSKILL_PISTOL_SILENCED =			1;
-	public static final int WEAPONSKILL_DESERT_EAGLE =				2;
-	public static final int WEAPONSKILL_SHOTGUN =					3;
-	public static final int WEAPONSKILL_SAWNOFF_SHOTGUN =			4;
-	public static final int WEAPONSKILL_SPAS12_SHOTGUN =			5;
-	public static final int WEAPONSKILL_MICRO_UZI =					6;
-	public static final int WEAPONSKILL_MP5 =						7;
-	public static final int WEAPONSKILL_AK47 =						8;
-	public static final int WEAPONSKILL_M4 =						9;
-	public static final int WEAPONSKILL_SNIPERRIFLE =				10;
-
 	public static final int WEAPONSTATE_UNKNOWN =					-1;
 	public static final int WEAPONSTATE_NO_BULLETS =				0;
 	public static final int WEAPONSTATE_LAST_BULLET =				1;
@@ -139,6 +133,14 @@ public class PlayerBase
 	public static final int PLAYER_RECORDING_TYPE_NONE =			0;
 	public static final int PLAYER_RECORDING_TYPE_DRIVER =			1;
 	public static final int PLAYER_RECORDING_TYPE_ONFOOT =			2;
+	
+	public static final String SHOP_PIZZASTACK = 					"FDPIZA";
+	public static final String SHOP_BURGERSHOT = 					"FDBURG";
+	public static final String SHOP_CLUCKINBELL = 					"FDCHICK";
+	public static final String SHOP_AMMUNATION1 = 					"AMMUN1";
+	public static final String SHOP_AMMUNATION2 = 					"AMMUN2";
+	public static final String SHOP_AMMUNATION3 = 					"AMMUN3";
+	public static final String SHOP_AMMUNATION5 = 					"AMMUN5";
 	
 	public static final int MAX_PLAYER_ATTACHED_OBJECTS =			5;
 
@@ -168,11 +170,19 @@ public class PlayerBase
 	}
 	
 	
-	int id = -1, ping;
+	int id = -1, ping, team, skin, wantedLevel;
 	String ip;
 	String name;
 	SpawnInfo spawnInfo = new SpawnInfo();
 	int color;
+	
+	boolean controllable = true;
+	boolean stuntBonus = false;
+	boolean spectating = false;
+	boolean recording = false;
+	
+	PlayerBase spectatingPlayer;
+	VehicleBase spectatingVehicle;
 
 	int frame = -1;
 	float health, armour;
@@ -186,6 +196,7 @@ public class PlayerBase
 	int state = STATE_NONE;
 	KeyState keyState = new KeyState();
 	PlayerAttach playerAttach;
+	PlayerSkill skill;
 	Checkpoint checkpoint;
 	RaceCheckpoint raceCheckpoint;
 	
@@ -194,6 +205,9 @@ public class PlayerBase
 
 	public int id()							{ return id; }
 	public int ping()						{ return ping; }
+	public int team()						{ return team; }
+	public int skin()						{ return skin; }
+	public int wantedLevel()				{ return wantedLevel; }
 	public int codepage()					{ return NativeFunction.getPlayerCodepage(id); };
 	public String ip()						{ return ip; }
 	public String name()					{ return name; }
@@ -203,12 +217,21 @@ public class PlayerBase
 	public int frame()						{ return frame; }
 	public float health()					{ return health; }
 	public float armour()					{ return armour; }
+	public int weapon()						{ return NativeFunction.getPlayerWeapon(id); }
 	public int ammo()						{ return NativeFunction.getPlayerAmmo(id); }
 	public int money()						{ return money; }
 	public int score()						{ return score; }
 	public int weather()					{ return weather; }
 	public int fightingStyle()				{ return fightingStyle; }
 	public VehicleBase vehicle()			{ return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerVehicleID(id)); }
+	public int seat()						{ return NativeFunction.getPlayerVehicleSeat(id); }
+	public boolean controllable()			{ return controllable; }
+	public int specialAction()				{ return NativeFunction.getPlayerSpecialAction(id); }
+	public boolean stuntBonus()				{ return stuntBonus; }
+	public boolean spectating()				{ return spectating; }
+	public PlayerBase spectatingPlayer()	{ return spectatingPlayer; }
+	public VehicleBase spectatingVehicle()	{ return spectatingVehicle; }
+	public boolean recording()				{ return recording; }
 	
 	public PointAngle position()			{ return position.clone(); }
 	public float angle()					{ return position.angle; }
@@ -219,6 +242,7 @@ public class PlayerBase
 	public int state()						{ return state; }
 	public KeyState keyState()				{ return keyState.clone(); }
 	public PlayerAttach playerAttach()		{ return playerAttach; }
+	public PlayerSkill skill()				{ return skill; }
 	public Checkpoint checkpoint()			{ return checkpoint; }
 	public RaceCheckpoint raceCheckpoint()	{ return raceCheckpoint; }
 	
@@ -298,6 +322,8 @@ public class PlayerBase
 	{
 		id = GameModeBase.instance.currentPlayerId;
 		ip = NativeFunction.getPlayerIp(id);
+		team = NativeFunction.getPlayerTeam(id);
+		skin = NativeFunction.getPlayerSkin(id);
 		name = NativeFunction.getPlayerName(id);
 		color = NativeFunction.getPlayerColor(id);
 		
@@ -502,7 +528,9 @@ public class PlayerBase
 		money = NativeFunction.getPlayerMoney(id);
 		NativeFunction.getPlayerPos( id, position );
 		position.angle = NativeFunction.getPlayerFacingAngle(id);
+		position.world = NativeFunction.getPlayerVirtualWorld(id);
 		NativeFunction.getPlayerVelocity( id, velocity );
+		NativeFunction.getPlayerKeys(id, keyState);
 		
 		frame++;
 		if( frame<0 ) frame = 0;
@@ -749,6 +777,11 @@ public class PlayerBase
 	{
 		NativeFunction.setPlayerDrunkLevel( id, level );
 	}
+	
+	public int getDrunkLevel()
+	{
+		return NativeFunction.getPlayerDrunkLevel(id);
+	}
 
 	public void applyAnimation( String animlib, String animname, float delta, int loop, int lockX, int lockY, int freeze, int time, int forcesync )
 	{
@@ -758,6 +791,16 @@ public class PlayerBase
 	public void clearAnimations( int forcesync )
 	{
 		NativeFunction.clearAnimations( id, forcesync );
+	}
+	
+	public int getAnimationIndex()
+	{
+		return NativeFunction.getPlayerAnimationIndex(id);
+	}
+	
+	public void getAnimationName(int index, String lib, String name)
+	{
+		NativeFunction.getAnimationName(index, lib, lib.length(), name, name.length());
 	}
 	
 	public void allowRightclickTeleport( boolean allow )
@@ -869,5 +912,145 @@ public class PlayerBase
 	{
 		NativeFunction.disablePlayerRaceCheckpoint( id );
 		raceCheckpoint = null;
+	}
+	
+	public int getWeaponState()
+	{
+		return NativeFunction.getPlayerWeaponState(id);
+	}
+	
+	public void setTeam(int team)
+	{
+		NativeFunction.setPlayerTeam(id, team);
+		this.team = team;
+	}
+	
+	public void setSkin(int skin)
+	{
+		NativeFunction.setPlayerSkin(id, skin);
+		this.skin = skin;
+	}
+	
+	public void giveWeapon(int weaponid, int ammo)
+	{
+		NativeFunction.givePlayerWeapon(id, weaponid, ammo);
+	}
+	
+	public void resetWeapons()
+	{
+		NativeFunction.resetPlayerWeapons(id);
+	}
+	
+	public void setTime(int hour, int minute)
+	{
+		NativeFunction.setPlayerTime(id, hour, minute);
+	}
+	
+	public Time getTime()
+	{
+		Time time = new Time();
+		NativeFunction.getPlayerTime(id, time);
+		return time;
+	}
+	
+	public void toggleClock(boolean toggle)
+	{
+		NativeFunction.togglePlayerClock(id, toggle);
+	}
+	
+	public void forceClassSelection()
+	{
+		NativeFunction.forceClassSelection(id);
+	}
+	
+	public void setWantedLevel(int level)
+	{
+		NativeFunction.setPlayerWantedLevel(id, level);
+		wantedLevel = level;
+	}
+	
+	public void playCrimeReport(int suspectid, int crimeid)
+	{
+		NativeFunction.playCrimeReportForPlayer(id, suspectid, crimeid);
+	}
+	
+	public void setShopName(String shop)
+	{
+		NativeFunction.setPlayerShopName(id, shop);
+	}
+	
+	public VehicleBase getSurfingVehicle()
+	{
+		return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerSurfingVehicleID(id));
+	}
+	
+	public void removeFromVehicle()
+	{
+		NativeFunction.removePlayerFromVehicle(id);
+	}
+	
+	public void toggleControllable(boolean toggle)
+	{
+		NativeFunction.togglePlayerControllable(id, toggle);
+		controllable = toggle;
+	}
+	
+	public void setSpecialAction(int action)
+	{
+		NativeFunction.setPlayerSpecialAction(id, action);
+	}
+	
+	public void setMapIcon(int iconid, Point point, int markertype, int color, int style)
+	{
+		NativeFunction.setPlayerMapIcon(id, iconid, point.x, point.y, point.z, markertype, color);
+	}
+	
+	public void removeMapIcon(int iconid)
+	{
+		NativeFunction.removePlayerMapIcon(id, iconid);
+	}
+	
+	public void enableStuntBonus(boolean enable)
+	{
+		NativeFunction.enableStuntBonusForAll(enable);
+		stuntBonus = enable;
+	}
+	
+	public void toggleSpectating(boolean toggle)
+	{
+		NativeFunction.togglePlayerSpectating(id, toggle);
+		spectating = toggle;
+		
+		if(!toggle)
+		{
+			spectatingPlayer = null;
+			spectatingVehicle = null;
+		}
+	}
+	
+	public void spectatePlayer(PlayerBase player, int mode)
+	{
+		NativeFunction.playerSpectatePlayer(id, player.id, mode);
+		spectatingPlayer = player;
+		spectatingVehicle = null;
+	}
+	
+	public void spectateVehicle(VehicleBase vehicle, int mode)
+	{
+		NativeFunction.playerSpectateVehicle(id, vehicle.id, mode);
+		spectatingPlayer = null;
+		spectatingVehicle = vehicle;
+	}
+	
+	public void startRecord(int type, String recordName)
+	{
+		NativeFunction.startRecordingPlayerData(id, type, recordName);
+		recording = true;
+	}
+	
+	public void stopRecord()
+	{
+		NativeFunction.stopRecordingPlayerData(id);
+		recording = false;
 	}
 }
