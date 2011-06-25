@@ -27,6 +27,7 @@ import java.util.Vector;
 
 import net.gtaun.event.EventDispatcher;
 import net.gtaun.samp.data.Color;
+import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.SpawnInfo;
 import net.gtaun.samp.event.DialogResponseEvent;
 import net.gtaun.samp.event.GameModeExitEvent;
@@ -159,7 +160,19 @@ public abstract class GameModeBase
 	
 	int currentPlayerId;
 	// PlayerBase() 需要用到
+	int weather;
+	float gravity;
+	int deathDropAmount = 0;
+	float nameTagDrawDistance = 70;
+	float chatRadius = -1;
+	float playerMarkerRadius = -1;
 	
+	public int weather()				{ return weather; }
+	public float gravity()				{ return gravity; }
+	public int deathDropAmount()		{ return deathDropAmount; }
+	public float nameTagDrawDistance() 	{ return nameTagDrawDistance; }
+	public float chatRadius()			{ return chatRadius; }
+	public float playerMarkerRadius()	{ return playerMarkerRadius;}
 	
 	EventDispatcher<GameModeExitEvent>		eventExit = new EventDispatcher<GameModeExitEvent>();
 	EventDispatcher<PlayerConnectEvent>		eventConnect = new EventDispatcher<PlayerConnectEvent>();
@@ -197,6 +210,9 @@ public abstract class GameModeBase
 			
 			NativeFunction.loadLibrary();
 			instance = this;
+			
+			weather = Integer.parseInt(NativeFunction.getServerVarAsString("weather"));
+			gravity = Float.parseFloat(NativeFunction.getServerVarAsString("gravity"));
 		}
 		catch( Exception e )
 		{
@@ -296,11 +312,6 @@ public abstract class GameModeBase
 		NativeFunction.setWorldTime( hour );
 	}
 	
-	public String getWeaponName( int weaponid )
-	{
-		return NativeFunction.getWeaponName( weaponid );
-	}
-	
 	public void enableTirePopping( boolean enabled )
 	{
 		NativeFunction.enableTirePopping( enabled );
@@ -314,11 +325,13 @@ public abstract class GameModeBase
 	public void setWeather( int weatherid )
 	{
 		NativeFunction.setWeather( weatherid );
+		weather = Integer.parseInt(NativeFunction.getServerVarAsString("weather"));
 	}
 	
 	public void setGravity( float gravity )
 	{
 		NativeFunction.setGravity( gravity );
+		this.gravity = Float.parseFloat(NativeFunction.getServerVarAsString("gravity"));
 	}
 	
 	public void allowAdminTeleport( boolean allow )
@@ -329,11 +342,12 @@ public abstract class GameModeBase
 	public void setDeathDropAmount( int amount )
 	{
 		NativeFunction.setDeathDropAmount( amount );
+		deathDropAmount = amount;
 	}
 	
-	public void createExplosion( float x, float y, float z, int type, float radius )
+	public void createExplosion( Point point, int type, float radius )
 	{
-		NativeFunction.createExplosion( x, y, z, type, radius );
+		NativeFunction.createExplosion( point.x, point.y, point.z, type, radius );
 	}
 	
 	public void enableStuntBonus( boolean enabled )
@@ -367,6 +381,7 @@ public abstract class GameModeBase
 	
 	public void setNameTagDrawDistance( float distance )
 	{
+		nameTagDrawDistance = distance;
 		NativeFunction.setNameTagDrawDistance( distance );
 	}
 	
@@ -377,11 +392,13 @@ public abstract class GameModeBase
 	
 	public void limitGlobalChatRadius( float radius )
 	{
+		chatRadius = radius;
 		NativeFunction.limitGlobalChatRadius( radius );
 	}
 	
 	public void limitPlayerMarkerRadius( float radius )
 	{
+		playerMarkerRadius = radius;
 		NativeFunction.limitPlayerMarkerRadius( radius );
 	}
 
@@ -409,6 +426,37 @@ public abstract class GameModeBase
 	{
 		NativeFunction.connectNPC( name, script );
 	}
+	
+	public void sendDeathMessage( PlayerBase killer, PlayerBase victim, int reason )
+	{
+		if(killer != null && victim != null)
+			NativeFunction.sendDeathMessage(killer.id, victim.id, reason);
+		else if(killer == null)
+			NativeFunction.sendDeathMessage(INVALID_PLAYER_ID, victim.id, reason);
+		else if(victim == null)
+			NativeFunction.sendDeathMessage(killer.id, INVALID_PLAYER_ID, reason);
+	}
+	
+	public void sendGameText( String text, int time, int style )
+	{
+		NativeFunction.gameTextForAll(text, time, style);
+	}
+	
+	public void sendGameText( PlayerBase player, String text, int time, int style )
+	{
+		NativeFunction.gameTextForPlayer(player.id, text, time, style);
+	}
+	
+	public int getMaxPlayers()
+	{
+		return NativeFunction.getMaxPlayers();
+	}
+	
+	public void exit()
+	{
+		NativeFunction.gameModeExit();
+	}
+	
 	
 	
 //--------------------------------------------------------- 被JNI呼叫的玩意儿
@@ -765,6 +813,8 @@ public abstract class GameModeBase
 		try
 		{
 			ObjectBase object = objectPool[objectid];
+			
+			object.speed = 0;
 			
 			object.onMoved();
 			object.eventMoved.dispatchEvent( new ObjectMovedEvent(object) );

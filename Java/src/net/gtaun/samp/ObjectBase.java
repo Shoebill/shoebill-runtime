@@ -49,8 +49,8 @@ public class ObjectBase
 	EventDispatcher<ObjectMovedEvent> eventMoved = new EventDispatcher<ObjectMovedEvent>();
 	
 	public IEventDispatcher<ObjectMovedEvent> 	eventMoved()	{ return eventMoved;}
-	
 
+	
 	ObjectBase()
 	{
 		

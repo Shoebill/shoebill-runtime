@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-package net.gtaun.samp.data;
+package net.gtaun.samp;
+
 
 /**
  * @author MK124
@@ -99,5 +100,10 @@ public class WeaponData
 	public WeaponData clone()
 	{
 		return new WeaponData(id, ammo);
+	}
+	
+	public static String getWeaponName( int weaponid )
+	{
+		return NativeFunction.getWeaponName( weaponid );
 	}
 }

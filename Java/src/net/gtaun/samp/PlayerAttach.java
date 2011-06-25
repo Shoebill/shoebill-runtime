@@ -67,8 +67,18 @@ public class PlayerAttach {
 		return success;
 	}
 	
-	public boolean  isSlotUsed(int slot)
+	public boolean isSlotUsed(int slot)
 	{
 		return models[slot] != -1;
+	}
+	
+	public int getModel(int slot)
+	{
+		return models[slot];
+	}
+	
+	public int getBone(int slot)
+	{
+		return bones[slot];
 	}
 }

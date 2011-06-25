@@ -16,6 +16,8 @@
 
 package net.gtaun.samp.data;
 
+import net.gtaun.samp.WeaponData;
+
 /**
  * @author MK124
  *

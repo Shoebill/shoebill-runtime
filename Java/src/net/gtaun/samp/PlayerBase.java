@@ -17,11 +17,8 @@
 
 package net.gtaun.samp;
 
-import java.awt.Color;
 import java.util.Iterator;
 import java.util.Vector;
-
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 import net.gtaun.event.EventDispatcher;
 import net.gtaun.event.IEventDispatcher;
@@ -31,7 +28,6 @@ import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointAngle;
 import net.gtaun.samp.data.SpawnInfo;
 import net.gtaun.samp.data.Time;
-import net.gtaun.samp.data.Vector3D;
 import net.gtaun.samp.data.Velocity;
 import net.gtaun.samp.event.DialogResponseEvent;
 import net.gtaun.samp.event.MenuExitedEvent;
