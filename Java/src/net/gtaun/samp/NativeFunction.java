@@ -253,7 +253,7 @@ final class NativeFunction
 	static native void setPlayerWorldBounds( int playerid, float x_max, float x_min, float y_max, float y_min );
 	static native void setPlayerMarkerForPlayer( int playerid, int showplayerid, int color );
 	static native void showPlayerNameTagForPlayer( int playerid, int showplayerid, boolean show );
-	static native void setPlayerMapIcon( int playerid, int iconid, float x, float y, float z, int markertype, int color );
+	static native void setPlayerMapIcon( int playerid, int iconid, float x, float y, float z, int markertype, int color, int style );
 	static native void removePlayerMapIcon( int playerid, int iconid );
 	static native void allowPlayerTeleport( int playerid, boolean allow );
 

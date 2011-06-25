@@ -1002,7 +1002,7 @@ public class PlayerBase
 	
 	public void setMapIcon(int iconid, Point point, int markertype, int color, int style)
 	{
-		NativeFunction.setPlayerMapIcon(id, iconid, point.x, point.y, point.z, markertype, color);
+		NativeFunction.setPlayerMapIcon(id, iconid, point.x, point.y, point.z, markertype, color, style);
 	}
 	
 	public void removeMapIcon(int iconid)

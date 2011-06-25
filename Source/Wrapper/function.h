@@ -220,7 +220,7 @@ int SetPlayerWorldBounds(int playerid, float x_max, float x_min, float y_max, fl
 int SetPlayerMarkerForPlayer(int playerid, int showplayerid, int color);
 int ShowPlayerNameTagForPlayer(int playerid, int showplayerid, int show);
 
-int SetPlayerMapIcon(int playerid, int iconid, float x, float y, float z, int markertype, int color);
+int SetPlayerMapIcon(int playerid, int iconid, float x, float y, float z, int markertype, int color, int style);
 int RemovePlayerMapIcon(int playerid, int iconid);
 int AllowPlayerTeleport(int playerid, int allow);
 

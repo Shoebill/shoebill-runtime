@@ -2503,14 +2503,14 @@ int ShowPlayerNameTagForPlayer( int playerid, int showplayerid, int show )
 	return func(pAMX, args);
 }
 
-int SetPlayerMapIcon( int playerid, int iconid, float x, float y, float z, int markertype, int color )
+int SetPlayerMapIcon( int playerid, int iconid, float x, float y, float z, int markertype, int color, int style )
 {
 	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerMapIcon");
 
-	cell args[8] =
+	cell args[9] =
 	{
 		sizeof(args)- sizeof(cell),
-		playerid, iconid, amx_ftoc(x), amx_ftoc(y), amx_ftoc(z), markertype, color
+		playerid, iconid, amx_ftoc(x), amx_ftoc(y), amx_ftoc(z), markertype, color, style
 	};
 
 	return func(pAMX, args);

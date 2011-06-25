@@ -2251,12 +2251,12 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_showPlayerNameTagForPl
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    setPlayerMapIcon
- * Signature: (IIFFFII)V
+ * Signature: (IIFFFIII)V
  */
 JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_setPlayerMapIcon
-  (JNIEnv *env, jclass jcls, jint playerid, jint iconid, jfloat x, jfloat y, jfloat z, jint markertype, jint color)
+  (JNIEnv *env, jclass jcls, jint playerid, jint iconid, jfloat x, jfloat y, jfloat z, jint markertype, jint color, jint style)
 {
-	SetPlayerMapIcon( playerid, iconid, x, y, z, markertype, color );
+	SetPlayerMapIcon( playerid, iconid, x, y, z, markertype, color, style );
 }
 
 /*
