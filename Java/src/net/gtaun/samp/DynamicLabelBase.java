@@ -29,8 +29,16 @@ import net.gtaun.samp.streamer.Streamer;
 
 public class DynamicLabelBase extends LabelBase implements IStreamObject
 {
-	static Streamer<DynamicLabelBase> streamer;
+	static final int DEFAULT_RANGE =		300;
 	
+	
+	static Streamer<DynamicLabelBase> streamer;
+
+	public static void initialize( GameModeBase gamemode )
+	{
+		if( streamer == null )
+			streamer = new Streamer<DynamicLabelBase>(gamemode, DEFAULT_RANGE);
+	}
 	public static void initialize( GameModeBase gamemode, int range )
 	{
 		if( streamer == null )

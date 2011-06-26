@@ -23,27 +23,28 @@ import net.gtaun.samp.data.Vector3D;
  *
  */
 
-public class PlayerAttach {
-	
-	int playerid;
+public class PlayerAttach
+{
+	int playerId;
 	
 	int[] models = new int[5];
 	int[] bones = new int[5];
 
-	public PlayerAttach(int playerid) {
+	
+	PlayerAttach( int playerid )
+	{
+		this.playerId = playerid;
 		
-		this.playerid = playerid;
-		
-		for(int i=0;i<5;i++)
+		for( int i=0; i<5; i++ )
 		{
 			models[i] = -1;
 			bones[i] = -1;
 		}
 	}
 	
-	public boolean set(int slot, int modelid, int bone, Vector3D offset, Vector3D rot, Vector3D scale)
+	public boolean set( int slot, int modelid, int bone, Vector3D offset, Vector3D rot, Vector3D scale )
 	{
-		boolean success = NativeFunction.setPlayerAttachedObject(playerid, slot, modelid, bone, offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, scale.x, scale.y, scale.z);
+		boolean success = NativeFunction.setPlayerAttachedObject(playerId, slot, modelid, bone, offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, scale.x, scale.y, scale.z);
 		
 		if(success)
 		{
@@ -54,9 +55,9 @@ public class PlayerAttach {
 		return success;
 	}
 	
-	public boolean remove(int slot)
+	public boolean remove( int slot )
 	{
-		boolean success = NativeFunction.removePlayerAttachedObject(playerid, slot);
+		boolean success = NativeFunction.removePlayerAttachedObject(playerId, slot);
 		
 		if(success)
 		{
@@ -67,17 +68,17 @@ public class PlayerAttach {
 		return success;
 	}
 	
-	public boolean isSlotUsed(int slot)
+	public boolean isSlotUsed( int slot )
 	{
 		return models[slot] != -1;
 	}
 	
-	public int getModel(int slot)
+	public int getModel( int slot )
 	{
 		return models[slot];
 	}
 	
-	public int getBone(int slot)
+	public int getBone( int slot )
 	{
 		return bones[slot];
 	}

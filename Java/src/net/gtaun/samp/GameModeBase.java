@@ -160,6 +160,7 @@ public abstract class GameModeBase
 	
 	int currentPlayerId;
 	// PlayerBase() 需要用到
+	
 	int weather;
 	float gravity;
 	int deathDropAmount = 0;
@@ -350,20 +351,6 @@ public abstract class GameModeBase
 		NativeFunction.createExplosion( point.x, point.y, point.z, type, radius );
 	}
 	
-	public void enableStuntBonus( boolean enabled )
-	{
-		NativeFunction.enableStuntBonusForAll( enabled );
-		
-		Vector<PlayerBase> players = PlayerBase.get(PlayerBase.class);
-		Iterator<PlayerBase> iterator = players.iterator();
-		PlayerBase player;
-		while( iterator.hasNext() )
-		{
-			player = iterator.next();
-			player.stuntBonus = enabled;
-		}
-	}
-	
 	public void enableZoneNames( boolean enabled )
 	{
 		NativeFunction.enableZoneNames( enabled );
@@ -388,18 +375,6 @@ public abstract class GameModeBase
 	public void disableNameTagLOS()
 	{
 		NativeFunction.disableNameTagLOS();
-	}
-	
-	public void limitGlobalChatRadius( float radius )
-	{
-		chatRadius = radius;
-		NativeFunction.limitGlobalChatRadius( radius );
-	}
-	
-	public void limitPlayerMarkerRadius( float radius )
-	{
-		playerMarkerRadius = radius;
-		NativeFunction.limitPlayerMarkerRadius( radius );
 	}
 
 	public void sendRconCommand( String command )
@@ -427,36 +402,10 @@ public abstract class GameModeBase
 		NativeFunction.connectNPC( name, script );
 	}
 	
-	public void sendDeathMessage( PlayerBase killer, PlayerBase victim, int reason )
-	{
-		if(killer != null && victim != null)
-			NativeFunction.sendDeathMessage(killer.id, victim.id, reason);
-		else if(killer == null)
-			NativeFunction.sendDeathMessage(INVALID_PLAYER_ID, victim.id, reason);
-		else if(victim == null)
-			NativeFunction.sendDeathMessage(killer.id, INVALID_PLAYER_ID, reason);
-	}
-	
-	public void sendGameText( String text, int time, int style )
-	{
-		NativeFunction.gameTextForAll(text, time, style);
-	}
-	
-	public void sendGameText( PlayerBase player, String text, int time, int style )
-	{
-		NativeFunction.gameTextForPlayer(player.id, text, time, style);
-	}
-	
-	public int getMaxPlayers()
-	{
-		return NativeFunction.getMaxPlayers();
-	}
-	
 	public void exit()
 	{
 		NativeFunction.gameModeExit();
 	}
-	
 	
 	
 //--------------------------------------------------------- 被JNI呼叫的玩意儿

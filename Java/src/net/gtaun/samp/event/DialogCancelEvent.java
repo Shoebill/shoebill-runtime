@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 JoJLlmAn
+ * Copyright (C) 2011 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,26 @@
  * limitations under the License.
  */
 
-package net.gtaun.samp;
+package net.gtaun.samp.event;
+
+import net.gtaun.event.Event;
+import net.gtaun.samp.DialogBase;
+import net.gtaun.samp.PlayerBase;
 
 /**
- * @author JoJLlmAn
+ * @author MK124
  *
  */
 
-public class VehicleDamage
+public class DialogCancelEvent extends Event
 {
-	int vehicleId;
-	int panels, doors, lights, tires;
-	
-	public int panels()		{ return panels; }
-	public int doors()		{ return doors; }
-	public int lights()		{ return lights; }
-	public int tires()		{ return tires; }
+	public DialogBase dialog;
+	public PlayerBase player;
 	
 	
-	VehicleDamage( int vehicleId )
+	public DialogCancelEvent( DialogBase dialog, PlayerBase player )
 	{
-		this.vehicleId = vehicleId;
-	}
-	
-	public void set( int panels, int doors, int lights, int tires )
-	{
-		NativeFunction.updateVehicleDamageStatus(vehicleId, panels, doors, lights, tires);
-		NativeFunction.getVehicleDamageStatus(vehicleId, this);
+		this.dialog = dialog;
+		this.player = player;
 	}
 }

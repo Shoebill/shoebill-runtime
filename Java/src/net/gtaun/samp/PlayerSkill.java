@@ -21,8 +21,8 @@ package net.gtaun.samp;
  *
  */
 
-public class PlayerSkill {
-	
+public class PlayerSkill
+{
 	public static final int WEAPONSKILL_PISTOL = 					0;
 	public static final int WEAPONSKILL_PISTOL_SILENCED =			1;
 	public static final int WEAPONSKILL_DESERT_EAGLE =				2;
@@ -34,30 +34,30 @@ public class PlayerSkill {
 	public static final int WEAPONSKILL_AK47 =						8;
 	public static final int WEAPONSKILL_M4 =						9;
 	public static final int WEAPONSKILL_SNIPERRIFLE =				10;
+	public static final int WEAPONSKILLS =							11;
 	
-	int[] skills = new int[11];
+	
+	int[] skills = new int[WEAPONSKILLS];
 	int playerid;
 	
-	public PlayerSkill(int playerid)
+	
+	PlayerSkill( int playerid )
 	{
-		for(int i=0;i<11;i++)
-			skills[i] = 999;
-		
+		for( int i=0; i<WEAPONSKILLS; i++ )	skills[i] = 999;
 		this.playerid = playerid;
 	}
 	
-	public void set(int type, int level)
+	
+	public void set( int type, int level )
 	{
-		if(level > 999)
-			level = 999;
-		else if(level < 0)
-			level = 0;
+		if(level > 999)		level = 999;
+		else if(level < 0)	level = 0;
 		
-		NativeFunction.setPlayerSkillLevel(playerid, type, level);
+		NativeFunction.setPlayerSkillLevel( playerid, type, level );
 		skills[type] = level;
 	}
 	
-	public int get(int type)
+	public int get( int type )
 	{
 		return skills[type];
 	}

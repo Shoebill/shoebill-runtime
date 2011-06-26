@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 JoJLlmAn
+ * Copyright (C) 2011 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,45 @@
  * limitations under the License.
  */
 
-package net.gtaun.samp;
+package net.gtaun.samp.data;
+
 
 /**
- * @author JoJLlmAn
+ * @author MK124
  *
  */
 
-public class VehicleDamage
+public class WeaponData
 {
-	int vehicleId;
-	int panels, doors, lights, tires;
+	public int id, ammo;
 	
-	public int panels()		{ return panels; }
-	public int doors()		{ return doors; }
-	public int lights()		{ return lights; }
-	public int tires()		{ return tires; }
-	
-	
-	VehicleDamage( int vehicleId )
+
+	public WeaponData()
 	{
-		this.vehicleId = vehicleId;
+		
 	}
 	
-	public void set( int panels, int doors, int lights, int tires )
+	public WeaponData( int id, int ammo )
 	{
-		NativeFunction.updateVehicleDamageStatus(vehicleId, panels, doors, lights, tires);
-		NativeFunction.getVehicleDamageStatus(vehicleId, this);
+		this.id = id;
+		this.ammo = ammo;
+	}
+	
+	
+	public boolean equals( Object obj )
+	{
+		if( obj == this )					return true;
+		if( !(obj instanceof WeaponData) )	return false;
+		
+		WeaponData data = (WeaponData) obj;
+		if( data.id != id )					return false;
+		if( data.ammo != ammo )				return false;
+		
+		return true;
+	}
+	
+	public WeaponData clone()
+	{
+		return new WeaponData(id, ammo);
 	}
 }

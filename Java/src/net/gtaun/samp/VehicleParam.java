@@ -45,7 +45,7 @@ public class VehicleParam
 		this.vehicleId = vehicleId;
 	}
 	
-	public void refresh()
+	public void update()
 	{
 		NativeFunction.getVehicleParamsEx( vehicleId, this );
 	}

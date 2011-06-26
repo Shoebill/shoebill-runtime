@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package net.gtaun.samp;
-
+package net.gtaun.samp.data;
 
 /**
  * @author MK124
  *
  */
 
-public class WeaponData
+public final class Weapons
 {
+	public static final int WEAPON_NONE =						0;
 	public static final int WEAPON_BRASSKNUCKLE =				1;
 	public static final int WEAPON_GOLFCLUB =					2;
 	public static final int WEAPON_NITESTICK =					3;
@@ -64,46 +64,13 @@ public class WeaponData
 	public static final int WEAPON_SPRAYCAN =					41;
 	public static final int WEAPON_FIREEXTINGUISHER =			42;
 	public static final int WEAPON_CAMERA =						43;
+	public static final int WEAPON_NIGHTVISION =				44;
+	public static final int WEAPON_INFRARED =					45;
 	public static final int WEAPON_PARACHUTE =					46;
+	public static final int WEAPON_FAKEPISTOL =					47;
 	public static final int WEAPON_VEHICLE =					49;
+	public static final int WEAPON_HELICOPTERBLADES =			50;
+	public static final int WEAPON_EXPLOSION =					51;
 	public static final int WEAPON_DROWN =						53;
 	public static final int WEAPON_COLLISION =					54;
-	
-	
-	public int id, ammo;
-	
-
-	public WeaponData()
-	{
-		
-	}
-	
-	public WeaponData( int id, int ammo )
-	{
-		this.id = id;
-		this.ammo = ammo;
-	}
-	
-	
-	public boolean equals( Object obj )
-	{
-		if( obj == this )					return true;
-		if( !(obj instanceof WeaponData) )	return false;
-		
-		WeaponData data = (WeaponData) obj;
-		if( data.id != id )					return false;
-		if( data.ammo != ammo )				return false;
-		
-		return true;
-	}
-	
-	public WeaponData clone()
-	{
-		return new WeaponData(id, ammo);
-	}
-	
-	public static String getWeaponName( int weaponid )
-	{
-		return NativeFunction.getWeaponName( weaponid );
-	}
 }

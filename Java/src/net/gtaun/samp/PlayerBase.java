@@ -154,6 +154,24 @@ public class PlayerBase
 		return GameModeBase.getInstance(GameModeBase.instance.playerPool, cls, id);
 	}
 	
+	public static int getMaxPlayers()
+	{
+		return NativeFunction.getMaxPlayers();
+	}
+	
+	public static void enableStuntBonusForAll( boolean enabled )
+	{
+		NativeFunction.enableStuntBonusForAll( enabled );
+		
+		Vector<PlayerBase> players = PlayerBase.get(PlayerBase.class);
+		Iterator<PlayerBase> iterator = players.iterator();
+		while( iterator.hasNext() )
+		{
+			PlayerBase player = iterator.next();
+			player.stuntBonus = enabled;
+		}
+	}
+	
 	public static void sendMessageToAll( int color, String message )
 	{
 		Vector<PlayerBase> players = get(PlayerBase.class);
@@ -163,6 +181,11 @@ public class PlayerBase
 			PlayerBase player = iterator.next();
 			player.sendMessage( color, message );
 		}
+	}
+	
+	public static void gameTextToAll( String text, int time, int style )
+	{
+		NativeFunction.gameTextForAll( text, time, style );
 	}
 	
 	

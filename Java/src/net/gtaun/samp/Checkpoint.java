@@ -22,7 +22,6 @@ import java.util.Vector;
 
 import net.gtaun.event.EventDispatcher;
 import net.gtaun.event.IEventDispatcher;
-import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.Vector3D;
 import net.gtaun.samp.event.CheckpointEnterEvent;
 import net.gtaun.samp.event.CheckpointLeaveEvent;
@@ -50,7 +49,7 @@ public class Checkpoint extends Vector3D
 		this.size = size;
 	}
 	
-	public Checkpoint( Point point, float size )
+	public Checkpoint( Vector3D point, float size )
 	{
 		super( point.x, point.y, point.z );
 		this.size = size;

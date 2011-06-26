@@ -85,7 +85,7 @@ public class TimerBase
 
 //---------------------------------------------------------
 	
-	public int onTick( int counting )
+	public int onTick( int counting, int realtime )
 	{
 		return 1;
 	}
@@ -128,6 +128,7 @@ public class TimerBase
 		running = false;
 	}
 
+	
 //---------------------------------------------------------
 	
 	void tick( int realint )
@@ -138,9 +139,10 @@ public class TimerBase
 		if( realInterval < interval ) return;
 		
 		if( count > 0 ) counting--;
-		onTick( counting );
+		onTick( counting, realInterval );
 		eventTick.dispatchEvent( new TimerTickEvent(this, realInterval) );
 		
+		realInterval = 0;
 		if( count > 0 && counting == 0 ) stop();
 	}
 }

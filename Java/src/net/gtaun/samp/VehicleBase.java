@@ -50,10 +50,11 @@ public class VehicleBase
 		return GameModeBase.getInstances(GameModeBase.instance.vehiclePool, cls);
 	}
 	
-	public static <T> T get( Class<T> cls, int id )
+	static <T> T get( Class<T> cls, int id )
 	{
 		return GameModeBase.getInstance(GameModeBase.instance.vehiclePool, cls, id);
 	}
+	
 	
 	public static void manualEngineAndLights()
 	{

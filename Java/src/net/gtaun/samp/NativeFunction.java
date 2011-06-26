@@ -22,6 +22,7 @@ import net.gtaun.samp.data.PointRot;
 import net.gtaun.samp.data.Quaternions;
 import net.gtaun.samp.data.Velocity;
 import net.gtaun.samp.data.Time;
+import net.gtaun.samp.data.WeaponData;
 
 /**
  * @author MK124

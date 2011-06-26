@@ -30,8 +30,16 @@ import net.gtaun.samp.streamer.Streamer;
 
 public class DynamicObjectBase extends ObjectBase implements IStreamObject
 {
-	static Streamer<DynamicObjectBase> streamer;
+	static final int DEFAULT_RANGE =		300;
 	
+	
+	static Streamer<DynamicObjectBase> streamer;
+
+	public static void initialize( GameModeBase gamemode )
+	{
+		if( streamer == null )
+			streamer = new Streamer<DynamicObjectBase>(gamemode, DEFAULT_RANGE);
+	}
 	public static void initialize( GameModeBase gamemode, int range )
 	{
 		if( streamer == null )
@@ -73,7 +81,7 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 	}
 	
 	private void init()
-	{
+	{	
 		for( int i = 0; i < id.length; i++ ) id[i] = -1;
 		streamer.add( this );
 	}
