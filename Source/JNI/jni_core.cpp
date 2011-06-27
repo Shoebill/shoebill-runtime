@@ -74,17 +74,34 @@ int jni_jvm_create( const char* classpath )
 	return 0;
 }
 
+int jni_jvm_processException()
+{
+	if( !env->ExceptionCheck() ) return 1;
+
+	jthrowable throwable = env->ExceptionOccurred();
+	jclass throwableCls = env->GetObjectClass(throwable);
+	jmethodID printStackTraceId = env->GetMethodID(throwableCls, "printStackTrace", "()V");
+	if( !printStackTraceId ) return -4;
+
+	env->CallVoidMethod( throwable, printStackTraceId );
+	env->ExceptionClear();
+
+	return 0;
+}
+
 int jni_jvm_newobject( jclass jcls, jobject *pjobj )
 {
-	jmethodID jmid;
-
 	if( !jvm ) return -1;
 
-	jmid = env->GetMethodID(jcls, "<init>", "()V");
+	jmethodID jmid = env->GetMethodID(jcls, "<init>", "()V");
 	if( !jmid ) return -2;
 
 	*pjobj = env->NewObject( jcls, jmid );
-	if( !*pjobj ) return -3;
+	if( !*pjobj )
+	{
+		jni_jvm_processException();
+		return -3;
+	}
 
 	return 0;
 }

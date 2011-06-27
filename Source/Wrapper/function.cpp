@@ -651,7 +651,7 @@ int SendRconCommand( const char* cmd )
 
 int GetServerVarAsString( const char* varname, char* buffer, int len )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetServerVarAsInt");
+	static amx_func_t func = amx_FindFunction(pAMX, "GetServerVarAsString");
 	cell *str_phys;
 
 	cell args[4] =

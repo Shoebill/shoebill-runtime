@@ -22,7 +22,7 @@
 
 
 #define classpath "./gamemodes/*.jar"
-#define modeclass "net/gtaun/mklms/GameMode"
+#define modeclass "net/gtaun/match/GameMode"
 
 
 jclass jmodecls = NULL;

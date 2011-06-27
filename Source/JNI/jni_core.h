@@ -18,5 +18,6 @@ extern JavaVM *jvm;
 extern JNIEnv *env;
 
 int jni_jvm_create( const char* classpath );
+int jni_jvm_processException();
 int jni_jvm_newobject( jclass jcls, jobject *pjobj );
 int jni_jvm_destroy();
