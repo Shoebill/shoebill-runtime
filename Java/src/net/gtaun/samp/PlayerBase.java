@@ -867,10 +867,14 @@ public class PlayerBase
 		return GameModeBase.instance.menuPool[ NativeFunction.getPlayerMenu(id) ];
 	}
 	
-	public void setCamera( Point pos, Point lookat )
+	public void setCameraPos( Point pos )
 	{
 		NativeFunction.setPlayerCameraPos( id, pos.x, pos.y, pos.z );
-		NativeFunction.setPlayerCameraLookAt( id, lookat.x, lookat.y, lookat.z );
+	}
+	
+	public void setCamerLookAt( Point lookat )
+	{
+		NativeFunction.setPlayerCameraLookAt(id, lookat.x, lookat.y, lookat.z);
 	}
 	
 	public void setCameraBehind()
@@ -878,10 +882,18 @@ public class PlayerBase
 		NativeFunction.setCameraBehindPlayer(id);
 	}
 	
-	public void getCamera( Point pos, Point lookvector )
+	public Point getCameraPos()
 	{
+		Point pos = new Point();
 		NativeFunction.getPlayerCameraPos( id, pos );
-		NativeFunction.getPlayerCameraFrontVector( id, lookvector );
+		return pos;
+	}
+	
+	public Point getCameraFrontVector()
+	{
+		Point lookat = new Point();
+		NativeFunction.getPlayerCameraFrontVector( id, lookat );
+		return lookat;
 	}
 	
 //--------------------------------------------------------- Is Functions
