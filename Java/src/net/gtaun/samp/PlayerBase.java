@@ -779,7 +779,10 @@ public class PlayerBase
 
 	public void sendDeathMessage( PlayerBase killer, int reason )
 	{
-		NativeFunction.sendDeathMessage( killer.id, id, reason );
+		if(killer == null)
+			NativeFunction.sendDeathMessage(GameModeBase.INVALID_PLAYER_ID, id, reason);
+		else
+			NativeFunction.sendDeathMessage( killer.id, id, reason );
 	}
 	
 	public void gameText( String text, int time, int style )
