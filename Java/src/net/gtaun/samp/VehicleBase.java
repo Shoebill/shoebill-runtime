@@ -160,6 +160,8 @@ public class VehicleBase
 		param = new VehicleParam( id );
 		component = new VehicleComponent( id );
 		damage = new VehicleDamage( id );
+		
+		GameModeBase.instance.vehiclePool[id] = this;
 	}
 	
 	
