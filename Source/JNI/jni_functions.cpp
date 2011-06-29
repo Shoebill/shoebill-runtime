@@ -3085,10 +3085,10 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_destroyObject
  * Method:    moveObject
  * Signature: (IFFFF)V
  */
-JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_moveObject
+JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_moveObject
   (JNIEnv *env, jclass jcls, jint objectid, jfloat x, jfloat y, jfloat z, jfloat speed)
 {
-	MoveObject( objectid, x, y, z, speed );
+	return MoveObject( objectid, x, y, z, speed );
 }
 
 /*

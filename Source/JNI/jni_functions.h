@@ -1972,7 +1972,7 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_destroyObject
  * Method:    moveObject
  * Signature: (IFFFF)V
  */
-JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_moveObject
+JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_moveObject
   (JNIEnv *, jclass, jint, jfloat, jfloat, jfloat, jfloat);
 
 /*
