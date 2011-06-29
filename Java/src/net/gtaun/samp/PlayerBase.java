@@ -216,8 +216,8 @@ public class PlayerBase
 	KeyState keyState = new KeyState();
 	PlayerAttach playerAttach;
 	PlayerSkill skill;
-	Checkpoint checkpoint;
-	RaceCheckpoint raceCheckpoint;
+	CheckpointBase checkpoint;
+	RaceCheckpointBase raceCheckpoint;
 	
 	DialogBase dialog;
 	
@@ -262,8 +262,8 @@ public class PlayerBase
 	public KeyState keyState()				{ return keyState.clone(); }
 	public PlayerAttach playerAttach()		{ return playerAttach; }
 	public PlayerSkill skill()				{ return skill; }
-	public Checkpoint checkpoint()			{ return checkpoint; }
-	public RaceCheckpoint raceCheckpoint()	{ return raceCheckpoint; }
+	public CheckpointBase checkpoint()			{ return checkpoint; }
+	public RaceCheckpointBase raceCheckpoint()	{ return raceCheckpoint; }
 	
 	public DialogBase dialog()				{ return dialog; }
 	
@@ -925,7 +925,7 @@ public class PlayerBase
 		return NativeFunction.isPlayerStreamedIn(id, forplayer.id);
 	}
 	
-	public void setCheckpoint( Checkpoint checkpoint )
+	public void setCheckpoint( CheckpointBase checkpoint )
 	{
 		checkpoint.set( this );
 	}
@@ -936,7 +936,7 @@ public class PlayerBase
 		checkpoint = null;
 	}
 	
-	public void setRaceCheckpoint( RaceCheckpoint checkpoint )
+	public void setRaceCheckpoint( RaceCheckpointBase checkpoint )
 	{
 		checkpoint.set( this );
 	}

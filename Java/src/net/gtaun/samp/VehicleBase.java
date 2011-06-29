@@ -415,9 +415,9 @@ public class VehicleBase
 		NativeFunction.repairVehicle( id );
 	}
 	
-	public void setAngularVelocity( float x, float y, float z )
+	public void setAngularVelocity( Velocity velocity )
 	{
-		NativeFunction.setVehicleAngularVelocity( id, x, y, z );
+		NativeFunction.setVehicleAngularVelocity( id, velocity.x, velocity.y, velocity.z );
 	}
 	
 	//public static int getComponentType( int component );

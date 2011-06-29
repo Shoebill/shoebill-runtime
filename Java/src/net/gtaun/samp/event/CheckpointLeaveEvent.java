@@ -17,7 +17,7 @@
 package net.gtaun.samp.event;
 
 import net.gtaun.event.Event;
-import net.gtaun.samp.Checkpoint;
+import net.gtaun.samp.CheckpointBase;
 import net.gtaun.samp.PlayerBase;
 
 /**
@@ -28,7 +28,7 @@ import net.gtaun.samp.PlayerBase;
 public class CheckpointLeaveEvent extends Event
 {
 	public PlayerBase player;
-	public Checkpoint checkpoint;
+	public CheckpointBase checkpoint;
 	
 	
 	public CheckpointLeaveEvent( PlayerBase player )

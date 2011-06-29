@@ -32,7 +32,7 @@ import net.gtaun.samp.event.RaceCheckpointLeaveEvent;
  *
  */
 
-public class RaceCheckpoint extends Vector3D
+public class RaceCheckpointBase extends Vector3D
 {
 	public static final int TYPE_NORMAL =				0;
 	public static final int TYPE_AIR =					3;
@@ -46,7 +46,7 @@ public class RaceCheckpoint extends Vector3D
 	
 	public float size;
 	public int type;
-	public RaceCheckpoint next;
+	public RaceCheckpointBase next;
 	
 	
 	EventDispatcher<RaceCheckpointEnterEvent>	eventEnter = new EventDispatcher<RaceCheckpointEnterEvent>();
@@ -56,7 +56,7 @@ public class RaceCheckpoint extends Vector3D
 	public IEventDispatcher<RaceCheckpointLeaveEvent>	eventLeave()	{ return eventLeave; }
 	
 
-	public RaceCheckpoint( float x, float y, float z, float size, int type, RaceCheckpoint next )
+	public RaceCheckpointBase( float x, float y, float z, float size, int type, RaceCheckpointBase next )
 	{
 		super( x, y, z );
 		
@@ -64,7 +64,7 @@ public class RaceCheckpoint extends Vector3D
 		this.type = type;
 	}
 
-	public RaceCheckpoint( Point position, float size, int type, RaceCheckpoint next )
+	public RaceCheckpointBase( Point position, float size, int type, RaceCheckpointBase next )
 	{
 		super( position.x, position.y, position.z );
 		
