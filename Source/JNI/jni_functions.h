@@ -170,18 +170,18 @@ JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_addStaticVehicleEx
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    addStaticPickup
- * Signature: (IIFFF)I
+ * Signature: (IIFFFI)I
  */
 JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_addStaticPickup
-  (JNIEnv *, jclass, jint, jint, jfloat, jfloat, jfloat);
+  (JNIEnv *, jclass, jint, jint, jfloat, jfloat, jfloat, jint);
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    createPickup
- * Signature: (IIFFF)I
+ * Signature: (IIFFFI)I
  */
 JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_createPickup
-  (JNIEnv *, jclass, jint, jint, jfloat, jfloat, jfloat);
+  (JNIEnv *, jclass, jint, jint, jfloat, jfloat, jfloat, jint);
 
 /*
  * Class:     net_gtaun_samp_NativeFunction

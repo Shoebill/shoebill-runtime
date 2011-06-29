@@ -59,6 +59,8 @@ public class PlayerObjectBase extends ObjectBase
 	private void init()
 	{
 		id = NativeFunction.createPlayerObject( player.id, model, position.x, position.y, position.z, position.rx, position.ry, position.rz );
+		
+		GameModeBase.instance.playerObjectPool[id] = this;
 	}
 	
 
@@ -75,7 +77,7 @@ public class PlayerObjectBase extends ObjectBase
 	public void destroy()
 	{
 		NativeFunction.destroyObject( id );
-		GameModeBase.instance.objectPool[ id ] = null;
+		GameModeBase.instance.playerObjectPool[ id ] = null;
 	}
 	
 	public PointRot position()
@@ -109,9 +111,11 @@ public class PlayerObjectBase extends ObjectBase
 		NativeFunction.setPlayerObjectRot( player.id, id, rx, ry, rz );
 	}
 	
-	public void move( float x, float y, float z, float speed )
+	public int move( float x, float y, float z, float speed )
 	{
 		NativeFunction.movePlayerObject( player.id, id, x, y, z, speed );
+		
+		return 0;
 	}
 	
 	public void stop()

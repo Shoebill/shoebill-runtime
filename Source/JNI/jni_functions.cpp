@@ -303,9 +303,9 @@ JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_addStaticVehicleEx
  * Signature: (IIFFF)I
  */
 JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_addStaticPickup
-  (JNIEnv *env, jclass jcls, jint model, jint type, jfloat x, jfloat y, jfloat z)
+  (JNIEnv *env, jclass jcls, jint model, jint type, jfloat x, jfloat y, jfloat z, jint virtualworld)
 {
-	return AddStaticPickup( model, type, x, y, z );
+	return AddStaticPickup( model, type, x, y, z, virtualworld );
 }
 
 /*
@@ -314,9 +314,9 @@ JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_addStaticPickup
  * Signature: (IIFFF)I
  */
 JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_createPickup
-  (JNIEnv *env, jclass jcls, jint model, jint type, jfloat x, jfloat y, jfloat z)
+  (JNIEnv *env, jclass jcls, jint model, jint type, jfloat x, jfloat y, jfloat z, jint virtualworld)
 {
-	return CreatePickup( model, type, x, y, z );
+	return CreatePickup( model, type, x, y, z, virtualworld );
 }
 
 /*

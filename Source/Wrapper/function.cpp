@@ -254,27 +254,27 @@ int AddStaticVehicleEx( int modelid, float spawn_x, float spawn_y, float spawn_z
 	return func(pAMX, args);
 }
 
-int AddStaticPickup( int model, int type, float x, float y, float z )
+int AddStaticPickup( int model, int type, float x, float y, float z, int virtualworld )
 {
 	static amx_func_t func = amx_FindFunction(pAMX, "AddStaticPickup");
 
-	cell args[6] =
+	cell args[7] =
 	{
 		sizeof(args)- sizeof(cell),
-		model, type, amx_ftoc(x), amx_ftoc(y), amx_ftoc(z)
+		model, type, amx_ftoc(x), amx_ftoc(y), amx_ftoc(z), virtualworld
 	};
 
 	return func(pAMX, args);
 }
 
-int CreatePickup( int model, int type, float x, float y, float z )
+int CreatePickup( int model, int type, float x, float y, float z, int virtualworld )
 {
 	static amx_func_t func = amx_FindFunction(pAMX, "CreatePickup");
 
-	cell args[6] =
+	cell args[7] =
 	{
 		sizeof(args)- sizeof(cell),
-		model, type, amx_ftoc(x), amx_ftoc(y), amx_ftoc(z)
+		model, type, amx_ftoc(x), amx_ftoc(y), amx_ftoc(z), virtualworld
 	};
 
 	return func(pAMX, args);

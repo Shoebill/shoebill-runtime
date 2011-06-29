@@ -145,9 +145,9 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 		}
 	}
 	
-	public void move( float x, float y, float z, float speed )
+	public int move( float x, float y, float z, float speed )
 	{
-		
+		return 0;
 	}
 	
 	public void stop()

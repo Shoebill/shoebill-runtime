@@ -765,6 +765,8 @@ public abstract class GameModeBase
 			ObjectBase object = objectPool[objectid];
 			
 			object.speed = 0;
+			NativeFunction.getObjectPos(objectid, object.position);
+			NativeFunction.getObjectRot(objectid, object.position);
 			
 			object.onMoved();
 			object.eventMoved.dispatchEvent( new ObjectMovedEvent(object) );

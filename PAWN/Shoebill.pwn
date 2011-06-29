@@ -385,7 +385,7 @@ public Oops()
 	SetPlayerWorldBounds(0, 0, 0, 0, 0);
 	SetPlayerMarkerForPlayer(0, 0, 0);
 	ShowPlayerNameTagForPlayer(0, 0, 0);
-	SetPlayerMapIcon(0, 0, 0, 0, 0, 0, 0);
+	SetPlayerMapIcon(0, 0, 0, 0, 0, 0, 0, 0);
 	RemovePlayerMapIcon(0, 0);
 	AllowPlayerTeleport(0, 0);
 
@@ -445,8 +445,8 @@ public Oops()
 	AddPlayerClassEx(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	AddStaticVehicle(0, 0, 0, 0, 0, 0, 0);
 	AddStaticVehicleEx(0, 0, 0, 0, 0, 0, 0, 0);
-	AddStaticPickup(0, 0, 0, 0, 0);
-	CreatePickup(0, 0, 0, 0, 0);
+	AddStaticPickup(0, 0, 0, 0, 0, 0);
+	CreatePickup(0, 0, 0, 0, 0, 0);
 	DestroyPickup(0);
 	ShowNameTags(0);
 	ShowPlayerMarkers(0);

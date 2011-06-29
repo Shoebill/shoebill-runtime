@@ -41,6 +41,7 @@ public class ObjectBase
 	int id, model;
 	PointRot position;
 	float speed = 0;
+	PlayerBase attachedPlayer;
 	
 	public int model()					{ return model; }
 	public float speed()				{ return speed; }
@@ -83,6 +84,7 @@ public class ObjectBase
 	private void init()
 	{
 		id = NativeFunction.createObject( model, position.x, position.y, position.z, position.rx, position.ry, position.rz );
+		GameModeBase.instance.objectPool[id] = this;
 	}
 	
 
@@ -104,6 +106,14 @@ public class ObjectBase
 	
 	public PointRot position()
 	{
+		if( attachedPlayer != null) return new PointRot(
+				position.x + attachedPlayer.position.x,
+				position.y + attachedPlayer.position.y, 
+				position.z + attachedPlayer.position.z, 
+				position.rx, 
+				position.ry, 
+				position.rz);
+		
 		if( speed == 0 ) return position.clone();
 		
 		NativeFunction.getObjectPos( id, position );
@@ -148,5 +158,8 @@ public class ObjectBase
 	public void attach( PlayerBase player, float x, float y, float z, float rx, float ry, float rz )
 	{
 		NativeFunction.attachObjectToPlayer( id, player.id, x, y, z, rx, ry, rz );
+		attachedPlayer = player;
+		
+		position = new PointRot(x, y, z, rx, ry, rz);
 	}
 }

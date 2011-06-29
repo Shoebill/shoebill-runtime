@@ -66,8 +66,8 @@ final class NativeFunction
 	static native int addPlayerClassEx( int teamid, int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle, int weapon1, int weapon1_ammo, int weapon2, int weapon2_ammo, int weapon3, int weapon3_ammo );
 	static native int addStaticVehicle( int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle, int color1, int color2 );
 	static native int addStaticVehicleEx( int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle, int color1, int color2, int respawn_delay );
-	static native int addStaticPickup( int model, int type, float x, float y, float z );
-	static native int createPickup( int model, int type, float x, float y, float z );
+	static native int addStaticPickup( int model, int type, float x, float y, float z, int virtualWorld );
+	static native int createPickup( int model, int type, float x, float y, float z, int virtualWorld );
 	static native void destroyPickup( int pickup );
 	static native void showNameTags( boolean enabled );
 	static native void showPlayerMarkers( int mode );

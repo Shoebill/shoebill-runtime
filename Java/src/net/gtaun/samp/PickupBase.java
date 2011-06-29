@@ -38,10 +38,12 @@ public class PickupBase
 	
 	int id;
 	int model, type;
+	int world = -1;
 	Point position;
 	
 	public int model()			{ return this.model; }
 	public int type()			{ return this.type; }
+	public int world()			{ return this.world; }
 	public Point position()		{ return this.position; }
 	
 	
@@ -50,7 +52,17 @@ public class PickupBase
 	public IEventDispatcher<PlayerPickupEvent>		eventPickup()		{ return eventPickup; }
 	
 	
-	public PickupBase( int model, int type, float x, float y, float z )
+	public PickupBase( int model, int type, float x, float y, float z, int virtualWorld )
+	{
+		this.model = model;
+		this.type = type;
+		this.position = new Point( x, y, z );
+		this.world = virtualWorld;
+		
+		init();
+	}
+	
+	public PickupBase( int model, int type, float x, float y, float z)
 	{
 		this.model = model;
 		this.type = type;
@@ -64,13 +76,16 @@ public class PickupBase
 		this.model = model;
 		this.type = type;
 		this.position = point.clone();
+		this.world = point.world;
 		
 		init();
 	}
 	
 	private void init()
 	{
-		id = NativeFunction.createPickup( model, type, position.x, position.y, position.z );
+		id = NativeFunction.createPickup( model, type, position.x, position.y, position.z, world );
+		
+		GameModeBase.instance.pickupPool[id] = this;
 	}
 	
 	

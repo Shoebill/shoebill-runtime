@@ -32,8 +32,8 @@ int AddPlayerClass(int modelid, float spawn_x, float spawn_y, float spawn_z, flo
 int AddPlayerClassEx(int teamid, int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle, int weapon1, int weapon1_ammo, int weapon2, int weapon2_ammo, int weapon3, int weapon3_ammo);
 int AddStaticVehicle(int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle, int color1, int color2);
 int AddStaticVehicleEx(int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle, int color1, int color2, int respawn_delay);
-int AddStaticPickup(int model, int type, float X, float Y, float Z);
-int CreatePickup(int model, int type, float X, float Y, float Z);
+int AddStaticPickup(int model, int type, float X, float Y, float Z, int virtualworld);
+int CreatePickup(int model, int type, float X, float Y, float Z, int virtualworld);
 int DestroyPickup(int pickup);
 int ShowNameTags(int show);
 int ShowPlayerMarkers(int mode);

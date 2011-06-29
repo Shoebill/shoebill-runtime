@@ -38,7 +38,7 @@ public class MenuBase
 	
 
 	int id;
-	String title, columnHeader;
+	String title, columnHeader = "";
 	int columns;
 	float x, y;
 	float col1Width, col2Width;
@@ -74,6 +74,7 @@ public class MenuBase
 	private void init()
 	{
 		id = NativeFunction.createMenu( title, columns, x, y, col1Width, col1Width );
+		GameModeBase.instance.menuPool[id] = this;
 	}
 	
 //---------------------------------------------------------

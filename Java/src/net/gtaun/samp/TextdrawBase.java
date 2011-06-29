@@ -66,6 +66,8 @@ public class TextdrawBase
 	{
 		id = NativeFunction.textDrawCreate( x, y, text );
 		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) isPlayerShowed[i] = false;
+		
+		GameModeBase.instance.textdrawPool[id] = this;
 	}
 	
 	

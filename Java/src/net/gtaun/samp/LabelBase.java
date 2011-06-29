@@ -82,6 +82,8 @@ public class LabelBase
 	{
 		id = NativeFunction.create3DTextLabel( text, color,
 				position.x, position.y, position.z, position.distance, position.world, testLOS );
+		
+		GameModeBase.instance.labelPool[id] = this;
 	}
 	
 //---------------------------------------------------------

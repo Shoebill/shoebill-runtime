@@ -66,6 +66,8 @@ public class ZoneBase
 			isPlayerShowed[i] = false;
 			isPlayerFlashing[i] = false;
 		}
+		
+		GameModeBase.instance.zonePool[id] = this;
 	}
 
 
@@ -94,8 +96,10 @@ public class ZoneBase
 	
 	public void flash( PlayerBase player, int color )
 	{
-		NativeFunction.gangZoneFlashForPlayer( player.id, id, color );
-		if( isPlayerShowed[player.id] ) isPlayerFlashing[player.id] = true;
+		if( isPlayerShowed[player.id] ){
+			NativeFunction.gangZoneFlashForPlayer( player.id, id, color );
+			isPlayerFlashing[player.id] = true;
+		}
 	}
 	
 	public void stopFlash( PlayerBase player )
