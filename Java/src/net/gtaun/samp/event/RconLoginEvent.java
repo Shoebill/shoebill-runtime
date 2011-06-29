@@ -25,9 +25,12 @@ import net.gtaun.event.Event;
 
 public class RconLoginEvent extends Event
 {
-	public String ip, password;
-	public boolean success;
+	String ip, password;
+	boolean success;
 	
+	public String ip()			{ return ip; }
+	public String password()	{ return password; }
+	public boolean success()	{ return success; }
 	
 	public RconLoginEvent( String ip, String password, boolean success )
 	{

@@ -26,8 +26,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerRequestClassEvent extends Event
 {
-	public PlayerBase player;
-	public int classid;
+	PlayerBase player;
+	int classid;
+	
+	public PlayerBase player()			{ return player; }
+	public int classid()				{ return classid; }
 	
 	
 	public PlayerRequestClassEvent(	PlayerBase player, int classid, int result )

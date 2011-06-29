@@ -26,8 +26,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerStreamOutEvent extends Event
 {
-	public PlayerBase player;
-	public PlayerBase forPlayer;
+	PlayerBase player;
+	PlayerBase forPlayer;
+	
+	public PlayerBase player()			{ return player; }
+	public PlayerBase forPlayer()		{ return forPlayer; }
 	
 	
 	public PlayerStreamOutEvent( PlayerBase player, PlayerBase forPlayer )

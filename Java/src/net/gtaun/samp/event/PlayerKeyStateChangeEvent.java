@@ -26,8 +26,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerKeyStateChangeEvent extends Event
 {
-	public PlayerBase player;
-	public int oldkeys;
+	PlayerBase player;
+	int oldkeys;
+	
+	public PlayerBase player()			{ return player; }
+	public int oldkeys()				{ return oldkeys; }
 	
 	
 	public PlayerKeyStateChangeEvent( PlayerBase player, int oldkeys )

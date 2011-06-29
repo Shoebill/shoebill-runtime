@@ -26,8 +26,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerCommandEvent extends Event
 {
-	public PlayerBase player;
-	public String command;
+	PlayerBase player;
+	String command;
+	
+	public PlayerBase player()			{ return player; }
+	public String command()				{ return command; }
 	
 	
 	public PlayerCommandEvent( PlayerBase player, String command, int result )

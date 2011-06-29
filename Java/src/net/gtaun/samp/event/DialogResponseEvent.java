@@ -27,10 +27,16 @@ import net.gtaun.samp.PlayerBase;
 
 public class DialogResponseEvent extends Event
 {
-	public DialogBase dialog;
-	public PlayerBase player;
-	public int response, listitem;
-	public String inputtext;
+	DialogBase dialog;
+	PlayerBase player;
+	int response, listitem;
+	String inputText;
+	
+	public PlayerBase player()			{ return player; }
+	public DialogBase dialog()			{ return dialog; }
+	public int response()				{ return response; }
+	public int listitem()				{ return listitem; }
+	public String inputText()			{ return inputText;}
 	
 	
 	public DialogResponseEvent( DialogBase dialog, PlayerBase player, int response, int listitem, String inputtext )
@@ -39,6 +45,6 @@ public class DialogResponseEvent extends Event
 		this.player = player;
 		this.response = response;
 		this.listitem = listitem;
-		this.inputtext = inputtext;
+		this.inputText = inputtext;
 	}
 }

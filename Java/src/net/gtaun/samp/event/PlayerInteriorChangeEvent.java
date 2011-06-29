@@ -26,8 +26,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerInteriorChangeEvent extends Event
 {
-	public PlayerBase player;
-	public int oldInteriorId;
+	PlayerBase player;
+	int oldInteriorId;
+	
+	public PlayerBase player()			{ return player; }
+	public int oldInteriorId()			{ return oldInteriorId; }
 	
 	
 	public PlayerInteriorChangeEvent( PlayerBase player, int oldInteriorId )

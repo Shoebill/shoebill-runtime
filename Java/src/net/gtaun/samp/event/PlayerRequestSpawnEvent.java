@@ -26,7 +26,9 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerRequestSpawnEvent extends Event
 {
-	public PlayerBase player;
+	PlayerBase player;
+	
+	public PlayerBase player()			{ return player; }
 	
 	
 	public PlayerRequestSpawnEvent( PlayerBase player, int result )

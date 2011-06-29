@@ -27,8 +27,11 @@ import net.gtaun.samp.VehicleBase;
 
 public class VehicleDeathEvent extends Event
 {
-	public VehicleBase vehicle;
-	public PlayerBase killer;
+	VehicleBase vehicle;
+	PlayerBase killer;
+	
+	public VehicleBase vehicle()	{ return vehicle; }
+	public PlayerBase killer()		{ return killer; }
 	
 	
 	public VehicleDeathEvent( VehicleBase vehicle, PlayerBase killer )

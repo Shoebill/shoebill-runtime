@@ -26,8 +26,11 @@ import net.gtaun.samp.VehicleBase;
 
 public class VehiclePaintjobEvent extends Event
 {
-	public VehicleBase vehicle;
-	public int paintjobid;
+	VehicleBase vehicle;
+	int paintjobid;
+	
+	public VehicleBase vehicle()	{ return vehicle; }
+	public int paintjobid()			{ return paintjobid; }
 	
 	
 	public VehiclePaintjobEvent( VehicleBase vehicle, int paintjobid )

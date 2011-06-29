@@ -27,8 +27,11 @@ import net.gtaun.samp.VehicleBase;
 
 public class VehicleStreamOutEvent extends Event
 {
-	public VehicleBase vehicle;
-	public PlayerBase player;
+	VehicleBase vehicle;
+	PlayerBase player;
+	
+	public VehicleBase vehicle()	{ return vehicle; }
+	public PlayerBase player()		{ return player; }
 	
 	
 	public VehicleStreamOutEvent( VehicleBase vehicle, PlayerBase player )

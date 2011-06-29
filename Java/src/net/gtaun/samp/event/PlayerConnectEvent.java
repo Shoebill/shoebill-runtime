@@ -26,7 +26,9 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerConnectEvent extends Event
 {
-	public PlayerBase player;
+	PlayerBase player;
+	
+	public PlayerBase player()			{ return player; }
 	
 	
 	public PlayerConnectEvent( PlayerBase player )

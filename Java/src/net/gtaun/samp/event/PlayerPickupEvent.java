@@ -27,8 +27,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerPickupEvent extends Event
 {
-	public PlayerBase player;
-	public PickupBase pickup;
+	PlayerBase player;
+	PickupBase pickup;
+	
+	public PlayerBase player()			{ return player; }
+	public PickupBase pickup()			{ return pickup; }
 	
 	
 	public PlayerPickupEvent( PlayerBase player, PickupBase pickup )

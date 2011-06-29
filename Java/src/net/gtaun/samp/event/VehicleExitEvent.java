@@ -30,6 +30,8 @@ public class VehicleExitEvent extends Event
 	VehicleBase vehicle;
 	PlayerBase player;
 	
+	public VehicleBase vehicle()	{ return vehicle; }
+	public PlayerBase player()		{ return player; }
 	
 	public VehicleExitEvent( VehicleBase vehicle, PlayerBase player )
 	{

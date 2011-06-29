@@ -26,8 +26,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerDisconnectEvent extends Event
 {
-	public PlayerBase player;
-	public int reason;
+	PlayerBase player;
+	int reason;
+	
+	public PlayerBase player()			{ return player; }
+	public int reason()					{ return reason; }
 	
 	
 	public PlayerDisconnectEvent( PlayerBase player, int reason )

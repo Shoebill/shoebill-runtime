@@ -25,7 +25,9 @@ import net.gtaun.event.Event;
 
 public class RconCommandEvent extends Event
 {
-	public String command;
+	String command;
+	
+	public String command()		{ return command; }
 	
 	
 	public RconCommandEvent( String command, int result )

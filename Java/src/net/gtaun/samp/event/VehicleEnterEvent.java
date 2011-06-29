@@ -31,6 +31,10 @@ public class VehicleEnterEvent extends Event
 	PlayerBase player;
 	boolean isPassenger;
 	
+	public VehicleBase vehicle()	{ return vehicle; }
+	public PlayerBase player()		{ return player; }
+	public boolean isPassenger()	{ return isPassenger; }
+	
 	
 	public VehicleEnterEvent( VehicleBase vehicle, PlayerBase player, boolean isPassenger )
 	{

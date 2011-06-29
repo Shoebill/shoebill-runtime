@@ -26,8 +26,11 @@ import net.gtaun.samp.TimerBase;
 
 public class TimerTickEvent extends Event
 {
-	public TimerBase timer;
-	public int realInterval;
+	TimerBase timer;
+	int realInterval;
+	
+	public TimerBase timer()		{ return timer; }
+	public int realInterval()		{ return realInterval; }
 	
 	
 	public TimerTickEvent( TimerBase timer, int realInterval )

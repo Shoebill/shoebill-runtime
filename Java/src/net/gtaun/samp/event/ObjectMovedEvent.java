@@ -26,8 +26,9 @@ import net.gtaun.samp.ObjectBase;
 
 public class ObjectMovedEvent extends Event
 {
-	public ObjectBase object;
+	ObjectBase object;
 	
+	public ObjectBase object()	{ return object; }
 	
 	public ObjectMovedEvent( ObjectBase object )
 	{

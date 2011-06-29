@@ -27,8 +27,11 @@ import net.gtaun.samp.RaceCheckpointBase;
 
 public class RaceCheckpointLeaveEvent extends Event
 {
-	public PlayerBase player;
-	public RaceCheckpointBase checkpoint;
+	PlayerBase player;
+	RaceCheckpointBase checkpoint;
+	
+	public PlayerBase player()				{ return player; }
+	public RaceCheckpointBase checkpoint()	{ return checkpoint; }
 	
 	
 	public RaceCheckpointLeaveEvent( PlayerBase player )

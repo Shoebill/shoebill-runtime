@@ -27,9 +27,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class CheckpointEnterEvent extends Event
 {
-	public PlayerBase player;
-	public CheckpointBase checkpoint;
+	PlayerBase player;
+	CheckpointBase checkpoint;
 	
+	public PlayerBase player()			{ return player; }
+	public CheckpointBase checkpoint()	{ return checkpoint; }
 	
 	public CheckpointEnterEvent( PlayerBase player )
 	{

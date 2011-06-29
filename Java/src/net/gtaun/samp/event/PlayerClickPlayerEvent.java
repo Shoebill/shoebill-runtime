@@ -26,10 +26,13 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerClickPlayerEvent extends Event
 {
-	public PlayerBase player;
-	public PlayerBase clickedplayer;
-	public int source;
+	PlayerBase player;
+	PlayerBase clickedplayer;
+	int source;
 	
+	public PlayerBase player()			{ return player; }
+	public PlayerBase clickedplayer()	{ return clickedplayer; }
+	public int source()					{ return source; }
 	
 	public PlayerClickPlayerEvent( PlayerBase player, PlayerBase clickedPlayer, int source )
 	{

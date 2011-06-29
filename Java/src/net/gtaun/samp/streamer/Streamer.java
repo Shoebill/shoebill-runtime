@@ -94,7 +94,7 @@ public class Streamer<O extends IStreamObject>
 	{
 		public void handleEvent( PlayerConnectEvent event )
 		{
-			event.player.eventUpdate().addListener( onPlayerUpdate );
+			event.player().eventUpdate().addListener( onPlayerUpdate );
 		}
 	};
 	
@@ -102,7 +102,7 @@ public class Streamer<O extends IStreamObject>
 	{
 		public void handleEvent( PlayerDisconnectEvent event )
 		{
-			event.player.eventUpdate().removeListener( onPlayerUpdate );
+			event.player().eventUpdate().removeListener( onPlayerUpdate );
 		}
 	};
 	
@@ -110,8 +110,8 @@ public class Streamer<O extends IStreamObject>
 	{
 		public void handleEvent( PlayerUpdateEvent event )
 		{
-			if( event.player.frame() % updateFrameTick == event.player.id() % updateFrameTick )
-				update( event.player );
+			if( event.player().frame() % updateFrameTick == event.player().id() % updateFrameTick )
+				update( event.player() );
 		}
 	};
 	

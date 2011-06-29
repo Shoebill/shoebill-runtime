@@ -27,9 +27,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class MenuExitedEvent extends Event
 {
-	public MenuBase menu;
-	public PlayerBase player;
+	MenuBase menu;
+	PlayerBase player;
 	
+	public MenuBase menu()		{ return menu; }
+	public PlayerBase player()	{ return player; }
 	
 	public MenuExitedEvent( MenuBase menu, PlayerBase player )
 	{

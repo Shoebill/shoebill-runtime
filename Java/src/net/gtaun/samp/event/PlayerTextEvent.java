@@ -26,8 +26,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerTextEvent extends Event
 {
-	public PlayerBase player;
-	public String text;
+	PlayerBase player;
+	String text;
+	
+	public PlayerBase player()			{ return player; }
+	public String text()				{ return text; }
 	
 	
 	public PlayerTextEvent( PlayerBase player, String text, int result )

@@ -27,9 +27,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerObjectMovedEvent extends Event
 {
-	public PlayerBase player;
-	public ObjectBase object;
+	PlayerBase player;
+	ObjectBase object;
 	
+	public PlayerBase player()			{ return player; }
+	public ObjectBase object()			{ return object; }
 	
 	public PlayerObjectMovedEvent( PlayerBase player, ObjectBase object )
 	{

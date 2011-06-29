@@ -30,6 +30,9 @@ public class VehicleUpdateDamageEvent extends Event
 	VehicleBase vehicle;
 	PlayerBase player;
 	
+	public VehicleBase vehicle()	{ return vehicle; }
+	public PlayerBase player()		{ return player; }
+	
 	
 	public VehicleUpdateDamageEvent( VehicleBase vehicle, PlayerBase player )
 	{

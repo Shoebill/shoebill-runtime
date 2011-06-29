@@ -26,8 +26,9 @@ import net.gtaun.samp.VehicleBase;
 
 public class VehicleUpdateEvent extends Event
 {
-	public VehicleBase vehicle;
+	VehicleBase vehicle;
 	
+	public VehicleBase vehicle()	{ return vehicle; }
 	
 	public VehicleUpdateEvent( VehicleBase vehicle )
 	{

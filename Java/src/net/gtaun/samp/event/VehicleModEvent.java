@@ -26,9 +26,11 @@ import net.gtaun.samp.VehicleBase;
 
 public class VehicleModEvent extends Event
 {
-	public VehicleBase vehicle;
-	public int componentid;
+	VehicleBase vehicle;
+	int componentid;
 	
+	public VehicleBase vehicle()	{ return vehicle; }
+	public int componentid()		{ return componentid; }
 	
 	public VehicleModEvent( VehicleBase vehicle, int componentid )
 	{

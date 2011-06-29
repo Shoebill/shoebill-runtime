@@ -26,8 +26,12 @@ import net.gtaun.samp.VehicleBase;
 
 public class VehicleResprayEvent extends Event
 {
-	public VehicleBase vehicle;
-	public int color1, color2;
+	VehicleBase vehicle;
+	int color1, color2;
+	
+	public VehicleBase vehicle()	{ return vehicle; }
+	public int color1()				{ return color1; }
+	public int color2()				{ return color2; }
 	
 	
 	public VehicleResprayEvent( VehicleBase vehicle, int color1, int color2 )

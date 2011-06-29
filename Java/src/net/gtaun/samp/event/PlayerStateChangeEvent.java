@@ -26,9 +26,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerStateChangeEvent extends Event
 {
-	public PlayerBase player;
-	public int oldstate;
+	PlayerBase player;
+	int oldstate;
 	
+	public PlayerBase player()			{ return player; }
+	public int oldstate()				{ return oldstate; }
 	
 	public PlayerStateChangeEvent( PlayerBase player, int oldstate )
 	{

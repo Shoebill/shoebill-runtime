@@ -26,7 +26,9 @@ import net.gtaun.samp.GameModeBase;
 
 public class GameModeExitEvent extends Event
 {
-	public GameModeBase gameMode;
+	GameModeBase gameMode;
+	
+	public GameModeBase gameMode()	{ return gameMode; }
 	
 	
 	public GameModeExitEvent( GameModeBase gameMode )

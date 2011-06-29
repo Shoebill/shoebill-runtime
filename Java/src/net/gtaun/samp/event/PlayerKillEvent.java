@@ -26,10 +26,13 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerKillEvent extends Event
 {
-	public PlayerBase player;
-	public PlayerBase victim;
-	public int reason;
+	PlayerBase player;
+	PlayerBase victim;
+	int reason;
 	
+	public PlayerBase player()			{ return player; }
+	public PlayerBase victim()			{ return victim; }
+	public int reason()					{ return reason; }
 	
 	public PlayerKillEvent( PlayerBase player, PlayerBase victim, int reason )
 	{

@@ -27,8 +27,11 @@ import net.gtaun.samp.PlayerBase;
 
 public class DialogCancelEvent extends Event
 {
-	public DialogBase dialog;
-	public PlayerBase player;
+	DialogBase dialog;
+	PlayerBase player;
+	
+	public PlayerBase player()			{ return player; }
+	public DialogBase dialog()			{ return dialog; }
 	
 	
 	public DialogCancelEvent( DialogBase dialog, PlayerBase player )

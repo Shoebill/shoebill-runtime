@@ -26,9 +26,13 @@ import net.gtaun.samp.PlayerBase;
 
 public class PlayerEnterExitModShopEvent extends Event
 {
-	public PlayerBase player;
-	public boolean enterexit;
-	public int interiorid;
+	PlayerBase player;
+	boolean enterexit;
+	int interiorid;
+	
+	public PlayerBase player()			{ return player; }
+	public boolean enterexit()			{ return enterexit; }
+	public int interiorid()				{ return interiorid; }
 	
 	
 	public PlayerEnterExitModShopEvent( PlayerBase player, boolean enterexit, int interiorid )
