@@ -206,7 +206,7 @@ public class PlayerBase
 	int frame = -1;
 	float health, armour;
 	int money, score;
-	int weather, fightingStyle;
+	int weather;
 //	VehicleBase vehicle;
 
 	PointAngle position = new PointAngle();
@@ -241,7 +241,7 @@ public class PlayerBase
 	public int money()						{ return money; }
 	public int score()						{ return score; }
 	public int weather()					{ return weather; }
-	public int fightingStyle()				{ return fightingStyle; }
+	public int fightingStyle()				{ return NativeFunction.getPlayerFightingStyle(id); }
 	public VehicleBase vehicle()			{ return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerVehicleID(id)); }
 	public int seat()						{ return NativeFunction.getPlayerVehicleSeat(id); }
 	public boolean controllable()			{ return controllable; }
@@ -350,7 +350,6 @@ public class PlayerBase
 		armour = NativeFunction.getPlayerArmour(id);
 		money = NativeFunction.getPlayerMoney(id);
 		score = NativeFunction.getPlayerScore(id);
-		fightingStyle = NativeFunction.getPlayerFightingStyle(id);
 		
 		NativeFunction.getPlayerPos(id, position);
 		NativeFunction.getPlayerFacingAngle(id);
@@ -364,6 +363,7 @@ public class PlayerBase
 		NativeFunction.getPlayerKeys(id, keyState);
 		
 		playerAttach = new PlayerAttach(id);
+		skill = new PlayerSkill(id);
 	}
 
 
@@ -638,7 +638,6 @@ public class PlayerBase
 	public void setFightingStyle( int style )
 	{
 		NativeFunction.setPlayerFightingStyle( id, style );
-		fightingStyle = style;
 	}
 
 	public void setVehicle( VehicleBase vehicle, int seat )
