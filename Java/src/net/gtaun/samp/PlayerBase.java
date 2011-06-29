@@ -171,7 +171,7 @@ public class PlayerBase
 			player.stuntBonus = enabled;
 		}
 	}
-	
+
 	public static void sendMessageToAll( int color, String message )
 	{
 		Vector<PlayerBase> players = get(PlayerBase.class);
@@ -183,8 +183,26 @@ public class PlayerBase
 		}
 	}
 	
-	public static void gameTextToAll( String text, int time, int style )
+	public static void sendMessageToAll( int color, String format, Object... args )
 	{
+		Vector<PlayerBase> players = get(PlayerBase.class);
+		Iterator<PlayerBase> iterator = players.iterator();
+		while( iterator.hasNext() )
+		{
+			PlayerBase player = iterator.next();
+			String message = String.format(format, args);
+			player.sendMessage( color, message );
+		}
+	}
+
+	public static void gameTextToAll( int time, int style, String text )
+	{
+		NativeFunction.gameTextForAll( text, time, style );
+	}
+	
+	public static void gameTextToAll( int time, int style, String format, Object... args )
+	{
+		String text = String.format(format, args);
 		NativeFunction.gameTextForAll( text, time, style );
 	}
 	
@@ -760,6 +778,12 @@ public class PlayerBase
 		NativeFunction.sendClientMessage( id, color, message );
 	}
 	
+	public void sendMessage( int color, String format, Object... args )
+	{
+		String message = String.format(format, args);
+		NativeFunction.sendClientMessage( id, color, message );
+	}
+	
 	public void sendChat( PlayerBase player, String message )
 	{
 		NativeFunction.sendPlayerMessageToPlayer( player.id, id, message );
@@ -783,9 +807,15 @@ public class PlayerBase
 		else
 			NativeFunction.sendDeathMessage( killer.id, id, reason );
 	}
-	
-	public void gameText( String text, int time, int style )
+
+	public void gameText( int time, int style, String text )
 	{
+		NativeFunction.gameTextForPlayer( id, text, time, style );
+	}
+	
+	public void gameText( int time, int style, String format, Object... args )
+	{
+		String text = String.format(format, args);
 		NativeFunction.gameTextForPlayer( id, text, time, style );
 	}
 
@@ -897,8 +927,6 @@ public class PlayerBase
 		NativeFunction.getPlayerCameraFrontVector( id, lookat );
 		return lookat;
 	}
-	
-//--------------------------------------------------------- Is Functions
 	
 	public boolean isInVehicle()
 	{

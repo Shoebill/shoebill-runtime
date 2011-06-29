@@ -40,7 +40,6 @@ public class DialogBase
 	
 	
 	int id, style;
-	public String caption, info, button1, button2;
 	
 	public int style()		{ return style; }
 	
@@ -55,17 +54,6 @@ public class DialogBase
 	public DialogBase( int style )
 	{
 		this.style = style;
-		init();
-	}
-	
-	public DialogBase( int style, String caption, String info, String button1, String button2 )
-	{
-		this.style = style;
-		this.caption = caption;
-		this.info = info;
-		this.button1 = button1;
-		this.button2 = button2;
-		
 		init();
 	}
 	
@@ -93,43 +81,20 @@ public class DialogBase
 	
 //---------------------------------------------------------
 	
-	private void cancelPlayerDialog( PlayerBase player )
-	{
-		if( player.dialog == null ) return;
-
-		player.dialog.onCancel( player );
-		player.dialog.eventCancel.dispatchEvent( new DialogCancelEvent(player.dialog, player) );
-	}
-
-	public void show( PlayerBase player )
-	{
-		cancelPlayerDialog( player );
-		
-		player.dialog = this;
-		NativeFunction.showPlayerDialog( player.id, id, style, caption, info, button1, button2 );
-	}
-	
-	public void show( PlayerBase player, String info )
-	{
-		cancelPlayerDialog( player );
-		
-		player.dialog = this;
-		NativeFunction.showPlayerDialog( player.id, id, style, caption, info, button1, button2 );
-	}
-	
-	public void show( PlayerBase player, String caption, String info )
-	{
-		cancelPlayerDialog( player );
-		
-		player.dialog = this;
-		NativeFunction.showPlayerDialog( player.id, id, style, caption, info, button1, button2 );
-	}
-	
 	public void show( PlayerBase player, String caption, String info, String button1, String button2 )
 	{
-		cancelPlayerDialog( player );
+		cancel( player );
 		
 		player.dialog = this;
 		NativeFunction.showPlayerDialog( player.id, id, style, caption, info, button1, button2 );
+	}
+	
+	public void cancel( PlayerBase player )
+	{
+		if( player.dialog == null ) return;
+		NativeFunction.showPlayerDialog( player.id, -1, 0, "", "", "", "" );
+		
+		player.dialog.onCancel( player );
+		player.dialog.eventCancel.dispatchEvent( new DialogCancelEvent(player.dialog, player) );
 	}
 }
