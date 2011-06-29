@@ -114,7 +114,6 @@ public class PlayerObjectBase extends ObjectBase
 	public int move( float x, float y, float z, float speed )
 	{
 		NativeFunction.movePlayerObject( player.id, id, x, y, z, speed );
-		
 		return 0;
 	}
 	

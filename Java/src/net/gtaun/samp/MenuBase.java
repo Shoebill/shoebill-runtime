@@ -100,11 +100,14 @@ public class MenuBase
 	
 	public void addItem( int column, String text )
 	{
+		if( text == null ) throw new NullPointerException();
 		NativeFunction.addMenuItem( id, column, text );
 	}
 	
 	public void setColumnHeader( int column, String text )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		NativeFunction.setMenuColumnHeader( id, column, text );
 		columnHeader = text;
 	}

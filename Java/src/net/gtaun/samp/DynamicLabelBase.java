@@ -51,6 +51,8 @@ public class DynamicLabelBase extends LabelBase implements IStreamObject
 	
 	public DynamicLabelBase( String text, int color, Point point, boolean testLOS )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.text = text;
 		this.color = color;
 		this.position = new PointRange( point, streamer.range() );
@@ -61,6 +63,8 @@ public class DynamicLabelBase extends LabelBase implements IStreamObject
 	
 	public DynamicLabelBase( String text, int color, PointRange point, boolean testLOS )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.text = text;
 		this.color = color;
 		this.position = point.clone();
@@ -137,6 +141,8 @@ public class DynamicLabelBase extends LabelBase implements IStreamObject
 	
 	public void update( int color, String text )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.color = color;
 		this.text = text;
 		

@@ -272,6 +272,7 @@ public abstract class GameModeBase
 	
 	public void setGameModeText( String string )
 	{
+		if( string == null ) throw new NullPointerException();
 		NativeFunction.setGameModeText( string );
 	}
 	
@@ -380,26 +381,31 @@ public abstract class GameModeBase
 
 	public void sendRconCommand( String command )
 	{
+		if( command == null ) throw new NullPointerException();
 		NativeFunction.sendRconCommand( command );
 	}
 	
 	public String getServerVarAsString( String varname )
 	{
+		if( varname == null ) throw new NullPointerException();
 		return NativeFunction.getServerVarAsString( varname );
 	}
 	
 	public int getServerVarAsInt( String varname )
 	{
+		if( varname == null ) throw new NullPointerException();
 		return NativeFunction.getServerVarAsInt( varname );
 	}
 	
 	public boolean getServerVarAsBool( String varname )
 	{
+		if( varname == null ) throw new NullPointerException();
 		return NativeFunction.getServerVarAsBool( varname );
 	}
 	
 	public void connectNPC( String name, String script )
 	{
+		if( name == null || script == null ) throw new NullPointerException();
 		NativeFunction.connectNPC( name, script );
 	}
 	

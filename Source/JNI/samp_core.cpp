@@ -15,15 +15,21 @@
  */
 
 #include <jni.h>
+#include <string.h>
 
 #include "encoding.h"
 #include "jni_core.h"
 #include "a_samp.h"
 
 
-#define classpath "./gamemodes/*.jar"
-#define modeclass "net/gtaun/match/GameMode"
+#define CLASSPATH "./gamemodes/*.jar"
+//#define modeclass "net/gtaun/match/GameMode"
 
+#define CONFIG_FILE "server.cfg"
+#define CONFIG_KEY_MODECLASS "modeclass"
+
+
+char modeclass[256] = {0};
 
 jclass jmodecls = NULL;
 jobject jmodeobj = NULL;
@@ -32,19 +38,51 @@ int server_codepage = 0;
 int player_codepage[MAX_PLAYERS] = {0};
 
 
+int LoadConfig();
+
+
 bool OnLoadPlugin()
 {
 	logprintf( "  > Shoebill JNI v0.0.0.0 by MK124." );
 
-
-	if( jni_jvm_create(classpath) < 0 )
+	int ret = LoadConfig();
+	if( ret < 0 )
 	{
-		logprintf( "  > Can't create Java VM." );
+		logprintf( "  > Error: Server.cfg not specified 'modeclass' value." );
+		return false;
+	}
+
+	if( jni_jvm_create(CLASSPATH) < 0 )
+	{
+		logprintf( "  > Error: Can't create Java VM." );
 		return false;
 	}
 
 	logprintf( "  > Java VM has been created." );
 	return true;
+}
+
+int LoadConfig()
+{
+	FILE *fp = fopen( CONFIG_FILE, "r" );
+	if( !fp ) return -1;
+
+	while ( !feof(fp) )
+	{
+		char key[64] = {0}, val[256] = {0};
+		fscanf( fp, "%[^ #]%*[ ]%[^#\n]%*[ #\n]", key, val );
+		if( strlen(key) == 0 ) continue;
+		
+		if( strcmp(strlwr(key), CONFIG_KEY_MODECLASS) == 0 ) strcpy( modeclass, val );
+	}
+
+	fclose( fp );
+
+	int len = strlen(modeclass);
+	if( len == 0 ) return -2;
+
+	for( int i=0; i<len; i++ ) if( modeclass[i] == '.' ) modeclass[i] = '/';
+	return 0;
 }
 
 void OnUnloadPlugin()
@@ -67,17 +105,17 @@ int OnGameModeInit()
 	jmodecls = env->FindClass(modeclass);
 	if( !jmodecls )
 	{
-		logprintf( "Can't find gamemode class." );
+		logprintf( "Error: Can't find GameMode class [%s].", modeclass );
 		return 0;
 	}
 
 	if( jni_jvm_newobject(jmodecls, &jmodeobj) < 0 )
 	{
-		logprintf( "Can't create gamemode object." );
+		logprintf( "Error: Can't create GameMode object [%s].", modeclass );
 		return 0;
 	}
 
-	logprintf( "Gamemode object has been created." );
+	logprintf( "GameMode object has been created." );
 	return 1;
 }
 
@@ -89,7 +127,7 @@ int OnGameModeExit()
 		env->DeleteLocalRef(jmodecls);
 		if( !jmid )
 		{
-			logprintf( "Can't find %s::onGameModeExit().", modeclass );
+			logprintf( "Error: Can't find %s::onGameModeExit().", modeclass );
 			return 0;
 		}
 

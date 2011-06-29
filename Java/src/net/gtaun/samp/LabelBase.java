@@ -60,6 +60,8 @@ public class LabelBase
 	
 	public LabelBase( String text, int color, Point point, float drawDistance, boolean testLOS )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.text = text;
 		this.color = color;
 		this.position = new PointRange( point, drawDistance );
@@ -70,6 +72,8 @@ public class LabelBase
 	
 	public LabelBase( String text, int color, PointRange point, boolean testLOS )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.text = text;
 		this.color = color;
 		this.position = point.clone();
@@ -137,6 +141,8 @@ public class LabelBase
 	
 	public void update( int color, String text )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.color = color;
 		this.text = text;
 		

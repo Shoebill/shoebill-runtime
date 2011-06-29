@@ -81,12 +81,13 @@ public class DialogBase
 	
 //---------------------------------------------------------
 	
-	public void show( PlayerBase player, String caption, String info, String button1, String button2 )
+	public void show( PlayerBase player, String caption, String text, String button1, String button2 )
 	{
+		if( caption == null || text == null || button1 == null || button2 == null ) throw new NullPointerException();
 		cancel( player );
 		
 		player.dialog = this;
-		NativeFunction.showPlayerDialog( player.id, id, style, caption, info, button1, button2 );
+		NativeFunction.showPlayerDialog( player.id, id, style, caption, text, button1, button2 );
 	}
 	
 	public void cancel( PlayerBase player )

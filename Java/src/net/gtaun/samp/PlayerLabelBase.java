@@ -31,6 +31,8 @@ public class PlayerLabelBase extends LabelBase
 	
 	public PlayerLabelBase( PlayerBase player, String text, int color, Point point, float drawDistance, boolean testLOS )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.player = player;
 		this.text = text;
 		this.color = color;
@@ -42,6 +44,8 @@ public class PlayerLabelBase extends LabelBase
 
 	public PlayerLabelBase( PlayerBase player, String text, int color, Point point, float drawDistance, boolean testLOS, PlayerBase attachedPlayer )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.player = player;
 		this.text = text;
 		this.color = color;
@@ -54,6 +58,8 @@ public class PlayerLabelBase extends LabelBase
 	
 	public PlayerLabelBase( PlayerBase player, String text, int color, Point point, float drawDistance, boolean testLOS, VehicleBase attachedVehicle )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.player = player;
 		this.text = text;
 		this.color = color;
@@ -66,6 +72,8 @@ public class PlayerLabelBase extends LabelBase
 
 	public PlayerLabelBase( PlayerBase player, String text, int color, PointRange point, boolean testLOS )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.player = player;
 		this.text = text;
 		this.color = color;
@@ -77,6 +85,8 @@ public class PlayerLabelBase extends LabelBase
 	
 	public PlayerLabelBase( PlayerBase player, String text, int color, PointRange point, boolean testLOS, PlayerBase attachedPlayer )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.player = player;
 		this.text = text;
 		this.color = color;
@@ -89,6 +99,8 @@ public class PlayerLabelBase extends LabelBase
 	
 	public PlayerLabelBase( PlayerBase player, String text, int color, PointRange point, boolean testLOS, VehicleBase attachedVehicle )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.player = player;
 		this.text = text;
 		this.color = color;

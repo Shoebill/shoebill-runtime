@@ -407,6 +407,7 @@ public class VehicleBase
 	
 	public void setNumberPlate( String numberplate )
 	{
+		if( numberplate == null ) throw new NullPointerException();
 		NativeFunction.setVehicleNumberPlate( id, numberplate );
 	}
 	

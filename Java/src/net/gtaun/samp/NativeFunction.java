@@ -241,7 +241,7 @@ final class NativeFunction
 	static native void applyAnimation( int playerid, String animlib, String animname, float delta, int loop, int lockX, int lockY, int freeze, int time, int forcesync );
 	static native void clearAnimations( int playerid, int forcesync  );
 	static native int getPlayerAnimationIndex( int playerid ); // return the index of any running applied animations ( 0 if none are running )
-	static native int getAnimationName( int index, String animlib, int len1, String animname, int len2 ); // get the animation lib/name for the 
+//	static native int getAnimationName( int index, String animlib, int len1, String animname, int len2 ); // get the animation lib/name for the 
 	static native int getPlayerSpecialAction( int playerid );
 	static native void setPlayerSpecialAction( int playerid, int actionid );
 

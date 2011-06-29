@@ -775,6 +775,7 @@ public class PlayerBase
 
 	public void sendMessage( int color, String message )
 	{
+		if( message == null ) throw new NullPointerException();
 		NativeFunction.sendClientMessage( id, color, message );
 	}
 	
@@ -786,11 +787,14 @@ public class PlayerBase
 	
 	public void sendChat( PlayerBase player, String message )
 	{
+		if( message == null ) throw new NullPointerException();
 		NativeFunction.sendPlayerMessageToPlayer( player.id, id, message );
 	}
 	
 	public void sendChatToAll( String message )
 	{
+		if( message == null ) throw new NullPointerException();
+		
 		Vector<PlayerBase> players = get(PlayerBase.class);
 		Iterator<PlayerBase> iterator = players.iterator();
 		while( iterator.hasNext() )
@@ -810,6 +814,7 @@ public class PlayerBase
 
 	public void gameText( int time, int style, String text )
 	{
+		if( text == null ) throw new NullPointerException();
 		NativeFunction.gameTextForPlayer( id, text, time, style );
 	}
 	
@@ -836,6 +841,7 @@ public class PlayerBase
 
 	public void applyAnimation( String animlib, String animname, float delta, int loop, int lockX, int lockY, int freeze, int time, int forcesync )
 	{
+		if( animlib == null || animname == null ) throw new NullPointerException();
 		NativeFunction.applyAnimation( id, animlib, animname, delta, loop, lockX, lockY, freeze, time, forcesync );
 	}
 	
@@ -847,11 +853,6 @@ public class PlayerBase
 	public int getAnimationIndex()
 	{
 		return NativeFunction.getPlayerAnimationIndex(id);
-	}
-	
-	public void getAnimationName(int index, String lib, String name)
-	{
-		NativeFunction.getAnimationName(index, lib, lib.length(), name, name.length());
 	}
 	
 	public void allowRightclickTeleport( boolean allow )
@@ -891,6 +892,7 @@ public class PlayerBase
 	
 	public void banEx( String reason )
 	{
+		if( reason == null ) throw new NullPointerException();
 		NativeFunction.banEx( id, reason );
 	}
 	
@@ -901,11 +903,13 @@ public class PlayerBase
 	
 	public void setCameraPos( Point pos )
 	{
+		if( pos == null ) throw new NullPointerException();
 		NativeFunction.setPlayerCameraPos( id, pos.x, pos.y, pos.z );
 	}
 	
 	public void setCamerLookAt( Point lookat )
 	{
+		if( lookat == null ) throw new NullPointerException();
 		NativeFunction.setPlayerCameraLookAt(id, lookat.x, lookat.y, lookat.z);
 	}
 	
@@ -928,12 +932,12 @@ public class PlayerBase
 		return lookat;
 	}
 	
-	public boolean isInVehicle()
+	public boolean inAnyVehicle()
 	{
 		return NativeFunction.isPlayerInAnyVehicle( id );
 	}
 	
-	public boolean isInVehicle(VehicleBase vehicle)
+	public boolean inVehicle( VehicleBase vehicle )
 	{
 		return NativeFunction.isPlayerInVehicle( id, vehicle.id );
 	}
@@ -943,7 +947,7 @@ public class PlayerBase
 		return NativeFunction.isPlayerAdmin(id);
 	}
 	
-	public boolean isInRangeOfPoint(Point point, int range)
+	public boolean inRangeOfPoint(Point point, int range)
 	{
 		return NativeFunction.isPlayerInRangeOfPoint(id, range, point.x, point.y, point.z);
 	}
@@ -977,67 +981,68 @@ public class PlayerBase
 	
 	public int getWeaponState()
 	{
-		return NativeFunction.getPlayerWeaponState(id);
+		return NativeFunction.getPlayerWeaponState( id );
 	}
 	
-	public void setTeam(int team)
+	public void setTeam( int team )
 	{
-		NativeFunction.setPlayerTeam(id, team);
+		NativeFunction.setPlayerTeam( id, team );
 		this.team = team;
 	}
 	
-	public void setSkin(int skin)
+	public void setSkin( int skin )
 	{
-		NativeFunction.setPlayerSkin(id, skin);
+		NativeFunction.setPlayerSkin( id, skin );
 		this.skin = skin;
 	}
 	
-	public void giveWeapon(int weaponid, int ammo)
+	public void giveWeapon( int weaponid, int ammo )
 	{
-		NativeFunction.givePlayerWeapon(id, weaponid, ammo);
+		NativeFunction.givePlayerWeapon( id, weaponid, ammo );
 	}
 	
 	public void resetWeapons()
 	{
-		NativeFunction.resetPlayerWeapons(id);
+		NativeFunction.resetPlayerWeapons( id );
 	}
 	
-	public void setTime(int hour, int minute)
+	public void setTime( int hour, int minute )
 	{
-		NativeFunction.setPlayerTime(id, hour, minute);
+		NativeFunction.setPlayerTime( id, hour, minute );
 	}
 	
 	public Time getTime()
 	{
 		Time time = new Time();
-		NativeFunction.getPlayerTime(id, time);
+		NativeFunction.getPlayerTime( id, time );
 		return time;
 	}
 	
-	public void toggleClock(boolean toggle)
+	public void toggleClock( boolean toggle )
 	{
-		NativeFunction.togglePlayerClock(id, toggle);
+		NativeFunction.togglePlayerClock( id, toggle );
 	}
 	
 	public void forceClassSelection()
 	{
-		NativeFunction.forceClassSelection(id);
+		NativeFunction.forceClassSelection( id );
 	}
 	
-	public void setWantedLevel(int level)
+	public void setWantedLevel( int level )
 	{
-		NativeFunction.setPlayerWantedLevel(id, level);
+		NativeFunction.setPlayerWantedLevel( id, level );
 		wantedLevel = level;
 	}
 	
-	public void playCrimeReport(int suspectid, int crimeid)
+	public void playCrimeReport( int suspectid, int crimeid )
 	{
-		NativeFunction.playCrimeReportForPlayer(id, suspectid, crimeid);
+		NativeFunction.playCrimeReportForPlayer( id, suspectid, crimeid );
 	}
 	
-	public void setShopName(String shop)
+	public void setShopName( String name )
 	{
-		NativeFunction.setPlayerShopName(id, shop);
+		if( name == null ) throw new NullPointerException();
+		NativeFunction.setPlayerShopName(id, name);
 	}
 	
 	public VehicleBase getSurfingVehicle()
@@ -1050,75 +1055,73 @@ public class PlayerBase
 		NativeFunction.removePlayerFromVehicle(id);
 	}
 	
-	public void toggleControllable(boolean toggle)
+	public void toggleControllable( boolean toggle )
 	{
-		NativeFunction.togglePlayerControllable(id, toggle);
+		NativeFunction.togglePlayerControllable( id, toggle );
 		controllable = toggle;
 	}
 	
-	public void setSpecialAction(int action)
+	public void setSpecialAction( int action )
 	{
-		NativeFunction.setPlayerSpecialAction(id, action);
+		NativeFunction.setPlayerSpecialAction( id, action );
 	}
 	
-	public void setMapIcon(int iconid, Point point, int markertype, int color, int style)
+	public void setMapIcon( int iconid, Point point, int markertype, int color, int style )
 	{
-		NativeFunction.setPlayerMapIcon(id, iconid, point.x, point.y, point.z, markertype, color, style);
+		NativeFunction.setPlayerMapIcon( id, iconid, point.x, point.y, point.z, markertype, color, style );
 	}
 	
-	public void removeMapIcon(int iconid)
+	public void removeMapIcon( int iconid )
 	{
-		NativeFunction.removePlayerMapIcon(id, iconid);
+		NativeFunction.removePlayerMapIcon( id, iconid );
 	}
 	
-	public void enableStuntBonus(boolean enable)
+	public void enableStuntBonus( boolean enable )
 	{
-		if(enable)
-			NativeFunction.enableStuntBonusForPlayer(id, 1);
-		else
-			NativeFunction.enableStuntBonusForPlayer(id, 0);
+		if( enable )	NativeFunction.enableStuntBonusForPlayer( id, 1 );
+		else			NativeFunction.enableStuntBonusForPlayer( id, 0 );
+		
 		stuntBonus = enable;
 	}
 	
-	public void toggleSpectating(boolean toggle)
+	public void toggleSpectating( boolean toggle )
 	{
-		NativeFunction.togglePlayerSpectating(id, toggle);
+		NativeFunction.togglePlayerSpectating( id, toggle );
 		spectating = toggle;
 		
-		if(!toggle)
-		{
-			spectatingPlayer = null;
-			spectatingVehicle = null;
-		}
+		if( toggle ) return;
+		
+		spectatingPlayer = null;
+		spectatingVehicle = null;
 	}
 	
 	public void spectatePlayer(PlayerBase player, int mode)
 	{
-		if(spectating){
-			NativeFunction.playerSpectatePlayer(id, player.id, mode);
-			spectatingPlayer = player;
-			spectatingVehicle = null;
-		}
+		if( !spectating ) return;
+		
+		NativeFunction.playerSpectatePlayer(id, player.id, mode);
+		spectatingPlayer = player;
+		spectatingVehicle = null;
 	}
 	
 	public void spectateVehicle(VehicleBase vehicle, int mode)
 	{
-		if(spectating){
-			NativeFunction.playerSpectateVehicle(id, vehicle.id, mode);
-			spectatingPlayer = null;
-			spectatingVehicle = vehicle;
-		}
+		if( !spectating ) return;
+
+		NativeFunction.playerSpectateVehicle(id, vehicle.id, mode);
+		spectatingPlayer = null;
+		spectatingVehicle = vehicle;
 	}
 	
-	public void startRecord(int type, String recordName)
+	public void startRecord( int type, String recordName )
 	{
-		NativeFunction.startRecordingPlayerData(id, type, recordName);
+		NativeFunction.startRecordingPlayerData( id, type, recordName );
 		recording = true;
 	}
 	
 	public void stopRecord()
 	{
-		NativeFunction.stopRecordingPlayerData(id);
+		NativeFunction.stopRecordingPlayerData( id );
 		recording = false;
 	}
 }

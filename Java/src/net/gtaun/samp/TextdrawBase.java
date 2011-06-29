@@ -46,6 +46,8 @@ public class TextdrawBase
 	
 	public TextdrawBase( float x, float y, String text )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.x = x;
 		this.y = y;
 		this.text = text;
@@ -136,6 +138,8 @@ public class TextdrawBase
 	
 	public void setText( String text )
 	{
+		if( text == null ) throw new NullPointerException();
+		
 		this.text = text;
 		NativeFunction.textDrawSetString( id, text );
 	}
