@@ -1046,7 +1046,10 @@ public class PlayerBase
 	
 	public void enableStuntBonus(boolean enable)
 	{
-		NativeFunction.enableStuntBonusForAll(enable);
+		if(enable)
+			NativeFunction.enableStuntBonusForPlayer(id, 1);
+		else
+			NativeFunction.enableStuntBonusForPlayer(id, 0);
 		stuntBonus = enable;
 	}
 	
@@ -1064,16 +1067,20 @@ public class PlayerBase
 	
 	public void spectatePlayer(PlayerBase player, int mode)
 	{
-		NativeFunction.playerSpectatePlayer(id, player.id, mode);
-		spectatingPlayer = player;
-		spectatingVehicle = null;
+		if(spectating){
+			NativeFunction.playerSpectatePlayer(id, player.id, mode);
+			spectatingPlayer = player;
+			spectatingVehicle = null;
+		}
 	}
 	
 	public void spectateVehicle(VehicleBase vehicle, int mode)
 	{
-		NativeFunction.playerSpectateVehicle(id, vehicle.id, mode);
-		spectatingPlayer = null;
-		spectatingVehicle = vehicle;
+		if(spectating){
+			NativeFunction.playerSpectateVehicle(id, vehicle.id, mode);
+			spectatingPlayer = null;
+			spectatingVehicle = vehicle;
+		}
 	}
 	
 	public void startRecord(int type, String recordName)
