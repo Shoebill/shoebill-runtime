@@ -38,18 +38,19 @@ public class MenuBase
 	
 
 	int id;
-	String title;
+	String title, columnHeader;
 	int columns;
 	float x, y;
 	float col1Width, col2Width;
 	
-	public int id()				{ return id; }
-	public String title()		{ return title; }
-	public int columns()		{ return columns; }
-	public float x()			{ return x; }
-	public float y()			{ return y; }
-	public float col1Width()	{ return col1Width; }
-	public float col2Width()	{ return col2Width; }
+	public int id()					{ return id; }
+	public String title()			{ return title; }
+	public int columns()			{ return columns; }
+	public float x()				{ return x; }
+	public float y()				{ return y; }
+	public float col1Width()		{ return col1Width; }
+	public float col2Width()		{ return col2Width; }
+	public String columnHeader()	{ return columnHeader; }
 	
 	EventDispatcher<MenuSelectedEvent> 	eventMenuSelected = new EventDispatcher<MenuSelectedEvent>();
 	EventDispatcher<MenuExitedEvent> 	eventMenuExited = new EventDispatcher<MenuExitedEvent>();
@@ -104,6 +105,7 @@ public class MenuBase
 	public void setColumnHeader( int column, String text )
 	{
 		NativeFunction.setMenuColumnHeader( id, column, text );
+		columnHeader = text;
 	}
 	
 	public void disable()

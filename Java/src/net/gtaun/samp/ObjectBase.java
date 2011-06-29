@@ -102,7 +102,7 @@ public class ObjectBase
 		GameModeBase.instance.objectPool[ id ] = null;
 	}
 	
-	public Point position()
+	public PointRot position()
 	{
 		if( speed == 0 ) return position.clone();
 		
@@ -133,10 +133,10 @@ public class ObjectBase
 		NativeFunction.setObjectRot( id, rx, ry, rz );
 	}
 	
-	public void move( float x, float y, float z, float speed )
+	public int move( float x, float y, float z, float speed )
 	{
 		this.speed = speed;
-		NativeFunction.moveObject( id, x, y, z, speed );
+		return NativeFunction.moveObject( id, x, y, z, speed );
 	}
 	
 	public void stop()

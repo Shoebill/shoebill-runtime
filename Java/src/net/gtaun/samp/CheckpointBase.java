@@ -31,7 +31,7 @@ import net.gtaun.samp.event.CheckpointLeaveEvent;
  *
  */
 
-public class Checkpoint extends Vector3D
+public class CheckpointBase extends Vector3D
 {
 	public float size;
 	
@@ -43,13 +43,13 @@ public class Checkpoint extends Vector3D
 	public IEventDispatcher<CheckpointLeaveEvent>	eventLeave()	{ return eventLeave; }
 
 	
-	public Checkpoint( float x, float y, float z, float size )
+	public CheckpointBase( float x, float y, float z, float size )
 	{
 		super( x, y, z );
 		this.size = size;
 	}
 	
-	public Checkpoint( Vector3D point, float size )
+	public CheckpointBase( Vector3D point, float size )
 	{
 		super( point.x, point.y, point.z );
 		this.size = size;

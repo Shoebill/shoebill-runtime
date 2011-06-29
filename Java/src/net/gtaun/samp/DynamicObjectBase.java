@@ -105,7 +105,7 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 			NativeFunction.destroyPlayerObject( i, id[i] );
 	}
 	
-	public Point position()
+	public PointRot position()
 	{
 		return position.clone();
 	}

@@ -118,6 +118,8 @@ public class LabelBase
 		offsetZ = z;
 		
 		NativeFunction.attach3DTextLabelToPlayer( id, player.id, x, y, z );
+		attachedPlayer = player;
+		attachedVehicle = null;
 	}
 	
 	public void attach( VehicleBase vehicle, float x, float y, float z )
@@ -127,6 +129,8 @@ public class LabelBase
 		offsetZ = z;
 		
 		NativeFunction.attach3DTextLabelToVehicle( id, vehicle.id, x, y, z );
+		attachedPlayer = null;
+		attachedVehicle = vehicle;
 	}
 	
 	public void update( int color, String text )

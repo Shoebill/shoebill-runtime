@@ -78,7 +78,7 @@ public class PlayerObjectBase extends ObjectBase
 		GameModeBase.instance.objectPool[ id ] = null;
 	}
 	
-	public Point position()
+	public PointRot position()
 	{
 		if( speed == 0 ) return position.clone();
 		

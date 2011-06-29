@@ -341,7 +341,7 @@ final class NativeFunction
 	static native void getObjectRot( int objectid, PointRot pointrot );
 	static native boolean isValidObject( int objectid );
 	static native void destroyObject( int objectid );
-	static native void moveObject( int objectid, float x, float y, float z, float speed );
+	static native int moveObject( int objectid, float x, float y, float z, float speed );
 	static native void stopObject( int objectid );
 	static native int createPlayerObject( int playerid, int modelid, float x, float y, float z, float rX, float rY, float rZ );
 	static native void setPlayerObjectPos( int playerid, int objectid, float x, float y, float z );

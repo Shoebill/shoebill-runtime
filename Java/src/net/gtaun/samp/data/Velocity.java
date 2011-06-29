@@ -33,7 +33,9 @@ public class Velocity extends Vector3D
 	
 	public Velocity( float x, float y, float z )
 	{
-		
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 	
 	

@@ -224,7 +224,7 @@ public class PlayerBase
 	int frame = -1;
 	float health, armour;
 	int money, score;
-	int weather, fightingStyle;
+	int weather;
 //	VehicleBase vehicle;
 
 	PointAngle position = new PointAngle();
@@ -234,8 +234,8 @@ public class PlayerBase
 	KeyState keyState = new KeyState();
 	PlayerAttach playerAttach;
 	PlayerSkill skill;
-	Checkpoint checkpoint;
-	RaceCheckpoint raceCheckpoint;
+	CheckpointBase checkpoint;
+	RaceCheckpointBase raceCheckpoint;
 	
 	DialogBase dialog;
 	
@@ -259,7 +259,7 @@ public class PlayerBase
 	public int money()						{ return money; }
 	public int score()						{ return score; }
 	public int weather()					{ return weather; }
-	public int fightingStyle()				{ return fightingStyle; }
+	public int fightingStyle()				{ return NativeFunction.getPlayerFightingStyle(id); }
 	public VehicleBase vehicle()			{ return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerVehicleID(id)); }
 	public int seat()						{ return NativeFunction.getPlayerVehicleSeat(id); }
 	public boolean controllable()			{ return controllable; }
@@ -280,8 +280,8 @@ public class PlayerBase
 	public KeyState keyState()				{ return keyState.clone(); }
 	public PlayerAttach playerAttach()		{ return playerAttach; }
 	public PlayerSkill skill()				{ return skill; }
-	public Checkpoint checkpoint()			{ return checkpoint; }
-	public RaceCheckpoint raceCheckpoint()	{ return raceCheckpoint; }
+	public CheckpointBase checkpoint()			{ return checkpoint; }
+	public RaceCheckpointBase raceCheckpoint()	{ return raceCheckpoint; }
 	
 	public DialogBase dialog()				{ return dialog; }
 	
@@ -368,7 +368,6 @@ public class PlayerBase
 		armour = NativeFunction.getPlayerArmour(id);
 		money = NativeFunction.getPlayerMoney(id);
 		score = NativeFunction.getPlayerScore(id);
-		fightingStyle = NativeFunction.getPlayerFightingStyle(id);
 		
 		NativeFunction.getPlayerPos(id, position);
 		NativeFunction.getPlayerFacingAngle(id);
@@ -382,6 +381,7 @@ public class PlayerBase
 		NativeFunction.getPlayerKeys(id, keyState);
 		
 		playerAttach = new PlayerAttach(id);
+		skill = new PlayerSkill(id);
 	}
 
 
@@ -656,7 +656,6 @@ public class PlayerBase
 	public void setFightingStyle( int style )
 	{
 		NativeFunction.setPlayerFightingStyle( id, style );
-		fightingStyle = style;
 	}
 
 	public void setVehicle( VehicleBase vehicle, int seat )
@@ -954,7 +953,7 @@ public class PlayerBase
 		return NativeFunction.isPlayerStreamedIn(id, forplayer.id);
 	}
 	
-	public void setCheckpoint( Checkpoint checkpoint )
+	public void setCheckpoint( CheckpointBase checkpoint )
 	{
 		checkpoint.set( this );
 	}
@@ -965,7 +964,7 @@ public class PlayerBase
 		checkpoint = null;
 	}
 	
-	public void setRaceCheckpoint( RaceCheckpoint checkpoint )
+	public void setRaceCheckpoint( RaceCheckpointBase checkpoint )
 	{
 		checkpoint.set( this );
 	}
@@ -1074,7 +1073,10 @@ public class PlayerBase
 	
 	public void enableStuntBonus(boolean enable)
 	{
-		NativeFunction.enableStuntBonusForAll(enable);
+		if(enable)
+			NativeFunction.enableStuntBonusForPlayer(id, 1);
+		else
+			NativeFunction.enableStuntBonusForPlayer(id, 0);
 		stuntBonus = enable;
 	}
 	
@@ -1092,16 +1094,20 @@ public class PlayerBase
 	
 	public void spectatePlayer(PlayerBase player, int mode)
 	{
-		NativeFunction.playerSpectatePlayer(id, player.id, mode);
-		spectatingPlayer = player;
-		spectatingVehicle = null;
+		if(spectating){
+			NativeFunction.playerSpectatePlayer(id, player.id, mode);
+			spectatingPlayer = player;
+			spectatingVehicle = null;
+		}
 	}
 	
 	public void spectateVehicle(VehicleBase vehicle, int mode)
 	{
-		NativeFunction.playerSpectateVehicle(id, vehicle.id, mode);
-		spectatingPlayer = null;
-		spectatingVehicle = vehicle;
+		if(spectating){
+			NativeFunction.playerSpectateVehicle(id, vehicle.id, mode);
+			spectatingPlayer = null;
+			spectatingVehicle = vehicle;
+		}
 	}
 	
 	public void startRecord(int type, String recordName)
