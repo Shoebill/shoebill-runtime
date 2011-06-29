@@ -162,6 +162,8 @@ public class VehicleBase
 		damage = new VehicleDamage( id );
 		
 		GameModeBase.instance.vehiclePool[id] = this;
+		
+		this.onSpawn();
 	}
 	
 	
