@@ -128,7 +128,7 @@ public class PlayerLabelBase extends LabelBase
 		id = NativeFunction.createPlayer3DTextLabel( player.id, text, color,
 				position.x, position.y, position.z, position.distance, playerId, vehicleId, testLOS );
 		
-		GameModeBase.instance.playerLabelPool[id] = this;
+		GameModeBase.instance.playerLabelPool[id+player.id*GameModeBase.MAX_LABELS_PLAYER] = this;
 	}
 	
 //---------------------------------------------------------
@@ -136,7 +136,7 @@ public class PlayerLabelBase extends LabelBase
 	public void destroy()
 	{
 		NativeFunction.deletePlayer3DTextLabel( player.id, id );
-		GameModeBase.instance.playerLabelPool[ id ] = null;
+		GameModeBase.instance.playerLabelPool[id+player.id*GameModeBase.MAX_LABELS_PLAYER] = null;
 	}
 
 	public void attach( PlayerBase player, float x, float y, float z )

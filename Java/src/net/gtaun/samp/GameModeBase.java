@@ -791,7 +791,7 @@ public abstract class GameModeBase
 		try
 		{
     		PlayerBase player = playerPool[playerid];
-    		ObjectBase object = playerObjectPool[objectid];
+    		ObjectBase object = playerObjectPool[objectid + playerid*MAX_OBJECTS];
     		
     		player.onObjectMoved( object );
     		player.eventObjectMoved.dispatchEvent( new PlayerObjectMovedEvent(player, object) );
