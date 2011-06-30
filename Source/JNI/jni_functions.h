@@ -1921,6 +1921,14 @@ JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_createObject
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
+ * Method:    attachObjectToVehicle
+ * Signature: (IIFFFFFF)V
+ */
+JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_attachObjectToVehicle
+  (JNIEnv *, jclass, jint, jint, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
  * Method:    setObjectPos
  * Signature: (IFFF)V
  */

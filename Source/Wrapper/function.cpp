@@ -3398,6 +3398,19 @@ int CreateObject( int modelid, float x, float y, float z, float rX, float rY, fl
 	return func(pAMX, args);
 }
 
+int AttachObjectToVehicle(int objectid, int vehicleid, float OffsetX, float OffsetY, float OffsetZ, float RotX, float RotY, float RotZ)
+{
+	static amx_func_t func = amx_FindFunction(pAMX, "AttachObjectToVehicle");
+
+	cell args[9] =
+	{
+		sizeof(args)- sizeof(cell),
+		objectid, vehicleid, amx_ftoc(OffsetX), amx_ftoc(OffsetY), amx_ftoc(OffsetZ), amx_ftoc(RotX), amx_ftoc(RotY), amx_ftoc(RotZ)
+	};
+
+	return func(pAMX, args);
+}
+
 int SetObjectPos( int objectid, float x, float y, float z )
 {
 	static amx_func_t func = amx_FindFunction(pAMX, "SetObjectPos");

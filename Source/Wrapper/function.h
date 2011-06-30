@@ -301,6 +301,7 @@ int GetVehicleVirtualWorld(int vehicleid);
 //----------------------------------------------------------
 // a_objects.inc
 int CreateObject(int modelid, float X, float Y, float Z, float rX, float rY, float rZ, float drawDistance);
+int AttachObjectToVehicle(int objectid, int vehicleid, float OffsetX, float OffsetY, float OffsetZ, float RotX, float RotY, float RotZ);
 int SetObjectPos(int objectid, float X, float Y, float Z);
 int GetObjectPos(int objectid, float &X, float &Y, float &Z);
 int SetObjectRot(int objectid, float RotX, float RotY, float RotZ);

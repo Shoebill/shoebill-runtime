@@ -2996,6 +2996,17 @@ JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_createObject
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
+ * Method:    attachObjectToVehicle
+ * Signature: (IIFFFFFF)V
+ */
+JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_attachObjectToVehicle
+  (JNIEnv *env, jclass jcls, jint objectid, jint vehicleid, jfloat x, jfloat y, jfloat z, jfloat rX, jfloat rY, jfloat rZ)
+{
+	AttachObjectToVehicle( objectid, vehicleid, x, y, z, rX, rY, rZ );
+}
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
  * Method:    setObjectPos
  * Signature: (IFFF)V
  */
