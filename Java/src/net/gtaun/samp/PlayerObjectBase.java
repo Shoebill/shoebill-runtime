@@ -28,6 +28,7 @@ public class PlayerObjectBase extends ObjectBase
 {
 	PlayerBase player;
 	
+	public PlayerBase player()		{ return player; }
 	
 	public PlayerObjectBase( PlayerBase player, int model, float x, float y, float z, float rx, float ry, float rz )
 	{
@@ -96,7 +97,7 @@ public class PlayerObjectBase extends ObjectBase
 
 //---------------------------------------------------------
 	
-	public int onMoved()
+	protected int onMoved()
 	{
 		return 1;
 	}
@@ -111,9 +112,7 @@ public class PlayerObjectBase extends ObjectBase
 	}
 	
 	public PointRot position()
-	{
-		if( speed == 0 ) return position.clone();
-		
+	{	
 		NativeFunction.getPlayerObjectPos( player.id, id, position );
 		NativeFunction.getPlayerObjectRot( player.id, id, position );
 		return position.clone();
@@ -144,16 +143,25 @@ public class PlayerObjectBase extends ObjectBase
 	public int move( float x, float y, float z, float speed )
 	{
 		NativeFunction.movePlayerObject( player.id, id, x, y, z, speed );
+		if(attachedPlayer == null) this.speed = speed;
 		return 0;
 	}
 	
 	public void stop()
 	{
+		speed = 0;
 		NativeFunction.stopPlayerObject( player.id, id );
 	}
 	
 	public void attach( PlayerBase player, float x, float y, float z, float rx, float ry, float rz )
 	{
-		NativeFunction.attachPlayerObjectToPlayer( player.id, id, player.id, x, y, z, rx, ry, rz );
+		NativeFunction.attachPlayerObjectToPlayer( this.player.id, id, player.id, x, y, z, rx, ry, rz );
+		this.attachedPlayer = player;
+		speed = 0;
+	}
+	
+	public void attach( VehicleBase vehicle, float x, float y, float z, float rx, float ry, float rz )
+	{
+		return;
 	}
 }

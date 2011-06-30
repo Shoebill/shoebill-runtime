@@ -335,6 +335,7 @@ final class NativeFunction
 //----------------------------------------------------------
 // a_objects.inc
 	static native int createObject( int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance );
+	static native void attachObjectToVehicle( int objectid, int vehicleid, float x, float y, float z, float rX, float rY, float rZ );
 	static native void setObjectPos( int objectid, float x, float y, float z );
 	static native void getObjectPos( int objectid, Point point );
 	static native void setObjectRot( int objectid, float rotX, float rotY, float rotZ );
