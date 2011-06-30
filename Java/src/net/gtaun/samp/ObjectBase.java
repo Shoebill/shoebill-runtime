@@ -42,9 +42,12 @@ public class ObjectBase
 	PointRot position;
 	float speed = 0;
 	PlayerBase attachedPlayer;
+	float drawDistance = 0;
 	
 	public int model()					{ return model; }
 	public float speed()				{ return speed; }
+	public PlayerBase attachedPlayer()	{ return attachedPlayer; }
+	public float drawDistance()			{ return drawDistance; }
 	
 	
 	EventDispatcher<ObjectMovedEvent> eventMoved = new EventDispatcher<ObjectMovedEvent>();
@@ -65,10 +68,28 @@ public class ObjectBase
 		init();
 	}
 	
+	public ObjectBase( int model, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
+	{
+		this.model = model;
+		this.position = new PointRot( x, y, z, rx, ry, rz );
+		this.drawDistance = drawDistance;
+		
+		init();
+	}
+	
 	public ObjectBase( int model, Point point, float rx, float ry, float rz )
 	{
 		this.model = model;
 		this.position = new PointRot( point, rx, ry, rz );
+		
+		init();
+	}
+	
+	public ObjectBase( int model, Point point, float rx, float ry, float rz, float drawDistance)
+	{
+		this.model = model;
+		this.position = new PointRot( point, rx, ry, rz );
+		this.drawDistance = drawDistance;
 		
 		init();
 	}
@@ -81,9 +102,18 @@ public class ObjectBase
 		init();
 	}
 	
+	public ObjectBase( int model, PointRot point, float drawDistance )
+	{
+		this.model = model;
+		this.position = point.clone();
+		this.drawDistance = drawDistance;
+		
+		init();
+	}
+	
 	private void init()
 	{
-		id = NativeFunction.createObject( model, position.x, position.y, position.z, position.rx, position.ry, position.rz );
+		id = NativeFunction.createObject( model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
 		GameModeBase.instance.objectPool[id] = this;
 	}
 	

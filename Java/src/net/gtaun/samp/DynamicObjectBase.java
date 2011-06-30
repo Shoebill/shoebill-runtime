@@ -173,7 +173,7 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 		if( id[player.id] == -1 )
 		{
 			id[player.id] = NativeFunction.createPlayerObject( player.id, model,
-					position.x, position.y, position.z, position.rx, position.ry, position.rz );
+					position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
 		}
 	}
 

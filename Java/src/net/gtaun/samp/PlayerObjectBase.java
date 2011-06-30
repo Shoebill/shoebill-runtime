@@ -38,11 +38,31 @@ public class PlayerObjectBase extends ObjectBase
 		init();
 	}
 	
+	public PlayerObjectBase( PlayerBase player, int model, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
+	{
+		this.player = player;
+		this.model = model;
+		this.position = new PointRot( x, y, z, rx, ry, rz );
+		this.drawDistance = drawDistance;
+		
+		init();
+	}
+	
 	public PlayerObjectBase( PlayerBase player, int model, Point point, float rx, float ry, float rz )
 	{
 		this.player = player;
 		this.model = model;
 		this.position = new PointRot( point, rx, ry, rz );
+		
+		init();
+	}
+	
+	public PlayerObjectBase( PlayerBase player, int model, Point point, float rx, float ry, float rz, float drawDistance )
+	{
+		this.player = player;
+		this.model = model;
+		this.position = new PointRot( point, rx, ry, rz );
+		this.drawDistance = drawDistance;
 		
 		init();
 	}
@@ -56,9 +76,19 @@ public class PlayerObjectBase extends ObjectBase
 		init();
 	}
 	
+	public PlayerObjectBase( PlayerBase player, int model, PointRot point, float drawDistance )
+	{
+		this.player = player;
+		this.model = model;
+		this.position = point.clone();
+		this.drawDistance = drawDistance;
+		
+		init();
+	}
+	
 	private void init()
 	{
-		id = NativeFunction.createPlayerObject( player.id, model, position.x, position.y, position.z, position.rx, position.ry, position.rz );
+		id = NativeFunction.createPlayerObject( player.id, model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
 		
 		GameModeBase.instance.playerObjectPool[id] = this;
 	}
