@@ -334,7 +334,8 @@ final class NativeFunction
 	
 //----------------------------------------------------------
 // a_objects.inc
-	static native int createObject( int modelid, float x, float y, float z, float rX, float rY, float rZ );
+	static native int createObject( int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance );
+	static native void attachObjectToVehicle( int objectid, int vehicleid, float x, float y, float z, float rX, float rY, float rZ );
 	static native void setObjectPos( int objectid, float x, float y, float z );
 	static native void getObjectPos( int objectid, Point point );
 	static native void setObjectRot( int objectid, float rotX, float rotY, float rotZ );
@@ -343,7 +344,7 @@ final class NativeFunction
 	static native void destroyObject( int objectid );
 	static native int moveObject( int objectid, float x, float y, float z, float speed );
 	static native void stopObject( int objectid );
-	static native int createPlayerObject( int playerid, int modelid, float x, float y, float z, float rX, float rY, float rZ );
+	static native int createPlayerObject( int playerid, int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance );
 	static native void setPlayerObjectPos( int playerid, int objectid, float x, float y, float z );
 	static native void getPlayerObjectPos( int playerid, int objectid, Point point );
 	static native void setPlayerObjectRot( int playerid, int objectid, float rotX, float rotY, float rotZ );

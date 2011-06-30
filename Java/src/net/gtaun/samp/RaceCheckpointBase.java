@@ -75,12 +75,12 @@ public class RaceCheckpointBase extends Vector3D
 	
 //---------------------------------------------------------
 
-	public int onEnter( PlayerBase player )
+	protected int onEnter( PlayerBase player )
 	{
 		return 0;
 	}
 	
-	public int onLeave( PlayerBase player )
+	protected int onLeave( PlayerBase player )
 	{
 		return 0;
 	}

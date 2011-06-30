@@ -253,6 +253,7 @@ public abstract class GameModeBase
 	public int weather()
 	{
 		return NativeFunction.getServerVarAsInt("weather");
+
 	}
 	
 	public float gravity()
@@ -793,6 +794,10 @@ public abstract class GameModeBase
     		PlayerBase player = playerPool[playerid];
     		ObjectBase object = playerObjectPool[objectid + playerid*MAX_OBJECTS];
     		
+    		object.speed = 0;  		
+    		
+    		object.onMoved();
+    		object.eventMoved.dispatchEvent(new ObjectMovedEvent(object));
     		player.onObjectMoved( object );
     		player.eventObjectMoved.dispatchEvent( new PlayerObjectMovedEvent(player, object) );
     		
@@ -814,8 +819,12 @@ public abstract class GameModeBase
 
     		System.out.println( "[pickup] " + player.name + " pickup " + pickup.model + " (" + pickup.type + ")" );
     		
+    		PlayerPickupEvent event = new PlayerPickupEvent(player, pickup);
+    		
+    		pickup.onPickup( player );
+    		pickup.eventPickup.dispatchEvent( event );
     		player.onPickup( pickup );
-    		player.eventPickup.dispatchEvent( new PlayerPickupEvent(player, pickup) );
+    		player.eventPickup.dispatchEvent( event );
     		
     		return 1;
     	}

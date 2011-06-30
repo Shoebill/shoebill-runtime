@@ -300,7 +300,8 @@ int GetVehicleVirtualWorld(int vehicleid);
 
 //----------------------------------------------------------
 // a_objects.inc
-int CreateObject(int modelid, float X, float Y, float Z, float rX, float rY, float rZ);
+int CreateObject(int modelid, float X, float Y, float Z, float rX, float rY, float rZ, float drawDistance);
+int AttachObjectToVehicle(int objectid, int vehicleid, float OffsetX, float OffsetY, float OffsetZ, float RotX, float RotY, float RotZ);
 int SetObjectPos(int objectid, float X, float Y, float Z);
 int GetObjectPos(int objectid, float &X, float &Y, float &Z);
 int SetObjectRot(int objectid, float RotX, float RotY, float RotZ);
@@ -309,7 +310,7 @@ int IsValidObject(int objectid);
 int DestroyObject(int objectid);
 int MoveObject(int objectid, float X, float Y, float Z, float Speed);
 int StopObject(int objectid);
-int CreatePlayerObject(int playerid, int modelid, float X, float Y, float Z, float rX, float rY, float rZ);
+int CreatePlayerObject(int playerid, int modelid, float X, float Y, float Z, float rX, float rY, float rZ, float drawDistance);
 int SetPlayerObjectPos(int playerid, int objectid, float X, float Y, float Z);
 int GetPlayerObjectPos(int playerid, int objectid, float &X, float &Y, float &Z);
 int SetPlayerObjectRot(int playerid, int objectid, float RotX, float RotY, float RotZ);

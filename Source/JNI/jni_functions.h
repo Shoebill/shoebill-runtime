@@ -1914,10 +1914,18 @@ JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleVirtualWorld
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    createObject
- * Signature: (IFFFFFF)I
+ * Signature: (IFFFFFFF)I
  */
 JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_createObject
-  (JNIEnv *, jclass, jint, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
+  (JNIEnv *, jclass, jint, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
+ * Method:    attachObjectToVehicle
+ * Signature: (IIFFFFFF)V
+ */
+JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_attachObjectToVehicle
+  (JNIEnv *, jclass, jint, jint, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
@@ -1986,10 +1994,10 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_stopObject
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    createPlayerObject
- * Signature: (IIFFFFFF)I
+ * Signature: (IIFFFFFFF)I
  */
 JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_createPlayerObject
-  (JNIEnv *, jclass, jint, jint, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
+  (JNIEnv *, jclass, jint, jint, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
 
 /*
  * Class:     net_gtaun_samp_NativeFunction

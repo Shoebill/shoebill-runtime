@@ -42,9 +42,14 @@ public class ObjectBase
 	PointRot position;
 	float speed = 0;
 	PlayerBase attachedPlayer;
+	VehicleBase attachedVehicle;
+	float drawDistance = 0;
 	
-	public int model()					{ return model; }
-	public float speed()				{ return speed; }
+	public int model()						{ return model; }
+	public float speed()					{ return speed; }
+	public PlayerBase attachedPlayer()		{ return attachedPlayer; }
+	public VehicleBase attachedVehicle()	{ return attachedVehicle; }
+	public float drawDistance()				{ return drawDistance; }
 	
 	
 	EventDispatcher<ObjectMovedEvent> eventMoved = new EventDispatcher<ObjectMovedEvent>();
@@ -65,10 +70,28 @@ public class ObjectBase
 		init();
 	}
 	
+	public ObjectBase( int model, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
+	{
+		this.model = model;
+		this.position = new PointRot( x, y, z, rx, ry, rz );
+		this.drawDistance = drawDistance;
+		
+		init();
+	}
+	
 	public ObjectBase( int model, Point point, float rx, float ry, float rz )
 	{
 		this.model = model;
 		this.position = new PointRot( point, rx, ry, rz );
+		
+		init();
+	}
+	
+	public ObjectBase( int model, Point point, float rx, float ry, float rz, float drawDistance)
+	{
+		this.model = model;
+		this.position = new PointRot( point, rx, ry, rz );
+		this.drawDistance = drawDistance;
 		
 		init();
 	}
@@ -81,16 +104,25 @@ public class ObjectBase
 		init();
 	}
 	
+	public ObjectBase( int model, PointRot point, float drawDistance )
+	{
+		this.model = model;
+		this.position = point.clone();
+		this.drawDistance = drawDistance;
+		
+		init();
+	}
+	
 	private void init()
 	{
-		id = NativeFunction.createObject( model, position.x, position.y, position.z, position.rx, position.ry, position.rz );
+		id = NativeFunction.createObject( model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
 		GameModeBase.instance.objectPool[id] = this;
 	}
 	
 
 //---------------------------------------------------------
 	
-	public int onMoved()
+	protected int onMoved()
 	{
 		return 1;
 	}
@@ -106,16 +138,6 @@ public class ObjectBase
 	
 	public PointRot position()
 	{
-		if( attachedPlayer != null) return new PointRot(
-				position.x + attachedPlayer.position.x,
-				position.y + attachedPlayer.position.y, 
-				position.z + attachedPlayer.position.z, 
-				position.rx, 
-				position.ry, 
-				position.rz);
-		
-		if( speed == 0 ) return position.clone();
-		
 		NativeFunction.getObjectPos( id, position );
 		NativeFunction.getObjectRot( id, position );
 		return position.clone();
@@ -145,7 +167,7 @@ public class ObjectBase
 	
 	public int move( float x, float y, float z, float speed )
 	{
-		this.speed = speed;
+		if(attachedPlayer == null && attachedVehicle == null) this.speed = speed;
 		return NativeFunction.moveObject( id, x, y, z, speed );
 	}
 	
@@ -159,7 +181,13 @@ public class ObjectBase
 	{
 		NativeFunction.attachObjectToPlayer( id, player.id, x, y, z, rx, ry, rz );
 		attachedPlayer = player;
-		
-		position = new PointRot(x, y, z, rx, ry, rz);
+		speed = 0;
+	}
+	
+	public void attach( VehicleBase vehicle, float x, float y, float z, float rx, float ry, float rz )
+	{
+		NativeFunction.attachObjectToVehicle( id, vehicle.id, x, y, z, rx, ry, rz );
+		attachedVehicle = vehicle;
+		speed = 0;
 	}
 }

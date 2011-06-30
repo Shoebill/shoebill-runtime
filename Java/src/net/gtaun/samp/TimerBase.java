@@ -85,7 +85,7 @@ public class TimerBase
 
 //---------------------------------------------------------
 	
-	public int onTick( int counting, int realtime )
+	protected int onTick( int counting, int realtime )
 	{
 		return 1;
 	}

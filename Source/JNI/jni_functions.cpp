@@ -300,7 +300,7 @@ JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_addStaticVehicleEx
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    addStaticPickup
- * Signature: (IIFFF)I
+ * Signature: (IIFFFI)I
  */
 JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_addStaticPickup
   (JNIEnv *env, jclass jcls, jint model, jint type, jfloat x, jfloat y, jfloat z, jint virtualworld)
@@ -311,7 +311,7 @@ JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_addStaticPickup
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    createPickup
- * Signature: (IIFFF)I
+ * Signature: (IIFFFI)I
  */
 JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_createPickup
   (JNIEnv *env, jclass jcls, jint model, jint type, jfloat x, jfloat y, jfloat z, jint virtualworld)
@@ -2986,12 +2986,23 @@ JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleVirtualWorld
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    createObject
- * Signature: (IFFFFFF)I
+ * Signature: (IFFFFFFF)I
  */
 JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_createObject
-  (JNIEnv *env, jclass jcls, jint modelid, jfloat x, jfloat y, jfloat z, jfloat rX, jfloat rY, jfloat rZ)
+  (JNIEnv *env, jclass jcls, jint modelid, jfloat x, jfloat y, jfloat z, jfloat rX, jfloat rY, jfloat rZ, jfloat drawDistance)
 {
-	return CreateObject( modelid, x, y, z, rX, rY, rZ );
+	return CreateObject( modelid, x, y, z, rX, rY, rZ, drawDistance );
+}
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
+ * Method:    attachObjectToVehicle
+ * Signature: (IIFFFFFF)V
+ */
+JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_attachObjectToVehicle
+  (JNIEnv *env, jclass jcls, jint objectid, jint vehicleid, jfloat x, jfloat y, jfloat z, jfloat rX, jfloat rY, jfloat rZ)
+{
+	AttachObjectToVehicle( objectid, vehicleid, x, y, z, rX, rY, rZ );
 }
 
 /*
@@ -3105,12 +3116,12 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_stopObject
 /*
  * Class:     net_gtaun_samp_NativeFunction
  * Method:    createPlayerObject
- * Signature: (IIFFFFFF)I
+ * Signature: (IIFFFFFFF)I
  */
 JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_createPlayerObject
-  (JNIEnv *env, jclass jcls, jint playerid, jint modelid, jfloat x, jfloat y, jfloat z, jfloat rX, jfloat rY, jfloat rZ)
+  (JNIEnv *env, jclass jcls, jint playerid, jint modelid, jfloat x, jfloat y, jfloat z, jfloat rX, jfloat rY, jfloat rZ, jfloat drawDistance)
 {
-	return CreatePlayerObject(playerid, modelid, x, y, z, rX, rY, rZ);
+	return CreatePlayerObject(playerid, modelid, x, y, z, rX, rY, rZ, drawDistance);
 }
 
 /*

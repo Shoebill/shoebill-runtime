@@ -50,7 +50,7 @@ public class VehicleBase
 		return GameModeBase.getInstances(GameModeBase.instance.vehiclePool, cls);
 	}
 	
-	static <T> T get( Class<T> cls, int id )
+	public static <T> T get( Class<T> cls, int id )
 	{
 		return GameModeBase.getInstance(GameModeBase.instance.vehiclePool, cls, id);
 	}
@@ -153,7 +153,20 @@ public class VehicleBase
 	
 	private void init( float x, float y, float z, int interior, int world, float angle )
 	{
-		id = NativeFunction.createVehicle( model, x, y, z, angle, color1, color2, respawnDelay );
+		switch(model){
+		
+			case 537:
+			case 538:
+			case 569:
+			case 570:
+			case 590:
+				id = NativeFunction.addStaticVehicle( model, x, y, z, angle, color1, color2 );
+				isStatic = true;
+				break;
+							
+			default:
+				id = NativeFunction.createVehicle( model, x, y, z, angle, color1, color2, respawnDelay );
+		}
 		NativeFunction.linkVehicleToInterior( id, interior );
 		NativeFunction.setVehicleVirtualWorld( id, world );
 

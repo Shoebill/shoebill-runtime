@@ -3385,14 +3385,27 @@ int GetVehicleVirtualWorld( int vehicleid )
 //----------------------------------------------------------
 // a_object.inc
 
-int CreateObject( int modelid, float x, float y, float z, float rX, float rY, float rZ)
+int CreateObject( int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance)
 {
 	static amx_func_t func = amx_FindFunction(pAMX, "CreateObject");
 
-	cell args[8] =
+	cell args[9] =
 	{
 		sizeof(args)- sizeof(cell),
-		modelid, amx_ftoc(x), amx_ftoc(y), amx_ftoc(z), amx_ftoc(rX), amx_ftoc(rY), amx_ftoc(rZ)
+		modelid, amx_ftoc(x), amx_ftoc(y), amx_ftoc(z), amx_ftoc(rX), amx_ftoc(rY), amx_ftoc(rZ), amx_ftoc(drawDistance)
+	};
+
+	return func(pAMX, args);
+}
+
+int AttachObjectToVehicle(int objectid, int vehicleid, float OffsetX, float OffsetY, float OffsetZ, float RotX, float RotY, float RotZ)
+{
+	static amx_func_t func = amx_FindFunction(pAMX, "AttachObjectToVehicle");
+
+	cell args[9] =
+	{
+		sizeof(args)- sizeof(cell),
+		objectid, vehicleid, amx_ftoc(OffsetX), amx_ftoc(OffsetY), amx_ftoc(OffsetZ), amx_ftoc(RotX), amx_ftoc(RotY), amx_ftoc(RotZ)
 	};
 
 	return func(pAMX, args);
@@ -3523,14 +3536,14 @@ int StopObject( int objectid )
 }
 
 
-int CreatePlayerObject( int playerid, int modelid, float x, float y, float z, float rx, float ry, float rz )
+int CreatePlayerObject( int playerid, int modelid, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
 {
 	static amx_func_t func = amx_FindFunction(pAMX, "CreatePlayerObject");
 
-	cell args[9] =
+	cell args[10] =
 	{
 		sizeof(args)- sizeof(cell),
-		playerid, modelid, amx_ftoc(x), amx_ftoc(y), amx_ftoc(z), amx_ftoc(rx), amx_ftoc(ry), amx_ftoc(rz)
+		playerid, modelid, amx_ftoc(x), amx_ftoc(y), amx_ftoc(z), amx_ftoc(rx), amx_ftoc(ry), amx_ftoc(rz), amx_ftoc(drawDistance)
 	};
 
 	return func(pAMX, args);
