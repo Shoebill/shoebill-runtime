@@ -84,6 +84,7 @@ public class ZoneBase
 	{
 		NativeFunction.gangZoneShowForPlayer( player.id, id, color );
 		isPlayerShowed[player.id] = true;
+		isPlayerFlashing[player.id] = false;
 	}
 	
 	public void hide( PlayerBase player )
