@@ -48,7 +48,7 @@ public class MainFrame extends Frame
 	{
 		version = new Label();
 		version.setBounds(new Rectangle(106, 86, 228, 18));
-		version.setText("Milestone 1 (20110630)");
+		version.setText("Milestone 1 (20110701)");
 		version.setFont(new Font("Dialog", Font.BOLD, 12));
 		version.setAlignment(Label.CENTER);
 		description = new Label();

@@ -19,7 +19,6 @@ package net.gtaun.samp;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
-import java.util.Vector;
 
 import net.gtaun.event.EventDispatcher;
 import net.gtaun.event.IEventDispatcher;
@@ -33,12 +32,6 @@ import net.gtaun.samp.event.TimerTickEvent;
 public class TimerBase
 {
 	public static final int COUNT_INFINITE = 0;
-	
-	
-	public static <T> Vector<T> get( Class<T> cls )
-	{
-		return GameModeBase.getInstances(GameModeBase.instance.timerPool, cls);
-	}
 	
 	
 	int interval, count;
