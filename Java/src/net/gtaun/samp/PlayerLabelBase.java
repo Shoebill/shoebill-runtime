@@ -16,6 +16,8 @@
 
 package net.gtaun.samp;
 
+import java.util.Vector;
+
 import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointRange;
 
@@ -26,6 +28,20 @@ import net.gtaun.samp.data.PointRange;
 
 public class PlayerLabelBase extends LabelBase
 {
+	public static <T> Vector<T> get( Class<T> cls, int playerid )
+	{
+		Vector<T> temp = GameModeBase.getInstances(GameModeBase.instance.playerLabelPool, cls);
+		
+		Vector<T> label = new Vector<T>();
+		
+		for(int i = playerid*GameModeBase.MAX_LABELS_PLAYER ; i < ( playerid + 1 )*GameModeBase.MAX_LABELS_PLAYER ; i++)
+		{
+			label.add(temp.elementAt(i));
+		}
+		
+		return label;
+	}
+	
 	PlayerBase player;
 	
 	
