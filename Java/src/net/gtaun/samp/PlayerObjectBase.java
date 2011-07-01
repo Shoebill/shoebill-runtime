@@ -16,6 +16,8 @@
 
 package net.gtaun.samp;
 
+import java.util.Vector;
+
 import net.gtaun.samp.data.Point;
 import net.gtaun.samp.data.PointRot;
 
@@ -26,6 +28,21 @@ import net.gtaun.samp.data.PointRot;
 
 public class PlayerObjectBase extends ObjectBase
 {
+	public static <T> Vector<T> get( Class<T> cls, int playerid )
+	{
+		Vector<T> temp = GameModeBase.getInstances(GameModeBase.instance.playerObjectPool, cls);
+		
+		Vector<T> label = new Vector<T>();
+		
+		for(int i = playerid*GameModeBase.MAX_OBJECTS ; i < ( playerid + 1 )*GameModeBase.MAX_OBJECTS ; i++)
+		{
+			label.add(temp.elementAt(i));
+		}
+		
+		return label;
+	}
+	
+	
 	PlayerBase player;
 	
 	public PlayerBase player()		{ return player; }
