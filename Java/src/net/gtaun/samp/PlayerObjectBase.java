@@ -30,16 +30,16 @@ public class PlayerObjectBase extends ObjectBase
 {
 	public static <T> Vector<T> get( Class<T> cls, int playerid )
 	{
-		Vector<T> temp = GameModeBase.getInstances(GameModeBase.instance.playerObjectPool, cls);
+		Vector<T> list = new Vector<T>();
 		
-		Vector<T> label = new Vector<T>();
-		
-		for(int i = playerid*GameModeBase.MAX_OBJECTS ; i < ( playerid + 1 )*GameModeBase.MAX_OBJECTS ; i++)
+		int baseIndex = playerid*GameModeBase.MAX_OBJECTS;
+		for( int i = baseIndex; i < baseIndex+GameModeBase.MAX_OBJECTS ; i++ )
 		{
-			label.add(temp.elementAt(i));
+			PlayerObjectBase obj = GameModeBase.instance.playerObjectPool[i];
+			if( cls.isInstance(obj) ) list.add( cls.cast(obj) );
 		}
 		
-		return label;
+		return list;
 	}
 	
 	

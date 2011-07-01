@@ -30,16 +30,16 @@ public class PlayerLabelBase extends LabelBase
 {
 	public static <T> Vector<T> get( Class<T> cls, int playerid )
 	{
-		Vector<T> temp = GameModeBase.getInstances(GameModeBase.instance.playerLabelPool, cls);
+		Vector<T> list = new Vector<T>();
 		
-		Vector<T> label = new Vector<T>();
-		
-		for(int i = playerid*GameModeBase.MAX_LABELS_PLAYER ; i < ( playerid + 1 )*GameModeBase.MAX_LABELS_PLAYER ; i++)
+		int baseIndex = playerid*GameModeBase.MAX_LABELS_PLAYER;
+		for( int i = baseIndex; i < baseIndex+GameModeBase.MAX_LABELS_PLAYER ; i++ )
 		{
-			label.add(temp.elementAt(i));
+			PlayerLabelBase obj = GameModeBase.instance.playerLabelPool[i];
+			if( cls.isInstance(obj) ) list.add( cls.cast(obj) );
 		}
 		
-		return label;
+		return list;
 	}
 	
 	PlayerBase player;
