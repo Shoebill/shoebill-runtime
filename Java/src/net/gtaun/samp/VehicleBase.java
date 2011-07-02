@@ -45,12 +45,12 @@ import net.gtaun.samp.event.VehicleUpdateEvent;
 
 public class VehicleBase
 {
-	public static <T> Vector<T> get( Class<T> cls )
+	public static <T> Vector<T> getVehicles( Class<T> cls )
 	{
 		return GameModeBase.getInstances(GameModeBase.instance.vehiclePool, cls);
 	}
 	
-	public static <T> T get( Class<T> cls, int id )
+	public static <T> T getVehicle( Class<T> cls, int id )
 	{
 		return GameModeBase.getInstance(GameModeBase.instance.vehiclePool, cls, id);
 	}
@@ -269,7 +269,7 @@ public class VehicleBase
 	
 	public VehicleBase trailer()
 	{
-		return get( VehicleBase.class, NativeFunction.getVehicleTrailer(id) );
+		return getVehicle( VehicleBase.class, NativeFunction.getVehicleTrailer(id) );
 	}
 	
 	public PointAngle position()
