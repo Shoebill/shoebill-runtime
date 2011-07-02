@@ -25,7 +25,7 @@
 
 int SendClientMessage( int playerid, int color, const char* message )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SendClientMessage");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -41,7 +41,7 @@ int SendClientMessage( int playerid, int color, const char* message )
 
 int SendClientMessageToAll( int color, const char* message )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SendClientMessageToAll");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -57,7 +57,7 @@ int SendClientMessageToAll( int color, const char* message )
 
 int SendPlayerMessageToPlayer( int playerid, int senderid, const char* message )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SendPlayerMessageToPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -73,7 +73,7 @@ int SendPlayerMessageToPlayer( int playerid, int senderid, const char* message )
 
 int SendPlayerMessageToAll( int senderid, const char* message )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SendPlayerMessageToAll");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -89,7 +89,7 @@ int SendPlayerMessageToAll( int senderid, const char* message )
 
 int SendDeathMessage( int killer, int victim, int weapon )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SendDeathMessage");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -102,7 +102,7 @@ int SendDeathMessage( int killer, int victim, int weapon )
 
 int GameTextForAll( const char* string, int time, int style )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GameTextForAll");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -118,7 +118,7 @@ int GameTextForAll( const char* string, int time, int style )
 
 int GameTextForPlayer( int playerid, const char* string, int time, int style )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GameTextForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -134,7 +134,7 @@ int GameTextForPlayer( int playerid, const char* string, int time, int style )
 
 int SetTimer( int timerIndex, int interval, int repeating )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetTimer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -147,7 +147,7 @@ int SetTimer( int timerIndex, int interval, int repeating )
 
 int KillTimer( int timerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "KillTimer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -160,7 +160,7 @@ int KillTimer( int timerid )
 
 int GetMaxPlayers()
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetMaxPlayers");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[1] =
 	{
@@ -175,7 +175,7 @@ int GetMaxPlayers()
 
 int SetGameModeText( const char* text )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetGameModeText");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -191,7 +191,7 @@ int SetGameModeText( const char* text )
 
 int SetTeamCount( int count )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetTeamCount");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -204,7 +204,7 @@ int SetTeamCount( int count )
 
 int AddPlayerClass( int modelid, float x, float y, float z, float z_angle, int weapon1id, int weapon1ammo, int weapon2id, int weapon2ammo, int weapon3id, int weapon3ammo )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AddPlayerClass");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[12] =
 	{
@@ -217,7 +217,7 @@ int AddPlayerClass( int modelid, float x, float y, float z, float z_angle, int w
 
 int AddPlayerClassEx( int teamid, int modelid, float x, float y, float z, float z_angle, int weapon1id, int weapon1ammo, int weapon2id, int weapon2ammo, int weapon3id, int weapon3ammo )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AddPlayerClassEx");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[13] =
 	{
@@ -230,7 +230,7 @@ int AddPlayerClassEx( int teamid, int modelid, float x, float y, float z, float 
 
 int AddStaticVehicle( int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle, int color1, int color2 )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AddStaticVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[8] =
 	{
@@ -243,7 +243,7 @@ int AddStaticVehicle( int modelid, float spawn_x, float spawn_y, float spawn_z, 
 
 int AddStaticVehicleEx( int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle, int color1, int color2, int respawn_delay )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AddStaticVehicleEx");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[9] =
 	{
@@ -256,7 +256,7 @@ int AddStaticVehicleEx( int modelid, float spawn_x, float spawn_y, float spawn_z
 
 int AddStaticPickup( int model, int type, float x, float y, float z, int virtualworld )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AddStaticPickup");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[7] =
 	{
@@ -269,7 +269,7 @@ int AddStaticPickup( int model, int type, float x, float y, float z, int virtual
 
 int CreatePickup( int model, int type, float x, float y, float z, int virtualworld )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "CreatePickup");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[7] =
 	{
@@ -282,7 +282,7 @@ int CreatePickup( int model, int type, float x, float y, float z, int virtualwor
 
 int DestroyPickup( int pickup )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DestroyPickup");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -295,7 +295,7 @@ int DestroyPickup( int pickup )
 
 int ShowNameTags( int show )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ShowNameTags");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -308,7 +308,7 @@ int ShowNameTags( int show )
 
 int ShowPlayerMarkers( int show )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ShowPlayerMarkers");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -321,7 +321,7 @@ int ShowPlayerMarkers( int show )
 
 int GameModeExit()
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GameModeExit");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[1] =
 	{
@@ -333,7 +333,7 @@ int GameModeExit()
 
 int SetWorldTime( int hour )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetWorldTime");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -346,7 +346,7 @@ int SetWorldTime( int hour )
 
 int GetWeaponName( int weaponid, char* weapon, int len )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetWeaponName");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *str_phys;
 
 	cell args[4] =
@@ -364,7 +364,7 @@ int GetWeaponName( int weaponid, char* weapon, int len )
 
 int EnableTirePopping( int enable )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "EnableTirePopping");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -377,7 +377,7 @@ int EnableTirePopping( int enable )
 
 int AllowInteriorWeapons( int allow )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AllowInteriorWeapons");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -390,7 +390,7 @@ int AllowInteriorWeapons( int allow )
 
 int SetWeather( int weatherid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetWeather");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -403,7 +403,7 @@ int SetWeather( int weatherid )
 
 int SetGravity( float gravity )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetGravity");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -416,7 +416,7 @@ int SetGravity( float gravity )
 
 int AllowAdminTeleport( int allow )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AllowAdminTeleport");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -429,7 +429,7 @@ int AllowAdminTeleport( int allow )
 
 int SetDeathDropAmount( int amount )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetDeathDropAmount");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -442,7 +442,7 @@ int SetDeathDropAmount( int amount )
 
 int CreateExplosion( float x, float y, float z, int type, float Radius )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "CreateExplosion");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[6] =
 	{
@@ -455,7 +455,7 @@ int CreateExplosion( float x, float y, float z, int type, float Radius )
 
 int EnableZoneNames( int enable )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "EnableZoneNames");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -468,7 +468,7 @@ int EnableZoneNames( int enable )
 
 int UsePlayerPedAnims()
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "UsePlayerPedAnims");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[1] =
 	{
@@ -480,7 +480,7 @@ int UsePlayerPedAnims()
 
 int DisableInteriorEnterExits()
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DisableInteriorEnterExits");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[1] =
 	{
@@ -492,7 +492,7 @@ int DisableInteriorEnterExits()
 
 int SetNameTagDrawDistance( float distance )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetNameTagDrawDistance");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -505,7 +505,7 @@ int SetNameTagDrawDistance( float distance )
 
 int DisableNameTagLOS()
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DisableNameTagLOS");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[1] =
 	{
@@ -517,7 +517,7 @@ int DisableNameTagLOS()
 
 int LimitGlobalChatRadius( float chat_radius )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "LimitGlobalChatRadius");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -530,7 +530,7 @@ int LimitGlobalChatRadius( float chat_radius )
 
 int LimitPlayerMarkerRadius( float marker_radius )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "LimitPlayerMarkerRadius");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -546,7 +546,7 @@ int LimitPlayerMarkerRadius( float marker_radius )
 
 int ConnectNPC( const char* name, const char* script )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ConnectNPC");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -563,7 +563,7 @@ int ConnectNPC( const char* name, const char* script )
 
 int IsPlayerNPC( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsPlayerNPC");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -579,7 +579,7 @@ int IsPlayerNPC( int playerid )
 
 int IsPlayerAdmin( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsPlayerAdmin");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -592,7 +592,7 @@ int IsPlayerAdmin( int playerid )
 
 int Kick( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "Kick");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -605,7 +605,7 @@ int Kick( int playerid )
 
 int Ban( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "Ban");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -618,7 +618,7 @@ int Ban( int playerid )
 
 int BanEx( int playerid, const char* reason )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "BanEx");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -635,7 +635,7 @@ int BanEx( int playerid, const char* reason )
 
 int SendRconCommand( const char* cmd )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SendRconCommand");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -651,7 +651,7 @@ int SendRconCommand( const char* cmd )
 
 int GetServerVarAsString( const char* varname, char* buffer, int len )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetServerVarAsString");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *str_phys;
 
 	cell args[4] =
@@ -670,7 +670,7 @@ int GetServerVarAsString( const char* varname, char* buffer, int len )
 
 int GetServerVarAsInt( const char* varname )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetServerVarAsInt");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -686,7 +686,7 @@ int GetServerVarAsInt( const char* varname )
 
 int GetServerVarAsBool( const char* varname )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetServerVarAsBool");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -705,7 +705,7 @@ int GetServerVarAsBool( const char* varname )
 
 int CreateMenu( const char* title, int columns, float x, float y, float col1width, float col2width )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "CreateMenu");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[7] =
 	{
@@ -721,7 +721,7 @@ int CreateMenu( const char* title, int columns, float x, float y, float col1widt
 
 int DestroyMenu( int menuid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DestroyMenu");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -734,7 +734,7 @@ int DestroyMenu( int menuid )
 
 int AddMenuItem( int menuid, int column, const char* menutext )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AddMenuItem");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -750,7 +750,7 @@ int AddMenuItem( int menuid, int column, const char* menutext )
 
 int SetMenuColumnHeader( int menuid, int column, const char* columnheader )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetMenuColumnHeader");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -766,7 +766,7 @@ int SetMenuColumnHeader( int menuid, int column, const char* columnheader )
 
 int ShowMenuForPlayer( int menuid, int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ShowMenuForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -779,7 +779,7 @@ int ShowMenuForPlayer( int menuid, int playerid )
 
 int HideMenuForPlayer( int menuid, int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "HideMenuForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -792,7 +792,7 @@ int HideMenuForPlayer( int menuid, int playerid )
 
 int IsValidMenu( int menuid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsValidMenu");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -805,7 +805,7 @@ int IsValidMenu( int menuid )
 
 int DisableMenu( int menuid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DisableMenu");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -818,7 +818,7 @@ int DisableMenu( int menuid )
 
 int DisableMenuRow( int menuid, int row )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DisableMenuRow");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -831,7 +831,7 @@ int DisableMenuRow( int menuid, int row )
 
 int GetPlayerMenu( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerMenu");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -847,7 +847,7 @@ int GetPlayerMenu( int playerid )
 
 int TextDrawCreate( float x, float y, const char* text )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawCreate");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -863,7 +863,7 @@ int TextDrawCreate( float x, float y, const char* text )
 
 int TextDrawDestroy( int text )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawDestroy");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -876,7 +876,7 @@ int TextDrawDestroy( int text )
 
 int TextDrawLetterSize( int text, float x, float y )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawLetterSize");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -889,7 +889,7 @@ int TextDrawLetterSize( int text, float x, float y )
 
 int TextDrawTextSize( int text, float x, float y )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawTextSize");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -902,7 +902,7 @@ int TextDrawTextSize( int text, float x, float y )
 
 int TextDrawAlignment( int text, int alignment )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawAlignment");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -915,7 +915,7 @@ int TextDrawAlignment( int text, int alignment )
 
 int TextDrawColor( int text, int color )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawColor");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -928,7 +928,7 @@ int TextDrawColor( int text, int color )
 
 int TextDrawUseBox( int text, int use )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawUseBox");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -941,7 +941,7 @@ int TextDrawUseBox( int text, int use )
 
 int TextDrawBoxColor( int text, int color )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawBoxColor");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -954,7 +954,7 @@ int TextDrawBoxColor( int text, int color )
 
 int TextDrawSetShadow( int text, int size )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawSetShadow");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -967,7 +967,7 @@ int TextDrawSetShadow( int text, int size )
 
 int TextDrawSetOutline( int text, int size )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawSetOutline");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -980,7 +980,7 @@ int TextDrawSetOutline( int text, int size )
 
 int TextDrawBackgroundColor( int text, int color )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawBackgroundColor");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -993,7 +993,7 @@ int TextDrawBackgroundColor( int text, int color )
 
 int TextDrawFont( int text, int font )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawFont");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1006,7 +1006,7 @@ int TextDrawFont( int text, int font )
 
 int TextDrawSetProportional( int text, int set )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawSetProportional");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1019,7 +1019,7 @@ int TextDrawSetProportional( int text, int set )
 
 int TextDrawShowForPlayer( int playerid, int text )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawShowForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1032,7 +1032,7 @@ int TextDrawShowForPlayer( int playerid, int text )
 
 int TextDrawHideForPlayer( int playerid, int text )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawHideForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1045,7 +1045,7 @@ int TextDrawHideForPlayer( int playerid, int text )
 
 int TextDrawShowForAll( int text )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawShowForAll");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1058,7 +1058,7 @@ int TextDrawShowForAll( int text )
 
 int TextDrawHideForAll( int text )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawHideForAll");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1071,7 +1071,7 @@ int TextDrawHideForAll( int text )
 
 int TextDrawSetString( int text, const char* string )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TextDrawSetString");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1090,7 +1090,7 @@ int TextDrawSetString( int text, const char* string )
 
 int GangZoneCreate( float minx, float miny, float maxx, float maxy )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GangZoneCreate");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -1103,7 +1103,7 @@ int GangZoneCreate( float minx, float miny, float maxx, float maxy )
 
 int GangZoneDestroy( int zone )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GangZoneDestroy");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1116,7 +1116,7 @@ int GangZoneDestroy( int zone )
 
 int GangZoneShowForPlayer( int playerid, int zone, int color )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GangZoneShowForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -1129,7 +1129,7 @@ int GangZoneShowForPlayer( int playerid, int zone, int color )
 
 int GangZoneShowForAll( int zone, int color )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GangZoneShowForAll");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1142,7 +1142,7 @@ int GangZoneShowForAll( int zone, int color )
 
 int GangZoneHideForPlayer( int playerid, int zone )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GangZoneHideForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1155,7 +1155,7 @@ int GangZoneHideForPlayer( int playerid, int zone )
 
 int GangZoneHideForAll( int zone )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GangZoneHideForAll");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1168,7 +1168,7 @@ int GangZoneHideForAll( int zone )
 
 int GangZoneFlashForPlayer( int playerid, int zone, int flashcolor )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GangZoneFlashForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -1181,7 +1181,7 @@ int GangZoneFlashForPlayer( int playerid, int zone, int flashcolor )
 
 int GangZoneFlashForAll( int zone, int flashcolor )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GangZoneFlashForAll");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1194,7 +1194,7 @@ int GangZoneFlashForAll( int zone, int flashcolor )
 
 int GangZoneStopFlashForPlayer( int playerid, int zone )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GangZoneStopFlashForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1207,7 +1207,7 @@ int GangZoneStopFlashForPlayer( int playerid, int zone )
 
 int GangZoneStopFlashForAll( int zone )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GangZoneStopFlashForAll");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1223,7 +1223,7 @@ int GangZoneStopFlashForAll( int zone )
 
 int Create3DTextLabel( const char* text, int color, float x, float y, float z, float DrawDistance, int virtualworld, int testLOS )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "Create3DTextLabel");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[9] =
 	{
@@ -1239,7 +1239,7 @@ int Create3DTextLabel( const char* text, int color, float x, float y, float z, f
 
 int Delete3DTextLabel( int id )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "Delete3DTextLabel");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1253,7 +1253,7 @@ int Delete3DTextLabel( int id )
 
 int Attach3DTextLabelToPlayer( int id, int playerid, float OffsetX, float OffsetY, float OffsetZ )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "Attach3DTextLabelToPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[6] =
 	{
@@ -1266,7 +1266,7 @@ int Attach3DTextLabelToPlayer( int id, int playerid, float OffsetX, float Offset
 
 int Attach3DTextLabelToVehicle( int id, int vehicleid, float OffsetX, float OffsetY, float OffsetZ )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "Attach3DTextLabelToVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[6] =
 	{
@@ -1279,7 +1279,7 @@ int Attach3DTextLabelToVehicle( int id, int vehicleid, float OffsetX, float Offs
 
 int Update3DTextLabelText( int id, int color, const char* text )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "Update3DTextLabelText");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -1298,7 +1298,7 @@ int Update3DTextLabelText( int id, int color, const char* text )
 
 int CreatePlayer3DTextLabel( int playerid, const char* text, int color, float x, float y, float z, float DrawDistance, int attachedplayer, int attachedvehicle, int testLOS )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "CreatePlayer3DTextLabel");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[11] =
 	{
@@ -1314,7 +1314,7 @@ int CreatePlayer3DTextLabel( int playerid, const char* text, int color, float x,
 
 int DeletePlayer3DTextLabel( int playerid, int id )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DeletePlayer3DTextLabel");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1327,7 +1327,7 @@ int DeletePlayer3DTextLabel( int playerid, int id )
 
 int UpdatePlayer3DTextLabelText( int playerid, int id, int color, const char* text )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "UpdatePlayer3DTextLabelText");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -1346,7 +1346,7 @@ int UpdatePlayer3DTextLabelText( int playerid, int id, int color, const char* te
 
 int ShowPlayerDialog( int playerid, int dialogid, int style, const char* caption, const char* info, const char* button1, const char* button2 )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ShowPlayerDialog");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[8] =
 	{
@@ -1369,7 +1369,7 @@ int ShowPlayerDialog( int playerid, int dialogid, int style, const char* caption
 
 int SetSpawnInfo( int playerid, int team, int skin, float x, float y, float z, float rotation, int weapon1, int weapon1_ammo, int weapon2, int weapon2_ammo, int weapon3, int weapon3_ammo )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetSpawnInfo");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[14] =
 	{
@@ -1382,7 +1382,7 @@ int SetSpawnInfo( int playerid, int team, int skin, float x, float y, float z, f
 
 int SpawnPlayer( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SpawnPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1398,7 +1398,7 @@ int SpawnPlayer( int playerid )
 
 int SetPlayerPos( int playerid, float x, float y, float z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerPos");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -1411,7 +1411,7 @@ int SetPlayerPos( int playerid, float x, float y, float z )
 
 int SetPlayerPosFindZ( int playerid, float x, float y, float z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerPosFindZ");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -1424,7 +1424,7 @@ int SetPlayerPosFindZ( int playerid, float x, float y, float z )
 
 int GetPlayerPos( int playerid, float& x, float& y, float& z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerPos");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *x_phys, *y_phys, *z_phys;
 
 	cell args[5] =
@@ -1447,7 +1447,7 @@ int GetPlayerPos( int playerid, float& x, float& y, float& z )
 
 int SetPlayerFacingAngle( int playerid, float ang )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerFacingAngle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1460,7 +1460,7 @@ int SetPlayerFacingAngle( int playerid, float ang )
 
 int GetPlayerFacingAngle( int playerid, float& ang )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerFacingAngle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *phys;
 
 	cell args[3] =
@@ -1479,7 +1479,7 @@ int GetPlayerFacingAngle( int playerid, float& ang )
 
 int IsPlayerInRangeOfPoint( int playerid, float range, float x, float y, float z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsPlayerInRangeOfPoint");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[6] =
 	{
@@ -1492,7 +1492,7 @@ int IsPlayerInRangeOfPoint( int playerid, float range, float x, float y, float z
 
 int IsPlayerStreamedIn( int playerid, int forplayerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsPlayerStreamedIn");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1505,7 +1505,7 @@ int IsPlayerStreamedIn( int playerid, int forplayerid )
 
 int SetPlayerInterior( int playerid, int interiorid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerInterior");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1518,7 +1518,7 @@ int SetPlayerInterior( int playerid, int interiorid )
 
 int GetPlayerInterior( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerInterior");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1531,7 +1531,7 @@ int GetPlayerInterior( int playerid )
 
 int SetPlayerHealth( int playerid, float health )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerHealth");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1544,7 +1544,7 @@ int SetPlayerHealth( int playerid, float health )
 
 int GetPlayerHealth( int playerid, float &health )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerHealth");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *phys;
 
 	cell args[3] =
@@ -1563,7 +1563,7 @@ int GetPlayerHealth( int playerid, float &health )
 
 int SetPlayerArmour( int playerid, float armour )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerArmour");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1576,7 +1576,7 @@ int SetPlayerArmour( int playerid, float armour )
 
 int GetPlayerArmour( int playerid, float &armour)
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerArmour");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *phys;
 
 	cell args[3] =
@@ -1595,7 +1595,7 @@ int GetPlayerArmour( int playerid, float &armour)
 
 int SetPlayerAmmo( int playerid, int weaponslot, int ammo )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerAmmo");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -1608,7 +1608,7 @@ int SetPlayerAmmo( int playerid, int weaponslot, int ammo )
 
 int GetPlayerAmmo( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerAmmo");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1621,7 +1621,7 @@ int GetPlayerAmmo( int playerid )
 
 int GetPlayerWeaponState( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerWeaponState");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1634,7 +1634,7 @@ int GetPlayerWeaponState( int playerid )
 
 int SetPlayerTeam( int playerid, int teamid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerTeam");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1647,7 +1647,7 @@ int SetPlayerTeam( int playerid, int teamid )
 
 int GetPlayerTeam( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerTeam");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1660,7 +1660,7 @@ int GetPlayerTeam( int playerid )
 
 int SetPlayerScore( int playerid, int score )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerScore");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1673,7 +1673,7 @@ int SetPlayerScore( int playerid, int score )
 
 int GetPlayerScore( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerScore");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1686,7 +1686,7 @@ int GetPlayerScore( int playerid )
 
 int GetPlayerDrunkLevel( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerDrunkLevel");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1699,7 +1699,7 @@ int GetPlayerDrunkLevel( int playerid )
 
 int SetPlayerDrunkLevel( int playerid, int level )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerDrunkLevel");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1712,7 +1712,7 @@ int SetPlayerDrunkLevel( int playerid, int level )
 
 int SetPlayerColor( int playerid, int color )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerColor");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1725,7 +1725,7 @@ int SetPlayerColor( int playerid, int color )
 
 int GetPlayerColor( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerColor");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1738,7 +1738,7 @@ int GetPlayerColor( int playerid )
 
 int SetPlayerSkin( int playerid, int skinid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerSkin");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1751,7 +1751,7 @@ int SetPlayerSkin( int playerid, int skinid )
 
 int GetPlayerSkin( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerSkin");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1764,7 +1764,7 @@ int GetPlayerSkin( int playerid )
 
 int GivePlayerWeapon( int playerid, int weaponid, int ammo )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GivePlayerWeapon");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -1777,7 +1777,7 @@ int GivePlayerWeapon( int playerid, int weaponid, int ammo )
 
 int ResetPlayerWeapons( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ResetPlayerWeapons");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1790,7 +1790,7 @@ int ResetPlayerWeapons( int playerid )
 
 int SetPlayerArmedWeapon( int playerid, int weaponid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerArmedWeapon");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1803,7 +1803,7 @@ int SetPlayerArmedWeapon( int playerid, int weaponid )
 
 int GetPlayerWeaponData( int playerid, int slot, int &weapons, int &ammo )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerWeaponData");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *w_phys, *a_phys;
 
 	cell args[5] =
@@ -1824,7 +1824,7 @@ int GetPlayerWeaponData( int playerid, int slot, int &weapons, int &ammo )
 
 int GivePlayerMoney( int playerid, int money )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GivePlayerMoney");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -1837,7 +1837,7 @@ int GivePlayerMoney( int playerid, int money )
 
 int ResetPlayerMoney( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ResetPlayerMoney");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1850,7 +1850,7 @@ int ResetPlayerMoney( int playerid )
 
 int SetPlayerName( int playerid, const char* name )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerName");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	
 	cell args[3] =
 	{
@@ -1866,7 +1866,7 @@ int SetPlayerName( int playerid, const char* name )
 
 int GetPlayerMoney( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerMoney");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1879,7 +1879,7 @@ int GetPlayerMoney( int playerid )
 
 int GetPlayerState( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerState");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1892,7 +1892,7 @@ int GetPlayerState( int playerid )
 
 int GetPlayerIp( int playerid, char* name, int len )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerIp");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *phys;
 
 	cell args[4] =
@@ -1910,7 +1910,7 @@ int GetPlayerIp( int playerid, char* name, int len )
 
 int GetPlayerPing( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerPing");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1923,7 +1923,7 @@ int GetPlayerPing( int playerid )
 
 int GetPlayerWeapon( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerWeapon");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -1936,7 +1936,7 @@ int GetPlayerWeapon( int playerid )
 
 int GetPlayerKeys( int playerid, int &keys, int &updown, int &leftright )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerKeys");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *k_phys, *u_phys, *l_phys;
 
 	cell args[5] =
@@ -1959,7 +1959,7 @@ int GetPlayerKeys( int playerid, int &keys, int &updown, int &leftright )
 
 int GetPlayerName( int playerid, char* name, int len )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerName");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *str_phys;
 
 	cell args[4] =
@@ -1977,7 +1977,7 @@ int GetPlayerName( int playerid, char* name, int len )
 
 int SetPlayerTime( int playerid, int hour, int minute )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerTime");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -1990,7 +1990,7 @@ int SetPlayerTime( int playerid, int hour, int minute )
 
 int GetPlayerTime( int playerid, int &hour, int &minute )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerTime");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *h_phys, *m_phys;
 
 	cell args[4] =
@@ -2011,7 +2011,7 @@ int GetPlayerTime( int playerid, int &hour, int &minute )
 
 int TogglePlayerClock( int playerid, int toggle )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TogglePlayerClock");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2024,7 +2024,7 @@ int TogglePlayerClock( int playerid, int toggle )
 
 int SetPlayerWeather( int playerid, int weather )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerWeather");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2037,7 +2037,7 @@ int SetPlayerWeather( int playerid, int weather )
 
 int ForceClassSelection( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ForceClassSelection");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2050,7 +2050,7 @@ int ForceClassSelection( int playerid )
 
 int SetPlayerWantedLevel( int playerid, int level )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerWantedLevel");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2063,7 +2063,7 @@ int SetPlayerWantedLevel( int playerid, int level )
 
 int GetPlayerWantedLevel( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerWantedLevel");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2076,7 +2076,7 @@ int GetPlayerWantedLevel( int playerid )
 
 int SetPlayerFightingStyle( int playerid, int style )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerFightingStyle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2089,7 +2089,7 @@ int SetPlayerFightingStyle( int playerid, int style )
 
 int GetPlayerFightingStyle( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerFightingStyle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2102,7 +2102,7 @@ int GetPlayerFightingStyle( int playerid )
 
 int SetPlayerVelocity( int playerid, float x, float y, float z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerVelocity");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -2115,7 +2115,7 @@ int SetPlayerVelocity( int playerid, float x, float y, float z )
 
 int GetPlayerVelocity( int playerid, float &x, float &y, float &z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerVelocity");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *x_phys, *y_phys, *z_phys;
 
 	cell args[5] =
@@ -2138,7 +2138,7 @@ int GetPlayerVelocity( int playerid, float &x, float &y, float &z )
 
 int PlayCrimeReportForPlayer( int playerid, int suspectid, int crime )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "PlayCrimeReportForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -2151,7 +2151,7 @@ int PlayCrimeReportForPlayer( int playerid, int suspectid, int crime )
 
 int SetPlayerShopName( int playerid, const char* shopname )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerShopName");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2164,7 +2164,7 @@ int SetPlayerShopName( int playerid, const char* shopname )
 
 int SetPlayerSkillLevel( int playerid, int skill, int level )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerSkillLevel");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -2177,7 +2177,7 @@ int SetPlayerSkillLevel( int playerid, int skill, int level )
 
 int GetPlayerSurfingVehicleID( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerSurfingVehicleID");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2191,7 +2191,7 @@ int GetPlayerSurfingVehicleID( int playerid )
 
 int SetPlayerAttachedObject( int playerid, int index, int modelid, int bone, float fOffsetX, float fOffsetY, float fOffsetZ, float frotX, float frotY, float frotZ, float fScaleX, float fScaleY, float fScaleZ )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerAttachedObject");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[14] =
 	{
@@ -2204,7 +2204,7 @@ int SetPlayerAttachedObject( int playerid, int index, int modelid, int bone, flo
 
 int RemovePlayerAttachedObject( int playerid, int index )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "RemovePlayerAttachedObject");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2217,7 +2217,7 @@ int RemovePlayerAttachedObject( int playerid, int index )
 
 int IsPlayerAttachedObjectSlotUsed( int playerid, int index )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsPlayerAttachedObjectSlotUsed");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2231,7 +2231,7 @@ int IsPlayerAttachedObjectSlotUsed( int playerid, int index )
 
 int SetPlayerChatBubble( int playerid, const char* text, int color, float drawdistance, int expiretime )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerChatBubble");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[6] =
 	{
@@ -2246,7 +2246,7 @@ int SetPlayerChatBubble( int playerid, const char* text, int color, float drawdi
 
 int PutPlayerInVehicle( int playerid, int vehicleid, int seatid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "PutPlayerInVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -2259,7 +2259,7 @@ int PutPlayerInVehicle( int playerid, int vehicleid, int seatid )
 
 int GetPlayerVehicleID( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerVehicleID");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2272,7 +2272,7 @@ int GetPlayerVehicleID( int playerid )
 
 int GetPlayerVehicleSeat( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerVehicleSeat");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2285,7 +2285,7 @@ int GetPlayerVehicleSeat( int playerid )
 
 int RemovePlayerFromVehicle( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "RemovePlayerFromVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2298,7 +2298,7 @@ int RemovePlayerFromVehicle( int playerid )
 
 int TogglePlayerControllable( int playerid, int toggle )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TogglePlayerControllable");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2311,7 +2311,7 @@ int TogglePlayerControllable( int playerid, int toggle )
 
 int PlayerPlaySound( int playerid, int soundid, float x, float y, float z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "PlayerPlaySound");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[6] =
 	{
@@ -2324,7 +2324,7 @@ int PlayerPlaySound( int playerid, int soundid, float x, float y, float z )
 
 int ApplyAnimation( int playerid, const char* animlib, const char* animname, float fDelta, int loop, int lockx, int locky, int freeze, int time, int forcesync )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ApplyAnimation");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[11] =
 	{
@@ -2339,7 +2339,7 @@ int ApplyAnimation( int playerid, const char* animlib, const char* animname, flo
 
 int ClearAnimations( int playerid, int forcesync )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ClearAnimations");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2352,7 +2352,7 @@ int ClearAnimations( int playerid, int forcesync )
 
 int GetPlayerAnimationIndex( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerAnimationIndex");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2365,7 +2365,7 @@ int GetPlayerAnimationIndex( int playerid )
 
 int GetAnimationName( int index, char* animlib, int len1, char* animname, int len2 )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetAnimationName");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *phys1, *phys2;
 
 	cell args[6] =
@@ -2385,7 +2385,7 @@ int GetAnimationName( int index, char* animlib, int len1, char* animname, int le
 
 int GetPlayerSpecialAction( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerSpecialAction");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2398,7 +2398,7 @@ int GetPlayerSpecialAction( int playerid )
 
 int SetPlayerSpecialAction( int playerid, int actionid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerSpecialAction");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2414,7 +2414,7 @@ int SetPlayerSpecialAction( int playerid, int actionid )
 
 int SetPlayerCheckpoint( int playerid, float x, float y, float z, float size )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerCheckpoint");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[6] =
 	{
@@ -2427,7 +2427,7 @@ int SetPlayerCheckpoint( int playerid, float x, float y, float z, float size )
 
 int DisablePlayerCheckpoint( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DisablePlayerCheckpoint");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2440,7 +2440,7 @@ int DisablePlayerCheckpoint( int playerid )
 
 int SetPlayerRaceCheckpoint( int playerid, int type, float x, float y, float z, float nextx, float nexty, float nextz, float size )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerRaceCheckpoint");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[10] =
 	{
@@ -2453,7 +2453,7 @@ int SetPlayerRaceCheckpoint( int playerid, int type, float x, float y, float z, 
 
 int DisablePlayerRaceCheckpoint( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DisablePlayerRaceCheckpoint");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2466,7 +2466,7 @@ int DisablePlayerRaceCheckpoint( int playerid )
 
 int SetPlayerWorldBounds( int playerid, float x_max, float x_min, float y_max, float y_min )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerWorldBounds");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[6] =
 	{
@@ -2479,7 +2479,7 @@ int SetPlayerWorldBounds( int playerid, float x_max, float x_min, float y_max, f
 
 int SetPlayerMarkerForPlayer( int playerid, int showplayerid, int color )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerMarkerForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -2492,7 +2492,7 @@ int SetPlayerMarkerForPlayer( int playerid, int showplayerid, int color )
 
 int ShowPlayerNameTagForPlayer( int playerid, int showplayerid, int show )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ShowPlayerNameTagForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -2505,7 +2505,7 @@ int ShowPlayerNameTagForPlayer( int playerid, int showplayerid, int show )
 
 int SetPlayerMapIcon( int playerid, int iconid, float x, float y, float z, int markertype, int color, int style )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerMapIcon");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[9] =
 	{
@@ -2518,7 +2518,7 @@ int SetPlayerMapIcon( int playerid, int iconid, float x, float y, float z, int m
 
 int RemovePlayerMapIcon( int playerid, int iconid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "RemovePlayerMapIcon");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2531,7 +2531,7 @@ int RemovePlayerMapIcon( int playerid, int iconid )
 
 int SetPlayerCameraPos ( int playerid, float x, float y, float z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerCameraPos");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -2544,7 +2544,7 @@ int SetPlayerCameraPos ( int playerid, float x, float y, float z )
 
 int SetPlayerCameraLookAt ( int playerid, float x, float y, float z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerCameraLookAt");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -2557,7 +2557,7 @@ int SetPlayerCameraLookAt ( int playerid, float x, float y, float z )
 
 int SetCameraBehindPlayer( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetCameraBehindPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2570,7 +2570,7 @@ int SetCameraBehindPlayer( int playerid )
 
 int GetPlayerCameraPos( int playerid, float &x, float &y, float &z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerCameraPos");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *x_phys, *y_phys, *z_phys;
 
 	cell args[5] =
@@ -2593,7 +2593,7 @@ int GetPlayerCameraPos( int playerid, float &x, float &y, float &z )
 
 int GetPlayerCameraFrontVector( int playerid, float &x, float &y, float &z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerCameraFrontVector");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *x_phys, *y_phys, *z_phys;
 
 	cell args[5] =
@@ -2616,7 +2616,7 @@ int GetPlayerCameraFrontVector( int playerid, float &x, float &y, float &z )
 
 int AllowPlayerTeleport( int playerid, int allow )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AllowPlayerTeleport");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2632,7 +2632,7 @@ int AllowPlayerTeleport( int playerid, int allow )
 
 int IsPlayerConnected( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsPlayerConnected");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2645,7 +2645,7 @@ int IsPlayerConnected( int playerid )
 
 int IsPlayerInVehicle( int playerid, int vehicleid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsPlayerInVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2658,7 +2658,7 @@ int IsPlayerInVehicle( int playerid, int vehicleid )
 
 int IsPlayerInAnyVehicle( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsPlayerInAnyVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2671,7 +2671,7 @@ int IsPlayerInAnyVehicle( int playerid )
 
 int IsPlayerInCheckpoint( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsPlayerInCheckpoint");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2684,7 +2684,7 @@ int IsPlayerInCheckpoint( int playerid )
 
 int IsPlayerInRaceCheckpoint( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsPlayerInRaceCheckpoint");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2700,7 +2700,7 @@ int IsPlayerInRaceCheckpoint( int playerid )
 
 int SetPlayerVirtualWorld( int playerid, int worldid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerVirtualWorld");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2713,7 +2713,7 @@ int SetPlayerVirtualWorld( int playerid, int worldid )
 
 int GetPlayerVirtualWorld( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerVirtualWorld");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2729,7 +2729,7 @@ int GetPlayerVirtualWorld( int playerid )
 
 int EnableStuntBonusForPlayer( int playerid, int enable )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "EnableStuntBonusForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2742,7 +2742,7 @@ int EnableStuntBonusForPlayer( int playerid, int enable )
 
 int EnableStuntBonusForAll( int enable )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "EnableStuntBonusForAll");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2758,7 +2758,7 @@ int EnableStuntBonusForAll( int enable )
 
 int TogglePlayerSpectating( int playerid, int toggle )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "TogglePlayerSpectating");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2771,7 +2771,7 @@ int TogglePlayerSpectating( int playerid, int toggle )
 
 int PlayerSpectatePlayer( int playerid, int targetplayerid, int mode )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "PlayerSpectatePlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -2784,7 +2784,7 @@ int PlayerSpectatePlayer( int playerid, int targetplayerid, int mode )
 
 int PlayerSpectateVehicle( int playerid, int targetvehicleid, int mode )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "PlayerSpectateVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -2800,7 +2800,7 @@ int PlayerSpectateVehicle( int playerid, int targetvehicleid, int mode )
 
 int StartRecordingPlayerData( int playerid, int recordtype, const char* recordname )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "StartRecordingPlayerData");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -2816,7 +2816,7 @@ int StartRecordingPlayerData( int playerid, int recordtype, const char* recordna
 
 int StopRecordingPlayerData( int playerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "StopRecordingPlayerData");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2833,7 +2833,7 @@ int StopRecordingPlayerData( int playerid )
 
 int CreateVehicle( int vehicletype, float x, float y, float z, float rotation, int color1, int color2, int respawn_delay )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "CreateVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[9] =
 	{
@@ -2846,7 +2846,7 @@ int CreateVehicle( int vehicletype, float x, float y, float z, float rotation, i
 
 int DestroyVehicle( int vehicleid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DestroyVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -2859,7 +2859,7 @@ int DestroyVehicle( int vehicleid )
 
 int IsVehicleStreamedIn( int vehicleid, int forplayerid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsVehicleStreamedIn");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2872,7 +2872,7 @@ int IsVehicleStreamedIn( int vehicleid, int forplayerid )
 
 int GetVehiclePos( int vehicleid, float &x, float &y, float &z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetVehiclePos");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *x_phys, *y_phys, *z_phys;
 
 	cell args[5] =
@@ -2895,7 +2895,7 @@ int GetVehiclePos( int vehicleid, float &x, float &y, float &z )
 
 int SetVehiclePos( int vehicleid, float x, float y, float z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetVehiclePos");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -2908,7 +2908,7 @@ int SetVehiclePos( int vehicleid, float x, float y, float z )
 
 int GetVehicleZAngle( int vehicleid, float &z_angle )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetVehicleZAngle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *phys;
 
 	cell args[3] =
@@ -2927,7 +2927,7 @@ int GetVehicleZAngle( int vehicleid, float &z_angle )
 
 int GetVehicleRotationQuat( int vehicleid, float &w, float &x, float &y, float &z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetVehicleRotationQuat");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *w_phys, *x_phys, *y_phys, *z_phys;
 
 	cell args[6] =
@@ -2953,7 +2953,7 @@ int GetVehicleRotationQuat( int vehicleid, float &w, float &x, float &y, float &
 
 int SetVehicleZAngle( int vehicleid, float z_angle )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetVehicleZAngle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -2966,7 +2966,7 @@ int SetVehicleZAngle( int vehicleid, float z_angle )
 
 int SetVehicleParamsForPlayer( int vehicleid, int playerid, int objective, int doorslocked )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetVehicleParamsForPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -2979,7 +2979,7 @@ int SetVehicleParamsForPlayer( int vehicleid, int playerid, int objective, int d
 
 int ManualVehicleEngineAndLights()
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ManualVehicleEngineAndLights");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[1] =
 	{
@@ -2991,7 +2991,7 @@ int ManualVehicleEngineAndLights()
 
 int SetVehicleParamsEx( int vehicleid, int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetVehicleParamsEx");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[9] =
 	{
@@ -3004,7 +3004,7 @@ int SetVehicleParamsEx( int vehicleid, int engine, int lights, int alarm, int do
 
 int GetVehicleParamsEx( int vehicleid, int &engine, int &lights, int &alarm, int &doors, int &bonnet, int &boot, int &objective )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetVehicleParamsEx");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *e_phys, *l_phys, *a_phys, *d_phys, *b_phys, *o_phys, *j_phys;
 
 	cell args[9] =
@@ -3036,7 +3036,7 @@ int GetVehicleParamsEx( int vehicleid, int &engine, int &lights, int &alarm, int
 
 int SetVehicleToRespawn( int vehicleid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetVehicleToRespawn");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	
 	cell args[2] =
 	{
@@ -3049,7 +3049,7 @@ int SetVehicleToRespawn( int vehicleid )
 
 int LinkVehicleToInterior( int vehicleid, int interiorid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "LinkVehicleToInterior");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -3062,7 +3062,7 @@ int LinkVehicleToInterior( int vehicleid, int interiorid )
 
 int AddVehicleComponent( int vehicleid, int componentid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AddVehicleComponent");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -3075,7 +3075,7 @@ int AddVehicleComponent( int vehicleid, int componentid )
 
 int RemoveVehicleComponent( int vehicleid, int componentid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "RemoveVehicleComponent");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -3088,7 +3088,7 @@ int RemoveVehicleComponent( int vehicleid, int componentid )
 
 int ChangeVehicleColor( int vehicleid, int color1, int color2 )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ChangeVehicleColor");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[4] =
 	{
@@ -3101,7 +3101,7 @@ int ChangeVehicleColor( int vehicleid, int color1, int color2 )
 
 int ChangeVehiclePaintjob( int vehicleid, int paintjobid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "ChangeVehiclePaintjob");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -3114,7 +3114,7 @@ int ChangeVehiclePaintjob( int vehicleid, int paintjobid )
 
 int SetVehicleHealth( int vehicleid, float health )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetVehicleHealth");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -3127,7 +3127,7 @@ int SetVehicleHealth( int vehicleid, float health )
 
 int GetVehicleHealth( int vehicleid, float &health )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetVehicleHealth");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *phys;
 
 	cell args[3] =
@@ -3146,7 +3146,7 @@ int GetVehicleHealth( int vehicleid, float &health )
 
 int AttachTrailerToVehicle( int trailerid, int vehicleid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AttachTrailerToVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -3159,7 +3159,7 @@ int AttachTrailerToVehicle( int trailerid, int vehicleid )
 
 int DetachTrailerFromVehicle( int vehicleid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DetachTrailerFromVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -3172,7 +3172,7 @@ int DetachTrailerFromVehicle( int vehicleid )
 
 int IsTrailerAttachedToVehicle( int vehicleid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsTrailerAttachedToVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -3185,7 +3185,7 @@ int IsTrailerAttachedToVehicle( int vehicleid )
 
 int GetVehicleTrailer( int vehicleid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetVehicleTrailer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -3198,7 +3198,7 @@ int GetVehicleTrailer( int vehicleid )
 
 int SetVehicleNumberPlate( int vehicleid, const char* numberplate )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetVehicleNumberPlate");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -3214,7 +3214,7 @@ int SetVehicleNumberPlate( int vehicleid, const char* numberplate )
 
 int GetVehicleModel( int vehicleid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetVehicleModel");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -3227,7 +3227,7 @@ int GetVehicleModel( int vehicleid )
 
 int GetVehicleComponentInSlot( int vehicleid, int slot )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetVehicleComponentInSlot");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -3240,7 +3240,7 @@ int GetVehicleComponentInSlot( int vehicleid, int slot )
 
 int GetVehicleComponentType( int component )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetVehicleComponentType");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -3253,7 +3253,7 @@ int GetVehicleComponentType( int component )
 
 int RepairVehicle( int vehicleid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "RepairVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -3266,7 +3266,7 @@ int RepairVehicle( int vehicleid )
 
 int GetVehicleVelocity( int vehicleid, float &x, float &y, float &z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetVehicleVelocity");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *x_phys, *y_phys, *z_phys;
 
 	cell args[5] =
@@ -3289,7 +3289,7 @@ int GetVehicleVelocity( int vehicleid, float &x, float &y, float &z )
 
 int SetVehicleVelocity( int vehicleid, float x, float y, float z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetVehicleVelocity");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -3302,7 +3302,7 @@ int SetVehicleVelocity( int vehicleid, float x, float y, float z )
 
 int SetVehicleAngularVelocity( int vehicleid, float x, float y, float z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetVehicleAngularVelocity");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -3315,7 +3315,7 @@ int SetVehicleAngularVelocity( int vehicleid, float x, float y, float z )
 
 int GetVehicleDamageStatus( int vehicleid, int &panels, int &doors, int &lights, int &tires)
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetVehicleDamageStatus");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *p_phys, *d_phys, *l_phys, *t_phys;
 
 	cell args[6] =
@@ -3340,7 +3340,7 @@ int GetVehicleDamageStatus( int vehicleid, int &panels, int &doors, int &lights,
 
 int UpdateVehicleDamageStatus( int vehicleid, int panels, int doors, int lights, int tires )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "UpdateVehicleDamageStatus");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[6] =
 	{
@@ -3356,7 +3356,7 @@ int UpdateVehicleDamageStatus( int vehicleid, int panels, int doors, int lights,
 
 int SetVehicleVirtualWorld( int vehicleid, int worldid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetVehicleVirtualWorld");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -3369,7 +3369,7 @@ int SetVehicleVirtualWorld( int vehicleid, int worldid )
 
 int GetVehicleVirtualWorld( int vehicleid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetVehicleVirtualWorld");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -3387,7 +3387,7 @@ int GetVehicleVirtualWorld( int vehicleid )
 
 int CreateObject( int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance)
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "CreateObject");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[9] =
 	{
@@ -3400,7 +3400,7 @@ int CreateObject( int modelid, float x, float y, float z, float rX, float rY, fl
 
 int AttachObjectToVehicle(int objectid, int vehicleid, float OffsetX, float OffsetY, float OffsetZ, float RotX, float RotY, float RotZ)
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AttachObjectToVehicle");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[9] =
 	{
@@ -3413,7 +3413,7 @@ int AttachObjectToVehicle(int objectid, int vehicleid, float OffsetX, float Offs
 
 int SetObjectPos( int objectid, float x, float y, float z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetObjectPos");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -3426,7 +3426,7 @@ int SetObjectPos( int objectid, float x, float y, float z )
 
 int GetObjectPos( int objectid, float &x, float &y, float &z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetObjectPos");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *x_phys, *y_phys, *z_phys;
 
 	cell args[5] =
@@ -3449,7 +3449,7 @@ int GetObjectPos( int objectid, float &x, float &y, float &z )
 
 int SetObjectRot( int objectid, float rotX, float rotY, float rotZ )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetObjectRot");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[5] =
 	{
@@ -3462,7 +3462,7 @@ int SetObjectRot( int objectid, float rotX, float rotY, float rotZ )
 
 int GetObjectRot( int objectid, float &rotX, float &rotY, float &rotZ)
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetObjectRot");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *x_phys, *y_phys, *z_phys;
 
 	cell args[5] =
@@ -3485,7 +3485,7 @@ int GetObjectRot( int objectid, float &rotX, float &rotY, float &rotZ)
 
 int IsValidObject( int objectid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsValidObject");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -3498,7 +3498,7 @@ int IsValidObject( int objectid )
 
 int DestroyObject( int objectid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DestroyObject");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -3511,7 +3511,7 @@ int DestroyObject( int objectid )
 
 int MoveObject( int objectid, float x, float y, float z, float Speed )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "MoveObject");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[6] =
 	{
@@ -3524,7 +3524,7 @@ int MoveObject( int objectid, float x, float y, float z, float Speed )
 
 int StopObject( int objectid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "StopObject");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[2] =
 	{
@@ -3538,7 +3538,7 @@ int StopObject( int objectid )
 
 int CreatePlayerObject( int playerid, int modelid, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "CreatePlayerObject");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[10] =
 	{
@@ -3551,7 +3551,7 @@ int CreatePlayerObject( int playerid, int modelid, float x, float y, float z, fl
 
 int SetPlayerObjectPos( int playerid, int objectid, float x, float y, float z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerObjectPos");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[6] =
 	{
@@ -3564,7 +3564,7 @@ int SetPlayerObjectPos( int playerid, int objectid, float x, float y, float z )
 
 int GetPlayerObjectPos( int playerid, int objectid, float &x, float &y, float &z )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerObjectPos");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *x_phys, *y_phys, *z_phys;
 
 	cell args[6] =
@@ -3587,7 +3587,7 @@ int GetPlayerObjectPos( int playerid, int objectid, float &x, float &y, float &z
 
 int SetPlayerObjectRot( int playerid, int objectid, float rotX, float rotY, float rotZ )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "SetPlayerObjectRot");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[6] =
 	{
@@ -3600,7 +3600,7 @@ int SetPlayerObjectRot( int playerid, int objectid, float rotX, float rotY, floa
 
 int GetPlayerObjectRot( int playerid, int objectid, float &rotX, float &rotY, float &rotZ)
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "GetPlayerObjectRot");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 	cell *x_phys, *y_phys, *z_phys;
 
 	cell args[6] =
@@ -3623,7 +3623,7 @@ int GetPlayerObjectRot( int playerid, int objectid, float &rotX, float &rotY, fl
 
 int IsValidPlayerObject( int playerid, int objectid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "IsValidPlayerObject");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -3636,7 +3636,7 @@ int IsValidPlayerObject( int playerid, int objectid )
 
 int DestroyPlayerObject( int playerid, int objectid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "DestroyPlayerObject");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -3649,7 +3649,7 @@ int DestroyPlayerObject( int playerid, int objectid )
 
 int MovePlayerObject( int playerid, int objectid, float x, float y, float z, float Speed )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "MovePlayerObject");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[7] =
 	{
@@ -3662,7 +3662,7 @@ int MovePlayerObject( int playerid, int objectid, float x, float y, float z, flo
 
 int StopPlayerObject( int playerid, int objectid )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "StopPlayerObject");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[3] =
 	{
@@ -3675,7 +3675,7 @@ int StopPlayerObject( int playerid, int objectid )
 
 int AttachObjectToPlayer( int objectid, int playerid, float OffsetX, float OffsetY, float OffsetZ, float rX, float rY, float rZ )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AttachObjectToPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[9] =
 	{
@@ -3688,7 +3688,7 @@ int AttachObjectToPlayer( int objectid, int playerid, float OffsetX, float Offse
 
 int AttachPlayerObjectToPlayer( int objectplayer, int objectid, int attachplayer, float OffsetX, float OffsetY, float OffsetZ, float rX, float rY, float rZ )
 {
-	static amx_func_t func = amx_FindFunction(pAMX, "AttachPlayerObjectToPlayer");
+	static amx_func_t func = amx_FindFunction(pAMX, __FUNCTION__);
 
 	cell args[10] =
 	{
