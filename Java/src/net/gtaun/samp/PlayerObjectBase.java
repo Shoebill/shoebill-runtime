@@ -28,7 +28,7 @@ import net.gtaun.samp.data.PointRot;
 
 public class PlayerObjectBase extends ObjectBase
 {
-	public static <T> Vector<T> get( Class<T> cls, int playerid )
+	public static <T> Vector<T> getPlayerObjects( Class<T> cls, int playerid )
 	{
 		Vector<T> list = new Vector<T>();
 		

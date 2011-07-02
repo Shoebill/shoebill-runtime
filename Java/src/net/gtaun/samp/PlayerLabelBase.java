@@ -28,7 +28,7 @@ import net.gtaun.samp.data.PointRange;
 
 public class PlayerLabelBase extends LabelBase
 {
-	public static <T> Vector<T> get( Class<T> cls, int playerid )
+	public static <T> Vector<T> getPlayerLabels( Class<T> cls, int playerid )
 	{
 		Vector<T> list = new Vector<T>();
 		
