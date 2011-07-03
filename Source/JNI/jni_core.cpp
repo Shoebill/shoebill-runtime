@@ -32,7 +32,7 @@ JNIEnv *env = NULL;
 int jni_jvm_create( const char* classpath )
 {
 	JavaVMInitArgs vm_args;
-	JavaVMOption options[3];
+	JavaVMOption options[2];
 
 	if( jvm != NULL ) return -1;
 
@@ -60,8 +60,8 @@ int jni_jvm_create( const char* classpath )
 	
 	
 	options[0].optionString = clspath;
-	options[1].optionString = "-Djava.compiler=NONE";
-	options[2].optionString = "-verbose:gc";
+	options[1].optionString = "-verbose:gc";
+	//options[2].optionString = "-Djava.compiler=NONE";
 
 	vm_args.version = JNI_VERSION_1_6;
 	vm_args.options = options;

@@ -43,7 +43,7 @@ int LoadConfig();
 
 bool OnLoadPlugin()
 {
-	logprintf( "  > Shoebill JNI v0.0.0.0 by MK124." );
+	logprintf( "  > Shoebill JNI Milestone 1 (20110703) by MK124." );
 
 	int ret = LoadConfig();
 	if( ret < 0 )
