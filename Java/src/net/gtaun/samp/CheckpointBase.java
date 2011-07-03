@@ -106,7 +106,7 @@ public class CheckpointBase extends Vector3D
 	{
 		Vector<T> players = new Vector<T>();
 		
-		Iterator<T> iterator = PlayerBase.getPlayers(cls).iterator();
+		Iterator<T> iterator = PlayerBase.get(cls).iterator();
 		while( iterator.hasNext() )
 		{
 			T player = iterator.next();

@@ -32,7 +32,7 @@ import net.gtaun.samp.event.ObjectMovedEvent;
 
 public class ObjectBase
 {
-	public static <T> Vector<T> getObjects( Class<T> cls )
+	public static <T> Vector<T> get( Class<T> cls )
 	{
 		return GameModeBase.getInstances(GameModeBase.instance.objectPool, cls);
 	}
