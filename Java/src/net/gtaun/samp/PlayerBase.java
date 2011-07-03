@@ -144,12 +144,12 @@ public class PlayerBase
 	
 //---------------------------------------------------------
 	
-	public static <T> Vector<T> get( Class<T> cls )
+	public static <T> Vector<T> getPlayers( Class<T> cls )
 	{
 		return GameModeBase.getInstances(GameModeBase.instance.playerPool, cls);
 	}
 	
-	public static <T> T get( Class<T> cls, int id )
+	public static <T> T getPlayer( Class<T> cls, int id )
 	{
 		return GameModeBase.getInstance(GameModeBase.instance.playerPool, cls, id);
 	}
@@ -163,7 +163,7 @@ public class PlayerBase
 	{
 		NativeFunction.enableStuntBonusForAll( enabled );
 		
-		Vector<PlayerBase> players = PlayerBase.get(PlayerBase.class);
+		Vector<PlayerBase> players = PlayerBase.getPlayers(PlayerBase.class);
 		Iterator<PlayerBase> iterator = players.iterator();
 		while( iterator.hasNext() )
 		{
@@ -174,7 +174,7 @@ public class PlayerBase
 
 	public static void sendMessageToAll( int color, String message )
 	{
-		Vector<PlayerBase> players = get(PlayerBase.class);
+		Vector<PlayerBase> players = getPlayers(PlayerBase.class);
 		Iterator<PlayerBase> iterator = players.iterator();
 		while( iterator.hasNext() )
 		{
@@ -185,7 +185,7 @@ public class PlayerBase
 	
 	public static void sendMessageToAll( int color, String format, Object... args )
 	{
-		Vector<PlayerBase> players = get(PlayerBase.class);
+		Vector<PlayerBase> players = getPlayers(PlayerBase.class);
 		Iterator<PlayerBase> iterator = players.iterator();
 		while( iterator.hasNext() )
 		{
@@ -260,7 +260,7 @@ public class PlayerBase
 	public int score()						{ return score; }
 	public int weather()					{ return weather; }
 	public int fightingStyle()				{ return NativeFunction.getPlayerFightingStyle(id); }
-	public VehicleBase vehicle()			{ return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerVehicleID(id)); }
+	public VehicleBase vehicle()			{ return VehicleBase.getVehicle(VehicleBase.class, NativeFunction.getPlayerVehicleID(id)); }
 	public int seat()						{ return NativeFunction.getPlayerVehicleSeat(id); }
 	public boolean controllable()			{ return controllable; }
 	public int specialAction()				{ return NativeFunction.getPlayerSpecialAction(id); }
@@ -795,7 +795,7 @@ public class PlayerBase
 	{
 		if( message == null ) throw new NullPointerException();
 		
-		Vector<PlayerBase> players = get(PlayerBase.class);
+		Vector<PlayerBase> players = getPlayers(PlayerBase.class);
 		Iterator<PlayerBase> iterator = players.iterator();
 		while( iterator.hasNext() )
 		{
@@ -1047,7 +1047,7 @@ public class PlayerBase
 	
 	public VehicleBase getSurfingVehicle()
 	{
-		return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerSurfingVehicleID(id));
+		return VehicleBase.getVehicle(VehicleBase.class, NativeFunction.getPlayerSurfingVehicleID(id));
 	}
 	
 	public void removeFromVehicle()

@@ -28,7 +28,7 @@ import net.gtaun.samp.data.Area;
 
 public class ZoneBase
 {
-	public static <T> Vector<T> get( Class<T> cls )
+	public static <T> Vector<T> getZones( Class<T> cls )
 	{
 		return GameModeBase.getInstances(GameModeBase.instance.zonePool, cls);
 	}
