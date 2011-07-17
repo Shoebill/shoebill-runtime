@@ -257,6 +257,7 @@ public Oops()
 
 // a_object.inc
 	CreateObject(0, 0, 0, 0, 0, 0, 0);
+	AttachObjectToVehicle(0, 0, f, f, f, f, f, f);
 	SetObjectPos(0, 0, 0, 0);
 	GetObjectPos(0, f, f, f);
 	SetObjectRot(0, 0, 0, 0);
@@ -361,8 +362,8 @@ public Oops()
 	RemovePlayerFromVehicle(0);
 	TogglePlayerControllable(0, 0);
 	PlayerPlaySound(0, 0, 0, 0, 0);
-	ApplyAnimation(0, a, a, 0, 0, 0, 0, 0, 0);
-	ClearAnimations(0);
+	ApplyAnimation(0, a, a, 0, 0, 0, 0, 0, 0, 0);
+	ClearAnimations(0, 0);
 	GetPlayerAnimationIndex(0);
 	GetAnimationName(0, a, 0, a, 0);
 
