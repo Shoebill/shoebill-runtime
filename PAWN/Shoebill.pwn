@@ -40,10 +40,8 @@ native n_OnVehicleStreamIn(vehicleid, forplayerid);
 native n_OnVehicleStreamOut(vehicleid, forplayerid);
 native n_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]);
 native n_OnPlayerClickPlayer(playerid, clickedplayerid, source);
-native n_OnTimer(timerid);
 
 
-forward OnTimer(timerid);
 forward Oops();
 
 
@@ -250,12 +248,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 {
 	return n_OnPlayerClickPlayer(playerid, clickedplayerid, source);
-}
-
-
-public OnTimer(timerid)
-{
-	return n_OnTimer(timerid);
 }
 
 

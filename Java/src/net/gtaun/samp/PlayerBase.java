@@ -142,7 +142,13 @@ public class PlayerBase
 
 	public static final int MAX_CHATBUBBLE_LENGTH =					144;
 	
+	
 //---------------------------------------------------------
+	
+	public static Vector<PlayerBase> get()
+	{
+		return GameModeBase.getInstances(GameModeBase.instance.playerPool, PlayerBase.class);
+	}
 	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
@@ -631,7 +637,8 @@ public class PlayerBase
 	public void setMoney( int money )
 	{
 		NativeFunction.resetPlayerMoney( id );
-		NativeFunction.givePlayerMoney( id, money );
+		if( money != 0 ) NativeFunction.givePlayerMoney( id, money );
+		
 		this.money = money;
 	}
 	
@@ -900,14 +907,24 @@ public class PlayerBase
 	{
 		return GameModeBase.instance.menuPool[ NativeFunction.getPlayerMenu(id) ];
 	}
+
+	public void setCameraPos( float x, float y, float z )
+	{
+		NativeFunction.setPlayerCameraPos( id, x, y, z );
+	}
 	
 	public void setCameraPos( Point pos )
 	{
 		if( pos == null ) throw new NullPointerException();
 		NativeFunction.setPlayerCameraPos( id, pos.x, pos.y, pos.z );
 	}
+
+	public void setCameraLookAt( float x, float y, float z )
+	{
+		NativeFunction.setPlayerCameraLookAt(id, x, y, z);
+	}
 	
-	public void setCamerLookAt( Point lookat )
+	public void setCameraLookAt( Point lookat )
 	{
 		if( lookat == null ) throw new NullPointerException();
 		NativeFunction.setPlayerCameraLookAt(id, lookat.x, lookat.y, lookat.z);

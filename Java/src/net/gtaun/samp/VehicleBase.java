@@ -153,8 +153,8 @@ public class VehicleBase
 	
 	private void init( float x, float y, float z, int interior, int world, float angle )
 	{
-		switch(model){
-		
+		switch( model )
+		{
 			case 537:
 			case 538:
 			case 569:
@@ -167,6 +167,7 @@ public class VehicleBase
 			default:
 				id = NativeFunction.createVehicle( model, x, y, z, angle, color1, color2, respawnDelay );
 		}
+		
 		NativeFunction.linkVehicleToInterior( id, interior );
 		NativeFunction.setVehicleVirtualWorld( id, world );
 

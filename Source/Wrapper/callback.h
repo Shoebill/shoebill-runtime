@@ -54,7 +54,3 @@ int OnVehicleStreamIn(int vehicleid, int forplayerid);
 int OnVehicleStreamOut(int vehicleid, int forplayerid);
 int OnDialogResponse(int playerid, int dialogid, int response, int listitem, char *inputtext);
 int OnPlayerClickPlayer(int playerid, int clickedplayerid, int source);
-
-
-// Custom Callbacks
-int OnTimer(int TimerIndex);
