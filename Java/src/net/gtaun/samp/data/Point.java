@@ -16,13 +16,18 @@
 
 package net.gtaun.samp.data;
 
+import java.io.Serializable;
+
 /**
  * @author MK124
  *
  */
 
-public class Point extends Vector3D
+public class Point extends Vector3D implements Serializable
 {
+	
+	private static final long serialVersionUID = 1L;
+	
 	//public float x, y, z;
 	public int interior, world;
 	

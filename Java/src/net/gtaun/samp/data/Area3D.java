@@ -23,6 +23,8 @@ package net.gtaun.samp.data;
 
 public class Area3D extends Area
 {
+	
+	private static final long serialVersionUID = 1L;
 	public float minZ, maxZ;
 	
 	

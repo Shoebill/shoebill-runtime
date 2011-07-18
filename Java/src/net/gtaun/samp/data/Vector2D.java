@@ -16,12 +16,17 @@
 
 package net.gtaun.samp.data;
 
+import java.io.Serializable;
+
 /**
  * @author JoJLlmAn
  *
  */
 
-public class Vector2D {
+public class Vector2D implements Serializable
+{
+	private static final long serialVersionUID = 1L;
+	
 	public float x, y;
 	
 	public Vector2D()

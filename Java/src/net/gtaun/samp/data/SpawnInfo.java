@@ -16,14 +16,18 @@
 
 package net.gtaun.samp.data;
 
+import java.io.Serializable;
+
 
 /**
  * @author MK124
  *
  */
 
-public class SpawnInfo
+public class SpawnInfo implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	public PointAngle position;
 	public int skin, team;
 	public WeaponData weapon1, weapon2, weapon3;

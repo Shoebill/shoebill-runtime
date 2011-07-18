@@ -16,13 +16,18 @@
 
 package net.gtaun.samp.data;
 
+import java.io.Serializable;
+
 /**
  * @author MK124
  *
  */
 
-public class Area
+public class Area implements Serializable
 {
+	
+	private static final long serialVersionUID = 1L;
+	
 	public float minX, minY, maxX, maxY;
 	
 	

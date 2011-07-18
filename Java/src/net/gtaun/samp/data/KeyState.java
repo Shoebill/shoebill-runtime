@@ -16,14 +16,19 @@
 
 package net.gtaun.samp.data;
 
+import java.io.Serializable;
+
 /**
  * @author MK124
  *
  */
 
 @SuppressWarnings("unused")
-public class KeyState
+public class KeyState implements Serializable
 {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private final int KEY_ACTION				= 1;
 	private final int KEY_CROUCH				= 2;
 	private final int KEY_FIRE					= 4;

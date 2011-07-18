@@ -26,6 +26,8 @@ public class Velocity extends Vector3D
 	//public float x, y, z;
 	
 
+	private static final long serialVersionUID = 1L;
+
 	public Velocity()
 	{
 		

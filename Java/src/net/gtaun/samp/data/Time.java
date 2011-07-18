@@ -16,13 +16,17 @@
 
 package net.gtaun.samp.data;
 
+import java.io.Serializable;
+
 /**
  * @author MK124
  *
  */
 
-public class Time
+public class Time implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	public int hour, minute;
 	
 	

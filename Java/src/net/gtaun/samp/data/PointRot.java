@@ -23,6 +23,8 @@ package net.gtaun.samp.data;
 
 public class PointRot extends Point
 {
+	private static final long serialVersionUID = 1L;
+	
 	public float rx, ry, rz;
 	
 	

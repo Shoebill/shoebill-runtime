@@ -16,13 +16,17 @@
 
 package net.gtaun.samp.data;
 
+import java.io.Serializable;
+
 /**
  * @author JoJLlmAn
  *
  */
 
-public class Quaternions extends Vector3D
+public class Quaternions extends Vector3D implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	//public float w,x,y,z;
 	
 	public float w;

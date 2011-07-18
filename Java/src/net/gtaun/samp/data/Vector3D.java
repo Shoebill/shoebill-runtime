@@ -23,6 +23,8 @@ package net.gtaun.samp.data;
 
 public class Vector3D extends Vector2D{
 	
+	private static final long serialVersionUID = 1L;
+	
 	public float z;
 	
 	public Vector3D()
