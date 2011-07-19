@@ -29,6 +29,11 @@ import net.gtaun.samp.data.PointRange;
 
 public class LabelBase
 {
+	public static Vector<LabelBase> get()
+	{
+		return GameModeBase.getInstances(GameModeBase.instance.labelPool, LabelBase.class);
+	}
+	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
 		return GameModeBase.getInstances(GameModeBase.instance.labelPool, cls);

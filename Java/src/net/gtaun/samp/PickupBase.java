@@ -30,6 +30,11 @@ import net.gtaun.samp.event.PlayerPickupEvent;
 
 public class PickupBase
 {
+	public static Vector<PickupBase> get()
+	{
+		return GameModeBase.getInstances(GameModeBase.instance.pickupPool, PickupBase.class);
+	}
+	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
 		return GameModeBase.getInstances(GameModeBase.instance.pickupPool, cls);

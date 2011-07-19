@@ -28,6 +28,19 @@ import net.gtaun.samp.data.PointRange;
 
 public class PlayerLabelBase extends LabelBase
 {
+	public static Vector<PlayerLabelBase> get( int playerid )
+	{
+		Vector<PlayerLabelBase> list = new Vector<PlayerLabelBase>();
+		
+		int baseIndex = playerid*GameModeBase.MAX_LABELS_PLAYER;
+		for( int i = baseIndex; i < baseIndex+GameModeBase.MAX_LABELS_PLAYER ; i++ )
+		{
+			list.add( GameModeBase.instance.playerLabelPool[i] );
+		}
+		
+		return list;
+	}
+	
 	public static <T> Vector<T> get( Class<T> cls, int playerid )
 	{
 		Vector<T> list = new Vector<T>();
