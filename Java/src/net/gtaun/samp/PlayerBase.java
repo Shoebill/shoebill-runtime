@@ -177,6 +177,11 @@ public class PlayerBase
 			player.stuntBonus = enabled;
 		}
 	}
+	
+	public static void allowAdminTeleport( boolean allow )
+	{
+		NativeFunction.allowAdminTeleport(allow);
+	}
 
 	public static void sendMessageToAll( int color, String message )
 	{
@@ -862,9 +867,9 @@ public class PlayerBase
 		return NativeFunction.getPlayerAnimationIndex(id);
 	}
 	
-	public void allowRightclickTeleport( boolean allow )
+	public void allowTeleport( boolean allow )
 	{
-		NativeFunction.allowAdminTeleport( allow );
+		NativeFunction.allowPlayerTeleport(id, allow);
 	}
 
 	public void playSound( int sound, float x, float y, float z )
