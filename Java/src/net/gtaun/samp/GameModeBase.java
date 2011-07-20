@@ -338,11 +338,6 @@ public abstract class GameModeBase
 		NativeFunction.setGravity( gravity );
 	}
 	
-	public void allowAdminTeleport( boolean allow )
-	{
-		NativeFunction.allowAdminTeleport( allow );
-	}
-	
 	public void setDeathDropAmount( int amount )
 	{
 		NativeFunction.setDeathDropAmount( amount );
