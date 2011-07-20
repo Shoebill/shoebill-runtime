@@ -26,6 +26,11 @@ import java.util.Vector;
 
 public class TextdrawBase
 {
+	public static Vector<TextdrawBase> get()
+	{
+		return GameModeBase.getInstances(GameModeBase.instance.textdrawPool, TextdrawBase.class);
+	}
+	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
 		return GameModeBase.getInstances(GameModeBase.instance.textdrawPool, cls);

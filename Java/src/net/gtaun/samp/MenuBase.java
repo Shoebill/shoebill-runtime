@@ -31,6 +31,11 @@ import net.gtaun.samp.event.MenuSelectedEvent;
 
 public class MenuBase
 {
+	public static Vector<MenuBase> get()
+	{
+		return GameModeBase.getInstances(GameModeBase.instance.menuPool, MenuBase.class);
+	}
+	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
 		return GameModeBase.getInstances(GameModeBase.instance.menuPool, cls);

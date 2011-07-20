@@ -45,6 +45,11 @@ import net.gtaun.samp.event.VehicleUpdateEvent;
 
 public class VehicleBase
 {
+	public static Vector<VehicleBase> get()
+	{
+		return GameModeBase.getInstances(GameModeBase.instance.vehiclePool, VehicleBase.class);
+	}
+	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
 		return GameModeBase.getInstances(GameModeBase.instance.vehiclePool, cls);

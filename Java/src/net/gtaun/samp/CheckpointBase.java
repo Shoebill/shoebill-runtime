@@ -33,6 +33,8 @@ import net.gtaun.samp.event.CheckpointLeaveEvent;
 
 public class CheckpointBase extends Vector3D
 {
+	private static final long serialVersionUID = 1L;
+
 	public float size;
 	
 	

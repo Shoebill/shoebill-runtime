@@ -28,6 +28,19 @@ import net.gtaun.samp.data.PointRot;
 
 public class PlayerObjectBase extends ObjectBase
 {
+	public static Vector<PlayerObjectBase> get( int playerid )
+	{
+		Vector<PlayerObjectBase> list = new Vector<PlayerObjectBase>();
+		
+		int baseIndex = playerid*GameModeBase.MAX_OBJECTS;
+		for( int i = baseIndex; i < baseIndex+GameModeBase.MAX_OBJECTS ; i++ )
+		{
+			list.add( GameModeBase.instance.playerObjectPool[i] );
+		}
+		
+		return list;
+	}
+	
 	public static <T> Vector<T> get( Class<T> cls, int playerid )
 	{
 		Vector<T> list = new Vector<T>();

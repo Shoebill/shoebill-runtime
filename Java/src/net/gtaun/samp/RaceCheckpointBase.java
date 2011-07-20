@@ -34,6 +34,8 @@ import net.gtaun.samp.event.RaceCheckpointLeaveEvent;
 
 public class RaceCheckpointBase extends Vector3D
 {
+	private static final long serialVersionUID = 1L;
+	
 	public static final int TYPE_NORMAL =				0;
 	public static final int TYPE_AIR =					3;
 	public static final int TYPE_NOTHING =				2;
