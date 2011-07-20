@@ -94,7 +94,7 @@ void OnProcessTick()
 {
 	if( !jmodeobj ) return;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onProcessTick", "()V");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onProcessTick", "()V");
 	if( !jmid ) return;
 
 	env->CallVoidMethod(jmodeobj, jmid);
@@ -123,7 +123,7 @@ int OnGameModeExit()
 {
 	if( jmodeobj != NULL )
 	{
-		jmethodID jmid = env->GetMethodID(jmodecls, "onGameModeExit", "()I");
+		static jmethodID jmid = env->GetMethodID(jmodecls, "onGameModeExit", "()I");
 		env->DeleteLocalRef(jmodecls);
 		if( !jmid )
 		{
@@ -156,7 +156,7 @@ int OnPlayerConnect( int playerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerConnect", "(I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerConnect", "(I)I");
 	if( !jmid ) return 0;
 	
 	return env->CallIntMethod(jmodeobj, jmid, playerid);
@@ -168,7 +168,7 @@ int OnPlayerDisconnect( int playerid, int reason )
 
 	player_codepage[playerid] = 0;
 	
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerDisconnect", "(II)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerDisconnect", "(II)I");
 	if( !jmid ) return 0;
 	
 	return env->CallIntMethod(jmodeobj, jmid, playerid, reason);
@@ -178,7 +178,7 @@ int OnPlayerSpawn( int playerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerSpawn", "(I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerSpawn", "(I)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid);
@@ -188,7 +188,7 @@ int OnPlayerDeath( int playerid, int killerid, int reason )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerDeath", "(III)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerDeath", "(III)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, killerid, reason);
@@ -198,7 +198,7 @@ int OnVehicleSpawn( int vehicleid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleSpawn", "(I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleSpawn", "(I)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, vehicleid);
@@ -208,7 +208,7 @@ int OnVehicleDeath( int vehicleid, int killerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleDeath", "(II)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleDeath", "(II)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, vehicleid, killerid);
@@ -218,7 +218,7 @@ int OnPlayerText( int playerid, char* text )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerText", "(ILjava/lang/String;)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerText", "(ILjava/lang/String;)I");
 	if( !jmid ) return 0;
 
 	jchar wtext[1024];
@@ -232,7 +232,7 @@ int OnPlayerCommandText( int playerid, char* cmdtext )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerCommandText", "(ILjava/lang/String;)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerCommandText", "(ILjava/lang/String;)I");
 	if( !jmid ) return 0;
 
 	jchar wtext[1024];
@@ -246,7 +246,7 @@ int OnPlayerRequestClass( int playerid, int classid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerRequestClass", "(II)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerRequestClass", "(II)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, classid);
@@ -256,7 +256,7 @@ int OnPlayerEnterVehicle( int playerid, int vehicleid, int ispassenger )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerEnterVehicle", "(III)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerEnterVehicle", "(III)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, vehicleid, ispassenger);
@@ -266,7 +266,7 @@ int OnPlayerExitVehicle( int playerid, int vehicleid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerExitVehicle", "(II)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerExitVehicle", "(II)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, vehicleid);
@@ -276,7 +276,7 @@ int OnPlayerStateChange( int playerid, int newstate, int oldstate )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerStateChange", "(III)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerStateChange", "(III)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, newstate, oldstate);
@@ -286,7 +286,7 @@ int OnPlayerEnterCheckpoint( int playerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerEnterCheckpoint", "(I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerEnterCheckpoint", "(I)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid);
@@ -296,7 +296,7 @@ int OnPlayerLeaveCheckpoint( int playerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerLeaveCheckpoint", "(I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerLeaveCheckpoint", "(I)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid);
@@ -306,7 +306,7 @@ int OnPlayerEnterRaceCheckpoint( int playerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerEnterRaceCheckpoint", "(I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerEnterRaceCheckpoint", "(I)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid);
@@ -316,7 +316,7 @@ int OnPlayerLeaveRaceCheckpoint( int playerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerLeaveRaceCheckpoint", "(I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerLeaveRaceCheckpoint", "(I)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid);
@@ -326,7 +326,7 @@ int OnRconCommand( char* cmd )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onServerRconCommand", "(Ljava/lang/String;)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onServerRconCommand", "(Ljava/lang/String;)I");
 	if( !jmid ) return 0;
 
 	jchar wtext[1024];
@@ -340,7 +340,7 @@ int OnPlayerRequestSpawn( int playerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerRequestSpawn", "(I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerRequestSpawn", "(I)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid);
@@ -350,7 +350,7 @@ int OnObjectMoved( int objectid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onObjectMoved", "(I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onObjectMoved", "(I)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, objectid);
@@ -360,7 +360,7 @@ int OnPlayerObjectMoved( int playerid, int objectid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerObjectMoved", "(II)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerObjectMoved", "(II)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, objectid);
@@ -370,7 +370,7 @@ int OnPlayerPickUpPickup( int playerid, int pickupid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerPickUpPickup", "(II)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerPickUpPickup", "(II)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, pickupid);
@@ -380,7 +380,7 @@ int OnVehicleMod( int playerid, int vehicleid, int componentid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleMod", "(III)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleMod", "(III)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, vehicleid, componentid);
@@ -390,7 +390,7 @@ int OnEnterExitModShop( int playerid, int enterexit, int interiorid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onEnterExitModShop", "(III)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onEnterExitModShop", "(III)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, enterexit, interiorid);
@@ -400,7 +400,7 @@ int OnVehiclePaintjob( int playerid, int vehicleid, int paintjobid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onVehiclePaintjob", "(III)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onVehiclePaintjob", "(III)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, vehicleid, paintjobid);
@@ -410,7 +410,7 @@ int OnVehicleRespray( int playerid, int vehicleid, int color1, int color2 )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleRespray", "(IIII)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleRespray", "(IIII)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, vehicleid, color1, color2);
@@ -420,7 +420,7 @@ int OnVehicleDamageStatusUpdate( int vehicleid, int playerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleDamageStatusUpdate", "(II)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleDamageStatusUpdate", "(II)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, vehicleid, playerid);
@@ -430,7 +430,7 @@ int OnPlayerSelectedMenuRow( int playerid, int row )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerSelectedMenuRow", "(II)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerSelectedMenuRow", "(II)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, row);
@@ -440,7 +440,7 @@ int OnPlayerExitedMenu( int playerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerExitedMenu", "(I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerExitedMenu", "(I)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid);
@@ -450,7 +450,7 @@ int OnPlayerInteriorChange( int playerid, int newinteriorid, int oldinteriorid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerInteriorChange", "(III)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerInteriorChange", "(III)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, newinteriorid, oldinteriorid);
@@ -460,7 +460,7 @@ int OnPlayerKeyStateChange( int playerid, int newkeys, int oldkeys )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerKeyStateChange", "(III)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerKeyStateChange", "(III)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, newkeys, oldkeys);
@@ -470,7 +470,7 @@ int OnRconLoginAttempt( char* ip, char* password, int success )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onServerRconLoginAttempt", "(Ljava/lang/String;Ljava/lang/String;I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onServerRconLoginAttempt", "(Ljava/lang/String;Ljava/lang/String;I)I");
 	if( !jmid ) return 0;
 
 	jstring iptext = env->NewStringUTF(ip);
@@ -486,7 +486,7 @@ int OnPlayerUpdate( int playerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerUpdate", "(I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerUpdate", "(I)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid);
@@ -496,7 +496,7 @@ int OnPlayerStreamIn( int playerid, int forplayerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerStreamIn", "(II)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerStreamIn", "(II)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, forplayerid);
@@ -506,7 +506,7 @@ int OnPlayerStreamOut( int playerid, int forplayerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerStreamOut", "(II)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerStreamOut", "(II)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, forplayerid);
@@ -516,7 +516,7 @@ int OnVehicleStreamIn( int vehicleid, int forplayerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleStreamIn", "(II)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleStreamIn", "(II)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, vehicleid, forplayerid);
@@ -526,7 +526,7 @@ int OnVehicleStreamOut( int vehicleid, int forplayerid )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleStreamOut", "(II)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onVehicleStreamOut", "(II)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, vehicleid, forplayerid);
@@ -536,7 +536,7 @@ int OnDialogResponse( int playerid, int dialogid, int response, int listitem, ch
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onDialogResponse", "(IIIILjava/lang/String;)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onDialogResponse", "(IIIILjava/lang/String;)I");
 	if( !jmid ) return 0;
 
 	jchar wtext[1024];
@@ -550,7 +550,7 @@ int OnPlayerClickPlayer( int playerid, int clickedplayerid, int source )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerClickPlayer", "(III)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onPlayerClickPlayer", "(III)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, playerid, clickedplayerid, source);
@@ -560,7 +560,7 @@ int OnTimer( int TimerIndex )
 {
 	if( !jmodeobj ) return 0;
 
-	jmethodID jmid = env->GetMethodID(jmodecls, "onTimer", "(I)I");
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onTimer", "(I)I");
 	if( !jmid ) return 0;
 
 	return env->CallIntMethod(jmodeobj, jmid, TimerIndex);
