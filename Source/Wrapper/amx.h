@@ -20,7 +20,7 @@
 #include <string.h>
 
 
-typedef int (*amx_func_t)(AMX *amx, cell* params);
+typedef int (*amx_native_t)(AMX *amx, cell* params);
 
 
 extern AMX *pAMX;
@@ -28,7 +28,7 @@ extern void *pAMXFunctions;
 extern AMX_NATIVE_INFO CallbackNatives[];
 
 
-inline amx_func_t amx_FindFunction( AMX *amx, const char *func )
+inline amx_native_t amx_FindNative( AMX *amx, const char *func )
 {
 	if( !amx )						return NULL;
 
@@ -39,7 +39,7 @@ inline amx_func_t amx_FindFunction( AMX *amx, const char *func )
 	AMX_HEADER *hdr = (AMX_HEADER*)amx->base;
 	AMX_FUNCSTUB *funcstub = (AMX_FUNCSTUB*)( (char*)(hdr)+ hdr->natives + hdr->defsize*index );
 
-	return (amx_func_t)funcstub->address;
+	return (amx_native_t)funcstub->address;
 }
 
 inline cell amx_Allot( AMX *amx, int len, cell **phys )
