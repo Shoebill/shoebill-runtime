@@ -43,6 +43,7 @@ native n_OnPlayerClickPlayer(playerid, clickedplayerid, source);
 
 
 forward Oops();
+forward CallDisconnect();
 
 
 main()
@@ -534,6 +535,7 @@ public Oops()
 	// Vehicle
 	CreateVehicle(0, 0, 0, 0, 0, 0, 0, 0);
 	DestroyVehicle(0);
+	IsVehicleStreamedIn(0, 0);
 	GetVehiclePos(0, f, f, f);
 	SetVehiclePos(0, 0, 0, 0);
 	GetVehicleZAngle(0, f);
@@ -571,4 +573,12 @@ public Oops()
 	GetVehicleVirtualWorld(0);
 }
 
+public CallDisconnect()
+{
+	OnPlayerConnect(0);
+	OnPlayerText(0, "test");
+	OnPlayerCommandText(0, "/test");
+	OnPlayerDisconnect(0,1);
+	OnRconCommand("test");
+}
 
