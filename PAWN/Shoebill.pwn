@@ -573,12 +573,4 @@ public Oops()
 	GetVehicleVirtualWorld(0);
 }
 
-public CallDisconnect()
-{
-	OnPlayerConnect(0);
-	OnPlayerText(0, "test");
-	OnPlayerCommandText(0, "/test");
-	OnPlayerDisconnect(0,1);
-	OnRconCommand("test");
-}
 
