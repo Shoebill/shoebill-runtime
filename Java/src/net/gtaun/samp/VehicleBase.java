@@ -35,6 +35,7 @@ import net.gtaun.samp.event.VehicleResprayEvent;
 import net.gtaun.samp.event.VehicleSpawnEvent;
 import net.gtaun.samp.event.VehicleStreamInEvent;
 import net.gtaun.samp.event.VehicleStreamOutEvent;
+import net.gtaun.samp.event.VehicleUnoccupiedUpdate;
 import net.gtaun.samp.event.VehicleUpdateDamageEvent;
 import net.gtaun.samp.event.VehicleUpdateEvent;
 
@@ -100,21 +101,23 @@ public class VehicleBase
 	EventDispatcher<VehiclePaintjobEvent>		eventPaintjob = new EventDispatcher<VehiclePaintjobEvent>();
 	EventDispatcher<VehicleResprayEvent>		eventRespray = new EventDispatcher<VehicleResprayEvent>();
 	EventDispatcher<VehicleUpdateDamageEvent>	eventUpdateDamage = new EventDispatcher<VehicleUpdateDamageEvent>();
+	EventDispatcher<VehicleUnoccupiedUpdate> 	eventVehicleUnoccupiedUpdate = new EventDispatcher<VehicleUnoccupiedUpdate>();
 	EventDispatcher<VehicleStreamInEvent>		eventStreamIn = new EventDispatcher<VehicleStreamInEvent>();
 	EventDispatcher<VehicleStreamOutEvent>		eventStreamOut = new EventDispatcher<VehicleStreamOutEvent>();
 
-	public IEventDispatcher<VehicleDestroyEvent>		eventDestroy()			{ return eventDestroy; }
-	public IEventDispatcher<VehicleSpawnEvent>			eventSpawn()			{ return eventSpawn; }
-	public IEventDispatcher<VehicleDeathEvent>			eventDeath()			{ return eventDeath; }
-	public IEventDispatcher<VehicleUpdateEvent>			eventUpdate()			{ return eventUpdate; }
-	public IEventDispatcher<VehicleEnterEvent>			eventEnter()			{ return eventEnter; }
-	public IEventDispatcher<VehicleExitEvent>			eventExit()				{ return eventExit; }
-	public IEventDispatcher<VehicleModEvent>			eventMod()				{ return eventMod; }
-	public IEventDispatcher<VehiclePaintjobEvent>		eventPaintjob()			{ return eventPaintjob; }
-	public IEventDispatcher<VehicleResprayEvent>		eventRespray()			{ return eventRespray; }
-	public IEventDispatcher<VehicleUpdateDamageEvent>	eventUpdateDamage()		{ return eventUpdateDamage; }
-	public IEventDispatcher<VehicleStreamInEvent>		eventStreamIn()			{ return eventStreamIn; }
-	public IEventDispatcher<VehicleStreamOutEvent>		eventStreamOut()		{ return eventStreamOut; }
+	public IEventDispatcher<VehicleDestroyEvent>		eventDestroy()					{ return eventDestroy; }
+	public IEventDispatcher<VehicleSpawnEvent>			eventSpawn()					{ return eventSpawn; }
+	public IEventDispatcher<VehicleDeathEvent>			eventDeath()					{ return eventDeath; }
+	public IEventDispatcher<VehicleUpdateEvent>			eventUpdate()					{ return eventUpdate; }
+	public IEventDispatcher<VehicleEnterEvent>			eventEnter()					{ return eventEnter; }
+	public IEventDispatcher<VehicleExitEvent>			eventExit()						{ return eventExit; }
+	public IEventDispatcher<VehicleModEvent>			eventMod()						{ return eventMod; }
+	public IEventDispatcher<VehiclePaintjobEvent>		eventPaintjob()					{ return eventPaintjob; }
+	public IEventDispatcher<VehicleResprayEvent>		eventRespray()					{ return eventRespray; }
+	public IEventDispatcher<VehicleUpdateDamageEvent>	eventUpdateDamage()				{ return eventUpdateDamage; }
+	public IEventDispatcher<VehicleUnoccupiedUpdate>	eventVehicleUnoccupiedUpdate()	{ return eventVehicleUnoccupiedUpdate; }
+	public IEventDispatcher<VehicleStreamInEvent>		eventStreamIn()					{ return eventStreamIn; }
+	public IEventDispatcher<VehicleStreamOutEvent>		eventStreamOut()				{ return eventStreamOut; }
 	
 
 	public VehicleBase( int model, float x, float y, float z, int interior, int world, float angle, int color1, int color2, int respawnDelay )
@@ -234,6 +237,11 @@ public class VehicleBase
 	}
 
 	protected int onUpdateDamage( PlayerBase player )
+	{
+		return 1;
+	}
+	
+	protected int onPlayerUnoccupiedUpdate( PlayerBase player )
 	{
 		return 1;
 	}
@@ -438,6 +446,11 @@ public class VehicleBase
 	public void setAngularVelocity( Velocity velocity )
 	{
 		NativeFunction.setVehicleAngularVelocity( id, velocity.x, velocity.y, velocity.z );
+	}
+	
+	public float distanceToPoint( Point point )
+	{
+		return NativeFunction.getVehicleDistanceFromPoint(id, point.x, point.y, point.z);
 	}
 	
 	//public static int getComponentType( int component );

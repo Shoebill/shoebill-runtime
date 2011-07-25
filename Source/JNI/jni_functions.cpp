@@ -1387,6 +1387,17 @@ JNIEXPORT jboolean JNICALL Java_net_gtaun_samp_NativeFunction_isPlayerInRangeOfP
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
+ * Method:    getPlayerDistanceFromPoint
+ * Signature: (IFFF)F
+ */
+JNIEXPORT jfloat JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerDistanceFromPoint
+  (JNIEnv *env, jclass jcls, jint playerid, jfloat x, jfloat y, jfloat z)
+{
+	return GetPlayerDistanceFromPoint(playerid, x, y, z);
+}
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
  * Method:    isPlayerStreamedIn
  * Signature: (II)Z
  */
@@ -1991,6 +2002,17 @@ JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerSurfingVehicl
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
+ * Method:    getPlayerSurfingObjectID
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerSurfingObjectID
+  (JNIEnv *env, jclass jcls, jint playerid)
+{
+	return GetPlayerSurfingObjectID(playerid);
+}
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
  * Method:    setPlayerAttachedObject
  * Signature: (IIIIFFFFFFFFF)Z
  */
@@ -2337,23 +2359,13 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerCameraPos
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
- * Method:    getPlayerCameraFrontVector
- * Signature: (ILnet/gtaun/samp/data/Point;)V
+ * Method:    getPlayerCameraMode
+ * Signature: (I)I
  */
-JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerCameraFrontVector
-  (JNIEnv *env, jclass jcls, jint playerid, jobject point)
+JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerCameraMode
+  (JNIEnv *env, jclass jcls, jint playerid)
 {
-	static jclass cls = env->GetObjectClass(point);
-	static jfieldID fidX = env->GetFieldID(cls, "x", "F");
-	static jfieldID fidY = env->GetFieldID(cls, "y", "F");
-	static jfieldID fidZ = env->GetFieldID(cls, "z", "F");
-
-	float x, y, z;
-	GetPlayerCameraFrontVector( playerid, x, y, z );
-
-	env->SetFloatField( point, fidX, x );
-	env->SetFloatField( point, fidY, y );
-	env->SetFloatField( point, fidZ, z );
+	return GetPlayerCameraMode(playerid);
 }
 
 /*
@@ -2614,6 +2626,17 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleRotationQuat
 	env->SetFloatField( quat, fidX, x );
 	env->SetFloatField( quat, fidY, y );
 	env->SetFloatField( quat, fidZ, z );
+}
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
+ * Method:    getVehicleDistanceFromPoint
+ * Signature: (IFFF)F
+ */
+JNIEXPORT jfloat JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleDistanceFromPoint
+  (JNIEnv *env, jclass jcls, jint vehicleid, jfloat x, jfloat y, jfloat z)
+{
+	return GetVehicleDistanceFromPoint(vehicleid, x, y, z);
 }
 
 /*

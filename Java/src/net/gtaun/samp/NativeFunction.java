@@ -175,6 +175,7 @@ final class NativeFunction
 	static native void setPlayerFacingAngle( int playerid, float angle );
 	static native float getPlayerFacingAngle( int playerid );
 	static native boolean isPlayerInRangeOfPoint( int playerid, float range, float x, float y, float z );
+	static native float getPlayerDistanceFromPoint( int playerid, float x, float y, float z); //0.3c r3
 	static native boolean isPlayerStreamedIn( int playerid, int forplayerid );
 	static native void setPlayerInterior( int playerid, int interiorid );
 	static native int getPlayerInterior( int playerid );
@@ -224,6 +225,7 @@ final class NativeFunction
 	static native void setPlayerShopName( int playerid, String shopname );
 	static native void setPlayerSkillLevel( int playerid, int skill, int level );
 	static native int getPlayerSurfingVehicleID( int playerid );
+	static native int getPlayerSurfingObjectID( int playerid ); //0.3c r3
 	
 	static native boolean setPlayerAttachedObject( int playerid, int index, int modelid, int bone, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ );
 	static native boolean removePlayerAttachedObject( int playerid, int index );
@@ -263,7 +265,7 @@ final class NativeFunction
 	static native void setCameraBehindPlayer( int playerid );
 	static native void getPlayerCameraPos( int playerid, Point point );
 	static native void getPlayerCameraFrontVector( int playerid, Point point );
-	//static native void getPlayerCameraUpVector( int playerid, Point point );
+	static native int getPlayerCameraMode( int playerid );
 
 	// Player conditionals
 	static native boolean isPlayerConnected( int playerid );
@@ -299,6 +301,7 @@ final class NativeFunction
 	static native void setVehiclePos( int vehicleid, float x, float y, float z );
 	static native float getVehicleZAngle( int vehicleid );
 	static native void getVehicleRotationQuat( int vehicleid, Quaternions quaternions );
+	static native float getVehicleDistanceFromPoint( int vehicleid, float x, float y, float z );
 	static native void setVehicleZAngle( int vehicleid, float angle );
 	static native void setVehicleParamsForPlayer( int vehicleid, int playerid, boolean objective, boolean doorslocked );
 	static native void manualVehicleEngineAndLights();

@@ -69,6 +69,7 @@ import net.gtaun.samp.event.VehicleResprayEvent;
 import net.gtaun.samp.event.VehicleSpawnEvent;
 import net.gtaun.samp.event.VehicleStreamInEvent;
 import net.gtaun.samp.event.VehicleStreamOutEvent;
+import net.gtaun.samp.event.VehicleUnoccupiedUpdate;
 import net.gtaun.samp.event.VehicleUpdateDamageEvent;
 
 /**
@@ -1339,6 +1340,30 @@ public abstract class GameModeBase
     		return 1;
     	}
 		catch( Exception e )
+		{
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	int onUnoccupiedVehicleUpdate( int vehicleid, int playerid, int passenger_seat )
+	{
+		try 
+		{
+			PlayerBase player = playerPool[playerid];
+    		VehicleBase vehicle = vehiclePool[vehicleid];
+    		
+    		VehicleUnoccupiedUpdate event = new VehicleUnoccupiedUpdate(vehicle, player, passenger_seat);
+    
+    		player.onUpdateUnoccupiedVehicle( vehicle );
+    		player.eventVehicleUnoccupiedUpdate.dispatchEvent( event );
+    		
+    		vehicle.onPlayerUnoccupiedUpdate( player );
+    		vehicle.eventVehicleUnoccupiedUpdate.dispatchEvent( event );
+    		
+    		return 1;
+		}
+		catch (Exception e) 
 		{
 			e.printStackTrace();
 			return 0;

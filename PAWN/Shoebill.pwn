@@ -40,10 +40,10 @@ native n_OnVehicleStreamIn(vehicleid, forplayerid);
 native n_OnVehicleStreamOut(vehicleid, forplayerid);
 native n_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]);
 native n_OnPlayerClickPlayer(playerid, clickedplayerid, source);
+native n_OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat); //0.3c r3
 
 
 forward Oops();
-forward CallDisconnect();
 
 
 main()
@@ -251,6 +251,11 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 	return n_OnPlayerClickPlayer(playerid, clickedplayerid, source);
 }
 
+public OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat)
+{
+	return n_OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat);
+}
+
 
 public Oops()
 {
@@ -291,6 +296,7 @@ public Oops()
 	SetPlayerFacingAngle(0, 0);
 	GetPlayerFacingAngle(0, f);
 	IsPlayerInRangeOfPoint(0, 0, 0, 0, 0);
+	GetPlayerDistanceFromPoint(0, f, f, f); //0.3c r3
 	IsPlayerStreamedIn(0, 0);
 	SetPlayerInterior(0, 0);
 	GetPlayerInterior(0);
@@ -340,6 +346,8 @@ public Oops()
 	SetPlayerShopName(0, a);
 	SetPlayerSkillLevel(0, 0, 0);
 	GetPlayerSurfingVehicleID(0);
+	GetPlayerSurfingObjectID(0); //0.3c r3
+	
 	SetPlayerAttachedObject(0, 0, 0, 0, 0, 0, 0, 0, 0);
 	RemovePlayerAttachedObject(0, 0);
 	IsPlayerAttachedObjectSlotUsed(0, 0);
@@ -388,6 +396,7 @@ public Oops()
 	SetCameraBehindPlayer(0);
 	GetPlayerCameraPos(0, f, f, f);
 	GetPlayerCameraFrontVector(0, f, f, f);
+	GetPlayerCameraMode(0); //0.3c r3
 
 	// Player conditionals
 	IsPlayerConnected(0);
@@ -540,6 +549,7 @@ public Oops()
 	SetVehiclePos(0, 0, 0, 0);
 	GetVehicleZAngle(0, f);
 	GetVehicleRotationQuat(0, f, f, f, f);
+	GetVehicleDistanceFromPoint(0, f, f, f); //0.3c r3
 	SetVehicleZAngle(0, 0);
 	SetVehicleParamsForPlayer(0, 0, 0, 0);
 	ManualVehicleEngineAndLights();

@@ -865,6 +865,14 @@ JNIEXPORT jboolean JNICALL Java_net_gtaun_samp_NativeFunction_isPlayerInRangeOfP
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
+ * Method:    getPlayerDistanceFromPoint
+ * Signature: (IFFF)F
+ */
+JNIEXPORT jfloat JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerDistanceFromPoint
+  (JNIEnv *, jclass, jint, jfloat, jfloat, jfloat);
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
  * Method:    isPlayerStreamedIn
  * Signature: (II)Z
  */
@@ -1257,6 +1265,14 @@ JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerSurfingVehicl
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
+ * Method:    getPlayerSurfingObjectID
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerSurfingObjectID
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
  * Method:    setPlayerAttachedObject
  * Signature: (IIIIFFFFFFFFF)Z
  */
@@ -1505,11 +1521,11 @@ JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerCameraFrontVe
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
- * Method:    getPlayerCameraUpVector
- * Signature: (ILnet/gtaun/samp/data/Point;)V
+ * Method:    getPlayerCameraMode
+ * Signature: (I)I
  */
-JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerCameraUpVector
-  (JNIEnv *, jclass, jint, jobject);
+JNIEXPORT jint JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerCameraMode
+  (JNIEnv *, jclass, jint);
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
@@ -1678,6 +1694,14 @@ JNIEXPORT jfloat JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleZAngle
  */
 JNIEXPORT void JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleRotationQuat
   (JNIEnv *, jclass, jint, jobject);
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
+ * Method:    getVehicleDistanceFromPoint
+ * Signature: (IFFF)F
+ */
+JNIEXPORT jfloat JNICALL Java_net_gtaun_samp_NativeFunction_getVehicleDistanceFromPoint
+  (JNIEnv *, jclass, jint, jfloat, jfloat, jfloat);
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
