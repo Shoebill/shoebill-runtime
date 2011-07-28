@@ -423,7 +423,7 @@ public abstract class GameModeBase
 			lastTick = nowTick;
 			
 			Iterator<Reference<TimerBase>> iterator = timerPool.iterator();
-			while( iterator.hasNext()                                                                                                                                                                                                                                                                                                       )
+			while( iterator.hasNext() )
 			{
 				TimerBase timer = iterator.next().get();
 				timer.tick( interval );
