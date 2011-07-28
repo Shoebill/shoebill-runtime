@@ -700,6 +700,42 @@ int GetServerVarAsBool( const char* varname )
 	return ret;
 }
 
+int GetPlayerNetworkStats(int playerid, char* retstr, int retstr_size)
+{
+	static amx_native_t func = amx_FindNative(pAMX, __FUNCTION__);
+	cell *str_phys;
+
+	cell args[4] =
+	{
+		sizeof(args)- sizeof(cell),
+		playerid, amx_Allot(pAMX, retstr_size, &str_phys), retstr_size
+	};
+
+	int ret = func(pAMX, args);
+
+	amx_GetString( retstr, str_phys, 0, retstr_size );
+	amx_Release( pAMX, args[2] );
+	return ret;
+}
+
+int GetNetworkStats(char* retstr, int retstr_size)
+{
+	static amx_native_t func = amx_FindNative(pAMX, __FUNCTION__);
+	cell *str_phys;
+
+	cell args[3] =
+	{
+		sizeof(args)- sizeof(cell),
+		amx_Allot(pAMX, retstr_size, &str_phys), retstr_size
+	};
+
+	int ret = func(pAMX, args);
+
+	amx_GetString( retstr, str_phys, 0, retstr_size );
+	amx_Release( pAMX, args[1] );
+	return ret;
+}
+
 
 // Menu
 

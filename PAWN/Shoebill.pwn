@@ -483,6 +483,8 @@ public Oops()
 	GetServerVarAsString(a, a, 0);
 	GetServerVarAsInt(a);
 	GetServerVarAsBool(a);
+	GetPlayerNetworkStats(0, a, 0);
+	GetNetworkStats(a, 0);
 
 	// Menu
 	CreateMenu(a, 0, 0, 0, 0, 0);

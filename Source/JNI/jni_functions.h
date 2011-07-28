@@ -425,6 +425,22 @@ JNIEXPORT jboolean JNICALL Java_net_gtaun_samp_NativeFunction_getServerVarAsBool
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
+ * Method:    getPlayerNetworkStats
+ * Signature: (I)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerNetworkStats
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
+ * Method:    getNetworkStats
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_net_gtaun_samp_NativeFunction_getNetworkStats
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
  * Method:    createMenu
  * Signature: (Ljava/lang/String;IFFFF)I
  */

@@ -102,6 +102,8 @@ final class NativeFunction
 	static native String getServerVarAsString( String varname );
 	static native int getServerVarAsInt( String varname );
 	static native boolean getServerVarAsBool( String varname );
+	static native String getPlayerNetworkStats( int playerid );
+	static native String getNetworkStats();
 
 	// Menu
 	static native int createMenu( String title, int columns, float x, float y, float col1width, float col2width );

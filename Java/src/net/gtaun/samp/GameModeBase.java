@@ -157,10 +157,10 @@ public abstract class GameModeBase
 	
 	Vector<Reference<TimerBase>> timerPool				= new Vector<Reference<TimerBase>>();
 	Map<Integer, WeakReference<DialogBase>> dialogPool	= new HashMap<Integer, WeakReference<DialogBase>>();
-	// 弱引用
+	// 撘勗���
 	
 	int currentPlayerId;
-	// PlayerBase() 需要用到
+	// PlayerBase() ����典
 	
 	int deathDropAmount = 0;
 	float nameTagDrawDistance = 70;
@@ -216,7 +216,7 @@ public abstract class GameModeBase
 	}
 	
 	
-//--------------------------------------------------------- 通过继承重写来处理事件
+//--------------------------------------------------------- ��蝏扳���亙���隞�
 
 	protected int onExit()
 	{
@@ -249,7 +249,7 @@ public abstract class GameModeBase
 	}
 
 	
-//--------------------------------------------------------- 提供的可爱的函数们
+//--------------------------------------------------------- ����梁��賣隞�
 	
 	public int weather()
 	{
@@ -411,8 +411,13 @@ public abstract class GameModeBase
 		NativeFunction.gameModeExit();
 	}
 	
+	public String getNetworkStats()
+	{
+		return NativeFunction.getNetworkStats();
+	}
 	
-//--------------------------------------------------------- 被JNI呼叫的玩意儿
+	
+//--------------------------------------------------------- 鋡侯NI�澆��
 
 	long lastTick = System.nanoTime();
 	void onProcessTick()

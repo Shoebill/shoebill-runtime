@@ -68,6 +68,8 @@ int SendRconCommand(const char* cmd);
 int GetServerVarAsString(const char* varname, char* buffer, int len);
 int GetServerVarAsInt(const char* varname);
 int GetServerVarAsBool(const char* varname);
+int GetPlayerNetworkStats(int playerid, char* retstr, int retstr_size);
+int GetNetworkStats(char* retstr, int retstr_size);
 
 // Menu
 int CreateMenu(const char* title, int columns, float x, float y, float col1width, float col2width = 0.0);

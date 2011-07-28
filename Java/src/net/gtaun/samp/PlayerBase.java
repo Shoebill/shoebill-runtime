@@ -1174,4 +1174,9 @@ public class PlayerBase
 		
 		return null;
 	}
+	
+	public String getNetworkStats()
+	{
+		return NativeFunction.getPlayerNetworkStats(id);
+	}
 }

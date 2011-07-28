@@ -692,6 +692,40 @@ JNIEXPORT jboolean JNICALL Java_net_gtaun_samp_NativeFunction_getServerVarAsBool
 
 /*
  * Class:     net_gtaun_samp_NativeFunction
+ * Method:    getPlayerNetworkStats
+ * Signature: (I)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerNetworkStats
+  (JNIEnv *env, jclass jcls, jint playerid)
+{
+	char retstr[2048];
+	GetPlayerNetworkStats( playerid, retstr, sizeof(retstr) );
+
+	jchar wstr[2048];
+	int len = mbs2wcs( server_codepage, retstr, -1, wstr, sizeof(wstr) );
+
+	return env->NewString(wstr, len-1);
+}
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
+ * Method:    getNetworkStats
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_net_gtaun_samp_NativeFunction_getNetworkStats
+  (JNIEnv *env, jclass jcls)
+{
+	char retstr[2048];
+	GetNetworkStats( retstr, sizeof(retstr) );
+
+	jchar wstr[2048];
+	int len = mbs2wcs( server_codepage, retstr, -1, wstr, sizeof(wstr) );
+
+	return env->NewString(wstr, len-1);
+}
+
+/*
+ * Class:     net_gtaun_samp_NativeFunction
  * Method:    createMenu
  * Signature: (Ljava/lang/String;IFFFF)I
  */
