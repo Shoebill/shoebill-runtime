@@ -68,6 +68,8 @@ int SendRconCommand(const char* cmd);
 int GetServerVarAsString(const char* varname, char* buffer, int len);
 int GetServerVarAsInt(const char* varname);
 int GetServerVarAsBool(const char* varname);
+int GetPlayerNetworkStats(int playerid, char* retstr, int retstr_size);
+int GetNetworkStats(char* retstr, int retstr_size);
 
 // Menu
 int CreateMenu(const char* title, int columns, float x, float y, float col1width, float col2width = 0.0);
@@ -141,6 +143,7 @@ int GetPlayerPos(int playerid, float& x, float& y, float& z);
 int SetPlayerFacingAngle(int playerid, float ang);
 int GetPlayerFacingAngle(int playerid, float& ang);
 int IsPlayerInRangeOfPoint(int playerid, float range, float x, float y, float z);
+int GetPlayerDistanceFromPoint(int playerid, float x, float y, float z); //0.3c r3
 int IsPlayerStreamedIn(int playerid, int forplayerid);
 int SetPlayerInterior(int playerid, int interiorid);
 int GetPlayerInterior(int playerid);
@@ -190,6 +193,7 @@ int PlayCrimeReportForPlayer(int playerid, int suspectid, int crime);
 int SetPlayerShopName(int playerid, const char* shopname);
 int SetPlayerSkillLevel(int playerid, int skill, int level);
 int GetPlayerSurfingVehicleID(int playerid);
+int GetPlayerSurfingObjectID(int playerid); //0.3c r3
 
 int SetPlayerAttachedObject(int playerid, int index, int modelid, int bone, float fOffsetX = 0.0, float fOffsetY = 0.0, float fOffsetZ = 0.0, float fRotX = 0.0, float fRotY = 0.0, float fRotZ = 0.0, float fScaleX = 1.0, float fScaleY = 1.0, float fScaleZ = 1.0);
 int RemovePlayerAttachedObject(int playerid, int index);
@@ -230,6 +234,7 @@ int SetPlayerCameraLookAt(int playerid, float x, float y, float z);
 int SetCameraBehindPlayer(int playerid);
 int GetPlayerCameraPos(int playerid, float &x, float &y, float &z);
 int GetPlayerCameraFrontVector(int playerid, float &x, float &y, float &z);
+int GetPlayerCameraMode(int playerid); //0.3c r3
 
 // Player conditionals
 int IsPlayerConnected(int playerid);
@@ -265,6 +270,7 @@ int GetVehiclePos(int vehicleid, float &x, float &y, float &z);
 int SetVehiclePos(int vehicleid, float x, float y, float z);
 int GetVehicleZAngle(int vehicleid, float &z_angle);
 int GetVehicleRotationQuat(int vehicleid, float &w, float &x, float &y, float &z);
+int GetVehicleDistanceFromPoint(int vehicleid, float x, float y, float z); //0.3c r3
 int SetVehicleZAngle(int vehicleid, float z_angle);
 int SetVehicleParamsForPlayer(int vehicleid, int playerid, int objective, int doorslocked);
 int ManualVehicleEngineAndLights();

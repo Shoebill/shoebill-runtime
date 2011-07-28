@@ -61,6 +61,7 @@ import net.gtaun.samp.event.VehiclePaintjobEvent;
 import net.gtaun.samp.event.VehicleResprayEvent;
 import net.gtaun.samp.event.VehicleStreamInEvent;
 import net.gtaun.samp.event.VehicleStreamOutEvent;
+import net.gtaun.samp.event.VehicleUnoccupiedUpdate;
 import net.gtaun.samp.exception.AlreadyExistException;
 import net.gtaun.samp.exception.IllegalLengthException;
 
@@ -235,7 +236,7 @@ public class PlayerBase
 	int frame = -1;
 	float health, armour;
 	int money, score;
-	int weather;
+	int weather, cameraMode;
 //	VehicleBase vehicle;
 
 	PointAngle position = new PointAngle();
@@ -270,6 +271,7 @@ public class PlayerBase
 	public int money()						{ return money; }
 	public int score()						{ return score; }
 	public int weather()					{ return weather; }
+	public int cameraMode()					{ return cameraMode; }
 	public int fightingStyle()				{ return NativeFunction.getPlayerFightingStyle(id); }
 	public VehicleBase vehicle()			{ return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerVehicleID(id)); }
 	public int seat()						{ return NativeFunction.getPlayerVehicleSeat(id); }
@@ -325,45 +327,47 @@ public class PlayerBase
 	EventDispatcher<VehicleModEvent>				eventVehicleMod = new EventDispatcher<VehicleModEvent>();
 	EventDispatcher<VehiclePaintjobEvent>			eventVehiclePaintjob = new EventDispatcher<VehiclePaintjobEvent>();
 	EventDispatcher<VehicleResprayEvent>			eventVehicleRespray = new EventDispatcher<VehicleResprayEvent>();
+	EventDispatcher<VehicleUnoccupiedUpdate> 		eventVehicleUnoccupiedUpdate = new EventDispatcher<VehicleUnoccupiedUpdate>();
 	EventDispatcher<VehicleStreamInEvent>			eventVehicleStreamIn = new EventDispatcher<VehicleStreamInEvent>();
 	EventDispatcher<VehicleStreamOutEvent>			eventVehicleStreamOut = new EventDispatcher<VehicleStreamOutEvent>();
 	EventDispatcher<DialogResponseEvent>			eventDialogResponse = new EventDispatcher<DialogResponseEvent>();
 	EventDispatcher<MenuSelectedEvent>				eventMenuSelected = new EventDispatcher<MenuSelectedEvent>();
 	EventDispatcher<MenuExitedEvent>				eventMenuExited = new EventDispatcher<MenuExitedEvent>();
 
-	public IEventDispatcher<PlayerDisconnectEvent>			eventDisconnect() 			{ return eventDisconnect; }
-	public IEventDispatcher<PlayerRequestSpawnEvent>		eventRequestSpawn() 		{ return eventRequestSpawn; }
-	public IEventDispatcher<PlayerSpawnEvent>				eventSpawn() 				{ return eventSpawn; }		
-	public IEventDispatcher<PlayerKillEvent>				eventKill() 				{ return eventKill; }
-	public IEventDispatcher<PlayerDeathEvent>				eventDeath() 				{ return eventDeath; }
-	public IEventDispatcher<PlayerTextEvent>				eventText() 				{ return eventText; }
-	public IEventDispatcher<PlayerCommandEvent>				eventCommand() 				{ return eventCommand; }
-	public IEventDispatcher<PlayerRequestClassEvent>		eventRequestClass() 		{ return eventRequestClass; }
-	public IEventDispatcher<PlayerUpdateEvent>				eventUpdate() 				{ return eventUpdate; }
-	public IEventDispatcher<PlayerStateChangeEvent>			eventStateChange() 			{ return eventStateChange; }
-	public IEventDispatcher<CheckpointEnterEvent>		eventEnterCheckpoint() 		{ return eventEnterCheckpoint; }
-	public IEventDispatcher<CheckpointLeaveEvent>		eventLeaveCheckpoint() 		{ return eventLeaveCheckpoint; }
-	public IEventDispatcher<RaceCheckpointEnterEvent>	eventEnterRaceCheckpoint() 	{ return eventEnterRaceCheckpoint; }
-	public IEventDispatcher<RaceCheckpointLeaveEvent>	eventLeaveRaceCheckpoint() 	{ return eventLeaveRaceCheckpoint; }
-	public IEventDispatcher<PlayerObjectMovedEvent>			eventObjectMoved() 			{ return eventObjectMoved; }
-	public IEventDispatcher<PlayerPickupEvent>				eventPickup() 				{ return eventPickup; }
-	public IEventDispatcher<PlayerEnterExitModShopEvent>	eventEnterExitModShop() 	{ return eventEnterExitModShop; }
-	public IEventDispatcher<PlayerInteriorChangeEvent>		eventInteriorChange() 		{ return eventInteriorChange; }
-	public IEventDispatcher<PlayerKeyStateChangeEvent>		eventKeyStateChange() 		{ return eventKeyStateChange; }
-	public IEventDispatcher<PlayerStreamInEvent>			eventStreamInEvent() 		{ return eventPlayerStreamIn; }
-	public IEventDispatcher<PlayerStreamOutEvent>			eventStreamOut() 			{ return eventPlayerStreamOut; }
-	public IEventDispatcher<PlayerClickPlayerEvent>			eventClickPlayer() 			{ return eventClickPlayer; }
+	public IEventDispatcher<PlayerDisconnectEvent>			eventDisconnect() 				{ return eventDisconnect; }
+	public IEventDispatcher<PlayerRequestSpawnEvent>		eventRequestSpawn() 			{ return eventRequestSpawn; }
+	public IEventDispatcher<PlayerSpawnEvent>				eventSpawn() 					{ return eventSpawn; }		
+	public IEventDispatcher<PlayerKillEvent>				eventKill() 					{ return eventKill; }
+	public IEventDispatcher<PlayerDeathEvent>				eventDeath() 					{ return eventDeath; }
+	public IEventDispatcher<PlayerTextEvent>				eventText() 					{ return eventText; }
+	public IEventDispatcher<PlayerCommandEvent>				eventCommand() 					{ return eventCommand; }
+	public IEventDispatcher<PlayerRequestClassEvent>		eventRequestClass() 			{ return eventRequestClass; }
+	public IEventDispatcher<PlayerUpdateEvent>				eventUpdate() 					{ return eventUpdate; }
+	public IEventDispatcher<PlayerStateChangeEvent>			eventStateChange() 				{ return eventStateChange; }
+	public IEventDispatcher<CheckpointEnterEvent>			eventEnterCheckpoint() 			{ return eventEnterCheckpoint; }
+	public IEventDispatcher<CheckpointLeaveEvent>			eventLeaveCheckpoint() 			{ return eventLeaveCheckpoint; }
+	public IEventDispatcher<RaceCheckpointEnterEvent>		eventEnterRaceCheckpoint() 		{ return eventEnterRaceCheckpoint; }
+	public IEventDispatcher<RaceCheckpointLeaveEvent>		eventLeaveRaceCheckpoint() 		{ return eventLeaveRaceCheckpoint; }
+	public IEventDispatcher<PlayerObjectMovedEvent>			eventObjectMoved() 				{ return eventObjectMoved; }
+	public IEventDispatcher<PlayerPickupEvent>				eventPickup() 					{ return eventPickup; }
+	public IEventDispatcher<PlayerEnterExitModShopEvent>	eventEnterExitModShop() 		{ return eventEnterExitModShop; }
+	public IEventDispatcher<PlayerInteriorChangeEvent>		eventInteriorChange() 			{ return eventInteriorChange; }
+	public IEventDispatcher<PlayerKeyStateChangeEvent>		eventKeyStateChange() 			{ return eventKeyStateChange; }
+	public IEventDispatcher<PlayerStreamInEvent>			eventStreamInEvent() 			{ return eventPlayerStreamIn; }
+	public IEventDispatcher<PlayerStreamOutEvent>			eventStreamOut() 				{ return eventPlayerStreamOut; }
+	public IEventDispatcher<PlayerClickPlayerEvent>			eventClickPlayer() 				{ return eventClickPlayer; }
 	public IEventDispatcher<PlayerClickPlayerEvent>			eventOthersClick() 				{ return eventOthersClick; }
-	public IEventDispatcher<VehicleEnterEvent>				eventEnterVehicle() 		{ return eventEnterVehicle; }
-	public IEventDispatcher<VehicleExitEvent>				eventExitVehicle() 			{ return eventExitVehicle; }
-	public IEventDispatcher<VehicleModEvent>				eventVehicleMod() 			{ return eventVehicleMod; }
-	public IEventDispatcher<VehiclePaintjobEvent>			eventVehiclePaintjob() 		{ return eventVehiclePaintjob; }
-	public IEventDispatcher<VehicleResprayEvent>			eventVehicleRespray() 		{ return eventVehicleRespray; }
-	public IEventDispatcher<VehicleStreamInEvent>			eventVehicleStreamIn() 		{ return eventVehicleStreamIn; }
-	public IEventDispatcher<VehicleStreamOutEvent>			eventVehicleStreamOut() 	{ return eventVehicleStreamOut; }
-	public IEventDispatcher<DialogResponseEvent>			eventDialogResponse() 		{ return eventDialogResponse; }
-	public IEventDispatcher<MenuSelectedEvent>				eventMenuSelected() 		{ return eventMenuSelected; }
-	public IEventDispatcher<MenuExitedEvent>				eventMenuExited() 			{ return eventMenuExited; }
+	public IEventDispatcher<VehicleEnterEvent>				eventEnterVehicle() 			{ return eventEnterVehicle; }
+	public IEventDispatcher<VehicleExitEvent>				eventExitVehicle() 				{ return eventExitVehicle; }
+	public IEventDispatcher<VehicleModEvent>				eventVehicleMod() 				{ return eventVehicleMod; }
+	public IEventDispatcher<VehiclePaintjobEvent>			eventVehiclePaintjob() 			{ return eventVehiclePaintjob; }
+	public IEventDispatcher<VehicleResprayEvent>			eventVehicleRespray() 			{ return eventVehicleRespray; }
+	public IEventDispatcher<VehicleUnoccupiedUpdate>		eventVehicleUnoccupiedUpdate()	{ return eventVehicleUnoccupiedUpdate; }
+	public IEventDispatcher<VehicleStreamInEvent>			eventVehicleStreamIn() 			{ return eventVehicleStreamIn; }
+	public IEventDispatcher<VehicleStreamOutEvent>			eventVehicleStreamOut() 		{ return eventVehicleStreamOut; }
+	public IEventDispatcher<DialogResponseEvent>			eventDialogResponse() 			{ return eventDialogResponse; }
+	public IEventDispatcher<MenuSelectedEvent>				eventMenuSelected() 			{ return eventMenuSelected; }
+	public IEventDispatcher<MenuExitedEvent>				eventMenuExited() 				{ return eventMenuExited; }
 
 	
 	protected PlayerBase()
@@ -393,6 +397,8 @@ public class PlayerBase
 		
 		playerAttach = new PlayerAttach(id);
 		skill = new PlayerSkill(id);
+		
+		cameraMode = NativeFunction.getPlayerCameraMode(id);
 	}
 
 
@@ -539,6 +545,11 @@ public class PlayerBase
 	{
 		return 1;
 	}
+	
+	protected int onUpdateUnoccupiedVehicle( VehicleBase vehicle )
+	{
+		return 1;
+	}
 
 	protected int onVehicleStreamIn( VehicleBase vehicle )
 	{
@@ -579,6 +590,8 @@ public class PlayerBase
 		position.world = NativeFunction.getPlayerVirtualWorld(id);
 		NativeFunction.getPlayerVelocity( id, velocity );
 		NativeFunction.getPlayerKeys(id, keyState);
+		
+		cameraMode = NativeFunction.getPlayerCameraMode(id);
 		
 		frame++;
 		if( frame<0 ) frame = 0;
@@ -1145,5 +1158,25 @@ public class PlayerBase
 	{
 		NativeFunction.stopRecordingPlayerData( id );
 		recording = false;
+	}
+	
+	public float distancToPoint( Point point )
+	{
+		return NativeFunction.getPlayerDistanceFromPoint(id, point.x, point.y, point.z);
+	}
+	
+	public ObjectBase getSurfingObject()
+	{
+		int objectid = NativeFunction.getPlayerSurfingObjectID(id);
+		
+		if(objectid != 65535)
+			return GameModeBase.instance.objectPool[objectid];
+		
+		return null;
+	}
+	
+	public String getNetworkStats()
+	{
+		return NativeFunction.getPlayerNetworkStats(id);
 	}
 }

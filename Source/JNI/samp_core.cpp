@@ -565,3 +565,13 @@ int OnTimer( int TimerIndex )
 
 	return env->CallIntMethod(jmodeobj, jmid, TimerIndex);
 }
+
+int OnUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passenger_seat)
+{
+	if( !jmodeobj ) return 0;
+
+	static jmethodID jmid = env->GetMethodID(jmodecls, "onUnoccupiedVehicleUpdate", "(III)I");
+	if( !jmid ) return 0;
+
+	return env->CallIntMethod(jmodeobj, jmid, vehicleid, playerid, passenger_seat);
+}

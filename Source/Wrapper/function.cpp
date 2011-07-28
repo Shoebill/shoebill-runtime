@@ -700,6 +700,42 @@ int GetServerVarAsBool( const char* varname )
 	return ret;
 }
 
+int GetPlayerNetworkStats(int playerid, char* retstr, int retstr_size)
+{
+	static amx_native_t func = amx_FindNative(pAMX, __FUNCTION__);
+	cell *str_phys;
+
+	cell args[4] =
+	{
+		sizeof(args)- sizeof(cell),
+		playerid, amx_Allot(pAMX, retstr_size, &str_phys), retstr_size
+	};
+
+	int ret = func(pAMX, args);
+
+	amx_GetString( retstr, str_phys, 0, retstr_size );
+	amx_Release( pAMX, args[2] );
+	return ret;
+}
+
+int GetNetworkStats(char* retstr, int retstr_size)
+{
+	static amx_native_t func = amx_FindNative(pAMX, __FUNCTION__);
+	cell *str_phys;
+
+	cell args[3] =
+	{
+		sizeof(args)- sizeof(cell),
+		amx_Allot(pAMX, retstr_size, &str_phys), retstr_size
+	};
+
+	int ret = func(pAMX, args);
+
+	amx_GetString( retstr, str_phys, 0, retstr_size );
+	amx_Release( pAMX, args[1] );
+	return ret;
+}
+
 
 // Menu
 
@@ -1490,6 +1526,19 @@ int IsPlayerInRangeOfPoint( int playerid, float range, float x, float y, float z
 	return func(pAMX, args);
 }
 
+int GetPlayerDistanceFromPoint( int playerid, float x, float y, float z )
+{
+	static amx_native_t func = amx_FindNative(pAMX, __FUNCTION__);
+
+	cell args[5] =
+	{
+		sizeof(args)- sizeof(cell),
+		playerid, amx_ftoc(x), amx_ftoc(y), amx_ftoc(z)
+	};
+
+	return func(pAMX, args);
+}
+
 int IsPlayerStreamedIn( int playerid, int forplayerid )
 {
 	static amx_native_t func = amx_FindNative(pAMX, __FUNCTION__);
@@ -2188,6 +2237,18 @@ int GetPlayerSurfingVehicleID( int playerid )
 	return func(pAMX, args);
 }
 
+int GetPlayerSurfingObjectID( int playerid )
+{
+	static amx_native_t func = amx_FindNative(pAMX, __FUNCTION__);
+
+	cell args[2] =
+	{
+		sizeof(args)- sizeof(cell),
+		playerid
+	};
+
+	return func(pAMX, args);
+}
 
 int SetPlayerAttachedObject( int playerid, int index, int modelid, int bone, float fOffsetX, float fOffsetY, float fOffsetZ, float frotX, float frotY, float frotZ, float fScaleX, float fScaleY, float fScaleZ )
 {
@@ -2614,6 +2675,19 @@ int GetPlayerCameraFrontVector( int playerid, float &x, float &y, float &z )
 	return ret;
 }
 
+int GetPlayerCameraMode( int playerid)
+{
+	static amx_native_t func = amx_FindNative(pAMX, __FUNCTION__);
+
+	cell args[2] =
+	{
+		sizeof(args)- sizeof(cell),
+		playerid
+	};
+
+	return func(pAMX, args);
+}
+
 int AllowPlayerTeleport( int playerid, int allow )
 {
 	static amx_native_t func = amx_FindNative(pAMX, __FUNCTION__);
@@ -2949,6 +3023,19 @@ int GetVehicleRotationQuat( int vehicleid, float &w, float &x, float &y, float &
 	amx_Release( pAMX, args[2] );
 	return ret;
 
+}
+
+int GetVehicleDistanceFromPoint( int vehicleid, float x, float y, float z )
+{
+	static amx_native_t func = amx_FindNative(pAMX, __FUNCTION__);
+
+	cell args[5] =
+	{
+		sizeof(args)- sizeof(cell),
+		vehicleid, amx_ftoc(x), amx_ftoc(y), amx_ftoc(z)
+	};
+
+	return func(pAMX, args);
 }
 
 int SetVehicleZAngle( int vehicleid, float z_angle )

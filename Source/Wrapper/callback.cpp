@@ -234,6 +234,10 @@ static cell AMX_NATIVE_CALL n_OnPlayerClickPlayer( AMX* amx, cell* params )
 	return OnPlayerClickPlayer(params[1], params[2], params[3]);
 }
 
+static cell AMX_NATIVE_CALL n_OnUnoccupiedVehicleUpdate( AMX* amx, cell* params)
+{
+	return OnUnoccupiedVehicleUpdate(params[1], params[2], params[3]);
+}
 
 AMX_NATIVE_INFO CallbackNatives[] =
 {
@@ -277,5 +281,6 @@ AMX_NATIVE_INFO CallbackNatives[] =
 	{ "n_OnVehicleStreamOut",				n_OnVehicleStreamOut},
 	{ "n_OnDialogResponse",					n_OnDialogResponse},
 	{ "n_OnPlayerClickPlayer",				n_OnPlayerClickPlayer},
+	{ "n_OnUnoccupiedVehicleUpdate",		n_OnUnoccupiedVehicleUpdate},
 	{ 0,									0 }
 };
