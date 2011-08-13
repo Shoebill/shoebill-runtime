@@ -9,9 +9,9 @@ JNIDIR = Source/JNI/
 samppluginDIR = Dependencies/sampplugin/
 
 OBJS = $(JNIDIR)encoding.o $(JNIDIR)jni_functions.o $(JNIDIR)jni_core.o \
-$(JNIDIR)samp_core.o $(JNIDIR)linux.o $(WrapperDIR)callback.o \
-$(WrapperDIR)core.o $(WrapperDIR)function.o $(samppluginDIR)amxplugin.o \
-$(samppluginDIR)amx/getch.o
+	$(JNIDIR)samp_core.o $(JNIDIR)linux.o $(WrapperDIR)callback.o \
+	$(WrapperDIR)core.o $(WrapperDIR)function.o \
+	$(samppluginDIR)amxplugin.o $(samppluginDIR)amx/getch.o
 
 .SUFFIXES: .o
 
