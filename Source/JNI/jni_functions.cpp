@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include <String.h>
+#include <string.h>
 
 #include "jni_functions.h"
 #include "samp_core.h"
 #include "encoding.h"
-#include "a_samp.h"
+#include "../Wrapper/a_samp.h"
 
 
 /*

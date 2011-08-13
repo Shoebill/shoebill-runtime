@@ -19,8 +19,11 @@
 
 #include "encoding.h"
 #include "jni_core.h"
-#include "a_samp.h"
+#include "../Wrapper/a_samp.h"
 
+#if defined(LINUX)
+#include "linux.h"
+#endif
 
 #define CLASSPATH "./gamemodes/*.jar"
 //#define modeclass "net/gtaun/match/GameMode"

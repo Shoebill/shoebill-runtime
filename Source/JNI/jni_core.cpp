@@ -20,7 +20,15 @@
 #include <jni.h>
 #include <stdio.h>
 #include <string.h>
+
+#if defined(WIN32)
 #include <io.h>
+#endif
+
+#if defined(LINUX)
+#include <dirent.h>
+#include "linux.h"
+#endif
 
 #include "jni_core.h"
 
@@ -44,6 +52,8 @@ int jni_jvm_create( const char* classpath )
 	for( int i=strlen(jarpath)-1; i>=0; i-- )
 		if( jarpath[i] == '/' ) { jarpath[i+1] = 0; break; }
 
+#if defined(WIN32)
+
 	_finddata_t finddata;
 	int hfind = _findfirst(classpath, &finddata);
 	if( hfind < 0 ) return -2;
@@ -55,6 +65,42 @@ int jni_jvm_create( const char* classpath )
 		strcat( clspath, ";" );
 	} while ( !_findnext(hfind, &finddata) );
 	_findclose( hfind );
+#endif
+
+#if defined(LINUX)
+	DIR *dir = opendir(jarpath);
+	struct dirent entry;
+	struct dirent* entryPtr = NULL;
+
+	readdir_r(dir, &entry, &entryPtr);
+	if(entryPtr == NULL) return -2;
+
+	while(entryPtr != NULL)
+	{
+		if(strncmp(entry.d_name, ".", PATH_MAX) ==0 ||
+			strncmp(entry.d_name, "..", PATH_MAX) ==0)
+		{
+			readdir_r(dir, &entry, &entryPtr);
+			continue;
+		}
+
+		int len = strlen(entry.d_name);
+
+		if(strcmp(strlwr(&(entry.d_name[len-4])), ".jar") != 0)
+		{
+			readdir_r(dir, &entry, &entryPtr);
+			continue;
+		}
+
+		strcat( clspath, jarpath );
+		strcat( clspath, entry.d_name );
+		strcat( clspath, ";" );
+
+		readdir_r(dir, &entry, &entryPtr);
+	}
+
+	closedir(dir);
+#endif
 
 	clspath[ strlen(clspath)-1 ] = 0;
 	
