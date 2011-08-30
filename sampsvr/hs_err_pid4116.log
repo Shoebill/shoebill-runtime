@@ -1,0 +1,191 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00000000, pid=4116, tid=6772
+#
+# JRE version: 6.0_24-b07
+# Java VM: Java HotSpot(TM) Server VM (19.1-b02 mixed mode windows-x86 )
+# Problematic frame:
+# C  0x00000000
+#
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x02059c00):  JavaThread "main" [_thread_in_native, id=6772, stack(0x00030000,0x00130000)]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x00000000
+
+Registers:
+EAX=0x0012ec68, EBX=0x1038c5e0, ECX=0x0133cb20, EDX=0x0012ea66
+ESP=0x0012eb88, EBP=0x0012ec80, ESI=0x0012eb94, EDI=0x0012ec74
+EIP=0x00000000, EFLAGS=0x00010212
+
+Register to memory mapping:
+
+EAX=0x0012ec68
+0x0012ec68 is pointing into the stack for thread: 0x02059c00
+"main" prio=6 tid=0x02059c00 nid=0x1a74 runnable [0x0012e000]
+   java.lang.Thread.State: RUNNABLE
+
+EBX=0x1038c5e0
+{method} 
+ - klass: {other class}
+
+ECX=0x0133cb20
+0x0133cb20 is pointing to unknown location
+
+EDX=0x0012ea66
+0x0012ea66 is pointing into the stack for thread: 0x02059c00
+"main" prio=6 tid=0x02059c00 nid=0x1a74 runnable [0x0012e000]
+   java.lang.Thread.State: RUNNABLE
+
+ESP=0x0012eb88
+0x0012eb88 is pointing into the stack for thread: 0x02059c00
+"main" prio=6 tid=0x02059c00 nid=0x1a74 runnable [0x0012e000]
+   java.lang.Thread.State: RUNNABLE
+
+EBP=0x0012ec80
+0x0012ec80 is pointing into the stack for thread: 0x02059c00
+"main" prio=6 tid=0x02059c00 nid=0x1a74 runnable [0x0012e000]
+   java.lang.Thread.State: RUNNABLE
+
+ESI=0x0012eb94
+0x0012eb94 is pointing into the stack for thread: 0x02059c00
+"main" prio=6 tid=0x02059c00 nid=0x1a74 runnable [0x0012e000]
+   java.lang.Thread.State: RUNNABLE
+
+EDI=0x0012ec74
+0x0012ec74 is pointing into the stack for thread: 0x02059c00
+"main" prio=6 tid=0x02059c00 nid=0x1a74 runnable [0x0012e000]
+   java.lang.Thread.State: RUNNABLE
+
+
+Top of Stack: (sp=0x0012eb88)
+0x0012eb88:   63b4ed2a 0133cb20 0012ec68 076bb8fa
+0x0012eb98:   0012ed58 1038c5e0 1038c5e0 cccccccc
+0x0012eba8:   cccccccc cccccccc cccccccc cccccccc
+0x0012ebb8:   cccccccc cccccccc cccccccc cccccccc
+0x0012ebc8:   cccccccc cccccccc cccccccc cccccccc
+0x0012ebd8:   cccccccc cccccccc cccccccc cccccccc
+0x0012ebe8:   cccccccc cccccccc cccccccc cccccccc
+0x0012ebf8:   cccccccc cccccccc cccccccc cccccccc 
+
+Instructions: (pc=0x00000000)
+0xfffffff0:   
+
+
+Stack: [0x00030000,0x00130000],  sp=0x0012eb88,  free space=1018k
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  net.gtaun.samp.NativeFunction.getVehicleComponentType(I)I+0
+j  net.gtaun.samp.GameModeBase.onVehicleMod(III)I+29
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x05718400 JavaThread "Low Memory Detector" daemon [_thread_blocked, id=7260, stack(0x05d10000,0x05e10000)]
+  0x05715800 JavaThread "CompilerThread1" daemon [_thread_blocked, id=6604, stack(0x05c10000,0x05d10000)]
+  0x01dbe000 JavaThread "CompilerThread0" daemon [_thread_blocked, id=7832, stack(0x05b10000,0x05c10000)]
+  0x01dbd000 JavaThread "Attach Listener" daemon [_thread_blocked, id=6000, stack(0x05a10000,0x05b10000)]
+  0x01dbc000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=7372, stack(0x05910000,0x05a10000)]
+  0x01db2400 JavaThread "Finalizer" daemon [_thread_blocked, id=7364, stack(0x05610000,0x05710000)]
+  0x01daf400 JavaThread "Reference Handler" daemon [_thread_blocked, id=8140, stack(0x05510000,0x05610000)]
+=>0x02059c00 JavaThread "main" [_thread_in_native, id=6772, stack(0x00030000,0x00130000)]
+
+Other Threads:
+  0x01dab800 VMThread [stack: 0x05410000,0x05510000] [id=1852]
+  0x05729400 WatcherThread [stack: 0x05e10000,0x05f10000] [id=3508]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ PSYoungGen      total 6272K, used 2425K [0x34080000, 0x34720000, 0x44080000)
+  eden space 6016K, 40% used [0x34080000,0x342da458,0x34660000)
+  from space 256K, 6% used [0x346e0000,0x346e4000,0x34720000)
+  to   space 384K, 0% used [0x34660000,0x34660000,0x346c0000)
+ PSOldGen        total 32768K, used 5665K [0x14080000, 0x16080000, 0x34080000)
+  object space 32768K, 17% used [0x14080000,0x14608530,0x16080000)
+ PSPermGen       total 16384K, used 3373K [0x10080000, 0x11080000, 0x14080000)
+  object space 16384K, 20% used [0x10080000,0x103cb768,0x11080000)
+
+Dynamic libraries:
+0x00400000 - 0x004e7000 	C:\Users\MK124\Desktop\Shoebill\sampsvr\samp-server.exe
+0x77720000 - 0x7785c000 	C:\Windows\SYSTEM32\ntdll.dll
+0x77500000 - 0x775d4000 	C:\Windows\system32\kernel32.dll
+0x75b70000 - 0x75bba000 	C:\Windows\system32\KERNELBASE.dll
+0x76860000 - 0x774aa000 	C:\Windows\system32\SHELL32.dll
+0x76430000 - 0x764dc000 	C:\Windows\system32\msvcrt.dll
+0x775e0000 - 0x77637000 	C:\Windows\system32\SHLWAPI.dll
+0x774b0000 - 0x774fe000 	C:\Windows\system32\GDI32.dll
+0x75c90000 - 0x75d59000 	C:\Windows\system32\USER32.dll
+0x76850000 - 0x7685a000 	C:\Windows\system32\LPK.dll
+0x75bc0000 - 0x75c5d000 	C:\Windows\system32\USP10.dll
+0x71330000 - 0x71337000 	C:\Windows\system32\WSOCK32.dll
+0x761a0000 - 0x761d5000 	C:\Windows\system32\WS2_32.dll
+0x75ef0000 - 0x75f91000 	C:\Windows\system32\RPCRT4.dll
+0x75fb0000 - 0x75fb6000 	C:\Windows\system32\NSI.dll
+0x73d90000 - 0x73dc2000 	C:\Windows\system32\WINMM.dll
+0x77860000 - 0x7787f000 	C:\Windows\system32\IMM32.DLL
+0x77880000 - 0x7794c000 	C:\Windows\system32\MSCTF.dll
+0x06540000 - 0x06559000 	D:\GDI++\gdi++.dll
+0x10000000 - 0x10076000 	D:\GDI++\freetype.dll
+0x761e0000 - 0x76280000 	C:\Windows\system32\ADVAPI32.dll
+0x75e70000 - 0x75e89000 	C:\Windows\SYSTEM32\sechost.dll
+0x0f000000 - 0x0f006000 	C:\Windows\system32\detoured.dll
+0x705d0000 - 0x705e2000 	C:\Users\MK124\Desktop\Shoebill\sampsvr\plugins\NPatcher.DLL
+0x75fa0000 - 0x75fa5000 	C:\Windows\system32\PSAPI.DLL
+0x63ae0000 - 0x63bf0000 	C:\Users\MK124\Desktop\Shoebill\sampsvr\plugins\Shoebill.DLL
+0x6db70000 - 0x6dfb9000 	C:\Program Files\Java\jdk1.6.0_24\jre\bin\server\jvm.dll
+0x7c360000 - 0x7c3b6000 	C:\Windows\system32\MSVCR71.dll
+0x757f0000 - 0x7583c000 	C:\Windows\system32\apphelp.dll
+0x6d850000 - 0x6d85c000 	C:\Program Files\Java\jdk1.6.0_24\jre\bin\verify.dll
+0x6d3d0000 - 0x6d3ef000 	C:\Program Files\Java\jdk1.6.0_24\jre\bin\java.dll
+0x6d330000 - 0x6d338000 	C:\Program Files\Java\jdk1.6.0_24\jre\bin\hpi.dll
+0x6d890000 - 0x6d89f000 	C:\Program Files\Java\jdk1.6.0_24\jre\bin\zip.dll
+0x73310000 - 0x73326000 	C:\Users\MK124\Desktop\Shoebill\sampsvr\plugins\logpath.DLL
+0x75300000 - 0x7533c000 	C:\Windows\system32\mswsock.dll
+0x74e30000 - 0x74e35000 	C:\Windows\System32\wshtcpip.dll
+0x73c60000 - 0x73c70000 	C:\Windows\system32\NLAapi.dll
+0x710a0000 - 0x710b0000 	C:\Windows\system32\napinsp.dll
+0x71080000 - 0x71092000 	C:\Windows\system32\pnrpnsp.dll
+0x71070000 - 0x7107d000 	C:\Windows\system32\wshbth.dll
+0x751c0000 - 0x75204000 	C:\Windows\system32\DNSAPI.dll
+0x71060000 - 0x71068000 	C:\Windows\System32\winrnr.dll
+0x73960000 - 0x7397c000 	C:\Windows\system32\IPHLPAPI.DLL
+0x73940000 - 0x73947000 	C:\Windows\system32\WINNSI.DLL
+0x71e60000 - 0x71e98000 	C:\Windows\System32\fwpuclnt.dll
+0x70650000 - 0x70656000 	C:\Windows\system32\rasadhlp.dll
+
+VM Arguments:
+jvm_args: -verbose:gc 
+java_command: <unknown>
+Launcher Type: generic
+
+Environment Variables:
+PATH=C:\Program Files\AMD APP\bin\x86;D:\Intel\VTune\CGGlbCache;D:\Intel\VTune\Analyzer\Bin;D:\Intel\VTune\Shared\Bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;C:\Program Files\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files\TortoiseSVN\bin;D:\Microsoft Visual Studio\VC98\Bin;D:\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files\TortoiseHg\;D:\WINDDK\;C:\Program Files\Xuggle\bin;C:\Program Files\Git\cmd;C:\Program Files\TortoiseGit\bin;D:\Microsoft Visual Studio\Common\MSDev98\Bin;D:\Microsoft Visual Studio\Common\Tools;D:\Microsoft Visual Studio\VC98\bin;D:\Microsoft Visual Studio 2008 SDK\VisualStudioIntegration\Tools\Sandcastle\ProductionTools\;D:\SSH Secure Shell;C:\Program Files\Java\jdk1.6.0_24\bin;C:\Program Files\Java\jdk1.6.0_24\jre\bin\server;D:\GDI++
+USERNAME=MK124
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=x86 Family 6 Model 15 Stepping 13, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 7 Build 7601 Service Pack 1
+
+CPU:total 2 (2 cores per cpu, 1 threads per core) family 6 model 15 stepping 13, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3
+
+Memory: 4k page, physical 3144952k(880756k free), swap 6288148k(3208076k free)
+
+vm_info: Java HotSpot(TM) Server VM (19.1-b02) for windows-x86 JRE (1.6.0_24-b07), built on Feb  2 2011 17:37:30 by "java_re" with MS VC++ 7.1 (VS2003)
+
+time: Sun Aug 07 11:16:32 2011
+elapsed time: 3986 seconds
+
