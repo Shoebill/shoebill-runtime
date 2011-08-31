@@ -51,7 +51,7 @@ int wcs2mbs( unsigned int codepage, const unsigned short* src, int srclen, char*
 //----------------------------------------------------------
 
 #if defined(LINUX) || defined(FREEBSD) || defined(__FreeBSD__) || defined(__OpenBSD__)
-#include "iconv.h"
+#include <iconv.h>
 
 int mbs2wcs( unsigned int codepage, const char* src, int srclen, unsigned short* dst, int dstlen )
 {

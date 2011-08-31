@@ -33,7 +33,7 @@ final class NativeFunction
 {
 	static void loadLibrary()
 	{
-		System.loadLibrary( "plugins/Shoebill" );
+		System.loadLibrary( "Shoebill" );
 	}
 	
 	

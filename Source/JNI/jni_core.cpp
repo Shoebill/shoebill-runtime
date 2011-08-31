@@ -19,7 +19,6 @@
 
 #include <jni.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #if defined(WIN32)
@@ -114,7 +113,7 @@ int jni_jvm_create( const char* classpath )
 
 	options[0].optionString = clspath;
 	options[1].optionString = "-verbose:gc";
-	options[2].optionString = "-Djava.library.path=/opt/samp03/plugins";
+	options[2].optionString = "-Djava.library.path=./plugins";
 	//options[3].optionString = "-Djava.compiler=NONE";
 
 	vm_args.version = JNI_VERSION_1_6;
