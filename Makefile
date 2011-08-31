@@ -15,10 +15,10 @@ OBJS = $(JNIDIR)encoding.o $(JNIDIR)jni_functions.o $(JNIDIR)jni_core.o \
 
 .SUFFIXES: .o
 
-all: Shoebill.so
+all: libShoebill.so
 
-Shoebill.so: $(OBJS)
-	$(CC) -shared $(OBJS) $(LIBDIR) -lawt -ljvm $(CFLAG) -o $@
+libShoebill.so: $(OBJS)
+	$(CC) -shared $(OBJS) $(LIBDIR) -ljvm $(CFLAG) -o $@
 	mv $@ Binary/$@
 
 %.o: %.cpp
@@ -27,5 +27,5 @@ Shoebill.so: $(OBJS)
 
 .PHONY: clean
 clean:
-	-rm Binary/Shoebill.so
+	-rm Binary/libShoebill.so
 	-rm $(OBJS)
