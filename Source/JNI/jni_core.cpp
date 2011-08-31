@@ -113,7 +113,7 @@ int jni_jvm_create( const char* classpath )
 	clspath[ strlen(clspath)-1 ] = 0;
 
 	options[0].optionString = clspath;
-	options[1].optionString = "-verbose:class";
+	options[1].optionString = "-verbose:gc";
 	options[2].optionString = "-Djava.library.path=/opt/samp03/plugins";
 	//options[3].optionString = "-Djava.compiler=NONE";
 
