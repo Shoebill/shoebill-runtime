@@ -1,5 +1,5 @@
 CC = g++
-CFLAG = -O3 -Wall -ansi -fPIC -g
+CFLAG = -O3 -Wall -ansi -fPIC
 DFLAG = -DLINUX
 INCDIR = -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux \
 	-I/usr/include
