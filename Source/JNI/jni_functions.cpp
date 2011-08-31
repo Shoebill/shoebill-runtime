@@ -654,7 +654,7 @@ JNIEXPORT jstring JNICALL Java_net_gtaun_samp_NativeFunction_getServerVarAsStrin
 	env->ReleaseStringUTFChars(varname, str_varname);
 
 	jchar wstr[256];
-	int len = mbs2wcs( server_codepage, var, -1, wstr, sizeof(wstr) );
+	int len = mbs2wcs( server_codepage, var, -1, wstr, sizeof(wstr)/sizeof(wstr[0]) );
 	return env->NewString(wstr, len-1);
 }
 
@@ -702,7 +702,7 @@ JNIEXPORT jstring JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerNetworkSta
 	GetPlayerNetworkStats( playerid, retstr, sizeof(retstr) );
 
 	jchar wstr[2048];
-	int len = mbs2wcs( server_codepage, retstr, -1, wstr, sizeof(wstr) );
+	int len = mbs2wcs( server_codepage, retstr, -1, wstr, sizeof(wstr)/sizeof(wstr[0]) );
 
 	return env->NewString(wstr, len-1);
 }
@@ -719,7 +719,7 @@ JNIEXPORT jstring JNICALL Java_net_gtaun_samp_NativeFunction_getNetworkStats
 	GetNetworkStats( retstr, sizeof(retstr) );
 
 	jchar wstr[2048];
-	int len = mbs2wcs( server_codepage, retstr, -1, wstr, sizeof(wstr) );
+	int len = mbs2wcs( server_codepage, retstr, -1, wstr, sizeof(wstr)/sizeof(wstr[0]) );
 
 	return env->NewString(wstr, len-1);
 }
@@ -1839,7 +1839,7 @@ JNIEXPORT jstring JNICALL Java_net_gtaun_samp_NativeFunction_getPlayerName
 	GetPlayerName( playerid, name, sizeof(name) );
 
 	jchar wstr[MAX_PLAYER_NAME];
-	int len = mbs2wcs( server_codepage, name, -1, wstr, sizeof(wstr) );
+	int len = mbs2wcs( server_codepage, name, -1, wstr, sizeof(wstr)/sizeof(wstr[0]) );
 
 	return env->NewString(wstr, len-1);
 }
