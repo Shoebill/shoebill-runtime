@@ -225,7 +225,7 @@ int OnPlayerText( int playerid, char* text )
 	if( !jmid ) return 0;
 
 	jchar wtext[1024];
-	int len = mbs2wcs(player_codepage[playerid], text, -1, wtext, sizeof(wtext));
+	int len = mbs2wcs(player_codepage[playerid], text, -1, wtext, sizeof(wtext)/sizeof(wtext[0]));
 
 	jstring str = env->NewString(wtext, len-1);
 	return env->CallIntMethod(jmodeobj, jmid, playerid, str);
@@ -239,7 +239,7 @@ int OnPlayerCommandText( int playerid, char* cmdtext )
 	if( !jmid ) return 0;
 
 	jchar wtext[1024];
-	int len = mbs2wcs(player_codepage[playerid], cmdtext, -1, wtext, sizeof(wtext));
+	int len = mbs2wcs(player_codepage[playerid], cmdtext, -1, wtext, sizeof(wtext)/sizeof(wtext[0]));
 
 	jstring str = env->NewString(wtext, len-1);
 	return env->CallIntMethod(jmodeobj, jmid, playerid, str);
@@ -333,7 +333,7 @@ int OnRconCommand( char* cmd )
 	if( !jmid ) return 0;
 
 	jchar wtext[1024];
-	int len = mbs2wcs(server_codepage, cmd, -1, wtext, sizeof(wtext));
+	int len = mbs2wcs(server_codepage, cmd, -1, wtext, sizeof(wtext)/sizeof(wtext[0]));
 
 	jstring str = env->NewString(wtext, len-1);
 	return env->CallIntMethod(jmodeobj, jmid, str);
@@ -479,7 +479,7 @@ int OnRconLoginAttempt( char* ip, char* password, int success )
 	jstring iptext = env->NewStringUTF(ip);
 
 	jchar wtext[1024];
-	int len = mbs2wcs(server_codepage, password, -1, wtext, sizeof(wtext));
+	int len = mbs2wcs(server_codepage, password, -1, wtext, sizeof(wtext)/sizeof(wtext[0]));
 	jstring str = env->NewString(wtext, len-1);
 
 	return env->CallIntMethod(jmodeobj, jmid, iptext, str, success);
@@ -543,7 +543,7 @@ int OnDialogResponse( int playerid, int dialogid, int response, int listitem, ch
 	if( !jmid ) return 0;
 
 	jchar wtext[1024];
-	int len = mbs2wcs(player_codepage[playerid], inputtext, -1, wtext, sizeof(wtext));
+	int len = mbs2wcs(player_codepage[playerid], inputtext, -1, wtext, sizeof(wtext)/sizeof(wtext[0]));
 
 	jstring str = env->NewString(wtext, len-1);
 	return env->CallIntMethod(jmodeobj, jmid, playerid, dialogid, response, listitem, str);

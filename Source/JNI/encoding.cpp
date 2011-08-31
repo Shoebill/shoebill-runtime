@@ -51,16 +51,38 @@ int wcs2mbs( unsigned int codepage, const unsigned short* src, int srclen, char*
 //----------------------------------------------------------
 
 #if defined(LINUX) || defined(FREEBSD) || defined(__FreeBSD__) || defined(__OpenBSD__)
-// iconv ?
+#include "iconv.h"
 
 int mbs2wcs( unsigned int codepage, const char* src, int srclen, unsigned short* dst, int dstlen )
 {
-	return 0;
+	size_t inbytesleft = srclen, outbytesleft = dstlen*sizeof(unsigned short);
+	char *in = (char*)src, *out = (char*)dst;
+
+	int value = 1;
+
+	iconv_t cd = iconv_open("UTF-16BE", "BIG5");
+	iconvctl( cd, ICONV_SET_TRANSLITERATE, &value);
+	iconvctl( cd, ICONV_SET_DISCARD_ILSEQ, &value);
+	iconv( cd, &in, &inbytesleft, &out, &outbytesleft );
+	iconv_close( cd );
+
+	return dstlen-(outbytesleft/sizeof(unsigned short));
 }
 
 int wcs2mbs( unsigned int codepage, const unsigned short* src, int srclen, char* dst, int dstlen, bool* usedDefChar )
 {
-	return 0;
+	size_t inbytesleft = srclen*sizeof(unsigned short), outbytesleft = dstlen;
+	char *in = (char*)src, *out = (char*)dst;
+
+	int value = 1;
+
+	iconv_t cd = iconv_open("BIG5", "UTF-16BE");
+	iconvctl( cd, ICONV_SET_TRANSLITERATE, &value);
+	iconvctl( cd, ICONV_SET_DISCARD_ILSEQ, &value);
+	iconv( cd, &in, &inbytesleft, &out, &outbytesleft );
+	iconv_close( cd );
+
+	return dstlen-outbytesleft;
 }
 
 #endif
