@@ -19,6 +19,7 @@
 
 #include <jni.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #if defined(WIN32)
@@ -40,7 +41,7 @@ JNIEnv *env = NULL;
 int jni_jvm_create( const char* classpath )
 {
 	JavaVMInitArgs vm_args;
-	JavaVMOption options[2];
+	JavaVMOption options[3];
 
 	if( jvm != NULL ) return -1;
 
@@ -92,9 +93,16 @@ int jni_jvm_create( const char* classpath )
 			continue;
 		}
 
+		/*char resolved[PATH_MAX];
+		char temp[PATH_MAX] = "";
+		strcat( temp, jarpath );
+		strcat( temp, entry.d_name );
+		realpath(temp, resolved);
+
+		strcat( clspath, resolved );*/
 		strcat( clspath, jarpath );
 		strcat( clspath, entry.d_name );
-		strcat( clspath, ";" );
+		strcat( clspath, ":" );
 
 		readdir_r(dir, &entry, &entryPtr);
 	}
@@ -103,11 +111,11 @@ int jni_jvm_create( const char* classpath )
 #endif
 
 	clspath[ strlen(clspath)-1 ] = 0;
-	
-	
+
 	options[0].optionString = clspath;
-	options[1].optionString = "-verbose:gc";
-	//options[2].optionString = "-Djava.compiler=NONE";
+	options[1].optionString = "-verbose:class";
+	options[2].optionString = "-Djava.library.path=/opt/samp03/plugins";
+	//options[3].optionString = "-Djava.compiler=NONE";
 
 	vm_args.version = JNI_VERSION_1_6;
 	vm_args.options = options;
