@@ -3,6 +3,7 @@
 	<name>Shoebill</name>
 	<comment></comment>
 	<projects>
+		<project>Lungfish</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -16,4 +17,11 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.jem.beaninfo.BeanInfoNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>lungfish</name>
+			<type>2</type>
+			<location>E:/Java Projects/Lungfish/src</location>
+		</link>
+	</linkedResources>
 </projectDescription>
