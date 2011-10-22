@@ -1,23 +1,2 @@
 
-/Java/doc
-/Java/bin
-/Source/JNI/Debug
-/Debug
-/Release
-/Binary/Debug
-/Binary/Shoebill.lib
-*.ncb
-*.suo
-/sampsvr/scriptfiles/class.txt
-/sampsvr/scriptfiles/vehicles
-/sampsvr/logs
-/Dependencies/sampplugin/Release
-/Dependencies/sampplugin/Debug
-/Source/JNI/Release
-/Source/JNI/Debug
-/Source/Wrapper/Debug
-/Source/Wrapper/Release
-/sampsvr/crashinfo.txt
-/sampsvr/plugins/Shoebill.dll
-/sampsvr/server.cfg
-/sampsvr/server_log.txt
+/bin
