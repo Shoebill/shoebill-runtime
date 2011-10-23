@@ -20,48 +20,19 @@ package net.gtaun.shoebill;
 import java.util.Iterator;
 import java.util.Vector;
 
+import net.gtaun.lungfish.data.Area;
+import net.gtaun.lungfish.data.KeyState;
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.data.PointAngle;
+import net.gtaun.lungfish.data.SpawnInfo;
+import net.gtaun.lungfish.data.Time;
+import net.gtaun.lungfish.data.Velocity;
+import net.gtaun.lungfish.object.IPlayer;
+import net.gtaun.lungfish.object.IPlayerAttach;
+import net.gtaun.lungfish.object.IPlayerSkill;
+import net.gtaun.lungfish.object.IVehicle;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.lungfish.event.CheckpointEnterEvent;
-import net.gtaun.lungfish.event.CheckpointLeaveEvent;
-import net.gtaun.lungfish.event.DialogResponseEvent;
-import net.gtaun.lungfish.event.MenuExitedEvent;
-import net.gtaun.lungfish.event.MenuSelectedEvent;
-import net.gtaun.lungfish.event.PlayerClickPlayerEvent;
-import net.gtaun.lungfish.event.PlayerCommandEvent;
-import net.gtaun.lungfish.event.PlayerDeathEvent;
-import net.gtaun.lungfish.event.PlayerDisconnectEvent;
-import net.gtaun.lungfish.event.PlayerEnterExitModShopEvent;
-import net.gtaun.lungfish.event.PlayerInteriorChangeEvent;
-import net.gtaun.lungfish.event.PlayerKeyStateChangeEvent;
-import net.gtaun.lungfish.event.PlayerKillEvent;
-import net.gtaun.lungfish.event.PlayerObjectMovedEvent;
-import net.gtaun.lungfish.event.PlayerPickupEvent;
-import net.gtaun.lungfish.event.PlayerRequestClassEvent;
-import net.gtaun.lungfish.event.PlayerRequestSpawnEvent;
-import net.gtaun.lungfish.event.PlayerSpawnEvent;
-import net.gtaun.lungfish.event.PlayerStateChangeEvent;
-import net.gtaun.lungfish.event.PlayerStreamInEvent;
-import net.gtaun.lungfish.event.PlayerStreamOutEvent;
-import net.gtaun.lungfish.event.PlayerTextEvent;
-import net.gtaun.lungfish.event.PlayerUpdateEvent;
-import net.gtaun.lungfish.event.RaceCheckpointEnterEvent;
-import net.gtaun.lungfish.event.RaceCheckpointLeaveEvent;
-import net.gtaun.lungfish.event.VehicleEnterEvent;
-import net.gtaun.lungfish.event.VehicleExitEvent;
-import net.gtaun.lungfish.event.VehicleModEvent;
-import net.gtaun.lungfish.event.VehiclePaintjobEvent;
-import net.gtaun.lungfish.event.VehicleResprayEvent;
-import net.gtaun.lungfish.event.VehicleStreamInEvent;
-import net.gtaun.lungfish.event.VehicleStreamOutEvent;
-import net.gtaun.lungfish.event.VehicleUnoccupiedUpdate;
-import net.gtaun.shoebill.data.Area;
-import net.gtaun.shoebill.data.KeyState;
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointAngle;
-import net.gtaun.shoebill.data.SpawnInfo;
-import net.gtaun.shoebill.data.Time;
-import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
 
@@ -70,7 +41,7 @@ import net.gtaun.shoebill.exception.IllegalLengthException;
  *
  */
 
-public class PlayerBase
+public class Player implements IPlayer
 {
 	public static final int STATE_NONE =							0;
 	public static final int STATE_ONFOOT =							1;
@@ -146,19 +117,19 @@ public class PlayerBase
 	
 //---------------------------------------------------------
 	
-	public static Vector<PlayerBase> get()
+	public static Vector<Player> get()
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.playerPool, PlayerBase.class);
+		return Gamemode.getInstances(Gamemode.instance.playerPool, Player.class);
 	}
 	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.playerPool, cls);
+		return Gamemode.getInstances(Gamemode.instance.playerPool, cls);
 	}
 	
 	public static <T> T get( Class<T> cls, int id )
 	{
-		return GameModeBase.getInstance(GameModeBase.instance.playerPool, cls, id);
+		return Gamemode.getInstance(Gamemode.instance.playerPool, cls, id);
 	}
 	
 	public static int getMaxPlayers()
@@ -170,12 +141,12 @@ public class PlayerBase
 	{
 		NativeFunction.enableStuntBonusForAll( enabled );
 		
-		Vector<PlayerBase> players = PlayerBase.get(PlayerBase.class);
-		Iterator<PlayerBase> iterator = players.iterator();
+		Vector<Player> players = Player.get(Player.class);
+		Iterator<Player> iterator = players.iterator();
 		while( iterator.hasNext() )
 		{
-			PlayerBase player = iterator.next();
-			player.stuntBonus = enabled;
+			Player player = iterator.next();
+			player.isStuntBonusEnabled = enabled;
 		}
 	}
 	
@@ -186,22 +157,22 @@ public class PlayerBase
 
 	public static void sendMessageToAll( int color, String message )
 	{
-		Vector<PlayerBase> players = get(PlayerBase.class);
-		Iterator<PlayerBase> iterator = players.iterator();
+		Vector<Player> players = get(Player.class);
+		Iterator<Player> iterator = players.iterator();
 		while( iterator.hasNext() )
 		{
-			PlayerBase player = iterator.next();
+			Player player = iterator.next();
 			player.sendMessage( color, message );
 		}
 	}
 	
 	public static void sendMessageToAll( int color, String format, Object... args )
 	{
-		Vector<PlayerBase> players = get(PlayerBase.class);
-		Iterator<PlayerBase> iterator = players.iterator();
+		Vector<Player> players = get(Player.class);
+		Iterator<Player> iterator = players.iterator();
 		while( iterator.hasNext() )
 		{
-			PlayerBase player = iterator.next();
+			Player player = iterator.next();
 			String message = String.format(format, args);
 			player.sendMessage( color, message );
 		}
@@ -219,6 +190,8 @@ public class PlayerBase
 	}
 	
 	
+	EventDispatcher eventDispatcher = new EventDispatcher();
+	
 	int id = -1, ping, team, skin, wantedLevel;
 	String ip;
 	String name;
@@ -226,14 +199,14 @@ public class PlayerBase
 	int color;
 	
 	boolean controllable = true;
-	boolean stuntBonus = false;
+	boolean isStuntBonusEnabled = false;
 	boolean spectating = false;
-	boolean recording = false;
+	boolean isRecording = false;
 	
-	PlayerBase spectatingPlayer;
-	VehicleBase spectatingVehicle;
+	Player spectatingPlayer;
+	Vehicle spectatingVehicle;
 
-	int frame = -1;
+	int updateTick = -1;
 	float health, armour;
 	int money, score;
 	int weather, cameraMode;
@@ -246,133 +219,63 @@ public class PlayerBase
 	KeyState keyState = new KeyState();
 	PlayerAttach playerAttach;
 	PlayerSkill skill;
-	CheckpointBase checkpoint;
-	RaceCheckpointBase raceCheckpoint;
+	Checkpoint checkpoint;
+	RaceCheckpoint raceCheckpoint;
 	
-	DialogBase dialog;
+	Dialog dialog;
 	
 
-	public int id()							{ return id; }
-	public int ping()						{ return ping; }
-	public int team()						{ return team; }
-	public int skin()						{ return skin; }
-	public int wantedLevel()				{ return wantedLevel; }
-	public int codepage()					{ return NativeFunction.getPlayerCodepage(id); };
-	public String ip()						{ return ip; }
-	public String name()					{ return name; }
-	public SpawnInfo spawnInfo()			{ return spawnInfo.clone(); }
-	public int color()						{ return color; }
+	public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	
+	public int getId()								{ return id; }
+	public int getPing()							{ return ping; }
+	public int getTeam()							{ return team; }
+	public int getSkin()							{ return skin; }
+	public int getWantedLevel()						{ return wantedLevel; }
+	public int getCodepage()						{ return NativeFunction.getPlayerCodepage(id); };
+	public String getIp()							{ return ip; }
+	public String getName()							{ return name; }
+	public SpawnInfo getSpawnInfo()					{ return spawnInfo.clone(); }
+	public int getColor()							{ return color; }
 
-	public int frame()						{ return frame; }
-	public float health()					{ return health; }
-	public float armour()					{ return armour; }
-	public int weapon()						{ return NativeFunction.getPlayerWeapon(id); }
-	public int ammo()						{ return NativeFunction.getPlayerAmmo(id); }
-	public int money()						{ return money; }
-	public int score()						{ return score; }
-	public int weather()					{ return weather; }
-	public int cameraMode()					{ return cameraMode; }
-	public int fightingStyle()				{ return NativeFunction.getPlayerFightingStyle(id); }
-	public VehicleBase vehicle()			{ return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerVehicleID(id)); }
-	public int seat()						{ return NativeFunction.getPlayerVehicleSeat(id); }
-	public boolean controllable()			{ return controllable; }
-	public int specialAction()				{ return NativeFunction.getPlayerSpecialAction(id); }
-	public boolean stuntBonus()				{ return stuntBonus; }
-	public boolean spectating()				{ return spectating; }
-	public PlayerBase spectatingPlayer()	{ return spectatingPlayer; }
-	public VehicleBase spectatingVehicle()	{ return spectatingVehicle; }
-	public boolean recording()				{ return recording; }
+	public int getUpdateTick()						{ return updateTick; }
+	public float getHealth()						{ return health; }
+	public float getArmour()						{ return armour; }
+	public int getWeapon()							{ return NativeFunction.getPlayerWeapon(id); }
+	public int getAmmo()							{ return NativeFunction.getPlayerAmmo(id); }
+	public int getMoney()							{ return money; }
+	public int getScore()							{ return score; }
+	public int getWeather()							{ return weather; }
+	public int getCameraMode()						{ return cameraMode; }
+	public int getFightingStyle()					{ return NativeFunction.getPlayerFightingStyle(id); }
+	public IVehicle getVehicle()					{ return Vehicle.get(NativeFunction.getPlayerVehicleID(id)); }
+	public int getVehicleSeat()						{ return NativeFunction.getPlayerVehicleSeat(id); }
+	public int getSpecialAction()					{ return NativeFunction.getPlayerSpecialAction(id); }
+	public Player getSpectatingPlayer()				{ return spectatingPlayer; }
+	public IVehicle getSpectatingVehicle()			{ return spectatingVehicle; }
 	
-	public PointAngle position()			{ return position.clone(); }
-	public float angle()					{ return position.angle; }
-	public float interior()					{ return position.interior; }
-	public float world()					{ return position.world; }
-	public Area worldBound()				{ return worldBound.clone(); }
-	public Velocity velocity()				{ return velocity.clone(); }
-	public int state()						{ return state; }
-	public KeyState keyState()				{ return keyState.clone(); }
-	public PlayerAttach playerAttach()		{ return playerAttach; }
-	public PlayerSkill skill()				{ return skill; }
-	public CheckpointBase checkpoint()			{ return checkpoint; }
-	public RaceCheckpointBase raceCheckpoint()	{ return raceCheckpoint; }
+	public PointAngle getPosition()					{ return position.clone(); }
+	public Area getWorldBound()						{ return worldBound.clone(); }
+	public Velocity getVelocity()					{ return velocity.clone(); }
+	public int getState()							{ return state; }
+	public KeyState getKeyState()					{ return keyState.clone(); }
+	public IPlayerAttach getPlayerAttach()			{ return playerAttach; }
+	public IPlayerSkill getSkill()					{ return skill; }
+	public Checkpoint getCheckpoint()			{ return checkpoint; }
+	public RaceCheckpoint getRaceCheckpoint()	{ return raceCheckpoint; }
 	
-	public DialogBase dialog()				{ return dialog; }
-	
-	
-	EventDispatcher<PlayerDisconnectEvent>			eventDisconnect = new EventDispatcher<PlayerDisconnectEvent>();
-	EventDispatcher<PlayerRequestSpawnEvent>		eventRequestSpawn = new EventDispatcher<PlayerRequestSpawnEvent>();
-	EventDispatcher<PlayerSpawnEvent>				eventSpawn = new EventDispatcher<PlayerSpawnEvent>();
-	EventDispatcher<PlayerKillEvent>				eventKill = new EventDispatcher<PlayerKillEvent>();
-	EventDispatcher<PlayerDeathEvent>				eventDeath = new EventDispatcher<PlayerDeathEvent>();
-	EventDispatcher<PlayerTextEvent>				eventText = new EventDispatcher<PlayerTextEvent>();
-	EventDispatcher<PlayerCommandEvent>				eventCommand = new EventDispatcher<PlayerCommandEvent>();
-	EventDispatcher<PlayerRequestClassEvent>		eventRequestClass = new EventDispatcher<PlayerRequestClassEvent>();
-	EventDispatcher<PlayerUpdateEvent>				eventUpdate = new EventDispatcher<PlayerUpdateEvent>();
-	EventDispatcher<PlayerStateChangeEvent>			eventStateChange = new EventDispatcher<PlayerStateChangeEvent>();
-	EventDispatcher<CheckpointEnterEvent>			eventEnterCheckpoint = new EventDispatcher<CheckpointEnterEvent>();
-	EventDispatcher<CheckpointLeaveEvent>			eventLeaveCheckpoint = new EventDispatcher<CheckpointLeaveEvent>();
-	EventDispatcher<RaceCheckpointEnterEvent>		eventEnterRaceCheckpoint = new EventDispatcher<RaceCheckpointEnterEvent>();
-	EventDispatcher<RaceCheckpointLeaveEvent>		eventLeaveRaceCheckpoint = new EventDispatcher<RaceCheckpointLeaveEvent>();
-	EventDispatcher<PlayerObjectMovedEvent>			eventObjectMoved = new EventDispatcher<PlayerObjectMovedEvent>();
-	EventDispatcher<PlayerPickupEvent>				eventPickup = new EventDispatcher<PlayerPickupEvent>();
-	EventDispatcher<PlayerEnterExitModShopEvent>	eventEnterExitModShop = new EventDispatcher<PlayerEnterExitModShopEvent>();
-	EventDispatcher<PlayerInteriorChangeEvent>		eventInteriorChange = new EventDispatcher<PlayerInteriorChangeEvent>();
-	EventDispatcher<PlayerKeyStateChangeEvent>		eventKeyStateChange = new EventDispatcher<PlayerKeyStateChangeEvent>();
-	EventDispatcher<PlayerStreamInEvent>			eventPlayerStreamIn = new EventDispatcher<PlayerStreamInEvent>();
-	EventDispatcher<PlayerStreamOutEvent>			eventPlayerStreamOut = new EventDispatcher<PlayerStreamOutEvent>();
-	EventDispatcher<PlayerClickPlayerEvent>			eventClickPlayer = new EventDispatcher<PlayerClickPlayerEvent>();
-	EventDispatcher<PlayerClickPlayerEvent>			eventOthersClick = new EventDispatcher<PlayerClickPlayerEvent>();
-	EventDispatcher<VehicleEnterEvent>				eventEnterVehicle = new EventDispatcher<VehicleEnterEvent>();
-	EventDispatcher<VehicleExitEvent>				eventExitVehicle = new EventDispatcher<VehicleExitEvent>();
-	EventDispatcher<VehicleModEvent>				eventVehicleMod = new EventDispatcher<VehicleModEvent>();
-	EventDispatcher<VehiclePaintjobEvent>			eventVehiclePaintjob = new EventDispatcher<VehiclePaintjobEvent>();
-	EventDispatcher<VehicleResprayEvent>			eventVehicleRespray = new EventDispatcher<VehicleResprayEvent>();
-	EventDispatcher<VehicleUnoccupiedUpdate> 		eventVehicleUnoccupiedUpdate = new EventDispatcher<VehicleUnoccupiedUpdate>();
-	EventDispatcher<VehicleStreamInEvent>			eventVehicleStreamIn = new EventDispatcher<VehicleStreamInEvent>();
-	EventDispatcher<VehicleStreamOutEvent>			eventVehicleStreamOut = new EventDispatcher<VehicleStreamOutEvent>();
-	EventDispatcher<DialogResponseEvent>			eventDialogResponse = new EventDispatcher<DialogResponseEvent>();
-	EventDispatcher<MenuSelectedEvent>				eventMenuSelected = new EventDispatcher<MenuSelectedEvent>();
-	EventDispatcher<MenuExitedEvent>				eventMenuExited = new EventDispatcher<MenuExitedEvent>();
+	public Dialog getDialog()					{ return dialog; }
 
-	public IEventDispatcher<PlayerDisconnectEvent>			eventDisconnect() 				{ return eventDisconnect; }
-	public IEventDispatcher<PlayerRequestSpawnEvent>		eventRequestSpawn() 			{ return eventRequestSpawn; }
-	public IEventDispatcher<PlayerSpawnEvent>				eventSpawn() 					{ return eventSpawn; }		
-	public IEventDispatcher<PlayerKillEvent>				eventKill() 					{ return eventKill; }
-	public IEventDispatcher<PlayerDeathEvent>				eventDeath() 					{ return eventDeath; }
-	public IEventDispatcher<PlayerTextEvent>				eventText() 					{ return eventText; }
-	public IEventDispatcher<PlayerCommandEvent>				eventCommand() 					{ return eventCommand; }
-	public IEventDispatcher<PlayerRequestClassEvent>		eventRequestClass() 			{ return eventRequestClass; }
-	public IEventDispatcher<PlayerUpdateEvent>				eventUpdate() 					{ return eventUpdate; }
-	public IEventDispatcher<PlayerStateChangeEvent>			eventStateChange() 				{ return eventStateChange; }
-	public IEventDispatcher<CheckpointEnterEvent>			eventEnterCheckpoint() 			{ return eventEnterCheckpoint; }
-	public IEventDispatcher<CheckpointLeaveEvent>			eventLeaveCheckpoint() 			{ return eventLeaveCheckpoint; }
-	public IEventDispatcher<RaceCheckpointEnterEvent>		eventEnterRaceCheckpoint() 		{ return eventEnterRaceCheckpoint; }
-	public IEventDispatcher<RaceCheckpointLeaveEvent>		eventLeaveRaceCheckpoint() 		{ return eventLeaveRaceCheckpoint; }
-	public IEventDispatcher<PlayerObjectMovedEvent>			eventObjectMoved() 				{ return eventObjectMoved; }
-	public IEventDispatcher<PlayerPickupEvent>				eventPickup() 					{ return eventPickup; }
-	public IEventDispatcher<PlayerEnterExitModShopEvent>	eventEnterExitModShop() 		{ return eventEnterExitModShop; }
-	public IEventDispatcher<PlayerInteriorChangeEvent>		eventInteriorChange() 			{ return eventInteriorChange; }
-	public IEventDispatcher<PlayerKeyStateChangeEvent>		eventKeyStateChange() 			{ return eventKeyStateChange; }
-	public IEventDispatcher<PlayerStreamInEvent>			eventStreamInEvent() 			{ return eventPlayerStreamIn; }
-	public IEventDispatcher<PlayerStreamOutEvent>			eventStreamOut() 				{ return eventPlayerStreamOut; }
-	public IEventDispatcher<PlayerClickPlayerEvent>			eventClickPlayer() 				{ return eventClickPlayer; }
-	public IEventDispatcher<PlayerClickPlayerEvent>			eventOthersClick() 				{ return eventOthersClick; }
-	public IEventDispatcher<VehicleEnterEvent>				eventEnterVehicle() 			{ return eventEnterVehicle; }
-	public IEventDispatcher<VehicleExitEvent>				eventExitVehicle() 				{ return eventExitVehicle; }
-	public IEventDispatcher<VehicleModEvent>				eventVehicleMod() 				{ return eventVehicleMod; }
-	public IEventDispatcher<VehiclePaintjobEvent>			eventVehiclePaintjob() 			{ return eventVehiclePaintjob; }
-	public IEventDispatcher<VehicleResprayEvent>			eventVehicleRespray() 			{ return eventVehicleRespray; }
-	public IEventDispatcher<VehicleUnoccupiedUpdate>		eventVehicleUnoccupiedUpdate()	{ return eventVehicleUnoccupiedUpdate; }
-	public IEventDispatcher<VehicleStreamInEvent>			eventVehicleStreamIn() 			{ return eventVehicleStreamIn; }
-	public IEventDispatcher<VehicleStreamOutEvent>			eventVehicleStreamOut() 		{ return eventVehicleStreamOut; }
-	public IEventDispatcher<DialogResponseEvent>			eventDialogResponse() 			{ return eventDialogResponse; }
-	public IEventDispatcher<MenuSelectedEvent>				eventMenuSelected() 			{ return eventMenuSelected; }
-	public IEventDispatcher<MenuExitedEvent>				eventMenuExited() 				{ return eventMenuExited; }
-
+	public boolean isStuntBonusEnabled()			{ return isStuntBonusEnabled; }
+	public boolean isSpectating()					{ return spectating; }
+	public boolean isRecording()					{ return isRecording; }
+	public boolean isControllable()					{ return controllable; }
 	
-	protected PlayerBase()
+	
+	
+	protected Player()
 	{
-		id = GameModeBase.instance.currentPlayerId;
+		id = Gamemode.instance.currentPlayerId;
 		ip = NativeFunction.getPlayerIp(id);
 		team = NativeFunction.getPlayerTeam(id);
 		skin = NativeFunction.getPlayerSkin(id);
@@ -419,12 +322,12 @@ public class PlayerBase
 		return 1;
 	}
 
-	protected int onKill( PlayerBase victim, int reason )
+	protected int onKill( Player victim, int reason )
 	{
 		return 1;
 	}
 	
-	protected int onDeath( PlayerBase killer, int reason )
+	protected int onDeath( Player killer, int reason )
 	{
 		return 1;
 	}
@@ -480,7 +383,7 @@ public class PlayerBase
 		return 1;
 	}
 
-	protected int onPickup( PickupBase pickup )
+	protected int onPickup( Pickup pickup )
 	{
 		return 1;
 	}
@@ -500,33 +403,33 @@ public class PlayerBase
 		return 1;
 	}
 	
-	protected int onPlayerStreamIn( PlayerBase forPlayer )
+	protected int onPlayerStreamIn( Player forPlayer )
 	{
 		return 1;
 	}
 
-	protected int onPlayerStreamOut( PlayerBase forPlayer )
+	protected int onPlayerStreamOut( Player forPlayer )
 	{
 		return 1;
 	}
 
-	protected int onClickPlayer( PlayerBase clickedplayer, int source )
+	protected int onClickPlayer( Player clickedplayer, int source )
 	{
 		return 1;
 	}
 	
-	protected int onOthersClick( PlayerBase player, int source )
+	protected int onOthersClick( Player player, int source )
 	{
 		
 		return 1;
 	}
 
-	protected int onEnterVehicle( VehicleBase vehicle, boolean ispassenger )
+	protected int onEnterVehicle( Vehicle vehicle, boolean ispassenger )
 	{
 		return 1;
 	}
 
-	protected int onExitVehicle( VehicleBase vehicle )
+	protected int onExitVehicle( Vehicle vehicle )
 	{
 		return 1;
 	}
@@ -546,32 +449,32 @@ public class PlayerBase
 		return 1;
 	}
 	
-	protected int onUpdateUnoccupiedVehicle( VehicleBase vehicle )
+	protected int onUpdateUnoccupiedVehicle( Vehicle vehicle )
 	{
 		return 1;
 	}
 
-	protected int onVehicleStreamIn( VehicleBase vehicle )
+	protected int onVehicleStreamIn( Vehicle vehicle )
 	{
 		return 1;
 	}
 
-	protected int onVehicleStreamOut( VehicleBase vehicle )
+	protected int onVehicleStreamOut( Vehicle vehicle )
 	{
 		return 1;
 	}
 
-	protected int onDialogResponse( DialogBase dialog, int response, int listitem, String inputtext )
+	protected int onDialogResponse( Dialog dialog, int response, int listitem, String inputtext )
 	{
 		return 1;
 	}
 
-	protected int onMenuSelected( MenuBase menu, int row )
+	protected int onMenuSelected( Menu menu, int row )
 	{
 		return 1;
 	}
 
-	protected int onMenuExited( MenuBase menu )
+	protected int onMenuExited( Menu menu )
 	{
 		return 1;
 	}
@@ -593,8 +496,8 @@ public class PlayerBase
 		
 		cameraMode = NativeFunction.getPlayerCameraMode(id);
 		
-		frame++;
-		if( frame<0 ) frame = 0;
+		updateTick++;
+		if( updateTick<0 ) updateTick = 0;
 	}
 
 	
@@ -683,12 +586,12 @@ public class PlayerBase
 		NativeFunction.setPlayerFightingStyle( id, style );
 	}
 
-	public void setVehicle( VehicleBase vehicle, int seat )
+	public void setVehicle( Vehicle vehicle, int seat )
 	{
 		vehicle.putPlayer( this, seat );
 	}
 	
-	public void setVehicle( VehicleBase vehicle )
+	public void setVehicle( Vehicle vehicle )
 	{
 		vehicle.putPlayer( this, 0 );
 	}
@@ -810,7 +713,7 @@ public class PlayerBase
 		NativeFunction.sendClientMessage( id, color, message );
 	}
 	
-	public void sendChat( PlayerBase player, String message )
+	public void sendChat( Player player, String message )
 	{
 		if( message == null ) throw new NullPointerException();
 		NativeFunction.sendPlayerMessageToPlayer( player.id, id, message );
@@ -820,19 +723,19 @@ public class PlayerBase
 	{
 		if( message == null ) throw new NullPointerException();
 		
-		Vector<PlayerBase> players = get(PlayerBase.class);
-		Iterator<PlayerBase> iterator = players.iterator();
+		Vector<Player> players = get(Player.class);
+		Iterator<Player> iterator = players.iterator();
 		while( iterator.hasNext() )
 		{
-			PlayerBase player = iterator.next();
+			Player player = iterator.next();
 			sendChat( player, message );
 		}
 	}
 
-	public void sendDeathMessage( PlayerBase killer, int reason )
+	public void sendDeathMessage( Player killer, int reason )
 	{
 		if(killer == null)
-			NativeFunction.sendDeathMessage(GameModeBase.INVALID_PLAYER_ID, id, reason);
+			NativeFunction.sendDeathMessage(Gamemode.INVALID_PLAYER_ID, id, reason);
 		else
 			NativeFunction.sendDeathMessage( killer.id, id, reason );
 	}
@@ -895,12 +798,12 @@ public class PlayerBase
 		NativeFunction.playerPlaySound( id, sound, point.x, point.y, point.z );
 	}
 	
-	public void markerForPlayer( PlayerBase player, int color )
+	public void markerForPlayer( Player player, int color )
 	{
 		NativeFunction.setPlayerMarkerForPlayer( id, player.id, color );
 	}
 	
-	public void nameTagForPlayer( PlayerBase player, boolean show )
+	public void nameTagForPlayer( Player player, boolean show )
 	{
 		NativeFunction.showPlayerNameTagForPlayer( id, player.id, show );
 	}
@@ -921,9 +824,9 @@ public class PlayerBase
 		NativeFunction.banEx( id, reason );
 	}
 	
-	public MenuBase getMenu()
+	public Menu getMenu()
 	{
-		return GameModeBase.instance.menuPool[ NativeFunction.getPlayerMenu(id) ];
+		return Gamemode.instance.menuPool[ NativeFunction.getPlayerMenu(id) ];
 	}
 
 	public void setCameraPos( float x, float y, float z )
@@ -972,7 +875,7 @@ public class PlayerBase
 		return NativeFunction.isPlayerInAnyVehicle( id );
 	}
 	
-	public boolean inVehicle( VehicleBase vehicle )
+	public boolean inVehicle( Vehicle vehicle )
 	{
 		return NativeFunction.isPlayerInVehicle( id, vehicle.id );
 	}
@@ -987,12 +890,12 @@ public class PlayerBase
 		return NativeFunction.isPlayerInRangeOfPoint(id, range, point.x, point.y, point.z);
 	}
 	
-	public boolean isStreamedIn(PlayerBase forplayer)
+	public boolean isStreamedIn(Player forplayer)
 	{
 		return NativeFunction.isPlayerStreamedIn(id, forplayer.id);
 	}
 	
-	public void setCheckpoint( CheckpointBase checkpoint )
+	public void setCheckpoint( Checkpoint checkpoint )
 	{
 		checkpoint.set( this );
 	}
@@ -1003,7 +906,7 @@ public class PlayerBase
 		checkpoint = null;
 	}
 	
-	public void setRaceCheckpoint( RaceCheckpointBase checkpoint )
+	public void setRaceCheckpoint( RaceCheckpoint checkpoint )
 	{
 		checkpoint.set( this );
 	}
@@ -1080,9 +983,9 @@ public class PlayerBase
 		NativeFunction.setPlayerShopName(id, name);
 	}
 	
-	public VehicleBase getSurfingVehicle()
+	public Vehicle getSurfingVehicle()
 	{
-		return VehicleBase.get(VehicleBase.class, NativeFunction.getPlayerSurfingVehicleID(id));
+		return Vehicle.get(Vehicle.class, NativeFunction.getPlayerSurfingVehicleID(id));
 	}
 	
 	public void removeFromVehicle()
@@ -1116,7 +1019,7 @@ public class PlayerBase
 		if( enable )	NativeFunction.enableStuntBonusForPlayer( id, 1 );
 		else			NativeFunction.enableStuntBonusForPlayer( id, 0 );
 		
-		stuntBonus = enable;
+		isStuntBonusEnabled = enable;
 	}
 	
 	public void toggleSpectating( boolean toggle )
@@ -1130,7 +1033,7 @@ public class PlayerBase
 		spectatingVehicle = null;
 	}
 	
-	public void spectatePlayer(PlayerBase player, int mode)
+	public void spectatePlayer(Player player, int mode)
 	{
 		if( !spectating ) return;
 		
@@ -1139,7 +1042,7 @@ public class PlayerBase
 		spectatingVehicle = null;
 	}
 	
-	public void spectateVehicle(VehicleBase vehicle, int mode)
+	public void spectateVehicle(Vehicle vehicle, int mode)
 	{
 		if( !spectating ) return;
 
@@ -1151,13 +1054,13 @@ public class PlayerBase
 	public void startRecord( int type, String recordName )
 	{
 		NativeFunction.startRecordingPlayerData( id, type, recordName );
-		recording = true;
+		isRecording = true;
 	}
 	
 	public void stopRecord()
 	{
 		NativeFunction.stopRecordingPlayerData( id );
-		recording = false;
+		isRecording = false;
 	}
 	
 	public float distancToPoint( Point point )
@@ -1170,7 +1073,7 @@ public class PlayerBase
 		int objectid = NativeFunction.getPlayerSurfingObjectID(id);
 		
 		if(objectid != 65535)
-			return GameModeBase.instance.objectPool[objectid];
+			return Gamemode.instance.objectPool[objectid];
 		
 		return null;
 	}

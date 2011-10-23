@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.streamer;
 
-import net.gtaun.shoebill.PlayerBase;
-import net.gtaun.shoebill.data.Point;
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.shoebill.Player;
 
 /**
  * @author MK124
@@ -27,6 +27,6 @@ import net.gtaun.shoebill.data.Point;
 public interface IStreamObject
 {
 	Point getPosition();
-	void streamIn( PlayerBase player );
-	void streamOut( PlayerBase player );
+	void streamIn( Player player );
+	void streamOut( Player player );
 }

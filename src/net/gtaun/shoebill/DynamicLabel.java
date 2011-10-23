@@ -16,9 +16,9 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointAngle;
-import net.gtaun.shoebill.data.PointRange;
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.data.PointAngle;
+import net.gtaun.lungfish.data.PointRange;
 import net.gtaun.shoebill.streamer.IStreamObject;
 import net.gtaun.shoebill.streamer.Streamer;
 
@@ -27,29 +27,29 @@ import net.gtaun.shoebill.streamer.Streamer;
  *
  */
 
-public class DynamicLabelBase extends LabelBase implements IStreamObject
+public class DynamicLabel extends Label implements IStreamObject
 {
 	static final int DEFAULT_RANGE =		300;
 	
 	
-	static Streamer<DynamicLabelBase> streamer;
+	static Streamer<DynamicLabel> streamer;
 
-	public static void initialize( GameModeBase gamemode )
+	public static void initialize( Gamemode gamemode )
 	{
 		if( streamer == null )
-			streamer = new Streamer<DynamicLabelBase>(gamemode, DEFAULT_RANGE);
+			streamer = new Streamer<DynamicLabel>(gamemode, DEFAULT_RANGE);
 	}
-	public static void initialize( GameModeBase gamemode, int range )
+	public static void initialize( Gamemode gamemode, int range )
 	{
 		if( streamer == null )
-			streamer = new Streamer<DynamicLabelBase>(gamemode, range);
+			streamer = new Streamer<DynamicLabel>(gamemode, range);
 	}
 	
 	
-	int id[] = new int[ GameModeBase.MAX_PLAYERS ];
+	int id[] = new int[ Gamemode.MAX_PLAYERS ];
 	
 	
-	public DynamicLabelBase( String text, int color, Point point, boolean testLOS )
+	public DynamicLabel( String text, int color, Point point, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -61,7 +61,7 @@ public class DynamicLabelBase extends LabelBase implements IStreamObject
 		init();
 	}
 	
-	public DynamicLabelBase( String text, int color, PointRange point, boolean testLOS )
+	public DynamicLabel( String text, int color, PointRange point, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -109,33 +109,33 @@ public class DynamicLabelBase extends LabelBase implements IStreamObject
 		return position.clone();
 	}
 	
-	public void attach( PlayerBase player, float x, float y, float z )
+	public void attach( Player player, float x, float y, float z )
 	{
 		offsetX = x;
 		offsetY = y;
 		offsetZ = z;
 		
-		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ )
+		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ )
 		{
 			if( id[i] < 0 ) continue;
 			NativeFunction.deletePlayer3DTextLabel( i, id[i] );
 			id[i] = NativeFunction.createPlayer3DTextLabel( i, text, color, x, y, z, position.distance,
-					player.id, GameModeBase.INVALID_VEHICLE_ID, testLOS );
+					player.id, Gamemode.INVALID_VEHICLE_ID, testLOS );
 		}
 	}
 	
-	public void attach( VehicleBase vehicle, float x, float y, float z )
+	public void attach( Vehicle vehicle, float x, float y, float z )
 	{
 		offsetX = x;
 		offsetY = y;
 		offsetZ = z;
 		
-		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ )
+		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ )
 		{
 			if( id[i] < 0 ) continue;
 			NativeFunction.deletePlayer3DTextLabel( i, id[i] );
 			id[i] = NativeFunction.createPlayer3DTextLabel( i, text, color, x, y, z, position.distance,
-					GameModeBase.INVALID_PLAYER_ID, vehicle.id, testLOS );
+					Gamemode.INVALID_PLAYER_ID, vehicle.id, testLOS );
 		}
 	}
 	
@@ -146,7 +146,7 @@ public class DynamicLabelBase extends LabelBase implements IStreamObject
 		this.color = color;
 		this.text = text;
 		
-		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ )
+		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ )
 		{
 			if( id[i] < 0 ) continue;
 			NativeFunction.updatePlayer3DTextLabelText( i, id[i], color, text );
@@ -156,17 +156,17 @@ public class DynamicLabelBase extends LabelBase implements IStreamObject
 	
 //---------------------------------------------------------
 
-	public void streamIn( PlayerBase player )
+	public void streamIn( Player player )
 	{
 		if( id[player.id] == -1 )
 		{
 			id[player.id] = NativeFunction.createPlayer3DTextLabel( player.id, text, color,
 					position.x, position.y, position.z, position.distance,
-					GameModeBase.INVALID_PLAYER_ID, GameModeBase.INVALID_VEHICLE_ID, testLOS );
+					Gamemode.INVALID_PLAYER_ID, Gamemode.INVALID_VEHICLE_ID, testLOS );
 		}
 	}
 
-	public void streamOut( PlayerBase player )
+	public void streamOut( Player player )
 	{
 		if( id[player.id] != -1 )
 		{

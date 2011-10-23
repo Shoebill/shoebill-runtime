@@ -20,19 +20,18 @@ package net.gtaun.shoebill;
 import java.util.Iterator;
 import java.util.Vector;
 
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.data.Vector3D;
+import net.gtaun.lungfish.object.IRaceCheckpoint;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.lungfish.event.RaceCheckpointEnterEvent;
-import net.gtaun.lungfish.event.RaceCheckpointLeaveEvent;
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.Vector3D;
 
 /**
  * @author JoJLlmAn, MK124
  *
  */
 
-public class RaceCheckpointBase extends Vector3D
+public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -46,19 +45,20 @@ public class RaceCheckpointBase extends Vector3D
 	
 //---------------------------------------------------------
 	
-	public float size;
-	public int type;
-	public RaceCheckpointBase next;
+	EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	
-	EventDispatcher<RaceCheckpointEnterEvent>	eventEnter = new EventDispatcher<RaceCheckpointEnterEvent>();
-	EventDispatcher<RaceCheckpointLeaveEvent>	eventLeave = new EventDispatcher<RaceCheckpointLeaveEvent>();
-
-	public IEventDispatcher<RaceCheckpointEnterEvent>	eventEnter()	{ return eventEnter; }
-	public IEventDispatcher<RaceCheckpointLeaveEvent>	eventLeave()	{ return eventLeave; }
+	float size;
+	int type;
+	RaceCheckpoint next;
 	
 
-	public RaceCheckpointBase( float x, float y, float z, float size, int type, RaceCheckpointBase next )
+	public IEventDispatcher	eventDispatcher()	{ return eventDispatcher; }
+	
+	public float getSize()						{ return size; }
+	public int getType()						{ return type; }
+	
+	
+	public RaceCheckpoint( float x, float y, float z, float size, int type, RaceCheckpoint next )
 	{
 		super( x, y, z );
 		
@@ -66,7 +66,7 @@ public class RaceCheckpointBase extends Vector3D
 		this.type = type;
 	}
 
-	public RaceCheckpointBase( Point position, float size, int type, RaceCheckpointBase next )
+	public RaceCheckpoint( Point position, float size, int type, RaceCheckpoint next )
 	{
 		super( position.x, position.y, position.z );
 		
@@ -77,12 +77,12 @@ public class RaceCheckpointBase extends Vector3D
 	
 //---------------------------------------------------------
 
-	protected int onEnter( PlayerBase player )
+	protected int onEnter( Player player )
 	{
 		return 0;
 	}
 	
-	protected int onLeave( PlayerBase player )
+	protected int onLeave( Player player )
 	{
 		return 0;
 	}
@@ -90,7 +90,7 @@ public class RaceCheckpointBase extends Vector3D
 	
 //---------------------------------------------------------
 	
-	public void set( PlayerBase player )
+	public void set( Player player )
 	{
 		if( next != null )
 			NativeFunction.setPlayerRaceCheckpoint( player.id, type, x, y, z, next.x, next.y, next.z, size );
@@ -107,7 +107,7 @@ public class RaceCheckpointBase extends Vector3D
 		player.raceCheckpoint = this;
 	}
 	
-	public void disable( PlayerBase player )
+	public void disable( Player player )
 	{
 		if(player.raceCheckpoint != this) return;
 
@@ -115,7 +115,7 @@ public class RaceCheckpointBase extends Vector3D
 		player.raceCheckpoint = null;
 	}
 	
-	public boolean inCheckpoint( PlayerBase player )
+	public boolean isInCheckpoint( Player player )
 	{
 		if( player.raceCheckpoint != this ) return false;
 		return NativeFunction.isPlayerInRaceCheckpoint( player.id );
@@ -123,20 +123,20 @@ public class RaceCheckpointBase extends Vector3D
 	
 	public void update()
 	{
-		for (int i = 0; i < GameModeBase.instance.playerPool.length; i++)
+		for (int i = 0; i < Gamemode.instance.playerPool.length; i++)
 		{
-			PlayerBase player = GameModeBase.instance.playerPool[i];
+			Player player = Gamemode.instance.playerPool[i];
 			if( player == null ) continue;
 			
 			if( player.raceCheckpoint == this ) set( player );
 		}
 	}
 	
-	public <T extends PlayerBase> Vector<T> usingPlayers( Class<T> cls )
+	public <T extends Player> Vector<T> usingPlayers( Class<T> cls )
 	{
 		Vector<T> players = new Vector<T>();
 		
-		Iterator<T> iterator = PlayerBase.get(cls).iterator();
+		Iterator<T> iterator = Player.get(cls).iterator();
 		while( iterator.hasNext() )
 		{
 			T player = iterator.next();

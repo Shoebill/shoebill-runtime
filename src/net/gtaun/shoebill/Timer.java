@@ -20,37 +20,38 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 
+import net.gtaun.lungfish.event.timer.TimerTickEvent;
+import net.gtaun.lungfish.object.ITimer;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.lungfish.event.TimerTickEvent;
 
 /**
  * @author MK124
  *
  */
 
-public class TimerBase
+public class Timer implements ITimer
 {
 	public static final int COUNT_INFINITE = 0;
 	
+
+	EventDispatcher eventDispatcher = new EventDispatcher();
 	
 	int interval, count;
 	
 	boolean running;
 	int counting, realInterval;
 
-	public int interval()		{ return interval; }
-	public int count()			{ return count; }
+	
+	public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	
+	public int getInterval()						{ return interval; }
+	public int getCount()							{ return count; }
 
-	public boolean running()	{ return running; }
-	
-	
-	EventDispatcher<TimerTickEvent>		eventTick = new EventDispatcher<TimerTickEvent>();
-	
-	public IEventDispatcher<TimerTickEvent>		eventTick()		{ return eventTick; }
+	public boolean isRunning()						{ return running; }
 	
 
-	public TimerBase( int interval )
+	public Timer( int interval )
 	{
 		this.interval = interval;
 		this.count = COUNT_INFINITE;
@@ -58,7 +59,7 @@ public class TimerBase
 		init();
 	}
 	
-	public TimerBase( int interval, int count )
+	public Timer( int interval, int count )
 	{
 		this.interval = interval;
 		this.count = count;
@@ -68,7 +69,7 @@ public class TimerBase
 	
 	private void init()
 	{
-		GameModeBase.instance.timerPool.add( new WeakReference<TimerBase>(this) );
+		Gamemode.instance.timerPool.add( new WeakReference<Timer>(this) );
 	}
 	
 	public void finalize()
@@ -88,13 +89,13 @@ public class TimerBase
 	
 	public void destroy()
 	{
-		Iterator<Reference<TimerBase>> iterator = GameModeBase.instance.timerPool.iterator();
+		Iterator<Reference<Timer>> iterator = Gamemode.instance.timerPool.iterator();
 		while( iterator.hasNext() )
 		{
-			Reference<TimerBase> reference = iterator.next();
+			Reference<Timer> reference = iterator.next();
 			if( reference.get() != this ) continue;
 			
-			GameModeBase.instance.timerPool.remove( reference );
+			Gamemode.instance.timerPool.remove( reference );
 			return;
 		}
 	}
@@ -133,7 +134,7 @@ public class TimerBase
 		
 		if( count > 0 ) counting--;
 		onTick( counting, realInterval );
-		eventTick.dispatchEvent( new TimerTickEvent(this, realInterval) );
+		eventDispatcher.dispatchEvent( new TimerTickEvent(this, realInterval) );
 		
 		realInterval = 0;
 		if( count > 0 && counting == 0 ) stop();

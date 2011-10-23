@@ -16,19 +16,24 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.lungfish.data.Vector3D;
+import net.gtaun.lungfish.object.IPlayerAttach;
 
 /**
  * @author JoJLlmAn
  *
  */
 
-public class PlayerAttach
+public class PlayerAttach implements IPlayerAttach
 {
 	int playerId;
 	
 	int[] models = new int[5];
 	int[] bones = new int[5];
+	
+	
+	public int[] getModels()	{ return models.clone(); }
+	public int[] getBones()		{ return bones.clone(); }
 
 	
 	PlayerAttach( int playerid )

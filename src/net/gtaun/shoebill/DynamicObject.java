@@ -18,8 +18,8 @@ package net.gtaun.shoebill;
 
 import java.util.Vector;
 
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointRot;
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.data.PointRot;
 import net.gtaun.shoebill.streamer.IStreamObject;
 import net.gtaun.shoebill.streamer.Streamer;
 
@@ -28,22 +28,22 @@ import net.gtaun.shoebill.streamer.Streamer;
  *
  */
 
-public class DynamicObjectBase extends ObjectBase implements IStreamObject
+public class DynamicObject extends ObjectBase implements IStreamObject
 {
 	static final int DEFAULT_RANGE =		300;
 	
 	
-	static Streamer<DynamicObjectBase> streamer;
+	static Streamer<DynamicObject> streamer;
 
-	public static void initialize( GameModeBase gamemode )
+	public static void initialize( Gamemode gamemode )
 	{
 		if( streamer == null )
-			streamer = new Streamer<DynamicObjectBase>(gamemode, DEFAULT_RANGE);
+			streamer = new Streamer<DynamicObject>(gamemode, DEFAULT_RANGE);
 	}
-	public static void initialize( GameModeBase gamemode, int range )
+	public static void initialize( Gamemode gamemode, int range )
 	{
 		if( streamer == null )
-			streamer = new Streamer<DynamicObjectBase>(gamemode, range);
+			streamer = new Streamer<DynamicObject>(gamemode, range);
 	}
 	
 	@Deprecated
@@ -53,10 +53,10 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 	}
 	
 	
-	int id[] = new int[ GameModeBase.MAX_PLAYERS ];
+	int id[] = new int[ Gamemode.MAX_PLAYERS ];
 	
 	
-	public DynamicObjectBase( int model, float x, float y, float z, float rx, float ry, float rz )
+	public DynamicObject( int model, float x, float y, float z, float rx, float ry, float rz )
 	{
 		this.model = model;
 		this.position = new PointRot( x, y, z, rx, ry, rz );
@@ -64,7 +64,7 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 		init();
 	}
 	
-	public DynamicObjectBase( int model, Point point, float rx, float ry, float rz )
+	public DynamicObject( int model, Point point, float rx, float ry, float rz )
 	{
 		this.model = model;
 		this.position = new PointRot( point, rx, ry, rz );
@@ -72,7 +72,7 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 		init();
 	}
 	
-	public DynamicObjectBase( int model, PointRot point )
+	public DynamicObject( int model, PointRot point )
 	{
 		this.model = model;
 		this.position = point.clone();
@@ -138,7 +138,7 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 		position.ry = ry;
 		position.rz = rz;
 		
-		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ )
+		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ )
 		{
 			if( id[i] < 0 ) continue;
 			NativeFunction.setPlayerObjectRot( i, id[i], rx, ry, rz );
@@ -155,7 +155,7 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 		
 	}
 	
-	public void attach( PlayerBase player, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( Player player, float x, float y, float z, float rx, float ry, float rz )
 	{
 		
 	}
@@ -168,7 +168,7 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 		return position;
 	}
 	
-	public void streamIn( PlayerBase player )
+	public void streamIn( Player player )
 	{
 		if( id[player.id] == -1 )
 		{
@@ -177,7 +177,7 @@ public class DynamicObjectBase extends ObjectBase implements IStreamObject
 		}
 	}
 
-	public void streamOut( PlayerBase player )
+	public void streamOut( Player player )
 	{
 		if( id[player.id] != -1 )
 		{

@@ -19,52 +19,50 @@ package net.gtaun.shoebill;
 
 import java.util.Vector;
 
+import net.gtaun.lungfish.object.IMenu;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.lungfish.event.MenuExitedEvent;
-import net.gtaun.lungfish.event.MenuSelectedEvent;
 
 /**
  * @author MK124, JoJLlmAn
  *
  */
 
-public class MenuBase
+public class Menu implements IMenu
 {
-	public static Vector<MenuBase> get()
+	public static Vector<Menu> get()
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.menuPool, MenuBase.class);
+		return Gamemode.getInstances(Gamemode.instance.menuPool, Menu.class);
 	}
 	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.menuPool, cls);
+		return Gamemode.getInstances(Gamemode.instance.menuPool, cls);
 	}
 	
 
+	EventDispatcher eventDispatcher = new EventDispatcher();
+	
 	int id;
 	String title, columnHeader = "";
 	int columns;
 	float x, y;
 	float col1Width, col2Width;
 	
-	public int id()					{ return id; }
-	public String title()			{ return title; }
-	public int columns()			{ return columns; }
-	public float x()				{ return x; }
-	public float y()				{ return y; }
-	public float col1Width()		{ return col1Width; }
-	public float col2Width()		{ return col2Width; }
-	public String columnHeader()	{ return columnHeader; }
+
+	public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
 	
-	EventDispatcher<MenuSelectedEvent> 	eventMenuSelected = new EventDispatcher<MenuSelectedEvent>();
-	EventDispatcher<MenuExitedEvent> 	eventMenuExited = new EventDispatcher<MenuExitedEvent>();
-	
-	public IEventDispatcher<MenuSelectedEvent>	eventMenuSelected()	{ return eventMenuSelected; }
-	public IEventDispatcher<MenuExitedEvent>	eventMenuExited()	{ return eventMenuExited; }
+	public int getId()								{ return id; }
+	public String getTitle()						{ return title; }
+	public int getColumns()							{ return columns; }
+	public float getX()								{ return x; }
+	public float getY()								{ return y; }
+	public float getCol1Width()						{ return col1Width; }
+	public float getCol2Width()						{ return col2Width; }
+	public String getColumnHeader()					{ return columnHeader; }
 	
 	
-	public MenuBase( String title, int columns, float x, float y, float col1Width, float col2Width )
+	public Menu( String title, int columns, float x, float y, float col1Width, float col2Width )
 	{
 		this.title = title;
 		this.columns = columns;
@@ -79,17 +77,17 @@ public class MenuBase
 	private void init()
 	{
 		id = NativeFunction.createMenu( title, columns, x, y, col1Width, col1Width );
-		GameModeBase.instance.menuPool[id] = this;
+		Gamemode.instance.menuPool[id] = this;
 	}
 	
 //---------------------------------------------------------
 	
-	protected int onPlayerSelectedMenuRow( PlayerBase player, int row )
+	protected int onPlayerSelectedMenuRow( Player player, int row )
 	{
 		return 1;
 	}
 	
-	protected int onPlayerExitedMenu( PlayerBase player )
+	protected int onPlayerExitedMenu( Player player )
 	{
 		return 1;
 	}
@@ -100,7 +98,7 @@ public class MenuBase
 	public void destroy()
 	{
 		NativeFunction.destroyMenu( id );
-		GameModeBase.instance.menuPool[ id ] = null;
+		Gamemode.instance.menuPool[ id ] = null;
 	}
 	
 	public void addItem( int column, String text )
@@ -127,12 +125,12 @@ public class MenuBase
 		NativeFunction.disableMenuRow( id, row );
 	}
 	
-	public void show( PlayerBase player )
+	public void show( Player player )
 	{
 		NativeFunction.showMenuForPlayer( id, player.id );
 	}
 	
-	public void hide( PlayerBase player )
+	public void hide( Player player )
 	{
 		NativeFunction.hideMenuForPlayer( id, player.id );
 	}

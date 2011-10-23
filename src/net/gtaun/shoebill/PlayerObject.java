@@ -18,24 +18,24 @@ package net.gtaun.shoebill;
 
 import java.util.Vector;
 
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointRot;
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.data.PointRot;
 
 /**
  * @author MK124
  *
  */
 
-public class PlayerObjectBase extends ObjectBase
+public class PlayerObject extends ObjectBase
 {
-	public static Vector<PlayerObjectBase> get( int playerid )
+	public static Vector<PlayerObject> get( int playerid )
 	{
-		Vector<PlayerObjectBase> list = new Vector<PlayerObjectBase>();
+		Vector<PlayerObject> list = new Vector<PlayerObject>();
 		
-		int baseIndex = playerid*GameModeBase.MAX_OBJECTS;
-		for( int i = baseIndex; i < baseIndex+GameModeBase.MAX_OBJECTS ; i++ )
+		int baseIndex = playerid*Gamemode.MAX_OBJECTS;
+		for( int i = baseIndex; i < baseIndex+Gamemode.MAX_OBJECTS ; i++ )
 		{
-			list.add( GameModeBase.instance.playerObjectPool[i] );
+			list.add( Gamemode.instance.playerObjectPool[i] );
 		}
 		
 		return list;
@@ -45,10 +45,10 @@ public class PlayerObjectBase extends ObjectBase
 	{
 		Vector<T> list = new Vector<T>();
 		
-		int baseIndex = playerid*GameModeBase.MAX_OBJECTS;
-		for( int i = baseIndex; i < baseIndex+GameModeBase.MAX_OBJECTS ; i++ )
+		int baseIndex = playerid*Gamemode.MAX_OBJECTS;
+		for( int i = baseIndex; i < baseIndex+Gamemode.MAX_OBJECTS ; i++ )
 		{
-			PlayerObjectBase obj = GameModeBase.instance.playerObjectPool[i];
+			PlayerObject obj = Gamemode.instance.playerObjectPool[i];
 			if( cls.isInstance(obj) ) list.add( cls.cast(obj) );
 		}
 		
@@ -56,11 +56,11 @@ public class PlayerObjectBase extends ObjectBase
 	}
 	
 	
-	PlayerBase player;
+	Player player;
 	
-	public PlayerBase player()		{ return player; }
+	public Player player()		{ return player; }
 	
-	public PlayerObjectBase( PlayerBase player, int model, float x, float y, float z, float rx, float ry, float rz )
+	public PlayerObject( Player player, int model, float x, float y, float z, float rx, float ry, float rz )
 	{
 		this.player = player;
 		this.model = model;
@@ -69,7 +69,7 @@ public class PlayerObjectBase extends ObjectBase
 		init();
 	}
 	
-	public PlayerObjectBase( PlayerBase player, int model, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
+	public PlayerObject( Player player, int model, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
 	{
 		this.player = player;
 		this.model = model;
@@ -79,7 +79,7 @@ public class PlayerObjectBase extends ObjectBase
 		init();
 	}
 	
-	public PlayerObjectBase( PlayerBase player, int model, Point point, float rx, float ry, float rz )
+	public PlayerObject( Player player, int model, Point point, float rx, float ry, float rz )
 	{
 		this.player = player;
 		this.model = model;
@@ -88,7 +88,7 @@ public class PlayerObjectBase extends ObjectBase
 		init();
 	}
 	
-	public PlayerObjectBase( PlayerBase player, int model, Point point, float rx, float ry, float rz, float drawDistance )
+	public PlayerObject( Player player, int model, Point point, float rx, float ry, float rz, float drawDistance )
 	{
 		this.player = player;
 		this.model = model;
@@ -98,7 +98,7 @@ public class PlayerObjectBase extends ObjectBase
 		init();
 	}
 	
-	public PlayerObjectBase( PlayerBase player, int model, PointRot point )
+	public PlayerObject( Player player, int model, PointRot point )
 	{
 		this.player = player;
 		this.model = model;
@@ -107,7 +107,7 @@ public class PlayerObjectBase extends ObjectBase
 		init();
 	}
 	
-	public PlayerObjectBase( PlayerBase player, int model, PointRot point, float drawDistance )
+	public PlayerObject( Player player, int model, PointRot point, float drawDistance )
 	{
 		this.player = player;
 		this.model = model;
@@ -121,7 +121,7 @@ public class PlayerObjectBase extends ObjectBase
 	{
 		id = NativeFunction.createPlayerObject( player.id, model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
 		
-		GameModeBase.instance.playerObjectPool[id + player.id*GameModeBase.MAX_OBJECTS] = this;
+		Gamemode.instance.playerObjectPool[id + player.id*Gamemode.MAX_OBJECTS] = this;
 	}
 	
 
@@ -138,7 +138,7 @@ public class PlayerObjectBase extends ObjectBase
 	public void destroy()
 	{
 		NativeFunction.destroyObject( id );
-		GameModeBase.instance.playerObjectPool[ id + player.id*GameModeBase.MAX_OBJECTS ] = null;
+		Gamemode.instance.playerObjectPool[ id + player.id*Gamemode.MAX_OBJECTS ] = null;
 	}
 	
 	public PointRot position()
@@ -183,14 +183,14 @@ public class PlayerObjectBase extends ObjectBase
 		NativeFunction.stopPlayerObject( player.id, id );
 	}
 	
-	public void attach( PlayerBase player, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( Player player, float x, float y, float z, float rx, float ry, float rz )
 	{
 		NativeFunction.attachPlayerObjectToPlayer( this.player.id, id, player.id, x, y, z, rx, ry, rz );
 		this.attachedPlayer = player;
 		speed = 0;
 	}
 	
-	public void attach( VehicleBase vehicle, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( Vehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
 	{
 		return;
 	}

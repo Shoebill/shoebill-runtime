@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 JoJLlmAn
+ * Copyright (C) 2011 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,14 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.data;
-
-import java.io.Serializable;
+package net.gtaun.shoebill;
 
 /**
- * @author JoJLlmAn
+ * @author MK124
  *
  */
 
-public class Vector2D implements Serializable
+public class Shoebill
 {
-	private static final long serialVersionUID = 1L;
-	
-	public float x, y;
-	
-	public Vector2D()
-	{
-		
-	}
-	
-	public Vector2D( float x, float y )
-	{
-		this.x = x;
-		this.y = y;
-	}
-	
-	public Vector2D clone()
-	{
-		return new Vector2D( x, y );
-	}
-	
+
 }

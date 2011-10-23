@@ -18,24 +18,24 @@ package net.gtaun.shoebill;
 
 import java.util.Vector;
 
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointRange;
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.data.PointRange;
 
 /**
  * @author MK124
  *
  */
 
-public class PlayerLabelBase extends LabelBase
+public class PlayerLabel extends Label
 {
-	public static Vector<PlayerLabelBase> get( int playerid )
+	public static Vector<PlayerLabel> get( int playerid )
 	{
-		Vector<PlayerLabelBase> list = new Vector<PlayerLabelBase>();
+		Vector<PlayerLabel> list = new Vector<PlayerLabel>();
 		
-		int baseIndex = playerid*GameModeBase.MAX_LABELS_PLAYER;
-		for( int i = baseIndex; i < baseIndex+GameModeBase.MAX_LABELS_PLAYER ; i++ )
+		int baseIndex = playerid*Gamemode.MAX_LABELS_PLAYER;
+		for( int i = baseIndex; i < baseIndex+Gamemode.MAX_LABELS_PLAYER ; i++ )
 		{
-			list.add( GameModeBase.instance.playerLabelPool[i] );
+			list.add( Gamemode.instance.playerLabelPool[i] );
 		}
 		
 		return list;
@@ -45,20 +45,20 @@ public class PlayerLabelBase extends LabelBase
 	{
 		Vector<T> list = new Vector<T>();
 		
-		int baseIndex = playerid*GameModeBase.MAX_LABELS_PLAYER;
-		for( int i = baseIndex; i < baseIndex+GameModeBase.MAX_LABELS_PLAYER ; i++ )
+		int baseIndex = playerid*Gamemode.MAX_LABELS_PLAYER;
+		for( int i = baseIndex; i < baseIndex+Gamemode.MAX_LABELS_PLAYER ; i++ )
 		{
-			PlayerLabelBase obj = GameModeBase.instance.playerLabelPool[i];
+			PlayerLabel obj = Gamemode.instance.playerLabelPool[i];
 			if( cls.isInstance(obj) ) list.add( cls.cast(obj) );
 		}
 		
 		return list;
 	}
 	
-	PlayerBase player;
+	Player player;
 	
 	
-	public PlayerLabelBase( PlayerBase player, String text, int color, Point point, float drawDistance, boolean testLOS )
+	public PlayerLabel( Player player, String text, int color, Point point, float drawDistance, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -71,7 +71,7 @@ public class PlayerLabelBase extends LabelBase
 		init();
 	}
 
-	public PlayerLabelBase( PlayerBase player, String text, int color, Point point, float drawDistance, boolean testLOS, PlayerBase attachedPlayer )
+	public PlayerLabel( Player player, String text, int color, Point point, float drawDistance, boolean testLOS, Player attachedPlayer )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -85,7 +85,7 @@ public class PlayerLabelBase extends LabelBase
 		init();
 	}
 	
-	public PlayerLabelBase( PlayerBase player, String text, int color, Point point, float drawDistance, boolean testLOS, VehicleBase attachedVehicle )
+	public PlayerLabel( Player player, String text, int color, Point point, float drawDistance, boolean testLOS, Vehicle attachedVehicle )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -99,7 +99,7 @@ public class PlayerLabelBase extends LabelBase
 		init();
 	}
 
-	public PlayerLabelBase( PlayerBase player, String text, int color, PointRange point, boolean testLOS )
+	public PlayerLabel( Player player, String text, int color, PointRange point, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -112,7 +112,7 @@ public class PlayerLabelBase extends LabelBase
 		init();
 	}
 	
-	public PlayerLabelBase( PlayerBase player, String text, int color, PointRange point, boolean testLOS, PlayerBase attachedPlayer )
+	public PlayerLabel( Player player, String text, int color, PointRange point, boolean testLOS, Player attachedPlayer )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -126,7 +126,7 @@ public class PlayerLabelBase extends LabelBase
 		init();
 	}
 	
-	public PlayerLabelBase( PlayerBase player, String text, int color, PointRange point, boolean testLOS, VehicleBase attachedVehicle )
+	public PlayerLabel( Player player, String text, int color, PointRange point, boolean testLOS, Vehicle attachedVehicle )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -142,7 +142,7 @@ public class PlayerLabelBase extends LabelBase
 	
 	private void init()
 	{
-		int playerId = GameModeBase.INVALID_PLAYER_ID, vehicleId = GameModeBase.INVALID_VEHICLE_ID;
+		int playerId = Gamemode.INVALID_PLAYER_ID, vehicleId = Gamemode.INVALID_VEHICLE_ID;
 		
 		if( attachedPlayer != null )	playerId = attachedPlayer.id;
 		if( attachedVehicle != null )	vehicleId = attachedVehicle.id;
@@ -157,7 +157,7 @@ public class PlayerLabelBase extends LabelBase
 		id = NativeFunction.createPlayer3DTextLabel( player.id, text, color,
 				position.x, position.y, position.z, position.distance, playerId, vehicleId, testLOS );
 		
-		GameModeBase.instance.playerLabelPool[id+player.id*GameModeBase.MAX_LABELS_PLAYER] = this;
+		Gamemode.instance.playerLabelPool[id+player.id*Gamemode.MAX_LABELS_PLAYER] = this;
 	}
 	
 //---------------------------------------------------------
@@ -165,21 +165,21 @@ public class PlayerLabelBase extends LabelBase
 	public void destroy()
 	{
 		NativeFunction.deletePlayer3DTextLabel( player.id, id );
-		GameModeBase.instance.playerLabelPool[id+player.id*GameModeBase.MAX_LABELS_PLAYER] = null;
+		Gamemode.instance.playerLabelPool[id+player.id*Gamemode.MAX_LABELS_PLAYER] = null;
 	}
 
-	public void attach( PlayerBase player, float x, float y, float z )
+	public void attach( Player player, float x, float y, float z )
 	{
 		NativeFunction.deletePlayer3DTextLabel( this.player.id, id );
 		id = NativeFunction.createPlayer3DTextLabel( this.player.id, text, color, x, y, z, position.distance,
-				player.id, GameModeBase.INVALID_VEHICLE_ID, testLOS );
+				player.id, Gamemode.INVALID_VEHICLE_ID, testLOS );
 	}
 
-	public void attach( VehicleBase vehicle, float x, float y, float z )
+	public void attach( Vehicle vehicle, float x, float y, float z )
 	{
 		NativeFunction.deletePlayer3DTextLabel( this.player.id, id );
 		id = NativeFunction.createPlayer3DTextLabel( this.player.id, text, color, x, y, z, position.distance,
-				GameModeBase.INVALID_PLAYER_ID, vehicle.id, testLOS );
+				Gamemode.INVALID_PLAYER_ID, vehicle.id, testLOS );
 	}
 	
 	public void update( int color, String text )

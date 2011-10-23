@@ -19,48 +19,48 @@ package net.gtaun.shoebill;
 
 import java.util.Vector;
 
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.data.PointRot;
+import net.gtaun.lungfish.object.IObject;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.lungfish.event.ObjectMovedEvent;
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointRot;
 
 /**
  * @author MK124, JoJLlmAn
  *
  */
 
-public class ObjectBase
+public class ObjectBase implements IObject
 {
 	public static Vector<ObjectBase> get()
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.objectPool, ObjectBase.class);
+		return Gamemode.getInstances(Gamemode.instance.objectPool, ObjectBase.class);
 	}
 	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.objectPool, cls);
+		return Gamemode.getInstances(Gamemode.instance.objectPool, cls);
 	}
 	
+	
+	EventDispatcher eventDispatcher = new EventDispatcher();
 	
 	int id, model;
 	PointRot position;
 	float speed = 0;
-	PlayerBase attachedPlayer;
-	VehicleBase attachedVehicle;
+	Player attachedPlayer;
+	Vehicle attachedVehicle;
 	float drawDistance = 0;
 	
-	public int model()						{ return model; }
-	public float speed()					{ return speed; }
-	public PlayerBase attachedPlayer()		{ return attachedPlayer; }
-	public VehicleBase attachedVehicle()	{ return attachedVehicle; }
-	public float drawDistance()				{ return drawDistance; }
 	
+	public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
 	
-	EventDispatcher<ObjectMovedEvent> eventMoved = new EventDispatcher<ObjectMovedEvent>();
+	public int getModel()							{ return model; }
+	public float getSpeed()							{ return speed; }
+	public Player getAttachedPlayer()				{ return attachedPlayer; }
+	public Vehicle getAttachedVehicle()				{ return attachedVehicle; }
+	public float getDrawDistance()					{ return drawDistance; }
 	
-	public IEventDispatcher<ObjectMovedEvent> 	eventMoved()	{ return eventMoved;}
-
 	
 	ObjectBase()
 	{
@@ -121,7 +121,7 @@ public class ObjectBase
 	private void init()
 	{
 		id = NativeFunction.createObject( model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
-		GameModeBase.instance.objectPool[id] = this;
+		Gamemode.instance.objectPool[id] = this;
 	}
 	
 
@@ -138,7 +138,7 @@ public class ObjectBase
 	public void destroy()
 	{
 		NativeFunction.destroyObject( id );
-		GameModeBase.instance.objectPool[ id ] = null;
+		Gamemode.instance.objectPool[ id ] = null;
 	}
 	
 	public PointRot position()
@@ -182,14 +182,14 @@ public class ObjectBase
 		NativeFunction.stopObject( id );
 	}
 	
-	public void attach( PlayerBase player, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( Player player, float x, float y, float z, float rx, float ry, float rz )
 	{
 		NativeFunction.attachObjectToPlayer( id, player.id, x, y, z, rx, ry, rz );
 		attachedPlayer = player;
 		speed = 0;
 	}
 	
-	public void attach( VehicleBase vehicle, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( Vehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
 	{
 		NativeFunction.attachObjectToVehicle( id, vehicle.id, x, y, z, rx, ry, rz );
 		attachedVehicle = vehicle;

@@ -16,12 +16,14 @@
 
 package net.gtaun.shoebill;
 
+import net.gtaun.lungfish.object.IPlayerSkill;
+
 /**
  * @author JoJLlmAn
  *
  */
 
-public class PlayerSkill
+public class PlayerSkill implements IPlayerSkill
 {
 	public static final int WEAPONSKILL_PISTOL = 					0;
 	public static final int WEAPONSKILL_PISTOL_SILENCED =			1;

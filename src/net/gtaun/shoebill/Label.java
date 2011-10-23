@@ -18,25 +18,25 @@ package net.gtaun.shoebill;
 
 import java.util.Vector;
 
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointAngle;
-import net.gtaun.shoebill.data.PointRange;
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.data.PointAngle;
+import net.gtaun.lungfish.data.PointRange;
 
 /**
  * @author MK124
  *
  */
 
-public class LabelBase
+public class Label
 {
-	public static Vector<LabelBase> get()
+	public static Vector<Label> get()
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.labelPool, LabelBase.class);
+		return Gamemode.getInstances(Gamemode.instance.labelPool, Label.class);
 	}
 	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.labelPool, cls);
+		return Gamemode.getInstances(Gamemode.instance.labelPool, cls);
 	}
 	
 	
@@ -47,23 +47,23 @@ public class LabelBase
 	boolean testLOS;
 	
 	float offsetX, offsetY, offsetZ;
-	PlayerBase attachedPlayer;
-	VehicleBase attachedVehicle;
+	Player attachedPlayer;
+	Vehicle attachedVehicle;
 
 	public int id()					{ return id; }
 	public String text()			{ return text; }
 	public int color()				{ return color; }
 	
-	public PlayerBase attachedPlayer()		{ return attachedPlayer; }
-	public VehicleBase attachedVehicle()	{ return attachedVehicle; }
+	public Player attachedPlayer()		{ return attachedPlayer; }
+	public Vehicle attachedVehicle()	{ return attachedVehicle; }
 	
 
-	LabelBase()
+	Label()
 	{
 		
 	}
 	
-	public LabelBase( String text, int color, Point point, float drawDistance, boolean testLOS )
+	public Label( String text, int color, Point point, float drawDistance, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -75,7 +75,7 @@ public class LabelBase
 		init();
 	}
 	
-	public LabelBase( String text, int color, PointRange point, boolean testLOS )
+	public Label( String text, int color, PointRange point, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -92,7 +92,7 @@ public class LabelBase
 		id = NativeFunction.create3DTextLabel( text, color,
 				position.x, position.y, position.z, position.distance, position.world, testLOS );
 		
-		GameModeBase.instance.labelPool[id] = this;
+		Gamemode.instance.labelPool[id] = this;
 	}
 	
 //---------------------------------------------------------
@@ -100,7 +100,7 @@ public class LabelBase
 	public void destroy()
 	{
 		NativeFunction.delete3DTextLabel( id );
-		GameModeBase.instance.labelPool[ id ] = null;
+		Gamemode.instance.labelPool[ id ] = null;
 	}
 
 	public PointRange position()
@@ -122,7 +122,7 @@ public class LabelBase
 		return position.clone();
 	}
 	
-	public void attach( PlayerBase player, float x, float y, float z )
+	public void attach( Player player, float x, float y, float z )
 	{
 		offsetX = x;
 		offsetY = y;
@@ -133,7 +133,7 @@ public class LabelBase
 		attachedVehicle = null;
 	}
 	
-	public void attach( VehicleBase vehicle, float x, float y, float z )
+	public void attach( Vehicle vehicle, float x, float y, float z )
 	{
 		offsetX = x;
 		offsetY = y;

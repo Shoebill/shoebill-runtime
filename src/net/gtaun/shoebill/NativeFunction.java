@@ -16,13 +16,13 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.data.KeyState;
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointRot;
-import net.gtaun.shoebill.data.Quaternions;
-import net.gtaun.shoebill.data.Time;
-import net.gtaun.shoebill.data.Velocity;
-import net.gtaun.shoebill.data.WeaponData;
+import net.gtaun.lungfish.data.KeyState;
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.data.PointRot;
+import net.gtaun.lungfish.data.Quaternions;
+import net.gtaun.lungfish.data.Time;
+import net.gtaun.lungfish.data.Velocity;
+import net.gtaun.lungfish.data.WeaponData;
 
 /**
  * @author MK124

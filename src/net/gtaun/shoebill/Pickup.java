@@ -19,45 +19,46 @@ package net.gtaun.shoebill;
 
 import java.util.Vector;
 
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.object.IPickup;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.lungfish.event.PlayerPickupEvent;
-import net.gtaun.shoebill.data.Point;
 
 /**
  * @author MK124, JoJLlmAn
  */
 
-public class PickupBase
+public class Pickup implements IPickup
 {
-	public static Vector<PickupBase> get()
+	public static Vector<Pickup> get()
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.pickupPool, PickupBase.class);
+		return Gamemode.getInstances(Gamemode.instance.pickupPool, Pickup.class);
 	}
 	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.pickupPool, cls);
+		return Gamemode.getInstances(Gamemode.instance.pickupPool, cls);
 	}
 	
+	
+	EventDispatcher eventDispatcher = new EventDispatcher();
 	
 	int id;
 	int model, type;
 	int world = -1;
 	Point position;
+
 	
-	public int model()			{ return this.model; }
-	public int type()			{ return this.type; }
-	public int world()			{ return this.world; }
-	public Point position()		{ return this.position; }
+	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	
-	EventDispatcher<PlayerPickupEvent>		eventPickup = new EventDispatcher<PlayerPickupEvent>();
-	
-	public IEventDispatcher<PlayerPickupEvent>		eventPickup()		{ return eventPickup; }
+	public int getModel()								{ return model; }
+	public int getType()								{ return type; }
+	public int getWorld()								{ return world; }
+	public Point getPosition()							{ return position.clone(); }
 	
 	
-	public PickupBase( int model, int type, float x, float y, float z, int virtualWorld )
+	
+	public Pickup( int model, int type, float x, float y, float z, int virtualWorld )
 	{
 		this.model = model;
 		this.type = type;
@@ -67,7 +68,7 @@ public class PickupBase
 		init();
 	}
 	
-	public PickupBase( int model, int type, float x, float y, float z)
+	public Pickup( int model, int type, float x, float y, float z)
 	{
 		this.model = model;
 		this.type = type;
@@ -76,7 +77,7 @@ public class PickupBase
 		init();
 	}
 	
-	public PickupBase( int model, int type, Point point )
+	public Pickup( int model, int type, Point point )
 	{
 		this.model = model;
 		this.type = type;
@@ -90,13 +91,13 @@ public class PickupBase
 	{
 		id = NativeFunction.createPickup( model, type, position.x, position.y, position.z, world );
 		
-		GameModeBase.instance.pickupPool[id] = this;
+		Gamemode.instance.pickupPool[id] = this;
 	}
 	
 	
 //---------------------------------------------------------
 	
-	protected int onPickup( PlayerBase player )
+	protected int onPickup( Player player )
 	{
 		return 1;
 	}
@@ -107,6 +108,6 @@ public class PickupBase
 	public void destroy()
 	{
 		NativeFunction.destroyPickup( id );
-		GameModeBase.instance.pickupPool[ id ] = null;
+		Gamemode.instance.pickupPool[ id ] = null;
 	}
 }

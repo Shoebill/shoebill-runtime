@@ -21,13 +21,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.event.player.PlayerConnectEvent;
+import net.gtaun.lungfish.event.player.PlayerDisconnectEvent;
+import net.gtaun.lungfish.event.player.PlayerUpdateEvent;
+import net.gtaun.lungfish.object.IPlayer;
+import net.gtaun.lungfish.util.event.Event;
 import net.gtaun.lungfish.util.event.IEventListener;
-import net.gtaun.lungfish.event.PlayerConnectEvent;
-import net.gtaun.lungfish.event.PlayerDisconnectEvent;
-import net.gtaun.lungfish.event.PlayerUpdateEvent;
-import net.gtaun.shoebill.GameModeBase;
-import net.gtaun.shoebill.PlayerBase;
-import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.Gamemode;
 
 /**
  * @author MK124
@@ -75,42 +76,45 @@ public class Streamer<O extends IStreamObject>
 {
 	protected Map<BlockArea, Vector<O>> blocks = new HashMap<BlockArea, Vector<O>>();
 	
-	GameModeBase gamemode;
-	int range, blockSize, updateFrameTick = 100;
+	Gamemode gamemode;
+	int range, blockSize, updateTick = 100;
 	
 	public int range()		{ return range; }
 	
 	
-	public Streamer( GameModeBase gamemode, int range )
+	public Streamer( Gamemode gamemode, int range )
 	{
-		gamemode.eventConnect().addListener( onPlayerConnect );
-		gamemode.eventDisconnect().addListener( onPlayerDisconnect );
+		gamemode.getEventDispatcher().addListener( PlayerConnectEvent.class, onPlayerConnect );
+		gamemode.getEventDispatcher().addListener( PlayerDisconnectEvent.class, onPlayerDisconnect );
 		
 		this.range = range;
 		blockSize = range/3*2;
 	}
 	
-	IEventListener<PlayerConnectEvent> onPlayerConnect = new IEventListener<PlayerConnectEvent>()
+	IEventListener onPlayerConnect = new IEventListener()
 	{
-		public void handleEvent( PlayerConnectEvent event )
+		public void handleEvent( Event e )
 		{
-			event.player().eventUpdate().addListener( onPlayerUpdate );
+			PlayerConnectEvent event = (PlayerConnectEvent) e;
+			event.player().getEventDispatcher().addListener( PlayerUpdateEvent.class, onPlayerUpdate );
 		}
 	};
 	
-	IEventListener<PlayerDisconnectEvent> onPlayerDisconnect = new IEventListener<PlayerDisconnectEvent>()
+	IEventListener onPlayerDisconnect = new IEventListener()
 	{
-		public void handleEvent( PlayerDisconnectEvent event )
+		public void handleEvent( Event e )
 		{
-			event.player().eventUpdate().removeListener( onPlayerUpdate );
+			PlayerDisconnectEvent event = (PlayerDisconnectEvent) e;
+			event.player().getEventDispatcher().removeListener( PlayerUpdateEvent.class, onPlayerUpdate );
 		}
 	};
 	
-	IEventListener<PlayerUpdateEvent> onPlayerUpdate = new IEventListener<PlayerUpdateEvent>()
+	IEventListener onPlayerUpdate = new IEventListener()
 	{
-		public void handleEvent( PlayerUpdateEvent event )
+		public void handleEvent( Event e )
 		{
-			if( event.player().frame() % updateFrameTick == event.player().id() % updateFrameTick )
+			PlayerUpdateEvent event = (PlayerUpdateEvent) e;
+			if( event.player().getUpdateTick() % updateTick == event.player().getId() % updateTick )
 				update( event.player() );
 		}
 	};
@@ -144,7 +148,7 @@ public class Streamer<O extends IStreamObject>
 		else blocks.remove( area );
 	}
 	
-	public void update( PlayerBase player )
+	public void update( IPlayer player )
 	{
 		
 	}

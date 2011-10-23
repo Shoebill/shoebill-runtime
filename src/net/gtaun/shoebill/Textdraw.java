@@ -19,24 +19,25 @@ package net.gtaun.shoebill;
 
 import java.util.Vector;
 
+
 /**
  * @author MK124, JoJLlmAn
  *
  */
 
-public class TextdrawBase
+public class Textdraw
 {
-	public static Vector<TextdrawBase> get()
+	public static Vector<Textdraw> get()
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.textdrawPool, TextdrawBase.class);
+		return Gamemode.getInstances(Gamemode.instance.textdrawPool, Textdraw.class);
 	}
 	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.textdrawPool, cls);
+		return Gamemode.getInstances(Gamemode.instance.textdrawPool, cls);
 	}
 	
-	private boolean[] isPlayerShowed = new boolean[GameModeBase.MAX_PLAYERS];
+	private boolean[] isPlayerShowed = new boolean[Gamemode.MAX_PLAYERS];
 	
 	
 	int id;
@@ -49,7 +50,7 @@ public class TextdrawBase
 	public String text()	{ return text; }
 	
 	
-	public TextdrawBase( float x, float y, String text )
+	public Textdraw( float x, float y, String text )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -60,7 +61,7 @@ public class TextdrawBase
 		init();
 	}
 	
-	public TextdrawBase( float x, float y )
+	public Textdraw( float x, float y )
 	{
 		this.x = x;
 		this.y = y;
@@ -72,9 +73,9 @@ public class TextdrawBase
 	private void init()
 	{
 		id = NativeFunction.textDrawCreate( x, y, text );
-		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) isPlayerShowed[i] = false;
+		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = false;
 		
-		GameModeBase.instance.textdrawPool[id] = this;
+		Gamemode.instance.textdrawPool[id] = this;
 	}
 	
 	
@@ -83,7 +84,7 @@ public class TextdrawBase
 	public void destroy()
 	{
 		NativeFunction.textDrawDestroy( id );
-		GameModeBase.instance.textdrawPool[id] = null;
+		Gamemode.instance.textdrawPool[id] = null;
 	}
 	
 	public void setLetterSize( float x, float y )
@@ -149,13 +150,13 @@ public class TextdrawBase
 		NativeFunction.textDrawSetString( id, text );
 	}
 	
-	public void show( PlayerBase player )
+	public void show( Player player )
 	{
 		NativeFunction.textDrawShowForPlayer( player.id, id );
 		isPlayerShowed[player.id] = true;
 	}
 	
-	public void hide( PlayerBase player )
+	public void hide( Player player )
 	{
 		NativeFunction.textDrawHideForPlayer( player.id, id );
 		isPlayerShowed[player.id] = false;
@@ -164,12 +165,12 @@ public class TextdrawBase
 	public void showForAll()
 	{
 		NativeFunction.textDrawShowForAll( id );
-		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
+		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
 	}
 	
 	public void hideForAll()
 	{
 		NativeFunction.textDrawHideForAll( id );
-		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) isPlayerShowed[i] = false;
+		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = false;
 	}
 }

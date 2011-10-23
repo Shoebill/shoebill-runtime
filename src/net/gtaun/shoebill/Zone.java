@@ -19,28 +19,28 @@ package net.gtaun.shoebill;
 
 import java.util.Vector;
 
-import net.gtaun.shoebill.data.Area;
+import net.gtaun.lungfish.data.Area;
 
 /**
  * @author MK124, JoJLlmAn
  *
  */
 
-public class ZoneBase
+public class Zone
 {
-	public static Vector<ZoneBase> get()
+	public static Vector<Zone> get()
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.zonePool, ZoneBase.class);
+		return Gamemode.getInstances(Gamemode.instance.zonePool, Zone.class);
 	}
 	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.zonePool, cls);
+		return Gamemode.getInstances(Gamemode.instance.zonePool, cls);
 	}
 	
 	
-	private boolean[] isPlayerShowed = new boolean[GameModeBase.MAX_PLAYERS];
-	private boolean[] isPlayerFlashing = new boolean[GameModeBase.MAX_PLAYERS];
+	private boolean[] isPlayerShowed = new boolean[Gamemode.MAX_PLAYERS];
+	private boolean[] isPlayerFlashing = new boolean[Gamemode.MAX_PLAYERS];
 	
 	
 	int id;
@@ -50,13 +50,13 @@ public class ZoneBase
 	public Area area()			{return this.area;}
 
 
-	public ZoneBase( float minx, float miny, float maxx, float maxy )
+	public Zone( float minx, float miny, float maxx, float maxy )
 	{
 		this.area = new Area( minx, miny, maxx, maxy );
 		init();
 	}
 	
-	public ZoneBase( Area area )
+	public Zone( Area area )
 	{
 		this.area = area;
 		init();
@@ -66,13 +66,13 @@ public class ZoneBase
 	{
 		id = NativeFunction.gangZoneCreate( area.minX, area.minY, area.maxX, area.maxY );
 		
-		for(int i=0; i<GameModeBase.MAX_PLAYERS; i++)
+		for(int i=0; i<Gamemode.MAX_PLAYERS; i++)
 		{
 			isPlayerShowed[i] = false;
 			isPlayerFlashing[i] = false;
 		}
 		
-		GameModeBase.instance.zonePool[id] = this;
+		Gamemode.instance.zonePool[id] = this;
 	}
 
 
@@ -81,18 +81,18 @@ public class ZoneBase
 	public void destroy()
 	{
 		NativeFunction.gangZoneDestroy( id );
-		GameModeBase.instance.zonePool[id] = null;
+		Gamemode.instance.zonePool[id] = null;
 	}
 	
 	
-	public void show( PlayerBase player, int color )
+	public void show( Player player, int color )
 	{
 		NativeFunction.gangZoneShowForPlayer( player.id, id, color );
 		isPlayerShowed[player.id] = true;
 		isPlayerFlashing[player.id] = false;
 	}
 	
-	public void hide( PlayerBase player )
+	public void hide( Player player )
 	{
 		NativeFunction.gangZoneHideForPlayer( player.id, id );
 		
@@ -100,7 +100,7 @@ public class ZoneBase
 		isPlayerFlashing[player.id] = false;
 	}
 	
-	public void flash( PlayerBase player, int color )
+	public void flash( Player player, int color )
 	{
 		if( isPlayerShowed[player.id] ){
 			NativeFunction.gangZoneFlashForPlayer( player.id, id, color );
@@ -108,7 +108,7 @@ public class ZoneBase
 		}
 	}
 	
-	public void stopFlash( PlayerBase player )
+	public void stopFlash( Player player )
 	{
 		NativeFunction.gangZoneStopFlashForPlayer( player.id, id );
 		isPlayerFlashing[player.id] = false;
@@ -118,14 +118,14 @@ public class ZoneBase
 	public void showForAll( int color )
 	{
 		NativeFunction.gangZoneShowForAll( id, color );
-		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
+		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
 	}
 	
 	public void hideForAll()
 	{
 		NativeFunction.gangZoneHideForAll( id );
 		
-		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ )
+		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ )
 		{
 			isPlayerShowed[i] = false;
 			isPlayerFlashing[i] = false;
@@ -135,12 +135,12 @@ public class ZoneBase
 	public void flashForAll( int color )
 	{
 		NativeFunction.gangZoneFlashForAll( id, color );
-		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
+		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
 	}
 
 	public void stopFlashForAll()
 	{
 		NativeFunction.gangZoneStopFlashForAll( id );
-		for( int i=0; i<GameModeBase.MAX_PLAYERS; i++ ) isPlayerFlashing[i] = false;
+		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerFlashing[i] = false;
 	}
 }

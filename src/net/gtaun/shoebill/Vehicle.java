@@ -19,46 +19,40 @@ package net.gtaun.shoebill;
 
 import java.util.Vector;
 
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.data.PointAngle;
+import net.gtaun.lungfish.data.Quaternions;
+import net.gtaun.lungfish.data.Velocity;
+import net.gtaun.lungfish.event.vehicle.VehicleDestroyEvent;
+import net.gtaun.lungfish.object.IVehicle;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.lungfish.event.VehicleDeathEvent;
-import net.gtaun.lungfish.event.VehicleDestroyEvent;
-import net.gtaun.lungfish.event.VehicleEnterEvent;
-import net.gtaun.lungfish.event.VehicleExitEvent;
-import net.gtaun.lungfish.event.VehicleModEvent;
-import net.gtaun.lungfish.event.VehiclePaintjobEvent;
-import net.gtaun.lungfish.event.VehicleResprayEvent;
-import net.gtaun.lungfish.event.VehicleSpawnEvent;
-import net.gtaun.lungfish.event.VehicleStreamInEvent;
-import net.gtaun.lungfish.event.VehicleStreamOutEvent;
-import net.gtaun.lungfish.event.VehicleUnoccupiedUpdate;
-import net.gtaun.lungfish.event.VehicleUpdateDamageEvent;
-import net.gtaun.lungfish.event.VehicleUpdateEvent;
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointAngle;
-import net.gtaun.shoebill.data.Quaternions;
-import net.gtaun.shoebill.data.Velocity;
 
 /**
  * @author MK124, JoJLlmAn
  *
  */
 
-public class VehicleBase
+public class Vehicle implements IVehicle
 {
-	public static Vector<VehicleBase> get()
+	public static Vector<Vehicle> get()
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.vehiclePool, VehicleBase.class);
+		return Gamemode.getInstances(Gamemode.instance.vehiclePool, Vehicle.class);
 	}
 	
 	public static <T> Vector<T> get( Class<T> cls )
 	{
-		return GameModeBase.getInstances(GameModeBase.instance.vehiclePool, cls);
+		return Gamemode.getInstances(Gamemode.instance.vehiclePool, cls);
+	}
+	
+	public static Vehicle get( int id )
+	{
+		return get( Vehicle.class, id );
 	}
 	
 	public static <T> T get( Class<T> cls, int id )
 	{
-		return GameModeBase.getInstance(GameModeBase.instance.vehiclePool, cls, id);
+		return Gamemode.getInstance(Gamemode.instance.vehiclePool, cls, id);
 	}
 	
 	
@@ -67,6 +61,8 @@ public class VehicleBase
 		NativeFunction.manualVehicleEngineAndLights();
 	}
 	
+
+	EventDispatcher eventDispatcher = new EventDispatcher();
 	
 	boolean isStatic = false, isDestroyed = false;
 	
@@ -79,48 +75,22 @@ public class VehicleBase
 	VehicleComponent component;
 	VehicleDamage damage;
 
-	public boolean isStatic()					{ return isStatic; }
-	public boolean isDestroyed()				{ return isDestroyed; }
 	
-	public int model()							{ return model; }
-	public int color1()							{ return color1; }
-	public int color2()							{ return color2; }
-	public int respawnDelay()					{ return respawnDelay; }
+	public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	
+	public boolean isStatic()						{ return isStatic; }
+	public boolean isDestroyed()					{ return isDestroyed; }
+	
+	public int getModel()							{ return model; }
+	public int getColor1()							{ return color1; }
+	public int getColor2()							{ return color2; }
+	public int getRespawnDelay()					{ return respawnDelay; }
 
-	public VehicleParam state()					{ return param; }
-	public VehicleComponent component()			{ return component; }
+	public VehicleParam getState()					{ return param; }
+	public VehicleComponent getComponent()			{ return component; }
 	
 	
-	EventDispatcher<VehicleDestroyEvent>		eventDestroy = new EventDispatcher<VehicleDestroyEvent>();
-	EventDispatcher<VehicleSpawnEvent>			eventSpawn = new EventDispatcher<VehicleSpawnEvent>();
-	EventDispatcher<VehicleDeathEvent>			eventDeath = new EventDispatcher<VehicleDeathEvent>();
-	EventDispatcher<VehicleUpdateEvent>			eventUpdate = new EventDispatcher<VehicleUpdateEvent>();
-	EventDispatcher<VehicleEnterEvent>			eventEnter = new EventDispatcher<VehicleEnterEvent>();
-	EventDispatcher<VehicleExitEvent>			eventExit = new EventDispatcher<VehicleExitEvent>();
-	EventDispatcher<VehicleModEvent>			eventMod = new EventDispatcher<VehicleModEvent>();
-	EventDispatcher<VehiclePaintjobEvent>		eventPaintjob = new EventDispatcher<VehiclePaintjobEvent>();
-	EventDispatcher<VehicleResprayEvent>		eventRespray = new EventDispatcher<VehicleResprayEvent>();
-	EventDispatcher<VehicleUpdateDamageEvent>	eventUpdateDamage = new EventDispatcher<VehicleUpdateDamageEvent>();
-	EventDispatcher<VehicleUnoccupiedUpdate> 	eventVehicleUnoccupiedUpdate = new EventDispatcher<VehicleUnoccupiedUpdate>();
-	EventDispatcher<VehicleStreamInEvent>		eventStreamIn = new EventDispatcher<VehicleStreamInEvent>();
-	EventDispatcher<VehicleStreamOutEvent>		eventStreamOut = new EventDispatcher<VehicleStreamOutEvent>();
-
-	public IEventDispatcher<VehicleDestroyEvent>		eventDestroy()					{ return eventDestroy; }
-	public IEventDispatcher<VehicleSpawnEvent>			eventSpawn()					{ return eventSpawn; }
-	public IEventDispatcher<VehicleDeathEvent>			eventDeath()					{ return eventDeath; }
-	public IEventDispatcher<VehicleUpdateEvent>			eventUpdate()					{ return eventUpdate; }
-	public IEventDispatcher<VehicleEnterEvent>			eventEnter()					{ return eventEnter; }
-	public IEventDispatcher<VehicleExitEvent>			eventExit()						{ return eventExit; }
-	public IEventDispatcher<VehicleModEvent>			eventMod()						{ return eventMod; }
-	public IEventDispatcher<VehiclePaintjobEvent>		eventPaintjob()					{ return eventPaintjob; }
-	public IEventDispatcher<VehicleResprayEvent>		eventRespray()					{ return eventRespray; }
-	public IEventDispatcher<VehicleUpdateDamageEvent>	eventUpdateDamage()				{ return eventUpdateDamage; }
-	public IEventDispatcher<VehicleUnoccupiedUpdate>	eventVehicleUnoccupiedUpdate()	{ return eventVehicleUnoccupiedUpdate; }
-	public IEventDispatcher<VehicleStreamInEvent>		eventStreamIn()					{ return eventStreamIn; }
-	public IEventDispatcher<VehicleStreamOutEvent>		eventStreamOut()				{ return eventStreamOut; }
-	
-
-	public VehicleBase( int model, float x, float y, float z, int interior, int world, float angle, int color1, int color2, int respawnDelay )
+	public Vehicle( int model, float x, float y, float z, int interior, int world, float angle, int color1, int color2, int respawnDelay )
 	{
 		this.color1 = color1;
 		this.color2 = color2;
@@ -129,7 +99,7 @@ public class VehicleBase
 		init( x, y, z, interior, world, angle );
 	}
 	
-	public VehicleBase( int model, float x, float y, float z, float angle, int color1, int color2, int respawnDelay )
+	public Vehicle( int model, float x, float y, float z, float angle, int color1, int color2, int respawnDelay )
 	{
 		this.model = model;
 		this.color1 = color1;
@@ -139,7 +109,7 @@ public class VehicleBase
 		init( x, y, z, 0, 0, angle );
 	}
 	
-	public VehicleBase( int model, Point point, float angle, int color1, int color2, int respawnDelay )
+	public Vehicle( int model, Point point, float angle, int color1, int color2, int respawnDelay )
 	{
 		this.model = model;
 		this.color1 = color1;
@@ -149,7 +119,7 @@ public class VehicleBase
 		init( point.x, point.y, point.z, point.interior, point.world, angle );
 	}
 	
-	public VehicleBase( int model, PointAngle point, int color1, int color2, int respawnDelay )
+	public Vehicle( int model, PointAngle point, int color1, int color2, int respawnDelay )
 	{
 		this.model = model;
 		this.color1 = color1;
@@ -183,77 +153,9 @@ public class VehicleBase
 		component = new VehicleComponent( id );
 		damage = new VehicleDamage( id );
 		
-		GameModeBase.instance.vehiclePool[id] = this;
+		Gamemode.instance.vehiclePool[id] = this;
 		
-		this.onSpawn();
-	}
-	
-	
-//---------------------------------------------------------
-	
-	protected int onDestroy()
-	{
-		return 1;
-	}
-	
-	protected int onSpawn()
-	{
-		return 1;
-	}
-
-	protected int onDeath( PlayerBase killer )
-	{
-		return 1;
-	}
-	
-	protected int onUpdate()
-	{
-		return 1;
-	}
-	
-	protected int onEnter( PlayerBase player, boolean ispassenger )
-	{
-		return 1;
-	}
-
-	protected int onExit( PlayerBase player )
-	{
-		return 1;
-	}
-	
-	protected int onMod( int componentid )
-	{
-		return 1;
-	}
-
-	protected int onPaintjob( int paintjobid )
-	{
-		return 1;
-	}
-
-	protected int onRespray( int color1, int color2 )
-	{
-		return 1;
-	}
-
-	protected int onUpdateDamage( PlayerBase player )
-	{
-		return 1;
-	}
-	
-	protected int onPlayerUnoccupiedUpdate( PlayerBase player )
-	{
-		return 1;
-	}
-
-	protected int onStreamIn( PlayerBase player )
-	{
-		return 1;
-	}
-
-	protected int onStreamOut( PlayerBase player )
-	{
-		return 1;
+		//this.onSpawn();
 	}
 	
 	
@@ -274,16 +176,16 @@ public class VehicleBase
 		NativeFunction.destroyVehicle( id );
 		
 		isDestroyed = true;
-		GameModeBase.instance.vehiclePool[ id ] = null;
+		Gamemode.instance.vehiclePool[ id ] = null;
 		
-		onDestroy();
-		eventDestroy.dispatchEvent( new VehicleDestroyEvent(this) );
+		//onDestroy();
+		eventDispatcher.dispatchEvent( new VehicleDestroyEvent(this) );
 	}
 	
 	
-	public VehicleBase trailer()
+	public Vehicle trailer()
 	{
-		return get( VehicleBase.class, NativeFunction.getVehicleTrailer(id) );
+		return get( Vehicle.class, NativeFunction.getVehicleTrailer(id) );
 	}
 	
 	public PointAngle position()
@@ -382,22 +284,22 @@ public class VehicleBase
 	}
 
 	
-	public void putPlayer( PlayerBase player, int seat )
+	public void putPlayer( Player player, int seat )
 	{
 		NativeFunction.putPlayerInVehicle( player.id, id, seat );
 	}
 	
-	public boolean isPlayerIn( PlayerBase player )
+	public boolean isPlayerIn( Player player )
 	{
 		return NativeFunction.isPlayerInVehicle(player.id, id);
 	}
 	
-	public boolean isStreamedIn( PlayerBase forplayer )
+	public boolean isStreamedIn( Player forplayer )
 	{
 		return NativeFunction.isVehicleStreamedIn(id, forplayer.id);
 	}
 	
-	public void setParamsForPlayer( PlayerBase player, boolean objective, boolean doorslocked )
+	public void setParamsForPlayer( Player player, boolean objective, boolean doorslocked )
 	{
 		NativeFunction.setVehicleParamsForPlayer( id, player.id, objective, doorslocked );
 	}
@@ -417,7 +319,7 @@ public class VehicleBase
 		NativeFunction.changeVehiclePaintjob( id, paintjobid );
 	}
 	
-	public void attachTrailer( VehicleBase trailer )
+	public void attachTrailer( Vehicle trailer )
 	{
 		NativeFunction.attachTrailerToVehicle( trailer.id, id );
 	}

@@ -20,38 +20,38 @@ package net.gtaun.shoebill;
 import java.util.Iterator;
 import java.util.Vector;
 
-import net.gtaun.lungfish.event.CheckpointEnterEvent;
-import net.gtaun.lungfish.event.CheckpointLeaveEvent;
+import net.gtaun.lungfish.data.Vector3D;
+import net.gtaun.lungfish.object.ICheckpoint;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.shoebill.data.Vector3D;
 
 /**
  * @author JoJLlmAn, MK124
  *
  */
 
-public class CheckpointBase extends Vector3D
+public class Checkpoint extends Vector3D implements ICheckpoint
 {
 	private static final long serialVersionUID = 8248982970415175584L;
 
-	public float size;
+	
+	EventDispatcher eventDispatcher = new EventDispatcher();
+	
+	float size;
 	
 	
-	EventDispatcher<CheckpointEnterEvent>	eventEnter = new EventDispatcher<CheckpointEnterEvent>();
-	EventDispatcher<CheckpointLeaveEvent>	eventLeave = new EventDispatcher<CheckpointLeaveEvent>();
+	public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	
+	public float getSize()							{ return size; }
 
-	public IEventDispatcher<CheckpointEnterEvent>	eventEnter()	{ return eventEnter; }
-	public IEventDispatcher<CheckpointLeaveEvent>	eventLeave()	{ return eventLeave; }
-
 	
-	public CheckpointBase( float x, float y, float z, float size )
+	public Checkpoint( float x, float y, float z, float size )
 	{
 		super( x, y, z );
 		this.size = size;
 	}
 	
-	public CheckpointBase( Vector3D point, float size )
+	public Checkpoint( Vector3D point, float size )
 	{
 		super( point.x, point.y, point.z );
 		this.size = size;
@@ -60,12 +60,12 @@ public class CheckpointBase extends Vector3D
 
 //---------------------------------------------------------
 
-	protected int onEnter( PlayerBase player )
+	protected int onEnter( Player player )
 	{
 		return 0;
 	}
 	
-	protected int onLeave( PlayerBase player )
+	protected int onLeave( Player player )
 	{
 		return 0;
 	}
@@ -73,13 +73,13 @@ public class CheckpointBase extends Vector3D
 	
 //---------------------------------------------------------
 	
-	public void set( PlayerBase player )
+	public void set( Player player )
 	{
 		NativeFunction.setPlayerCheckpoint( player.id, x, y, z, size );
 		player.checkpoint = this;
 	}
 	
-	public void disable( PlayerBase player )
+	public void disable( Player player )
 	{
 		if( player.checkpoint != this ) return;
 
@@ -87,7 +87,7 @@ public class CheckpointBase extends Vector3D
 		player.checkpoint = null;
 	}
 	
-	public boolean inCheckpoint( PlayerBase player )
+	public boolean inCheckpoint( Player player )
 	{
 		if( player.checkpoint != this ) return false;
 		return NativeFunction.isPlayerInCheckpoint(player.id);
@@ -95,20 +95,20 @@ public class CheckpointBase extends Vector3D
 	
 	public void update()
 	{
-		for (int i = 0; i < GameModeBase.instance.playerPool.length; i++)
+		for (int i = 0; i < Gamemode.instance.playerPool.length; i++)
 		{
-			PlayerBase player = GameModeBase.instance.playerPool[i];
+			Player player = Gamemode.instance.playerPool[i];
 			if( player == null ) continue;
 			
 			if( player.checkpoint == this ) set( player );
 		}
 	}
 	
-	public <T extends PlayerBase> Vector<T> usingPlayers( Class<T> cls )
+	public <T extends Player> Vector<T> usingPlayers( Class<T> cls )
 	{
 		Vector<T> players = new Vector<T>();
 		
-		Iterator<T> iterator = PlayerBase.get(cls).iterator();
+		Iterator<T> iterator = Player.get(cls).iterator();
 		while( iterator.hasNext() )
 		{
 			T player = iterator.next();

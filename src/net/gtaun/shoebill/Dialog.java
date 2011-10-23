@@ -18,17 +18,17 @@ package net.gtaun.shoebill;
 
 import java.lang.ref.WeakReference;
 
+import net.gtaun.lungfish.event.dialog.DialogCancelEvent;
+import net.gtaun.lungfish.object.IDialog;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.lungfish.event.DialogCancelEvent;
-import net.gtaun.lungfish.event.DialogResponseEvent;
 
 /**
  * @author MK124
  *
  */
 
-public class DialogBase
+public class Dialog implements IDialog
 {
 	public static final int STYLE_MSGBOX =		0;
 	public static final int STYLE_INPUT =		1;
@@ -39,19 +39,17 @@ public class DialogBase
 	private static int count = 0;
 	
 	
+	EventDispatcher eventDispatcher = new EventDispatcher();
+	
 	int id, style;
-	
-	public int style()		{ return style; }
-	
 
-	EventDispatcher<DialogResponseEvent>	eventResponse = new EventDispatcher<DialogResponseEvent>();
-	EventDispatcher<DialogCancelEvent>		eventCancel = new EventDispatcher<DialogCancelEvent>();
-
-	public IEventDispatcher<DialogResponseEvent>	eventResponse()		{ return eventResponse; }
-	public IEventDispatcher<DialogCancelEvent>		eventCancel()		{ return eventCancel; }
+	
+	public IEventDispatcher getEventDispatcher()	{ return getEventDispatcher(); }
+	
+	public int getStyle()							{ return style; }
 	
 	
-	public DialogBase( int style )
+	public Dialog( int style )
 	{
 		this.style = style;
 		init();
@@ -62,18 +60,18 @@ public class DialogBase
 		id = count;
 		count++;
 		
-		GameModeBase.instance.dialogPool.put( id, new WeakReference<DialogBase>(this) );
+		Gamemode.instance.dialogPool.put( id, new WeakReference<Dialog>(this) );
 	}
 	
 	
 //---------------------------------------------------------
 	
-	protected int onResponse( PlayerBase player, int response, int listitem, String inputtext )
+	protected int onResponse( Player player, int response, int listitem, String inputtext )
 	{
 		return 1;
 	}
 	
-	protected int onCancel( PlayerBase player )
+	protected int onCancel( Player player )
 	{
 		return 1;
 	}
@@ -81,7 +79,7 @@ public class DialogBase
 	
 //---------------------------------------------------------
 	
-	public void show( PlayerBase player, String caption, String text, String button1, String button2 )
+	public void show( Player player, String caption, String text, String button1, String button2 )
 	{
 		if( caption == null || text == null || button1 == null || button2 == null ) throw new NullPointerException();
 		cancel( player );
@@ -90,12 +88,12 @@ public class DialogBase
 		NativeFunction.showPlayerDialog( player.id, id, style, caption, text, button1, button2 );
 	}
 	
-	public void cancel( PlayerBase player )
+	public void cancel( Player player )
 	{
 		if( player.dialog == null ) return;
 		NativeFunction.showPlayerDialog( player.id, -1, 0, "", "", "", "" );
 		
 		player.dialog.onCancel( player );
-		player.dialog.eventCancel.dispatchEvent( new DialogCancelEvent(player.dialog, player) );
+		player.dialog.eventDispatcher.dispatchEvent( new DialogCancelEvent(player.dialog, player) );
 	}
 }

@@ -25,59 +25,60 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
+import net.gtaun.lungfish.data.Color;
+import net.gtaun.lungfish.data.Point;
+import net.gtaun.lungfish.data.SpawnInfo;
+import net.gtaun.lungfish.event.checkpoint.CheckpointEnterEvent;
+import net.gtaun.lungfish.event.checkpoint.CheckpointLeaveEvent;
+import net.gtaun.lungfish.event.dialog.DialogResponseEvent;
+import net.gtaun.lungfish.event.gamemode.GamemodeExitEvent;
+import net.gtaun.lungfish.event.menu.MenuExitedEvent;
+import net.gtaun.lungfish.event.menu.MenuSelectedEvent;
+import net.gtaun.lungfish.event.object.ObjectMovedEvent;
+import net.gtaun.lungfish.event.player.PlayerClickPlayerEvent;
+import net.gtaun.lungfish.event.player.PlayerCommandEvent;
+import net.gtaun.lungfish.event.player.PlayerConnectEvent;
+import net.gtaun.lungfish.event.player.PlayerDeathEvent;
+import net.gtaun.lungfish.event.player.PlayerDisconnectEvent;
+import net.gtaun.lungfish.event.player.PlayerEnterExitModShopEvent;
+import net.gtaun.lungfish.event.player.PlayerInteriorChangeEvent;
+import net.gtaun.lungfish.event.player.PlayerKeyStateChangeEvent;
+import net.gtaun.lungfish.event.player.PlayerKillEvent;
+import net.gtaun.lungfish.event.player.PlayerObjectMovedEvent;
+import net.gtaun.lungfish.event.player.PlayerPickupEvent;
+import net.gtaun.lungfish.event.player.PlayerRequestClassEvent;
+import net.gtaun.lungfish.event.player.PlayerRequestSpawnEvent;
+import net.gtaun.lungfish.event.player.PlayerSpawnEvent;
+import net.gtaun.lungfish.event.player.PlayerStateChangeEvent;
+import net.gtaun.lungfish.event.player.PlayerStreamInEvent;
+import net.gtaun.lungfish.event.player.PlayerStreamOutEvent;
+import net.gtaun.lungfish.event.player.PlayerTextEvent;
+import net.gtaun.lungfish.event.player.PlayerUpdateEvent;
+import net.gtaun.lungfish.event.racecheckpoint.RaceCheckpointEnterEvent;
+import net.gtaun.lungfish.event.racecheckpoint.RaceCheckpointLeaveEvent;
+import net.gtaun.lungfish.event.rcon.RconCommandEvent;
+import net.gtaun.lungfish.event.rcon.RconLoginEvent;
+import net.gtaun.lungfish.event.vehicle.VehicleDeathEvent;
+import net.gtaun.lungfish.event.vehicle.VehicleEnterEvent;
+import net.gtaun.lungfish.event.vehicle.VehicleExitEvent;
+import net.gtaun.lungfish.event.vehicle.VehicleModEvent;
+import net.gtaun.lungfish.event.vehicle.VehiclePaintjobEvent;
+import net.gtaun.lungfish.event.vehicle.VehicleResprayEvent;
+import net.gtaun.lungfish.event.vehicle.VehicleSpawnEvent;
+import net.gtaun.lungfish.event.vehicle.VehicleStreamInEvent;
+import net.gtaun.lungfish.event.vehicle.VehicleStreamOutEvent;
+import net.gtaun.lungfish.event.vehicle.VehicleUnoccupiedUpdateEvent;
+import net.gtaun.lungfish.event.vehicle.VehicleUpdateDamageEvent;
+import net.gtaun.lungfish.object.IGamemode;
 import net.gtaun.lungfish.util.event.EventDispatcher;
-import net.gtaun.lungfish.event.CheckpointEnterEvent;
-import net.gtaun.lungfish.event.CheckpointLeaveEvent;
-import net.gtaun.lungfish.event.DialogResponseEvent;
-import net.gtaun.lungfish.event.GameModeExitEvent;
-import net.gtaun.lungfish.event.MenuExitedEvent;
-import net.gtaun.lungfish.event.MenuSelectedEvent;
-import net.gtaun.lungfish.event.ObjectMovedEvent;
-import net.gtaun.lungfish.event.PlayerClickPlayerEvent;
-import net.gtaun.lungfish.event.PlayerCommandEvent;
-import net.gtaun.lungfish.event.PlayerConnectEvent;
-import net.gtaun.lungfish.event.PlayerDeathEvent;
-import net.gtaun.lungfish.event.PlayerDisconnectEvent;
-import net.gtaun.lungfish.event.PlayerEnterExitModShopEvent;
-import net.gtaun.lungfish.event.PlayerInteriorChangeEvent;
-import net.gtaun.lungfish.event.PlayerKeyStateChangeEvent;
-import net.gtaun.lungfish.event.PlayerKillEvent;
-import net.gtaun.lungfish.event.PlayerObjectMovedEvent;
-import net.gtaun.lungfish.event.PlayerPickupEvent;
-import net.gtaun.lungfish.event.PlayerRequestClassEvent;
-import net.gtaun.lungfish.event.PlayerRequestSpawnEvent;
-import net.gtaun.lungfish.event.PlayerSpawnEvent;
-import net.gtaun.lungfish.event.PlayerStateChangeEvent;
-import net.gtaun.lungfish.event.PlayerStreamInEvent;
-import net.gtaun.lungfish.event.PlayerStreamOutEvent;
-import net.gtaun.lungfish.event.PlayerTextEvent;
-import net.gtaun.lungfish.event.PlayerUpdateEvent;
-import net.gtaun.lungfish.event.RaceCheckpointEnterEvent;
-import net.gtaun.lungfish.event.RaceCheckpointLeaveEvent;
-import net.gtaun.lungfish.event.RconCommandEvent;
-import net.gtaun.lungfish.event.RconLoginEvent;
-import net.gtaun.lungfish.event.TimerTickEvent;
-import net.gtaun.lungfish.event.VehicleDeathEvent;
-import net.gtaun.lungfish.event.VehicleEnterEvent;
-import net.gtaun.lungfish.event.VehicleExitEvent;
-import net.gtaun.lungfish.event.VehicleModEvent;
-import net.gtaun.lungfish.event.VehiclePaintjobEvent;
-import net.gtaun.lungfish.event.VehicleResprayEvent;
-import net.gtaun.lungfish.event.VehicleSpawnEvent;
-import net.gtaun.lungfish.event.VehicleStreamInEvent;
-import net.gtaun.lungfish.event.VehicleStreamOutEvent;
-import net.gtaun.lungfish.event.VehicleUnoccupiedUpdate;
-import net.gtaun.lungfish.event.VehicleUpdateDamageEvent;
-import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.SpawnInfo;
+import net.gtaun.lungfish.util.event.IEventDispatcher;
 
 /**
  * @author MK124, JoJLlmAn
  *
  */
 
-public abstract class GameModeBase
+public abstract class Gamemode implements IGamemode
 {
 	public static final int MAX_PLAYER_NAME =			24;
 	public static final int MAX_PLAYERS =				500;
@@ -101,7 +102,7 @@ public abstract class GameModeBase
 	
 //----------------------------------------------------------
     
-	static GameModeBase instance = null;
+	static Gamemode instance = null;
 
 	static PrintStream consoleStream = System.out;
 	static PrintStream errorStream = System.err;
@@ -142,57 +143,47 @@ public abstract class GameModeBase
 	}
 	
 
-	private Class<?> playerCls = PlayerBase.class;
+	private Class<?> playerCls = Player.class;
 	
-	PlayerBase[] playerPool						= new PlayerBase[MAX_PLAYERS];
-	VehicleBase[] vehiclePool					= new VehicleBase[MAX_VEHICLES];
+	EventDispatcher eventDispatcher = new EventDispatcher();
+	
+	Player[] playerPool						= new Player[MAX_PLAYERS];
+	Vehicle[] vehiclePool					= new Vehicle[MAX_VEHICLES];
 	ObjectBase[] objectPool						= new ObjectBase[MAX_OBJECTS];
-	PlayerObjectBase[] playerObjectPool			= new PlayerObjectBase[MAX_OBJECTS*MAX_PLAYERS];
-	PickupBase[] pickupPool						= new PickupBase[MAX_PICKUPS];
-	LabelBase[] labelPool						= new LabelBase[MAX_LABELS_GLOBAL];
-	PlayerLabelBase[] playerLabelPool			= new PlayerLabelBase[MAX_LABELS_PLAYER*MAX_PLAYERS];
-	TextdrawBase[] textdrawPool					= new TextdrawBase[MAX_TEXT_DRAWS];
-	ZoneBase[] zonePool							= new ZoneBase[MAX_ZONES];
-	MenuBase[] menuPool							= new MenuBase[MAX_MENUS];
+	PlayerObject[] playerObjectPool			= new PlayerObject[MAX_OBJECTS*MAX_PLAYERS];
+	Pickup[] pickupPool						= new Pickup[MAX_PICKUPS];
+	Label[] labelPool						= new Label[MAX_LABELS_GLOBAL];
+	PlayerLabel[] playerLabelPool			= new PlayerLabel[MAX_LABELS_PLAYER*MAX_PLAYERS];
+	Textdraw[] textdrawPool					= new Textdraw[MAX_TEXT_DRAWS];
+	Zone[] zonePool							= new Zone[MAX_ZONES];
+	Menu[] menuPool							= new Menu[MAX_MENUS];
 	
-	Vector<Reference<TimerBase>> timerPool				= new Vector<Reference<TimerBase>>();
-	Map<Integer, WeakReference<DialogBase>> dialogPool	= new HashMap<Integer, WeakReference<DialogBase>>();
-	// 撘勗���
+	Vector<Reference<Timer>> timerPool				= new Vector<Reference<Timer>>();
+	Map<Integer, WeakReference<Dialog>> dialogPool	= new HashMap<Integer, WeakReference<Dialog>>();
+	
 	
 	int currentPlayerId;
-	// PlayerBase() ����典
 	
 	int deathDropAmount = 0;
 	float nameTagDrawDistance = 70;
 	float chatRadius = -1;
 	float playerMarkerRadius = -1;
 	
+	
+	public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	
 	public int deathDropAmount()		{ return deathDropAmount; }
 	public float nameTagDrawDistance()	{ return nameTagDrawDistance; }
 	public float chatRadius()			{ return chatRadius; }
 	public float playerMarkerRadius()	{ return playerMarkerRadius;}
 	
-	EventDispatcher<GameModeExitEvent>		eventExit = new EventDispatcher<GameModeExitEvent>();
-	EventDispatcher<PlayerConnectEvent>		eventConnect = new EventDispatcher<PlayerConnectEvent>();
-	EventDispatcher<PlayerDisconnectEvent>	eventDisconnect = new EventDispatcher<PlayerDisconnectEvent>();
-	EventDispatcher<RconCommandEvent>		eventRconCommand = new EventDispatcher<RconCommandEvent>();
-	EventDispatcher<RconLoginEvent>			eventRconLogin = new EventDispatcher<RconLoginEvent>();
-	EventDispatcher<TimerTickEvent>			eventTick = new EventDispatcher<TimerTickEvent>();
-	
-	public EventDispatcher<GameModeExitEvent>		eventExit()				{ return eventExit; }
-	public EventDispatcher<PlayerConnectEvent>		eventConnect()			{ return eventConnect; }
-	public EventDispatcher<PlayerDisconnectEvent>	eventDisconnect()		{ return eventDisconnect; }
-	public EventDispatcher<RconCommandEvent>		eventRconCommand()		{ return eventRconCommand; }
-	public EventDispatcher<RconLoginEvent>			eventRconLogin()		{ return eventRconLogin; }
-	public EventDispatcher<TimerTickEvent>			eventTick()				{ return eventTick; }
-	
 
-	protected GameModeBase()
+	protected Gamemode()
 	{
 		init();
 	}
 
-	protected GameModeBase( Class<?> playercls )
+	protected Gamemode( Class<?> playercls )
 	{
 		playerCls = playercls;
 		init();
@@ -223,12 +214,12 @@ public abstract class GameModeBase
 		return 1;
 	}
 	
-	protected int onConnect( PlayerBase player )
+	protected int onConnect( Player player )
 	{
 		return 1;
 	}
 	
-	protected int onDisconnect( PlayerBase player, int reason )
+	protected int onDisconnect( Player player, int reason )
 	{
 		return 1;
 	}
@@ -428,10 +419,10 @@ public abstract class GameModeBase
 			int interval = (int) ((nowTick - lastTick) / 1000 / 1000);
 			lastTick = nowTick;
 			
-			Iterator<Reference<TimerBase>> iterator = timerPool.iterator();
+			Iterator<Reference<Timer>> iterator = timerPool.iterator();
 			while( iterator.hasNext() )
 			{
-				TimerBase timer = iterator.next().get();
+				Timer timer = iterator.next().get();
 				timer.tick( interval );
 			}
 		}
@@ -446,7 +437,7 @@ public abstract class GameModeBase
 		try
 		{
 			onExit();
-			eventExit.dispatchEvent( new GameModeExitEvent(this) );
+			eventDispatcher.dispatchEvent( new GamemodeExitEvent(this) );
 			
 			logStream.log( "--- Server Shutting Down." );
 			
@@ -464,12 +455,12 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player;
+    		Player player;
     		currentPlayerId = playerid;
     		
     		try
     		{
-    			player = (PlayerBase) playerCls.newInstance();
+    			player = (Player) playerCls.newInstance();
     		}
     		catch (InstantiationException e)
     		{
@@ -486,7 +477,7 @@ public abstract class GameModeBase
     		logStream.log( "[join] " + player.name + " has joined the server (" + playerid + ":" + player.ip + ")" );
     		
     		onConnect( player );
-    		eventConnect.dispatchEvent( new PlayerConnectEvent(player) );
+    		eventDispatcher.dispatchEvent( new PlayerConnectEvent(player) );
     		return 1;
 		}
 		catch( Exception e )
@@ -500,16 +491,16 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		logStream.log( "[part] " + player.name + " has left the server (" + playerid + ":" + reason + ")" );
     		
     		PlayerDisconnectEvent event = new PlayerDisconnectEvent(player, reason);
     		
     		onDisconnect( player, reason );
-    		eventDisconnect.dispatchEvent( event );
+    		eventDispatcher.dispatchEvent( event );
     		
     		player.onDisconnect( reason );
-    		player.eventDisconnect.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		playerPool[playerid] = null;
     		return 1;
@@ -525,7 +516,7 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		System.out.println( "[spawn] " + player.name + " has spawned (" + playerid + ")" );
     		
     		player.team = NativeFunction.getPlayerTeam(player.id);
@@ -534,7 +525,7 @@ public abstract class GameModeBase
     		player.playerAttach = new PlayerAttach(playerid);
     			
     		player.onSpawn();
-    		player.eventSpawn.dispatchEvent( new PlayerSpawnEvent(player) );
+    		player.eventDispatcher.dispatchEvent( new PlayerSpawnEvent(player) );
     
     		return 1;
     	}
@@ -549,8 +540,8 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
-    		PlayerBase killer = null;
+    		Player player = playerPool[playerid];
+    		Player killer = null;
     		
     		if( killerid != 0xFFFF )
     		{
@@ -559,14 +550,14 @@ public abstract class GameModeBase
     					" (" + NativeFunction.getWeaponName(reason) + ")" );
     			
     			killer.onKill( player, reason );
-    			killer.eventKill.dispatchEvent( new PlayerKillEvent(killer, player, reason) );
+    			killer.eventDispatcher.dispatchEvent( new PlayerKillEvent(killer, player, reason) );
     		}
     		else logStream.log( "[death] " + player.name + " died (" + playerid + ":" + reason + ")" );
     		
     		player.playerAttach = new PlayerAttach(playerid);
     		
     		player.onDeath( killer, reason );
-    		player.eventDeath.dispatchEvent( new PlayerDeathEvent(player, killer, reason) );
+    		player.eventDispatcher.dispatchEvent( new PlayerDeathEvent(player, killer, reason) );
     		
     		return 1;
     	}
@@ -581,14 +572,14 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		logStream.log( "[chat] [" + player.name + "]: " + text );
     		
     		PlayerTextEvent event = new PlayerTextEvent(player, text, player.onText(text));
-    		player.eventText.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
-    		if( event.result() != 0 )
-    			PlayerBase.sendMessageToAll( Color.WHITE, "{FE8B13}" + player.name() + ": {FFFFFF}" + text );
+    		if( event.getResult() != 0 )
+    			Player.sendMessageToAll( Color.WHITE, "{FE8B13}" + player.getName() + ": {FFFFFF}" + text );
     		
     		return 0;
     	}
@@ -603,13 +594,13 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		System.out.println( "[cmd] [" + player.name + "] " + cmdtext );
     		
     		PlayerCommandEvent event = new PlayerCommandEvent(player, cmdtext, player.onCommand(cmdtext));
-    		player.eventCommand.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
-    		return event.result();
+    		return event.getResult();
 		}
 		catch( Exception e )
 		{
@@ -622,12 +613,12 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		
     		PlayerRequestClassEvent event = new PlayerRequestClassEvent(player, classid, player.onRequestClass(classid));
-    		player.eventRequestClass.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
-    		return event.result();
+    		return event.getResult();
     	}
 		catch( Exception e )
 		{
@@ -640,12 +631,12 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		
     		player.state = newstate;
     		
     		player.onStateChange( oldstate );
-    		player.eventStateChange.dispatchEvent( new PlayerStateChangeEvent(player, oldstate) );
+    		player.eventDispatcher.dispatchEvent( new PlayerStateChangeEvent(player, oldstate) );
     		
     		return 1;
 		}
@@ -660,15 +651,15 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		
     		CheckpointEnterEvent event = new CheckpointEnterEvent( player );
     		
     		player.checkpoint.onEnter( player );
-    		player.checkpoint.eventEnter.dispatchEvent( event );
+    		player.checkpoint.eventDispatcher.dispatchEvent( event );
     		
     		player.onEnterCheckpoint();
-    		player.eventEnterCheckpoint.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -683,15 +674,15 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		
     		CheckpointLeaveEvent event = new CheckpointLeaveEvent(player);
 
     		player.checkpoint.onLeave( player );
-    		player.checkpoint.eventLeave.dispatchEvent( event );
+    		player.checkpoint.eventDispatcher.dispatchEvent( event );
     		
     		player.onLeaveCheckpoint();
-    		player.eventLeaveCheckpoint.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -706,15 +697,15 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		
     		RaceCheckpointEnterEvent event = new RaceCheckpointEnterEvent(player);
     		
     		player.raceCheckpoint.onEnter( player );
-    		player.raceCheckpoint.eventEnter.dispatchEvent( event );
+    		player.raceCheckpoint.eventDispatcher.dispatchEvent( event );
     		
     		player.onEnterRaceCheckpoint();
-    		player.eventEnterRaceCheckpoint.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -729,15 +720,15 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		
     		RaceCheckpointLeaveEvent event = new RaceCheckpointLeaveEvent(player);
     		
     		player.raceCheckpoint.onLeave( player );
-    		player.raceCheckpoint.eventLeave.dispatchEvent( event );
+    		player.raceCheckpoint.eventDispatcher.dispatchEvent( event );
     		
     		player.onLeaveRaceCheckpoint();
-    		player.eventLeaveRaceCheckpoint.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -752,12 +743,12 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		
     		PlayerRequestSpawnEvent event = new PlayerRequestSpawnEvent( player, player.onRequestSpawn() );
-    		player.eventRequestSpawn.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
-    		return event.result();
+    		return event.getResult();
 		}
 		catch( Exception e )
 		{
@@ -777,7 +768,7 @@ public abstract class GameModeBase
 			NativeFunction.getObjectRot(objectid, object.position);
 			
 			object.onMoved();
-			object.eventMoved.dispatchEvent( new ObjectMovedEvent(object) );
+			object.eventDispatcher.dispatchEvent( new ObjectMovedEvent(object) );
 			
 			return 1;
 		}
@@ -792,15 +783,15 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		ObjectBase object = playerObjectPool[objectid + playerid*MAX_OBJECTS];
     		
     		object.speed = 0;  		
     		
     		object.onMoved();
-    		object.eventMoved.dispatchEvent(new ObjectMovedEvent(object));
+    		object.eventDispatcher.dispatchEvent(new ObjectMovedEvent(object));
     		player.onObjectMoved( object );
-    		player.eventObjectMoved.dispatchEvent( new PlayerObjectMovedEvent(player, object) );
+    		player.eventDispatcher.dispatchEvent( new PlayerObjectMovedEvent(player, object) );
     		
     		return 1;
 		}
@@ -815,17 +806,17 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
-    		PickupBase pickup = pickupPool[pickupid];
+    		Player player = playerPool[playerid];
+    		Pickup pickup = pickupPool[pickupid];
 
     		System.out.println( "[pickup] " + player.name + " pickup " + pickup.model + " (" + pickup.type + ")" );
     		
     		PlayerPickupEvent event = new PlayerPickupEvent(player, pickup);
     		
     		pickup.onPickup( player );
-    		pickup.eventPickup.dispatchEvent( event );
+    		pickup.eventDispatcher.dispatchEvent( event );
     		player.onPickup( pickup );
-    		player.eventPickup.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -846,16 +837,16 @@ public abstract class GameModeBase
     		//player.on();
     		//player.event.dispatchEvent( new Player(player) );
 			
-			PlayerBase player = playerPool[playerid];
-			MenuBase menu = menuPool[NativeFunction.getPlayerMenu(playerid)];
+			Player player = playerPool[playerid];
+			Menu menu = menuPool[NativeFunction.getPlayerMenu(playerid)];
 			
 			MenuSelectedEvent event = new MenuSelectedEvent( menu, player, row );
 			
 			player.onMenuSelected( menu, row );
 			menu.onPlayerSelectedMenuRow( player, row );
 			
-			player.eventMenuSelected.dispatchEvent( event );
-    		menu.eventMenuSelected.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+    		menu.eventDispatcher.dispatchEvent( event );
 			
     		return 1;
     	}
@@ -876,16 +867,16 @@ public abstract class GameModeBase
     		//player.on();
     		//player.event.dispatchEvent( new Player(player) );
 			
-			PlayerBase player = playerPool[playerid];
-			MenuBase menu = menuPool[NativeFunction.getPlayerMenu(playerid)];
+			Player player = playerPool[playerid];
+			Menu menu = menuPool[NativeFunction.getPlayerMenu(playerid)];
 			
 			MenuExitedEvent event = new MenuExitedEvent( menu, player );
 			
 			player.onMenuExited( menu );
 			menu.onPlayerExitedMenu( player );
 			
-			player.eventMenuExited.dispatchEvent( event );
-    		menu.eventMenuExited.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+    		menu.eventDispatcher.dispatchEvent( event );
     			
     		return 1;
     	}
@@ -900,13 +891,13 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		System.out.println( "[interior] " + player.name + " interior has changed to " + newinteriorid );
     		
     		player.position.interior = newinteriorid;
     		
     		player.onInteriorChange( oldinteriorid );
-    		player.eventInteriorChange.dispatchEvent( new PlayerInteriorChangeEvent(player, oldinteriorid) );
+    		player.eventDispatcher.dispatchEvent( new PlayerInteriorChangeEvent(player, oldinteriorid) );
     		
     		return 1;
 		}
@@ -921,13 +912,13 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		
     		player.keyState.keys = newkeys;
     		//update keystate
     		
     		player.onKeyStateChange( oldkeys );
-    		player.eventKeyStateChange.dispatchEvent( new PlayerKeyStateChangeEvent(player, oldkeys) );
+    		player.eventDispatcher.dispatchEvent( new PlayerKeyStateChangeEvent(player, oldkeys) );
     		
     		return 1;
     	}
@@ -942,11 +933,11 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		player.update();
     		
     		player.onUpdate();
-    		player.eventUpdate.dispatchEvent( new PlayerUpdateEvent(player) );
+    		player.eventDispatcher.dispatchEvent( new PlayerUpdateEvent(player) );
     		
     		return 1;
 		}
@@ -961,11 +952,11 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
-    		PlayerBase forplayer = playerPool[forplayerid];
+    		Player player = playerPool[playerid];
+    		Player forplayer = playerPool[forplayerid];
     		
     		player.onPlayerStreamIn( forplayer );
-    		player.eventPlayerStreamIn.dispatchEvent( new PlayerStreamInEvent(player, forplayer) );
+    		player.eventDispatcher.dispatchEvent( new PlayerStreamInEvent(player, forplayer) );
     		
     		return 1;
     	}
@@ -980,11 +971,11 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
-    		PlayerBase forplayer = playerPool[forplayerid];
+    		Player player = playerPool[playerid];
+    		Player forplayer = playerPool[forplayerid];
     		
     		player.onPlayerStreamOut( forplayer );
-    		player.eventPlayerStreamOut.dispatchEvent( new PlayerStreamOutEvent(player, forplayer) );
+    		player.eventDispatcher.dispatchEvent( new PlayerStreamOutEvent(player, forplayer) );
     		
     		return 1;
     	}
@@ -999,8 +990,8 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
-    		PlayerBase clickedPlayer = playerPool[clickedplayerid];
+    		Player player = playerPool[playerid];
+    		Player clickedPlayer = playerPool[clickedplayerid];
 
     		System.out.println( "[click] " + player.name + " has clicked " + clickedPlayer.name );
     		
@@ -1008,10 +999,10 @@ public abstract class GameModeBase
     		PlayerClickPlayerEvent event = new PlayerClickPlayerEvent( player, clickedPlayer, source );
     		
     		player.onClickPlayer( clickedPlayer, source );
-    		player.eventClickPlayer.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		clickedPlayer.onOthersClick( clickedPlayer, source );
-    		clickedPlayer.eventOthersClick.dispatchEvent( event );
+    		clickedPlayer.eventDispatcher.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -1026,10 +1017,10 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
+    		Player player = playerPool[playerid];
     		
     		player.onEnterExitModShop( enterexit != 0, interiorid );
-    		player.eventEnterExitModShop.dispatchEvent( new PlayerEnterExitModShopEvent(player, enterexit != 0, interiorid) );
+    		player.eventDispatcher.dispatchEvent( new PlayerEnterExitModShopEvent(player, enterexit != 0, interiorid) );
     		
     		return 1;
     	}
@@ -1044,8 +1035,8 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
-    		DialogBase dialog = dialogPool.get(dialogid).get();
+    		Player player = playerPool[playerid];
+    		Dialog dialog = dialogPool.get(dialogid).get();
     		
     		if( dialog == null )
     		{
@@ -1056,10 +1047,10 @@ public abstract class GameModeBase
     		DialogResponseEvent event = new DialogResponseEvent(dialog, player, response, listitem, inputtext);
     		
     		player.onDialogResponse( dialog, response, listitem, inputtext );
-    		player.eventDialogResponse.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		dialog.onResponse( player, response, listitem, inputtext );
-    		dialog.eventResponse.dispatchEvent( event );
+    		dialog.eventDispatcher.dispatchEvent( event );
     		
     		player.dialog = null;
     		return 1;
@@ -1075,19 +1066,18 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
-    		VehicleBase vehicle = vehiclePool[vehicleid];
+    		Player player = playerPool[playerid];
+    		Vehicle vehicle = vehiclePool[vehicleid];
     		
     		System.out.println( "[vehicle] " + player.name + " enter a vehicle (" + vehicle.model + ")" );
     		
     		
     		VehicleEnterEvent event = new VehicleEnterEvent(vehicle, player, ispassenger != 0);
     		
-    		vehicle.onEnter( player, ispassenger != 0 );
-    		vehicle.eventEnter.dispatchEvent( event );
+    		vehicle.eventDispatcher.dispatchEvent( event );
     		
     		player.onEnterVehicle( vehicle, ispassenger != 0 );
-    		player.eventEnterVehicle.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -1102,19 +1092,18 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
-    		VehicleBase vehicle = vehiclePool[vehicleid];
+    		Player player = playerPool[playerid];
+    		Vehicle vehicle = vehiclePool[vehicleid];
 
     		System.out.println( "[vehicle] " + player.name + " leave a vehicle (" + vehicle.model + ")" );
     		
     		
     		VehicleExitEvent event = new VehicleExitEvent(vehicle, player);
     		
-    		vehicle.onExit( player );
-    		vehicle.eventExit.dispatchEvent( event );
+    		vehicle.eventDispatcher.dispatchEvent( event );
     		
     		player.onExitVehicle( vehicle );
-    		player.eventExitVehicle.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -1129,10 +1118,9 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		VehicleBase vehicle = vehiclePool[vehicleid];
+    		Vehicle vehicle = vehiclePool[vehicleid];
     		
-    		vehicle.onSpawn();
-    		vehicle.eventSpawn.dispatchEvent( new VehicleSpawnEvent(vehicle) );
+    		vehicle.eventDispatcher.dispatchEvent( new VehicleSpawnEvent(vehicle) );
     		
     		return 1;
     	}
@@ -1147,11 +1135,10 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		VehicleBase vehicle = vehiclePool[vehicleid];
-    		PlayerBase killer = playerPool[killerid];
+    		Vehicle vehicle = vehiclePool[vehicleid];
+    		Player killer = playerPool[killerid];
     		
-    		vehicle.onDeath( killer );
-    		vehicle.eventDeath.dispatchEvent( new VehicleDeathEvent(vehicle, killer) );
+    		vehicle.eventDispatcher.dispatchEvent( new VehicleDeathEvent(vehicle, killer) );
     		
     		return 1;
     	}
@@ -1166,19 +1153,18 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
-    		VehicleBase vehicle = vehiclePool[vehicleid];
+    		Player player = playerPool[playerid];
+    		Vehicle vehicle = vehiclePool[vehicleid];
     		
     		VehicleModEvent event = new VehicleModEvent(vehicle, componentid);
     		
     		int type = NativeFunction.getVehicleComponentType(componentid);
     		vehicle.component.components[type] = NativeFunction.getVehicleComponentInSlot(vehicleid, type);
     
-    		vehicle.onMod( componentid );
-    		vehicle.eventMod.dispatchEvent( event );
+    		vehicle.eventDispatcher.dispatchEvent( event );
     		
     		player.onVehicleMod( componentid );
-    		player.eventVehicleMod.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		return 1;	
     	}
@@ -1193,16 +1179,15 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
-    		VehicleBase vehicle = vehiclePool[vehicleid];
+    		Player player = playerPool[playerid];
+    		Vehicle vehicle = vehiclePool[vehicleid];
     		
     		VehiclePaintjobEvent event = new VehiclePaintjobEvent(vehicle, paintjobid);
     
-    		vehicle.onPaintjob( paintjobid );
-    		vehicle.eventPaintjob.dispatchEvent( event );
+    		vehicle.eventDispatcher.dispatchEvent( event );
     		
     		player.onVehiclePaintjob( paintjobid );
-    		player.eventVehiclePaintjob.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -1217,16 +1202,15 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[playerid];
-    		VehicleBase vehicle = vehiclePool[vehicleid];
+    		Player player = playerPool[playerid];
+    		Vehicle vehicle = vehiclePool[vehicleid];
     		
     		VehicleResprayEvent event = new VehicleResprayEvent( vehicle, color1, color2 );
     
-    		vehicle.onRespray( color1, color2 );
-    		vehicle.eventRespray.dispatchEvent( event );
+    		vehicle.eventDispatcher.dispatchEvent( event );
     		
     		player.onVehicleRespray( color1, color2 );
-    		player.eventVehicleRespray.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -1241,15 +1225,14 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		VehicleBase vehicle = vehiclePool[vehicleid];
-    		PlayerBase player = playerPool[playerid];
+    		Vehicle vehicle = vehiclePool[vehicleid];
+    		Player player = playerPool[playerid];
     		
     		NativeFunction.getVehicleDamageStatus(vehicleid, vehicle.damage);
     		
     		VehicleUpdateDamageEvent event = new VehicleUpdateDamageEvent(vehicle, player);
     
-    		vehicle.onUpdateDamage( player );
-    		vehicle.eventUpdateDamage.dispatchEvent( event );
+    		vehicle.eventDispatcher.dispatchEvent( event );
     		
     		//player.on();
     		//player.event.dispatchEvent( new Player(player) );
@@ -1267,16 +1250,15 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[forplayerid];
-    		VehicleBase vehicle = vehiclePool[vehicleid];
+    		Player player = playerPool[forplayerid];
+    		Vehicle vehicle = vehiclePool[vehicleid];
     		
     		VehicleStreamInEvent event = new VehicleStreamInEvent(vehicle, player);
     		
-    		vehicle.onStreamIn( player );
-    		vehicle.eventStreamIn.dispatchEvent( event );
+    		vehicle.eventDispatcher.dispatchEvent( event );
     		
     		player.onVehicleStreamIn( vehicle );
-    		player.eventVehicleStreamIn.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     
     		return 1;
     	}
@@ -1291,16 +1273,15 @@ public abstract class GameModeBase
 	{
 		try
 		{
-    		PlayerBase player = playerPool[forplayerid];
-    		VehicleBase vehicle = vehiclePool[vehicleid];
+    		Player player = playerPool[forplayerid];
+    		Vehicle vehicle = vehiclePool[vehicleid];
     		
     		VehicleStreamOutEvent event = new VehicleStreamOutEvent(vehicle, player);
     
     		player.onVehicleStreamOut( vehicle );
-    		player.eventVehicleStreamOut.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
-    		vehicle.onStreamOut( player );
-    		vehicle.eventStreamOut.dispatchEvent( event );
+    		vehicle.eventDispatcher.dispatchEvent( event );
     		
     		return 1;
     	}
@@ -1319,9 +1300,9 @@ public abstract class GameModeBase
 			
     		
     		RconCommandEvent event = new RconCommandEvent(cmd, onRconCommand(cmd));
-    		eventRconCommand.dispatchEvent( event );
+    		eventDispatcher.dispatchEvent( event );
     		
-    		return event.result();
+    		return event.getResult();
     	}
 		catch( Exception e )
 		{
@@ -1340,7 +1321,7 @@ public abstract class GameModeBase
     		
     		
     		onRconLogin( ip, password, success != 0 );
-    		eventRconLogin.dispatchEvent( new RconLoginEvent(ip, password, success!=0) );
+    		eventDispatcher.dispatchEvent( new RconLoginEvent(ip, password, success!=0) );
     		
     		return 1;
     	}
@@ -1355,16 +1336,15 @@ public abstract class GameModeBase
 	{
 		try 
 		{
-			PlayerBase player = playerPool[playerid];
-    		VehicleBase vehicle = vehiclePool[vehicleid];
+			Player player = playerPool[playerid];
+    		Vehicle vehicle = vehiclePool[vehicleid];
     		
-    		VehicleUnoccupiedUpdate event = new VehicleUnoccupiedUpdate(vehicle, player, passenger_seat);
+    		VehicleUnoccupiedUpdateEvent event = new VehicleUnoccupiedUpdateEvent(vehicle, player, passenger_seat);
     
     		player.onUpdateUnoccupiedVehicle( vehicle );
-    		player.eventVehicleUnoccupiedUpdate.dispatchEvent( event );
+    		player.eventDispatcher.dispatchEvent( event );
     		
-    		vehicle.onPlayerUnoccupiedUpdate( player );
-    		vehicle.eventVehicleUnoccupiedUpdate.dispatchEvent( event );
+    		vehicle.eventDispatcher.dispatchEvent( event );
     		
     		return 1;
 		}
