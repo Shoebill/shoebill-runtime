@@ -133,7 +133,7 @@ public class PlayerObject extends ObjectBase
 		Gamemode.instance.playerObjectPool[ id + player.id*Gamemode.MAX_OBJECTS ] = null;
 	}
 	
-	public PointRot position()
+	public PointRot getPosition()
 	{	
 		NativeFunction.getPlayerObjectPos( player.id, id, position );
 		NativeFunction.getPlayerObjectRot( player.id, id, position );

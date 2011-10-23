@@ -22,6 +22,7 @@ import java.util.Vector;
 
 import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.data.Vector3D;
+import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.IRaceCheckpoint;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
@@ -52,10 +53,10 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 	RaceCheckpoint next;
 	
 
-	public IEventDispatcher	eventDispatcher()	{ return eventDispatcher; }
+	public IEventDispatcher	getEventDispatcher()	{ return eventDispatcher; }
 	
-	public float getSize()						{ return size; }
-	public int getType()						{ return type; }
+	public float getSize()							{ return size; }
+	public int getType()							{ return type; }
 	
 	
 	public RaceCheckpoint( float x, float y, float z, float size, int type, RaceCheckpoint next )
@@ -77,8 +78,10 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 	
 //---------------------------------------------------------
 	
-	public void set( Player player )
+	public void set( IPlayer p )
 	{
+		Player player = (Player) p;
+		
 		if( next != null )
 			NativeFunction.setPlayerRaceCheckpoint( player.id, type, x, y, z, next.x, next.y, next.z, size );
 		else
@@ -94,17 +97,20 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 		player.raceCheckpoint = this;
 	}
 	
-	public void disable( Player player )
+	public void disable( IPlayer p )
 	{
+		Player player = (Player) p;
 		if(player.raceCheckpoint != this) return;
 
 		NativeFunction.disablePlayerRaceCheckpoint( player.id );
 		player.raceCheckpoint = null;
 	}
 	
-	public boolean isInCheckpoint( Player player )
+	public boolean isInCheckpoint( IPlayer p )
 	{
+		Player player = (Player) p;
 		if( player.raceCheckpoint != this ) return false;
+		
 		return NativeFunction.isPlayerInRaceCheckpoint( player.id );
 	}
 	
@@ -119,14 +125,14 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 		}
 	}
 	
-	public <T extends Player> Vector<T> usingPlayers( Class<T> cls )
+	public Vector<IPlayer> getUsingPlayers()
 	{
-		Vector<T> players = new Vector<T>();
+		Vector<IPlayer> players = new Vector<IPlayer>();
 		
-		Iterator<T> iterator = Player.get(cls).iterator();
+		Iterator<IPlayer> iterator = Player.get().iterator();
 		while( iterator.hasNext() )
 		{
-			T player = iterator.next();
+			Player player = (Player) iterator.next();
 			if( player.raceCheckpoint == this ) players.add( player );
 		}
 		

@@ -22,6 +22,7 @@ import java.util.Vector;
 
 import net.gtaun.lungfish.data.Vector3D;
 import net.gtaun.lungfish.object.ICheckpoint;
+import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
 
@@ -60,22 +61,27 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 
 //---------------------------------------------------------
 	
-	public void set( Player player )
+	public void set( IPlayer p )
 	{
+		Player player = (Player)p;
+		
 		NativeFunction.setPlayerCheckpoint( player.id, x, y, z, size );
 		player.checkpoint = this;
 	}
 	
-	public void disable( Player player )
+	public void disable( IPlayer p )
 	{
+		Player player = (Player)p;
 		if( player.checkpoint != this ) return;
 
 		NativeFunction.disablePlayerCheckpoint( player.id );
 		player.checkpoint = null;
 	}
 	
-	public boolean inCheckpoint( Player player )
+	public boolean isInCheckpoint( IPlayer p )
 	{
+		Player player = (Player)p;
+		
 		if( player.checkpoint != this ) return false;
 		return NativeFunction.isPlayerInCheckpoint(player.id);
 	}
@@ -91,14 +97,14 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 		}
 	}
 	
-	public <T extends Player> Vector<T> usingPlayers( Class<T> cls )
+	public Vector<IPlayer> getUsingPlayers()
 	{
-		Vector<T> players = new Vector<T>();
+		Vector<IPlayer> players = new Vector<IPlayer>();
 		
-		Iterator<T> iterator = Player.get(cls).iterator();
+		Iterator<IPlayer> iterator = Player.get().iterator();
 		while( iterator.hasNext() )
 		{
-			T player = iterator.next();
+			Player player = (Player) iterator.next();
 			if( player.checkpoint == this ) players.add( player );
 		}
 		

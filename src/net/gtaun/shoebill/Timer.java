@@ -72,7 +72,7 @@ public class Timer implements ITimer
 		Gamemode.instance.timerPool.add( new WeakReference<Timer>(this) );
 	}
 	
-	public void finalize()
+	protected void finalize()
 	{
 		destroy();
 	}

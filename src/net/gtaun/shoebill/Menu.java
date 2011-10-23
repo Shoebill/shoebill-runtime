@@ -20,6 +20,7 @@ package net.gtaun.shoebill;
 import java.util.Vector;
 
 import net.gtaun.lungfish.object.IMenu;
+import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
 
@@ -113,13 +114,15 @@ public class Menu implements IMenu
 		NativeFunction.disableMenuRow( id, row );
 	}
 	
-	public void show( Player player )
+	public void show( IPlayer p )
 	{
+		Player player = (Player)p;
 		NativeFunction.showMenuForPlayer( id, player.id );
 	}
 	
-	public void hide( Player player )
+	public void hide( IPlayer p )
 	{
+		Player player = (Player)p;
 		NativeFunction.hideMenuForPlayer( id, player.id );
 	}
 }

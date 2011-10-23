@@ -96,7 +96,7 @@ public class Streamer<O extends IStreamObject>
 		public void handleEvent( Event e )
 		{
 			PlayerConnectEvent event = (PlayerConnectEvent) e;
-			event.player().getEventDispatcher().addListener( PlayerUpdateEvent.class, onPlayerUpdate );
+			event.getPlayer().getEventDispatcher().addListener( PlayerUpdateEvent.class, onPlayerUpdate );
 		}
 	};
 	
@@ -105,7 +105,7 @@ public class Streamer<O extends IStreamObject>
 		public void handleEvent( Event e )
 		{
 			PlayerDisconnectEvent event = (PlayerDisconnectEvent) e;
-			event.player().getEventDispatcher().removeListener( PlayerUpdateEvent.class, onPlayerUpdate );
+			event.getPlayer().getEventDispatcher().removeListener( PlayerUpdateEvent.class, onPlayerUpdate );
 		}
 	};
 	
@@ -114,8 +114,8 @@ public class Streamer<O extends IStreamObject>
 		public void handleEvent( Event e )
 		{
 			PlayerUpdateEvent event = (PlayerUpdateEvent) e;
-			if( event.player().getUpdateTick() % updateTick == event.player().getId() % updateTick )
-				update( event.player() );
+			if( event.getPlayer().getUpdateTick() % updateTick == event.getPlayer().getId() % updateTick )
+				update( event.getPlayer() );
 		}
 	};
 	

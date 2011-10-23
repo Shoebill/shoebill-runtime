@@ -22,6 +22,8 @@ import java.util.Vector;
 import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.data.PointRot;
 import net.gtaun.lungfish.object.IObject;
+import net.gtaun.lungfish.object.IPlayer;
+import net.gtaun.lungfish.object.IVehicle;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
 
@@ -133,7 +135,7 @@ public class ObjectBase implements IObject
 		Gamemode.instance.objectPool[ id ] = null;
 	}
 	
-	public PointRot position()
+	public PointRot getPosition()
 	{
 		NativeFunction.getObjectPos( id, position );
 		NativeFunction.getObjectRot( id, position );
@@ -174,15 +176,19 @@ public class ObjectBase implements IObject
 		NativeFunction.stopObject( id );
 	}
 	
-	public void attach( Player player, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( IPlayer p, float x, float y, float z, float rx, float ry, float rz )
 	{
+		Player player = (Player)p;
+		
 		NativeFunction.attachObjectToPlayer( id, player.id, x, y, z, rx, ry, rz );
 		attachedPlayer = player;
 		speed = 0;
 	}
 	
-	public void attach( Vehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( IVehicle v, float x, float y, float z, float rx, float ry, float rz )
 	{
+		Vehicle vehicle = (Vehicle)v;
+		
 		NativeFunction.attachObjectToVehicle( id, vehicle.id, x, y, z, rx, ry, rz );
 		attachedVehicle = vehicle;
 		speed = 0;

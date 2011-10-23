@@ -17,13 +17,15 @@
 
 package net.gtaun.shoebill;
 
+import net.gtaun.lungfish.object.IVehicleComponent;
+
 
 /**
  * @author MK124, JoJLlmAn
  *
  */
 
-public class VehicleComponent
+public class VehicleComponent implements IVehicleComponent
 {
 	public static final int SLOT_SPOILER =			0;
 	public static final int SLOT_HOOD =				1;

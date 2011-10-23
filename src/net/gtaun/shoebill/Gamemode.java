@@ -35,6 +35,7 @@ import net.gtaun.lungfish.event.gamemode.GamemodeExitEvent;
 import net.gtaun.lungfish.event.menu.MenuExitedEvent;
 import net.gtaun.lungfish.event.menu.MenuSelectedEvent;
 import net.gtaun.lungfish.event.object.ObjectMovedEvent;
+import net.gtaun.lungfish.event.object.PlayerObjectMovedEvent;
 import net.gtaun.lungfish.event.player.PlayerClickPlayerEvent;
 import net.gtaun.lungfish.event.player.PlayerCommandEvent;
 import net.gtaun.lungfish.event.player.PlayerConnectEvent;
@@ -44,7 +45,6 @@ import net.gtaun.lungfish.event.player.PlayerEnterExitModShopEvent;
 import net.gtaun.lungfish.event.player.PlayerInteriorChangeEvent;
 import net.gtaun.lungfish.event.player.PlayerKeyStateChangeEvent;
 import net.gtaun.lungfish.event.player.PlayerKillEvent;
-import net.gtaun.lungfish.event.player.PlayerObjectMovedEvent;
 import net.gtaun.lungfish.event.player.PlayerPickupEvent;
 import net.gtaun.lungfish.event.player.PlayerRequestClassEvent;
 import net.gtaun.lungfish.event.player.PlayerRequestSpawnEvent;
@@ -170,12 +170,12 @@ public abstract class Gamemode implements IGamemode
 	float playerMarkerRadius = -1;
 	
 	
-	public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	public int deathDropAmount()		{ return deathDropAmount; }
-	public float nameTagDrawDistance()	{ return nameTagDrawDistance; }
-	public float chatRadius()			{ return chatRadius; }
-	public float playerMarkerRadius()	{ return playerMarkerRadius;}
+	public int getDeathDropAmount()						{ return deathDropAmount; }
+	public float getNameTagDrawDistance()				{ return nameTagDrawDistance; }
+	public float getChatRadius()						{ return chatRadius; }
+	public float getPlayerMarkerRadius()				{ return playerMarkerRadius;}
 	
 
 	protected Gamemode()
@@ -205,42 +205,9 @@ public abstract class Gamemode implements IGamemode
 			e.printStackTrace();
 		}
 	}
-	
-	
-//--------------------------------------------------------- ��蝏扳���亙���隞�
-
-	protected int onExit()
-	{
-		return 1;
-	}
-	
-	protected int onConnect( Player player )
-	{
-		return 1;
-	}
-	
-	protected int onDisconnect( Player player, int reason )
-	{
-		return 1;
-	}
-	
-	protected int onRconCommand( String command )
-	{
-		return 0;
-	}
-
-	protected int onRconLogin( String ip, String password, boolean success )
-	{
-		return 1;
-	}
-
-	protected void onTick()
-	{
-		
-	}
 
 	
-//--------------------------------------------------------- ����梁��賣隞�
+//--------------------------------------------------------- 
 	
 	public int weather()
 	{
@@ -436,7 +403,6 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-			onExit();
 			eventDispatcher.dispatchEvent( new GamemodeExitEvent(this) );
 			
 			logStream.log( "--- Server Shutting Down." );
@@ -476,7 +442,6 @@ public abstract class Gamemode implements IGamemode
 			playerPool[playerid] = player;
 			logStream.log( "[join] " + player.name + " has joined the server (" + playerid + ":" + player.ip + ")" );
 			
-			onConnect( player );
 			eventDispatcher.dispatchEvent( new PlayerConnectEvent(player) );
 			return 1;
 		}
@@ -496,7 +461,6 @@ public abstract class Gamemode implements IGamemode
 			
 			PlayerDisconnectEvent event = new PlayerDisconnectEvent(player, reason);
 			
-			onDisconnect( player, reason );
 			eventDispatcher.dispatchEvent( event );
 			
 			player.eventDispatcher.dispatchEvent( event );
@@ -970,7 +934,7 @@ public abstract class Gamemode implements IGamemode
 		try
 		{
 			Player player = playerPool[playerid];
-			player.eventDispatcher.dispatchEvent( new PlayerEnterExitModShopEvent(player, enterexit != 0, interiorid) );
+			player.eventDispatcher.dispatchEvent( new PlayerEnterExitModShopEvent(player, enterexit, interiorid) );
 			
 			return 1;
 		}
@@ -1232,7 +1196,7 @@ public abstract class Gamemode implements IGamemode
 			logStream.log( "[rcon] " + " command: " + cmd );
 			
 			
-			RconCommandEvent event = new RconCommandEvent(cmd, onRconCommand(cmd));
+			RconCommandEvent event = new RconCommandEvent(cmd, 0);
 			eventDispatcher.dispatchEvent( event );
 			
 			return event.getResult();
@@ -1252,8 +1216,6 @@ public abstract class Gamemode implements IGamemode
 				logStream.log( "[rcon] " + " bad rcon attempy by: " + ip + " (" + password + ")" );
 			else logStream.log( "[rcon] " + ip + " has logged." );
 			
-			
-			onRconLogin( ip, password, success != 0 );
 			eventDispatcher.dispatchEvent( new RconLoginEvent(ip, password, success!=0) );
 			
 			return 1;

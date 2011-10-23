@@ -117,9 +117,9 @@ public class Player implements IPlayer
 	
 //---------------------------------------------------------
 	
-	public static Vector<Player> get()
+	public static Vector<IPlayer> get()
 	{
-		return Gamemode.getInstances(Gamemode.instance.playerPool, Player.class);
+		return Gamemode.getInstances(Gamemode.instance.playerPool, IPlayer.class);
 	}
 	
 	public static <T> Vector<T> get( Class<T> cls )

@@ -20,6 +20,7 @@ import java.lang.ref.WeakReference;
 
 import net.gtaun.lungfish.event.dialog.DialogCancelEvent;
 import net.gtaun.lungfish.object.IDialog;
+import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
 
@@ -48,6 +49,8 @@ public class Dialog implements IDialog
 	
 	public int getStyle()							{ return style; }
 	
+
+//---------------------------------------------------------
 	
 	public Dialog( int style )
 	{
@@ -66,8 +69,10 @@ public class Dialog implements IDialog
 	
 //---------------------------------------------------------
 	
-	public void show( Player player, String caption, String text, String button1, String button2 )
+	public void show( IPlayer p, String caption, String text, String button1, String button2 )
 	{
+		Player player = (Player) p;
+		
 		if( caption == null || text == null || button1 == null || button2 == null ) throw new NullPointerException();
 		cancel( player );
 		
@@ -75,8 +80,10 @@ public class Dialog implements IDialog
 		NativeFunction.showPlayerDialog( player.id, id, style, caption, text, button1, button2 );
 	}
 	
-	public void cancel( Player player )
+	public void cancel( IPlayer p )
 	{
+		Player player = (Player) p;
+		
 		if( player.dialog == null ) return;
 		NativeFunction.showPlayerDialog( player.id, -1, 0, "", "", "", "" );
 		

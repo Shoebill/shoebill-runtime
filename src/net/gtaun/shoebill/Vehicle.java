@@ -25,6 +25,8 @@ import net.gtaun.lungfish.data.Quaternions;
 import net.gtaun.lungfish.data.Velocity;
 import net.gtaun.lungfish.event.vehicle.VehicleDestroyEvent;
 import net.gtaun.lungfish.object.IVehicle;
+import net.gtaun.lungfish.object.IVehicleComponent;
+import net.gtaun.lungfish.object.IVehicleParam;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
 
@@ -86,8 +88,8 @@ public class Vehicle implements IVehicle
 	public int getColor2()							{ return color2; }
 	public int getRespawnDelay()					{ return respawnDelay; }
 
-	public VehicleParam getState()					{ return param; }
-	public VehicleComponent getComponent()			{ return component; }
+	public IVehicleParam getState()					{ return param; }
+	public IVehicleComponent getComponent()			{ return component; }
 	
 	
 	public Vehicle( int model, float x, float y, float z, int interior, int world, float angle, int color1, int color2, int respawnDelay )
