@@ -66,19 +66,6 @@ public class Dialog implements IDialog
 	
 //---------------------------------------------------------
 	
-	protected int onResponse( Player player, int response, int listitem, String inputtext )
-	{
-		return 1;
-	}
-	
-	protected int onCancel( Player player )
-	{
-		return 1;
-	}
-	
-	
-//---------------------------------------------------------
-	
 	public void show( Player player, String caption, String text, String button1, String button2 )
 	{
 		if( caption == null || text == null || button1 == null || button2 == null ) throw new NullPointerException();
@@ -93,7 +80,6 @@ public class Dialog implements IDialog
 		if( player.dialog == null ) return;
 		NativeFunction.showPlayerDialog( player.id, -1, 0, "", "", "", "" );
 		
-		player.dialog.onCancel( player );
 		player.dialog.eventDispatcher.dispatchEvent( new DialogCancelEvent(player.dialog, player) );
 	}
 }

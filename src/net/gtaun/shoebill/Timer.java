@@ -76,13 +76,6 @@ public class Timer implements ITimer
 	{
 		destroy();
 	}
-
-//---------------------------------------------------------
-	
-	protected int onTick( int counting, int realtime )
-	{
-		return 1;
-	}
 	
 	
 //---------------------------------------------------------
@@ -133,7 +126,6 @@ public class Timer implements ITimer
 		if( realInterval < interval ) return;
 		
 		if( count > 0 ) counting--;
-		onTick( counting, realInterval );
 		eventDispatcher.dispatchEvent( new TimerTickEvent(this, realInterval) );
 		
 		realInterval = 0;

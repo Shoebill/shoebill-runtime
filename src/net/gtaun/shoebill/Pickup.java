@@ -97,14 +97,6 @@ public class Pickup implements IPickup
 	
 //---------------------------------------------------------
 	
-	protected int onPickup( Player player )
-	{
-		return 1;
-	}
-	
-	
-//---------------------------------------------------------
-	
 	public void destroy()
 	{
 		NativeFunction.destroyPickup( id );

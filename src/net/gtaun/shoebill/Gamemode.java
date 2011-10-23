@@ -82,26 +82,26 @@ public abstract class Gamemode implements IGamemode
 {
 	public static final int MAX_PLAYER_NAME =			24;
 	public static final int MAX_PLAYERS =				500;
-    public static final int MAX_VEHICLES =				2000;
-    public static final int MAX_OBJECTS =				400;
-    public static final int MAX_ZONES =					1024;
-    public static final int MAX_TEXT_DRAWS =			2048;
-    public static final int MAX_MENUS =					128;
-    public static final int MAX_LABELS_GLOBAL =			1024;
-    public static final int MAX_LABELS_PLAYER =			1024;
-    public static final int MAX_PICKUPS =				2048;
-    
-    static final int INVALID_PLAYER_ID =				0xFFFF;
-    static final int INVALID_VEHICLE_ID	=				0xFFFF;
-    static final int INVALID_OBJECT_ID =				0xFFFF;
-    static final int INVALID_MENU =						0xFF;
-    static final int INVALID_TEXT_DRAW =				0xFFFF;
-    static final int INVALID_GANG_ZONE =				-1;
-    static final int INVALID_3DTEXT_ID =				0xFFFF;
-    static final int PLAYER_NO_TEAM =					255;
+	public static final int MAX_VEHICLES =				2000;
+	public static final int MAX_OBJECTS =				400;
+	public static final int MAX_ZONES =					1024;
+	public static final int MAX_TEXT_DRAWS =			2048;
+	public static final int MAX_MENUS =					128;
+	public static final int MAX_LABELS_GLOBAL =			1024;
+	public static final int MAX_LABELS_PLAYER =			1024;
+	public static final int MAX_PICKUPS =				2048;
+	
+	static final int INVALID_PLAYER_ID =				0xFFFF;
+	static final int INVALID_VEHICLE_ID	=				0xFFFF;
+	static final int INVALID_OBJECT_ID =				0xFFFF;
+	static final int INVALID_MENU =						0xFF;
+	static final int INVALID_TEXT_DRAW =				0xFFFF;
+	static final int INVALID_GANG_ZONE =				-1;
+	static final int INVALID_3DTEXT_ID =				0xFFFF;
+	static final int PLAYER_NO_TEAM =					255;
 	
 //----------------------------------------------------------
-    
+	
 	static Gamemode instance = null;
 
 	static PrintStream consoleStream = System.out;
@@ -455,30 +455,30 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player;
-    		currentPlayerId = playerid;
-    		
-    		try
-    		{
-    			player = (Player) playerCls.newInstance();
-    		}
-    		catch (InstantiationException e)
-    		{
-    			e.printStackTrace();
-    			return 0;
-    		}
-    		catch (IllegalAccessException e)
-    		{
-    			e.printStackTrace();
-    			return 0;
-    		}
+			Player player;
+			currentPlayerId = playerid;
+			
+			try
+			{
+				player = (Player) playerCls.newInstance();
+			}
+			catch (InstantiationException e)
+			{
+				e.printStackTrace();
+				return 0;
+			}
+			catch (IllegalAccessException e)
+			{
+				e.printStackTrace();
+				return 0;
+			}
 
-    		playerPool[playerid] = player;
-    		logStream.log( "[join] " + player.name + " has joined the server (" + playerid + ":" + player.ip + ")" );
-    		
-    		onConnect( player );
-    		eventDispatcher.dispatchEvent( new PlayerConnectEvent(player) );
-    		return 1;
+			playerPool[playerid] = player;
+			logStream.log( "[join] " + player.name + " has joined the server (" + playerid + ":" + player.ip + ")" );
+			
+			onConnect( player );
+			eventDispatcher.dispatchEvent( new PlayerConnectEvent(player) );
+			return 1;
 		}
 		catch( Exception e )
 		{
@@ -491,20 +491,19 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		logStream.log( "[part] " + player.name + " has left the server (" + playerid + ":" + reason + ")" );
-    		
-    		PlayerDisconnectEvent event = new PlayerDisconnectEvent(player, reason);
-    		
-    		onDisconnect( player, reason );
-    		eventDispatcher.dispatchEvent( event );
-    		
-    		player.onDisconnect( reason );
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		playerPool[playerid] = null;
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			logStream.log( "[part] " + player.name + " has left the server (" + playerid + ":" + reason + ")" );
+			
+			PlayerDisconnectEvent event = new PlayerDisconnectEvent(player, reason);
+			
+			onDisconnect( player, reason );
+			eventDispatcher.dispatchEvent( event );
+			
+			player.eventDispatcher.dispatchEvent( event );
+			
+			playerPool[playerid] = null;
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -516,19 +515,17 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		System.out.println( "[spawn] " + player.name + " has spawned (" + playerid + ")" );
-    		
-    		player.team = NativeFunction.getPlayerTeam(player.id);
-    		player.skin = NativeFunction.getPlayerSkin(player.id);
-    		
-    		player.playerAttach = new PlayerAttach(playerid);
-    			
-    		player.onSpawn();
-    		player.eventDispatcher.dispatchEvent( new PlayerSpawnEvent(player) );
-    
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			System.out.println( "[spawn] " + player.name + " has spawned (" + playerid + ")" );
+			
+			player.team = NativeFunction.getPlayerTeam(player.id);
+			player.skin = NativeFunction.getPlayerSkin(player.id);
+			
+			player.playerAttach = new PlayerAttach(playerid);
+			player.eventDispatcher.dispatchEvent( new PlayerSpawnEvent(player) );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -540,27 +537,24 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		Player killer = null;
-    		
-    		if( killerid != 0xFFFF )
-    		{
-    			killer = playerPool[killerid];
-    			logStream.log( "[kill] " + killer.name + " killed " + player.name +
-    					" (" + NativeFunction.getWeaponName(reason) + ")" );
-    			
-    			killer.onKill( player, reason );
-    			killer.eventDispatcher.dispatchEvent( new PlayerKillEvent(killer, player, reason) );
-    		}
-    		else logStream.log( "[death] " + player.name + " died (" + playerid + ":" + reason + ")" );
-    		
-    		player.playerAttach = new PlayerAttach(playerid);
-    		
-    		player.onDeath( killer, reason );
-    		player.eventDispatcher.dispatchEvent( new PlayerDeathEvent(player, killer, reason) );
-    		
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			Player killer = null;
+			
+			if( killerid != 0xFFFF )
+			{
+				killer = playerPool[killerid];
+				logStream.log( "[kill] " + killer.name + " killed " + player.name +
+						" (" + NativeFunction.getWeaponName(reason) + ")" );
+				
+				killer.eventDispatcher.dispatchEvent( new PlayerKillEvent(killer, player, reason) );
+			}
+			else logStream.log( "[death] " + player.name + " died (" + playerid + ":" + reason + ")" );
+			
+			player.playerAttach = new PlayerAttach(playerid);
+			player.eventDispatcher.dispatchEvent( new PlayerDeathEvent(player, killer, reason) );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -572,17 +566,17 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		logStream.log( "[chat] [" + player.name + "]: " + text );
-    		
-    		PlayerTextEvent event = new PlayerTextEvent(player, text, player.onText(text));
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		if( event.getResult() != 0 )
-    			Player.sendMessageToAll( Color.WHITE, "{FE8B13}" + player.getName() + ": {FFFFFF}" + text );
-    		
-    		return 0;
-    	}
+			Player player = playerPool[playerid];
+			logStream.log( "[chat] [" + player.name + "]: " + text );
+			
+			PlayerTextEvent event = new PlayerTextEvent(player, text, 1);
+			player.eventDispatcher.dispatchEvent( event );
+			
+			if( event.getResult() != 0 )
+				Player.sendMessageToAll( Color.WHITE, "{FE8B13}" + player.getName() + ": {FFFFFF}" + text );
+			
+			return 0;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -594,13 +588,13 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		System.out.println( "[cmd] [" + player.name + "] " + cmdtext );
-    		
-    		PlayerCommandEvent event = new PlayerCommandEvent(player, cmdtext, player.onCommand(cmdtext));
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return event.getResult();
+			Player player = playerPool[playerid];
+			System.out.println( "[cmd] [" + player.name + "] " + cmdtext );
+			
+			PlayerCommandEvent event = new PlayerCommandEvent(player, cmdtext, 0);
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return event.getResult();
 		}
 		catch( Exception e )
 		{
@@ -613,13 +607,13 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		
-    		PlayerRequestClassEvent event = new PlayerRequestClassEvent(player, classid, player.onRequestClass(classid));
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return event.getResult();
-    	}
+			Player player = playerPool[playerid];
+			
+			PlayerRequestClassEvent event = new PlayerRequestClassEvent(player, classid, 1);
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return event.getResult();
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -631,14 +625,12 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		
-    		player.state = newstate;
-    		
-    		player.onStateChange( oldstate );
-    		player.eventDispatcher.dispatchEvent( new PlayerStateChangeEvent(player, oldstate) );
-    		
-    		return 1;
+			Player player = playerPool[playerid];
+			
+			player.state = newstate;
+			player.eventDispatcher.dispatchEvent( new PlayerStateChangeEvent(player, oldstate) );
+			
+			return 1;
 		}
 		catch( Exception e )
 		{
@@ -651,18 +643,15 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		
-    		CheckpointEnterEvent event = new CheckpointEnterEvent( player );
-    		
-    		player.checkpoint.onEnter( player );
-    		player.checkpoint.eventDispatcher.dispatchEvent( event );
-    		
-    		player.onEnterCheckpoint();
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			
+			CheckpointEnterEvent event = new CheckpointEnterEvent( player );
+			
+			player.checkpoint.eventDispatcher.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -674,18 +663,14 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		
-    		CheckpointLeaveEvent event = new CheckpointLeaveEvent(player);
+			Player player = playerPool[playerid];
+			CheckpointLeaveEvent event = new CheckpointLeaveEvent(player);
 
-    		player.checkpoint.onLeave( player );
-    		player.checkpoint.eventDispatcher.dispatchEvent( event );
-    		
-    		player.onLeaveCheckpoint();
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;
-    	}
+			player.checkpoint.eventDispatcher.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -697,18 +682,14 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		
-    		RaceCheckpointEnterEvent event = new RaceCheckpointEnterEvent(player);
-    		
-    		player.raceCheckpoint.onEnter( player );
-    		player.raceCheckpoint.eventDispatcher.dispatchEvent( event );
-    		
-    		player.onEnterRaceCheckpoint();
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			RaceCheckpointEnterEvent event = new RaceCheckpointEnterEvent(player);
+			
+			player.raceCheckpoint.eventDispatcher.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -720,18 +701,14 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		
-    		RaceCheckpointLeaveEvent event = new RaceCheckpointLeaveEvent(player);
-    		
-    		player.raceCheckpoint.onLeave( player );
-    		player.raceCheckpoint.eventDispatcher.dispatchEvent( event );
-    		
-    		player.onLeaveRaceCheckpoint();
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			RaceCheckpointLeaveEvent event = new RaceCheckpointLeaveEvent(player);
+			
+			player.raceCheckpoint.eventDispatcher.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -743,12 +720,12 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		
-    		PlayerRequestSpawnEvent event = new PlayerRequestSpawnEvent( player, player.onRequestSpawn() );
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return event.getResult();
+			Player player = playerPool[playerid];
+			
+			PlayerRequestSpawnEvent event = new PlayerRequestSpawnEvent( player, 1 );
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return event.getResult();
 		}
 		catch( Exception e )
 		{
@@ -767,9 +744,7 @@ public abstract class Gamemode implements IGamemode
 			NativeFunction.getObjectPos(objectid, object.position);
 			NativeFunction.getObjectRot(objectid, object.position);
 			
-			object.onMoved();
 			object.eventDispatcher.dispatchEvent( new ObjectMovedEvent(object) );
-			
 			return 1;
 		}
 		catch( Exception e )
@@ -783,17 +758,15 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		ObjectBase object = playerObjectPool[objectid + playerid*MAX_OBJECTS];
-    		
-    		object.speed = 0;  		
-    		
-    		object.onMoved();
-    		object.eventDispatcher.dispatchEvent(new ObjectMovedEvent(object));
-    		player.onObjectMoved( object );
-    		player.eventDispatcher.dispatchEvent( new PlayerObjectMovedEvent(player, object) );
-    		
-    		return 1;
+			Player player = playerPool[playerid];
+			ObjectBase object = playerObjectPool[objectid + playerid*MAX_OBJECTS];
+			
+			object.speed = 0;  		
+			
+			object.eventDispatcher.dispatchEvent(new ObjectMovedEvent(object));
+			player.eventDispatcher.dispatchEvent( new PlayerObjectMovedEvent(player, object) );
+			
+			return 1;
 		}
 		catch( Exception e )
 		{
@@ -806,20 +779,18 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		Pickup pickup = pickupPool[pickupid];
+			Player player = playerPool[playerid];
+			Pickup pickup = pickupPool[pickupid];
 
-    		System.out.println( "[pickup] " + player.name + " pickup " + pickup.model + " (" + pickup.type + ")" );
-    		
-    		PlayerPickupEvent event = new PlayerPickupEvent(player, pickup);
-    		
-    		pickup.onPickup( player );
-    		pickup.eventDispatcher.dispatchEvent( event );
-    		player.onPickup( pickup );
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;
-    	}
+			System.out.println( "[pickup] " + player.name + " pickup " + pickup.model + " (" + pickup.type + ")" );
+			
+			PlayerPickupEvent event = new PlayerPickupEvent(player, pickup);
+			
+			pickup.eventDispatcher.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -831,25 +802,22 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		//PlayerBase player = playerPool[playerid];
-    		//MenuBase menu = menuPool[];
-    		
-    		//player.on();
-    		//player.event.dispatchEvent( new Player(player) );
+			//PlayerBase player = playerPool[playerid];
+			//MenuBase menu = menuPool[];
+			
+			//player.on();
+			//player.event.dispatchEvent( new Player(player) );
 			
 			Player player = playerPool[playerid];
 			Menu menu = menuPool[NativeFunction.getPlayerMenu(playerid)];
 			
 			MenuSelectedEvent event = new MenuSelectedEvent( menu, player, row );
 			
-			player.onMenuSelected( menu, row );
-			menu.onPlayerSelectedMenuRow( player, row );
-			
 			player.eventDispatcher.dispatchEvent( event );
-    		menu.eventDispatcher.dispatchEvent( event );
+			menu.eventDispatcher.dispatchEvent( event );
 			
-    		return 1;
-    	}
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -861,25 +829,22 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		//PlayerBase player = playerPool[playerid];
-    		//MenuBase menu = menuPool[];
-    		
-    		//player.on();
-    		//player.event.dispatchEvent( new Player(player) );
+			//PlayerBase player = playerPool[playerid];
+			//MenuBase menu = menuPool[];
+			
+			//player.on();
+			//player.event.dispatchEvent( new Player(player) );
 			
 			Player player = playerPool[playerid];
 			Menu menu = menuPool[NativeFunction.getPlayerMenu(playerid)];
 			
 			MenuExitedEvent event = new MenuExitedEvent( menu, player );
 			
-			player.onMenuExited( menu );
-			menu.onPlayerExitedMenu( player );
-			
 			player.eventDispatcher.dispatchEvent( event );
-    		menu.eventDispatcher.dispatchEvent( event );
-    			
-    		return 1;
-    	}
+			menu.eventDispatcher.dispatchEvent( event );
+				
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -891,15 +856,13 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		System.out.println( "[interior] " + player.name + " interior has changed to " + newinteriorid );
-    		
-    		player.position.interior = newinteriorid;
-    		
-    		player.onInteriorChange( oldinteriorid );
-    		player.eventDispatcher.dispatchEvent( new PlayerInteriorChangeEvent(player, oldinteriorid) );
-    		
-    		return 1;
+			Player player = playerPool[playerid];
+			System.out.println( "[interior] " + player.name + " interior has changed to " + newinteriorid );
+			
+			player.position.interior = newinteriorid;
+			player.eventDispatcher.dispatchEvent( new PlayerInteriorChangeEvent(player, oldinteriorid) );
+			
+			return 1;
 		}
 		catch( Exception e )
 		{
@@ -912,16 +875,14 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		
-    		player.keyState.keys = newkeys;
-    		//update keystate
-    		
-    		player.onKeyStateChange( oldkeys );
-    		player.eventDispatcher.dispatchEvent( new PlayerKeyStateChangeEvent(player, oldkeys) );
-    		
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			
+			player.keyState.keys = newkeys;
+			//update keystate
+			
+			player.eventDispatcher.dispatchEvent( new PlayerKeyStateChangeEvent(player, oldkeys) );
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -933,13 +894,11 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		player.update();
-    		
-    		player.onUpdate();
-    		player.eventDispatcher.dispatchEvent( new PlayerUpdateEvent(player) );
-    		
-    		return 1;
+			Player player = playerPool[playerid];
+			player.update();
+			
+			player.eventDispatcher.dispatchEvent( new PlayerUpdateEvent(player) );
+			return 1;
 		}
 		catch( Exception e )
 		{
@@ -952,14 +911,12 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		Player forplayer = playerPool[forplayerid];
-    		
-    		player.onPlayerStreamIn( forplayer );
-    		player.eventDispatcher.dispatchEvent( new PlayerStreamInEvent(player, forplayer) );
-    		
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			Player forplayer = playerPool[forplayerid];
+			
+			player.eventDispatcher.dispatchEvent( new PlayerStreamInEvent(player, forplayer) );
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -971,14 +928,12 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		Player forplayer = playerPool[forplayerid];
-    		
-    		player.onPlayerStreamOut( forplayer );
-    		player.eventDispatcher.dispatchEvent( new PlayerStreamOutEvent(player, forplayer) );
-    		
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			Player forplayer = playerPool[forplayerid];
+			
+			player.eventDispatcher.dispatchEvent( new PlayerStreamOutEvent(player, forplayer) );
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -990,22 +945,19 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		Player clickedPlayer = playerPool[clickedplayerid];
+			Player player = playerPool[playerid];
+			Player clickedPlayer = playerPool[clickedplayerid];
 
-    		System.out.println( "[click] " + player.name + " has clicked " + clickedPlayer.name );
-    		
-    		
-    		PlayerClickPlayerEvent event = new PlayerClickPlayerEvent( player, clickedPlayer, source );
-    		
-    		player.onClickPlayer( clickedPlayer, source );
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		clickedPlayer.onOthersClick( clickedPlayer, source );
-    		clickedPlayer.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;
-    	}
+			System.out.println( "[click] " + player.name + " has clicked " + clickedPlayer.name );
+			
+			
+			PlayerClickPlayerEvent event = new PlayerClickPlayerEvent( player, clickedPlayer, source );
+			
+			player.eventDispatcher.dispatchEvent( event );
+			clickedPlayer.eventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1017,13 +969,11 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		
-    		player.onEnterExitModShop( enterexit != 0, interiorid );
-    		player.eventDispatcher.dispatchEvent( new PlayerEnterExitModShopEvent(player, enterexit != 0, interiorid) );
-    		
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			player.eventDispatcher.dispatchEvent( new PlayerEnterExitModShopEvent(player, enterexit != 0, interiorid) );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1035,26 +985,23 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		Dialog dialog = dialogPool.get(dialogid).get();
-    		
-    		if( dialog == null )
-    		{
-    			dialogPool.remove( dialogid );
-    			return 0;
-    		}
-    		
-    		DialogResponseEvent event = new DialogResponseEvent(dialog, player, response, listitem, inputtext);
-    		
-    		player.onDialogResponse( dialog, response, listitem, inputtext );
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		dialog.onResponse( player, response, listitem, inputtext );
-    		dialog.eventDispatcher.dispatchEvent( event );
-    		
-    		player.dialog = null;
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			Dialog dialog = dialogPool.get(dialogid).get();
+			
+			if( dialog == null )
+			{
+				dialogPool.remove( dialogid );
+				return 0;
+			}
+			
+			DialogResponseEvent event = new DialogResponseEvent(dialog, player, response, listitem, inputtext);
+			
+			player.eventDispatcher.dispatchEvent( event );
+			dialog.eventDispatcher.dispatchEvent( event );
+			
+			player.dialog = null;
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1066,21 +1013,19 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		Vehicle vehicle = vehiclePool[vehicleid];
-    		
-    		System.out.println( "[vehicle] " + player.name + " enter a vehicle (" + vehicle.model + ")" );
-    		
-    		
-    		VehicleEnterEvent event = new VehicleEnterEvent(vehicle, player, ispassenger != 0);
-    		
-    		vehicle.eventDispatcher.dispatchEvent( event );
-    		
-    		player.onEnterVehicle( vehicle, ispassenger != 0 );
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			Vehicle vehicle = vehiclePool[vehicleid];
+			
+			System.out.println( "[vehicle] " + player.name + " enter a vehicle (" + vehicle.model + ")" );
+			
+			
+			VehicleEnterEvent event = new VehicleEnterEvent(vehicle, player, ispassenger != 0);
+			
+			vehicle.eventDispatcher.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1092,21 +1037,19 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		Vehicle vehicle = vehiclePool[vehicleid];
+			Player player = playerPool[playerid];
+			Vehicle vehicle = vehiclePool[vehicleid];
 
-    		System.out.println( "[vehicle] " + player.name + " leave a vehicle (" + vehicle.model + ")" );
-    		
-    		
-    		VehicleExitEvent event = new VehicleExitEvent(vehicle, player);
-    		
-    		vehicle.eventDispatcher.dispatchEvent( event );
-    		
-    		player.onExitVehicle( vehicle );
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;
-    	}
+			System.out.println( "[vehicle] " + player.name + " leave a vehicle (" + vehicle.model + ")" );
+			
+			
+			VehicleExitEvent event = new VehicleExitEvent(vehicle, player);
+			
+			vehicle.eventDispatcher.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1118,12 +1061,12 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Vehicle vehicle = vehiclePool[vehicleid];
-    		
-    		vehicle.eventDispatcher.dispatchEvent( new VehicleSpawnEvent(vehicle) );
-    		
-    		return 1;
-    	}
+			Vehicle vehicle = vehiclePool[vehicleid];
+			
+			vehicle.eventDispatcher.dispatchEvent( new VehicleSpawnEvent(vehicle) );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1135,13 +1078,13 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Vehicle vehicle = vehiclePool[vehicleid];
-    		Player killer = playerPool[killerid];
-    		
-    		vehicle.eventDispatcher.dispatchEvent( new VehicleDeathEvent(vehicle, killer) );
-    		
-    		return 1;
-    	}
+			Vehicle vehicle = vehiclePool[vehicleid];
+			Player killer = playerPool[killerid];
+			
+			vehicle.eventDispatcher.dispatchEvent( new VehicleDeathEvent(vehicle, killer) );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1153,21 +1096,19 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		Vehicle vehicle = vehiclePool[vehicleid];
-    		
-    		VehicleModEvent event = new VehicleModEvent(vehicle, componentid);
-    		
-    		int type = NativeFunction.getVehicleComponentType(componentid);
-    		vehicle.component.components[type] = NativeFunction.getVehicleComponentInSlot(vehicleid, type);
-    
-    		vehicle.eventDispatcher.dispatchEvent( event );
-    		
-    		player.onVehicleMod( componentid );
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;	
-    	}
+			Player player = playerPool[playerid];
+			Vehicle vehicle = vehiclePool[vehicleid];
+			
+			VehicleModEvent event = new VehicleModEvent(vehicle, componentid);
+			
+			int type = NativeFunction.getVehicleComponentType(componentid);
+			vehicle.component.components[type] = NativeFunction.getVehicleComponentInSlot(vehicleid, type);
+	
+			vehicle.eventDispatcher.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return 1;	
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1179,18 +1120,16 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		Vehicle vehicle = vehiclePool[vehicleid];
-    		
-    		VehiclePaintjobEvent event = new VehiclePaintjobEvent(vehicle, paintjobid);
-    
-    		vehicle.eventDispatcher.dispatchEvent( event );
-    		
-    		player.onVehiclePaintjob( paintjobid );
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			Vehicle vehicle = vehiclePool[vehicleid];
+			
+			VehiclePaintjobEvent event = new VehiclePaintjobEvent(vehicle, paintjobid);
+	
+			vehicle.eventDispatcher.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1202,43 +1141,41 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[playerid];
-    		Vehicle vehicle = vehiclePool[vehicleid];
-    		
-    		VehicleResprayEvent event = new VehicleResprayEvent( vehicle, color1, color2 );
-    
-    		vehicle.eventDispatcher.dispatchEvent( event );
-    		
-    		player.onVehicleRespray( color1, color2 );
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;
-    	}
+			Player player = playerPool[playerid];
+			Vehicle vehicle = vehiclePool[vehicleid];
+			
+			VehicleResprayEvent event = new VehicleResprayEvent( vehicle, color1, color2 );
+	
+			vehicle.eventDispatcher.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
 			return 0;
 		}
-    }
+	}
 
 	int onVehicleDamageStatusUpdate( int vehicleid, int playerid )
 	{
 		try
 		{
-    		Vehicle vehicle = vehiclePool[vehicleid];
-    		Player player = playerPool[playerid];
-    		
-    		NativeFunction.getVehicleDamageStatus(vehicleid, vehicle.damage);
-    		
-    		VehicleUpdateDamageEvent event = new VehicleUpdateDamageEvent(vehicle, player);
-    
-    		vehicle.eventDispatcher.dispatchEvent( event );
-    		
-    		//player.on();
-    		//player.event.dispatchEvent( new Player(player) );
-    		
-    		return 1;
-    	}
+			Vehicle vehicle = vehiclePool[vehicleid];
+			Player player = playerPool[playerid];
+			
+			NativeFunction.getVehicleDamageStatus(vehicleid, vehicle.damage);
+			
+			VehicleUpdateDamageEvent event = new VehicleUpdateDamageEvent(vehicle, player);
+	
+			vehicle.eventDispatcher.dispatchEvent( event );
+			
+			//player.on();
+			//player.event.dispatchEvent( new Player(player) );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1250,18 +1187,16 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[forplayerid];
-    		Vehicle vehicle = vehiclePool[vehicleid];
-    		
-    		VehicleStreamInEvent event = new VehicleStreamInEvent(vehicle, player);
-    		
-    		vehicle.eventDispatcher.dispatchEvent( event );
-    		
-    		player.onVehicleStreamIn( vehicle );
-    		player.eventDispatcher.dispatchEvent( event );
-    
-    		return 1;
-    	}
+			Player player = playerPool[forplayerid];
+			Vehicle vehicle = vehiclePool[vehicleid];
+			
+			VehicleStreamInEvent event = new VehicleStreamInEvent(vehicle, player);
+			
+			vehicle.eventDispatcher.dispatchEvent( event );
+			player.eventDispatcher.dispatchEvent( event );
+	
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1273,18 +1208,16 @@ public abstract class Gamemode implements IGamemode
 	{
 		try
 		{
-    		Player player = playerPool[forplayerid];
-    		Vehicle vehicle = vehiclePool[vehicleid];
-    		
-    		VehicleStreamOutEvent event = new VehicleStreamOutEvent(vehicle, player);
-    
-    		player.onVehicleStreamOut( vehicle );
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		vehicle.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;
-    	}
+			Player player = playerPool[forplayerid];
+			Vehicle vehicle = vehiclePool[vehicleid];
+			
+			VehicleStreamOutEvent event = new VehicleStreamOutEvent(vehicle, player);
+	
+			player.eventDispatcher.dispatchEvent( event );
+			vehicle.eventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1298,12 +1231,12 @@ public abstract class Gamemode implements IGamemode
 		{
 			logStream.log( "[rcon] " + " command: " + cmd );
 			
-    		
-    		RconCommandEvent event = new RconCommandEvent(cmd, onRconCommand(cmd));
-    		eventDispatcher.dispatchEvent( event );
-    		
-    		return event.getResult();
-    	}
+			
+			RconCommandEvent event = new RconCommandEvent(cmd, onRconCommand(cmd));
+			eventDispatcher.dispatchEvent( event );
+			
+			return event.getResult();
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1318,13 +1251,13 @@ public abstract class Gamemode implements IGamemode
 			if( success == 0 )
 				logStream.log( "[rcon] " + " bad rcon attempy by: " + ip + " (" + password + ")" );
 			else logStream.log( "[rcon] " + ip + " has logged." );
-    		
-    		
-    		onRconLogin( ip, password, success != 0 );
-    		eventDispatcher.dispatchEvent( new RconLoginEvent(ip, password, success!=0) );
-    		
-    		return 1;
-    	}
+			
+			
+			onRconLogin( ip, password, success != 0 );
+			eventDispatcher.dispatchEvent( new RconLoginEvent(ip, password, success!=0) );
+			
+			return 1;
+		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
@@ -1337,16 +1270,15 @@ public abstract class Gamemode implements IGamemode
 		try 
 		{
 			Player player = playerPool[playerid];
-    		Vehicle vehicle = vehiclePool[vehicleid];
-    		
-    		VehicleUnoccupiedUpdateEvent event = new VehicleUnoccupiedUpdateEvent(vehicle, player, passenger_seat);
-    
-    		player.onUpdateUnoccupiedVehicle( vehicle );
-    		player.eventDispatcher.dispatchEvent( event );
-    		
-    		vehicle.eventDispatcher.dispatchEvent( event );
-    		
-    		return 1;
+			Vehicle vehicle = vehiclePool[vehicleid];
+			
+			VehicleUnoccupiedUpdateEvent event = new VehicleUnoccupiedUpdateEvent(vehicle, player, passenger_seat);
+	
+			player.eventDispatcher.dispatchEvent( event );
+			
+			vehicle.eventDispatcher.dispatchEvent( event );
+			
+			return 1;
 		}
 		catch (Exception e) 
 		{

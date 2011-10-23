@@ -88,14 +88,6 @@ public class DynamicObject extends ObjectBase implements IStreamObject
 
 
 //---------------------------------------------------------
-	
-	public int onMoved()
-	{
-		return 1;
-	}
-	
-
-//---------------------------------------------------------
 
 	public void destroy()
 	{

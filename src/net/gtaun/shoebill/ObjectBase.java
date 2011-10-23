@@ -126,14 +126,6 @@ public class ObjectBase implements IObject
 	
 
 //---------------------------------------------------------
-	
-	protected int onMoved()
-	{
-		return 1;
-	}
-	
-
-//---------------------------------------------------------
 
 	public void destroy()
 	{

@@ -76,19 +76,6 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 	
 	
 //---------------------------------------------------------
-
-	protected int onEnter( Player player )
-	{
-		return 0;
-	}
-	
-	protected int onLeave( Player player )
-	{
-		return 0;
-	}
-
-	
-//---------------------------------------------------------
 	
 	public void set( Player player )
 	{

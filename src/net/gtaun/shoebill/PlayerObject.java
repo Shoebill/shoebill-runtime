@@ -126,14 +126,6 @@ public class PlayerObject extends ObjectBase
 	
 
 //---------------------------------------------------------
-	
-	protected int onMoved()
-	{
-		return 1;
-	}
-	
-
-//---------------------------------------------------------
 
 	public void destroy()
 	{

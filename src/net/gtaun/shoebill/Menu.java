@@ -80,18 +80,6 @@ public class Menu implements IMenu
 		Gamemode.instance.menuPool[id] = this;
 	}
 	
-//---------------------------------------------------------
-	
-	protected int onPlayerSelectedMenuRow( Player player, int row )
-	{
-		return 1;
-	}
-	
-	protected int onPlayerExitedMenu( Player player )
-	{
-		return 1;
-	}
-	
 	
 //---------------------------------------------------------
 	

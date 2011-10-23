@@ -59,19 +59,6 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 	
 
 //---------------------------------------------------------
-
-	protected int onEnter( Player player )
-	{
-		return 0;
-	}
-	
-	protected int onLeave( Player player )
-	{
-		return 0;
-	}
-	
-	
-//---------------------------------------------------------
 	
 	public void set( Player player )
 	{
