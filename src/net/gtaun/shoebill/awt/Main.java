@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.about;
+package net.gtaun.shoebill.awt;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

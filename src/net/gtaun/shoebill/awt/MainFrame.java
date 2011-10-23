@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.about;
+package net.gtaun.shoebill.awt;
 
 import java.awt.Desktop;
 import java.awt.Frame;
@@ -48,19 +48,22 @@ public class MainFrame extends Frame
 	{
 		version = new Label();
 		version.setBounds(new Rectangle(106, 86, 228, 18));
-		version.setText("Milestone 1 (20110701)");
+		version.setText("Milestone 2 (2011)");
 		version.setFont(new Font("Dialog", Font.BOLD, 12));
 		version.setAlignment(Label.CENTER);
+		
 		description = new Label();
 		description.setText("Java for SA:MP DEVKIT");
 		description.setAlignment(Label.CENTER);
 		description.setBounds(new Rectangle(106, 67, 228, 13));
+		
 		caption = new Label();
 		caption.setFont(new Font("Dialog", Font.PLAIN, 24));
 		caption.setAlignment(Label.CENTER);
 		caption.setText("Project Shoebill");
 		caption.setBounds(new Rectangle(78, 39, 284, 36));
 		caption.setName("caption");
+		
 		this.setLayout(null);
 		this.setSize(441, 124);
 		this.setName("about");
