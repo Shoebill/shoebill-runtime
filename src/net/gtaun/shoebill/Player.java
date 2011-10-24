@@ -27,14 +27,16 @@ import net.gtaun.lungfish.data.PointAngle;
 import net.gtaun.lungfish.data.SpawnInfo;
 import net.gtaun.lungfish.data.Time;
 import net.gtaun.lungfish.data.Velocity;
+import net.gtaun.lungfish.exception.AlreadyExistException;
+import net.gtaun.lungfish.exception.IllegalLengthException;
+import net.gtaun.lungfish.object.ICheckpoint;
 import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.IPlayerAttach;
 import net.gtaun.lungfish.object.IPlayerSkill;
+import net.gtaun.lungfish.object.IRaceCheckpoint;
 import net.gtaun.lungfish.object.IVehicle;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.shoebill.exception.AlreadyExistException;
-import net.gtaun.shoebill.exception.IllegalLengthException;
 
 /**
  * @author MK124, JoJLlmAn
@@ -411,12 +413,12 @@ public class Player implements IPlayer
 		NativeFunction.setPlayerFightingStyle( id, style );
 	}
 
-	public void setVehicle( Vehicle vehicle, int seat )
+	public void setVehicle( IVehicle vehicle, int seat )
 	{
 		vehicle.putPlayer( this, seat );
 	}
 	
-	public void setVehicle( Vehicle vehicle )
+	public void setVehicle( IVehicle vehicle )
 	{
 		vehicle.putPlayer( this, 0 );
 	}
@@ -538,8 +540,10 @@ public class Player implements IPlayer
 		NativeFunction.sendClientMessage( id, color, message );
 	}
 	
-	public void sendChat( Player player, String message )
+	public void sendChat( IPlayer p, String message )
 	{
+		Player player = (Player) p;
+		
 		if( message == null ) throw new NullPointerException();
 		NativeFunction.sendPlayerMessageToPlayer( player.id, id, message );
 	}
@@ -557,21 +561,23 @@ public class Player implements IPlayer
 		}
 	}
 
-	public void sendDeathMessage( Player killer, int reason )
+	public void sendDeathMessage( IPlayer k, int reason )
 	{
+		Player killer = (Player) k;
+		
 		if(killer == null)
 			NativeFunction.sendDeathMessage(Gamemode.INVALID_PLAYER_ID, id, reason);
 		else
 			NativeFunction.sendDeathMessage( killer.id, id, reason );
 	}
 
-	public void gameText( int time, int style, String text )
+	public void sendGameText( int time, int style, String text )
 	{
 		if( text == null ) throw new NullPointerException();
 		NativeFunction.gameTextForPlayer( id, text, time, style );
 	}
 	
-	public void gameText( int time, int style, String format, Object... args )
+	public void sendGameText( int time, int style, String format, Object... args )
 	{
 		String text = String.format(format, args);
 		NativeFunction.gameTextForPlayer( id, text, time, style );
@@ -623,13 +629,15 @@ public class Player implements IPlayer
 		NativeFunction.playerPlaySound( id, sound, point.x, point.y, point.z );
 	}
 	
-	public void markerForPlayer( Player player, int color )
+	public void markerForPlayer( IPlayer p, int color )
 	{
+		Player player = (Player) p;
 		NativeFunction.setPlayerMarkerForPlayer( id, player.id, color );
 	}
 	
-	public void nameTagForPlayer( Player player, boolean show )
+	public void showNameTagForPlayer( IPlayer p, boolean show )
 	{
+		Player player = (Player) p;
 		NativeFunction.showPlayerNameTagForPlayer( id, player.id, show );
 	}
 
@@ -695,13 +703,14 @@ public class Player implements IPlayer
 		return lookat;
 	}
 	
-	public boolean inAnyVehicle()
+	public boolean isInAnyVehicle()
 	{
 		return NativeFunction.isPlayerInAnyVehicle( id );
 	}
 	
-	public boolean inVehicle( Vehicle vehicle )
+	public boolean isInVehicle( IVehicle v )
 	{
+		Vehicle vehicle = (Vehicle) v;
 		return NativeFunction.isPlayerInVehicle( id, vehicle.id );
 	}
 	
@@ -710,17 +719,18 @@ public class Player implements IPlayer
 		return NativeFunction.isPlayerAdmin(id);
 	}
 	
-	public boolean inRangeOfPoint(Point point, int range)
+	public boolean isInRangeOfPoint(Point point, int range)
 	{
 		return NativeFunction.isPlayerInRangeOfPoint(id, range, point.x, point.y, point.z);
 	}
 	
-	public boolean isStreamedIn(Player forplayer)
+	public boolean isStreamedIn(IPlayer fp)
 	{
+		Player forplayer = (Player) fp;
 		return NativeFunction.isPlayerStreamedIn(id, forplayer.id);
 	}
 	
-	public void setCheckpoint( Checkpoint checkpoint )
+	public void setCheckpoint( ICheckpoint checkpoint )
 	{
 		checkpoint.set( this );
 	}
@@ -731,7 +741,7 @@ public class Player implements IPlayer
 		checkpoint = null;
 	}
 	
-	public void setRaceCheckpoint( RaceCheckpoint checkpoint )
+	public void setRaceCheckpoint( IRaceCheckpoint checkpoint )
 	{
 		checkpoint.set( this );
 	}
@@ -808,7 +818,7 @@ public class Player implements IPlayer
 		NativeFunction.setPlayerShopName(id, name);
 	}
 	
-	public Vehicle getSurfingVehicle()
+	public IVehicle getSurfingVehicle()
 	{
 		return Vehicle.get(Vehicle.class, NativeFunction.getPlayerSurfingVehicleID(id));
 	}
@@ -858,8 +868,9 @@ public class Player implements IPlayer
 		spectatingVehicle = null;
 	}
 	
-	public void spectatePlayer(Player player, int mode)
+	public void spectatePlayer(IPlayer p, int mode)
 	{
+		Player player = (Player) p;
 		if( !spectating ) return;
 		
 		NativeFunction.playerSpectatePlayer(id, player.id, mode);
@@ -867,8 +878,9 @@ public class Player implements IPlayer
 		spectatingVehicle = null;
 	}
 	
-	public void spectateVehicle(Vehicle vehicle, int mode)
+	public void spectateVehicle(IVehicle v, int mode)
 	{
+		Vehicle vehicle = (Vehicle) v;
 		if( !spectating ) return;
 
 		NativeFunction.playerSpectateVehicle(id, vehicle.id, mode);

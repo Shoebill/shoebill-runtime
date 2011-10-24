@@ -108,7 +108,7 @@ public class Label
 		PointAngle pos = null;
 		
 		if( attachedPlayer != null )	pos = attachedPlayer.position;
-		if( attachedVehicle != null )	pos = attachedVehicle.position();
+		if( attachedVehicle != null )	pos = attachedVehicle.getPosition();
 		
 		if( pos != null )
 		{

@@ -24,6 +24,7 @@ import net.gtaun.lungfish.data.PointAngle;
 import net.gtaun.lungfish.data.Quaternions;
 import net.gtaun.lungfish.data.Velocity;
 import net.gtaun.lungfish.event.vehicle.VehicleDestroyEvent;
+import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.IVehicle;
 import net.gtaun.lungfish.object.IVehicleComponent;
 import net.gtaun.lungfish.object.IVehicleParam;
@@ -177,12 +178,12 @@ public class Vehicle implements IVehicle
 	}
 	
 	
-	public Vehicle trailer()
+	public Vehicle getTrailer()
 	{
 		return get( Vehicle.class, NativeFunction.getVehicleTrailer(id) );
 	}
 	
-	public PointAngle position()
+	public PointAngle getPosition()
 	{
 		PointAngle position = new PointAngle();
 
@@ -194,27 +195,27 @@ public class Vehicle implements IVehicle
 		return position;
 	}
 	
-	public float angle()
+	public float getAngle()
 	{
 		return NativeFunction.getVehicleZAngle(id);
 	}
 	
-	public int interior()
+	public int getInterior()
 	{
 		return interior;
 	}
 	
-	public int world()
+	public int getWorld()
 	{
 		return NativeFunction.getVehicleVirtualWorld(id);
 	}
 	
-	public float health()
+	public float getHealth()
 	{
 		return NativeFunction.getVehicleHealth(id);
 	}
 
-	public Velocity velocity()
+	public Velocity getVelocity()
 	{
 		Velocity velocity = new Velocity();
 		NativeFunction.getVehicleVelocity( id, velocity );
@@ -222,7 +223,7 @@ public class Vehicle implements IVehicle
 		return velocity;
 	}
 	
-	public Quaternions rotationQuat()
+	public Quaternions getRotationQuat()
 	{
 		Quaternions quaternions = new Quaternions();
 		NativeFunction.getVehicleRotationQuat( id, quaternions );
@@ -278,23 +279,27 @@ public class Vehicle implements IVehicle
 	}
 
 	
-	public void putPlayer( Player player, int seat )
+	public void putPlayer( IPlayer p, int seat )
 	{
+		Player player = (Player) p;
 		NativeFunction.putPlayerInVehicle( player.id, id, seat );
 	}
 	
-	public boolean isPlayerIn( Player player )
+	public boolean isPlayerIn( IPlayer p )
 	{
+		Player player = (Player) p;
 		return NativeFunction.isPlayerInVehicle(player.id, id);
 	}
 	
-	public boolean isStreamedIn( Player forplayer )
+	public boolean isStreamedIn( IPlayer fp )
 	{
+		Player forplayer = (Player) fp;
 		return NativeFunction.isVehicleStreamedIn(id, forplayer.id);
 	}
 	
-	public void setParamsForPlayer( Player player, boolean objective, boolean doorslocked )
+	public void setParamsForPlayer( IPlayer p, boolean objective, boolean doorslocked )
 	{
+		Player player = (Player) p;
 		NativeFunction.setVehicleParamsForPlayer( id, player.id, objective, doorslocked );
 	}
 	
@@ -313,8 +318,9 @@ public class Vehicle implements IVehicle
 		NativeFunction.changeVehiclePaintjob( id, paintjobid );
 	}
 	
-	public void attachTrailer( Vehicle trailer )
+	public void attachTrailer( IVehicle t )
 	{
+		Vehicle trailer = (Vehicle) t;
 		NativeFunction.attachTrailerToVehicle( trailer.id, id );
 	}
 	
