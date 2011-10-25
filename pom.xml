@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>net.gtaun</groupId>
+  <artifactId>shoebill</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>shoebill</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <scm>
+  	<url>https://github.com/mk124/Shoebill</url>
+  	<connection>scm:git:git://github.com/mk124/Shoebill.git</connection>
+  	<developerConnection>scm:git:git@github.com:mk124/Shoebill.git</developerConnection>
+  </scm>
+  
+  <ciManagement>
+  	<url>http://ci.gtaun.net</url>
+  	<system>jenkins</system>
+  </ciManagement>
+  
+  <dependencies>
+    <dependency>
+      <groupId>net.gtaun</groupId>
+      <artifactId>Lungfish</artifactId>
+      <version>0.1-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+    
+  <build>
+    <defaultGoal>clean install</defaultGoal>
+    
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.4</version>
+        <executions>
+           <execution>
+             <phase>package</phase>
+             <goals>
+               <goal>shade</goal>
+             </goals>
+           </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>

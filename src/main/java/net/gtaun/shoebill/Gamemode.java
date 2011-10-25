@@ -149,7 +149,7 @@ public abstract class Gamemode implements IGamemode
 	
 	Player[] playerPool						= new Player[MAX_PLAYERS];
 	Vehicle[] vehiclePool					= new Vehicle[MAX_VEHICLES];
-	ObjectBase[] objectPool						= new ObjectBase[MAX_OBJECTS];
+	ObjectBase[] objectPool					= new ObjectBase[MAX_OBJECTS];
 	PlayerObject[] playerObjectPool			= new PlayerObject[MAX_OBJECTS*MAX_PLAYERS];
 	Pickup[] pickupPool						= new Pickup[MAX_PICKUPS];
 	Label[] labelPool						= new Label[MAX_LABELS_GLOBAL];
@@ -375,7 +375,7 @@ public abstract class Gamemode implements IGamemode
 	}
 	
 	
-//--------------------------------------------------------- 鋡侯NI�澆��
+//---------------------------------------------------------
 
 	long lastTick = System.nanoTime();
 	void onProcessTick()
