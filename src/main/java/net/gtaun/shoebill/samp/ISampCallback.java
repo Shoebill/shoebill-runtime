@@ -42,7 +42,7 @@ public interface ISampCallback
 	int onPlayerLeaveCheckpoint( int playerid );
 	int onPlayerEnterRaceCheckpoint( int playerid );
 	int onPlayerLeaveRaceCheckpoint( int playerid );
-	int onServerRconCommand( String cmd );
+	int onRconCommand( String cmd );
 	int onPlayerRequestSpawn( int playerid );
 	int onObjectMoved( int objectid );
 	int onPlayerObjectMoved( int playerid, int objectid );
@@ -54,7 +54,7 @@ public interface ISampCallback
 	int onPlayerExitedMenu( int playerid );
 	int onPlayerInteriorChange( int playerid, int newinteriorid, int oldinteriorid );
 	int onPlayerKeyStateChange( int playerid, int newkeys, int oldkeys );
-	int onServerRconLoginAttempt( String ip, String password, int success );
+	int onRconLoginAttempt( String ip, String password, int success );
 	int onPlayerUpdate( int playerid );
 	int onPlayerStreamIn( int playerid, int forplayerid );
 	int onPlayerStreamOut( int playerid, int forplayerid );
