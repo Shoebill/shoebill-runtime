@@ -17,7 +17,7 @@
 package net.gtaun.shoebill.streamer;
 
 import net.gtaun.lungfish.data.Point;
-import net.gtaun.shoebill.Player;
+import net.gtaun.shoebill.object.Player;
 
 /**
  * @author MK124

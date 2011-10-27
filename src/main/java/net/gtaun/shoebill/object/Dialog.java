@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.object;
 
 import java.lang.ref.WeakReference;
 
@@ -23,6 +23,7 @@ import net.gtaun.lungfish.object.IDialog;
 import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
+import net.gtaun.shoebill.NativeFunction;
 
 /**
  * @author MK124

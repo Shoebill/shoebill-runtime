@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.object;
 
 import java.io.PrintStream;
 import java.lang.ref.Reference;
@@ -72,6 +72,8 @@ import net.gtaun.lungfish.event.vehicle.VehicleUpdateDamageEvent;
 import net.gtaun.lungfish.object.IGamemode;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
+import net.gtaun.shoebill.LogPrintStream;
+import net.gtaun.shoebill.NativeFunction;
 
 /**
  * @author MK124, JoJLlmAn

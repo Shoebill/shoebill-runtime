@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.object;
 
 import java.util.Vector;
 
 import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.data.PointRange;
+import net.gtaun.shoebill.NativeFunction;
 
 /**
  * @author MK124

@@ -28,7 +28,7 @@ import net.gtaun.lungfish.event.player.PlayerUpdateEvent;
 import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.util.event.Event;
 import net.gtaun.lungfish.util.event.IEventListener;
-import net.gtaun.shoebill.Gamemode;
+import net.gtaun.shoebill.object.Gamemode;
 
 /**
  * @author MK124

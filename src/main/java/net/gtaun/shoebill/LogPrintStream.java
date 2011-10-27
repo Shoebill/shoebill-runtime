@@ -31,7 +31,7 @@ import java.util.Locale;
  *
  */
 
-class LogPrintStream extends PrintStream
+public class LogPrintStream extends PrintStream
 {
 	static DateFormat fileFormat = new SimpleDateFormat("yyyy-MM-dd");
 	static DateFormat directoryFormat = new SimpleDateFormat("yyyy-MM");
@@ -55,7 +55,7 @@ class LogPrintStream extends PrintStream
 	boolean timestamp = false;
 	
 	
-	LogPrintStream( PrintStream console ) throws FileNotFoundException, UnsupportedEncodingException
+	public  LogPrintStream( PrintStream console ) throws FileNotFoundException, UnsupportedEncodingException
 	{
 		super( new FileOutputStream(makeFilePath(), true), true, "UTF-8" );
 		this.consoleStream = console;

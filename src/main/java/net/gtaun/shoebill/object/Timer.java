@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.object;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;

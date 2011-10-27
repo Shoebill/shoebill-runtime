@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.object;
 
 import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.data.PointAngle;
 import net.gtaun.lungfish.data.PointRange;
+import net.gtaun.shoebill.NativeFunction;
 import net.gtaun.shoebill.streamer.IStreamObject;
 import net.gtaun.shoebill.streamer.Streamer;
 

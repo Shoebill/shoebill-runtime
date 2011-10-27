@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.object;
+
+import net.gtaun.shoebill.NativeFunction;
 
 /**
  * @author JoJLlmAn

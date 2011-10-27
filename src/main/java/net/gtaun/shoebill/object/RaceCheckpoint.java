@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.object;
 
 import java.util.Iterator;
 import java.util.Vector;
@@ -26,6 +26,7 @@ import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.IRaceCheckpoint;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
+import net.gtaun.shoebill.NativeFunction;
 
 /**
  * @author JoJLlmAn, MK124

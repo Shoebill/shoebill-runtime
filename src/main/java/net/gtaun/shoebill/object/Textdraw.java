@@ -15,9 +15,11 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.object;
 
 import java.util.Vector;
+
+import net.gtaun.shoebill.NativeFunction;
 
 
 /**

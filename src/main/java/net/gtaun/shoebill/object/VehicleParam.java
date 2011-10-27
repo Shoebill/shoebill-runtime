@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.object;
 
 import net.gtaun.lungfish.object.IVehicleParam;
+import net.gtaun.shoebill.NativeFunction;
 
 /**
  * @author JoJLlmAn
