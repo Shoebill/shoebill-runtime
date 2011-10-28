@@ -19,6 +19,7 @@ package net.gtaun.shoebill.object;
 
 import java.util.Vector;
 
+import net.gtaun.lungfish.object.ITextdraw;
 import net.gtaun.shoebill.NativeFunction;
 
 
@@ -27,7 +28,7 @@ import net.gtaun.shoebill.NativeFunction;
  *
  */
 
-public class Textdraw
+public class Textdraw implements ITextdraw
 {
 	public static Vector<Textdraw> get()
 	{

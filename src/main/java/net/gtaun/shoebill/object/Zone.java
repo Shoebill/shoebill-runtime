@@ -20,6 +20,7 @@ package net.gtaun.shoebill.object;
 import java.util.Vector;
 
 import net.gtaun.lungfish.data.Area;
+import net.gtaun.lungfish.object.IZone;
 import net.gtaun.shoebill.NativeFunction;
 
 /**
@@ -27,7 +28,7 @@ import net.gtaun.shoebill.NativeFunction;
  *
  */
 
-public class Zone
+public class Zone implements IZone
 {
 	public static Vector<Zone> get()
 	{
