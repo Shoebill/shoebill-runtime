@@ -20,6 +20,8 @@ import java.util.Vector;
 
 import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.data.PointRot;
+import net.gtaun.lungfish.object.IPlayer;
+import net.gtaun.lungfish.object.IPlayerObject;
 import net.gtaun.shoebill.NativeFunction;
 
 /**
@@ -27,7 +29,7 @@ import net.gtaun.shoebill.NativeFunction;
  *
  */
 
-public class PlayerObject extends ObjectBase
+public class PlayerObject extends ObjectBase implements IPlayerObject
 {
 	public static Vector<PlayerObject> get( int playerid )
 	{
@@ -59,7 +61,8 @@ public class PlayerObject extends ObjectBase
 	
 	Player player;
 	
-	public Player player()		{ return player; }
+	public IPlayer getPlayer()		{ return player; }
+	
 	
 	public PlayerObject( Player player, int model, float x, float y, float z, float rx, float ry, float rz )
 	{

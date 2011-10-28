@@ -21,6 +21,9 @@ import java.util.Vector;
 import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.data.PointAngle;
 import net.gtaun.lungfish.data.PointRange;
+import net.gtaun.lungfish.object.ILabel;
+import net.gtaun.lungfish.object.IPlayer;
+import net.gtaun.lungfish.object.IVehicle;
 import net.gtaun.shoebill.NativeFunction;
 
 /**
@@ -28,7 +31,7 @@ import net.gtaun.shoebill.NativeFunction;
  *
  */
 
-public class Label
+public class Label implements ILabel
 {
 	public static Vector<Label> get()
 	{
@@ -51,12 +54,12 @@ public class Label
 	Player attachedPlayer;
 	Vehicle attachedVehicle;
 
-	public int id()					{ return id; }
-	public String text()			{ return text; }
-	public int color()				{ return color; }
+	public int getId()							{ return id; }
+	public String getText()						{ return text; }
+	public int getColor()						{ return color; }
 	
-	public Player attachedPlayer()		{ return attachedPlayer; }
-	public Vehicle attachedVehicle()	{ return attachedVehicle; }
+	public IPlayer getAttachedPlayer()			{ return attachedPlayer; }
+	public IVehicle getAttachedVehicle()		{ return attachedVehicle; }
 	
 
 	Label()

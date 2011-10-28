@@ -20,6 +20,8 @@ import java.util.Vector;
 
 import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.data.PointRange;
+import net.gtaun.lungfish.object.IPlayer;
+import net.gtaun.lungfish.object.IPlayerLabel;
 import net.gtaun.shoebill.NativeFunction;
 
 /**
@@ -27,7 +29,7 @@ import net.gtaun.shoebill.NativeFunction;
  *
  */
 
-public class PlayerLabel extends Label
+public class PlayerLabel extends Label implements IPlayerLabel
 {
 	public static Vector<PlayerLabel> get( int playerid )
 	{
@@ -56,7 +58,10 @@ public class PlayerLabel extends Label
 		return list;
 	}
 	
+	
 	Player player;
+	
+	public IPlayer getPlayer()			{ return player; }
 	
 	
 	public PlayerLabel( Player player, String text, int color, Point point, float drawDistance, boolean testLOS )
