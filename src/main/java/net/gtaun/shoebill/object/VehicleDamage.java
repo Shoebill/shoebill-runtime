@@ -28,10 +28,10 @@ public class VehicleDamage
 	int vehicleId;
 	int panels, doors, lights, tires;
 	
-	public int panels()		{ return panels; }
-	public int doors()		{ return doors; }
-	public int lights()		{ return lights; }
-	public int tires()		{ return tires; }
+	public int getPanels()		{ return panels; }
+	public int getDoors()		{ return doors; }
+	public int getLights()		{ return lights; }
+	public int getTires()		{ return tires; }
 	
 	
 	VehicleDamage( int vehicleId )

@@ -34,13 +34,13 @@ public class VehicleParam implements IVehicleParam
 	int vehicleId;
 	int engine, lights, alarm, doors, bonnet, boot, objective;
 	
-	public int engine()			{ return engine; }
-	public int lights()			{ return lights; }
-	public int alarm()			{ return alarm; }
-	public int doors()			{ return doors; }
-	public int bonnet()			{ return bonnet; }
-	public int boot()			{ return boot; }
-	public int objective()		{ return objective; }
+	public int getEngine()			{ return engine; }
+	public int getLights()			{ return lights; }
+	public int getAlarm()			{ return alarm; }
+	public int getDoors()			{ return doors; }
+	public int getBonnet()			{ return bonnet; }
+	public int getBoot()			{ return boot; }
+	public int getObjective()		{ return objective; }
 	
 	
 	VehicleParam( int vehicleId )
