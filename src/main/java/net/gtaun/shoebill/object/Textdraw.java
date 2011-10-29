@@ -19,6 +19,8 @@ package net.gtaun.shoebill.object;
 
 import java.util.Vector;
 
+import net.gtaun.lungfish.data.Color;
+import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.ITextdraw;
 import net.gtaun.shoebill.NativeFunction;
 
@@ -47,10 +49,11 @@ public class Textdraw implements ITextdraw
 	float x, y;
 	String text;
 	
-	public int id()			{ return id; }
-	public float x()		{ return x; }
-	public float y()		{ return y; }
-	public String text()	{ return text; }
+	
+	public int getId()			{ return id; }
+	public float getX()			{ return x; }
+	public float getY()			{ return y; }
+	public String getText()		{ return text; }
 	
 	
 	public Textdraw( float x, float y, String text )
@@ -105,19 +108,19 @@ public class Textdraw implements ITextdraw
 		NativeFunction.textDrawAlignment( id, alignment );
 	}
 	
-	public void setColor( int color )
+	public void setColor( Color color )
 	{
-		NativeFunction.textDrawColor( id, color );
+		NativeFunction.textDrawColor( id, color.getValue() );
 	}
 	
-	public void useBox( boolean use )
+	public void setUseBox( boolean use )
 	{
 		NativeFunction.textDrawUseBox( id, use );
 	}
 	
-	public void setBoxColor( int color )
+	public void setBoxColor( Color color )
 	{
-		NativeFunction.textDrawBoxColor( id, color );
+		NativeFunction.textDrawBoxColor( id, color.getValue() );
 	}
 	
 	public void setShadow( int size )
@@ -130,9 +133,9 @@ public class Textdraw implements ITextdraw
 		NativeFunction.textDrawSetOutline( id, size );
 	}
 	
-	public void setBackgroundColor( int color )
+	public void setBackgroundColor( Color color )
 	{
-		NativeFunction.textDrawBackgroundColor( id, color );
+		NativeFunction.textDrawBackgroundColor( id, color.getValue() );
 	}
 	
 	public void setFont( int font )
@@ -153,14 +156,16 @@ public class Textdraw implements ITextdraw
 		NativeFunction.textDrawSetString( id, text );
 	}
 	
-	public void show( Player player )
+	public void show( IPlayer p )
 	{
+		Player player = (Player) p;
 		NativeFunction.textDrawShowForPlayer( player.id, id );
 		isPlayerShowed[player.id] = true;
 	}
 	
-	public void hide( Player player )
+	public void hide( IPlayer p )
 	{
+		Player player = (Player) p;
 		NativeFunction.textDrawHideForPlayer( player.id, id );
 		isPlayerShowed[player.id] = false;
 	}

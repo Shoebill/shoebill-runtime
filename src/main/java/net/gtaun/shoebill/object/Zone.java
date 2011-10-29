@@ -20,6 +20,8 @@ package net.gtaun.shoebill.object;
 import java.util.Vector;
 
 import net.gtaun.lungfish.data.Area;
+import net.gtaun.lungfish.data.Color;
+import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.IZone;
 import net.gtaun.shoebill.NativeFunction;
 
@@ -48,19 +50,19 @@ public class Zone implements IZone
 	int id;
 	Area area;
 	
-	public int id()				{return this.id;}
-	public Area area()			{return this.area;}
+	public int getId()				{ return id; }
+	public Area getArea()			{ return area.clone(); }
 
 
-	public Zone( float minx, float miny, float maxx, float maxy )
+	public Zone( float minX, float minY, float maxX, float maxY )
 	{
-		this.area = new Area( minx, miny, maxx, maxy );
+		this.area = new Area( minX, minY, maxX, maxY );
 		init();
 	}
 	
 	public Zone( Area area )
 	{
-		this.area = area;
+		this.area = area.clone();
 		init();
 	}
 	
@@ -87,39 +89,46 @@ public class Zone implements IZone
 	}
 	
 	
-	public void show( Player player, int color )
+	public void show( IPlayer p, int color )
 	{
+		Player player = (Player) p;
+		
 		NativeFunction.gangZoneShowForPlayer( player.id, id, color );
 		isPlayerShowed[player.id] = true;
 		isPlayerFlashing[player.id] = false;
 	}
 	
-	public void hide( Player player )
+	public void hide( IPlayer p )
 	{
+		Player player = (Player) p;
+		
 		NativeFunction.gangZoneHideForPlayer( player.id, id );
 		
 		isPlayerShowed[player.id] = false;
 		isPlayerFlashing[player.id] = false;
 	}
 	
-	public void flash( Player player, int color )
+	public void flash( IPlayer p, int color )
 	{
+		Player player = (Player) p;
 		if( isPlayerShowed[player.id] ){
 			NativeFunction.gangZoneFlashForPlayer( player.id, id, color );
 			isPlayerFlashing[player.id] = true;
 		}
 	}
 	
-	public void stopFlash( Player player )
+	public void stopFlash( IPlayer p )
 	{
+		Player player = (Player) p;
+		
 		NativeFunction.gangZoneStopFlashForPlayer( player.id, id );
 		isPlayerFlashing[player.id] = false;
 	}
 	
 
-	public void showForAll( int color )
+	public void showForAll( Color color )
 	{
-		NativeFunction.gangZoneShowForAll( id, color );
+		NativeFunction.gangZoneShowForAll( id, color.getValue() );
 		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
 	}
 	
@@ -134,9 +143,9 @@ public class Zone implements IZone
 		}
 	}
 	
-	public void flashForAll( int color )
+	public void flashForAll( Color color )
 	{
-		NativeFunction.gangZoneFlashForAll( id, color );
+		NativeFunction.gangZoneFlashForAll( id, color.getValue() );
 		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
 	}
 
