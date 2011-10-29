@@ -18,6 +18,7 @@ package net.gtaun.shoebill.object;
 
 import java.util.Vector;
 
+import net.gtaun.lungfish.data.Color;
 import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.data.PointRange;
 import net.gtaun.lungfish.object.IPlayer;
@@ -64,26 +65,26 @@ public class PlayerLabel extends Label implements IPlayerLabel
 	public IPlayer getPlayer()			{ return player; }
 	
 	
-	public PlayerLabel( Player player, String text, int color, Point point, float drawDistance, boolean testLOS )
+	public PlayerLabel( Player player, String text, Color color, Point point, float drawDistance, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.player = player;
 		this.text = text;
-		this.color = color;
+		this.color = color.clone();
 		this.position = new PointRange( point, drawDistance );
 		this.testLOS = testLOS;
 		
 		init();
 	}
 
-	public PlayerLabel( Player player, String text, int color, Point point, float drawDistance, boolean testLOS, Player attachedPlayer )
+	public PlayerLabel( Player player, String text, Color color, Point point, float drawDistance, boolean testLOS, Player attachedPlayer )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.player = player;
 		this.text = text;
-		this.color = color;
+		this.color = color.clone();
 		this.position = new PointRange( point, drawDistance );
 		this.testLOS = testLOS;
 		this.attachedPlayer = attachedPlayer;
@@ -91,13 +92,13 @@ public class PlayerLabel extends Label implements IPlayerLabel
 		init();
 	}
 	
-	public PlayerLabel( Player player, String text, int color, Point point, float drawDistance, boolean testLOS, Vehicle attachedVehicle )
+	public PlayerLabel( Player player, String text, Color color, Point point, float drawDistance, boolean testLOS, Vehicle attachedVehicle )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.player = player;
 		this.text = text;
-		this.color = color;
+		this.color = color.clone();
 		this.position = new PointRange( point, drawDistance );
 		this.testLOS = testLOS;
 		this.attachedVehicle = attachedVehicle;
@@ -105,26 +106,26 @@ public class PlayerLabel extends Label implements IPlayerLabel
 		init();
 	}
 
-	public PlayerLabel( Player player, String text, int color, PointRange point, boolean testLOS )
+	public PlayerLabel( Player player, String text, Color color, PointRange point, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.player = player;
 		this.text = text;
-		this.color = color;
+		this.color = color.clone();
 		this.position = point.clone();
 		this.testLOS = testLOS;
 		
 		init();
 	}
 	
-	public PlayerLabel( Player player, String text, int color, PointRange point, boolean testLOS, Player attachedPlayer )
+	public PlayerLabel( Player player, String text, Color color, PointRange point, boolean testLOS, Player attachedPlayer )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.player = player;
 		this.text = text;
-		this.color = color;
+		this.color = color.clone();
 		this.position = point.clone();
 		this.testLOS = testLOS;
 		this.attachedPlayer = attachedPlayer;
@@ -132,13 +133,13 @@ public class PlayerLabel extends Label implements IPlayerLabel
 		init();
 	}
 	
-	public PlayerLabel( Player player, String text, int color, PointRange point, boolean testLOS, Vehicle attachedVehicle )
+	public PlayerLabel( Player player, String text, Color color, PointRange point, boolean testLOS, Vehicle attachedVehicle )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.player = player;
 		this.text = text;
-		this.color = color;
+		this.color = color.clone();
 		this.position = point.clone();
 		this.testLOS = testLOS;
 		this.attachedVehicle = attachedVehicle;
@@ -160,7 +161,7 @@ public class PlayerLabel extends Label implements IPlayerLabel
 			offsetZ = position.z;
 		}
 		
-		id = NativeFunction.createPlayer3DTextLabel( player.id, text, color,
+		id = NativeFunction.createPlayer3DTextLabel( player.id, text, color.getValue(),
 				position.x, position.y, position.z, position.distance, playerId, vehicleId, testLOS );
 		
 		Gamemode.instance.playerLabelPool[id+player.id*Gamemode.MAX_LABELS_PLAYER] = this;
@@ -177,22 +178,22 @@ public class PlayerLabel extends Label implements IPlayerLabel
 	public void attach( Player player, float x, float y, float z )
 	{
 		NativeFunction.deletePlayer3DTextLabel( this.player.id, id );
-		id = NativeFunction.createPlayer3DTextLabel( this.player.id, text, color, x, y, z, position.distance,
+		id = NativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance,
 				player.id, Gamemode.INVALID_VEHICLE_ID, testLOS );
 	}
 
 	public void attach( Vehicle vehicle, float x, float y, float z )
 	{
 		NativeFunction.deletePlayer3DTextLabel( this.player.id, id );
-		id = NativeFunction.createPlayer3DTextLabel( this.player.id, text, color, x, y, z, position.distance,
+		id = NativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance,
 				Gamemode.INVALID_PLAYER_ID, vehicle.id, testLOS );
 	}
 	
-	public void update( int color, String text )
+	public void update( Color color, String text )
 	{
-		this.color = color;
+		this.color = color.clone();
 		this.text = text;
 		
-		NativeFunction.updatePlayer3DTextLabelText( player.id, id, color, text );
+		NativeFunction.updatePlayer3DTextLabelText( player.id, id, color.getValue(), text );
 	}
 }

@@ -18,6 +18,7 @@ package net.gtaun.shoebill.object;
 
 import java.util.Vector;
 
+import net.gtaun.lungfish.data.Color;
 import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.data.PointAngle;
 import net.gtaun.lungfish.data.PointRange;
@@ -46,7 +47,7 @@ public class Label implements ILabel
 	
 	int id;
 	String text;
-	int color;
+	Color color;
 	PointRange position;
 	boolean testLOS;
 	
@@ -56,7 +57,7 @@ public class Label implements ILabel
 
 	public int getId()							{ return id; }
 	public String getText()						{ return text; }
-	public int getColor()						{ return color; }
+	public Color getColor()						{ return color.clone(); }
 	
 	public IPlayer getAttachedPlayer()			{ return attachedPlayer; }
 	public IVehicle getAttachedVehicle()		{ return attachedVehicle; }
@@ -67,24 +68,24 @@ public class Label implements ILabel
 		
 	}
 	
-	public Label( String text, int color, Point point, float drawDistance, boolean testLOS )
+	public Label( String text, Color color, Point point, float drawDistance, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.text = text;
-		this.color = color;
+		this.color = color.clone();
 		this.position = new PointRange( point, drawDistance );
 		this.testLOS = testLOS;
 		
 		init();
 	}
 	
-	public Label( String text, int color, PointRange point, boolean testLOS )
+	public Label( String text, Color color, PointRange point, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.text = text;
-		this.color = color;
+		this.color = color.clone();
 		this.position = point.clone();
 		this.testLOS = testLOS;
 		
@@ -93,7 +94,7 @@ public class Label implements ILabel
 	
 	private void init()
 	{
-		id = NativeFunction.create3DTextLabel( text, color,
+		id = NativeFunction.create3DTextLabel( text, color.getValue(),
 				position.x, position.y, position.z, position.distance, position.world, testLOS );
 		
 		Gamemode.instance.labelPool[id] = this;
@@ -148,13 +149,13 @@ public class Label implements ILabel
 		attachedVehicle = vehicle;
 	}
 	
-	public void update( int color, String text )
+	public void update( Color color, String text )
 	{
 		if( text == null ) throw new NullPointerException();
 		
-		this.color = color;
+		this.color = color.clone();
 		this.text = text;
 		
-		NativeFunction.update3DTextLabelText( id, color, text );
+		NativeFunction.update3DTextLabelText( id, color.getValue(), text );
 	}
 }

@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import net.gtaun.lungfish.data.Area;
+import net.gtaun.lungfish.data.Color;
 import net.gtaun.lungfish.data.KeyState;
 import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.data.PointAngle;
@@ -158,7 +159,7 @@ public class Player implements IPlayer
 		NativeFunction.allowAdminTeleport(allow);
 	}
 
-	public static void sendMessageToAll( int color, String message )
+	public static void sendMessageToAll( Color color, String message )
 	{
 		Vector<Player> players = get(Player.class);
 		Iterator<Player> iterator = players.iterator();
@@ -169,7 +170,7 @@ public class Player implements IPlayer
 		}
 	}
 	
-	public static void sendMessageToAll( int color, String format, Object... args )
+	public static void sendMessageToAll( Color color, String format, Object... args )
 	{
 		Vector<Player> players = get(Player.class);
 		Iterator<Player> iterator = players.iterator();
@@ -199,7 +200,7 @@ public class Player implements IPlayer
 	String ip;
 	String name;
 	SpawnInfo spawnInfo = new SpawnInfo();
-	int color;
+	Color color;
 	
 	boolean controllable = true;
 	boolean isStuntBonusEnabled = false;
@@ -239,7 +240,7 @@ public class Player implements IPlayer
 	public String getIp()							{ return ip; }
 	public String getName()							{ return name; }
 	public SpawnInfo getSpawnInfo()					{ return spawnInfo.clone(); }
-	public int getColor()							{ return color; }
+	public Color getColor()							{ return color; }
 
 	public int getUpdateTick()						{ return updateTick; }
 	public float getHealth()						{ return health; }
@@ -283,7 +284,7 @@ public class Player implements IPlayer
 		team = NativeFunction.getPlayerTeam(id);
 		skin = NativeFunction.getPlayerSkin(id);
 		name = NativeFunction.getPlayerName(id);
-		color = NativeFunction.getPlayerColor(id);
+		color = new Color( NativeFunction.getPlayerColor(id) );
 		
 		health = NativeFunction.getPlayerHealth(id);
 		armour = NativeFunction.getPlayerArmour(id);
@@ -360,10 +361,10 @@ public class Player implements IPlayer
 		spawnInfo = info;
 	}
 	
-	public void setColor( int color )
+	public void setColor( Color color )
 	{
-		NativeFunction.setPlayerColor( id, color );
-		this.color = color;
+		this.color = color.clone();
+		NativeFunction.setPlayerColor( id, color.getValue() );
 	}
 
 	public void setHealth( float health )
@@ -529,16 +530,16 @@ public class Player implements IPlayer
 	
 //---------------------------------------------------------
 
-	public void sendMessage( int color, String message )
+	public void sendMessage( Color color, String message )
 	{
 		if( message == null ) throw new NullPointerException();
-		NativeFunction.sendClientMessage( id, color, message );
+		NativeFunction.sendClientMessage( id, color.getValue(), message );
 	}
 	
-	public void sendMessage( int color, String format, Object... args )
+	public void sendMessage( Color color, String format, Object... args )
 	{
 		String message = String.format(format, args);
-		NativeFunction.sendClientMessage( id, color, message );
+		NativeFunction.sendClientMessage( id, color.getValue(), message );
 	}
 	
 	public void sendChat( IPlayer p, String message )
@@ -630,10 +631,10 @@ public class Player implements IPlayer
 		NativeFunction.playerPlaySound( id, sound, point.x, point.y, point.z );
 	}
 	
-	public void markerForPlayer( IPlayer p, int color )
+	public void markerForPlayer( IPlayer p, Color color )
 	{
 		Player player = (Player) p;
-		NativeFunction.setPlayerMarkerForPlayer( id, player.id, color );
+		NativeFunction.setPlayerMarkerForPlayer( id, player.id, color.getValue() );
 	}
 	
 	public void showNameTagForPlayer( IPlayer p, boolean show )
@@ -840,9 +841,9 @@ public class Player implements IPlayer
 		NativeFunction.setPlayerSpecialAction( id, action );
 	}
 	
-	public void setMapIcon( int iconid, Point point, int markertype, int color, int style )
+	public void setMapIcon( int iconid, Point point, int markertype, Color color, int style )
 	{
-		NativeFunction.setPlayerMapIcon( id, iconid, point.x, point.y, point.z, markertype, color, style );
+		NativeFunction.setPlayerMapIcon( id, iconid, point.x, point.y, point.z, markertype, color.getValue(), style );
 	}
 	
 	public void removeMapIcon( int iconid )
