@@ -38,16 +38,20 @@ public final class NativeFunction
 		System.loadLibrary( "Shoebill" );
 	}
 	
-	
+
+
 //----------------------------------------------------------
-// a_samp.inc
+// Custom
 	
-	// Basic
 	public static native void setServerCodepage( int Codepage );
 	public static native int getServerCodepage();
 	
 	public static native void setPlayerCodepage( int playerid, int Codepage );
 	public static native int getPlayerCodepage( int playerid );
+	
+	
+//----------------------------------------------------------
+// a_samp.inc
 	
 	// Util
 	public static native void sendClientMessage( int playerid, int color, String message );
@@ -169,6 +173,8 @@ public final class NativeFunction
 	
 //----------------------------------------------------------
 // a_players.inc
+
+	// Player
 	public static native void setSpawnInfo( int playerid, int teamid, int skinid, float x, float y, float z, float rotation, int weapon1, int weapon1_ammo, int weapon2, int weapon2_ammo, int weapon3, int weapon3_ammo );
 	public static native void spawnPlayer( int playerid );
 
@@ -230,11 +236,26 @@ public final class NativeFunction
 	public static native void setPlayerSkillLevel( int playerid, int skill, int level );
 	public static native int getPlayerSurfingVehicleID( int playerid );
 	public static native int getPlayerSurfingObjectID( int playerid ); //0.3c r3
-	
+
+	// Attached to bone objects
 	public static native boolean setPlayerAttachedObject( int playerid, int index, int modelid, int bone, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ );
 	public static native boolean removePlayerAttachedObject( int playerid, int index );
 	public static native boolean isPlayerAttachedObjectSlotUsed( int playerid, int index );
+
+	// Per-player variable system (PVars)
+	public static native void setPVarInt( int playerid, String varname, int int_value );
+	public static native int getPVarInt( int playerid, String varname );
+	public static native void setPVarString( int playerid, String varname, String string_value );
+	public static native String getPVarString( int playerid, String varname );
+	public static native void setPVarFloat( int playerid, String varname, float float_value );
+	public static native float getPVarFloat( int playerid, String varname );
+	public static native int deletePVar( int playerid, String varname );
 	
+	public static native int getPVarsUpperIndex( int playerid );
+	public static native String getPVarNameAtIndex( int playerid, int index );
+	public static native int getPVarType( int playerid, String varname );
+	
+	// Chat Bubble
 	public static native void setPlayerChatBubble( int playerid, String text, int color, float drawdistance, int expiretime );
 
 	// Player controls
@@ -251,7 +272,7 @@ public final class NativeFunction
 	public static native int getPlayerSpecialAction( int playerid );
 	public static native void setPlayerSpecialAction( int playerid, int actionid );
 
-	// Player map commands
+	// Player world/map related
 	public static native void setPlayerCheckpoint( int playerid, float x, float y, float z, float size );
 	public static native void disablePlayerCheckpoint( int playerid );
 	public static native void setPlayerRaceCheckpoint( int playerid, int type, float x, float y, float z, float nextX, float nextY, float nextZ, float size );
@@ -259,8 +280,10 @@ public final class NativeFunction
 	public static native void setPlayerWorldBounds( int playerid, float x_max, float x_min, float y_max, float y_min );
 	public static native void setPlayerMarkerForPlayer( int playerid, int showplayerid, int color );
 	public static native void showPlayerNameTagForPlayer( int playerid, int showplayerid, boolean show );
+	
 	public static native void setPlayerMapIcon( int playerid, int iconid, float x, float y, float z, int markertype, int color, int style );
 	public static native void removePlayerMapIcon( int playerid, int iconid );
+	
 	public static native void allowPlayerTeleport( int playerid, boolean allow );
 
 	// Player camera
@@ -291,13 +314,15 @@ public final class NativeFunction
 	public static native void playerSpectatePlayer( int playerid, int targetplayerid, int mode );
 	public static native void playerSpectateVehicle( int playerid, int targetvehicleid, int mode );
 
-	// Npc Record
+	// Recording for NPC playback
 	public static native void startRecordingPlayerData( int playerid, int recordtype, String recordname );
 	public static native void stopRecordingPlayerData( int playerid );
 	
 	
 //----------------------------------------------------------
 // a_vehicles.inc
+
+	// Vehicle
 	public static native int createVehicle( int model, float x, float y, float z, float rotation, int color1, int color2, int respawnDelay );
 	public static native void destroyVehicle( int vehicleid );
 	public static native boolean isVehicleStreamedIn( int vehicleid, int forplayerid );
@@ -341,6 +366,7 @@ public final class NativeFunction
 	
 //----------------------------------------------------------
 // a_objects.inc
+	
 	public static native int createObject( int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance );
 	public static native void attachObjectToVehicle( int objectid, int vehicleid, float x, float y, float z, float rX, float rY, float rZ );
 	public static native void setObjectPos( int objectid, float x, float y, float z );
