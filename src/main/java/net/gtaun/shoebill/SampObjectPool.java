@@ -34,7 +34,7 @@ import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.Zone;
 
-public class ObjectPool implements IObjectPool
+public class SampObjectPool implements IObjectPool
 {
 	public static final int MAX_PLAYER_NAME =			24;
 	public static final int MAX_PLAYERS =				500;
