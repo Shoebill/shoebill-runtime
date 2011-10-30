@@ -50,10 +50,10 @@ public class Textdraw implements ITextdraw
 	String text;
 	
 	
-	public int getId()			{ return id; }
-	public float getX()			{ return x; }
-	public float getY()			{ return y; }
-	public String getText()		{ return text; }
+	@Override public int getId()			{ return id; }
+	@Override public float getX()			{ return x; }
+	@Override public float getY()			{ return y; }
+	@Override public String getText()		{ return text; }
 	
 	
 	public Textdraw( float x, float y, String text )
@@ -86,68 +86,81 @@ public class Textdraw implements ITextdraw
 	
 	
 //---------------------------------------------------------
-	
+
+	@Override
 	public void destroy()
 	{
 		NativeFunction.textDrawDestroy( id );
 		Gamemode.instance.textdrawPool[id] = null;
 	}
-	
+
+	@Override
 	public void setLetterSize( float x, float y )
 	{
 		NativeFunction.textDrawLetterSize( id, x, y );
 	}
-	
+
+	@Override
 	public void setTextSize( float x, float y )
 	{
 		NativeFunction.textDrawTextSize( id, x, y );
 	}
-	
+
+	@Override
 	public void setAlignment( int alignment )
 	{
 		NativeFunction.textDrawAlignment( id, alignment );
 	}
-	
+
+	@Override
 	public void setColor( Color color )
 	{
 		NativeFunction.textDrawColor( id, color.getValue() );
 	}
-	
+
+	@Override
 	public void setUseBox( boolean use )
 	{
 		NativeFunction.textDrawUseBox( id, use );
 	}
-	
+
+	@Override
 	public void setBoxColor( Color color )
 	{
 		NativeFunction.textDrawBoxColor( id, color.getValue() );
 	}
-	
+
+	@Override
 	public void setShadow( int size )
 	{
 		NativeFunction.textDrawSetShadow( id, size );
 	}
-	
+
+	@Override
 	public void setOutline( int size )
 	{
 		NativeFunction.textDrawSetOutline( id, size );
 	}
-	
+
+	@Override
 	public void setBackgroundColor( Color color )
 	{
 		NativeFunction.textDrawBackgroundColor( id, color.getValue() );
 	}
-	
+
+	@Override
 	public void setFont( int font )
 	{
 		NativeFunction.textDrawFont( id, font );
 	}
-	
+
+	@Override
 	public void setProportional( int set )
 	{
 		NativeFunction.textDrawSetProportional( id, set );
 	}
-	
+
+	@Override
 	public void setText( String text )
 	{
 		if( text == null ) throw new NullPointerException();
@@ -155,27 +168,31 @@ public class Textdraw implements ITextdraw
 		this.text = text;
 		NativeFunction.textDrawSetString( id, text );
 	}
-	
+
+	@Override
 	public void show( IPlayer p )
 	{
 		Player player = (Player) p;
 		NativeFunction.textDrawShowForPlayer( player.id, id );
 		isPlayerShowed[player.id] = true;
 	}
-	
+
+	@Override
 	public void hide( IPlayer p )
 	{
 		Player player = (Player) p;
 		NativeFunction.textDrawHideForPlayer( player.id, id );
 		isPlayerShowed[player.id] = false;
 	}
-	
+
+	@Override
 	public void showForAll()
 	{
 		NativeFunction.textDrawShowForAll( id );
 		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
 	}
-	
+
+	@Override
 	public void hideForAll()
 	{
 		NativeFunction.textDrawHideForAll( id );

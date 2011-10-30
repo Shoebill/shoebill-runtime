@@ -56,13 +56,13 @@ public class ObjectBase implements IObject
 	float drawDistance = 0;
 	
 	
-	public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
 	
-	public int getModel()							{ return model; }
-	public float getSpeed()							{ return speed; }
-	public Player getAttachedPlayer()				{ return attachedPlayer; }
-	public Vehicle getAttachedVehicle()				{ return attachedVehicle; }
-	public float getDrawDistance()					{ return drawDistance; }
+	@Override public int getModel()							{ return model; }
+	@Override public float getSpeed()							{ return speed; }
+	@Override public Player getAttachedPlayer()				{ return attachedPlayer; }
+	@Override public Vehicle getAttachedVehicle()				{ return attachedVehicle; }
+	@Override public float getDrawDistance()					{ return drawDistance; }
 	
 	
 	ObjectBase()
@@ -130,12 +130,14 @@ public class ObjectBase implements IObject
 
 //---------------------------------------------------------
 
+	@Override
 	public void destroy()
 	{
 		NativeFunction.destroyObject( id );
 		Gamemode.instance.objectPool[ id ] = null;
 	}
 	
+	@Override
 	public PointRot getPosition()
 	{
 		NativeFunction.getObjectPos( id, position );
@@ -143,12 +145,14 @@ public class ObjectBase implements IObject
 		return position.clone();
 	}
 	
+	@Override
 	public void setPosition( Point position )
 	{
 		this.position.set( position );
 		NativeFunction.setObjectPos( id, position.x, position.y, position.z );
 	}
 	
+	@Override
 	public void setPosition( PointRot position )
 	{
 		this.position = position.clone();
@@ -156,6 +160,7 @@ public class ObjectBase implements IObject
 		NativeFunction.setObjectRot( id, position.rx, position.ry, position.rz );
 	}
 	
+	@Override
 	public void setRotate( float rx, float ry, float rz )
 	{
 		position.rx = rx;
@@ -165,18 +170,21 @@ public class ObjectBase implements IObject
 		NativeFunction.setObjectRot( id, rx, ry, rz );
 	}
 	
+	@Override
 	public int move( float x, float y, float z, float speed )
 	{
 		if(attachedPlayer == null && attachedVehicle == null) this.speed = speed;
 		return NativeFunction.moveObject( id, x, y, z, speed );
 	}
 	
+	@Override
 	public void stop()
 	{
 		speed = 0;
 		NativeFunction.stopObject( id );
 	}
 	
+	@Override
 	public void attach( IPlayer p, float x, float y, float z, float rx, float ry, float rz )
 	{
 		Player player = (Player)p;
@@ -186,6 +194,7 @@ public class ObjectBase implements IObject
 		speed = 0;
 	}
 	
+	@Override
 	public void attach( IVehicle v, float x, float y, float z, float rx, float ry, float rz )
 	{
 		Vehicle vehicle = (Vehicle)v;

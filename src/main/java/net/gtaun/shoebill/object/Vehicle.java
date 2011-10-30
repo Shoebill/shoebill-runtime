@@ -80,18 +80,18 @@ public class Vehicle implements IVehicle
 	VehicleDamage damage;
 
 	
-	public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
 	
-	public boolean isStatic()						{ return isStatic; }
-	public boolean isDestroyed()					{ return isDestroyed; }
+	@Override public boolean isStatic()						{ return isStatic; }
+	@Override public boolean isDestroyed()					{ return isDestroyed; }
 	
-	public int getModel()							{ return model; }
-	public int getColor1()							{ return color1; }
-	public int getColor2()							{ return color2; }
-	public int getRespawnDelay()					{ return respawnDelay; }
+	@Override public int getModel()							{ return model; }
+	@Override public int getColor1()							{ return color1; }
+	@Override public int getColor2()							{ return color2; }
+	@Override public int getRespawnDelay()					{ return respawnDelay; }
 
-	public IVehicleParam getState()					{ return param; }
-	public IVehicleComponent getComponent()			{ return component; }
+	@Override public IVehicleParam getState()					{ return param; }
+	@Override public IVehicleComponent getComponent()			{ return component; }
 	
 	
 	public Vehicle( int model, float x, float y, float z, int interior, int world, float angle, int color1, int color2, int respawnDelay )
@@ -165,6 +165,7 @@ public class Vehicle implements IVehicle
 	
 //---------------------------------------------------------
 	
+	@Override
 	public void destroy()
 	{
 		if( isStatic ) return;
@@ -179,11 +180,13 @@ public class Vehicle implements IVehicle
 	}
 	
 	
+	@Override
 	public Vehicle getTrailer()
 	{
 		return get( Vehicle.class, NativeFunction.getVehicleTrailer(id) );
 	}
 	
+	@Override
 	public PointAngle getPosition()
 	{
 		PointAngle position = new PointAngle();
@@ -196,26 +199,31 @@ public class Vehicle implements IVehicle
 		return position;
 	}
 	
+	@Override
 	public float getAngle()
 	{
 		return NativeFunction.getVehicleZAngle(id);
 	}
 	
+	@Override
 	public int getInterior()
 	{
 		return interior;
 	}
 	
+	@Override
 	public int getWorld()
 	{
 		return NativeFunction.getVehicleVirtualWorld(id);
 	}
 	
+	@Override
 	public float getHealth()
 	{
 		return NativeFunction.getVehicleHealth(id);
 	}
 
+	@Override
 	public Velocity getVelocity()
 	{
 		Velocity velocity = new Velocity();
@@ -224,6 +232,7 @@ public class Vehicle implements IVehicle
 		return velocity;
 	}
 	
+	@Override
 	public Quaternions getRotationQuat()
 	{
 		Quaternions quaternions = new Quaternions();
@@ -233,11 +242,13 @@ public class Vehicle implements IVehicle
 	}
 	
 
+	@Override
 	public void setPosition( float x, float y, float z )
 	{
 		NativeFunction.setVehiclePos( id, x, y, z );
 	}
 	
+	@Override
 	public void setPosition( Point point )
 	{
 		NativeFunction.setVehiclePos( id, point.x, point.y, point.z );
@@ -245,6 +256,7 @@ public class Vehicle implements IVehicle
 		NativeFunction.setVehicleVirtualWorld( id, point.world );
 	}
 	
+	@Override
 	public void setPosition( PointAngle point )
 	{
 		NativeFunction.setVehiclePos( id, point.x, point.y, point.z );
@@ -253,104 +265,123 @@ public class Vehicle implements IVehicle
 		NativeFunction.setVehicleVirtualWorld( id, point.world );
 	}
 	
+	@Override
 	public void setHealth( float health )
 	{
 		NativeFunction.setVehicleHealth( id, health );
 	}
 	
+	@Override
 	public void setVelocity( Velocity velocity )
 	{
 		NativeFunction.setVehicleVelocity( id, velocity.x, velocity.y, velocity.z );
 	}
 	
+	@Override
 	public void setAngle( float angle )
 	{
 		NativeFunction.setVehicleZAngle( id, angle );
 	}
 	
+	@Override
 	public void setInterior( int interior )
 	{
 		this.interior = interior;
 		NativeFunction.linkVehicleToInterior( id, interior );
 	}
 	
+	@Override
 	public void setWorld( int world )
 	{
 		NativeFunction.setVehicleVirtualWorld( id, world );
 	}
 
 	
+	@Override
 	public void putPlayer( IPlayer p, int seat )
 	{
 		Player player = (Player) p;
 		NativeFunction.putPlayerInVehicle( player.id, id, seat );
 	}
 	
+	@Override
 	public boolean isPlayerIn( IPlayer p )
 	{
 		Player player = (Player) p;
 		return NativeFunction.isPlayerInVehicle(player.id, id);
 	}
 	
+	@Override
 	public boolean isStreamedIn( IPlayer fp )
 	{
 		Player forplayer = (Player) fp;
 		return NativeFunction.isVehicleStreamedIn(id, forplayer.id);
 	}
 	
+	@Override
 	public void setParamsForPlayer( IPlayer p, boolean objective, boolean doorslocked )
 	{
 		Player player = (Player) p;
 		NativeFunction.setVehicleParamsForPlayer( id, player.id, objective, doorslocked );
 	}
 	
+	@Override
 	public void respawn()
 	{
 		NativeFunction.setVehicleToRespawn( id );
 	}
 	
+	@Override
 	public void setColor( int color1, int color2 )
 	{
 		NativeFunction.changeVehicleColor( id, color1, color2 );
 	}
 	
+	@Override
 	public void setPaintjob( int paintjobid )
 	{
 		NativeFunction.changeVehiclePaintjob( id, paintjobid );
 	}
 	
+	@Override
 	public void attachTrailer( IVehicle t )
 	{
 		Vehicle trailer = (Vehicle) t;
 		NativeFunction.attachTrailerToVehicle( trailer.id, id );
 	}
 	
+	@Override
 	public void detachTrailer()
 	{
 		NativeFunction.detachTrailerFromVehicle( id );
 	}
 	
+	@Override
 	public boolean isTrailerAttached()
 	{
 		return NativeFunction.isTrailerAttachedToVehicle(id);
 	}
 	
+	@Override
 	public void setNumberPlate( String numberplate )
 	{
 		if( numberplate == null ) throw new NullPointerException();
 		NativeFunction.setVehicleNumberPlate( id, numberplate );
 	}
 	
+	@Override
 	public void repair()
 	{
 		NativeFunction.repairVehicle( id );
 	}
 	
+	@Override
 	public void setAngularVelocity( Velocity velocity )
 	{
 		NativeFunction.setVehicleAngularVelocity( id, velocity.x, velocity.y, velocity.z );
 	}
 	
+	@Override
 	public float distanceToPoint( Point point )
 	{
 		return NativeFunction.getVehicleDistanceFromPoint(id, point.x, point.y, point.z);

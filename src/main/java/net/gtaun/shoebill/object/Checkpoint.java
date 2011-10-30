@@ -42,9 +42,9 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 	float size;
 	
 	
-	public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
 	
-	public float getSize()							{ return size; }
+	@Override public float getSize()							{ return size; }
 
 	
 	public Checkpoint( float x, float y, float z, float size )
@@ -62,6 +62,7 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 
 //---------------------------------------------------------
 	
+	@Override
 	public void set( IPlayer p )
 	{
 		Player player = (Player)p;
@@ -70,6 +71,7 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 		player.checkpoint = this;
 	}
 	
+	@Override
 	public void disable( IPlayer p )
 	{
 		Player player = (Player)p;
@@ -79,6 +81,7 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 		player.checkpoint = null;
 	}
 	
+	@Override
 	public boolean isInCheckpoint( IPlayer p )
 	{
 		Player player = (Player)p;
@@ -87,17 +90,18 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 		return NativeFunction.isPlayerInCheckpoint(player.id);
 	}
 	
+	@Override
 	public void update()
 	{
-		for (int i = 0; i < Gamemode.instance.playerPool.length; i++)
+		for( Player player : Gamemode.instance.playerPool )
 		{
-			Player player = Gamemode.instance.playerPool[i];
 			if( player == null ) continue;
 			
 			if( player.checkpoint == this ) set( player );
 		}
 	}
 	
+	@Override
 	public Vector<IPlayer> getUsingPlayers()
 	{
 		Vector<IPlayer> players = new Vector<IPlayer>();

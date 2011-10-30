@@ -46,9 +46,9 @@ public class Dialog implements IDialog
 	int id, style;
 
 	
-	public IEventDispatcher getEventDispatcher()	{ return getEventDispatcher(); }
+	@Override public IEventDispatcher getEventDispatcher()	{ return getEventDispatcher(); }
 	
-	public int getStyle()							{ return style; }
+	@Override public int getStyle()							{ return style; }
 	
 
 //---------------------------------------------------------
@@ -70,6 +70,7 @@ public class Dialog implements IDialog
 	
 //---------------------------------------------------------
 	
+	@Override
 	public void show( IPlayer p, String caption, String text, String button1, String button2 )
 	{
 		Player player = (Player) p;
@@ -81,6 +82,7 @@ public class Dialog implements IDialog
 		NativeFunction.showPlayerDialog( player.id, id, style, caption, text, button1, button2 );
 	}
 	
+	@Override
 	public void cancel( IPlayer p )
 	{
 		Player player = (Player) p;

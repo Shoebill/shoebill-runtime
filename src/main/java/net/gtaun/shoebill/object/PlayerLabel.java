@@ -23,6 +23,7 @@ import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.data.PointRange;
 import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.IPlayerLabel;
+import net.gtaun.lungfish.object.IVehicle;
 import net.gtaun.shoebill.NativeFunction;
 
 /**
@@ -62,7 +63,7 @@ public class PlayerLabel extends Label implements IPlayerLabel
 	
 	Player player;
 	
-	public IPlayer getPlayer()			{ return player; }
+	@Override public IPlayer getPlayer()			{ return player; }
 	
 	
 	public PlayerLabel( Player player, String text, Color color, Point point, float drawDistance, boolean testLOS )
@@ -169,26 +170,34 @@ public class PlayerLabel extends Label implements IPlayerLabel
 	
 //---------------------------------------------------------
 	
+	@Override
 	public void destroy()
 	{
 		NativeFunction.deletePlayer3DTextLabel( player.id, id );
 		Gamemode.instance.playerLabelPool[id+player.id*Gamemode.MAX_LABELS_PLAYER] = null;
 	}
 
-	public void attach( Player player, float x, float y, float z )
+	@Override
+	public void attach( IPlayer p, float x, float y, float z )
 	{
+		Player player = (Player) p;
+		
 		NativeFunction.deletePlayer3DTextLabel( this.player.id, id );
 		id = NativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance,
 				player.id, Gamemode.INVALID_VEHICLE_ID, testLOS );
 	}
 
-	public void attach( Vehicle vehicle, float x, float y, float z )
+	@Override
+	public void attach( IVehicle v, float x, float y, float z )
 	{
+		Vehicle vehicle = (Vehicle) v;
+		
 		NativeFunction.deletePlayer3DTextLabel( this.player.id, id );
 		id = NativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance,
 				Gamemode.INVALID_PLAYER_ID, vehicle.id, testLOS );
 	}
 	
+	@Override
 	public void update( Color color, String text )
 	{
 		this.color = color.clone();

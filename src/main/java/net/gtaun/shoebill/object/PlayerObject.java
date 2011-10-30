@@ -61,7 +61,7 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 	
 	Player player;
 	
-	public IPlayer getPlayer()		{ return player; }
+	@Override public IPlayer getPlayer()		{ return player; }
 	
 	
 	public PlayerObject( Player player, int model, float x, float y, float z, float rx, float ry, float rz )
@@ -131,12 +131,14 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 
 //---------------------------------------------------------
 
+	@Override
 	public void destroy()
 	{
 		NativeFunction.destroyObject( id );
 		Gamemode.instance.playerObjectPool[ id + player.id*Gamemode.MAX_OBJECTS ] = null;
 	}
 	
+	@Override
 	public PointRot getPosition()
 	{	
 		NativeFunction.getPlayerObjectPos( player.id, id, position );
@@ -144,12 +146,14 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 		return position.clone();
 	}
 	
+	@Override
 	public void setPosition( Point position )
 	{
 		this.position.set( position );
 		NativeFunction.setPlayerObjectPos( player.id, id, position.x, position.y, position.z );
 	}
 	
+	@Override
 	public void setPosition( PointRot position )
 	{
 		this.position = position.clone();
@@ -157,6 +161,7 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 		NativeFunction.setPlayerObjectRot( player.id, id, position.rx, position.ry, position.rz );
 	}
 	
+	@Override
 	public void setRotate( float rx, float ry, float rz )
 	{
 		position.rx = rx;
@@ -166,6 +171,7 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 		NativeFunction.setPlayerObjectRot( player.id, id, rx, ry, rz );
 	}
 	
+	@Override
 	public int move( float x, float y, float z, float speed )
 	{
 		NativeFunction.movePlayerObject( player.id, id, x, y, z, speed );
@@ -173,6 +179,7 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 		return 0;
 	}
 	
+	@Override
 	public void stop()
 	{
 		speed = 0;

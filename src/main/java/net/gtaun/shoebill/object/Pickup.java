@@ -50,12 +50,12 @@ public class Pickup implements IPickup
 	Point position;
 
 	
-	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	public int getModel()								{ return model; }
-	public int getType()								{ return type; }
-	public int getWorld()								{ return world; }
-	public Point getPosition()							{ return position.clone(); }
+	@Override public int getModel()								{ return model; }
+	@Override public int getType()								{ return type; }
+	@Override public int getWorld()								{ return world; }
+	@Override public Point getPosition()							{ return position.clone(); }
 	
 	
 	
@@ -98,6 +98,7 @@ public class Pickup implements IPickup
 	
 //---------------------------------------------------------
 	
+	@Override
 	public void destroy()
 	{
 		NativeFunction.destroyPickup( id );

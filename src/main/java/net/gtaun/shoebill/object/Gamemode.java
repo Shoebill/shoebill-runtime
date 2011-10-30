@@ -115,10 +115,10 @@ public abstract class Gamemode implements IGamemode
 	{
 		Vector<T> list = new Vector<T>();
 		
-		for( int i=0; i<items.length; i++ )
+		for( Object item : items )
 		{
-			if( items[i] != null && cls.isInstance(items[i]) )
-				list.add( cls.cast(items[i]) );
+			if( item != null && cls.isInstance(item) )
+				list.add( cls.cast(item) );
 		}
 		
 		return list;		
@@ -172,12 +172,12 @@ public abstract class Gamemode implements IGamemode
 	float playerMarkerRadius = -1;
 	
 	
-	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	public int getDeathDropAmount()						{ return deathDropAmount; }
-	public float getNameTagDrawDistance()				{ return nameTagDrawDistance; }
-	public float getChatRadius()						{ return chatRadius; }
-	public float getPlayerMarkerRadius()				{ return playerMarkerRadius;}
+	@Override public int getDeathDropAmount()						{ return deathDropAmount; }
+	@Override public float getNameTagDrawDistance()				{ return nameTagDrawDistance; }
+	@Override public float getChatRadius()						{ return chatRadius; }
+	@Override public float getPlayerMarkerRadius()				{ return playerMarkerRadius;}
 	
 
 	protected Gamemode()
@@ -227,27 +227,32 @@ public abstract class Gamemode implements IGamemode
 		return NativeFunction.getServerCodepage();
 	}
 	
+	@Override
 	public void setServerCodepage( int codepage )
 	{
 		NativeFunction.setServerCodepage( codepage );
 	}
 	
+	@Override
 	public void setGameModeText( String string )
 	{
 		if( string == null ) throw new NullPointerException();
 		NativeFunction.setGameModeText( string );
 	}
 	
+	@Override
 	public void setTeamCount( int count )
 	{
 		NativeFunction.setTeamCount( count );
 	}
 
+	@Override
 	public int addPlayerClass( int model, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 )
 	{
 		return NativeFunction.addPlayerClass( model, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3 );
 	}
 
+	@Override
 	public int addPlayerClass( int model, SpawnInfo spawninfo )
 	{
 		return NativeFunction.addPlayerClass( model, 
@@ -256,6 +261,7 @@ public abstract class Gamemode implements IGamemode
 			spawninfo.weapon3.id, spawninfo.weapon3.ammo );
 	}
 	
+	@Override
 	public int addPlayerClassEx( int team, int model, SpawnInfo spawninfo )
 	{
 		return NativeFunction.addPlayerClassEx( team, model, 
@@ -264,113 +270,134 @@ public abstract class Gamemode implements IGamemode
 				spawninfo.weapon3.id, spawninfo.weapon3.ammo );
 	}
 
+	@Override
 	public void showNameTags( boolean enabled )
 	{
 		NativeFunction.showNameTags( enabled );
 	}
 	
+	@Override
 	public void showPlayerMarkers( int mode )
 	{
 		NativeFunction.showPlayerMarkers( mode );
 	}
 	
+	@Override
 	public void setWorldTime( int hour )
 	{
 		NativeFunction.setWorldTime( hour );
 	}
 	
+	@Override
 	public void enableTirePopping( boolean enabled )
 	{
 		NativeFunction.enableTirePopping( enabled );
 	}
 	
+	@Override
 	public void allowInteriorWeapons( boolean allow )
 	{
 		NativeFunction.allowInteriorWeapons( allow );
 	}
 	
+	@Override
 	public void setWeather( int weatherid )
 	{
 		NativeFunction.setWeather( weatherid );
 	}
 	
+	@Override
 	public void setGravity( float gravity )
 	{
 		NativeFunction.setGravity( gravity );
 	}
 	
+	@Override
 	public void setDeathDropAmount( int amount )
 	{
 		NativeFunction.setDeathDropAmount( amount );
 		deathDropAmount = amount;
 	}
 	
+	@Override
 	public void createExplosion( Point point, int type, float radius )
 	{
 		NativeFunction.createExplosion( point.x, point.y, point.z, type, radius );
 	}
 	
+	@Override
 	public void enableZoneNames( boolean enabled )
 	{
 		NativeFunction.enableZoneNames( enabled );
 	}
 	
+	@Override
 	public void usePlayerPedAnims()
 	{
 		NativeFunction.usePlayerPedAnims();
 	}
 	
+	@Override
 	public void disableInteriorEnterExits()
 	{
 		NativeFunction.disableInteriorEnterExits();
 	}
 	
+	@Override
 	public void setNameTagDrawDistance( float distance )
 	{
 		nameTagDrawDistance = distance;
 		NativeFunction.setNameTagDrawDistance( distance );
 	}
 	
+	@Override
 	public void disableNameTagLOS()
 	{
 		NativeFunction.disableNameTagLOS();
 	}
 
+	@Override
 	public void sendRconCommand( String command )
 	{
 		if( command == null ) throw new NullPointerException();
 		NativeFunction.sendRconCommand( command );
 	}
 	
+	@Override
 	public String getServerVarAsString( String varname )
 	{
 		if( varname == null ) throw new NullPointerException();
 		return NativeFunction.getServerVarAsString( varname );
 	}
 	
+	@Override
 	public int getServerVarAsInt( String varname )
 	{
 		if( varname == null ) throw new NullPointerException();
 		return NativeFunction.getServerVarAsInt( varname );
 	}
 	
+	@Override
 	public boolean getServerVarAsBool( String varname )
 	{
 		if( varname == null ) throw new NullPointerException();
 		return NativeFunction.getServerVarAsBool( varname );
 	}
 	
+	@Override
 	public void connectNPC( String name, String script )
 	{
 		if( name == null || script == null ) throw new NullPointerException();
 		NativeFunction.connectNPC( name, script );
 	}
 	
+	@Override
 	public void exit()
 	{
 		NativeFunction.gameModeExit();
 	}
 	
+	@Override
 	public String getNetworkStats()
 	{
 		return NativeFunction.getNetworkStats();

@@ -79,6 +79,7 @@ public class LogPrintStream extends PrintStream
 		timestamp = false;
 	}
 
+	@Override
 	public void print( boolean b )
 	{
 		consoleStream.print( b );
@@ -87,6 +88,7 @@ public class LogPrintStream extends PrintStream
 		super.print( b );
 	}
 
+	@Override
 	public void print( char c )
 	{
 		consoleStream.print( c );
@@ -95,6 +97,7 @@ public class LogPrintStream extends PrintStream
 		super.print( c );
 	}
 
+	@Override
 	public void print( int i )
 	{
 		consoleStream.print( i );
@@ -103,6 +106,7 @@ public class LogPrintStream extends PrintStream
 		super.print( i );
 	}
 
+	@Override
 	public void print( long l )
 	{
 		consoleStream.print( l );
@@ -111,6 +115,7 @@ public class LogPrintStream extends PrintStream
 		super.print( l );
 	}
 
+	@Override
 	public void print( float f )
 	{
 		consoleStream.print( f );
@@ -119,6 +124,7 @@ public class LogPrintStream extends PrintStream
 		super.print( f );
 	}
 
+	@Override
 	public void print( double d )
 	{
 		consoleStream.print( d );
@@ -127,6 +133,7 @@ public class LogPrintStream extends PrintStream
 		super.print( d );
 	}
 
+	@Override
 	public void print( char[] s )
 	{
 		consoleStream.print( s );
@@ -135,6 +142,7 @@ public class LogPrintStream extends PrintStream
 		super.print( s );
 	}
 
+	@Override
 	public void print( String s )
 	{
 		consoleStream.print( s );
@@ -145,6 +153,7 @@ public class LogPrintStream extends PrintStream
 		if( s.charAt(s.length()-1) == '\n' ) timestamp = false;
 	}
 
+	@Override
 	public void print( Object obj )
 	{
 		consoleStream.print( obj );
@@ -153,6 +162,7 @@ public class LogPrintStream extends PrintStream
 		super.print( obj );
 	}
 
+	@Override
 	public void println()
 	{
 		consoleStream.println();
@@ -163,6 +173,7 @@ public class LogPrintStream extends PrintStream
 		timestamp = false;
 	}
 
+	@Override
 	public void println( boolean x )
 	{
 		consoleStream.println( x );
@@ -174,6 +185,7 @@ public class LogPrintStream extends PrintStream
 		timestamp = false;
 	}
 
+	@Override
 	public void println( char x )
 	{
 		consoleStream.println( x );
@@ -185,6 +197,7 @@ public class LogPrintStream extends PrintStream
 		timestamp = false;
 	}
 
+	@Override
 	public void println( int x )
 	{
 		consoleStream.println( x );
@@ -196,6 +209,7 @@ public class LogPrintStream extends PrintStream
 		timestamp = false;
 	}
 
+	@Override
 	public void println( long x )
 	{
 		consoleStream.println( x );
@@ -207,6 +221,7 @@ public class LogPrintStream extends PrintStream
 		timestamp = false;
 	}
 
+	@Override
 	public void println( float x )
 	{
 		consoleStream.println( x );
@@ -218,6 +233,7 @@ public class LogPrintStream extends PrintStream
 		timestamp = false;
 	}
 
+	@Override
 	public void println( double x )
 	{
 		consoleStream.println( x );
@@ -229,6 +245,7 @@ public class LogPrintStream extends PrintStream
 		timestamp = false;
 	}
 
+	@Override
 	public void println( char[] x )
 	{
 		consoleStream.println( x );
@@ -239,6 +256,7 @@ public class LogPrintStream extends PrintStream
 		
 		timestamp = false;	}
 
+	@Override
 	public void println( String x )
 	{
 		consoleStream.println( x );
@@ -250,6 +268,7 @@ public class LogPrintStream extends PrintStream
 		timestamp = false;
 	}
 
+	@Override
 	public void println( Object x )
 	{
 		consoleStream.println( x );
@@ -261,6 +280,7 @@ public class LogPrintStream extends PrintStream
 		timestamp = false;
 	}
 
+	@Override
 	public PrintStream printf( String format, Object... args )
 	{
 		String s = String.format(format, args);
@@ -269,6 +289,7 @@ public class LogPrintStream extends PrintStream
 		return this;
 	}
 
+	@Override
 	public PrintStream printf( Locale l, String format, Object... args )
 	{
 		String s = String.format(l, format, args);
@@ -277,6 +298,7 @@ public class LogPrintStream extends PrintStream
 		return this;
 	}
 
+	@Override
 	public PrintStream format( String format, Object... args )
 	{
 		String s = String.format(format, args);
@@ -285,6 +307,7 @@ public class LogPrintStream extends PrintStream
 		return this;
 	}
 
+	@Override
 	public PrintStream format( Locale l, String format, Object... args )
 	{
 		String s = String.format(l, format, args);

@@ -50,8 +50,9 @@ public class Zone implements IZone
 	int id;
 	Area area;
 	
-	public int getId()				{ return id; }
-	public Area getArea()			{ return area.clone(); }
+	
+	@Override public int getId()				{ return id; }
+	@Override public Area getArea()				{ return area.clone(); }
 
 
 	public Zone( float minX, float minY, float maxX, float maxY )
@@ -82,13 +83,15 @@ public class Zone implements IZone
 
 //---------------------------------------------------------
 	
+	@Override
 	public void destroy()
 	{
 		NativeFunction.gangZoneDestroy( id );
 		Gamemode.instance.zonePool[id] = null;
 	}
 	
-	
+
+	@Override
 	public void show( IPlayer p, int color )
 	{
 		Player player = (Player) p;
@@ -97,7 +100,8 @@ public class Zone implements IZone
 		isPlayerShowed[player.id] = true;
 		isPlayerFlashing[player.id] = false;
 	}
-	
+
+	@Override
 	public void hide( IPlayer p )
 	{
 		Player player = (Player) p;
@@ -107,7 +111,8 @@ public class Zone implements IZone
 		isPlayerShowed[player.id] = false;
 		isPlayerFlashing[player.id] = false;
 	}
-	
+
+	@Override
 	public void flash( IPlayer p, int color )
 	{
 		Player player = (Player) p;
@@ -116,7 +121,8 @@ public class Zone implements IZone
 			isPlayerFlashing[player.id] = true;
 		}
 	}
-	
+
+	@Override
 	public void stopFlash( IPlayer p )
 	{
 		Player player = (Player) p;
@@ -126,12 +132,14 @@ public class Zone implements IZone
 	}
 	
 
+	@Override
 	public void showForAll( Color color )
 	{
 		NativeFunction.gangZoneShowForAll( id, color.getValue() );
 		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
 	}
-	
+
+	@Override
 	public void hideForAll()
 	{
 		NativeFunction.gangZoneHideForAll( id );
@@ -142,13 +150,15 @@ public class Zone implements IZone
 			isPlayerFlashing[i] = false;
 		}
 	}
-	
+
+	@Override
 	public void flashForAll( Color color )
 	{
 		NativeFunction.gangZoneFlashForAll( id, color.getValue() );
 		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
 	}
-
+	
+	@Override
 	public void stopFlashForAll()
 	{
 		NativeFunction.gangZoneStopFlashForAll( id );

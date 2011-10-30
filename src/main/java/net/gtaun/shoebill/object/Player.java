@@ -229,52 +229,51 @@ public class Player implements IPlayer
 	Dialog dialog;
 	
 
-	public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	public int getId()								{ return id; }
-	public int getPing()							{ return ping; }
-	public int getTeam()							{ return team; }
-	public int getSkin()							{ return skin; }
-	public int getWantedLevel()						{ return wantedLevel; }
-	public int getCodepage()						{ return NativeFunction.getPlayerCodepage(id); };
-	public String getIp()							{ return ip; }
-	public String getName()							{ return name; }
-	public SpawnInfo getSpawnInfo()					{ return spawnInfo.clone(); }
-	public Color getColor()							{ return color; }
+	@Override public int getId()								{ return id; }
+	@Override public int getPing()								{ return ping; }
+	@Override public int getTeam()								{ return team; }
+	@Override public int getSkin()								{ return skin; }
+	@Override public int getWantedLevel()						{ return wantedLevel; }
+	@Override public int getCodepage()							{ return NativeFunction.getPlayerCodepage(id); };
+	@Override public String getIp()								{ return ip; }
+	@Override public String getName()							{ return name; }
+	@Override public SpawnInfo getSpawnInfo()					{ return spawnInfo.clone(); }
+	@Override public Color getColor()							{ return color; }
 
-	public int getUpdateTick()						{ return updateTick; }
-	public float getHealth()						{ return health; }
-	public float getArmour()						{ return armour; }
-	public int getWeapon()							{ return NativeFunction.getPlayerWeapon(id); }
-	public int getAmmo()							{ return NativeFunction.getPlayerAmmo(id); }
-	public int getMoney()							{ return money; }
-	public int getScore()							{ return score; }
-	public int getWeather()							{ return weather; }
-	public int getCameraMode()						{ return cameraMode; }
-	public int getFightingStyle()					{ return NativeFunction.getPlayerFightingStyle(id); }
-	public IVehicle getVehicle()					{ return Vehicle.get(NativeFunction.getPlayerVehicleID(id)); }
-	public int getVehicleSeat()						{ return NativeFunction.getPlayerVehicleSeat(id); }
-	public int getSpecialAction()					{ return NativeFunction.getPlayerSpecialAction(id); }
-	public Player getSpectatingPlayer()				{ return spectatingPlayer; }
-	public IVehicle getSpectatingVehicle()			{ return spectatingVehicle; }
+	@Override public int getUpdateTick()						{ return updateTick; }
+	@Override public float getHealth()							{ return health; }
+	@Override public float getArmour()							{ return armour; }
+	@Override public int getWeapon()							{ return NativeFunction.getPlayerWeapon(id); }
+	@Override public int getAmmo()								{ return NativeFunction.getPlayerAmmo(id); }
+	@Override public int getMoney()								{ return money; }
+	@Override public int getScore()								{ return score; }
+	@Override public int getWeather()							{ return weather; }
+	@Override public int getCameraMode()						{ return cameraMode; }
+	@Override public int getFightingStyle()						{ return NativeFunction.getPlayerFightingStyle(id); }
+	@Override public IVehicle getVehicle()						{ return Vehicle.get(NativeFunction.getPlayerVehicleID(id)); }
+	@Override public int getVehicleSeat()						{ return NativeFunction.getPlayerVehicleSeat(id); }
+	@Override public int getSpecialAction()						{ return NativeFunction.getPlayerSpecialAction(id); }
+	@Override public Player getSpectatingPlayer()				{ return spectatingPlayer; }
+	@Override public IVehicle getSpectatingVehicle()			{ return spectatingVehicle; }
 	
-	public PointAngle getPosition()					{ return position.clone(); }
-	public Area getWorldBound()						{ return worldBound.clone(); }
-	public Velocity getVelocity()					{ return velocity.clone(); }
-	public int getState()							{ return state; }
-	public KeyState getKeyState()					{ return keyState.clone(); }
-	public IPlayerAttach getPlayerAttach()			{ return playerAttach; }
-	public IPlayerSkill getSkill()					{ return skill; }
-	public Checkpoint getCheckpoint()			{ return checkpoint; }
-	public RaceCheckpoint getRaceCheckpoint()	{ return raceCheckpoint; }
+	@Override public PointAngle getPosition()					{ return position.clone(); }
+	@Override public Area getWorldBound()						{ return worldBound.clone(); }
+	@Override public Velocity getVelocity()						{ return velocity.clone(); }
+	@Override public int getState()								{ return state; }
+	@Override public KeyState getKeyState()						{ return keyState.clone(); }
+	@Override public IPlayerAttach getPlayerAttach()			{ return playerAttach; }
+	@Override public IPlayerSkill getSkill()					{ return skill; }
+	@Override public Checkpoint getCheckpoint()					{ return checkpoint; }
+	@Override public RaceCheckpoint getRaceCheckpoint()			{ return raceCheckpoint; }
 	
-	public Dialog getDialog()					{ return dialog; }
-
-	public boolean isStuntBonusEnabled()			{ return isStuntBonusEnabled; }
-	public boolean isSpectating()					{ return spectating; }
-	public boolean isRecording()					{ return isRecording; }
-	public boolean isControllable()					{ return controllable; }
+	@Override public Dialog getDialog()							{ return dialog; }
 	
+	@Override public boolean isStuntBonusEnabled()				{ return isStuntBonusEnabled; }
+	@Override public boolean isSpectating()						{ return spectating; }
+	@Override public boolean isRecording()						{ return isRecording; }
+	@Override public boolean isControllable()					{ return controllable; }
 	
 	
 	protected Player()
@@ -332,11 +331,13 @@ public class Player implements IPlayer
 	
 //---------------------------------------------------------
 	
+	@Override
 	public void setCodepage( int codepage )
 	{
 		NativeFunction.setPlayerCodepage( id, codepage );
 	}
 	
+	@Override
 	public void setName( String name ) throws IllegalArgumentException, IllegalLengthException, AlreadyExistException
 	{
 		if( name == null ) throw new IllegalArgumentException();
@@ -349,12 +350,14 @@ public class Player implements IPlayer
 		this.name = name;
 	}
 	
+	@Override
 	public void setSpawnInfo( float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 )
 	{
 		SpawnInfo info = new SpawnInfo(x, y, z, interiorId, worldId, angle, skin, team, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3);
 		setSpawnInfo( info );
 	}
 	
+	@Override
 	public void setSpawnInfo( SpawnInfo info )
 	{
 		NativeFunction.setSpawnInfo( id, info.team, info.skin, info.position.x, info.position.y, info.position.z, info.position.angle, info.weapon1.id, info.weapon1.ammo, info.weapon2.id, info.weapon2.ammo, info.weapon3.id, info.weapon3.ammo );
@@ -367,23 +370,27 @@ public class Player implements IPlayer
 		NativeFunction.setPlayerColor( id, color.getValue() );
 	}
 
+	@Override
 	public void setHealth( float health )
 	{
 		NativeFunction.setPlayerHealth( id, health );
 		this.health = health;
 	}
 	
+	@Override
 	public void setArmour( float armour)
 	{
 		NativeFunction.setPlayerArmour( id, armour );
 		this.armour = armour;
 	}
 	
+	@Override
 	public void setAmmo( int weaponslot, int ammo )
 	{
 		NativeFunction.setPlayerAmmo( id, weaponslot, ammo );
 	}
 	
+	@Override
 	public void setMoney( int money )
 	{
 		NativeFunction.resetPlayerMoney( id );
@@ -392,39 +399,46 @@ public class Player implements IPlayer
 		this.money = money;
 	}
 	
+	@Override
 	public void giveMoney( int money )
 	{
 		NativeFunction.givePlayerMoney( id, money );
 		this.money = NativeFunction.getPlayerMoney(id);
 	}
 	
+	@Override
 	public void setScore( int score )
 	{
 		NativeFunction.setPlayerScore( id, score );
 		this.score = score;
 	}
 	
+	@Override
 	public void setWeather( int weather )
 	{
 		NativeFunction.setPlayerWeather( id, weather );
 		this.weather = weather;
 	}
 	
+	@Override
 	public void setFightingStyle( int style )
 	{
 		NativeFunction.setPlayerFightingStyle( id, style );
 	}
 
+	@Override
 	public void setVehicle( IVehicle vehicle, int seat )
 	{
 		vehicle.putPlayer( this, seat );
 	}
 	
+	@Override
 	public void setVehicle( IVehicle vehicle )
 	{
 		vehicle.putPlayer( this, 0 );
 	}
 
+	@Override
 	public void setPosition( float x, float y, float z )
 	{
 		NativeFunction.setPlayerPos( id, x, y, z );
@@ -434,6 +448,7 @@ public class Player implements IPlayer
 		this.position.z = z;
 	}
 	
+	@Override
 	public void setPositionFindZ( float x, float y, float z )
 	{
 		NativeFunction.setPlayerPosFindZ( id, x, y, z );
@@ -443,6 +458,7 @@ public class Player implements IPlayer
 		this.position.z = z;
 	}
 
+	@Override
 	public void setPosition( Point position )
 	{
 		NativeFunction.setPlayerPos( id, position.x, position.y, position.z );
@@ -456,6 +472,7 @@ public class Player implements IPlayer
 		this.position.set( position );
 	}
 	
+	@Override
 	public void setPositionFindZ( Point position )
 	{
 		NativeFunction.setPlayerPosFindZ( id, position.x, position.y, position.z );
@@ -469,6 +486,7 @@ public class Player implements IPlayer
 		this.position.set( position );
 	}
 
+	@Override
 	public void setPosition( PointAngle position )
 	{
 		NativeFunction.setPlayerPos( id, position.x, position.y, position.z );
@@ -483,6 +501,7 @@ public class Player implements IPlayer
 		this.position.set( position );
 	}
 	
+	@Override
 	public void setPositionFindZ( PointAngle position )
 	{
 		NativeFunction.setPlayerPosFindZ( id, position.x, position.y, position.z );
@@ -497,30 +516,35 @@ public class Player implements IPlayer
 		this.position.set( position );
 	}
 	
+	@Override
 	public void setAngle( float angle )
 	{
 		NativeFunction.setPlayerFacingAngle( id, angle );
 		position.angle = angle;
 	}
 	
+	@Override
 	public void setInterior( int interior )
 	{
 		NativeFunction.setPlayerInterior( id, interior );
 		position.interior = interior;
 	}
 	
+	@Override
 	public void setWorld( int world )
 	{
 		NativeFunction.setPlayerVirtualWorld( id, world );
 		position.world = world;
 	}
 	
+	@Override
 	public void setWorldBound( Area bound )
 	{
 		NativeFunction.setPlayerWorldBounds( id, bound.maxX, bound.minX, bound.maxY, bound.minY );
 		worldBound.set( bound );
 	}
 	
+	@Override
 	public void setSpeed( Velocity spd )
 	{
 		NativeFunction.setPlayerVelocity( id, spd.x, spd.y, spd.z );
@@ -542,6 +566,7 @@ public class Player implements IPlayer
 		NativeFunction.sendClientMessage( id, color.getValue(), message );
 	}
 	
+	@Override
 	public void sendChat( IPlayer p, String message )
 	{
 		Player player = (Player) p;
@@ -550,6 +575,7 @@ public class Player implements IPlayer
 		NativeFunction.sendPlayerMessageToPlayer( player.id, id, message );
 	}
 	
+	@Override
 	public void sendChatToAll( String message )
 	{
 		if( message == null ) throw new NullPointerException();
@@ -563,6 +589,7 @@ public class Player implements IPlayer
 		}
 	}
 
+	@Override
 	public void sendDeathMessage( IPlayer k, int reason )
 	{
 		Player killer = (Player) k;
@@ -573,59 +600,70 @@ public class Player implements IPlayer
 			NativeFunction.sendDeathMessage( killer.id, id, reason );
 	}
 
+	@Override
 	public void sendGameText( int time, int style, String text )
 	{
 		if( text == null ) throw new NullPointerException();
 		NativeFunction.gameTextForPlayer( id, text, time, style );
 	}
 	
+	@Override
 	public void sendGameText( int time, int style, String format, Object... args )
 	{
 		String text = String.format(format, args);
 		NativeFunction.gameTextForPlayer( id, text, time, style );
 	}
 
+	@Override
 	public void spawn()
 	{
 		NativeFunction.spawnPlayer( id );
 	}
 	
+	@Override
 	public void setDrunkLevel( int level )
 	{
 		NativeFunction.setPlayerDrunkLevel( id, level );
 	}
 	
+	@Override
 	public int getDrunkLevel()
 	{
 		return NativeFunction.getPlayerDrunkLevel(id);
 	}
 
+	@Override
 	public void applyAnimation( String animlib, String animname, float delta, int loop, int lockX, int lockY, int freeze, int time, int forcesync )
 	{
 		if( animlib == null || animname == null ) throw new NullPointerException();
 		NativeFunction.applyAnimation( id, animlib, animname, delta, loop, lockX, lockY, freeze, time, forcesync );
 	}
 	
+	@Override
 	public void clearAnimations( int forcesync )
 	{
 		NativeFunction.clearAnimations( id, forcesync );
 	}
 	
+	@Override
 	public int getAnimationIndex()
 	{
 		return NativeFunction.getPlayerAnimationIndex(id);
 	}
 	
+	@Override
 	public void allowTeleport( boolean allow )
 	{
 		NativeFunction.allowPlayerTeleport(id, allow);
 	}
 
+	@Override
 	public void playSound( int sound, float x, float y, float z )
 	{
 		NativeFunction.playerPlaySound( id, sound, x, y, z );
 	}
 	
+	@Override
 	public void playSound( int sound, Point point )
 	{
 		NativeFunction.playerPlaySound( id, sound, point.x, point.y, point.z );
@@ -637,38 +675,45 @@ public class Player implements IPlayer
 		NativeFunction.setPlayerMarkerForPlayer( id, player.id, color.getValue() );
 	}
 	
+	@Override
 	public void showNameTagForPlayer( IPlayer p, boolean show )
 	{
 		Player player = (Player) p;
 		NativeFunction.showPlayerNameTagForPlayer( id, player.id, show );
 	}
 
+	@Override
 	public void kick()
 	{
 		NativeFunction.kick( id );
 	}
 	
+	@Override
 	public void ban()
 	{
 		NativeFunction.ban( id );
 	}
 	
+	@Override
 	public void banEx( String reason )
 	{
 		if( reason == null ) throw new NullPointerException();
 		NativeFunction.banEx( id, reason );
 	}
 	
+	@Override
 	public Menu getMenu()
 	{
 		return Gamemode.instance.menuPool[ NativeFunction.getPlayerMenu(id) ];
 	}
 
+	@Override
 	public void setCameraPos( float x, float y, float z )
 	{
 		NativeFunction.setPlayerCameraPos( id, x, y, z );
 	}
 	
+	@Override
 	public void setCameraPos( Point pos )
 	{
 		if( pos == null ) throw new NullPointerException();

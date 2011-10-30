@@ -54,10 +54,10 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 	RaceCheckpoint next;
 	
 
-	public IEventDispatcher	getEventDispatcher()	{ return eventDispatcher; }
+	@Override public IEventDispatcher	getEventDispatcher()	{ return eventDispatcher; }
 	
-	public float getSize()							{ return size; }
-	public int getType()							{ return type; }
+	@Override public float getSize()							{ return size; }
+	@Override public int getType()							{ return type; }
 	
 	
 	public RaceCheckpoint( float x, float y, float z, float size, int type, RaceCheckpoint next )
@@ -79,6 +79,7 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 	
 //---------------------------------------------------------
 	
+	@Override
 	public void set( IPlayer p )
 	{
 		Player player = (Player) p;
@@ -98,6 +99,7 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 		player.raceCheckpoint = this;
 	}
 	
+	@Override
 	public void disable( IPlayer p )
 	{
 		Player player = (Player) p;
@@ -107,6 +109,7 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 		player.raceCheckpoint = null;
 	}
 	
+	@Override
 	public boolean isInCheckpoint( IPlayer p )
 	{
 		Player player = (Player) p;
@@ -115,17 +118,18 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 		return NativeFunction.isPlayerInRaceCheckpoint( player.id );
 	}
 	
+	@Override
 	public void update()
 	{
-		for (int i = 0; i < Gamemode.instance.playerPool.length; i++)
+		for( Player player : Gamemode.instance.playerPool )
 		{
-			Player player = Gamemode.instance.playerPool[i];
 			if( player == null ) continue;
 			
 			if( player.raceCheckpoint == this ) set( player );
 		}
 	}
 	
+	@Override
 	public Vector<IPlayer> getUsingPlayers()
 	{
 		Vector<IPlayer> players = new Vector<IPlayer>();

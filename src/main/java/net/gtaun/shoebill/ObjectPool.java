@@ -72,57 +72,68 @@ public class ObjectPool implements IObjectPool
 	Map<Integer, Reference<Dialog>> dialogPool			= new HashMap<Integer, Reference<Dialog>>();
 	
 	
+	@Override
 	public IPlayer getPlayer( int id )
 	{
 		return playerPool[id];
 	}
 	
+	@Override
 	public IVehicle getVehicle( int id )
 	{
 		return vehiclePool[id];
 	}
 	
+	@Override
 	public IObject getObject( int id )
 	{
 		return objectPool[id];
 	}
 	
+	@Override
 	public IPlayerObject getPlayerObject( IPlayer player, int id )
 	{
 		return playerObjectPool.get( player ) [id];
 	}
 	
+	@Override
 	public IPickup getPickup( int id )
 	{
 		return pickupPool[id];
 	}
 	
+	@Override
 	public ILabel getLabel( int id )
 	{
 		return labelPool[id];
 	}
 	
+	@Override
 	public IPlayerLabel getPlayerLabel( IPlayer player, int id )
 	{
 		return playerLabelPool.get( player ) [id];
 	}
 	
+	@Override
 	public ITextdraw getTextdraw( int id )
 	{
 		return textdrawPool[id];
 	}
 	
+	@Override
 	public IZone getZone( int id )
 	{
 		return zonePool[id];
 	}
 	
+	@Override
 	public IMenu getMenu( int id )
 	{
 		return menuPool[id];
 	}
 	
 	
+	@Override
 	public Collection<IPlayer> getPlayers()
 	{
 		Collection<IPlayer> players = new Vector<IPlayer>();
@@ -131,6 +142,7 @@ public class ObjectPool implements IObjectPool
 		return players;
 	}
 	
+	@Override
 	public Collection<IVehicle> getVehicles()
 	{
 		Collection<IVehicle> vehicles = new Vector<IVehicle>();
@@ -139,6 +151,7 @@ public class ObjectPool implements IObjectPool
 		return vehicles;
 	}
 	
+	@Override
 	public Collection<IObject> getObjects()
 	{
 		Collection<IObject> objects  = new Vector<IObject>();
@@ -147,6 +160,7 @@ public class ObjectPool implements IObjectPool
 		return objects;
 	}
 	
+	@Override
 	public Collection<IPlayerObject> getPlayerObjects( IPlayer player )
 	{
 		Collection<IPlayerObject> objects  = new Vector<IPlayerObject>();
@@ -155,6 +169,7 @@ public class ObjectPool implements IObjectPool
 		return objects;
 	}
 	
+	@Override
 	public Collection<IPickup> getPickups()
 	{
 		Collection<IPickup> pickups = new Vector<IPickup>();
@@ -163,6 +178,7 @@ public class ObjectPool implements IObjectPool
 		return pickups;
 	}
 	
+	@Override
 	public Collection<ILabel> getLabels()
 	{
 		Collection<ILabel> labels = new Vector<ILabel>();
@@ -171,6 +187,7 @@ public class ObjectPool implements IObjectPool
 		return labels;
 	}
 	
+	@Override
 	public Collection<IPlayerLabel> getpPlayerLabels( IPlayer player )
 	{
 		Collection<IPlayerLabel> objects  = new Vector<IPlayerLabel>();
@@ -179,6 +196,7 @@ public class ObjectPool implements IObjectPool
 		return objects;
 	}
 	
+	@Override
 	public Collection<ITextdraw> getTextdraws()
 	{
 		Collection<ITextdraw> textdraws = new Vector<ITextdraw>();
@@ -187,6 +205,7 @@ public class ObjectPool implements IObjectPool
 		return textdraws;
 	}
 	
+	@Override
 	public Collection<IZone> getZones()
 	{
 		Collection<IZone> zones = new Vector<IZone>();
@@ -195,6 +214,7 @@ public class ObjectPool implements IObjectPool
 		return zones;
 	}
 	
+	@Override
 	public Collection<IMenu> getMenus()
 	{
 		List<IMenu> menus = new Vector<IMenu>();
@@ -204,6 +224,7 @@ public class ObjectPool implements IObjectPool
 	}
 	
 	
+	@Override
 	public Collection<ITimer> getTimers()
 	{
 		Collection<ITimer> timers = new Vector<ITimer>();
@@ -218,6 +239,7 @@ public class ObjectPool implements IObjectPool
 		return timers;
 	}
 	
+	@Override
 	public Collection<IDialog> getDialogs()
 	{
 		Collection<IDialog> dialogs = new Vector<IDialog>();

@@ -55,12 +55,13 @@ public class Label implements ILabel
 	Player attachedPlayer;
 	Vehicle attachedVehicle;
 
-	public int getId()							{ return id; }
-	public String getText()						{ return text; }
-	public Color getColor()						{ return color.clone(); }
 	
-	public IPlayer getAttachedPlayer()			{ return attachedPlayer; }
-	public IVehicle getAttachedVehicle()		{ return attachedVehicle; }
+	@Override public int getId()							{ return id; }
+	@Override public String getText()						{ return text; }
+	@Override public Color getColor()						{ return color.clone(); }
+	
+	@Override public IPlayer getAttachedPlayer()			{ return attachedPlayer; }
+	@Override public IVehicle getAttachedVehicle()		{ return attachedVehicle; }
 	
 
 	Label()
@@ -102,13 +103,15 @@ public class Label implements ILabel
 	
 //---------------------------------------------------------
 	
+	@Override
 	public void destroy()
 	{
 		NativeFunction.delete3DTextLabel( id );
 		Gamemode.instance.labelPool[ id ] = null;
 	}
 
-	public PointRange position()
+	@Override
+	public PointRange getPosition()
 	{
 		PointAngle pos = null;
 		
@@ -126,9 +129,12 @@ public class Label implements ILabel
 		
 		return position.clone();
 	}
-	
-	public void attach( Player player, float x, float y, float z )
+
+	@Override
+	public void attach( IPlayer p, float x, float y, float z )
 	{
+		Player player = (Player) p;
+		
 		offsetX = x;
 		offsetY = y;
 		offsetZ = z;
@@ -137,9 +143,12 @@ public class Label implements ILabel
 		attachedPlayer = player;
 		attachedVehicle = null;
 	}
-	
-	public void attach( Vehicle vehicle, float x, float y, float z )
+
+	@Override
+	public void attach( IVehicle v, float x, float y, float z )
 	{
+		Vehicle vehicle = (Vehicle) v;
+		
 		offsetX = x;
 		offsetY = y;
 		offsetZ = z;
@@ -148,7 +157,8 @@ public class Label implements ILabel
 		attachedPlayer = null;
 		attachedVehicle = vehicle;
 	}
-	
+
+	@Override
 	public void update( Color color, String text )
 	{
 		if( text == null ) throw new NullPointerException();
