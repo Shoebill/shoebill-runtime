@@ -56,11 +56,11 @@ public class Label implements ILabel
 	Vehicle attachedVehicle;
 
 	
-	@Override public int getId()							{ return id; }
-	@Override public String getText()						{ return text; }
-	@Override public Color getColor()						{ return color.clone(); }
+	@Override public int getId()						{ return id; }
+	@Override public String getText()					{ return text; }
+	@Override public Color getColor()					{ return color.clone(); }
 	
-	@Override public IPlayer getAttachedPlayer()			{ return attachedPlayer; }
+	@Override public IPlayer getAttachedPlayer()		{ return attachedPlayer; }
 	@Override public IVehicle getAttachedVehicle()		{ return attachedVehicle; }
 	
 

@@ -80,15 +80,15 @@ public class Vehicle implements IVehicle
 	VehicleDamage damage;
 
 	
-	@Override public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	@Override public boolean isStatic()						{ return isStatic; }
-	@Override public boolean isDestroyed()					{ return isDestroyed; }
+	@Override public boolean isStatic()							{ return isStatic; }
+	@Override public boolean isDestroyed()						{ return isDestroyed; }
 	
-	@Override public int getModel()							{ return model; }
+	@Override public int getModel()								{ return model; }
 	@Override public int getColor1()							{ return color1; }
 	@Override public int getColor2()							{ return color2; }
-	@Override public int getRespawnDelay()					{ return respawnDelay; }
+	@Override public int getRespawnDelay()						{ return respawnDelay; }
 
 	@Override public IVehicleParam getState()					{ return param; }
 	@Override public IVehicleComponent getComponent()			{ return component; }

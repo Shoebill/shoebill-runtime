@@ -55,7 +55,7 @@ public class Pickup implements IPickup
 	@Override public int getModel()								{ return model; }
 	@Override public int getType()								{ return type; }
 	@Override public int getWorld()								{ return world; }
-	@Override public Point getPosition()							{ return position.clone(); }
+	@Override public Point getPosition()						{ return position.clone(); }
 	
 	
 	

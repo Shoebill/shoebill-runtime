@@ -63,7 +63,7 @@ public class PlayerLabel extends Label implements IPlayerLabel
 	
 	Player player;
 	
-	@Override public IPlayer getPlayer()			{ return player; }
+	@Override public IPlayer getPlayer()		{ return player; }
 	
 	
 	public PlayerLabel( Player player, String text, Color color, Point point, float drawDistance, boolean testLOS )

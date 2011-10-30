@@ -42,7 +42,7 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 	float size;
 	
 	
-	@Override public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
 	@Override public float getSize()							{ return size; }
 

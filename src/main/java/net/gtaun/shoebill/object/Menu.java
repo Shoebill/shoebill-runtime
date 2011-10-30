@@ -52,10 +52,10 @@ public class Menu implements IMenu
 	float col1Width, col2Width;
 	
 
-	@Override public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
 	@Override public int getId()								{ return id; }
-	@Override public String getTitle()						{ return title; }
+	@Override public String getTitle()							{ return title; }
 	@Override public int getColumns()							{ return columns; }
 	@Override public float getX()								{ return x; }
 	@Override public float getY()								{ return y; }

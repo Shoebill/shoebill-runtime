@@ -174,7 +174,7 @@ public abstract class Gamemode implements IGamemode
 	
 	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	@Override public int getDeathDropAmount()						{ return deathDropAmount; }
+	@Override public int getDeathDropAmount()					{ return deathDropAmount; }
 	@Override public float getNameTagDrawDistance()				{ return nameTagDrawDistance; }
 	@Override public float getChatRadius()						{ return chatRadius; }
 	@Override public float getPlayerMarkerRadius()				{ return playerMarkerRadius;}

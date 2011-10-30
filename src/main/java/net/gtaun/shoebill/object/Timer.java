@@ -43,10 +43,10 @@ public class Timer implements ITimer
 	int counting, realInterval;
 
 	
-	@Override public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	@Override public int getInterval()						{ return interval; }
-	@Override public int getCount()							{ return count; }
+	@Override public int getInterval()							{ return interval; }
+	@Override public int getCount()								{ return count; }
 
 	@Override public boolean isRunning()						{ return running; }
 	

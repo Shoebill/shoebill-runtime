@@ -57,7 +57,7 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 	@Override public IEventDispatcher	getEventDispatcher()	{ return eventDispatcher; }
 	
 	@Override public float getSize()							{ return size; }
-	@Override public int getType()							{ return type; }
+	@Override public int getType()								{ return type; }
 	
 	
 	public RaceCheckpoint( float x, float y, float z, float size, int type, RaceCheckpoint next )

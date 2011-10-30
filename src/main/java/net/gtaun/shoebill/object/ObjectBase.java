@@ -56,11 +56,11 @@ public class ObjectBase implements IObject
 	float drawDistance = 0;
 	
 	
-	@Override public IEventDispatcher getEventDispatcher()	{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	@Override public int getModel()							{ return model; }
+	@Override public int getModel()								{ return model; }
 	@Override public float getSpeed()							{ return speed; }
-	@Override public Player getAttachedPlayer()				{ return attachedPlayer; }
+	@Override public Player getAttachedPlayer()					{ return attachedPlayer; }
 	@Override public Vehicle getAttachedVehicle()				{ return attachedVehicle; }
 	@Override public float getDrawDistance()					{ return drawDistance; }
 	

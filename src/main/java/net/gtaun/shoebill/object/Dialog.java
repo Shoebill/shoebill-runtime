@@ -46,9 +46,9 @@ public class Dialog implements IDialog
 	int id, style;
 
 	
-	@Override public IEventDispatcher getEventDispatcher()	{ return getEventDispatcher(); }
+	@Override public IEventDispatcher getEventDispatcher()		{ return getEventDispatcher(); }
 	
-	@Override public int getStyle()							{ return style; }
+	@Override public int getStyle()								{ return style; }
 	
 
 //---------------------------------------------------------
