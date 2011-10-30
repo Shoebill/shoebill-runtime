@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.WeakHashMap;
 
 import net.gtaun.lungfish.IObjectPool;
 import net.gtaun.lungfish.object.IDialog;
@@ -56,19 +57,19 @@ public class ObjectPool implements IObjectPool
 	static final int PLAYER_NO_TEAM =					255;
 	
 	
-	Player[] playerPool						= new Player[MAX_PLAYERS];
-	Vehicle[] vehiclePool					= new Vehicle[MAX_VEHICLES];
-	ObjectBase[] objectPool					= new ObjectBase[MAX_OBJECTS];
-	PlayerObject[] playerObjectPool			= new PlayerObject[MAX_OBJECTS*MAX_PLAYERS];
-	Pickup[] pickupPool						= new Pickup[MAX_PICKUPS];
-	Label[] labelPool						= new Label[MAX_LABELS_GLOBAL];
-	PlayerLabel[] playerLabelPool			= new PlayerLabel[MAX_LABELS_PLAYER*MAX_PLAYERS];
-	Textdraw[] textdrawPool					= new Textdraw[MAX_TEXT_DRAWS];
-	Zone[] zonePool							= new Zone[MAX_ZONES];
-	Menu[] menuPool							= new Menu[MAX_MENUS];
+	Player[] playerPool									= new Player[MAX_PLAYERS];
+	Vehicle[] vehiclePool								= new Vehicle[MAX_VEHICLES];
+	ObjectBase[] objectPool								= new ObjectBase[MAX_OBJECTS];
+	Map<Player, PlayerObject[]> playerObjectPool		= new WeakHashMap<Player, PlayerObject[]>();
+	Pickup[] pickupPool									= new Pickup[MAX_PICKUPS];
+	Label[] labelPool									= new Label[MAX_LABELS_GLOBAL];
+	Map<Player, PlayerLabel[]> playerLabelPool			= new WeakHashMap<Player, PlayerLabel[]>();
+	Textdraw[] textdrawPool								= new Textdraw[MAX_TEXT_DRAWS];
+	Zone[] zonePool										= new Zone[MAX_ZONES];
+	Menu[] menuPool										= new Menu[MAX_MENUS];
 	
-	Vector<Reference<Timer>> timerPool			= new Vector<Reference<Timer>>();
-	Map<Integer, Reference<Dialog>> dialogPool	= new HashMap<Integer, Reference<Dialog>>();
+	Vector<Reference<Timer>> timerPool					= new Vector<Reference<Timer>>();
+	Map<Integer, Reference<Dialog>> dialogPool			= new HashMap<Integer, Reference<Dialog>>();
 	
 	
 	public IPlayer getPlayer( int id )
@@ -88,7 +89,7 @@ public class ObjectPool implements IObjectPool
 	
 	public IPlayerObject getPlayerObject( IPlayer player, int id )
 	{
-		return null;
+		return playerObjectPool.get( player ) [id];
 	}
 	
 	public IPickup getPickup( int id )
@@ -103,7 +104,7 @@ public class ObjectPool implements IObjectPool
 	
 	public IPlayerLabel getPlayerLabel( IPlayer player, int id )
 	{
-		return null;
+		return playerLabelPool.get( player ) [id];
 	}
 	
 	public ITextdraw getTextdraw( int id )
@@ -148,7 +149,10 @@ public class ObjectPool implements IObjectPool
 	
 	public Collection<IPlayerObject> getPlayerObjects( IPlayer player )
 	{
-		return null;
+		Collection<IPlayerObject> objects  = new Vector<IPlayerObject>();
+		for( IPlayerObject object : playerObjectPool.get(player) ) objects.add( object );
+		
+		return objects;
 	}
 	
 	public Collection<IPickup> getPickups()
@@ -169,7 +173,10 @@ public class ObjectPool implements IObjectPool
 	
 	public Collection<IPlayerLabel> getpPlayerLabels( IPlayer player )
 	{
-		return null;
+		Collection<IPlayerLabel> objects  = new Vector<IPlayerLabel>();
+		for( IPlayerLabel object : playerLabelPool.get(player) ) objects.add( object );
+		
+		return objects;
 	}
 	
 	public Collection<ITextdraw> getTextdraws()
