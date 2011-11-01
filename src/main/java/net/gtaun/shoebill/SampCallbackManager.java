@@ -37,21 +37,30 @@ public class SampCallbackManager implements ISampCallbackManager
 		callbackHandlers = new Vector<ISampCallback>();
 	}
 
+	@Override
 	public void registerCallbackHandler( ISampCallback handler )
 	{
 		callbackHandlers.add( handler );
 	}
 
+	@Override
 	public void unregisterCallbackHandler( ISampCallback handler )
 	{
 		callbackHandlers.remove( handler );
 	}
 
+	@Override
 	public boolean hasCallbackHandler( ISampCallback handler )
 	{
 		return callbackHandlers.contains( handler );
 	}
 
+	@Override
+	public ISampCallback getMasterCallbackHandler()
+	{
+		return sampCallback;
+	}
+	
 
 	ISampCallback sampCallback = new ISampCallback()
 	{
