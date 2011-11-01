@@ -18,7 +18,7 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.lungfish.data.Vector3D;
 import net.gtaun.lungfish.object.IPlayerAttach;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author JoJLlmAn
@@ -50,7 +50,7 @@ public class PlayerAttach implements IPlayerAttach
 	
 	public boolean set( int slot, int modelid, int bone, Vector3D offset, Vector3D rot, Vector3D scale )
 	{
-		boolean success = NativeFunction.setPlayerAttachedObject(playerId, slot, modelid, bone, offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, scale.x, scale.y, scale.z);
+		boolean success = SampNativeFunction.setPlayerAttachedObject(playerId, slot, modelid, bone, offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, scale.x, scale.y, scale.z);
 		
 		if(success)
 		{
@@ -63,7 +63,7 @@ public class PlayerAttach implements IPlayerAttach
 	
 	public boolean remove( int slot )
 	{
-		boolean success = NativeFunction.removePlayerAttachedObject(playerId, slot);
+		boolean success = SampNativeFunction.removePlayerAttachedObject(playerId, slot);
 		
 		if(success)
 		{

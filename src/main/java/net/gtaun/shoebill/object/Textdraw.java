@@ -22,7 +22,7 @@ import java.util.Vector;
 import net.gtaun.lungfish.data.Color;
 import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.ITextdraw;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 
 /**
@@ -78,7 +78,7 @@ public class Textdraw implements ITextdraw
 	
 	private void init()
 	{
-		id = NativeFunction.textDrawCreate( x, y, text );
+		id = SampNativeFunction.textDrawCreate( x, y, text );
 		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = false;
 		
 		Gamemode.instance.textdrawPool[id] = this;
@@ -90,74 +90,74 @@ public class Textdraw implements ITextdraw
 	@Override
 	public void destroy()
 	{
-		NativeFunction.textDrawDestroy( id );
+		SampNativeFunction.textDrawDestroy( id );
 		Gamemode.instance.textdrawPool[id] = null;
 	}
 
 	@Override
 	public void setLetterSize( float x, float y )
 	{
-		NativeFunction.textDrawLetterSize( id, x, y );
+		SampNativeFunction.textDrawLetterSize( id, x, y );
 	}
 
 	@Override
 	public void setTextSize( float x, float y )
 	{
-		NativeFunction.textDrawTextSize( id, x, y );
+		SampNativeFunction.textDrawTextSize( id, x, y );
 	}
 
 	@Override
 	public void setAlignment( int alignment )
 	{
-		NativeFunction.textDrawAlignment( id, alignment );
+		SampNativeFunction.textDrawAlignment( id, alignment );
 	}
 
 	@Override
 	public void setColor( Color color )
 	{
-		NativeFunction.textDrawColor( id, color.getValue() );
+		SampNativeFunction.textDrawColor( id, color.getValue() );
 	}
 
 	@Override
 	public void setUseBox( boolean use )
 	{
-		NativeFunction.textDrawUseBox( id, use );
+		SampNativeFunction.textDrawUseBox( id, use );
 	}
 
 	@Override
 	public void setBoxColor( Color color )
 	{
-		NativeFunction.textDrawBoxColor( id, color.getValue() );
+		SampNativeFunction.textDrawBoxColor( id, color.getValue() );
 	}
 
 	@Override
 	public void setShadow( int size )
 	{
-		NativeFunction.textDrawSetShadow( id, size );
+		SampNativeFunction.textDrawSetShadow( id, size );
 	}
 
 	@Override
 	public void setOutline( int size )
 	{
-		NativeFunction.textDrawSetOutline( id, size );
+		SampNativeFunction.textDrawSetOutline( id, size );
 	}
 
 	@Override
 	public void setBackgroundColor( Color color )
 	{
-		NativeFunction.textDrawBackgroundColor( id, color.getValue() );
+		SampNativeFunction.textDrawBackgroundColor( id, color.getValue() );
 	}
 
 	@Override
 	public void setFont( int font )
 	{
-		NativeFunction.textDrawFont( id, font );
+		SampNativeFunction.textDrawFont( id, font );
 	}
 
 	@Override
 	public void setProportional( int set )
 	{
-		NativeFunction.textDrawSetProportional( id, set );
+		SampNativeFunction.textDrawSetProportional( id, set );
 	}
 
 	@Override
@@ -166,14 +166,14 @@ public class Textdraw implements ITextdraw
 		if( text == null ) throw new NullPointerException();
 		
 		this.text = text;
-		NativeFunction.textDrawSetString( id, text );
+		SampNativeFunction.textDrawSetString( id, text );
 	}
 
 	@Override
 	public void show( IPlayer p )
 	{
 		Player player = (Player) p;
-		NativeFunction.textDrawShowForPlayer( player.id, id );
+		SampNativeFunction.textDrawShowForPlayer( player.id, id );
 		isPlayerShowed[player.id] = true;
 	}
 
@@ -181,21 +181,21 @@ public class Textdraw implements ITextdraw
 	public void hide( IPlayer p )
 	{
 		Player player = (Player) p;
-		NativeFunction.textDrawHideForPlayer( player.id, id );
+		SampNativeFunction.textDrawHideForPlayer( player.id, id );
 		isPlayerShowed[player.id] = false;
 	}
 
 	@Override
 	public void showForAll()
 	{
-		NativeFunction.textDrawShowForAll( id );
+		SampNativeFunction.textDrawShowForAll( id );
 		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
 	}
 
 	@Override
 	public void hideForAll()
 	{
-		NativeFunction.textDrawHideForAll( id );
+		SampNativeFunction.textDrawHideForAll( id );
 		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = false;
 	}
 }

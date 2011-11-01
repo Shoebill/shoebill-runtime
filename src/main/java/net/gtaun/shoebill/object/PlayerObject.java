@@ -22,7 +22,7 @@ import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.data.PointRot;
 import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.IPlayerObject;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author MK124
@@ -123,7 +123,7 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 	
 	private void init()
 	{
-		id = NativeFunction.createPlayerObject( player.id, model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
+		id = SampNativeFunction.createPlayerObject( player.id, model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
 		
 		Gamemode.instance.playerObjectPool[id + player.id*Gamemode.MAX_OBJECTS] = this;
 	}
@@ -134,15 +134,15 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 	@Override
 	public void destroy()
 	{
-		NativeFunction.destroyObject( id );
+		SampNativeFunction.destroyObject( id );
 		Gamemode.instance.playerObjectPool[ id + player.id*Gamemode.MAX_OBJECTS ] = null;
 	}
 	
 	@Override
 	public PointRot getPosition()
 	{	
-		NativeFunction.getPlayerObjectPos( player.id, id, position );
-		NativeFunction.getPlayerObjectRot( player.id, id, position );
+		SampNativeFunction.getPlayerObjectPos( player.id, id, position );
+		SampNativeFunction.getPlayerObjectRot( player.id, id, position );
 		return position.clone();
 	}
 	
@@ -150,15 +150,15 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 	public void setPosition( Point position )
 	{
 		this.position.set( position );
-		NativeFunction.setPlayerObjectPos( player.id, id, position.x, position.y, position.z );
+		SampNativeFunction.setPlayerObjectPos( player.id, id, position.x, position.y, position.z );
 	}
 	
 	@Override
 	public void setPosition( PointRot position )
 	{
 		this.position = position.clone();
-		NativeFunction.setPlayerObjectPos( player.id, id, position.x, position.y, position.z );
-		NativeFunction.setPlayerObjectRot( player.id, id, position.rx, position.ry, position.rz );
+		SampNativeFunction.setPlayerObjectPos( player.id, id, position.x, position.y, position.z );
+		SampNativeFunction.setPlayerObjectRot( player.id, id, position.rx, position.ry, position.rz );
 	}
 	
 	@Override
@@ -168,13 +168,13 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 		position.ry = ry;
 		position.rz = rz;
 		
-		NativeFunction.setPlayerObjectRot( player.id, id, rx, ry, rz );
+		SampNativeFunction.setPlayerObjectRot( player.id, id, rx, ry, rz );
 	}
 	
 	@Override
 	public int move( float x, float y, float z, float speed )
 	{
-		NativeFunction.movePlayerObject( player.id, id, x, y, z, speed );
+		SampNativeFunction.movePlayerObject( player.id, id, x, y, z, speed );
 		if(attachedPlayer == null) this.speed = speed;
 		return 0;
 	}
@@ -183,12 +183,12 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 	public void stop()
 	{
 		speed = 0;
-		NativeFunction.stopPlayerObject( player.id, id );
+		SampNativeFunction.stopPlayerObject( player.id, id );
 	}
 	
 	public void attach( Player player, float x, float y, float z, float rx, float ry, float rz )
 	{
-		NativeFunction.attachPlayerObjectToPlayer( this.player.id, id, player.id, x, y, z, rx, ry, rz );
+		SampNativeFunction.attachPlayerObjectToPlayer( this.player.id, id, player.id, x, y, z, rx, ry, rz );
 		this.attachedPlayer = player;
 		speed = 0;
 	}

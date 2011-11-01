@@ -23,7 +23,7 @@ import net.gtaun.lungfish.object.IDialog;
 import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author MK124
@@ -79,7 +79,7 @@ public class Dialog implements IDialog
 		cancel( player );
 		
 		player.dialog = this;
-		NativeFunction.showPlayerDialog( player.id, id, style, caption, text, button1, button2 );
+		SampNativeFunction.showPlayerDialog( player.id, id, style, caption, text, button1, button2 );
 	}
 	
 	@Override
@@ -88,7 +88,7 @@ public class Dialog implements IDialog
 		Player player = (Player) p;
 		
 		if( player.dialog == null ) return;
-		NativeFunction.showPlayerDialog( player.id, -1, 0, "", "", "", "" );
+		SampNativeFunction.showPlayerDialog( player.id, -1, 0, "", "", "", "" );
 		
 		player.dialog.eventDispatcher.dispatchEvent( new DialogCancelEvent(player.dialog, player) );
 	}

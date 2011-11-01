@@ -73,7 +73,7 @@ import net.gtaun.lungfish.object.IGamemode;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
 import net.gtaun.shoebill.LogPrintStream;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author MK124, JoJLlmAn
@@ -199,7 +199,7 @@ public abstract class Gamemode implements IGamemode
 			System.setOut( logStream );
 			System.setErr( logStream );
 			
-			NativeFunction.loadLibrary();
+			SampNativeFunction.loadLibrary();
 			instance = this;
 		}
 		catch( Exception e )
@@ -213,49 +213,49 @@ public abstract class Gamemode implements IGamemode
 	
 	public int weather()
 	{
-		return NativeFunction.getServerVarAsInt("weather");
+		return SampNativeFunction.getServerVarAsInt("weather");
 
 	}
 	
 	public float gravity()
 	{
-		return Float.parseFloat(NativeFunction.getServerVarAsString("gravity"));
+		return Float.parseFloat(SampNativeFunction.getServerVarAsString("gravity"));
 	}
 	
 	public int serverCodepage()
 	{
-		return NativeFunction.getServerCodepage();
+		return SampNativeFunction.getServerCodepage();
 	}
 	
 	@Override
 	public void setServerCodepage( int codepage )
 	{
-		NativeFunction.setServerCodepage( codepage );
+		SampNativeFunction.setServerCodepage( codepage );
 	}
 	
 	@Override
 	public void setGameModeText( String string )
 	{
 		if( string == null ) throw new NullPointerException();
-		NativeFunction.setGameModeText( string );
+		SampNativeFunction.setGameModeText( string );
 	}
 	
 	@Override
 	public void setTeamCount( int count )
 	{
-		NativeFunction.setTeamCount( count );
+		SampNativeFunction.setTeamCount( count );
 	}
 
 	@Override
 	public int addPlayerClass( int model, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 )
 	{
-		return NativeFunction.addPlayerClass( model, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3 );
+		return SampNativeFunction.addPlayerClass( model, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3 );
 	}
 
 	@Override
 	public int addPlayerClass( int model, SpawnInfo spawninfo )
 	{
-		return NativeFunction.addPlayerClass( model, 
+		return SampNativeFunction.addPlayerClass( model, 
 			spawninfo.position.x, spawninfo.position.y, spawninfo.position.z, spawninfo.position.angle,
 			spawninfo.weapon1.id, spawninfo.weapon1.ammo, spawninfo.weapon2.id, spawninfo.weapon2.ammo,
 			spawninfo.weapon3.id, spawninfo.weapon3.ammo );
@@ -264,7 +264,7 @@ public abstract class Gamemode implements IGamemode
 	@Override
 	public int addPlayerClassEx( int team, int model, SpawnInfo spawninfo )
 	{
-		return NativeFunction.addPlayerClassEx( team, model, 
+		return SampNativeFunction.addPlayerClassEx( team, model, 
 				spawninfo.position.x, spawninfo.position.y, spawninfo.position.z, spawninfo.position.angle,
 				spawninfo.weapon1.id, spawninfo.weapon1.ammo, spawninfo.weapon2.id, spawninfo.weapon2.ammo,
 				spawninfo.weapon3.id, spawninfo.weapon3.ammo );
@@ -273,134 +273,134 @@ public abstract class Gamemode implements IGamemode
 	@Override
 	public void showNameTags( boolean enabled )
 	{
-		NativeFunction.showNameTags( enabled );
+		SampNativeFunction.showNameTags( enabled );
 	}
 	
 	@Override
 	public void showPlayerMarkers( int mode )
 	{
-		NativeFunction.showPlayerMarkers( mode );
+		SampNativeFunction.showPlayerMarkers( mode );
 	}
 	
 	@Override
 	public void setWorldTime( int hour )
 	{
-		NativeFunction.setWorldTime( hour );
+		SampNativeFunction.setWorldTime( hour );
 	}
 	
 	@Override
 	public void enableTirePopping( boolean enabled )
 	{
-		NativeFunction.enableTirePopping( enabled );
+		SampNativeFunction.enableTirePopping( enabled );
 	}
 	
 	@Override
 	public void allowInteriorWeapons( boolean allow )
 	{
-		NativeFunction.allowInteriorWeapons( allow );
+		SampNativeFunction.allowInteriorWeapons( allow );
 	}
 	
 	@Override
 	public void setWeather( int weatherid )
 	{
-		NativeFunction.setWeather( weatherid );
+		SampNativeFunction.setWeather( weatherid );
 	}
 	
 	@Override
 	public void setGravity( float gravity )
 	{
-		NativeFunction.setGravity( gravity );
+		SampNativeFunction.setGravity( gravity );
 	}
 	
 	@Override
 	public void setDeathDropAmount( int amount )
 	{
-		NativeFunction.setDeathDropAmount( amount );
+		SampNativeFunction.setDeathDropAmount( amount );
 		deathDropAmount = amount;
 	}
 	
 	@Override
 	public void createExplosion( Point point, int type, float radius )
 	{
-		NativeFunction.createExplosion( point.x, point.y, point.z, type, radius );
+		SampNativeFunction.createExplosion( point.x, point.y, point.z, type, radius );
 	}
 	
 	@Override
 	public void enableZoneNames( boolean enabled )
 	{
-		NativeFunction.enableZoneNames( enabled );
+		SampNativeFunction.enableZoneNames( enabled );
 	}
 	
 	@Override
 	public void usePlayerPedAnims()
 	{
-		NativeFunction.usePlayerPedAnims();
+		SampNativeFunction.usePlayerPedAnims();
 	}
 	
 	@Override
 	public void disableInteriorEnterExits()
 	{
-		NativeFunction.disableInteriorEnterExits();
+		SampNativeFunction.disableInteriorEnterExits();
 	}
 	
 	@Override
 	public void setNameTagDrawDistance( float distance )
 	{
 		nameTagDrawDistance = distance;
-		NativeFunction.setNameTagDrawDistance( distance );
+		SampNativeFunction.setNameTagDrawDistance( distance );
 	}
 	
 	@Override
 	public void disableNameTagLOS()
 	{
-		NativeFunction.disableNameTagLOS();
+		SampNativeFunction.disableNameTagLOS();
 	}
 
 	@Override
 	public void sendRconCommand( String command )
 	{
 		if( command == null ) throw new NullPointerException();
-		NativeFunction.sendRconCommand( command );
+		SampNativeFunction.sendRconCommand( command );
 	}
 	
 	@Override
 	public String getServerVarAsString( String varname )
 	{
 		if( varname == null ) throw new NullPointerException();
-		return NativeFunction.getServerVarAsString( varname );
+		return SampNativeFunction.getServerVarAsString( varname );
 	}
 	
 	@Override
 	public int getServerVarAsInt( String varname )
 	{
 		if( varname == null ) throw new NullPointerException();
-		return NativeFunction.getServerVarAsInt( varname );
+		return SampNativeFunction.getServerVarAsInt( varname );
 	}
 	
 	@Override
 	public boolean getServerVarAsBool( String varname )
 	{
 		if( varname == null ) throw new NullPointerException();
-		return NativeFunction.getServerVarAsBool( varname );
+		return SampNativeFunction.getServerVarAsBool( varname );
 	}
 	
 	@Override
 	public void connectNPC( String name, String script )
 	{
 		if( name == null || script == null ) throw new NullPointerException();
-		NativeFunction.connectNPC( name, script );
+		SampNativeFunction.connectNPC( name, script );
 	}
 	
 	@Override
 	public void exit()
 	{
-		NativeFunction.gameModeExit();
+		SampNativeFunction.gameModeExit();
 	}
 	
 	@Override
 	public String getNetworkStats()
 	{
-		return NativeFunction.getNetworkStats();
+		return SampNativeFunction.getNetworkStats();
 	}
 	
 	
@@ -511,8 +511,8 @@ public abstract class Gamemode implements IGamemode
 			Player player = playerPool[playerid];
 			System.out.println( "[spawn] " + player.name + " has spawned (" + playerid + ")" );
 			
-			player.team = NativeFunction.getPlayerTeam(player.id);
-			player.skin = NativeFunction.getPlayerSkin(player.id);
+			player.team = SampNativeFunction.getPlayerTeam(player.id);
+			player.skin = SampNativeFunction.getPlayerSkin(player.id);
 			
 			player.playerAttach = new PlayerAttach(playerid);
 			player.eventDispatcher.dispatchEvent( new PlayerSpawnEvent(player) );
@@ -537,7 +537,7 @@ public abstract class Gamemode implements IGamemode
 			{
 				killer = playerPool[killerid];
 				logStream.log( "[kill] " + killer.name + " killed " + player.name +
-						" (" + NativeFunction.getWeaponName(reason) + ")" );
+						" (" + SampNativeFunction.getWeaponName(reason) + ")" );
 				
 				killer.eventDispatcher.dispatchEvent( new PlayerKillEvent(killer, player, reason) );
 			}
@@ -734,8 +734,8 @@ public abstract class Gamemode implements IGamemode
 			ObjectBase object = objectPool[objectid];
 			
 			object.speed = 0;
-			NativeFunction.getObjectPos(objectid, object.position);
-			NativeFunction.getObjectRot(objectid, object.position);
+			SampNativeFunction.getObjectPos(objectid, object.position);
+			SampNativeFunction.getObjectRot(objectid, object.position);
 			
 			object.eventDispatcher.dispatchEvent( new ObjectMovedEvent(object) );
 			return 1;
@@ -802,7 +802,7 @@ public abstract class Gamemode implements IGamemode
 			//player.event.dispatchEvent( new Player(player) );
 			
 			Player player = playerPool[playerid];
-			Menu menu = menuPool[NativeFunction.getPlayerMenu(playerid)];
+			Menu menu = menuPool[SampNativeFunction.getPlayerMenu(playerid)];
 			
 			MenuSelectedEvent event = new MenuSelectedEvent( menu, player, row );
 			
@@ -829,7 +829,7 @@ public abstract class Gamemode implements IGamemode
 			//player.event.dispatchEvent( new Player(player) );
 			
 			Player player = playerPool[playerid];
-			Menu menu = menuPool[NativeFunction.getPlayerMenu(playerid)];
+			Menu menu = menuPool[SampNativeFunction.getPlayerMenu(playerid)];
 			
 			MenuExitedEvent event = new MenuExitedEvent( menu, player );
 			
@@ -1094,8 +1094,8 @@ public abstract class Gamemode implements IGamemode
 			
 			VehicleModEvent event = new VehicleModEvent(vehicle, componentid);
 			
-			int type = NativeFunction.getVehicleComponentType(componentid);
-			vehicle.component.components[type] = NativeFunction.getVehicleComponentInSlot(vehicleid, type);
+			int type = SampNativeFunction.getVehicleComponentType(componentid);
+			vehicle.component.components[type] = SampNativeFunction.getVehicleComponentInSlot(vehicleid, type);
 	
 			vehicle.eventDispatcher.dispatchEvent( event );
 			player.eventDispatcher.dispatchEvent( event );
@@ -1158,7 +1158,7 @@ public abstract class Gamemode implements IGamemode
 			Vehicle vehicle = vehiclePool[vehicleid];
 			Player player = playerPool[playerid];
 			
-			NativeFunction.getVehicleDamageStatus(vehicleid, vehicle.damage);
+			SampNativeFunction.getVehicleDamageStatus(vehicleid, vehicle.damage);
 			
 			VehicleUpdateDamageEvent event = new VehicleUpdateDamageEvent(vehicle, player);
 	

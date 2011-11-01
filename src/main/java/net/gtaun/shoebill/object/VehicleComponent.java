@@ -18,7 +18,7 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.lungfish.object.IVehicleComponent;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 
 /**
@@ -47,7 +47,7 @@ public class VehicleComponent implements IVehicleComponent
 	
 	public static int getComponentSlot( int componentid )
 	{
-		return NativeFunction.getVehicleComponentType(componentid);
+		return SampNativeFunction.getVehicleComponentType(componentid);
 	}
 	
 	
@@ -66,23 +66,23 @@ public class VehicleComponent implements IVehicleComponent
 	
 	public void add( int componentid )
 	{
-		NativeFunction.addVehicleComponent( vehicleId, componentid );
+		SampNativeFunction.addVehicleComponent( vehicleId, componentid );
 		
-		int slot = NativeFunction.getVehicleComponentType(componentid);
-		components[slot] = NativeFunction.getVehicleComponentInSlot(vehicleId, slot);
+		int slot = SampNativeFunction.getVehicleComponentType(componentid);
+		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicleId, slot);
 	}
 	
 	public void remove( int componentid )
 	{
-		NativeFunction.removeVehicleComponent( vehicleId, componentid );
+		SampNativeFunction.removeVehicleComponent( vehicleId, componentid );
 		
-		int slot = NativeFunction.getVehicleComponentType(componentid);
-		components[slot] = NativeFunction.getVehicleComponentInSlot(vehicleId, slot);
+		int slot = SampNativeFunction.getVehicleComponentType(componentid);
+		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicleId, slot);
 	}
 	
 	public int get( int slot )
 	{
-		return NativeFunction.getVehicleComponentInSlot( vehicleId, slot );
+		return SampNativeFunction.getVehicleComponentInSlot( vehicleId, slot );
 	}
 	
 	public int[] toArray()
@@ -99,6 +99,6 @@ public class VehicleComponent implements IVehicleComponent
 	void update()
 	{
 		for( int i=0; i<SLOTS; i++ )
-			components[i] = NativeFunction.getVehicleComponentInSlot(vehicleId, i);
+			components[i] = SampNativeFunction.getVehicleComponentInSlot(vehicleId, i);
 	}
 }

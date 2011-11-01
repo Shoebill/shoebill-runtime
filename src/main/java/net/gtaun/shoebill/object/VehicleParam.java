@@ -17,7 +17,7 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.lungfish.object.IVehicleParam;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author JoJLlmAn
@@ -50,12 +50,12 @@ public class VehicleParam implements IVehicleParam
 	
 	public void update()
 	{
-		NativeFunction.getVehicleParamsEx( vehicleId, this );
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
 	}
 	
 	public void set( int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective )
 	{
-		NativeFunction.setVehicleParamsEx( vehicleId, engine, lights, alarm, doors, bonnet, boot, objective );
-		NativeFunction.getVehicleParamsEx( vehicleId, this);
+		SampNativeFunction.setVehicleParamsEx( vehicleId, engine, lights, alarm, doors, bonnet, boot, objective );
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this);
 	}
 }

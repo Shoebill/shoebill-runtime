@@ -26,7 +26,7 @@ import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.IRaceCheckpoint;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author JoJLlmAn, MK124
@@ -85,7 +85,7 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 		Player player = (Player) p;
 		
 		if( next != null )
-			NativeFunction.setPlayerRaceCheckpoint( player.id, type, x, y, z, next.x, next.y, next.z, size );
+			SampNativeFunction.setPlayerRaceCheckpoint( player.id, type, x, y, z, next.x, next.y, next.z, size );
 		else
 		{
 			int type = this.type;
@@ -93,7 +93,7 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 			if( type == TYPE_NORMAL )		type = TYPE_NORMAL_FINISH;
 			else if( type == TYPE_AIR )		type = TYPE_AIR_FINISH;
 			
-			NativeFunction.setPlayerRaceCheckpoint( player.id, type, x, y, z, x, y, z, size );
+			SampNativeFunction.setPlayerRaceCheckpoint( player.id, type, x, y, z, x, y, z, size );
 		}
 		
 		player.raceCheckpoint = this;
@@ -105,7 +105,7 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 		Player player = (Player) p;
 		if(player.raceCheckpoint != this) return;
 
-		NativeFunction.disablePlayerRaceCheckpoint( player.id );
+		SampNativeFunction.disablePlayerRaceCheckpoint( player.id );
 		player.raceCheckpoint = null;
 	}
 	
@@ -115,7 +115,7 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 		Player player = (Player) p;
 		if( player.raceCheckpoint != this ) return false;
 		
-		return NativeFunction.isPlayerInRaceCheckpoint( player.id );
+		return SampNativeFunction.isPlayerInRaceCheckpoint( player.id );
 	}
 	
 	@Override

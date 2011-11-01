@@ -24,7 +24,7 @@ import net.gtaun.lungfish.data.PointRange;
 import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.IPlayerLabel;
 import net.gtaun.lungfish.object.IVehicle;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author MK124
@@ -162,7 +162,7 @@ public class PlayerLabel extends Label implements IPlayerLabel
 			offsetZ = position.z;
 		}
 		
-		id = NativeFunction.createPlayer3DTextLabel( player.id, text, color.getValue(),
+		id = SampNativeFunction.createPlayer3DTextLabel( player.id, text, color.getValue(),
 				position.x, position.y, position.z, position.distance, playerId, vehicleId, testLOS );
 		
 		Gamemode.instance.playerLabelPool[id+player.id*Gamemode.MAX_LABELS_PLAYER] = this;
@@ -173,7 +173,7 @@ public class PlayerLabel extends Label implements IPlayerLabel
 	@Override
 	public void destroy()
 	{
-		NativeFunction.deletePlayer3DTextLabel( player.id, id );
+		SampNativeFunction.deletePlayer3DTextLabel( player.id, id );
 		Gamemode.instance.playerLabelPool[id+player.id*Gamemode.MAX_LABELS_PLAYER] = null;
 	}
 
@@ -182,8 +182,8 @@ public class PlayerLabel extends Label implements IPlayerLabel
 	{
 		Player player = (Player) p;
 		
-		NativeFunction.deletePlayer3DTextLabel( this.player.id, id );
-		id = NativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance,
+		SampNativeFunction.deletePlayer3DTextLabel( this.player.id, id );
+		id = SampNativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance,
 				player.id, Gamemode.INVALID_VEHICLE_ID, testLOS );
 	}
 
@@ -192,8 +192,8 @@ public class PlayerLabel extends Label implements IPlayerLabel
 	{
 		Vehicle vehicle = (Vehicle) v;
 		
-		NativeFunction.deletePlayer3DTextLabel( this.player.id, id );
-		id = NativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance,
+		SampNativeFunction.deletePlayer3DTextLabel( this.player.id, id );
+		id = SampNativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance,
 				Gamemode.INVALID_PLAYER_ID, vehicle.id, testLOS );
 	}
 	
@@ -203,6 +203,6 @@ public class PlayerLabel extends Label implements IPlayerLabel
 		this.color = color.clone();
 		this.text = text;
 		
-		NativeFunction.updatePlayer3DTextLabelText( player.id, id, color.getValue(), text );
+		SampNativeFunction.updatePlayer3DTextLabelText( player.id, id, color.getValue(), text );
 	}
 }

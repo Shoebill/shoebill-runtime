@@ -26,7 +26,7 @@ import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.IVehicle;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author MK124, JoJLlmAn
@@ -123,7 +123,7 @@ public class ObjectBase implements IObject
 	
 	private void init()
 	{
-		id = NativeFunction.createObject( model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
+		id = SampNativeFunction.createObject( model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
 		Gamemode.instance.objectPool[id] = this;
 	}
 	
@@ -133,15 +133,15 @@ public class ObjectBase implements IObject
 	@Override
 	public void destroy()
 	{
-		NativeFunction.destroyObject( id );
+		SampNativeFunction.destroyObject( id );
 		Gamemode.instance.objectPool[ id ] = null;
 	}
 	
 	@Override
 	public PointRot getPosition()
 	{
-		NativeFunction.getObjectPos( id, position );
-		NativeFunction.getObjectRot( id, position );
+		SampNativeFunction.getObjectPos( id, position );
+		SampNativeFunction.getObjectRot( id, position );
 		return position.clone();
 	}
 	
@@ -149,15 +149,15 @@ public class ObjectBase implements IObject
 	public void setPosition( Point position )
 	{
 		this.position.set( position );
-		NativeFunction.setObjectPos( id, position.x, position.y, position.z );
+		SampNativeFunction.setObjectPos( id, position.x, position.y, position.z );
 	}
 	
 	@Override
 	public void setPosition( PointRot position )
 	{
 		this.position = position.clone();
-		NativeFunction.setObjectPos( id, position.x, position.y, position.z );
-		NativeFunction.setObjectRot( id, position.rx, position.ry, position.rz );
+		SampNativeFunction.setObjectPos( id, position.x, position.y, position.z );
+		SampNativeFunction.setObjectRot( id, position.rx, position.ry, position.rz );
 	}
 	
 	@Override
@@ -167,21 +167,21 @@ public class ObjectBase implements IObject
 		position.ry = ry;
 		position.rz = rz;
 		
-		NativeFunction.setObjectRot( id, rx, ry, rz );
+		SampNativeFunction.setObjectRot( id, rx, ry, rz );
 	}
 	
 	@Override
 	public int move( float x, float y, float z, float speed )
 	{
 		if(attachedPlayer == null && attachedVehicle == null) this.speed = speed;
-		return NativeFunction.moveObject( id, x, y, z, speed );
+		return SampNativeFunction.moveObject( id, x, y, z, speed );
 	}
 	
 	@Override
 	public void stop()
 	{
 		speed = 0;
-		NativeFunction.stopObject( id );
+		SampNativeFunction.stopObject( id );
 	}
 	
 	@Override
@@ -189,7 +189,7 @@ public class ObjectBase implements IObject
 	{
 		Player player = (Player)p;
 		
-		NativeFunction.attachObjectToPlayer( id, player.id, x, y, z, rx, ry, rz );
+		SampNativeFunction.attachObjectToPlayer( id, player.id, x, y, z, rx, ry, rz );
 		attachedPlayer = player;
 		speed = 0;
 	}
@@ -199,7 +199,7 @@ public class ObjectBase implements IObject
 	{
 		Vehicle vehicle = (Vehicle)v;
 		
-		NativeFunction.attachObjectToVehicle( id, vehicle.id, x, y, z, rx, ry, rz );
+		SampNativeFunction.attachObjectToVehicle( id, vehicle.id, x, y, z, rx, ry, rz );
 		attachedVehicle = vehicle;
 		speed = 0;
 	}

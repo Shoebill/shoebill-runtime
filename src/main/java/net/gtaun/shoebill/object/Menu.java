@@ -23,7 +23,7 @@ import net.gtaun.lungfish.object.IMenu;
 import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author MK124, JoJLlmAn
@@ -78,7 +78,7 @@ public class Menu implements IMenu
 	
 	private void init()
 	{
-		id = NativeFunction.createMenu( title, columns, x, y, col1Width, col1Width );
+		id = SampNativeFunction.createMenu( title, columns, x, y, col1Width, col1Width );
 		Gamemode.instance.menuPool[id] = this;
 	}
 	
@@ -88,7 +88,7 @@ public class Menu implements IMenu
 	@Override
 	public void destroy()
 	{
-		NativeFunction.destroyMenu( id );
+		SampNativeFunction.destroyMenu( id );
 		Gamemode.instance.menuPool[ id ] = null;
 	}
 	
@@ -96,7 +96,7 @@ public class Menu implements IMenu
 	public void addItem( int column, String text )
 	{
 		if( text == null ) throw new NullPointerException();
-		NativeFunction.addMenuItem( id, column, text );
+		SampNativeFunction.addMenuItem( id, column, text );
 	}
 	
 	@Override
@@ -104,33 +104,33 @@ public class Menu implements IMenu
 	{
 		if( text == null ) throw new NullPointerException();
 		
-		NativeFunction.setMenuColumnHeader( id, column, text );
+		SampNativeFunction.setMenuColumnHeader( id, column, text );
 		columnHeader = text;
 	}
 	
 	@Override
 	public void disable()
 	{
-		NativeFunction.disableMenu( id );
+		SampNativeFunction.disableMenu( id );
 	}
 	
 	@Override
 	public void disableRow( int row )
 	{
-		NativeFunction.disableMenuRow( id, row );
+		SampNativeFunction.disableMenuRow( id, row );
 	}
 	
 	@Override
 	public void show( IPlayer p )
 	{
 		Player player = (Player)p;
-		NativeFunction.showMenuForPlayer( id, player.id );
+		SampNativeFunction.showMenuForPlayer( id, player.id );
 	}
 	
 	@Override
 	public void hide( IPlayer p )
 	{
 		Player player = (Player)p;
-		NativeFunction.hideMenuForPlayer( id, player.id );
+		SampNativeFunction.hideMenuForPlayer( id, player.id );
 	}
 }

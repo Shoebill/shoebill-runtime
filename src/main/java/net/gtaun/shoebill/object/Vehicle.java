@@ -30,7 +30,7 @@ import net.gtaun.lungfish.object.IVehicleComponent;
 import net.gtaun.lungfish.object.IVehicleParam;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author MK124, JoJLlmAn
@@ -62,7 +62,7 @@ public class Vehicle implements IVehicle
 	
 	public static void manualEngineAndLights()
 	{
-		NativeFunction.manualVehicleEngineAndLights();
+		SampNativeFunction.manualVehicleEngineAndLights();
 	}
 	
 
@@ -142,16 +142,16 @@ public class Vehicle implements IVehicle
 			case 569:
 			case 570:
 			case 590:
-				id = NativeFunction.addStaticVehicle( model, x, y, z, angle, color1, color2 );
+				id = SampNativeFunction.addStaticVehicle( model, x, y, z, angle, color1, color2 );
 				isStatic = true;
 				break;
 							
 			default:
-				id = NativeFunction.createVehicle( model, x, y, z, angle, color1, color2, respawnDelay );
+				id = SampNativeFunction.createVehicle( model, x, y, z, angle, color1, color2, respawnDelay );
 		}
 		
-		NativeFunction.linkVehicleToInterior( id, interior );
-		NativeFunction.setVehicleVirtualWorld( id, world );
+		SampNativeFunction.linkVehicleToInterior( id, interior );
+		SampNativeFunction.setVehicleVirtualWorld( id, world );
 
 		param = new VehicleParam( id );
 		component = new VehicleComponent( id );
@@ -170,7 +170,7 @@ public class Vehicle implements IVehicle
 	{
 		if( isStatic ) return;
 		
-		NativeFunction.destroyVehicle( id );
+		SampNativeFunction.destroyVehicle( id );
 		
 		isDestroyed = true;
 		Gamemode.instance.vehiclePool[ id ] = null;
@@ -183,7 +183,7 @@ public class Vehicle implements IVehicle
 	@Override
 	public Vehicle getTrailer()
 	{
-		return get( Vehicle.class, NativeFunction.getVehicleTrailer(id) );
+		return get( Vehicle.class, SampNativeFunction.getVehicleTrailer(id) );
 	}
 	
 	@Override
@@ -191,10 +191,10 @@ public class Vehicle implements IVehicle
 	{
 		PointAngle position = new PointAngle();
 
-		NativeFunction.getVehiclePos( id, position );
-		position.angle = NativeFunction.getVehicleZAngle(id);
+		SampNativeFunction.getVehiclePos( id, position );
+		position.angle = SampNativeFunction.getVehicleZAngle(id);
 		position.interior = interior;
-		position.world = NativeFunction.getVehicleVirtualWorld( id );
+		position.world = SampNativeFunction.getVehicleVirtualWorld( id );
 		
 		return position;
 	}
@@ -202,7 +202,7 @@ public class Vehicle implements IVehicle
 	@Override
 	public float getAngle()
 	{
-		return NativeFunction.getVehicleZAngle(id);
+		return SampNativeFunction.getVehicleZAngle(id);
 	}
 	
 	@Override
@@ -214,20 +214,20 @@ public class Vehicle implements IVehicle
 	@Override
 	public int getWorld()
 	{
-		return NativeFunction.getVehicleVirtualWorld(id);
+		return SampNativeFunction.getVehicleVirtualWorld(id);
 	}
 	
 	@Override
 	public float getHealth()
 	{
-		return NativeFunction.getVehicleHealth(id);
+		return SampNativeFunction.getVehicleHealth(id);
 	}
 
 	@Override
 	public Velocity getVelocity()
 	{
 		Velocity velocity = new Velocity();
-		NativeFunction.getVehicleVelocity( id, velocity );
+		SampNativeFunction.getVehicleVelocity( id, velocity );
 		
 		return velocity;
 	}
@@ -236,7 +236,7 @@ public class Vehicle implements IVehicle
 	public Quaternions getRotationQuat()
 	{
 		Quaternions quaternions = new Quaternions();
-		NativeFunction.getVehicleRotationQuat( id, quaternions );
+		SampNativeFunction.getVehicleRotationQuat( id, quaternions );
 		
 		return quaternions;
 	}
@@ -245,55 +245,55 @@ public class Vehicle implements IVehicle
 	@Override
 	public void setPosition( float x, float y, float z )
 	{
-		NativeFunction.setVehiclePos( id, x, y, z );
+		SampNativeFunction.setVehiclePos( id, x, y, z );
 	}
 	
 	@Override
 	public void setPosition( Point point )
 	{
-		NativeFunction.setVehiclePos( id, point.x, point.y, point.z );
-		NativeFunction.linkVehicleToInterior( id, point.interior );
-		NativeFunction.setVehicleVirtualWorld( id, point.world );
+		SampNativeFunction.setVehiclePos( id, point.x, point.y, point.z );
+		SampNativeFunction.linkVehicleToInterior( id, point.interior );
+		SampNativeFunction.setVehicleVirtualWorld( id, point.world );
 	}
 	
 	@Override
 	public void setPosition( PointAngle point )
 	{
-		NativeFunction.setVehiclePos( id, point.x, point.y, point.z );
-		NativeFunction.setVehicleZAngle( id, point.angle );
-		NativeFunction.linkVehicleToInterior( id, point.interior );
-		NativeFunction.setVehicleVirtualWorld( id, point.world );
+		SampNativeFunction.setVehiclePos( id, point.x, point.y, point.z );
+		SampNativeFunction.setVehicleZAngle( id, point.angle );
+		SampNativeFunction.linkVehicleToInterior( id, point.interior );
+		SampNativeFunction.setVehicleVirtualWorld( id, point.world );
 	}
 	
 	@Override
 	public void setHealth( float health )
 	{
-		NativeFunction.setVehicleHealth( id, health );
+		SampNativeFunction.setVehicleHealth( id, health );
 	}
 	
 	@Override
 	public void setVelocity( Velocity velocity )
 	{
-		NativeFunction.setVehicleVelocity( id, velocity.x, velocity.y, velocity.z );
+		SampNativeFunction.setVehicleVelocity( id, velocity.x, velocity.y, velocity.z );
 	}
 	
 	@Override
 	public void setAngle( float angle )
 	{
-		NativeFunction.setVehicleZAngle( id, angle );
+		SampNativeFunction.setVehicleZAngle( id, angle );
 	}
 	
 	@Override
 	public void setInterior( int interior )
 	{
 		this.interior = interior;
-		NativeFunction.linkVehicleToInterior( id, interior );
+		SampNativeFunction.linkVehicleToInterior( id, interior );
 	}
 	
 	@Override
 	public void setWorld( int world )
 	{
-		NativeFunction.setVehicleVirtualWorld( id, world );
+		SampNativeFunction.setVehicleVirtualWorld( id, world );
 	}
 
 	
@@ -301,90 +301,90 @@ public class Vehicle implements IVehicle
 	public void putPlayer( IPlayer p, int seat )
 	{
 		Player player = (Player) p;
-		NativeFunction.putPlayerInVehicle( player.id, id, seat );
+		SampNativeFunction.putPlayerInVehicle( player.id, id, seat );
 	}
 	
 	@Override
 	public boolean isPlayerIn( IPlayer p )
 	{
 		Player player = (Player) p;
-		return NativeFunction.isPlayerInVehicle(player.id, id);
+		return SampNativeFunction.isPlayerInVehicle(player.id, id);
 	}
 	
 	@Override
 	public boolean isStreamedIn( IPlayer fp )
 	{
 		Player forplayer = (Player) fp;
-		return NativeFunction.isVehicleStreamedIn(id, forplayer.id);
+		return SampNativeFunction.isVehicleStreamedIn(id, forplayer.id);
 	}
 	
 	@Override
 	public void setParamsForPlayer( IPlayer p, boolean objective, boolean doorslocked )
 	{
 		Player player = (Player) p;
-		NativeFunction.setVehicleParamsForPlayer( id, player.id, objective, doorslocked );
+		SampNativeFunction.setVehicleParamsForPlayer( id, player.id, objective, doorslocked );
 	}
 	
 	@Override
 	public void respawn()
 	{
-		NativeFunction.setVehicleToRespawn( id );
+		SampNativeFunction.setVehicleToRespawn( id );
 	}
 	
 	@Override
 	public void setColor( int color1, int color2 )
 	{
-		NativeFunction.changeVehicleColor( id, color1, color2 );
+		SampNativeFunction.changeVehicleColor( id, color1, color2 );
 	}
 	
 	@Override
 	public void setPaintjob( int paintjobid )
 	{
-		NativeFunction.changeVehiclePaintjob( id, paintjobid );
+		SampNativeFunction.changeVehiclePaintjob( id, paintjobid );
 	}
 	
 	@Override
 	public void attachTrailer( IVehicle t )
 	{
 		Vehicle trailer = (Vehicle) t;
-		NativeFunction.attachTrailerToVehicle( trailer.id, id );
+		SampNativeFunction.attachTrailerToVehicle( trailer.id, id );
 	}
 	
 	@Override
 	public void detachTrailer()
 	{
-		NativeFunction.detachTrailerFromVehicle( id );
+		SampNativeFunction.detachTrailerFromVehicle( id );
 	}
 	
 	@Override
 	public boolean isTrailerAttached()
 	{
-		return NativeFunction.isTrailerAttachedToVehicle(id);
+		return SampNativeFunction.isTrailerAttachedToVehicle(id);
 	}
 	
 	@Override
 	public void setNumberPlate( String numberplate )
 	{
 		if( numberplate == null ) throw new NullPointerException();
-		NativeFunction.setVehicleNumberPlate( id, numberplate );
+		SampNativeFunction.setVehicleNumberPlate( id, numberplate );
 	}
 	
 	@Override
 	public void repair()
 	{
-		NativeFunction.repairVehicle( id );
+		SampNativeFunction.repairVehicle( id );
 	}
 	
 	@Override
 	public void setAngularVelocity( Velocity velocity )
 	{
-		NativeFunction.setVehicleAngularVelocity( id, velocity.x, velocity.y, velocity.z );
+		SampNativeFunction.setVehicleAngularVelocity( id, velocity.x, velocity.y, velocity.z );
 	}
 	
 	@Override
 	public float distanceToPoint( Point point )
 	{
-		return NativeFunction.getVehicleDistanceFromPoint(id, point.x, point.y, point.z);
+		return SampNativeFunction.getVehicleDistanceFromPoint(id, point.x, point.y, point.z);
 	}
 	
 	//public static int getComponentType( int component );

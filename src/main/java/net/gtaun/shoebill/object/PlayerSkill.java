@@ -17,7 +17,7 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.lungfish.object.IPlayerSkill;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author JoJLlmAn
@@ -56,7 +56,7 @@ public class PlayerSkill implements IPlayerSkill
 		if(level > 999)		level = 999;
 		else if(level < 0)	level = 0;
 		
-		NativeFunction.setPlayerSkillLevel( playerid, type, level );
+		SampNativeFunction.setPlayerSkillLevel( playerid, type, level );
 		skills[type] = level;
 	}
 	

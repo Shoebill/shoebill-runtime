@@ -23,7 +23,7 @@ import net.gtaun.lungfish.data.Point;
 import net.gtaun.lungfish.object.IPickup;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author MK124, JoJLlmAn
@@ -90,7 +90,7 @@ public class Pickup implements IPickup
 	
 	private void init()
 	{
-		id = NativeFunction.createPickup( model, type, position.x, position.y, position.z, world );
+		id = SampNativeFunction.createPickup( model, type, position.x, position.y, position.z, world );
 		
 		Gamemode.instance.pickupPool[id] = this;
 	}
@@ -101,7 +101,7 @@ public class Pickup implements IPickup
 	@Override
 	public void destroy()
 	{
-		NativeFunction.destroyPickup( id );
+		SampNativeFunction.destroyPickup( id );
 		Gamemode.instance.pickupPool[ id ] = null;
 	}
 }

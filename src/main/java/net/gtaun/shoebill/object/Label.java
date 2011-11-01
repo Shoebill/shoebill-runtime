@@ -25,7 +25,7 @@ import net.gtaun.lungfish.data.PointRange;
 import net.gtaun.lungfish.object.ILabel;
 import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.object.IVehicle;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author MK124
@@ -95,7 +95,7 @@ public class Label implements ILabel
 	
 	private void init()
 	{
-		id = NativeFunction.create3DTextLabel( text, color.getValue(),
+		id = SampNativeFunction.create3DTextLabel( text, color.getValue(),
 				position.x, position.y, position.z, position.distance, position.world, testLOS );
 		
 		Gamemode.instance.labelPool[id] = this;
@@ -106,7 +106,7 @@ public class Label implements ILabel
 	@Override
 	public void destroy()
 	{
-		NativeFunction.delete3DTextLabel( id );
+		SampNativeFunction.delete3DTextLabel( id );
 		Gamemode.instance.labelPool[ id ] = null;
 	}
 
@@ -139,7 +139,7 @@ public class Label implements ILabel
 		offsetY = y;
 		offsetZ = z;
 		
-		NativeFunction.attach3DTextLabelToPlayer( id, player.id, x, y, z );
+		SampNativeFunction.attach3DTextLabelToPlayer( id, player.id, x, y, z );
 		attachedPlayer = player;
 		attachedVehicle = null;
 	}
@@ -153,7 +153,7 @@ public class Label implements ILabel
 		offsetY = y;
 		offsetZ = z;
 		
-		NativeFunction.attach3DTextLabelToVehicle( id, vehicle.id, x, y, z );
+		SampNativeFunction.attach3DTextLabelToVehicle( id, vehicle.id, x, y, z );
 		attachedPlayer = null;
 		attachedVehicle = vehicle;
 	}
@@ -166,6 +166,6 @@ public class Label implements ILabel
 		this.color = color.clone();
 		this.text = text;
 		
-		NativeFunction.update3DTextLabelText( id, color.getValue(), text );
+		SampNativeFunction.update3DTextLabelText( id, color.getValue(), text );
 	}
 }

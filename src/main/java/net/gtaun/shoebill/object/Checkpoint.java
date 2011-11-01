@@ -25,7 +25,7 @@ import net.gtaun.lungfish.object.ICheckpoint;
 import net.gtaun.lungfish.object.IPlayer;
 import net.gtaun.lungfish.util.event.EventDispatcher;
 import net.gtaun.lungfish.util.event.IEventDispatcher;
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author JoJLlmAn, MK124
@@ -67,7 +67,7 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 	{
 		Player player = (Player)p;
 		
-		NativeFunction.setPlayerCheckpoint( player.id, x, y, z, size );
+		SampNativeFunction.setPlayerCheckpoint( player.id, x, y, z, size );
 		player.checkpoint = this;
 	}
 	
@@ -77,7 +77,7 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 		Player player = (Player)p;
 		if( player.checkpoint != this ) return;
 
-		NativeFunction.disablePlayerCheckpoint( player.id );
+		SampNativeFunction.disablePlayerCheckpoint( player.id );
 		player.checkpoint = null;
 	}
 	
@@ -87,7 +87,7 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 		Player player = (Player)p;
 		
 		if( player.checkpoint != this ) return false;
-		return NativeFunction.isPlayerInCheckpoint(player.id);
+		return SampNativeFunction.isPlayerInCheckpoint(player.id);
 	}
 	
 	@Override

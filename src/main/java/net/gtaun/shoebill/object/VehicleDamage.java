@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.NativeFunction;
+import net.gtaun.shoebill.SampNativeFunction;
 
 /**
  * @author JoJLlmAn
@@ -41,7 +41,7 @@ public class VehicleDamage
 	
 	public void set( int panels, int doors, int lights, int tires )
 	{
-		NativeFunction.updateVehicleDamageStatus(vehicleId, panels, doors, lights, tires);
-		NativeFunction.getVehicleDamageStatus(vehicleId, this);
+		SampNativeFunction.updateVehicleDamageStatus(vehicleId, panels, doors, lights, tires);
+		SampNativeFunction.getVehicleDamageStatus(vehicleId, this);
 	}
 }

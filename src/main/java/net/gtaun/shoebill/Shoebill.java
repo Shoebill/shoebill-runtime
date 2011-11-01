@@ -36,6 +36,7 @@ public class Shoebill implements IShoebill
 	
 	SampCallbackManager sampCallbackManager;
 	ISampFunction sampFunction;
+	
 	SampObjectPool managedObjectPool;
 	PluginManager pluginManager;
 
@@ -54,6 +55,7 @@ public class Shoebill implements IShoebill
 		return globalEventDispatcher;
 	}
 	
+	
 	@Override
 	public ISampCallbackManager getCallbackManager()
 	{
@@ -65,6 +67,7 @@ public class Shoebill implements IShoebill
 	{
 		return sampFunction;
 	}
+	
 
 	@Override
 	public IObjectPool getManagedObjectPool()
