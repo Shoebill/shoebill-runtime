@@ -199,7 +199,6 @@ public abstract class Gamemode implements IGamemode
 			System.setOut( logStream );
 			System.setErr( logStream );
 			
-			SampNativeFunction.loadLibrary();
 			instance = this;
 		}
 		catch( Exception e )
