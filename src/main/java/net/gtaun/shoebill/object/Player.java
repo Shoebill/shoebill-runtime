@@ -20,25 +20,19 @@ package net.gtaun.shoebill.object;
 import java.util.Iterator;
 import java.util.Vector;
 
-import net.gtaun.lungfish.data.Area;
-import net.gtaun.lungfish.data.Color;
-import net.gtaun.lungfish.data.KeyState;
-import net.gtaun.lungfish.data.Point;
-import net.gtaun.lungfish.data.PointAngle;
-import net.gtaun.lungfish.data.SpawnInfo;
-import net.gtaun.lungfish.data.Time;
-import net.gtaun.lungfish.data.Velocity;
-import net.gtaun.lungfish.exception.AlreadyExistException;
-import net.gtaun.lungfish.exception.IllegalLengthException;
-import net.gtaun.lungfish.object.ICheckpoint;
-import net.gtaun.lungfish.object.IPlayer;
-import net.gtaun.lungfish.object.IPlayerAttach;
-import net.gtaun.lungfish.object.IPlayerSkill;
-import net.gtaun.lungfish.object.IRaceCheckpoint;
-import net.gtaun.lungfish.object.IVehicle;
-import net.gtaun.lungfish.util.event.EventDispatcher;
-import net.gtaun.lungfish.util.event.IEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.data.Area;
+import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.data.KeyState;
+import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.data.PointAngle;
+import net.gtaun.shoebill.data.SpawnInfo;
+import net.gtaun.shoebill.data.Time;
+import net.gtaun.shoebill.data.Velocity;
+import net.gtaun.shoebill.exception.AlreadyExistException;
+import net.gtaun.shoebill.exception.IllegalLengthException;
+import net.gtaun.shoebill.util.event.EventDispatcher;
+import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124, JoJLlmAn

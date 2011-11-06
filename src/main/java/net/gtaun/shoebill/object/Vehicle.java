@@ -19,18 +19,14 @@ package net.gtaun.shoebill.object;
 
 import java.util.Vector;
 
-import net.gtaun.lungfish.data.Point;
-import net.gtaun.lungfish.data.PointAngle;
-import net.gtaun.lungfish.data.Quaternions;
-import net.gtaun.lungfish.data.Velocity;
-import net.gtaun.lungfish.event.vehicle.VehicleDestroyEvent;
-import net.gtaun.lungfish.object.IPlayer;
-import net.gtaun.lungfish.object.IVehicle;
-import net.gtaun.lungfish.object.IVehicleComponent;
-import net.gtaun.lungfish.object.IVehicleParam;
-import net.gtaun.lungfish.util.event.EventDispatcher;
-import net.gtaun.lungfish.util.event.IEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.data.PointAngle;
+import net.gtaun.shoebill.data.Quaternions;
+import net.gtaun.shoebill.data.Velocity;
+import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
+import net.gtaun.shoebill.util.event.EventDispatcher;
+import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124, JoJLlmAn

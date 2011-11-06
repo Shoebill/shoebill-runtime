@@ -18,12 +18,10 @@ package net.gtaun.shoebill.object;
 
 import java.lang.ref.WeakReference;
 
-import net.gtaun.lungfish.event.dialog.DialogCancelEvent;
-import net.gtaun.lungfish.object.IDialog;
-import net.gtaun.lungfish.object.IPlayer;
-import net.gtaun.lungfish.util.event.EventDispatcher;
-import net.gtaun.lungfish.util.event.IEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
+import net.gtaun.shoebill.util.event.EventDispatcher;
+import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124

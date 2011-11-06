@@ -16,8 +16,6 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.lungfish.IPlugin;
-import net.gtaun.lungfish.IPluginManager;
 
 /**
  * @author MK124

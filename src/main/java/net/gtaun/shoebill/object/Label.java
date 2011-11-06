@@ -18,14 +18,11 @@ package net.gtaun.shoebill.object;
 
 import java.util.Vector;
 
-import net.gtaun.lungfish.data.Color;
-import net.gtaun.lungfish.data.Point;
-import net.gtaun.lungfish.data.PointAngle;
-import net.gtaun.lungfish.data.PointRange;
-import net.gtaun.lungfish.object.ILabel;
-import net.gtaun.lungfish.object.IPlayer;
-import net.gtaun.lungfish.object.IVehicle;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.data.PointAngle;
+import net.gtaun.shoebill.data.PointRange;
 
 /**
  * @author MK124

@@ -16,13 +16,9 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.lungfish.IObjectPool;
-import net.gtaun.lungfish.IPluginManager;
-import net.gtaun.lungfish.ISampCallbackManager;
-import net.gtaun.lungfish.IShoebill;
-import net.gtaun.lungfish.samp.ISampCallback;
-import net.gtaun.lungfish.util.event.EventDispatcher;
-import net.gtaun.lungfish.util.event.IEventDispatcher;
+import net.gtaun.shoebill.samp.ISampCallback;
+import net.gtaun.shoebill.util.event.EventDispatcher;
+import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 
 /**

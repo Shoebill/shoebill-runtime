@@ -19,11 +19,10 @@ package net.gtaun.shoebill.object;
 
 import java.util.Vector;
 
-import net.gtaun.lungfish.data.Point;
-import net.gtaun.lungfish.object.IPickup;
-import net.gtaun.lungfish.util.event.EventDispatcher;
-import net.gtaun.lungfish.util.event.IEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.util.event.EventDispatcher;
+import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124, JoJLlmAn

@@ -19,8 +19,7 @@ package net.gtaun.shoebill;
 import java.util.List;
 import java.util.Vector;
 
-import net.gtaun.lungfish.ISampCallbackManager;
-import net.gtaun.lungfish.samp.ISampCallback;
+import net.gtaun.shoebill.samp.ISampCallback;
 
 /**
  * @author MK124

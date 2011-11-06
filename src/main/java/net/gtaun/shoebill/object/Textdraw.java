@@ -19,10 +19,8 @@ package net.gtaun.shoebill.object;
 
 import java.util.Vector;
 
-import net.gtaun.lungfish.data.Color;
-import net.gtaun.lungfish.object.IPlayer;
-import net.gtaun.lungfish.object.ITextdraw;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.data.Color;
 
 
 /**

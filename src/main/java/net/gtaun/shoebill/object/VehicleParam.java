@@ -16,7 +16,6 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.lungfish.object.IVehicleParam;
 import net.gtaun.shoebill.SampNativeFunction;
 
 /**

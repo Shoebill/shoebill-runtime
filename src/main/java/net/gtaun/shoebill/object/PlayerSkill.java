@@ -16,7 +16,6 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.lungfish.object.IPlayerSkill;
 import net.gtaun.shoebill.SampNativeFunction;
 
 /**

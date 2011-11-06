@@ -16,9 +16,8 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.lungfish.data.Vector3D;
-import net.gtaun.lungfish.object.IPlayerAttach;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.data.Vector3D;
 
 /**
  * @author JoJLlmAn

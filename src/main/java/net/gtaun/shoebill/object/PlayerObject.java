@@ -18,11 +18,9 @@ package net.gtaun.shoebill.object;
 
 import java.util.Vector;
 
-import net.gtaun.lungfish.data.Point;
-import net.gtaun.lungfish.data.PointRot;
-import net.gtaun.lungfish.object.IPlayer;
-import net.gtaun.lungfish.object.IPlayerObject;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.data.PointRot;
 
 /**
  * @author MK124

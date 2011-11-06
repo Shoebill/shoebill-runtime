@@ -26,13 +26,13 @@
   </ciManagement>
   
   <dependencies>
-    <dependency>
-      <groupId>net.gtaun</groupId>
-      <artifactId>Lungfish</artifactId>
-      <version>0.1-SNAPSHOT</version>
+  	<dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>1.9</version>
       <type>jar</type>
       <scope>compile</scope>
-    </dependency>
+  	</dependency>
   </dependencies>
     
   <build>

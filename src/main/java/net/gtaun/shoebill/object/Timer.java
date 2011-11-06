@@ -20,10 +20,9 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 
-import net.gtaun.lungfish.event.timer.TimerTickEvent;
-import net.gtaun.lungfish.object.ITimer;
-import net.gtaun.lungfish.util.event.EventDispatcher;
-import net.gtaun.lungfish.util.event.IEventDispatcher;
+import net.gtaun.shoebill.event.timer.TimerTickEvent;
+import net.gtaun.shoebill.util.event.EventDispatcher;
+import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124
