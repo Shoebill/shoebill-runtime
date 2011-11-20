@@ -95,9 +95,9 @@ public abstract class Gamemode
 	static final int INVALID_PLAYER_ID =				0xFFFF;
 	static final int INVALID_VEHICLE_ID	=				0xFFFF;
 	static final int INVALID_OBJECT_ID =				0xFFFF;
-	static final int INVALID_MENU =						0xFF;
-	static final int INVALID_TEXT_DRAW =				0xFFFF;
-	static final int INVALID_GANG_ZONE =				-1;
+	static final int INVALID_MENU_ID =					0xFF;
+	static final int INVALID_TEXT_DRAW_ID =				0xFFFF;
+	static final int INVALID_GANG_ZONE_ID =				-1;
 	static final int INVALID_3DTEXT_ID =				0xFFFF;
 	static final int PLAYER_NO_TEAM =					255;
 	
