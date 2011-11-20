@@ -16,26 +16,23 @@
 
 package net.gtaun.shoebill.event.player;
 
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.util.event.Event;
+import net.gtaun.shoebill.object.Player;
 
 /**
  * @author MK124
  *
  */
 
-public class PlayerKeyStateChangeEvent extends Event
+public class PlayerKeyStateChangeEvent extends PlayerEvent
 {
-	IPlayer player;
 	int oldkeys;
 	
-	public IPlayer getPlayer()				{ return player; }
 	public int getOldkeys()				{ return oldkeys; }
 	
 	
-	public PlayerKeyStateChangeEvent( IPlayer player, int oldkeys )
+	public PlayerKeyStateChangeEvent( Player player, int oldkeys )
 	{
-		this.player = player;
+		super( player );
 		this.oldkeys = oldkeys;
 	}
 }

@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.event.listener;
 
-import net.gtaun.shoebill.event.racecheckpoint.RaceCheckpointEnterEvent;
-import net.gtaun.shoebill.event.racecheckpoint.RaceCheckpointLeaveEvent;
+import net.gtaun.shoebill.event.checkpoint.RaceCheckpointEnterEvent;
+import net.gtaun.shoebill.event.checkpoint.RaceCheckpointLeaveEvent;
 import net.gtaun.shoebill.util.event.EventListener;
 
 /**

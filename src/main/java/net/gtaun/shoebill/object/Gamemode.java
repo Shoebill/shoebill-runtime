@@ -32,6 +32,8 @@ import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.event.checkpoint.CheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointLeaveEvent;
+import net.gtaun.shoebill.event.checkpoint.RaceCheckpointEnterEvent;
+import net.gtaun.shoebill.event.checkpoint.RaceCheckpointLeaveEvent;
 import net.gtaun.shoebill.event.dialog.DialogResponseEvent;
 import net.gtaun.shoebill.event.gamemode.GamemodeExitEvent;
 import net.gtaun.shoebill.event.menu.MenuExitedEvent;
@@ -56,8 +58,6 @@ import net.gtaun.shoebill.event.player.PlayerStreamInEvent;
 import net.gtaun.shoebill.event.player.PlayerStreamOutEvent;
 import net.gtaun.shoebill.event.player.PlayerTextEvent;
 import net.gtaun.shoebill.event.player.PlayerUpdateEvent;
-import net.gtaun.shoebill.event.racecheckpoint.RaceCheckpointEnterEvent;
-import net.gtaun.shoebill.event.racecheckpoint.RaceCheckpointLeaveEvent;
 import net.gtaun.shoebill.event.rcon.RconCommandEvent;
 import net.gtaun.shoebill.event.rcon.RconLoginEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleDeathEvent;
@@ -79,7 +79,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public abstract class Gamemode implements IGamemode
+public abstract class Gamemode
 {
 	public static final int MAX_PLAYER_NAME =			24;
 	public static final int MAX_PLAYERS =				500;
@@ -171,12 +171,12 @@ public abstract class Gamemode implements IGamemode
 	float playerMarkerRadius = -1;
 	
 	
-	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	@Override public int getDeathDropAmount()					{ return deathDropAmount; }
-	@Override public float getNameTagDrawDistance()				{ return nameTagDrawDistance; }
-	@Override public float getChatRadius()						{ return chatRadius; }
-	@Override public float getPlayerMarkerRadius()				{ return playerMarkerRadius;}
+	public int getDeathDropAmount()					{ return deathDropAmount; }
+	public float getNameTagDrawDistance()				{ return nameTagDrawDistance; }
+	public float getChatRadius()						{ return chatRadius; }
+	public float getPlayerMarkerRadius()				{ return playerMarkerRadius;}
 	
 
 	protected Gamemode()
@@ -225,32 +225,27 @@ public abstract class Gamemode implements IGamemode
 		return SampNativeFunction.getServerCodepage();
 	}
 	
-	@Override
 	public void setServerCodepage( int codepage )
 	{
 		SampNativeFunction.setServerCodepage( codepage );
 	}
 	
-	@Override
 	public void setGameModeText( String string )
 	{
 		if( string == null ) throw new NullPointerException();
 		SampNativeFunction.setGameModeText( string );
 	}
 	
-	@Override
 	public void setTeamCount( int count )
 	{
 		SampNativeFunction.setTeamCount( count );
 	}
 
-	@Override
 	public int addPlayerClass( int model, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 )
 	{
 		return SampNativeFunction.addPlayerClass( model, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3 );
 	}
 
-	@Override
 	public int addPlayerClass( int model, SpawnInfo spawninfo )
 	{
 		return SampNativeFunction.addPlayerClass( model, 
@@ -259,7 +254,6 @@ public abstract class Gamemode implements IGamemode
 			spawninfo.weapon3.id, spawninfo.weapon3.ammo );
 	}
 	
-	@Override
 	public int addPlayerClassEx( int team, int model, SpawnInfo spawninfo )
 	{
 		return SampNativeFunction.addPlayerClassEx( team, model, 
@@ -268,134 +262,113 @@ public abstract class Gamemode implements IGamemode
 				spawninfo.weapon3.id, spawninfo.weapon3.ammo );
 	}
 
-	@Override
 	public void showNameTags( boolean enabled )
 	{
 		SampNativeFunction.showNameTags( enabled );
 	}
 	
-	@Override
 	public void showPlayerMarkers( int mode )
 	{
 		SampNativeFunction.showPlayerMarkers( mode );
 	}
 	
-	@Override
 	public void setWorldTime( int hour )
 	{
 		SampNativeFunction.setWorldTime( hour );
 	}
 	
-	@Override
 	public void enableTirePopping( boolean enabled )
 	{
 		SampNativeFunction.enableTirePopping( enabled );
 	}
 	
-	@Override
 	public void allowInteriorWeapons( boolean allow )
 	{
 		SampNativeFunction.allowInteriorWeapons( allow );
 	}
 	
-	@Override
 	public void setWeather( int weatherid )
 	{
 		SampNativeFunction.setWeather( weatherid );
 	}
 	
-	@Override
 	public void setGravity( float gravity )
 	{
 		SampNativeFunction.setGravity( gravity );
 	}
 	
-	@Override
 	public void setDeathDropAmount( int amount )
 	{
 		SampNativeFunction.setDeathDropAmount( amount );
 		deathDropAmount = amount;
 	}
 	
-	@Override
 	public void createExplosion( Point point, int type, float radius )
 	{
 		SampNativeFunction.createExplosion( point.x, point.y, point.z, type, radius );
 	}
 	
-	@Override
 	public void enableZoneNames( boolean enabled )
 	{
 		SampNativeFunction.enableZoneNames( enabled );
 	}
 	
-	@Override
 	public void usePlayerPedAnims()
 	{
 		SampNativeFunction.usePlayerPedAnims();
 	}
 	
-	@Override
 	public void disableInteriorEnterExits()
 	{
 		SampNativeFunction.disableInteriorEnterExits();
 	}
 	
-	@Override
 	public void setNameTagDrawDistance( float distance )
 	{
 		nameTagDrawDistance = distance;
 		SampNativeFunction.setNameTagDrawDistance( distance );
 	}
 	
-	@Override
 	public void disableNameTagLOS()
 	{
 		SampNativeFunction.disableNameTagLOS();
 	}
 
-	@Override
 	public void sendRconCommand( String command )
 	{
 		if( command == null ) throw new NullPointerException();
 		SampNativeFunction.sendRconCommand( command );
 	}
 	
-	@Override
 	public String getServerVarAsString( String varname )
 	{
 		if( varname == null ) throw new NullPointerException();
 		return SampNativeFunction.getServerVarAsString( varname );
 	}
 	
-	@Override
 	public int getServerVarAsInt( String varname )
 	{
 		if( varname == null ) throw new NullPointerException();
 		return SampNativeFunction.getServerVarAsInt( varname );
 	}
 	
-	@Override
 	public boolean getServerVarAsBool( String varname )
 	{
 		if( varname == null ) throw new NullPointerException();
 		return SampNativeFunction.getServerVarAsBool( varname );
 	}
 	
-	@Override
 	public void connectNPC( String name, String script )
 	{
 		if( name == null || script == null ) throw new NullPointerException();
 		SampNativeFunction.connectNPC( name, script );
 	}
 	
-	@Override
 	public void exit()
 	{
 		SampNativeFunction.gameModeExit();
 	}
 	
-	@Override
 	public String getNetworkStats()
 	{
 		return SampNativeFunction.getNetworkStats();

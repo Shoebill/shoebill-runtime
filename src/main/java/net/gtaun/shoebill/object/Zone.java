@@ -28,7 +28,7 @@ import net.gtaun.shoebill.data.Color;
  *
  */
 
-public class Zone implements IZone
+public class Zone implements IDestroyable
 {
 	public static Vector<Zone> get()
 	{
@@ -45,12 +45,12 @@ public class Zone implements IZone
 	private boolean[] isPlayerFlashing = new boolean[Gamemode.MAX_PLAYERS];
 	
 	
-	int id;
+	int id = -1;
 	Area area;
 	
 	
-	@Override public int getId()				{ return id; }
-	@Override public Area getArea()				{ return area.clone(); }
+	public int getId()				{ return id; }
+	public Area getArea()			{ return area.clone(); }
 
 
 	public Zone( float minX, float minY, float maxX, float maxY )
@@ -86,58 +86,53 @@ public class Zone implements IZone
 	{
 		SampNativeFunction.gangZoneDestroy( id );
 		Gamemode.instance.zonePool[id] = null;
+		
+		id = -1;
+	}
+	
+	@Override
+	public boolean isDestroyed()
+	{
+		return id == -1;
 	}
 	
 
-	@Override
-	public void show( IPlayer p, int color )
+	public void show( Player player, int color )
 	{
-		Player player = (Player) p;
-		
 		SampNativeFunction.gangZoneShowForPlayer( player.id, id, color );
 		isPlayerShowed[player.id] = true;
 		isPlayerFlashing[player.id] = false;
 	}
 
-	@Override
-	public void hide( IPlayer p )
+	public void hide( Player player )
 	{
-		Player player = (Player) p;
-		
 		SampNativeFunction.gangZoneHideForPlayer( player.id, id );
 		
 		isPlayerShowed[player.id] = false;
 		isPlayerFlashing[player.id] = false;
 	}
 
-	@Override
-	public void flash( IPlayer p, int color )
+	public void flash( Player player, int color )
 	{
-		Player player = (Player) p;
 		if( isPlayerShowed[player.id] ){
 			SampNativeFunction.gangZoneFlashForPlayer( player.id, id, color );
 			isPlayerFlashing[player.id] = true;
 		}
 	}
 
-	@Override
-	public void stopFlash( IPlayer p )
+	public void stopFlash( Player player )
 	{
-		Player player = (Player) p;
-		
 		SampNativeFunction.gangZoneStopFlashForPlayer( player.id, id );
 		isPlayerFlashing[player.id] = false;
 	}
 	
 
-	@Override
 	public void showForAll( Color color )
 	{
 		SampNativeFunction.gangZoneShowForAll( id, color.getValue() );
 		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
 	}
 
-	@Override
 	public void hideForAll()
 	{
 		SampNativeFunction.gangZoneHideForAll( id );
@@ -149,14 +144,12 @@ public class Zone implements IZone
 		}
 	}
 
-	@Override
 	public void flashForAll( Color color )
 	{
 		SampNativeFunction.gangZoneFlashForAll( id, color.getValue() );
 		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
 	}
 	
-	@Override
 	public void stopFlashForAll()
 	{
 		SampNativeFunction.gangZoneStopFlashForAll( id );

@@ -14,25 +14,14 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
-
-import java.util.List;
-
-import net.gtaun.shoebill.util.event.IEventDispatcher;
+package net.gtaun.shoebill.lungfish;
 
 /**
  * @author MK124
  *
  */
 
-public interface ICheckpoint
+public abstract class Plugin extends Lungfish
 {
-	IEventDispatcher getEventDispatcher();
-	float getSize();
 	
-	void set( IPlayer player );
-	void disable( IPlayer player );
-	boolean isInCheckpoint( IPlayer player );
-	void update();
-	List<IPlayer> getUsingPlayers();
 }

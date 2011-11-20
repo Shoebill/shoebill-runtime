@@ -14,28 +14,29 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
+package net.gtaun.shoebill.event.dialog;
 
-import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.data.PointRange;
+import net.gtaun.shoebill.object.Dialog;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.util.event.Event;
 
 /**
  * @author MK124
  *
  */
 
-public interface ILabel
+public abstract class DialogEvent extends Event
 {
-	int getId();
-	String getText();
-	Color getColor();
+	Dialog dialog;
+	Player player;
 	
-	IPlayer getAttachedPlayer();
-	IVehicle getAttachedVehicle();
+	public Dialog getDialog()			{ return dialog; }
+	public Player getPlayer()			{ return player; }
 	
-	void destroy();
-	PointRange getPosition();
-	void attach( IPlayer player, float x, float y, float z );
-	void attach( IVehicle vehicle, float x, float y, float z );
-	void update( Color color, String text );
+	
+	public DialogEvent( Dialog dialog, Player player )
+	{
+		this.dialog = dialog;
+		this.player = player;
+	}
 }

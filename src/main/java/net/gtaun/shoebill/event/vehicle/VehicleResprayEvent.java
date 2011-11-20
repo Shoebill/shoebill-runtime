@@ -16,27 +16,24 @@
 
 package net.gtaun.shoebill.event.vehicle;
 
-import net.gtaun.shoebill.object.IVehicle;
-import net.gtaun.shoebill.util.event.Event;
+import net.gtaun.shoebill.object.Vehicle;
 
 /**
  * @author MK124
  *
  */
 
-public class VehicleResprayEvent extends Event
+public class VehicleResprayEvent extends VehicleEvent
 {
-	IVehicle vehicle;
 	int color1, color2;
 	
-	public IVehicle getVehicle()		{ return vehicle; }
 	public int getColor1()				{ return color1; }
 	public int getColor2()				{ return color2; }
 	
 	
-	public VehicleResprayEvent( IVehicle vehicle, int color1, int color2 )
+	public VehicleResprayEvent( Vehicle vehicle, int color1, int color2 )
 	{
-		this.vehicle = vehicle;
+		super( vehicle );
 		this.color1 = color1;
 		this.color2 = color2;
 	}

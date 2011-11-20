@@ -28,7 +28,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class Menu implements IMenu
+public class Menu implements IDestroyable
 {
 	public static Vector<Menu> get()
 	{
@@ -43,23 +43,23 @@ public class Menu implements IMenu
 
 	EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	int id;
+	int id = -1;
 	String title, columnHeader = "";
 	int columns;
 	float x, y;
 	float col1Width, col2Width;
 	
 
-	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	@Override public int getId()								{ return id; }
-	@Override public String getTitle()							{ return title; }
-	@Override public int getColumns()							{ return columns; }
-	@Override public float getX()								{ return x; }
-	@Override public float getY()								{ return y; }
-	@Override public float getCol1Width()						{ return col1Width; }
-	@Override public float getCol2Width()						{ return col2Width; }
-	@Override public String getColumnHeader()					{ return columnHeader; }
+	public int getId()								{ return id; }
+	public String getTitle()							{ return title; }
+	public int getColumns()							{ return columns; }
+	public float getX()								{ return x; }
+	public float getY()								{ return y; }
+	public float getCol1Width()						{ return col1Width; }
+	public float getCol2Width()						{ return col2Width; }
+	public String getColumnHeader()					{ return columnHeader; }
 	
 	
 	public Menu( String title, int columns, float x, float y, float col1Width, float col2Width )
@@ -88,16 +88,22 @@ public class Menu implements IMenu
 	{
 		SampNativeFunction.destroyMenu( id );
 		Gamemode.instance.menuPool[ id ] = null;
+		
+		id = -1;
 	}
 	
 	@Override
+	public boolean isDestroyed()
+	{
+		return id == -1;
+	}
+	
 	public void addItem( int column, String text )
 	{
 		if( text == null ) throw new NullPointerException();
 		SampNativeFunction.addMenuItem( id, column, text );
 	}
 	
-	@Override
 	public void setColumnHeader( int column, String text )
 	{
 		if( text == null ) throw new NullPointerException();
@@ -106,29 +112,23 @@ public class Menu implements IMenu
 		columnHeader = text;
 	}
 	
-	@Override
 	public void disable()
 	{
 		SampNativeFunction.disableMenu( id );
 	}
 	
-	@Override
 	public void disableRow( int row )
 	{
 		SampNativeFunction.disableMenuRow( id, row );
 	}
 	
-	@Override
-	public void show( IPlayer p )
+	public void show( Player player )
 	{
-		Player player = (Player)p;
 		SampNativeFunction.showMenuForPlayer( id, player.id );
 	}
 	
-	@Override
-	public void hide( IPlayer p )
+	public void hide( Player player )
 	{
-		Player player = (Player)p;
 		SampNativeFunction.hideMenuForPlayer( id, player.id );
 	}
 }

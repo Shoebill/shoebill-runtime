@@ -14,19 +14,29 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.event.gamemode;
+package net.gtaun.shoebill.event.menu;
 
-import net.gtaun.shoebill.object.Gamemode;
+import net.gtaun.shoebill.object.Menu;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.util.event.Event;
 
 /**
  * @author MK124
  *
  */
 
-public class GamemodeInitEvent extends GamemodeEvent
+public abstract class MenuEvent extends Event
 {
-	public GamemodeInitEvent( Gamemode gamemode )
+	Menu menu;
+	Player player;
+	
+	public Menu getMenu()			{ return menu; }
+	public Player getPlayer()		{ return player; }
+	
+	
+	public MenuEvent( Menu menu, Player player )
 	{
-		super( gamemode );
+		this.menu = menu;
+		this.player = player;
 	}
 }

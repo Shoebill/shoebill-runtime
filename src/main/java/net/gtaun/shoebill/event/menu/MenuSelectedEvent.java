@@ -16,30 +16,24 @@
 
 package net.gtaun.shoebill.event.menu;
 
-import net.gtaun.shoebill.object.IMenu;
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.util.event.Event;
+import net.gtaun.shoebill.object.Menu;
+import net.gtaun.shoebill.object.Player;
 
 /**
  * @author MK124
  *
  */
 
-public class MenuSelectedEvent extends Event
+public class MenuSelectedEvent extends MenuEvent
 {
-	IMenu menu;
-	IPlayer player;
 	int row;
 	
-	public IMenu getMenu()			{ return menu; }
-	public IPlayer getPlayer()		{ return player; }
 	public int getRow()				{ return row; }
 	
 	
-	public MenuSelectedEvent( IMenu menu, IPlayer player, int row )
+	public MenuSelectedEvent( Menu menu, Player player, int row )
 	{
-		this.menu = menu;
-		this.player = player;
+		super( menu, player );
 		this.row = row;
 	}
 }

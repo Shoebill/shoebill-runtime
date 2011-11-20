@@ -24,7 +24,7 @@ import net.gtaun.shoebill.data.Vector3D;
  *
  */
 
-public class PlayerAttach implements IPlayerAttach
+public class PlayerAttach
 {
 	int playerId;
 	

@@ -16,27 +16,26 @@
 
 package net.gtaun.shoebill;
 
+import net.gtaun.shoebill.lungfish.Plugin;
 
 /**
  * @author MK124
  *
  */
 
-public class PluginManager implements IPluginManager
+public class PluginManager
 {
 	PluginManager()
 	{
 		
 	}
 	
-	@Override
-	public IPlugin getPlugin( String name )
+	public Plugin getPlugin( String name )
 	{
 		return null;
 	}
 	
-	@Override
-	public IPlugin loadPlugin( String name )
+	public Plugin loadPlugin( String name )
 	{
 		return null;
 	}

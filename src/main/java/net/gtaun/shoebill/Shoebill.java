@@ -61,13 +61,13 @@ public class Shoebill implements IShoebill
 	}
 
 	@Override
-	public IObjectPool getManagedObjectPool()
+	public SampObjectPool getManagedObjectPool()
 	{
 		return managedObjectPool;
 	}
 	
 	@Override
-	public IPluginManager getPluginManager()
+	public PluginManager getPluginManager()
 	{
 		return null;
 	}

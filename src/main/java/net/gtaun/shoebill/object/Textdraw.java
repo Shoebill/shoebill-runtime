@@ -28,7 +28,7 @@ import net.gtaun.shoebill.data.Color;
  *
  */
 
-public class Textdraw implements ITextdraw
+public class Textdraw implements IDestroyable
 {
 	public static Vector<Textdraw> get()
 	{
@@ -43,15 +43,15 @@ public class Textdraw implements ITextdraw
 	private boolean[] isPlayerShowed = new boolean[Gamemode.MAX_PLAYERS];
 	
 	
-	int id;
+	int id = -1;
 	float x, y;
 	String text;
 	
 	
-	@Override public int getId()			{ return id; }
-	@Override public float getX()			{ return x; }
-	@Override public float getY()			{ return y; }
-	@Override public String getText()		{ return text; }
+	public int getId()				{ return id; }
+	public float getX()				{ return x; }
+	public float getY()				{ return y; }
+	public String getText()			{ return text; }
 	
 	
 	public Textdraw( float x, float y, String text )
@@ -90,75 +90,71 @@ public class Textdraw implements ITextdraw
 	{
 		SampNativeFunction.textDrawDestroy( id );
 		Gamemode.instance.textdrawPool[id] = null;
+		
+		id = -1;
 	}
 
 	@Override
+	public boolean isDestroyed()
+	{
+		return id == -1;
+	}
+
 	public void setLetterSize( float x, float y )
 	{
 		SampNativeFunction.textDrawLetterSize( id, x, y );
 	}
 
-	@Override
 	public void setTextSize( float x, float y )
 	{
 		SampNativeFunction.textDrawTextSize( id, x, y );
 	}
 
-	@Override
 	public void setAlignment( int alignment )
 	{
 		SampNativeFunction.textDrawAlignment( id, alignment );
 	}
 
-	@Override
 	public void setColor( Color color )
 	{
 		SampNativeFunction.textDrawColor( id, color.getValue() );
 	}
 
-	@Override
 	public void setUseBox( boolean use )
 	{
 		SampNativeFunction.textDrawUseBox( id, use );
 	}
 
-	@Override
 	public void setBoxColor( Color color )
 	{
 		SampNativeFunction.textDrawBoxColor( id, color.getValue() );
 	}
 
-	@Override
 	public void setShadow( int size )
 	{
 		SampNativeFunction.textDrawSetShadow( id, size );
 	}
 
-	@Override
 	public void setOutline( int size )
 	{
 		SampNativeFunction.textDrawSetOutline( id, size );
 	}
 
-	@Override
 	public void setBackgroundColor( Color color )
 	{
 		SampNativeFunction.textDrawBackgroundColor( id, color.getValue() );
 	}
 
-	@Override
 	public void setFont( int font )
 	{
 		SampNativeFunction.textDrawFont( id, font );
 	}
 
-	@Override
 	public void setProportional( int set )
 	{
 		SampNativeFunction.textDrawSetProportional( id, set );
 	}
 
-	@Override
 	public void setText( String text )
 	{
 		if( text == null ) throw new NullPointerException();
@@ -167,30 +163,24 @@ public class Textdraw implements ITextdraw
 		SampNativeFunction.textDrawSetString( id, text );
 	}
 
-	@Override
-	public void show( IPlayer p )
+	public void show( Player player )
 	{
-		Player player = (Player) p;
 		SampNativeFunction.textDrawShowForPlayer( player.id, id );
 		isPlayerShowed[player.id] = true;
 	}
 
-	@Override
-	public void hide( IPlayer p )
+	public void hide( Player player )
 	{
-		Player player = (Player) p;
 		SampNativeFunction.textDrawHideForPlayer( player.id, id );
 		isPlayerShowed[player.id] = false;
 	}
 
-	@Override
 	public void showForAll()
 	{
 		SampNativeFunction.textDrawShowForAll( id );
 		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
 	}
 
-	@Override
 	public void hideForAll()
 	{
 		SampNativeFunction.textDrawHideForAll( id );

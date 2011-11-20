@@ -23,7 +23,7 @@ import net.gtaun.shoebill.SampNativeFunction;
  *
  */
 
-public class PlayerSkill implements IPlayerSkill
+public class PlayerSkill
 {
 	public static final int WEAPONSKILL_PISTOL = 					0;
 	public static final int WEAPONSKILL_PISTOL_SILENCED =			1;

@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.event.plugin;
 
-import net.gtaun.shoebill.IPlugin;
+import net.gtaun.shoebill.lungfish.Plugin;
 import net.gtaun.shoebill.util.event.Event;
 
 /**
@@ -26,13 +26,13 @@ import net.gtaun.shoebill.util.event.Event;
 
 public class PluginLoadEvent extends Event
 {
-	IPlugin plugin;
+	Plugin plugin;
 	
 	
-	public IPlugin getPlugin()		{ return plugin; }
+	public Plugin getPlugin()		{ return plugin; }
 	
 	
-	public PluginLoadEvent( IPlugin plugin )
+	public PluginLoadEvent( Plugin plugin )
 	{
 		this.plugin = plugin;
 	}

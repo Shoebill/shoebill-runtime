@@ -16,9 +16,7 @@
 
 package net.gtaun.shoebill.object;
 
-import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
-import java.util.Iterator;
 
 import net.gtaun.shoebill.event.timer.TimerTickEvent;
 import net.gtaun.shoebill.util.event.EventDispatcher;
@@ -29,7 +27,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class Timer implements ITimer
+public class Timer
 {
 	public static final int COUNT_INFINITE = 0;
 	
@@ -42,12 +40,12 @@ public class Timer implements ITimer
 	int counting, realInterval;
 
 	
-	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	@Override public int getInterval()							{ return interval; }
-	@Override public int getCount()								{ return count; }
+	public int getInterval()							{ return interval; }
+	public int getCount()								{ return count; }
 
-	@Override public boolean isRunning()						{ return running; }
+	public boolean isRunning()							{ return running; }
 	
 
 	public Timer( int interval )
@@ -71,42 +69,19 @@ public class Timer implements ITimer
 		Gamemode.instance.timerPool.add( new WeakReference<Timer>(this) );
 	}
 	
-	@Override
-	protected void finalize()
-	{
-		destroy();
-	}
-	
 	
 //---------------------------------------------------------
 	
-	@Override
-	public void destroy()
-	{
-		Iterator<Reference<Timer>> iterator = Gamemode.instance.timerPool.iterator();
-		while( iterator.hasNext() )
-		{
-			Reference<Timer> reference = iterator.next();
-			if( reference.get() != this ) continue;
-			
-			Gamemode.instance.timerPool.remove( reference );
-			return;
-		}
-	}
-	
-	@Override
 	public void setInterval( int interval )
 	{
 		this.interval = interval;
 	}
 	
-	@Override
 	public void setCount( int count )
 	{
 		this.count = count;
 	}
 	
-	@Override
 	public void start()
 	{
 		counting = count;
@@ -114,7 +89,6 @@ public class Timer implements ITimer
 		running = true;
 	}
 	
-	@Override
 	public void stop()
 	{
 		running = false;

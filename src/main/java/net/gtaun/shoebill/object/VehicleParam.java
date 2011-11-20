@@ -23,7 +23,7 @@ import net.gtaun.shoebill.SampNativeFunction;
  *
  */
 
-public class VehicleParam implements IVehicleParam
+public class VehicleParam
 {
 	public static final int PARAM_UNSET =			-1;
 	public static final int PARAM_OFF =				0;

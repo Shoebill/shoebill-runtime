@@ -28,6 +28,6 @@ public interface IShoebill
 	IEventDispatcher getGlobalEventDispatcher();
 	
 	ISampCallbackManager getCallbackManager();
-	IObjectPool getManagedObjectPool();
-	IPluginManager getPluginManager();
+	SampObjectPool getManagedObjectPool();
+	PluginManager getPluginManager();
 }

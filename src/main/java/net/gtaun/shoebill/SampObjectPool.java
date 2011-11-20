@@ -9,18 +9,6 @@ import java.util.Vector;
 import java.util.WeakHashMap;
 
 import net.gtaun.shoebill.object.Dialog;
-import net.gtaun.shoebill.object.IDialog;
-import net.gtaun.shoebill.object.ILabel;
-import net.gtaun.shoebill.object.IMenu;
-import net.gtaun.shoebill.object.IObject;
-import net.gtaun.shoebill.object.IPickup;
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.object.IPlayerLabel;
-import net.gtaun.shoebill.object.IPlayerObject;
-import net.gtaun.shoebill.object.ITextdraw;
-import net.gtaun.shoebill.object.ITimer;
-import net.gtaun.shoebill.object.IVehicle;
-import net.gtaun.shoebill.object.IZone;
 import net.gtaun.shoebill.object.Label;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.ObjectBase;
@@ -33,7 +21,7 @@ import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.Zone;
 
-public class SampObjectPool implements IObjectPool
+public class SampObjectPool
 {
 	public static final int MAX_PLAYER_NAME =			24;
 	public static final int MAX_PLAYERS =				500;
@@ -71,165 +59,144 @@ public class SampObjectPool implements IObjectPool
 	Map<Integer, Reference<Dialog>> dialogPool			= new HashMap<Integer, Reference<Dialog>>();
 	
 	
-	@Override
-	public IPlayer getPlayer( int id )
+	public Player getPlayer( int id )
 	{
 		return playerPool[id];
 	}
 	
-	@Override
-	public IVehicle getVehicle( int id )
+	public Vehicle getVehicle( int id )
 	{
 		return vehiclePool[id];
 	}
 	
-	@Override
-	public IObject getObject( int id )
+	public Object getObject( int id )
 	{
 		return objectPool[id];
 	}
 	
-	@Override
-	public IPlayerObject getPlayerObject( IPlayer player, int id )
+	public PlayerObject getPlayerObject( Player player, int id )
 	{
 		return playerObjectPool.get( player ) [id];
 	}
 	
-	@Override
-	public IPickup getPickup( int id )
+	public Pickup getPickup( int id )
 	{
 		return pickupPool[id];
 	}
 	
-	@Override
-	public ILabel getLabel( int id )
+	public Label getLabel( int id )
 	{
 		return labelPool[id];
 	}
 	
-	@Override
-	public IPlayerLabel getPlayerLabel( IPlayer player, int id )
+	public PlayerLabel getPlayerLabel( Player player, int id )
 	{
 		return playerLabelPool.get( player ) [id];
 	}
 	
-	@Override
-	public ITextdraw getTextdraw( int id )
+	public Textdraw getTextdraw( int id )
 	{
 		return textdrawPool[id];
 	}
 	
-	@Override
-	public IZone getZone( int id )
+	public Zone getZone( int id )
 	{
 		return zonePool[id];
 	}
 	
-	@Override
-	public IMenu getMenu( int id )
+	public Menu getMenu( int id )
 	{
 		return menuPool[id];
 	}
 	
 	
-	@Override
-	public Collection<IPlayer> getPlayers()
+	public Collection<Player> getPlayers()
 	{
-		Collection<IPlayer> players = new Vector<IPlayer>();
-		for( IPlayer player : playerPool ) players.add( player );
+		Collection<Player> players = new Vector<Player>();
+		for( Player player : playerPool ) players.add( player );
 		
 		return players;
 	}
 	
-	@Override
-	public Collection<IVehicle> getVehicles()
+	public Collection<Vehicle> getVehicles()
 	{
-		Collection<IVehicle> vehicles = new Vector<IVehicle>();
-		for( IVehicle vehicle : vehiclePool ) vehicles.add( vehicle );
+		Collection<Vehicle> vehicles = new Vector<Vehicle>();
+		for( Vehicle vehicle : vehiclePool ) vehicles.add( vehicle );
 		
 		return vehicles;
 	}
 	
-	@Override
-	public Collection<IObject> getObjects()
+	public Collection<Object> getObjects()
 	{
-		Collection<IObject> objects  = new Vector<IObject>();
-		for( IObject object : objectPool ) objects.add( object );
+		Collection<Object> objects  = new Vector<Object>();
+		for( Object object : objectPool ) objects.add( object );
 		
 		return objects;
 	}
 	
-	@Override
-	public Collection<IPlayerObject> getPlayerObjects( IPlayer player )
+	public Collection<PlayerObject> getPlayerObjects( Player player )
 	{
-		Collection<IPlayerObject> objects  = new Vector<IPlayerObject>();
-		for( IPlayerObject object : playerObjectPool.get(player) ) objects.add( object );
+		Collection<PlayerObject> objects  = new Vector<PlayerObject>();
+		for( PlayerObject object : playerObjectPool.get(player) ) objects.add( object );
 		
 		return objects;
 	}
 	
-	@Override
-	public Collection<IPickup> getPickups()
+	public Collection<Pickup> getPickups()
 	{
-		Collection<IPickup> pickups = new Vector<IPickup>();
-		for( IPickup pickup : pickupPool ) pickups.add( pickup );
+		Collection<Pickup> pickups = new Vector<Pickup>();
+		for( Pickup pickup : pickupPool ) pickups.add( pickup );
 		
 		return pickups;
 	}
 	
-	@Override
-	public Collection<ILabel> getLabels()
+	public Collection<Label> getLabels()
 	{
-		Collection<ILabel> labels = new Vector<ILabel>();
-		for( ILabel label : labelPool ) labels.add( label );
+		Collection<Label> labels = new Vector<Label>();
+		for( Label label : labelPool ) labels.add( label );
 		
 		return labels;
 	}
 	
-	@Override
-	public Collection<IPlayerLabel> getpPlayerLabels( IPlayer player )
+	public Collection<PlayerLabel> getpPlayerLabels( Player player )
 	{
-		Collection<IPlayerLabel> objects  = new Vector<IPlayerLabel>();
-		for( IPlayerLabel object : playerLabelPool.get(player) ) objects.add( object );
+		Collection<PlayerLabel> objects  = new Vector<PlayerLabel>();
+		for( PlayerLabel object : playerLabelPool.get(player) ) objects.add( object );
 		
 		return objects;
 	}
 	
-	@Override
-	public Collection<ITextdraw> getTextdraws()
+	public Collection<Textdraw> getTextdraws()
 	{
-		Collection<ITextdraw> textdraws = new Vector<ITextdraw>();
-		for( ITextdraw textdraw : textdrawPool ) textdraws.add( textdraw );
+		Collection<Textdraw> textdraws = new Vector<Textdraw>();
+		for( Textdraw textdraw : textdrawPool ) textdraws.add( textdraw );
 		
 		return textdraws;
 	}
 	
-	@Override
-	public Collection<IZone> getZones()
+	public Collection<Zone> getZones()
 	{
-		Collection<IZone> zones = new Vector<IZone>();
-		for( IZone zone : zonePool ) zones.add( zone );
+		Collection<Zone> zones = new Vector<Zone>();
+		for( Zone zone : zonePool ) zones.add( zone );
 		
 		return zones;
 	}
 	
-	@Override
-	public Collection<IMenu> getMenus()
+	public Collection<Menu> getMenus()
 	{
-		List<IMenu> menus = new Vector<IMenu>();
-		for( IMenu menu : menuPool ) menus.add( menu );
+		List<Menu> menus = new Vector<Menu>();
+		for( Menu menu : menuPool ) menus.add( menu );
 		
 		return menus;
 	}
 	
 	
-	@Override
-	public Collection<ITimer> getTimers()
+	public Collection<Timer> getTimers()
 	{
-		Collection<ITimer> timers = new Vector<ITimer>();
+		Collection<Timer> timers = new Vector<Timer>();
 		for( Reference<Timer> reference : timerPool )
 		{
-			ITimer timer = reference.get();
+			Timer timer = reference.get();
 			if( timer == null ) continue;
 			
 			timers.add( timer );
@@ -238,13 +205,12 @@ public class SampObjectPool implements IObjectPool
 		return timers;
 	}
 	
-	@Override
-	public Collection<IDialog> getDialogs()
+	public Collection<Dialog> getDialogs()
 	{
-		Collection<IDialog> dialogs = new Vector<IDialog>();
+		Collection<Dialog> dialogs = new Vector<Dialog>();
 		for( Reference<Dialog> reference : dialogPool.values() )
 		{
-			IDialog dialog = reference.get();
+			Dialog dialog = reference.get();
 			if( dialog == null ) continue;
 			
 			dialogs.add( dialog );

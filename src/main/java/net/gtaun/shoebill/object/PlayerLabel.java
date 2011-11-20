@@ -28,7 +28,7 @@ import net.gtaun.shoebill.data.PointRange;
  *
  */
 
-public class PlayerLabel extends Label implements IPlayerLabel
+public class PlayerLabel extends Label
 {
 	public static Vector<PlayerLabel> get( int playerid )
 	{
@@ -60,7 +60,7 @@ public class PlayerLabel extends Label implements IPlayerLabel
 	
 	Player player;
 	
-	@Override public IPlayer getPlayer()		{ return player; }
+	public Player getPlayer()		{ return player; }
 	
 	
 	public PlayerLabel( Player player, String text, Color color, Point point, float drawDistance, boolean testLOS )
@@ -175,20 +175,16 @@ public class PlayerLabel extends Label implements IPlayerLabel
 	}
 
 	@Override
-	public void attach( IPlayer p, float x, float y, float z )
+	public void attach( Player player, float x, float y, float z )
 	{
-		Player player = (Player) p;
-		
 		SampNativeFunction.deletePlayer3DTextLabel( this.player.id, id );
 		id = SampNativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance,
 				player.id, Gamemode.INVALID_VEHICLE_ID, testLOS );
 	}
 
 	@Override
-	public void attach( IVehicle v, float x, float y, float z )
+	public void attach( Vehicle vehicle, float x, float y, float z )
 	{
-		Vehicle vehicle = (Vehicle) v;
-		
 		SampNativeFunction.deletePlayer3DTextLabel( this.player.id, id );
 		id = SampNativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance,
 				Gamemode.INVALID_PLAYER_ID, vehicle.id, testLOS );

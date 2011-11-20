@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.event.player;
+
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.util.event.Event;
 
 /**
  * @author MK124
  *
  */
 
-public interface IPluginManager
+public abstract class PlayerEvent extends Event
 {
-	IPlugin loadPlugin( String name );
-	IPlugin getPlugin( String name );
+	Player player;
+	
+	public Player getPlayer()		{ return player; }
+	
+	
+	public PlayerEvent( Player player )
+	{
+		this.player = player;
+	}
 }

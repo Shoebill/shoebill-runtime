@@ -28,7 +28,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class Dialog implements IDialog
+public class Dialog
 {
 	public static final int STYLE_MSGBOX =		0;
 	public static final int STYLE_INPUT =		1;
@@ -44,9 +44,9 @@ public class Dialog implements IDialog
 	int id, style;
 
 	
-	@Override public IEventDispatcher getEventDispatcher()		{ return getEventDispatcher(); }
+	public IEventDispatcher getEventDispatcher()		{ return getEventDispatcher(); }
 	
-	@Override public int getStyle()								{ return style; }
+	public int getStyle()								{ return style; }
 	
 
 //---------------------------------------------------------
@@ -68,11 +68,8 @@ public class Dialog implements IDialog
 	
 //---------------------------------------------------------
 	
-	@Override
-	public void show( IPlayer p, String caption, String text, String button1, String button2 )
+	public void show( Player player, String caption, String text, String button1, String button2 )
 	{
-		Player player = (Player) p;
-		
 		if( caption == null || text == null || button1 == null || button2 == null ) throw new NullPointerException();
 		cancel( player );
 		
@@ -80,11 +77,8 @@ public class Dialog implements IDialog
 		SampNativeFunction.showPlayerDialog( player.id, id, style, caption, text, button1, button2 );
 	}
 	
-	@Override
-	public void cancel( IPlayer p )
-	{
-		Player player = (Player) p;
-		
+	public void cancel( Player player )
+	{		
 		if( player.dialog == null ) return;
 		SampNativeFunction.showPlayerDialog( player.id, -1, 0, "", "", "", "" );
 		

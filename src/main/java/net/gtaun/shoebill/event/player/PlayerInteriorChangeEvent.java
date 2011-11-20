@@ -16,26 +16,23 @@
 
 package net.gtaun.shoebill.event.player;
 
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.util.event.Event;
+import net.gtaun.shoebill.object.Player;
 
 /**
  * @author MK124
  *
  */
 
-public class PlayerInteriorChangeEvent extends Event
+public class PlayerInteriorChangeEvent extends PlayerEvent
 {
-	IPlayer player;
 	int oldInteriorId;
 	
-	public IPlayer getPlayer()				{ return player; }
 	public int getOldInteriorId()			{ return oldInteriorId; }
 	
 	
-	public PlayerInteriorChangeEvent( IPlayer player, int oldInteriorId )
+	public PlayerInteriorChangeEvent( Player player, int oldInteriorId )
 	{
-		this.player = player;
+		super( player );
 		this.oldInteriorId = oldInteriorId;
 	}
 }

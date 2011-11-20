@@ -16,29 +16,25 @@
 
 package net.gtaun.shoebill.event.player;
 
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.util.event.Event;
+import net.gtaun.shoebill.object.Player;
 
 /**
  * @author MK124
  *
  */
 
-public class PlayerTextEvent extends Event
+public class PlayerTextEvent extends PlayerEvent
 {
-	IPlayer player;
 	String text;
 	
-	public IPlayer getPlayer()			{ return player; }
 	public String getText()				{ return text; }
 	
 	
-	public PlayerTextEvent( IPlayer player, String text, int result )
+	public PlayerTextEvent( Player player, String text, int result )
 	{
-		this.result = result;
-		
-		this.player = player;
+		super( player );
 		this.text = text;
+		this.result = result;
 	}
 	
 	@Override

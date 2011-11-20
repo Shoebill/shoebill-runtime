@@ -16,26 +16,23 @@
 
 package net.gtaun.shoebill.event.player;
 
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.util.event.Event;
+import net.gtaun.shoebill.object.Player;
 
 /**
  * @author MK124
  *
  */
 
-public class PlayerDisconnectEvent extends Event
+public class PlayerDisconnectEvent extends PlayerEvent
 {
-	IPlayer player;
 	int reason;
 	
-	public IPlayer getPlayer()				{ return player; }
 	public int getReason()					{ return reason; }
 	
 	
-	public PlayerDisconnectEvent( IPlayer player, int reason )
+	public PlayerDisconnectEvent( Player player, int reason )
 	{
-		this.player = player;
+		super( player );
 		this.reason = reason;
 	}
 }

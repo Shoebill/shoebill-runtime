@@ -16,27 +16,24 @@
 
 package net.gtaun.shoebill.event.vehicle;
 
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.object.IVehicle;
-import net.gtaun.shoebill.util.event.Event;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.Vehicle;
 
 /**
  * @author MK124
  *
  */
 
-public class VehicleDeathEvent extends Event
+public class VehicleDeathEvent extends VehicleEvent
 {
-	IVehicle vehicle;
-	IPlayer killer;
+	Player killer;
 	
-	public IVehicle getVehicle()		{ return vehicle; }
-	public IPlayer getKiller()			{ return killer; }
+	public Player getKiller()			{ return killer; }
 	
 	
-	public VehicleDeathEvent( IVehicle vehicle, IPlayer killer )
+	public VehicleDeathEvent( Vehicle vehicle, Player killer )
 	{
-		this.vehicle = vehicle;
+		super( vehicle );
 		this.killer = killer;
 	}
 }

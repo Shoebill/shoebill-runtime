@@ -14,14 +14,25 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
+package net.gtaun.shoebill.event.object;
+
+import net.gtaun.shoebill.object.ObjectBase;
+import net.gtaun.shoebill.util.event.Event;
 
 /**
  * @author MK124
  *
  */
 
-public interface IPlayerLabel extends ILabel
+public class ObjectEvent extends Event
 {
-	IPlayer getPlayer();
+	ObjectBase object;
+	
+	public ObjectBase getObject()		{ return object; }
+	
+	
+	public ObjectEvent( ObjectBase object )
+	{
+		this.object = object;
+	}
 }

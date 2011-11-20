@@ -21,7 +21,8 @@ package net.gtaun.shoebill.object;
  *
  */
 
-public interface IPlayerObject extends IObject
+public interface IDestroyable
 {
-	IPlayer getPlayer();
+	void destroy();
+	boolean isDestroyed();
 }

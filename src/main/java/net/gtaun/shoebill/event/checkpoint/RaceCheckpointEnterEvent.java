@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.event.checkpoint;
+
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.RaceCheckpoint;
 
 /**
  * @author MK124
  *
  */
 
-public class Gamemode extends Lungfish
+public class RaceCheckpointEnterEvent extends CheckpointEvent
 {
+	public RaceCheckpoint getCheckpoint()		{ return (RaceCheckpoint)checkpoint; }
 	
+	
+	public RaceCheckpointEnterEvent( Player player )
+	{
+		super( player, player.getRaceCheckpoint() );
+	}
 }

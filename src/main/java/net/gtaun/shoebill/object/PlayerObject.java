@@ -27,7 +27,7 @@ import net.gtaun.shoebill.data.PointRot;
  *
  */
 
-public class PlayerObject extends ObjectBase implements IPlayerObject
+public class PlayerObject extends ObjectBase implements IDestroyable
 {
 	public static Vector<PlayerObject> get( int playerid )
 	{
@@ -59,7 +59,7 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 	
 	Player player;
 	
-	@Override public IPlayer getPlayer()		{ return player; }
+	public Player getPlayer()		{ return player; }
 	
 	
 	public PlayerObject( Player player, int model, float x, float y, float z, float rx, float ry, float rz )
@@ -134,6 +134,14 @@ public class PlayerObject extends ObjectBase implements IPlayerObject
 	{
 		SampNativeFunction.destroyObject( id );
 		Gamemode.instance.playerObjectPool[ id + player.id*Gamemode.MAX_OBJECTS ] = null;
+		
+		id = -1;
+	}
+
+	@Override
+	public boolean isDestroyed()
+	{
+		return id == -1;
 	}
 	
 	@Override

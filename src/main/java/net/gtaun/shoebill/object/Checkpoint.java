@@ -30,7 +30,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class Checkpoint extends Vector3D implements ICheckpoint
+public class Checkpoint extends Vector3D
 {
 	private static final long serialVersionUID = 8248982970415175584L;
 
@@ -40,9 +40,9 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 	float size;
 	
 	
-	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	@Override public float getSize()							{ return size; }
+	public float getSize()								{ return size; }
 
 	
 	public Checkpoint( float x, float y, float z, float size )
@@ -60,51 +60,40 @@ public class Checkpoint extends Vector3D implements ICheckpoint
 
 //---------------------------------------------------------
 	
-	@Override
-	public void set( IPlayer p )
+	public void set( Player player )
 	{
-		Player player = (Player)p;
-		
 		SampNativeFunction.setPlayerCheckpoint( player.id, x, y, z, size );
 		player.checkpoint = this;
 	}
 	
-	@Override
-	public void disable( IPlayer p )
+	public void disable( Player player )
 	{
-		Player player = (Player)p;
 		if( player.checkpoint != this ) return;
 
 		SampNativeFunction.disablePlayerCheckpoint( player.id );
 		player.checkpoint = null;
 	}
 	
-	@Override
-	public boolean isInCheckpoint( IPlayer p )
+	public boolean isInCheckpoint( Player player )
 	{
-		Player player = (Player)p;
-		
 		if( player.checkpoint != this ) return false;
 		return SampNativeFunction.isPlayerInCheckpoint(player.id);
 	}
 	
-	@Override
 	public void update()
 	{
 		for( Player player : Gamemode.instance.playerPool )
 		{
 			if( player == null ) continue;
-			
 			if( player.checkpoint == this ) set( player );
 		}
 	}
 	
-	@Override
-	public Vector<IPlayer> getUsingPlayers()
+	public Vector<Player> getUsingPlayers()
 	{
-		Vector<IPlayer> players = new Vector<IPlayer>();
+		Vector<Player> players = new Vector<Player>();
 		
-		Iterator<IPlayer> iterator = Player.get().iterator();
+		Iterator<Player> iterator = Player.get().iterator();
 		while( iterator.hasNext() )
 		{
 			Player player = (Player) iterator.next();

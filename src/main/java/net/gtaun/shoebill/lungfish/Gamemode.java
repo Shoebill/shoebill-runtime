@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
+package net.gtaun.shoebill.lungfish;
 
 /**
  * @author MK124
  *
  */
 
-public interface IPlayerAttach
+public class Gamemode extends Lungfish
 {
-
+	
 }

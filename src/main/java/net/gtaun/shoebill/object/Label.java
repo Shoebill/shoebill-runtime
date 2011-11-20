@@ -29,7 +29,7 @@ import net.gtaun.shoebill.data.PointRange;
  *
  */
 
-public class Label implements ILabel
+public class Label implements IDestroyable
 {
 	public static Vector<Label> get()
 	{
@@ -42,7 +42,7 @@ public class Label implements ILabel
 	}
 	
 	
-	int id;
+	int id = -1;
 	String text;
 	Color color;
 	PointRange position;
@@ -52,13 +52,9 @@ public class Label implements ILabel
 	Player attachedPlayer;
 	Vehicle attachedVehicle;
 
-	
-	@Override public int getId()						{ return id; }
-	@Override public String getText()					{ return text; }
-	@Override public Color getColor()					{ return color.clone(); }
-	
-	@Override public IPlayer getAttachedPlayer()		{ return attachedPlayer; }
-	@Override public IVehicle getAttachedVehicle()		{ return attachedVehicle; }
+	public int getId()						{ return id; } public String getText()					{ return text; } public Color getColor()					{ return color.clone(); }
+	public Player getAttachedPlayer()		{ return attachedPlayer; }
+	public Vehicle getAttachedVehicle()	{ return attachedVehicle; }
 	
 
 	Label()
@@ -105,9 +101,16 @@ public class Label implements ILabel
 	{
 		SampNativeFunction.delete3DTextLabel( id );
 		Gamemode.instance.labelPool[ id ] = null;
+		
+		id = -1;
+	}
+	
+	@Override
+	public boolean isDestroyed()
+	{
+		return id == -1;
 	}
 
-	@Override
 	public PointRange getPosition()
 	{
 		PointAngle pos = null;
@@ -127,11 +130,8 @@ public class Label implements ILabel
 		return position.clone();
 	}
 
-	@Override
-	public void attach( IPlayer p, float x, float y, float z )
+	public void attach( Player player, float x, float y, float z )
 	{
-		Player player = (Player) p;
-		
 		offsetX = x;
 		offsetY = y;
 		offsetZ = z;
@@ -141,11 +141,8 @@ public class Label implements ILabel
 		attachedVehicle = null;
 	}
 
-	@Override
-	public void attach( IVehicle v, float x, float y, float z )
+	public void attach( Vehicle vehicle, float x, float y, float z )
 	{
-		Vehicle vehicle = (Vehicle) v;
-		
 		offsetX = x;
 		offsetY = y;
 		offsetZ = z;
@@ -155,7 +152,6 @@ public class Label implements ILabel
 		attachedVehicle = vehicle;
 	}
 
-	@Override
 	public void update( Color color, String text )
 	{
 		if( text == null ) throw new NullPointerException();

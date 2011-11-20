@@ -16,23 +16,17 @@
 
 package net.gtaun.shoebill.event.vehicle;
 
-import net.gtaun.shoebill.object.IVehicle;
-import net.gtaun.shoebill.util.event.Event;
+import net.gtaun.shoebill.object.Vehicle;
 
 /**
  * @author MK124
  *
  */
 
-public class VehicleDestroyEvent extends Event
+public class VehicleDestroyEvent extends VehicleEvent
 {
-	IVehicle vehicle;
-	
-	public IVehicle getVehicle()		{ return vehicle; }
-	
-	
-	public VehicleDestroyEvent( IVehicle vehicle )
+	public VehicleDestroyEvent( Vehicle vehicle )
 	{
-		this.vehicle = vehicle;
+		super( vehicle );
 	}
 }

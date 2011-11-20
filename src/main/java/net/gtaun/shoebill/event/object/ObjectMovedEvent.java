@@ -16,23 +16,22 @@
 
 package net.gtaun.shoebill.event.object;
 
-import net.gtaun.shoebill.object.IObject;
-import net.gtaun.shoebill.util.event.Event;
+import net.gtaun.shoebill.object.ObjectBase;
 
 /**
  * @author JoJLlmAn
  *
  */
 
-public class ObjectMovedEvent extends Event
+public class ObjectMovedEvent extends ObjectEvent
 {
-	IObject object;
+	ObjectBase object;
 	
-	public IObject getObject()		{ return object; }
+	public ObjectBase getObject()		{ return object; }
 	
 	
-	public ObjectMovedEvent( IObject object )
+	public ObjectMovedEvent( ObjectBase object )
 	{
-		this.object = object;
+		super( object );
 	}
 }

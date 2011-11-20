@@ -14,19 +14,25 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.event.gamemode;
+package net.gtaun.shoebill.event.vehicle;
 
-import net.gtaun.shoebill.object.Gamemode;
+import net.gtaun.shoebill.object.Vehicle;
+import net.gtaun.shoebill.util.event.Event;
 
 /**
  * @author MK124
  *
  */
 
-public class GamemodeInitEvent extends GamemodeEvent
+public abstract class VehicleEvent extends Event
 {
-	public GamemodeInitEvent( Gamemode gamemode )
+	Vehicle vehicle;
+	
+	public Vehicle getVehicle()			{ return vehicle; }
+	
+	
+	public VehicleEvent( Vehicle vehicle )
 	{
-		super( gamemode );
+		this.vehicle = vehicle;
 	}
 }

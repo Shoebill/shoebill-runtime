@@ -14,14 +14,28 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
+package net.gtaun.shoebill.lungfish;
+
+import net.gtaun.shoebill.IShoebill;
 
 /**
  * @author MK124
  *
  */
 
-public interface IPlayerSkill
+public abstract class Lungfish
 {
-
+	IShoebill shoebill;
+	
+	
+	public Lungfish()
+	{
+		
+	}
+	
+	
+	public IShoebill getShoebill()
+	{
+		return shoebill;
+	}
 }

@@ -14,14 +14,29 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.event.checkpoint;
+
+import net.gtaun.shoebill.object.Checkpoint;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.util.event.Event;
 
 /**
  * @author MK124
  *
  */
 
-public interface IPlugin
+public abstract class CheckpointEvent extends Event
 {
-
+	Player player;
+	Checkpoint checkpoint;
+	
+	public Player getPlayer()				{ return player; }
+	public Checkpoint getCheckpoint()		{ return checkpoint; }
+	
+	
+	public CheckpointEvent( Player player, Checkpoint checkpoint )
+	{
+		this.player = player;
+		this.checkpoint = checkpoint;
+	}
 }

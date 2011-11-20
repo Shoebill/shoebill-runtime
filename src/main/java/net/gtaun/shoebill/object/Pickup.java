@@ -28,7 +28,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  * @author MK124, JoJLlmAn
  */
 
-public class Pickup implements IPickup
+public class Pickup implements IDestroyable
 {
 	public static Vector<Pickup> get()
 	{
@@ -43,18 +43,18 @@ public class Pickup implements IPickup
 	
 	EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	int id;
+	int id = -1;
 	int model, type;
 	int world = -1;
 	Point position;
 
 	
-	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	@Override public int getModel()								{ return model; }
-	@Override public int getType()								{ return type; }
-	@Override public int getWorld()								{ return world; }
-	@Override public Point getPosition()						{ return position.clone(); }
+	public int getModel()								{ return model; }
+	public int getType()								{ return type; }
+	public int getWorld()								{ return world; }
+	public Point getPosition()							{ return position.clone(); }
 	
 	
 	
@@ -102,5 +102,13 @@ public class Pickup implements IPickup
 	{
 		SampNativeFunction.destroyPickup( id );
 		Gamemode.instance.pickupPool[ id ] = null;
+		
+		id = -1;
+	}
+	
+	@Override
+	public boolean isDestroyed()
+	{
+		return id == -1;
 	}
 }

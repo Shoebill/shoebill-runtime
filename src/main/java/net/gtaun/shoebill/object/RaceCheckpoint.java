@@ -22,16 +22,13 @@ import java.util.Vector;
 
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.Vector3D;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author JoJLlmAn, MK124
  *
  */
 
-public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
+public class RaceCheckpoint extends Checkpoint
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -45,22 +42,16 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 	
 //---------------------------------------------------------
 	
-	EventDispatcher eventDispatcher = new EventDispatcher();
-	
-	float size;
 	int type;
 	RaceCheckpoint next;
 	
-
-	@Override public IEventDispatcher	getEventDispatcher()	{ return eventDispatcher; }
-	
-	@Override public float getSize()							{ return size; }
-	@Override public int getType()								{ return type; }
+	public int getType()				{ return type; }
+	public RaceCheckpoint getNext()			{ return next; }
 	
 	
 	public RaceCheckpoint( float x, float y, float z, float size, int type, RaceCheckpoint next )
 	{
-		super( x, y, z );
+		super( x, y, z, size );
 		
 		this.size = size;
 		this.type = type;
@@ -68,7 +59,7 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 
 	public RaceCheckpoint( Point position, float size, int type, RaceCheckpoint next )
 	{
-		super( position.x, position.y, position.z );
+		super( position.x, position.y, position.z, size );
 		
 		this.size = size;
 		this.type = type;
@@ -77,11 +68,8 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 	
 //---------------------------------------------------------
 	
-	@Override
-	public void set( IPlayer p )
+	public void set( Player player )
 	{
-		Player player = (Player) p;
-		
 		if( next != null )
 			SampNativeFunction.setPlayerRaceCheckpoint( player.id, type, x, y, z, next.x, next.y, next.z, size );
 		else
@@ -97,26 +85,21 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 		player.raceCheckpoint = this;
 	}
 	
-	@Override
-	public void disable( IPlayer p )
+	public void disable( Player player )
 	{
-		Player player = (Player) p;
 		if(player.raceCheckpoint != this) return;
 
 		SampNativeFunction.disablePlayerRaceCheckpoint( player.id );
 		player.raceCheckpoint = null;
 	}
 	
-	@Override
-	public boolean isInCheckpoint( IPlayer p )
+	public boolean isInCheckpoint( Player player )
 	{
-		Player player = (Player) p;
 		if( player.raceCheckpoint != this ) return false;
 		
 		return SampNativeFunction.isPlayerInRaceCheckpoint( player.id );
 	}
 	
-	@Override
 	public void update()
 	{
 		for( Player player : Gamemode.instance.playerPool )
@@ -127,12 +110,11 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 		}
 	}
 	
-	@Override
-	public Vector<IPlayer> getUsingPlayers()
+	public Vector<Player> getUsingPlayers()
 	{
-		Vector<IPlayer> players = new Vector<IPlayer>();
+		Vector<Player> players = new Vector<Player>();
 		
-		Iterator<IPlayer> iterator = Player.get().iterator();
+		Iterator<Player> iterator = Player.get().iterator();
 		while( iterator.hasNext() )
 		{
 			Player player = (Player) iterator.next();
