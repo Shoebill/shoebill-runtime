@@ -30,12 +30,12 @@ public class PlayerCommandEvent extends PlayerEvent
 	public String getCommand()				{ return command; }
 	
 	
-	public PlayerCommandEvent( Player player, String command, int result )
+	public PlayerCommandEvent( Player player, String command )
 	{
 		super( player );
-		
 		this.command = command;
-		this.result = result;
+		
+		result = 0;
 	}
 	
 	@Override

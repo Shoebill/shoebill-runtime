@@ -25,14 +25,14 @@ import net.gtaun.shoebill.object.Player;
 
 public class PlayerKeyStateChangeEvent extends PlayerEvent
 {
-	int oldkeys;
+	int oldKeys;
 	
-	public int getOldkeys()				{ return oldkeys; }
+	public int getOldkeys()				{ return oldKeys; }
 	
 	
-	public PlayerKeyStateChangeEvent( Player player, int oldkeys )
+	public PlayerKeyStateChangeEvent( Player player, int oldKeys )
 	{
 		super( player );
-		this.oldkeys = oldkeys;
+		this.oldKeys = oldKeys;
 	}
 }

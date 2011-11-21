@@ -25,10 +25,11 @@ import net.gtaun.shoebill.object.Player;
 
 public class PlayerRequestSpawnEvent extends PlayerEvent
 {
-	public PlayerRequestSpawnEvent( Player player, int result )
+	public PlayerRequestSpawnEvent( Player player )
 	{
 		super( player );
-		this.result = result;
+		
+		result = 1;
 	}
 	
 	@Override

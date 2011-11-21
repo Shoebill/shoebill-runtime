@@ -17,11 +17,13 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Vector;
+import java.util.Collection;
 
-import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.PointRot;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -32,14 +34,17 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public class ObjectBase implements IDestroyable
 {
-	public static Vector<ObjectBase> get()
+	public static final int INVALID_ID =				0xFFFF;
+	
+	
+	public static Collection<ObjectBase> get()
 	{
-		return Gamemode.getInstances(Gamemode.instance.objectPool, ObjectBase.class);
+		return Shoebill.getInstance().getManagedObjectPool().getObjects();
 	}
 	
-	public static <T> Vector<T> get( Class<T> cls )
+	public static <T extends ObjectBase> Collection<T> get( Class<T> cls )
 	{
-		return Gamemode.getInstances(Gamemode.instance.objectPool, cls);
+		return Shoebill.getInstance().getManagedObjectPool().getObjects( cls );
 	}
 	
 	
@@ -122,7 +127,9 @@ public class ObjectBase implements IDestroyable
 	private void init()
 	{
 		id = SampNativeFunction.createObject( model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
-		Gamemode.instance.objectPool[id] = this;
+		
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setObject( id, this );
 	}
 	
 
@@ -132,7 +139,9 @@ public class ObjectBase implements IDestroyable
 	public void destroy()
 	{
 		SampNativeFunction.destroyObject( id );
-		Gamemode.instance.objectPool[ id ] = null;
+
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setObject( id, null );
 		
 		id = -1;
 	}

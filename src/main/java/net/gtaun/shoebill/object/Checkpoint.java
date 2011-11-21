@@ -17,11 +17,12 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.Vector;
 
-import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -82,21 +83,19 @@ public class Checkpoint extends Vector3D
 	
 	public void update()
 	{
-		for( Player player : Gamemode.instance.playerPool )
+		Collection<Player> players = Shoebill.getInstance().getManagedObjectPool().getPlayers();
+		for( Player player : players )
 		{
 			if( player == null ) continue;
 			if( player.checkpoint == this ) set( player );
 		}
 	}
 	
-	public Vector<Player> getUsingPlayers()
+	public Collection<Player> getUsingPlayers()
 	{
-		Vector<Player> players = new Vector<Player>();
-		
-		Iterator<Player> iterator = Player.get().iterator();
-		while( iterator.hasNext() )
+		Collection<Player> players = new Vector<Player>();
+		for( Player player : Player.get() )
 		{
-			Player player = (Player) iterator.next();
 			if( player.checkpoint == this ) players.add( player );
 		}
 		

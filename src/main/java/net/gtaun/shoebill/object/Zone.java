@@ -17,11 +17,13 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Vector;
+import java.util.Collection;
 
-import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
  * @author MK124, JoJLlmAn
@@ -30,19 +32,22 @@ import net.gtaun.shoebill.data.Color;
 
 public class Zone implements IDestroyable
 {
-	public static Vector<Zone> get()
+	public static final int INVALID_ID =		-1;
+	
+	
+	public static Collection<Zone> get()
 	{
-		return Gamemode.getInstances(Gamemode.instance.zonePool, Zone.class);
+		return Shoebill.getInstance().getManagedObjectPool().getZones();
 	}
 	
-	public static <T> Vector<T> get( Class<T> cls )
+	public static <T extends Zone> Collection<T> get( Class<T> cls )
 	{
-		return Gamemode.getInstances(Gamemode.instance.zonePool, cls);
+		return Shoebill.getInstance().getManagedObjectPool().getZones( cls );
 	}
 	
 	
-	private boolean[] isPlayerShowed = new boolean[Gamemode.MAX_PLAYERS];
-	private boolean[] isPlayerFlashing = new boolean[Gamemode.MAX_PLAYERS];
+	private boolean[] isPlayerShowed = new boolean[SampObjectPool.MAX_PLAYERS];
+	private boolean[] isPlayerFlashing = new boolean[SampObjectPool.MAX_PLAYERS];
 	
 	
 	int id = -1;
@@ -69,13 +74,14 @@ public class Zone implements IDestroyable
 	{
 		id = SampNativeFunction.gangZoneCreate( area.minX, area.minY, area.maxX, area.maxY );
 		
-		for(int i=0; i<Gamemode.MAX_PLAYERS; i++)
+		for( int i=0; i<isPlayerShowed.length; i++ )
 		{
 			isPlayerShowed[i] = false;
 			isPlayerFlashing[i] = false;
 		}
 		
-		Gamemode.instance.zonePool[id] = this;
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setZone( id, this );
 	}
 
 
@@ -85,7 +91,9 @@ public class Zone implements IDestroyable
 	public void destroy()
 	{
 		SampNativeFunction.gangZoneDestroy( id );
-		Gamemode.instance.zonePool[id] = null;
+
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setZone( id, null );
 		
 		id = -1;
 	}
@@ -130,14 +138,14 @@ public class Zone implements IDestroyable
 	public void showForAll( Color color )
 	{
 		SampNativeFunction.gangZoneShowForAll( id, color.getValue() );
-		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
+		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = true;
 	}
 
 	public void hideForAll()
 	{
 		SampNativeFunction.gangZoneHideForAll( id );
 		
-		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ )
+		for( int i=0; i<isPlayerShowed.length; i++ )
 		{
 			isPlayerShowed[i] = false;
 			isPlayerFlashing[i] = false;
@@ -147,12 +155,12 @@ public class Zone implements IDestroyable
 	public void flashForAll( Color color )
 	{
 		SampNativeFunction.gangZoneFlashForAll( id, color.getValue() );
-		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
+		for( int i=0; i<isPlayerShowed.length; i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
 	}
 	
 	public void stopFlashForAll()
 	{
 		SampNativeFunction.gangZoneStopFlashForAll( id );
-		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerFlashing[i] = false;
+		for( int i=0; i<isPlayerFlashing.length; i++ ) isPlayerFlashing[i] = false;
 	}
 }

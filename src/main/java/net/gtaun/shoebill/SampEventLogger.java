@@ -1,0 +1,343 @@
+/**
+ * Copyright (C) 2011 MK124
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package net.gtaun.shoebill;
+
+import net.gtaun.shoebill.object.Pickup;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.Vehicle;
+import net.gtaun.shoebill.samp.ISampCallbackHandler;
+import net.gtaun.shoebill.samp.SampNativeFunction;
+
+/**
+ * @author MK124
+ *
+ */
+
+public class SampEventLogger implements ISampCallbackHandler
+{
+	ISampObjectPool sampObjectPool;
+	
+	
+	public SampEventLogger( ISampObjectPool pool )
+	{
+		sampObjectPool = pool;
+	}
+	
+
+	@Override
+	public int onGameModeInit()
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onGameModeExit()
+	{
+		System.out.println( "--- Server Shutting Down." );
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerConnect( int playerId )
+	{
+		Player player = sampObjectPool.getPlayer(playerId);
+		System.out.println( "[join] " + player.getName() + " has joined the server (" + playerId + ":" + player.getIp() + ")" );
+
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerDisconnect( int playerId, int reason )
+	{
+		Player player = sampObjectPool.getPlayer(playerId);
+		System.out.println( "[part] " + player.getName() + " has left the server (" + playerId + ":" + reason + ")" );
+	
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerSpawn( int playerId )
+	{
+		Player player = sampObjectPool.getPlayer(playerId);
+		System.out.println( "[spawn] " + player.getName() + " has spawned (" + playerId + ")" );
+	
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerDeath( int playerId, int killerId, int reason )
+	{
+		Player player = sampObjectPool.getPlayer( playerId );
+		
+		if( killerId == Player.INVALID_ID )
+		{
+			System.out.println( "[death] " + player.getName() + " died (" + playerId + ":" + reason + ")" );
+			return 1;
+		}
+		
+		Player killer = sampObjectPool.getPlayer( killerId );
+		System.out.println( "[kill] " + killer.getName() + " killed " + player.getName() + " (" + SampNativeFunction.getWeaponName(reason) + ")" );
+		return 1;
+	}
+	
+	@Override
+	public int onVehicleSpawn( int vehicleId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onVehicleDeath( int vehicleId, int killerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerText( int playerId, String text )
+	{
+		Player player = sampObjectPool.getPlayer( playerId );
+		System.out.println( "[chat] [" + player.getName() + "]: " + text );
+		
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerCommandText( int playerId, String cmdtext )
+	{
+		Player player = sampObjectPool.getPlayer( playerId );
+		System.out.println( "[cmd] [" + player.getName() + "] " + cmdtext );
+		
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerRequestClass( int playerId, int classId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerEnterVehicle( int playerId, int vehicleId, int isPassenger )
+	{
+		Player player = sampObjectPool.getPlayer( playerId );
+		Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
+		
+		System.out.println( "[vehicle] " + player.getName() + " enter a vehicle (" + vehicle.getModel() + ")" );
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerExitVehicle( int playerId, int vehicleId )
+	{
+		Player player = sampObjectPool.getPlayer( playerId );
+		Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
+		
+		System.out.println( "[vehicle] " + player.getName() + " leave a vehicle (" + vehicle.getModel() + ")" );
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerStateChange( int playerId, int state, int oldState )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerEnterCheckpoint( int playerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerLeaveCheckpoint( int playerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerEnterRaceCheckpoint( int playerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerLeaveRaceCheckpoint( int playerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onRconCommand( String cmd )
+	{
+		System.out.println( "[rcon] " + " command: " + cmd );
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerRequestSpawn( int playerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onObjectMoved( int objectId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerObjectMoved( int playerId, int objectId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerPickUpPickup( int playerId, int pickupId )
+	{
+		Player player = sampObjectPool.getPlayer( playerId );
+		Pickup pickup = sampObjectPool.getPickup( pickupId );
+		
+		System.out.println( "[pickup] " + player.getName() + " pickup " + pickup.getModel() + " (" + pickup.getType() + ")" );
+		return 1;
+	}
+	
+	@Override
+	public int onVehicleMod( int playerId, int vehicleId, int componentId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onEnterExitModShop( int playerId, int enterexit, int interiorId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onVehiclePaintjob( int playerId, int vehicleId, int paintjobId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onVehicleRespray( int playerId, int vehicleId, int color1, int color2 )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onVehicleDamageStatusUpdate( int vehicleId, int playerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onUnoccupiedVehicleUpdate( int vehicleId, int playerId, int passengerSeat )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerSelectedMenuRow( int playerId, int row )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerExitedMenu( int playerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerInteriorChange( int playerId, int interiorId, int oldInteriorId )
+	{
+		Player player = sampObjectPool.getPlayer( playerId );
+		System.out.println( "[interior] " + player.getName() + " interior has changed to " + interiorId );
+	
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerKeyStateChange( int playerId, int keys, int oldKeys )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onRconLoginAttempt( String ip, String password, int isSuccess )
+	{
+		if( isSuccess == 0 )
+			System.out.println( "[rcon] " + " bad rcon attempy by: " + ip + " (" + password + ")" );
+		else
+			System.out.println( "[rcon] " + ip + " has logged." );
+		
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerUpdate( int playerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerStreamIn( int playerId, int forPlayerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerStreamOut( int playerId, int forPlayerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onVehicleStreamIn( int vehicleId, int forPlayerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onVehicleStreamOut( int vehicleId, int forPlayerId )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onDialogResponse( int playerId, int dialogId, int response, int listitem, String inputtext )
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerClickPlayer( int playerId, int clickedPlayerId, int source )
+	{
+		Player player = sampObjectPool.getPlayer( playerId );
+		Player clickedPlayer = sampObjectPool.getPlayer( clickedPlayerId );
+		
+		System.out.println( "[click] " + player.getName() + " has clicked " + clickedPlayer.getName() );
+		return 1;
+	}
+	
+	@Override
+	public void onProcessTick()
+	{
+		
+	}
+}

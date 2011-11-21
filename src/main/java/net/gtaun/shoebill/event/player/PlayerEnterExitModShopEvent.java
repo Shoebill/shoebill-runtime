@@ -26,16 +26,16 @@ import net.gtaun.shoebill.object.Player;
 public class PlayerEnterExitModShopEvent extends PlayerEvent
 {
 	int enterexit;
-	int interiorid;
+	int interiorId;
 	
 	public int getEnterexit()				{ return enterexit; }
-	public int getInteriorId()				{ return interiorid; }
+	public int getInteriorId()				{ return interiorId; }
 	
 	
-	public PlayerEnterExitModShopEvent( Player player, int enterexit, int interiorid )
+	public PlayerEnterExitModShopEvent( Player player, int enterexit, int interiorId )
 	{
 		super( player );
 		this.enterexit = enterexit;
-		this.interiorid = interiorid;
+		this.interiorId = interiorId;
 	}
 }

@@ -30,11 +30,11 @@ public class RconCommandEvent extends Event
 	public String getCommand()		{ return command; }
 	
 	
-	public RconCommandEvent( String command, int result )
+	public RconCommandEvent( String command )
 	{
 		this.command = command;
 		
-		this.result = result;
+		result = 0;
 	}
 	
 	@Override

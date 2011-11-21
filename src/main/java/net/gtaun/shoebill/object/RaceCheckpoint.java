@@ -17,11 +17,11 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.Vector;
 
-import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
  * @author JoJLlmAn, MK124
@@ -102,22 +102,18 @@ public class RaceCheckpoint extends Checkpoint
 	
 	public void update()
 	{
-		for( Player player : Gamemode.instance.playerPool )
+		for( Player player : Player.get() )
 		{
-			if( player == null ) continue;
-			
+			if( player == null ) continue;			
 			if( player.raceCheckpoint == this ) set( player );
 		}
 	}
 	
-	public Vector<Player> getUsingPlayers()
+	public Collection<Player> getUsingPlayers()
 	{
-		Vector<Player> players = new Vector<Player>();
-		
-		Iterator<Player> iterator = Player.get().iterator();
-		while( iterator.hasNext() )
+		Collection<Player> players = new Vector<Player>();
+		for( Player player : Player.get() )
 		{
-			Player player = (Player) iterator.next();
 			if( player.raceCheckpoint == this ) players.add( player );
 		}
 		

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.samp;
 
 import net.gtaun.shoebill.data.KeyState;
 import net.gtaun.shoebill.data.Point;

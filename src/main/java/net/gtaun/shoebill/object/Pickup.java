@@ -17,10 +17,12 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Vector;
+import java.util.Collection;
 
-import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -30,14 +32,14 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public class Pickup implements IDestroyable
 {
-	public static Vector<Pickup> get()
+	public static Collection<Pickup> get()
 	{
-		return Gamemode.getInstances(Gamemode.instance.pickupPool, Pickup.class);
+		return Shoebill.getInstance().getManagedObjectPool().getPickups();
 	}
 	
-	public static <T> Vector<T> get( Class<T> cls )
+	public static <T extends Pickup> Collection<T> get( Class<T> cls )
 	{
-		return Gamemode.getInstances(Gamemode.instance.pickupPool, cls);
+		return Shoebill.getInstance().getManagedObjectPool().getPickups( cls );
 	}
 	
 	
@@ -91,7 +93,8 @@ public class Pickup implements IDestroyable
 	{
 		id = SampNativeFunction.createPickup( model, type, position.x, position.y, position.z, world );
 		
-		Gamemode.instance.pickupPool[id] = this;
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setPickup( id, this );
 	}
 	
 	
@@ -101,7 +104,9 @@ public class Pickup implements IDestroyable
 	public void destroy()
 	{
 		SampNativeFunction.destroyPickup( id );
-		Gamemode.instance.pickupPool[ id ] = null;
+
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setPickup( id, null );
 		
 		id = -1;
 	}

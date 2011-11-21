@@ -18,6 +18,8 @@ package net.gtaun.shoebill.event.listener;
 
 import net.gtaun.shoebill.event.checkpoint.CheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointLeaveEvent;
+import net.gtaun.shoebill.event.checkpoint.RaceCheckpointEnterEvent;
+import net.gtaun.shoebill.event.checkpoint.RaceCheckpointLeaveEvent;
 import net.gtaun.shoebill.util.event.EventListener;
 
 /**
@@ -33,6 +35,8 @@ public abstract class CheckpointEventListener extends EventListener
 	}
 
 	
-	public void onCheckpointEnter( CheckpointEnterEvent event )		{ }
-	public void onCheckpointLeave( CheckpointLeaveEvent event )		{ }
+	public void onCheckpointEnter( CheckpointEnterEvent event )						{ }
+	public void onCheckpointLeave( CheckpointLeaveEvent event )						{ }
+	public void onRaceCheckpointEnter( RaceCheckpointEnterEvent event  )			{ }
+	public void onRaceCheckpointLeave( RaceCheckpointLeaveEvent event  )			{ }
 }

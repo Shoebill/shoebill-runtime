@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.object;
 
-import java.lang.ref.WeakReference;
-
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.event.timer.TimerTickEvent;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
@@ -66,7 +66,8 @@ public class Timer
 	
 	private void init()
 	{
-		Gamemode.instance.timerPool.add( new WeakReference<Timer>(this) );
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.putTimer( this );
 	}
 	
 	
@@ -97,7 +98,7 @@ public class Timer
 	
 //---------------------------------------------------------
 	
-	void tick( int realint )
+	public void tick( int realint )
 	{
 		if( running == false ) return;
 		

@@ -25,17 +25,17 @@ import net.gtaun.shoebill.object.Player;
 
 public class PlayerClickPlayerEvent extends PlayerEvent
 {
-	Player clickedplayer;
+	Player clickedPlayer;
 	int source;
 	
-	public Player getClickedplayer()		{ return clickedplayer; }
+	public Player getClickedPlayer()		{ return clickedPlayer; }
 	public int getSource()					{ return source; }
 	
 	
 	public PlayerClickPlayerEvent( Player player, Player clickedPlayer, int source )
 	{
 		super( player );
-		this.clickedplayer = clickedPlayer;
+		this.clickedPlayer = clickedPlayer;
 		this.source = source;
 	}
 }

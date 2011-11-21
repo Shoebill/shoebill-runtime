@@ -16,13 +16,15 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Vector;
+import java.util.Collection;
 
-import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.PointAngle;
 import net.gtaun.shoebill.data.PointRange;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
  * @author MK124
@@ -31,14 +33,14 @@ import net.gtaun.shoebill.data.PointRange;
 
 public class Label implements IDestroyable
 {
-	public static Vector<Label> get()
+	public static Collection<Label> get()
 	{
-		return Gamemode.getInstances(Gamemode.instance.labelPool, Label.class);
+		return Shoebill.getInstance().getManagedObjectPool().getLabels();
 	}
 	
-	public static <T> Vector<T> get( Class<T> cls )
+	public static <T extends Label> Collection<T> get( Class<T> cls )
 	{
-		return Gamemode.getInstances(Gamemode.instance.labelPool, cls);
+		return Shoebill.getInstance().getManagedObjectPool().getLabels( cls );
 	}
 	
 	
@@ -91,7 +93,8 @@ public class Label implements IDestroyable
 		id = SampNativeFunction.create3DTextLabel( text, color.getValue(),
 				position.x, position.y, position.z, position.distance, position.world, testLOS );
 		
-		Gamemode.instance.labelPool[id] = this;
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setLabel( id, this );
 	}
 	
 //---------------------------------------------------------
@@ -100,8 +103,10 @@ public class Label implements IDestroyable
 	public void destroy()
 	{
 		SampNativeFunction.delete3DTextLabel( id );
-		Gamemode.instance.labelPool[ id ] = null;
 		
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setLabel( id, null );
+
 		id = -1;
 	}
 	

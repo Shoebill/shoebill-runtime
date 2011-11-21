@@ -16,45 +16,33 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Vector;
+import java.util.Collection;
 
-import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.PointRange;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
  * @author MK124
  *
  */
 
-public class PlayerLabel extends Label
+public class PlayerLabel extends Label implements IDestroyable
 {
-	public static Vector<PlayerLabel> get( int playerid )
+	public static final int INVALID_ID =			0xFFFF;
+	
+	
+	public static Collection<PlayerLabel> get( Player player )
 	{
-		Vector<PlayerLabel> list = new Vector<PlayerLabel>();
-		
-		int baseIndex = playerid*Gamemode.MAX_LABELS_PLAYER;
-		for( int i = baseIndex; i < baseIndex+Gamemode.MAX_LABELS_PLAYER ; i++ )
-		{
-			list.add( Gamemode.instance.playerLabelPool[i] );
-		}
-		
-		return list;
+		return Shoebill.getInstance().getManagedObjectPool().getPlayerLabels( player );
 	}
 	
-	public static <T> Vector<T> get( Class<T> cls, int playerid )
+	public static <T extends PlayerLabel> Collection<T> get( Player player, Class<T> cls )
 	{
-		Vector<T> list = new Vector<T>();
-		
-		int baseIndex = playerid*Gamemode.MAX_LABELS_PLAYER;
-		for( int i = baseIndex; i < baseIndex+Gamemode.MAX_LABELS_PLAYER ; i++ )
-		{
-			PlayerLabel obj = Gamemode.instance.playerLabelPool[i];
-			if( cls.isInstance(obj) ) list.add( cls.cast(obj) );
-		}
-		
-		return list;
+		return Shoebill.getInstance().getManagedObjectPool().getPlayerLabels( player, cls );
 	}
 	
 	
@@ -147,7 +135,7 @@ public class PlayerLabel extends Label
 	
 	private void init()
 	{
-		int playerId = Gamemode.INVALID_PLAYER_ID, vehicleId = Gamemode.INVALID_VEHICLE_ID;
+		int playerId = Player.INVALID_ID, vehicleId = Vehicle.INVALID_ID;
 		
 		if( attachedPlayer != null )	playerId = attachedPlayer.id;
 		if( attachedVehicle != null )	vehicleId = attachedVehicle.id;
@@ -162,7 +150,8 @@ public class PlayerLabel extends Label
 		id = SampNativeFunction.createPlayer3DTextLabel( player.id, text, color.getValue(),
 				position.x, position.y, position.z, position.distance, playerId, vehicleId, testLOS );
 		
-		Gamemode.instance.playerLabelPool[id+player.id*Gamemode.MAX_LABELS_PLAYER] = this;
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setPlayerLabel( player, id, this );
 	}
 	
 //---------------------------------------------------------
@@ -171,23 +160,31 @@ public class PlayerLabel extends Label
 	public void destroy()
 	{
 		SampNativeFunction.deletePlayer3DTextLabel( player.id, id );
-		Gamemode.instance.playerLabelPool[id+player.id*Gamemode.MAX_LABELS_PLAYER] = null;
+
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setPlayerLabel( player, id, null );
+		
+		id = -1;
+	}
+	
+	@Override
+	public boolean isDestroyed()
+	{
+		return id == -1;
 	}
 
 	@Override
 	public void attach( Player player, float x, float y, float z )
 	{
 		SampNativeFunction.deletePlayer3DTextLabel( this.player.id, id );
-		id = SampNativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance,
-				player.id, Gamemode.INVALID_VEHICLE_ID, testLOS );
+		id = SampNativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance, player.id, Vehicle.INVALID_ID, testLOS );
 	}
 
 	@Override
 	public void attach( Vehicle vehicle, float x, float y, float z )
 	{
 		SampNativeFunction.deletePlayer3DTextLabel( this.player.id, id );
-		id = SampNativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance,
-				Gamemode.INVALID_PLAYER_ID, vehicle.id, testLOS );
+		id = SampNativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance, Player.INVALID_ID, vehicle.id, testLOS );
 	}
 	
 	@Override

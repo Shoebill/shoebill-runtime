@@ -17,9 +17,11 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Vector;
+import java.util.Collection;
 
-import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -30,14 +32,17 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public class Menu implements IDestroyable
 {
-	public static Vector<Menu> get()
+	public static final int INVALID_ID =			0xFF;
+	
+	
+	public static Collection<Menu> get()
 	{
-		return Gamemode.getInstances(Gamemode.instance.menuPool, Menu.class);
+		return Shoebill.getInstance().getManagedObjectPool().getMenus();
 	}
 	
-	public static <T> Vector<T> get( Class<T> cls )
+	public static <T extends Menu> Collection<T> get( Class<T> cls )
 	{
-		return Gamemode.getInstances(Gamemode.instance.menuPool, cls);
+		return Shoebill.getInstance().getManagedObjectPool().getMenus( cls );
 	}
 	
 
@@ -77,7 +82,9 @@ public class Menu implements IDestroyable
 	private void init()
 	{
 		id = SampNativeFunction.createMenu( title, columns, x, y, col1Width, col1Width );
-		Gamemode.instance.menuPool[id] = this;
+		
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setMenu( id, this );
 	}
 	
 	
@@ -87,7 +94,9 @@ public class Menu implements IDestroyable
 	public void destroy()
 	{
 		SampNativeFunction.destroyMenu( id );
-		Gamemode.instance.menuPool[ id ] = null;
+		
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setMenu( id, null );
 		
 		id = -1;
 	}

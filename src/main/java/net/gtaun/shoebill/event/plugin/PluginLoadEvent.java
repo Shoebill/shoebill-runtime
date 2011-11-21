@@ -28,7 +28,6 @@ public class PluginLoadEvent extends Event
 {
 	Plugin plugin;
 	
-	
 	public Plugin getPlugin()		{ return plugin; }
 	
 	

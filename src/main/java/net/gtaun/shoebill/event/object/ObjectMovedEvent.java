@@ -25,11 +25,6 @@ import net.gtaun.shoebill.object.ObjectBase;
 
 public class ObjectMovedEvent extends ObjectEvent
 {
-	ObjectBase object;
-	
-	public ObjectBase getObject()		{ return object; }
-	
-	
 	public ObjectMovedEvent( ObjectBase object )
 	{
 		super( object );

@@ -17,10 +17,10 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.Collection;
 
-import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.KeyState;
@@ -31,6 +31,7 @@ import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -41,6 +42,10 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public class Player
 {
+	public static final int INVALID_ID =							0xFFFF;
+	public static final int PLAYER_NO_TEAM =						255;
+	public static final int MAX_NAME_LENGTH =						24;
+	
 	public static final int STATE_NONE =							0;
 	public static final int STATE_ONFOOT =							1;
 	public static final int STATE_DRIVER =							2;
@@ -115,19 +120,19 @@ public class Player
 	
 //---------------------------------------------------------
 	
-	public static Vector<Player> get()
+	public static Collection<Player> get()
 	{
-		return Gamemode.getInstances(Gamemode.instance.playerPool, Player.class);
+		return Shoebill.getInstance().getManagedObjectPool().getPlayers();
 	}
 	
-	public static <T> Vector<T> get( Class<T> cls )
+	public static <T extends Player> Collection<T> get( Class<T> cls )
 	{
-		return Gamemode.getInstances(Gamemode.instance.playerPool, cls);
+		return Shoebill.getInstance().getManagedObjectPool().getPlayers( cls );
 	}
 	
-	public static <T> T get( Class<T> cls, int id )
+	public static <T extends Player> T get( Class<T> cls, int id )
 	{
-		return Gamemode.getInstance(Gamemode.instance.playerPool, cls, id);
+		return cls.cast( Shoebill.getInstance().getManagedObjectPool().getPlayer(id) );
 	}
 	
 	public static int getMaxPlayers()
@@ -138,14 +143,7 @@ public class Player
 	public static void enableStuntBonusForAll( boolean enabled )
 	{
 		SampNativeFunction.enableStuntBonusForAll( enabled );
-		
-		Vector<Player> players = Player.get(Player.class);
-		Iterator<Player> iterator = players.iterator();
-		while( iterator.hasNext() )
-		{
-			Player player = iterator.next();
-			player.isStuntBonusEnabled = enabled;
-		}
+		for( Player player : get() ) player.isStuntBonusEnabled = enabled;
 	}
 	
 	public static void allowAdminTeleport( boolean allow )
@@ -155,22 +153,13 @@ public class Player
 
 	public static void sendMessageToAll( Color color, String message )
 	{
-		Vector<Player> players = get(Player.class);
-		Iterator<Player> iterator = players.iterator();
-		while( iterator.hasNext() )
-		{
-			Player player = iterator.next();
-			player.sendMessage( color, message );
-		}
+		for( Player player : get() ) player.sendMessage( color, message );
 	}
 	
 	public static void sendMessageToAll( Color color, String format, Object... args )
 	{
-		Vector<Player> players = get(Player.class);
-		Iterator<Player> iterator = players.iterator();
-		while( iterator.hasNext() )
+		for( Player player : get() )
 		{
-			Player player = iterator.next();
 			String message = String.format(format, args);
 			player.sendMessage( color, message );
 		}
@@ -191,7 +180,6 @@ public class Player
 	EventDispatcher eventDispatcher = new EventDispatcher();
 	
 	int id = -1;
-	int ping, team, skin, wantedLevel;
 	String ip;
 	String name;
 	SpawnInfo spawnInfo = new SpawnInfo();
@@ -209,12 +197,10 @@ public class Player
 	float health, armour;
 	int money, score;
 	int weather, cameraMode;
-//	VehicleBase vehicle;
 
 	PointAngle position = new PointAngle();
 	Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
 	Velocity velocity = new Velocity();
-	int state = STATE_NONE;
 	KeyState keyState = new KeyState();
 	PlayerAttach playerAttach;
 	PlayerSkill skill;
@@ -227,10 +213,10 @@ public class Player
 	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
 	public int getId()									{ return id; }
-	public int getPing()								{ return ping; }
-	public int getTeam()								{ return team; }
-	public int getSkin()								{ return skin; }
-	public int getWantedLevel()							{ return wantedLevel; }
+	public int getPing()								{ return SampNativeFunction.getPlayerPing(id); }
+	public int getTeam()								{ return SampNativeFunction.getPlayerTeam(id); }
+	public int getSkin()								{ return SampNativeFunction.getPlayerSkin(id); }
+	public int getWantedLevel()							{ return SampNativeFunction.getPlayerWantedLevel(id); }
 	public int getCodepage()							{ return SampNativeFunction.getPlayerCodepage(id); };
 	public String getIp()								{ return ip; }
 	public String getName()								{ return name; }
@@ -256,7 +242,7 @@ public class Player
 	public PointAngle getPosition()						{ return position.clone(); }
 	public Area getWorldBound()							{ return worldBound.clone(); }
 	public Velocity getVelocity()						{ return velocity.clone(); }
-	public int getState()								{ return state; }
+	public int getState()								{ return SampNativeFunction.getPlayerState(id); }
 	public KeyState getKeyState()						{ return keyState.clone(); }
 	public PlayerAttach getPlayerAttach()				{ return playerAttach; }
 	public PlayerSkill getSkill()						{ return skill; }
@@ -273,10 +259,10 @@ public class Player
 	
 	protected Player()
 	{
-		id = Gamemode.instance.currentPlayerId;
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		
+		id = pool.getCurrentPlayerId();
 		ip = SampNativeFunction.getPlayerIp(id);
-		team = SampNativeFunction.getPlayerTeam(id);
-		skin = SampNativeFunction.getPlayerSkin(id);
 		name = SampNativeFunction.getPlayerName(id);
 		color = new Color( SampNativeFunction.getPlayerColor(id) );
 		
@@ -293,7 +279,6 @@ public class Player
 		
 		SampNativeFunction.getPlayerVelocity(id, velocity);
 		
-		state = SampNativeFunction.getPlayerState(id);
 		SampNativeFunction.getPlayerKeys(id, keyState);
 		
 		playerAttach = new PlayerAttach(id);
@@ -307,7 +292,6 @@ public class Player
 	
 	void update()
 	{
-		ping = SampNativeFunction.getPlayerPing( id );
 		health = SampNativeFunction.getPlayerHealth(id);
 		armour = SampNativeFunction.getPlayerArmour(id);
 		money = SampNativeFunction.getPlayerMoney(id);
@@ -545,20 +529,13 @@ public class Player
 	public void sendChatToAll( String message )
 	{
 		if( message == null ) throw new NullPointerException();
-		
-		Vector<Player> players = get(Player.class);
-		Iterator<Player> iterator = players.iterator();
-		while( iterator.hasNext() )
-		{
-			Player player = iterator.next();
-			sendChat( player, message );
-		}
+		for( Player player : get() ) sendChat( player, message );
 	}
 
 	public void sendDeathMessage( Player killer, int reason )
 	{
-		if(killer == null)
-			SampNativeFunction.sendDeathMessage(Gamemode.INVALID_PLAYER_ID, id, reason);
+		if( killer == null )
+			SampNativeFunction.sendDeathMessage( INVALID_ID, id, reason );
 		else
 			SampNativeFunction.sendDeathMessage( killer.id, id, reason );
 	}
@@ -649,7 +626,7 @@ public class Player
 	
 	public Menu getMenu()
 	{
-		return Gamemode.instance.menuPool[ SampNativeFunction.getPlayerMenu(id) ];
+		return Shoebill.getInstance().getManagedObjectPool().getMenu( SampNativeFunction.getPlayerMenu(id) );
 	}
 
 	public void setCameraPos( float x, float y, float z )
@@ -748,13 +725,11 @@ public class Player
 	public void setTeam( int team )
 	{
 		SampNativeFunction.setPlayerTeam( id, team );
-		this.team = team;
 	}
 	
 	public void setSkin( int skin )
 	{
 		SampNativeFunction.setPlayerSkin( id, skin );
-		this.skin = skin;
 	}
 	
 	public void giveWeapon( int weaponid, int ammo )
@@ -792,7 +767,6 @@ public class Player
 	public void setWantedLevel( int level )
 	{
 		SampNativeFunction.setPlayerWantedLevel( id, level );
-		wantedLevel = level;
 	}
 	
 	public void playCrimeReport( int suspectid, int crimeid )
@@ -894,11 +868,9 @@ public class Player
 	public ObjectBase getSurfingObject()
 	{
 		int objectid = SampNativeFunction.getPlayerSurfingObjectID(id);
+		if( objectid == ObjectBase.INVALID_ID ) return null;
 		
-		if(objectid != 65535)
-			return Gamemode.instance.objectPool[objectid];
-		
-		return null;
+		return Shoebill.getInstance().getManagedObjectPool().getObject( objectid );
 	}
 	
 	public String getNetworkStats()

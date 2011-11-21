@@ -30,12 +30,12 @@ public class PlayerRequestClassEvent extends PlayerEvent
 	public int getClassId()				{ return classId; }
 	
 	
-	public PlayerRequestClassEvent(	Player player, int classId, int result )
+	public PlayerRequestClassEvent(	Player player, int classId )
 	{
 		super( player );
-		
 		this.classId = classId;
-		this.result = result;
+		
+		result = 0;
 	}
 	
 	@Override

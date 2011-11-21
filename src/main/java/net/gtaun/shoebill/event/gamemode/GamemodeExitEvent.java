@@ -25,8 +25,6 @@ import net.gtaun.shoebill.object.Gamemode;
 
 public class GamemodeExitEvent extends GamemodeEvent
 {
-	
-	
 	public GamemodeExitEvent( Gamemode gamemode )
 	{
 		super( gamemode );

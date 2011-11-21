@@ -16,8 +16,7 @@
 
 package net.gtaun.shoebill.event.listener;
 
-import net.gtaun.shoebill.event.checkpoint.RaceCheckpointEnterEvent;
-import net.gtaun.shoebill.event.checkpoint.RaceCheckpointLeaveEvent;
+import net.gtaun.shoebill.event.plugin.PluginLoadEvent;
 import net.gtaun.shoebill.util.event.EventListener;
 
 /**
@@ -25,14 +24,13 @@ import net.gtaun.shoebill.util.event.EventListener;
  *
  */
 
-public abstract class RaceCheckpointEventListener extends EventListener
+public abstract class PluginEventListener extends EventListener
 {
-	protected RaceCheckpointEventListener()
+	protected PluginEventListener()
 	{
-		super( RaceCheckpointEventListener.class );
+		super( PluginEventListener.class );
 	}
 
-
-	public void onRaceCheckpointEnter( RaceCheckpointEnterEvent event  )			{ }
-	public void onRaceCheckpointLeave( RaceCheckpointLeaveEvent event  )			{ }
+	
+	public void onPluginLoad( PluginLoadEvent event )			{ }
 }

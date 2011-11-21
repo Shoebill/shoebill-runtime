@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.samp;
 
-import net.gtaun.shoebill.samp.ISampCallback;
 
 /**
  * @author MK124
@@ -25,9 +24,9 @@ import net.gtaun.shoebill.samp.ISampCallback;
 
 public interface ISampCallbackManager
 {
-	void registerCallbackHandler( ISampCallback handler );
-	void unregisterCallbackHandler( ISampCallback handler );
-	boolean hasCallbackHandler( ISampCallback handler );
+	void registerCallbackHandler( ISampCallbackHandler handler );
+	void unregisterCallbackHandler( ISampCallbackHandler handler );
+	boolean hasCallbackHandler( ISampCallbackHandler handler );
 	
-	ISampCallback getMasterCallbackHandler();
+	ISampCallbackHandler getMasterCallbackHandler();
 }

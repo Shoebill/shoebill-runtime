@@ -16,11 +16,13 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Vector;
+import java.util.Collection;
 
-import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.PointRot;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
  * @author MK124
@@ -29,31 +31,14 @@ import net.gtaun.shoebill.data.PointRot;
 
 public class PlayerObject extends ObjectBase implements IDestroyable
 {
-	public static Vector<PlayerObject> get( int playerid )
+	public static Collection<PlayerObject> get( Player player )
 	{
-		Vector<PlayerObject> list = new Vector<PlayerObject>();
-		
-		int baseIndex = playerid*Gamemode.MAX_OBJECTS;
-		for( int i = baseIndex; i < baseIndex+Gamemode.MAX_OBJECTS ; i++ )
-		{
-			list.add( Gamemode.instance.playerObjectPool[i] );
-		}
-		
-		return list;
+		return Shoebill.getInstance().getManagedObjectPool().getPlayerObjects( player );
 	}
 	
-	public static <T> Vector<T> get( Class<T> cls, int playerid )
+	public static <T extends PlayerObject> Collection<T> get( Player player, Class<T> cls )
 	{
-		Vector<T> list = new Vector<T>();
-		
-		int baseIndex = playerid*Gamemode.MAX_OBJECTS;
-		for( int i = baseIndex; i < baseIndex+Gamemode.MAX_OBJECTS ; i++ )
-		{
-			PlayerObject obj = Gamemode.instance.playerObjectPool[i];
-			if( cls.isInstance(obj) ) list.add( cls.cast(obj) );
-		}
-		
-		return list;
+		return Shoebill.getInstance().getManagedObjectPool().getPlayerObjects( player, cls );
 	}
 	
 	
@@ -123,7 +108,8 @@ public class PlayerObject extends ObjectBase implements IDestroyable
 	{
 		id = SampNativeFunction.createPlayerObject( player.id, model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
 		
-		Gamemode.instance.playerObjectPool[id + player.id*Gamemode.MAX_OBJECTS] = this;
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setPlayerObject( player, id, this );
 	}
 	
 
@@ -133,7 +119,9 @@ public class PlayerObject extends ObjectBase implements IDestroyable
 	public void destroy()
 	{
 		SampNativeFunction.destroyObject( id );
-		Gamemode.instance.playerObjectPool[ id + player.id*Gamemode.MAX_OBJECTS ] = null;
+
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setPlayerObject( player, id, null );
 		
 		id = -1;
 	}

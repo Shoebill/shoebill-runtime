@@ -16,10 +16,10 @@
 
 package net.gtaun.shoebill.object;
 
-import java.lang.ref.WeakReference;
-
-import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -45,7 +45,8 @@ public class Dialog
 
 	
 	public IEventDispatcher getEventDispatcher()		{ return getEventDispatcher(); }
-	
+
+	public int getId()									{ return id; }
 	public int getStyle()								{ return style; }
 	
 
@@ -62,7 +63,8 @@ public class Dialog
 		id = count;
 		count++;
 		
-		Gamemode.instance.dialogPool.put( id, new WeakReference<Dialog>(this) );
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.putDialog( id, this );
 	}
 	
 	

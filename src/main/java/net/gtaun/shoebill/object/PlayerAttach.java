@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
  * @author JoJLlmAn

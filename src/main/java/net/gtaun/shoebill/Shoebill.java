@@ -16,7 +16,8 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.samp.ISampCallback;
+import net.gtaun.shoebill.samp.ISampCallbackManager;
+import net.gtaun.shoebill.samp.SampCallbackManager;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -28,11 +29,18 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public class Shoebill implements IShoebill
 {
+	static Shoebill instance;
+	public static IShoebill getInstance()		{ return instance; }
+	
+	
 	EventDispatcher globalEventDispatcher;
 	
 	SampCallbackManager sampCallbackManager;
 	SampObjectPool managedObjectPool;
 	PluginManager pluginManager;
+	
+	SampEventLogger sampEventLogger;
+	SampEventDispatcher sampEventDispatcher;
 
 
 	Shoebill()
@@ -43,7 +51,11 @@ public class Shoebill implements IShoebill
 		managedObjectPool = new SampObjectPool();
 		pluginManager = new PluginManager();
 		
-		sampCallbackManager.registerCallbackHandler( sampCallbackHandler );
+		sampEventLogger = new SampEventLogger( managedObjectPool );
+		sampEventDispatcher = new SampEventDispatcher( managedObjectPool, globalEventDispatcher );
+
+		sampCallbackManager.registerCallbackHandler( sampEventLogger );
+		sampCallbackManager.registerCallbackHandler( sampEventDispatcher );
 	}
 
 	
@@ -61,7 +73,7 @@ public class Shoebill implements IShoebill
 	}
 
 	@Override
-	public SampObjectPool getManagedObjectPool()
+	public ISampObjectPool getManagedObjectPool()
 	{
 		return managedObjectPool;
 	}
@@ -71,260 +83,4 @@ public class Shoebill implements IShoebill
 	{
 		return null;
 	}
-	
-	
-	ISampCallback sampCallbackHandler = new ISampCallback()
-	{
-		public int onVehicleStreamOut( int arg0, int arg1 )
-		{
-			
-			return 0;
-		}
-		
-		public int onVehicleStreamIn( int arg0, int arg1 )
-		{
-
-			return 0;
-		}
-		
-		public int onVehicleSpawn( int arg0 )
-		{
-
-			return 0;
-		}
-		
-		public int onVehicleRespray( int arg0, int arg1, int arg2, int arg3 )
-		{
-			
-			return 0;
-		}
-		
-		public int onVehiclePaintjob( int arg0, int arg1, int arg2 )
-		{
-			
-			return 0;
-		}
-		
-		public int onVehicleMod( int arg0, int arg1, int arg2 )
-		{
-			
-			return 0;
-		}
-		
-		public int onVehicleDeath( int arg0, int arg1 )
-		{
-			
-			return 0;
-		}
-		
-		public int onVehicleDamageStatusUpdate( int arg0, int arg1 )
-		{
-			
-			return 0;
-		}
-		
-		public int onUnoccupiedVehicleUpdate( int arg0, int arg1, int arg2 )
-		{
-			
-			return 0;
-		}
-		
-		public int onRconLoginAttempt( String arg0, String arg1, int arg2 )
-		{
-			
-			return 0;
-		}
-		
-		public int onRconCommand( String arg0 )
-		{
-			
-			return 0;
-		}
-		
-		public void onProcessTick()
-		{
-			
-			
-		}
-		
-		public int onPlayerUpdate( int arg0 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerText( int arg0, String arg1 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerStreamOut( int arg0, int arg1 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerStreamIn( int arg0, int arg1 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerStateChange( int arg0, int arg1, int arg2 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerSpawn( int arg0 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerSelectedMenuRow( int arg0, int arg1 )
-		{
-			
-			return 0;
-		}
-
-		public int onPlayerRequestSpawn( int arg0 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerRequestClass( int arg0, int arg1 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerPickUpPickup( int arg0, int arg1 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerObjectMoved( int arg0, int arg1 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerLeaveRaceCheckpoint( int arg0 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerLeaveCheckpoint( int arg0 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerKeyStateChange( int arg0, int arg1, int arg2 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerInteriorChange( int arg0, int arg1, int arg2 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerExitedMenu( int arg0 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerExitVehicle( int arg0, int arg1 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerEnterVehicle( int arg0, int arg1, int arg2 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerEnterRaceCheckpoint( int arg0 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerEnterCheckpoint( int arg0 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerDisconnect( int arg0, int arg1 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerDeath( int arg0, int arg1, int arg2 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerConnect( int arg0 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerCommandText( int arg0, String arg1 )
-		{
-			
-			return 0;
-		}
-		
-		public int onPlayerClickPlayer( int arg0, int arg1, int arg2 )
-		{
-			
-			return 0;
-		}
-		
-		public int onObjectMoved( int arg0 )
-		{
-			
-			return 0;
-		}
-		
-		public int onGameModeInit()
-		{
-			
-			return 0;
-		}
-		
-		public int onGameModeExit()
-		{
-			
-			return 0;
-		}
-		
-		public int onEnterExitModShop( int arg0, int arg1, int arg2 )
-		{
-			
-			return 0;
-		}
-		
-		public int onDialogResponse( int arg0, int arg1, int arg2, int arg3, String arg4 )
-		{
-			
-			return 0;
-		}
-	};
 }

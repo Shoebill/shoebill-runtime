@@ -17,10 +17,12 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Vector;
+import java.util.Collection;
 
-import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 
 
 /**
@@ -30,22 +32,25 @@ import net.gtaun.shoebill.data.Color;
 
 public class Textdraw implements IDestroyable
 {
-	public static Vector<Textdraw> get()
+	public static final int INVALID_ID =		0xFFFF;
+	
+	
+	public static Collection<Textdraw> get()
 	{
-		return Gamemode.getInstances(Gamemode.instance.textdrawPool, Textdraw.class);
+		return Shoebill.getInstance().getManagedObjectPool().getTextdraws();
 	}
 	
-	public static <T> Vector<T> get( Class<T> cls )
+	public static <T extends Textdraw> Collection<T> get( Class<T> cls )
 	{
-		return Gamemode.getInstances(Gamemode.instance.textdrawPool, cls);
+		return Shoebill.getInstance().getManagedObjectPool().getTextdraws( cls );
 	}
-	
-	private boolean[] isPlayerShowed = new boolean[Gamemode.MAX_PLAYERS];
 	
 	
 	int id = -1;
 	float x, y;
 	String text;
+	
+	private boolean[] isPlayerShowed = new boolean[SampObjectPool.MAX_PLAYERS];
 	
 	
 	public int getId()				{ return id; }
@@ -77,9 +82,10 @@ public class Textdraw implements IDestroyable
 	private void init()
 	{
 		id = SampNativeFunction.textDrawCreate( x, y, text );
-		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = false;
+		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = false;
 		
-		Gamemode.instance.textdrawPool[id] = this;
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setTextdraw( id, this );
 	}
 	
 	
@@ -89,7 +95,9 @@ public class Textdraw implements IDestroyable
 	public void destroy()
 	{
 		SampNativeFunction.textDrawDestroy( id );
-		Gamemode.instance.textdrawPool[id] = null;
+
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setTextdraw( id, null );
 		
 		id = -1;
 	}
@@ -178,12 +186,12 @@ public class Textdraw implements IDestroyable
 	public void showForAll()
 	{
 		SampNativeFunction.textDrawShowForAll( id );
-		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = true;
+		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = true;
 	}
 
 	public void hideForAll()
 	{
 		SampNativeFunction.textDrawHideForAll( id );
-		for( int i=0; i<Gamemode.MAX_PLAYERS; i++ ) isPlayerShowed[i] = false;
+		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = false;
 	}
 }

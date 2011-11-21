@@ -17,14 +17,16 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Vector;
+import java.util.Collection;
 
-import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.PointAngle;
 import net.gtaun.shoebill.data.Quaternions;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -35,24 +37,27 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public class Vehicle implements IDestroyable
 {
-	public static Vector<Vehicle> get()
+	public static final int INVALID_ID	=				0xFFFF;
+	
+	
+	public static Collection<Vehicle> get()
 	{
-		return Gamemode.getInstances(Gamemode.instance.vehiclePool, Vehicle.class);
+		return Shoebill.getInstance().getManagedObjectPool().getVehicles();
 	}
 	
-	public static <T> Vector<T> get( Class<T> cls )
+	public static <T extends Vehicle> Collection<T> get( Class<T> cls )
 	{
-		return Gamemode.getInstances(Gamemode.instance.vehiclePool, cls);
+		return Shoebill.getInstance().getManagedObjectPool().getVehicles( cls );
 	}
 	
 	public static Vehicle get( int id )
 	{
-		return get( Vehicle.class, id );
+		return Shoebill.getInstance().getManagedObjectPool().getVehicle( id );
 	}
 	
-	public static <T> T get( Class<T> cls, int id )
+	public static <T extends Vehicle> T get( Class<T> cls, int id )
 	{
-		return Gamemode.getInstance(Gamemode.instance.vehiclePool, cls, id);
+		return cls.cast( Shoebill.getInstance().getManagedObjectPool().getVehicle(id) );
 	}
 	
 	
@@ -77,6 +82,7 @@ public class Vehicle implements IDestroyable
 	VehicleDamage damage;
 
 	
+	public int getId()									{ return id; }
 	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
 	public boolean isStatic()							{ return isStatic; }
@@ -153,7 +159,8 @@ public class Vehicle implements IDestroyable
 		component = new VehicleComponent( id );
 		damage = new VehicleDamage( id );
 		
-		Gamemode.instance.vehiclePool[id] = this;
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setVehicle( id, this );
 		
 		//this.onSpawn();
 	}
@@ -167,11 +174,12 @@ public class Vehicle implements IDestroyable
 		if( isStatic ) return;
 		
 		SampNativeFunction.destroyVehicle( id );
-		Gamemode.instance.vehiclePool[ id ] = null;
-		
-		id = -1;
-		
+
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		pool.setVehicle( id, null );
+
 		eventDispatcher.dispatchEvent( new VehicleDestroyEvent(this) );
+		id = -1;
 	}
 	
 	@Override
@@ -346,11 +354,6 @@ public class Vehicle implements IDestroyable
 	public void setAngularVelocity( Velocity velocity )
 	{
 		SampNativeFunction.setVehicleAngularVelocity( id, velocity.x, velocity.y, velocity.z );
-	}
-	
-	public float distanceToPoint( Point point )
-	{
-		return SampNativeFunction.getVehicleDistanceFromPoint(id, point.x, point.y, point.z);
 	}
 	
 	//public static int getComponentType( int component );

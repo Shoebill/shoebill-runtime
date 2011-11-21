@@ -30,11 +30,12 @@ public class PlayerTextEvent extends PlayerEvent
 	public String getText()				{ return text; }
 	
 	
-	public PlayerTextEvent( Player player, String text, int result )
+	public PlayerTextEvent( Player player, String text )
 	{
 		super( player );
 		this.text = text;
-		this.result = result;
+		
+		result = 1;
 	}
 	
 	@Override
