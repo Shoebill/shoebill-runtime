@@ -18,8 +18,6 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
-import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
-import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -39,15 +37,15 @@ public class Dialog implements IDialog
 	private static int count = 0;
 	
 	
-	EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	int id, style;
+	private int id, style;
 
 	
-	@Override public IEventDispatcher getEventDispatcher()		{ return getEventDispatcher(); }
+	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 
 	@Override public int getId()									{ return id; }
-	@Override public int getStyle()								{ return style; }
+	@Override public int getStyle()									{ return style; }
 	
 
 //---------------------------------------------------------
@@ -73,22 +71,13 @@ public class Dialog implements IDialog
 	@Override
 	public void show( IPlayer player, String caption, String text, String button1, String button2 )
 	{
-		if( caption == null || text == null || button1 == null || button2 == null ) throw new NullPointerException();
-		cancel( player );
-		
-		((Player)player).dialog = this;
-		SampNativeFunction.showPlayerDialog( player.getId(), id, style, caption, text, button1, button2 );
+		player.showDialog( this, caption, text, button1, button2 );
 	}
 	
 	@Override
 	public void cancel( IPlayer player )
 	{
-		if( player.getDialog() == null ) return;
-		SampNativeFunction.showPlayerDialog( player.getId(), -1, 0, "", "", "", "" );
-		
-		DialogCancelEvent event = new DialogCancelEvent( player.getDialog(), player );
-		
-		player.getDialog().getEventDispatcher().dispatchEvent( event );
-		player.getEventDispatcher().dispatchEvent( event );
+		if( player.getDialog() != this ) return;
+		player.cancelDialog();
 	}
 }

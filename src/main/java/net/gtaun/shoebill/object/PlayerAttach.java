@@ -26,10 +26,10 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class PlayerAttach implements IPlayerAttach
 {
-	int playerId;
+	private int playerId;
 	
-	int[] models = new int[5];
-	int[] bones = new int[5];
+	private int[] models = new int[5];
+	private int[] bones = new int[5];
 	
 	
 	public int[] getModels()	{ return models.clone(); }

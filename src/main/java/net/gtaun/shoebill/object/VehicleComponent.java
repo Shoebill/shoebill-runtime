@@ -50,9 +50,9 @@ public class VehicleComponent implements IVehicleComponent
 	}
 	
 	
-	int vehicleId;
+	private int vehicleId;
 	
-	int[] components = new int[SLOTS];
+	private int[] components = new int[SLOTS];
 	
 	
 	VehicleComponent( int vehicleId )

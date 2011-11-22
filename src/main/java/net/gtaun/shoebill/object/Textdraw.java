@@ -46,9 +46,9 @@ public class Textdraw implements ITextdraw
 	}
 	
 	
-	int id = -1;
-	float x, y;
-	String text;
+	private int id = -1;
+	private float x, y;
+	private String text;
 	
 	private boolean[] isPlayerShowed = new boolean[SampObjectPool.MAX_PLAYERS];
 	

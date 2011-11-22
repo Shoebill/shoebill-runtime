@@ -43,12 +43,12 @@ public class Pickup implements IPickup
 	}
 	
 	
-	EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	int id = -1;
-	int model, type;
-	int world = -1;
-	Point position;
+	private int id = -1;
+	private int model, type;
+	private int world = -1;
+	private Point position;
 
 	
 	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }

@@ -44,15 +44,15 @@ public class Label implements ILabel
 	}
 	
 	
-	int id = -1;
-	String text;
-	Color color;
-	PointRange position;
-	boolean testLOS;
+	private int id = -1;
+	private String text;
+	private Color color;
+	private PointRange position;
+	private boolean testLOS;
 	
-	float offsetX, offsetY, offsetZ;
-	IPlayer attachedPlayer;
-	IVehicle attachedVehicle;
+	private float offsetX, offsetY, offsetZ;
+	private IPlayer attachedPlayer;
+	private IVehicle attachedVehicle;
 
 	@Override public int getId()						{ return id; }
 	@Override public String getText()					{ return text; }

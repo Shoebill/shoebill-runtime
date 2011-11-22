@@ -18,6 +18,7 @@ package net.gtaun.shoebill.object;
 
 import java.util.Collection;
 
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
@@ -28,11 +29,16 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 public interface ICheckpoint
 {
 	IEventDispatcher getEventDispatcher();
+	
+	Vector3D getPosition();
 	float getSize();
+	
+	void setPosition( Vector3D position );
 	
 	void set( IPlayer player );
 	void disable( IPlayer player );
 	boolean isInCheckpoint( IPlayer player );
 	void update();
+	
 	Collection<IPlayer> getUsingPlayers();
 }

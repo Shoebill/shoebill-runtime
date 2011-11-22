@@ -16,27 +16,12 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.data.Area;
-import net.gtaun.shoebill.data.Color;
-
 /**
  * @author MK124
  *
  */
 
-public interface IZone extends IDestroyable
+public interface IVehicleDamage
 {
-	int getId();
-	Area getArea();
-	
-	void show( IPlayer p, int color );
-	void hide( IPlayer p );
-	void flash( IPlayer p, int color );
-	void stopFlash( IPlayer p );
-	
-	void showForAll( Color color );
-	void hideForAll();
-	
-	void flashForAll( Color color );
-	void stopFlashForAll();
+
 }

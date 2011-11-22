@@ -31,29 +31,29 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
+public class RaceCheckpoint implements IRaceCheckpoint
 {
-	private static final long serialVersionUID = 1L;
-	
 	public static final int TYPE_NORMAL =				0;
 	public static final int TYPE_AIR =					3;
 	public static final int TYPE_NOTHING =				2;
 
-	private static final int TYPE_NORMAL_FINISH =		1;
-	private static final int TYPE_AIR_FINISH =			4;
+	public static final int TYPE_NORMAL_FINISH =		1;
+	public static final int TYPE_AIR_FINISH =			4;
 
 	
 //---------------------------------------------------------
 	
-	EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	float size;
-	int type;
-	RaceCheckpoint next;
+	private Vector3D position;
+	private float size;
+	private int type;
+	private RaceCheckpoint next;
 
 	
 	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
+	@Override public Vector3D getPosition()							{ return position.clone(); }
 	@Override public float getSize()								{ return size; }
 	@Override public int getType()									{ return type; }
 	@Override public RaceCheckpoint getNext()						{ return next; }
@@ -61,8 +61,7 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 	
 	public RaceCheckpoint( float x, float y, float z, float size, int type, RaceCheckpoint next )
 	{
-		super( x, y, z );
-		
+		this.position = new Vector3D( x, y, z );
 		this.size = size;
 		this.type = type;
 		this.next = next;
@@ -70,8 +69,7 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 
 	public RaceCheckpoint( Point position, float size, int type, RaceCheckpoint next )
 	{
-		super( position.x, position.y, position.z );
-		
+		this.position = position.clone();
 		this.size = size;
 		this.type = type;
 		this.next = next;
@@ -81,30 +79,23 @@ public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 //---------------------------------------------------------
 
 	@Override
+	public void setPosition( Vector3D position )
+	{
+		this.position = position;
+		update();
+	}
+	
+	@Override
 	public void set( IPlayer player )
 	{
-		if( next != null )
-			SampNativeFunction.setPlayerRaceCheckpoint( player.getId(), type, x, y, z, next.x, next.y, next.z, size );
-		else
-		{
-			int type = this.type;
-			
-			if( type == TYPE_NORMAL )		type = TYPE_NORMAL_FINISH;
-			else if( type == TYPE_AIR )		type = TYPE_AIR_FINISH;
-			
-			SampNativeFunction.setPlayerRaceCheckpoint( player.getId(), type, x, y, z, x, y, z, size );
-		}
-		
-		((Player)player).raceCheckpoint = this;
+		player.setRaceCheckpoint( this );
 	}
 	
 	@Override
 	public void disable( IPlayer player )
 	{
-		if(player.getRaceCheckpoint() != this) return;
-
-		SampNativeFunction.disablePlayerRaceCheckpoint( player.getId() );
-		((Player)player).raceCheckpoint = null;
+		if( player.getRaceCheckpoint() != this ) return;
+		player.disableRaceCheckpoint();
 	}
 	
 	@Override

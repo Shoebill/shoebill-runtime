@@ -48,15 +48,15 @@ public class ObjectBase implements IObject
 	}
 	
 	
-	EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	int id = -1;
-	int model;
-	PointRot position;
-	float speed = 0;
-	IPlayer attachedPlayer;
-	IVehicle attachedVehicle;
-	float drawDistance = 0;
+	private int id = -1;
+	private int model;
+	private PointRot position;
+	private float speed = 0;
+	private IPlayer attachedPlayer;
+	private IVehicle attachedVehicle;
+	private float drawDistance = 0;
 	
 	
 	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }

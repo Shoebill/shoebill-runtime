@@ -44,17 +44,17 @@ public class PlayerObject implements IPlayerObject
 	}
 	
 
-	EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	int id = -1;
-	Player player;
+	private int id = -1;
+	private Player player;
 	
-	int model;
-	PointRot position;
-	float speed = 0;
-	IPlayer attachedPlayer;
-	IVehicle attachedVehicle;
-	float drawDistance = 0;
+	private int model;
+	private PointRot position;
+	private float speed = 0;
+	private IPlayer attachedPlayer;
+	private IVehicle attachedVehicle;
+	private float drawDistance = 0;
 	
 	
 	@Override public Player getPlayer()								{ return player; }
@@ -126,7 +126,7 @@ public class PlayerObject implements IPlayerObject
 	
 	private void init()
 	{
-		id = SampNativeFunction.createPlayerObject( player.id, model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
+		id = SampNativeFunction.createPlayerObject( player.getId(), model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setPlayerObject( player, id, this );
@@ -155,8 +155,8 @@ public class PlayerObject implements IPlayerObject
 	@Override
 	public PointRot getPosition()
 	{	
-		SampNativeFunction.getPlayerObjectPos( player.id, id, position );
-		SampNativeFunction.getPlayerObjectRot( player.id, id, position );
+		SampNativeFunction.getPlayerObjectPos( player.getId(), id, position );
+		SampNativeFunction.getPlayerObjectRot( player.getId(), id, position );
 		return position.clone();
 	}
 	
@@ -164,15 +164,15 @@ public class PlayerObject implements IPlayerObject
 	public void setPosition( Point position )
 	{
 		this.position.set( position );
-		SampNativeFunction.setPlayerObjectPos( player.id, id, position.x, position.y, position.z );
+		SampNativeFunction.setPlayerObjectPos( player.getId(), id, position.x, position.y, position.z );
 	}
 	
 	@Override
 	public void setPosition( PointRot position )
 	{
 		this.position = position.clone();
-		SampNativeFunction.setPlayerObjectPos( player.id, id, position.x, position.y, position.z );
-		SampNativeFunction.setPlayerObjectRot( player.id, id, position.rx, position.ry, position.rz );
+		SampNativeFunction.setPlayerObjectPos( player.getId(), id, position.x, position.y, position.z );
+		SampNativeFunction.setPlayerObjectRot( player.getId(), id, position.rx, position.ry, position.rz );
 	}
 	
 	@Override
@@ -182,13 +182,13 @@ public class PlayerObject implements IPlayerObject
 		position.ry = ry;
 		position.rz = rz;
 		
-		SampNativeFunction.setPlayerObjectRot( player.id, id, rx, ry, rz );
+		SampNativeFunction.setPlayerObjectRot( player.getId(), id, rx, ry, rz );
 	}
 	
 	@Override
 	public int move( float x, float y, float z, float speed )
 	{
-		SampNativeFunction.movePlayerObject( player.id, id, x, y, z, speed );
+		SampNativeFunction.movePlayerObject( player.getId(), id, x, y, z, speed );
 		if(attachedPlayer == null) this.speed = speed;
 		return 0;
 	}
@@ -197,13 +197,13 @@ public class PlayerObject implements IPlayerObject
 	public void stop()
 	{
 		speed = 0;
-		SampNativeFunction.stopPlayerObject( player.id, id );
+		SampNativeFunction.stopPlayerObject( player.getId(), id );
 	}
 	
 	@Override
 	public void attach( IPlayer player, float x, float y, float z, float rx, float ry, float rz )
 	{
-		SampNativeFunction.attachPlayerObjectToPlayer( this.player.id, id, player.getId(), x, y, z, rx, ry, rz );
+		SampNativeFunction.attachPlayerObjectToPlayer( this.player.getId(), id, player.getId(), x, y, z, rx, ry, rz );
 		this.attachedPlayer = player;
 		speed = 0;
 	}

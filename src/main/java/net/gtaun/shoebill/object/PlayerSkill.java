@@ -39,8 +39,8 @@ public class PlayerSkill implements IPlayerSkill
 	public static final int WEAPONSKILLS =							11;
 	
 	
-	int[] skills = new int[WEAPONSKILLS];
-	int playerid;
+	private int[] skills = new int[WEAPONSKILLS];
+	private int playerid;
 	
 	
 	PlayerSkill( int playerid )

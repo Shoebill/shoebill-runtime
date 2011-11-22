@@ -67,33 +67,33 @@ public class Vehicle implements IVehicle
 	}
 	
 
-	EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	boolean isStatic = false;
+	private boolean isStatic = false;
 	
-	int id = -1;
-	int model;
-	int interior;
-	int color1, color2;
-	int respawnDelay;
+	private int id = -1;
+	private int model;
+	private int interior;
+	private int color1, color2;
+	private int respawnDelay;
 
-	VehicleParam param;
-	VehicleComponent component;
-	VehicleDamage damage;
+	private IVehicleParam param;
+	private IVehicleComponent component;
+	private VehicleDamage damage;
 
 	
 	@Override public int getId()									{ return id; }
-	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
-	@Override public boolean isStatic()							{ return isStatic; }
+	@Override public boolean isStatic()								{ return isStatic; }
 	
-	@Override public int getModel()								{ return model; }
+	@Override public int getModel()									{ return model; }
 	@Override public int getColor1()								{ return color1; }
 	@Override public int getColor2()								{ return color2; }
-	@Override public int getRespawnDelay()						{ return respawnDelay; }
+	@Override public int getRespawnDelay()							{ return respawnDelay; }
 
-	@Override public VehicleParam getState()						{ return param; }
-	@Override public VehicleComponent getComponent()				{ return component; }
+	@Override public IVehicleParam getState()						{ return param; }
+	@Override public IVehicleComponent getComponent()				{ return component; }
 	
 	
 	public Vehicle( int model, float x, float y, float z, int interior, int world, float angle, int color1, int color2, int respawnDelay )

@@ -49,9 +49,8 @@ public class Zone implements IZone
 	private boolean[] isPlayerShowed = new boolean[SampObjectPool.MAX_PLAYERS];
 	private boolean[] isPlayerFlashing = new boolean[SampObjectPool.MAX_PLAYERS];
 	
-	
-	int id = -1;
-	Area area;
+	private int id = -1;
+	private Area area;
 	
 	
 	@Override public int getId()				{ return id; }

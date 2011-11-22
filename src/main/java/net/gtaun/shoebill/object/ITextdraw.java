@@ -18,7 +18,6 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Color;
 
-
 /**
  * @author MK124
  *

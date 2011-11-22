@@ -46,13 +46,13 @@ public class Menu implements IMenu
 	}
 	
 
-	EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	int id = -1;
-	String title, columnHeader = "";
-	int columns;
-	float x, y;
-	float col1Width, col2Width;
+	private int id = -1;
+	private String title, columnHeader = "";
+	private int columns;
+	private float x, y;
+	private float col1Width, col2Width;
 	
 
 	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }

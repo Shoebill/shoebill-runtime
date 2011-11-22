@@ -32,12 +32,12 @@ public class Timer implements ITimer
 	public static final int COUNT_INFINITE = 0;
 	
 
-	EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	int interval, count;
+	private int interval, count;
 	
-	boolean running;
-	int counting, realInterval;
+	private boolean running;
+	private int counting, realInterval;
 
 	
 	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }

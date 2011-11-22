@@ -31,50 +31,53 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class Checkpoint extends Vector3D implements ICheckpoint
+public class Checkpoint implements ICheckpoint
 {
-	private static final long serialVersionUID = 8248982970415175584L;
-
+	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	EventDispatcher eventDispatcher = new EventDispatcher();
-	
-	float size;
+	private Vector3D position;
+	private float size;
 	
 	
 	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
-	
+
+	@Override public Vector3D getPosition()							{ return position.clone(); }
 	@Override public float getSize()								{ return size; }
 
 	
 	public Checkpoint( float x, float y, float z, float size )
 	{
-		super( x, y, z );
+		this.position = new Vector3D( x, y, z );
 		this.size = size;
 	}
 	
 	public Checkpoint( Vector3D point, float size )
 	{
-		super( point.x, point.y, point.z );
+		this.position = point.clone();
 		this.size = size;
 	}
 	
 
 //---------------------------------------------------------
+
+	@Override
+	public void setPosition( Vector3D position )
+	{
+		this.position = position.clone();
+		update();
+	}
 	
 	@Override
 	public void set( IPlayer player )
 	{
-		SampNativeFunction.setPlayerCheckpoint( player.getId(), x, y, z, size );
-		((Player)player).checkpoint = this;
+		player.setCheckpoint( this );
 	}
 	
 	@Override
 	public void disable( IPlayer player )
 	{
 		if( player.getCheckpoint() != this ) return;
-
-		SampNativeFunction.disablePlayerCheckpoint( player.getId() );
-		((Player)player).checkpoint = null;
+		player.setCheckpoint( null );
 	}
 	
 	@Override

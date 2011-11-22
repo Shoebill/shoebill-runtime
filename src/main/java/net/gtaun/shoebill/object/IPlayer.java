@@ -107,7 +107,7 @@ public interface IPlayer
 	public void setInterior( int interior );
 	public void setWorld( int world );
 	public void setWorldBound( Area bound );
-	public void setSpeed( Velocity spd );
+	public void setSpeed( Velocity speed );
 
 	public void sendMessage( Color color, String message );
 	public void sendMessage( Color color, String format, Object... args );
@@ -171,7 +171,9 @@ public interface IPlayer
 	public void spectateVehicle(IVehicle vehicle, int mode);
 	public void startRecord( int type, String recordName );
 	public void stopRecord();
-	public float distancToPoint( Point point );
 	public IObject getSurfingObject();
 	public String getNetworkStats();
+
+	public void showDialog( IDialog dialog, String caption, String text, String button1, String button2 );
+	public void cancelDialog();
 }

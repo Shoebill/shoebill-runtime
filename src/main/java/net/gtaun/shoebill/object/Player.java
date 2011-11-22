@@ -28,7 +28,9 @@ import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.PointAngle;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
+import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
@@ -176,37 +178,37 @@ public class Player implements IPlayer
 	}
 	
 	
-	EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	int id = -1;
-	String ip;
-	String name;
-	SpawnInfo spawnInfo = new SpawnInfo();
-	Color color;
+	private int id = -1;
+	private String ip;
+	private String name;
+	private SpawnInfo spawnInfo = new SpawnInfo();
+	private Color color;
 	
-	boolean controllable = true;
-	boolean isStuntBonusEnabled = false;
-	boolean spectating = false;
-	boolean isRecording = false;
+	private boolean controllable = true;
+	private boolean isStuntBonusEnabled = false;
+	private boolean spectating = false;
+	private boolean isRecording = false;
 	
-	IPlayer spectatingPlayer;
-	IVehicle spectatingVehicle;
+	private IPlayer spectatingPlayer;
+	private IVehicle spectatingVehicle;
 
-	int updateTick = -1;
-	float health, armour;
-	int money, score;
-	int weather, cameraMode;
+	private int updateTick = -1;
+	private float health, armour;
+	private int money, score;
+	private int weather, cameraMode;
 
-	PointAngle position = new PointAngle();
-	Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
-	Velocity velocity = new Velocity();
-	KeyState keyState = new KeyState();
-	PlayerAttach playerAttach;
-	PlayerSkill skill;
-	Checkpoint checkpoint;
-	RaceCheckpoint raceCheckpoint;
+	private PointAngle position = new PointAngle();
+	private Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
+	private Velocity velocity = new Velocity();
+	private KeyState keyState = new KeyState();
+	private IPlayerAttach playerAttach;
+	private IPlayerSkill skill;
+	private ICheckpoint checkpoint;
+	private IRaceCheckpoint raceCheckpoint;
 	
-	Dialog dialog;
+	private IDialog dialog;
 	
 
 	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
@@ -248,7 +250,7 @@ public class Player implements IPlayer
 	@Override public ICheckpoint getCheckpoint()					{ return checkpoint; }
 	@Override public IRaceCheckpoint getRaceCheckpoint()			{ return raceCheckpoint; }
 	
-	@Override public Dialog getDialog()								{ return dialog; }
+	@Override public IDialog getDialog()							{ return dialog; }
 
 	@Override public boolean isOnline()								{ return id == -1; }
 	@Override public boolean isStuntBonusEnabled()					{ return isStuntBonusEnabled; }
@@ -755,7 +757,15 @@ public class Player implements IPlayer
 	@Override
 	public void setCheckpoint( ICheckpoint checkpoint )
 	{
-		checkpoint.set( this );
+		if( checkpoint == null )
+		{
+			disableCheckpoint();
+			return;
+		}
+
+		Vector3D position = checkpoint.getPosition();
+		SampNativeFunction.setPlayerCheckpoint( id, position.x, position.y, position.z, checkpoint.getSize() );
+		this.checkpoint = checkpoint;
 	}
 	
 	@Override
@@ -768,7 +778,32 @@ public class Player implements IPlayer
 	@Override
 	public void setRaceCheckpoint( IRaceCheckpoint checkpoint )
 	{
-		checkpoint.set( this );
+		if( checkpoint == null )
+		{
+			disableRaceCheckpoint();
+			return;
+		}
+		
+		IRaceCheckpoint next = checkpoint.getNext();
+		
+		Vector3D position = checkpoint.getPosition();
+		Vector3D nextPosition = next.getPosition();
+		
+		if( checkpoint.getNext() != null )
+		{
+			SampNativeFunction.setPlayerRaceCheckpoint( id, checkpoint.getType(), position.x, position.y, position.z, nextPosition.x, nextPosition.y, nextPosition.z, checkpoint.getSize() );
+		}
+		else
+		{
+			int type = checkpoint.getType();
+			
+			if( type == RaceCheckpoint.TYPE_NORMAL )		type = RaceCheckpoint.TYPE_NORMAL_FINISH;
+			else if( type == RaceCheckpoint.TYPE_AIR )		type = RaceCheckpoint.TYPE_AIR_FINISH;
+			
+			SampNativeFunction.setPlayerRaceCheckpoint( id, type, position.x, position.y, position.z, position.x, position.y, position.z, checkpoint.getSize() );
+		}
+		
+		raceCheckpoint = checkpoint;
 	}
 	
 	@Override
@@ -946,12 +981,6 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public float distancToPoint( Point point )
-	{
-		return SampNativeFunction.getPlayerDistanceFromPoint(id, point.x, point.y, point.z);
-	}
-	
-	@Override
 	public IObject getSurfingObject()
 	{
 		int objectid = SampNativeFunction.getPlayerSurfingObjectID(id);
@@ -964,5 +993,28 @@ public class Player implements IPlayer
 	public String getNetworkStats()
 	{
 		return SampNativeFunction.getPlayerNetworkStats(id);
+	}
+	
+	@Override
+	public void showDialog( IDialog dialog, String caption, String text, String button1, String button2 )
+	{
+		if( caption == null || text == null || button1 == null || button2 == null ) throw new NullPointerException();
+		cancelDialog();
+		
+		SampNativeFunction.showPlayerDialog( id, dialog.getId(), dialog.getStyle(), caption, text, button1, button2 );
+		this.dialog = dialog;
+	}
+
+	@Override
+	public void cancelDialog()
+	{
+		if( dialog == null ) return;
+		SampNativeFunction.showPlayerDialog( id, -1, 0, "", "", "", "" );
+		
+		DialogCancelEvent event = new DialogCancelEvent( dialog, this );
+		
+		dialog.getEventDispatcher().dispatchEvent( event );
+		eventDispatcher.dispatchEvent( event );
+		Shoebill.getInstance().getGlobalEventDispatcher().dispatchEvent( event );
 	}
 }

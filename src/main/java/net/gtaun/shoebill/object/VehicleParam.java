@@ -30,8 +30,8 @@ public class VehicleParam implements IVehicleParam
 	public static final int PARAM_ON =				1;
 	
 	
-	int vehicleId;
-	int engine, lights, alarm, doors, bonnet, boot, objective;
+	private int vehicleId;
+	private int engine, lights, alarm, doors, bonnet, boot, objective;
 	
 	public int getEngine()			{ return engine; }
 	public int getLights()			{ return lights; }

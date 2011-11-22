@@ -47,16 +47,16 @@ public class PlayerLabel implements IPlayerLabel
 	}
 	
 	
-	int id = -1;
-	IPlayer player;
-	String text;
-	Color color;
-	PointRange position;
-	boolean testLOS;
+	private int id = -1;
+	private IPlayer player;
+	private String text;
+	private Color color;
+	private PointRange position;
+	private boolean testLOS;
 	
-	float offsetX, offsetY, offsetZ;
-	IPlayer attachedPlayer;
-	IVehicle attachedVehicle;
+	private float offsetX, offsetY, offsetZ;
+	private IPlayer attachedPlayer;
+	private IVehicle attachedVehicle;
 	
 	
 	@Override public int getId()						{ return id; }

@@ -25,8 +25,8 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class VehicleDamage
 {
-	int vehicleId;
-	int panels, doors, lights, tires;
+	private int vehicleId;
+	private int panels, doors, lights, tires;
 	
 	public int getPanels()		{ return panels; }
 	public int getDoors()		{ return doors; }

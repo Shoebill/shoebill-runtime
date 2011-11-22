@@ -30,12 +30,12 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public abstract class Gamemode implements IGamemode
 {
-	EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	int deathDropAmount = 0;
-	float nameTagDrawDistance = 70;
-	float chatRadius = -1;
-	float playerMarkerRadius = -1;
+	private int deathDropAmount = 0;
+	private float nameTagDrawDistance = 70;
+	private float chatRadius = -1;
+	private float playerMarkerRadius = -1;
 	
 	
 	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
