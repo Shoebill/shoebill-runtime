@@ -28,19 +28,15 @@ public abstract class Event
 	boolean interruptable;
 	boolean interrupted;
 	
-	boolean cancelable;
-	boolean canceled;
-	
 	
 	public Event()
 	{
 		this.interruptable = true;
-		this.cancelable = false;
 	}
 	
-	public Event( boolean interruptable, boolean cancelable )
+	public Event( boolean interruptable )
 	{
-		this.cancelable = cancelable;
+		this.interruptable = interruptable;
 	}
 
 	public int getResult()
@@ -60,20 +56,5 @@ public abstract class Event
 	{
 		interrupted = interruptable;
 		return interrupted;
-	}
-	
-	public boolean isCancelable()
-	{
-		return cancelable;
-	}
-	public boolean cancel()
-	{
-		canceled = cancelable;
-		return canceled;
-	}
-	
-	protected void onCancel()
-	{
-		
 	}
 }

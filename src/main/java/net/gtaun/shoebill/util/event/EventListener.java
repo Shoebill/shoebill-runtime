@@ -68,11 +68,18 @@ public abstract class EventListener implements IEventListener
 	}
 	
 	@Override
-	public void handleEvent( Event event ) throws Exception
+	public void handleEvent( Event event )
 	{
 		Method method = eventMethodMap.get( event.getClass() );
 		if( method == null ) return;
 
-		method.invoke( this, event );
+		try
+		{
+			method.invoke( this, event );
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+		}
 	}
 }

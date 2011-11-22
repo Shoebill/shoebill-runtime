@@ -23,5 +23,5 @@ package net.gtaun.shoebill.util.event;
 
 public interface IEventListener
 {
-	void handleEvent( Event event ) throws Exception;
+	void handleEvent( Event event );
 }
