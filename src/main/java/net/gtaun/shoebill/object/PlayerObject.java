@@ -209,6 +209,6 @@ public class PlayerObject implements IPlayerObject
 	@Override
 	public void attach( IVehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
 	{
-		return;
+		throw new UnsupportedOperationException();
 	}
 }

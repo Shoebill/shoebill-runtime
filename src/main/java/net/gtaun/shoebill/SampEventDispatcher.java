@@ -118,20 +118,15 @@ public class SampEventDispatcher implements ISampCallbackHandler
 		try
 		{
 			IPlayer player;
-			sampObjectPool.currentPlayerId = playerId;
 			
 			try
 			{
-				player = Player.class.newInstance();
+				player = Player.class.getConstructor( Integer.class ).newInstance( playerId );
 			}
 			catch( Exception e )
 			{
 				e.printStackTrace();
 				return 0;
-			}
-			finally
-			{
-				sampObjectPool.currentPlayerId = -1;
 			}
 
 			sampObjectPool.setPlayer( playerId, player );
@@ -693,8 +688,9 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			//SampNativeFunction.getVehicleDamageStatus(vehicleid, vehicle.damage);
 			
 			VehicleUpdateDamageEvent event = new VehicleUpdateDamageEvent(vehicle, player);
-	
+			
 			vehicle.getEventDispatcher().dispatchEvent( event );
+			if( player != null ) player.getEventDispatcher().dispatchEvent( event );
 			globalEventDispatcher.dispatchEvent( event );
 			
 			//player.on();
@@ -712,6 +708,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	@Override
 	public int onUnoccupiedVehicleUpdate( int vehicleId, int playerId, int passengerSeat )
 	{
+		
 		try 
 		{
 			IVehicle vehicle = sampObjectPool.getVehicle( vehicleId );
