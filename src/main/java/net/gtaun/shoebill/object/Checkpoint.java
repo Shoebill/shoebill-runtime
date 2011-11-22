@@ -58,8 +58,6 @@ public class Checkpoint implements ICheckpoint
 	}
 	
 
-//---------------------------------------------------------
-
 	@Override
 	public void setPosition( Vector3D position )
 	{

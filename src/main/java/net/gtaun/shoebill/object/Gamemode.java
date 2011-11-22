@@ -57,9 +57,6 @@ public abstract class Gamemode implements IGamemode
 	}
 
 	
-//--------------------------------------------------------- 
-	
-	
 	@Override
 	public void setServerCodepage( int codepage )
 	{

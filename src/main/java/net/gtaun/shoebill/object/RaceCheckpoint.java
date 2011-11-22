@@ -75,8 +75,6 @@ public class RaceCheckpoint implements IRaceCheckpoint
 		this.next = next;
 	}
 	
-	
-//---------------------------------------------------------
 
 	@Override
 	public void setPosition( Vector3D position )

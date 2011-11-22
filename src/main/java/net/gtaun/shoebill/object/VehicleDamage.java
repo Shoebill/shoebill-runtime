@@ -39,6 +39,7 @@ public class VehicleDamage implements IVehicleDamage
 		this.vehicleId = vehicleId;
 	}
 	
+	
 	public void set( int panels, int doors, int lights, int tires )
 	{
 		SampNativeFunction.updateVehicleDamageStatus(vehicleId, panels, doors, lights, tires);

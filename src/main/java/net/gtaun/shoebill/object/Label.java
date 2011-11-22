@@ -99,7 +99,6 @@ public class Label implements ILabel
 		pool.setLabel( id, this );
 	}
 	
-//---------------------------------------------------------
 	
 	@Override
 	public void destroy()

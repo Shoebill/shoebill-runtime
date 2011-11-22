@@ -171,7 +171,6 @@ public class PlayerLabel implements IPlayerLabel
 		pool.setPlayerLabel( player, id, this );
 	}
 	
-//---------------------------------------------------------
 	
 	@Override
 	public void destroy()

@@ -26,6 +26,7 @@ import net.gtaun.shoebill.data.PointAngle;
 import net.gtaun.shoebill.data.Quaternions;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
+import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
@@ -163,11 +164,11 @@ public class Vehicle implements IVehicle
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setVehicle( id, this );
 		
-		//this.onSpawn();
+		VehicleSpawnEvent event = new VehicleSpawnEvent( this );
+		eventDispatcher.dispatchEvent( event );
+		Shoebill.getInstance().getGlobalEventDispatcher().dispatchEvent( event );
 	}
 	
-	
-//---------------------------------------------------------
 	
 	@Override
 	public void destroy()

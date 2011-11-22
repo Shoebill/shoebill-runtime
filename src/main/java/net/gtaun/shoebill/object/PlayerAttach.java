@@ -47,6 +47,7 @@ public class PlayerAttach implements IPlayerAttach
 		}
 	}
 	
+	
 	public boolean set( int slot, int modelid, int bone, Vector3D offset, Vector3D rot, Vector3D scale )
 	{
 		boolean success = SampNativeFunction.setPlayerAttachedObject(playerId, slot, modelid, bone, offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, scale.x, scale.y, scale.z);

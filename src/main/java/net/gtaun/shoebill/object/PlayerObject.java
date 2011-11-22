@@ -133,8 +133,6 @@ public class PlayerObject implements IPlayerObject
 	}
 	
 
-//---------------------------------------------------------
-
 	@Override
 	public void destroy()
 	{

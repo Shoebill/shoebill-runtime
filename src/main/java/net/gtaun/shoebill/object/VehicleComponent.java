@@ -61,7 +61,6 @@ public class VehicleComponent implements IVehicleComponent
 		update();
 	}
 	
-//---------------------------------------------------------
 	
 	public void add( int componentid )
 	{

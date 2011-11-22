@@ -71,8 +71,6 @@ public class Timer implements ITimer
 	}
 	
 	
-//---------------------------------------------------------
-	
 	@Override
 	public void setInterval( int interval )
 	{

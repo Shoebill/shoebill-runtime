@@ -83,8 +83,6 @@ public class Zone implements IZone
 		pool.setZone( id, this );
 	}
 
-
-//---------------------------------------------------------
 	
 	@Override
 	public void destroy()

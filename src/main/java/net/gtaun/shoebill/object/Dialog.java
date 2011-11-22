@@ -66,8 +66,6 @@ public class Dialog implements IDialog
 	}
 	
 	
-//---------------------------------------------------------
-	
 	@Override
 	public void show( IPlayer player, String caption, String text, String button1, String button2 )
 	{

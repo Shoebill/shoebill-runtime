@@ -47,6 +47,7 @@ public class VehicleParam implements IVehicleParam
 		this.vehicleId = vehicleId;
 	}
 	
+	
 	public void update()
 	{
 		SampNativeFunction.getVehicleParamsEx( vehicleId, this );

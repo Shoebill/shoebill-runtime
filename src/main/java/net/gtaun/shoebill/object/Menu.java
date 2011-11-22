@@ -88,8 +88,6 @@ public class Menu implements IMenu
 	}
 	
 	
-//---------------------------------------------------------
-	
 	@Override
 	public void destroy()
 	{

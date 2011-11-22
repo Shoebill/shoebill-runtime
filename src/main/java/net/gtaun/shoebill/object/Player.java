@@ -290,28 +290,6 @@ public class Player implements IPlayer
 	}
 
 	
-//---------------------------------------------------------
-	
-	void update()
-	{
-		health = SampNativeFunction.getPlayerHealth(id);
-		armour = SampNativeFunction.getPlayerArmour(id);
-		money = SampNativeFunction.getPlayerMoney(id);
-		SampNativeFunction.getPlayerPos( id, position );
-		position.angle = SampNativeFunction.getPlayerFacingAngle(id);
-		position.world = SampNativeFunction.getPlayerVirtualWorld(id);
-		SampNativeFunction.getPlayerVelocity( id, velocity );
-		SampNativeFunction.getPlayerKeys(id, keyState);
-		
-		cameraMode = SampNativeFunction.getPlayerCameraMode(id);
-		
-		updateTick++;
-		if( updateTick<0 ) updateTick = 0;
-	}
-
-	
-//---------------------------------------------------------
-	
 	@Override
 	public void setCodepage( int codepage )
 	{

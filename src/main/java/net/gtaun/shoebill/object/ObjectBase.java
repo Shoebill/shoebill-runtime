@@ -133,8 +133,6 @@ public class ObjectBase implements IObject
 	}
 	
 
-//---------------------------------------------------------
-
 	@Override
 	public void destroy()
 	{

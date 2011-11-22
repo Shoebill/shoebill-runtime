@@ -88,8 +88,6 @@ public class Textdraw implements ITextdraw
 		pool.setTextdraw( id, this );
 	}
 	
-	
-//---------------------------------------------------------
 
 	@Override
 	public void destroy()
