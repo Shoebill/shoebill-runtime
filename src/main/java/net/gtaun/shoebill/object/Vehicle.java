@@ -79,7 +79,7 @@ public class Vehicle implements IVehicle
 
 	private IVehicleParam param;
 	private IVehicleComponent component;
-	private VehicleDamage damage;
+	private IVehicleDamage damage;
 
 	
 	@Override public int getId()									{ return id; }
@@ -94,6 +94,7 @@ public class Vehicle implements IVehicle
 
 	@Override public IVehicleParam getState()						{ return param; }
 	@Override public IVehicleComponent getComponent()				{ return component; }
+	@Override public IVehicleDamage getDamage()						{ return damage; }
 	
 	
 	public Vehicle( int model, float x, float y, float z, int interior, int world, float angle, int color1, int color2, int respawnDelay )

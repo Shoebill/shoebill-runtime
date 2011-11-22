@@ -23,7 +23,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  *
  */
 
-public class VehicleDamage
+public class VehicleDamage implements IVehicleDamage
 {
 	private int vehicleId;
 	private int panels, doors, lights, tires;

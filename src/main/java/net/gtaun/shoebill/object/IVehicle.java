@@ -42,6 +42,7 @@ public interface IVehicle extends IDestroyable
 
 	IVehicleParam getState();
 	IVehicleComponent getComponent();
+	public IVehicleDamage getDamage();
 	
 	IVehicle getTrailer();
 	PointAngle getPosition();
