@@ -519,10 +519,6 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			IObject object = sampObjectPool.getObject( objectId );
 			ObjectMovedEvent event = new ObjectMovedEvent(object);
 			
-			//object.speed = 0;
-			//SampNativeFunction.getObjectPos(objectid, object.position);
-			//SampNativeFunction.getObjectRot(objectid, object.position);
-			
 			object.getEventDispatcher().dispatchEvent( event );
 			globalEventDispatcher.dispatchEvent( event );
 			
@@ -542,8 +538,6 @@ public class SampEventDispatcher implements ISampCallbackHandler
 		{
 			IPlayer player = sampObjectPool.getPlayer( playerId );
 			IPlayerObject object = sampObjectPool.getPlayerObject( player, objectId );
-			
-			//object.speed = 0;
 			
 			PlayerObjectMovedEvent event = new PlayerObjectMovedEvent(player, object);
 			ObjectMovedEvent objectMovedEvent = new ObjectMovedEvent( object );
@@ -595,9 +589,6 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			
 			VehicleModEvent event = new VehicleModEvent(vehicle, componentId);
 			
-			//int type = SampNativeFunction.getVehicleComponentType(componentId);
-			//vehicle.component.components[type] = SampNativeFunction.getVehicleComponentInSlot(vehicleid, type);
-	
 			vehicle.getEventDispatcher().dispatchEvent( event );
 			player.getEventDispatcher().dispatchEvent( event );
 			globalEventDispatcher.dispatchEvent( event );

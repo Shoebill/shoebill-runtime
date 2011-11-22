@@ -26,8 +26,10 @@ import net.gtaun.shoebill.data.PointAngle;
 import net.gtaun.shoebill.data.Quaternions;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
+import net.gtaun.shoebill.event.vehicle.VehicleModEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.shoebill.util.event.Event;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -68,7 +70,20 @@ public class Vehicle implements IVehicle
 	}
 	
 
-	private EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher()
+	{
+		@Override
+		public void dispatchEvent( Event event )
+		{
+			if( event instanceof VehicleModEvent )
+			{
+				//int type = SampNativeFunction.getVehicleComponentType(componentId);
+				//component.components[type] = SampNativeFunction.getVehicleComponentInSlot(vehicleid, type);
+			}
+			
+			super.dispatchEvent( event );
+		}
+	};
 	
 	private boolean isStatic = false;
 	
