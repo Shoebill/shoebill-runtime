@@ -31,7 +31,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class Checkpoint extends Vector3D
+public class Checkpoint extends Vector3D implements ICheckpoint
 {
 	private static final long serialVersionUID = 8248982970415175584L;
 
@@ -41,9 +41,9 @@ public class Checkpoint extends Vector3D
 	float size;
 	
 	
-	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
-	public float getSize()								{ return size; }
+	@Override public float getSize()								{ return size; }
 
 	
 	public Checkpoint( float x, float y, float z, float size )
@@ -61,42 +61,47 @@ public class Checkpoint extends Vector3D
 
 //---------------------------------------------------------
 	
-	public void set( Player player )
+	@Override
+	public void set( IPlayer player )
 	{
-		SampNativeFunction.setPlayerCheckpoint( player.id, x, y, z, size );
-		player.checkpoint = this;
+		SampNativeFunction.setPlayerCheckpoint( player.getId(), x, y, z, size );
+		((Player)player).checkpoint = this;
 	}
 	
-	public void disable( Player player )
+	@Override
+	public void disable( IPlayer player )
 	{
-		if( player.checkpoint != this ) return;
+		if( player.getCheckpoint() != this ) return;
 
-		SampNativeFunction.disablePlayerCheckpoint( player.id );
-		player.checkpoint = null;
+		SampNativeFunction.disablePlayerCheckpoint( player.getId() );
+		((Player)player).checkpoint = null;
 	}
 	
-	public boolean isInCheckpoint( Player player )
+	@Override
+	public boolean isInCheckpoint( IPlayer player )
 	{
-		if( player.checkpoint != this ) return false;
-		return SampNativeFunction.isPlayerInCheckpoint(player.id);
+		if( player.getCheckpoint() != this ) return false;
+		return SampNativeFunction.isPlayerInCheckpoint( player.getId() );
 	}
 	
+	@Override
 	public void update()
 	{
-		Collection<Player> players = Shoebill.getInstance().getManagedObjectPool().getPlayers();
-		for( Player player : players )
+		Collection<IPlayer> players = Shoebill.getInstance().getManagedObjectPool().getPlayers();
+		for( IPlayer player : players )
 		{
 			if( player == null ) continue;
-			if( player.checkpoint == this ) set( player );
+			if( player.getCheckpoint() == this ) set( player );
 		}
 	}
 	
-	public Collection<Player> getUsingPlayers()
+	@Override
+	public Collection<IPlayer> getUsingPlayers()
 	{
-		Collection<Player> players = new Vector<Player>();
-		for( Player player : Player.get() )
+		Collection<IPlayer> players = new Vector<IPlayer>();
+		for( IPlayer player : Player.get() )
 		{
-			if( player.checkpoint == this ) players.add( player );
+			if( player.getCheckpoint() == this ) players.add( player );
 		}
 		
 		return players;

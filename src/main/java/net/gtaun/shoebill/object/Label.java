@@ -31,14 +31,14 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  *
  */
 
-public class Label implements IDestroyable
+public class Label implements ILabel
 {
-	public static Collection<Label> get()
+	public static Collection<ILabel> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getLabels();
 	}
 	
-	public static <T extends Label> Collection<T> get( Class<T> cls )
+	public static <T extends ILabel> Collection<T> get( Class<T> cls )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getLabels( cls );
 	}
@@ -51,12 +51,14 @@ public class Label implements IDestroyable
 	boolean testLOS;
 	
 	float offsetX, offsetY, offsetZ;
-	Player attachedPlayer;
-	Vehicle attachedVehicle;
+	IPlayer attachedPlayer;
+	IVehicle attachedVehicle;
 
-	public int getId()						{ return id; } public String getText()					{ return text; } public Color getColor()					{ return color.clone(); }
-	public Player getAttachedPlayer()		{ return attachedPlayer; }
-	public Vehicle getAttachedVehicle()	{ return attachedVehicle; }
+	@Override public int getId()						{ return id; }
+	@Override public String getText()					{ return text; }
+	@Override public Color getColor()					{ return color.clone(); }
+	@Override public IPlayer getAttachedPlayer()		{ return attachedPlayer; }
+	@Override public IVehicle getAttachedVehicle()		{ return attachedVehicle; }
 	
 
 	Label()
@@ -116,11 +118,12 @@ public class Label implements IDestroyable
 		return id == -1;
 	}
 
+	@Override
 	public PointRange getPosition()
 	{
 		PointAngle pos = null;
 		
-		if( attachedPlayer != null )	pos = attachedPlayer.position;
+		if( attachedPlayer != null )	pos = attachedPlayer.getPosition();
 		if( attachedVehicle != null )	pos = attachedVehicle.getPosition();
 		
 		if( pos != null )
@@ -135,28 +138,31 @@ public class Label implements IDestroyable
 		return position.clone();
 	}
 
-	public void attach( Player player, float x, float y, float z )
+	@Override
+	public void attach( IPlayer player, float x, float y, float z )
 	{
 		offsetX = x;
 		offsetY = y;
 		offsetZ = z;
 		
-		SampNativeFunction.attach3DTextLabelToPlayer( id, player.id, x, y, z );
+		SampNativeFunction.attach3DTextLabelToPlayer( id, player.getId(), x, y, z );
 		attachedPlayer = player;
 		attachedVehicle = null;
 	}
 
-	public void attach( Vehicle vehicle, float x, float y, float z )
+	@Override
+	public void attach( IVehicle vehicle, float x, float y, float z )
 	{
 		offsetX = x;
 		offsetY = y;
 		offsetZ = z;
 		
-		SampNativeFunction.attach3DTextLabelToVehicle( id, vehicle.id, x, y, z );
+		SampNativeFunction.attach3DTextLabelToVehicle( id, vehicle.getId(), x, y, z );
 		attachedPlayer = null;
 		attachedVehicle = vehicle;
 	}
 
+	@Override
 	public void update( Color color, String text )
 	{
 		if( text == null ) throw new NullPointerException();

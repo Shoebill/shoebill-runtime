@@ -32,17 +32,17 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class ObjectBase implements IDestroyable
+public class ObjectBase implements IObject
 {
 	public static final int INVALID_ID =				0xFFFF;
 	
 	
-	public static Collection<ObjectBase> get()
+	public static Collection<IObject> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getObjects();
 	}
 	
-	public static <T extends ObjectBase> Collection<T> get( Class<T> cls )
+	public static <T extends IObject> Collection<T> get( Class<T> cls )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getObjects( cls );
 	}
@@ -54,18 +54,18 @@ public class ObjectBase implements IDestroyable
 	int model;
 	PointRot position;
 	float speed = 0;
-	Player attachedPlayer;
-	Vehicle attachedVehicle;
+	IPlayer attachedPlayer;
+	IVehicle attachedVehicle;
 	float drawDistance = 0;
 	
 	
-	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
-	public int getModel()								{ return model; }
-	public float getSpeed()								{ return speed; }
-	public Player getAttachedPlayer()					{ return attachedPlayer; }
-	public Vehicle getAttachedVehicle()					{ return attachedVehicle; }
-	public float getDrawDistance()						{ return drawDistance; }
+	@Override public int getModel()									{ return model; }
+	@Override public float getSpeed()								{ return speed; }
+	@Override public IPlayer getAttachedPlayer()					{ return attachedPlayer; }
+	@Override public IVehicle getAttachedVehicle()					{ return attachedVehicle; }
+	@Override public float getDrawDistance()						{ return drawDistance; }
 	
 	
 	ObjectBase()
@@ -152,6 +152,7 @@ public class ObjectBase implements IDestroyable
 		return id == -1;
 	}
 	
+	@Override
 	public PointRot getPosition()
 	{
 		SampNativeFunction.getObjectPos( id, position );
@@ -159,12 +160,14 @@ public class ObjectBase implements IDestroyable
 		return position.clone();
 	}
 	
+	@Override
 	public void setPosition( Point position )
 	{
 		this.position.set( position );
 		SampNativeFunction.setObjectPos( id, position.x, position.y, position.z );
 	}
 	
+	@Override
 	public void setPosition( PointRot position )
 	{
 		this.position = position.clone();
@@ -172,6 +175,7 @@ public class ObjectBase implements IDestroyable
 		SampNativeFunction.setObjectRot( id, position.rx, position.ry, position.rz );
 	}
 	
+	@Override
 	public void setRotate( float rx, float ry, float rz )
 	{
 		position.rx = rx;
@@ -181,28 +185,32 @@ public class ObjectBase implements IDestroyable
 		SampNativeFunction.setObjectRot( id, rx, ry, rz );
 	}
 	
+	@Override
 	public int move( float x, float y, float z, float speed )
 	{
 		if(attachedPlayer == null && attachedVehicle == null) this.speed = speed;
 		return SampNativeFunction.moveObject( id, x, y, z, speed );
 	}
 	
+	@Override
 	public void stop()
 	{
 		speed = 0;
 		SampNativeFunction.stopObject( id );
 	}
 	
-	public void attach( Player player, float x, float y, float z, float rx, float ry, float rz )
+	@Override
+	public void attach( IPlayer player, float x, float y, float z, float rx, float ry, float rz )
 	{
-		SampNativeFunction.attachObjectToPlayer( id, player.id, x, y, z, rx, ry, rz );
+		SampNativeFunction.attachObjectToPlayer( id, player.getId(), x, y, z, rx, ry, rz );
 		attachedPlayer = player;
 		speed = 0;
 	}
 	
-	public void attach( Vehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
+	@Override
+	public void attach( IVehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
 	{
-		SampNativeFunction.attachObjectToVehicle( id, vehicle.id, x, y, z, rx, ry, rz );
+		SampNativeFunction.attachObjectToVehicle( id, vehicle.getId(), x, y, z, rx, ry, rz );
 		attachedVehicle = vehicle;
 		speed = 0;
 	}

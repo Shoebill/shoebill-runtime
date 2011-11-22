@@ -28,7 +28,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class Dialog
+public class Dialog implements IDialog
 {
 	public static final int STYLE_MSGBOX =		0;
 	public static final int STYLE_INPUT =		1;
@@ -44,10 +44,10 @@ public class Dialog
 	int id, style;
 
 	
-	public IEventDispatcher getEventDispatcher()		{ return getEventDispatcher(); }
+	@Override public IEventDispatcher getEventDispatcher()		{ return getEventDispatcher(); }
 
-	public int getId()									{ return id; }
-	public int getStyle()								{ return style; }
+	@Override public int getId()									{ return id; }
+	@Override public int getStyle()								{ return style; }
 	
 
 //---------------------------------------------------------
@@ -70,20 +70,25 @@ public class Dialog
 	
 //---------------------------------------------------------
 	
-	public void show( Player player, String caption, String text, String button1, String button2 )
+	@Override
+	public void show( IPlayer player, String caption, String text, String button1, String button2 )
 	{
 		if( caption == null || text == null || button1 == null || button2 == null ) throw new NullPointerException();
 		cancel( player );
 		
-		player.dialog = this;
-		SampNativeFunction.showPlayerDialog( player.id, id, style, caption, text, button1, button2 );
+		((Player)player).dialog = this;
+		SampNativeFunction.showPlayerDialog( player.getId(), id, style, caption, text, button1, button2 );
 	}
 	
-	public void cancel( Player player )
-	{		
-		if( player.dialog == null ) return;
-		SampNativeFunction.showPlayerDialog( player.id, -1, 0, "", "", "", "" );
+	@Override
+	public void cancel( IPlayer player )
+	{
+		if( player.getDialog() == null ) return;
+		SampNativeFunction.showPlayerDialog( player.getId(), -1, 0, "", "", "", "" );
 		
-		player.dialog.eventDispatcher.dispatchEvent( new DialogCancelEvent(player.dialog, player) );
+		DialogCancelEvent event = new DialogCancelEvent( player.getDialog(), player );
+		
+		player.getDialog().getEventDispatcher().dispatchEvent( event );
+		player.getEventDispatcher().dispatchEvent( event );
 	}
 }

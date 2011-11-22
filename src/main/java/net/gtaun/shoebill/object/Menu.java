@@ -30,17 +30,17 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class Menu implements IDestroyable
+public class Menu implements IMenu
 {
 	public static final int INVALID_ID =			0xFF;
 	
 	
-	public static Collection<Menu> get()
+	public static Collection<IMenu> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getMenus();
 	}
 	
-	public static <T extends Menu> Collection<T> get( Class<T> cls )
+	public static <T extends IMenu> Collection<T> get( Class<T> cls )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getMenus( cls );
 	}
@@ -55,16 +55,16 @@ public class Menu implements IDestroyable
 	float col1Width, col2Width;
 	
 
-	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	public int getId()								{ return id; }
-	public String getTitle()							{ return title; }
-	public int getColumns()							{ return columns; }
-	public float getX()								{ return x; }
-	public float getY()								{ return y; }
-	public float getCol1Width()						{ return col1Width; }
-	public float getCol2Width()						{ return col2Width; }
-	public String getColumnHeader()					{ return columnHeader; }
+	@Override public int getId()								{ return id; }
+	@Override public String getTitle()							{ return title; }
+	@Override public int getColumns()							{ return columns; }
+	@Override public float getX()								{ return x; }
+	@Override public float getY()								{ return y; }
+	@Override public float getCol1Width()						{ return col1Width; }
+	@Override public float getCol2Width()						{ return col2Width; }
+	@Override public String getColumnHeader()					{ return columnHeader; }
 	
 	
 	public Menu( String title, int columns, float x, float y, float col1Width, float col2Width )
@@ -107,12 +107,14 @@ public class Menu implements IDestroyable
 		return id == -1;
 	}
 	
+	@Override
 	public void addItem( int column, String text )
 	{
 		if( text == null ) throw new NullPointerException();
 		SampNativeFunction.addMenuItem( id, column, text );
 	}
 	
+	@Override
 	public void setColumnHeader( int column, String text )
 	{
 		if( text == null ) throw new NullPointerException();
@@ -121,23 +123,27 @@ public class Menu implements IDestroyable
 		columnHeader = text;
 	}
 	
+	@Override
 	public void disable()
 	{
 		SampNativeFunction.disableMenu( id );
 	}
 	
+	@Override
 	public void disableRow( int row )
 	{
 		SampNativeFunction.disableMenuRow( id, row );
 	}
 	
-	public void show( Player player )
+	@Override
+	public void show( IPlayer player )
 	{
-		SampNativeFunction.showMenuForPlayer( id, player.id );
+		SampNativeFunction.showMenuForPlayer( id, player.getId() );
 	}
 	
-	public void hide( Player player )
+	@Override
+	public void hide( IPlayer player )
 	{
-		SampNativeFunction.hideMenuForPlayer( id, player.id );
+		SampNativeFunction.hideMenuForPlayer( id, player.getId() );
 	}
 }

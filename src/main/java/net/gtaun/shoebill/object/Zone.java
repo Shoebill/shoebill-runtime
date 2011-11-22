@@ -30,17 +30,17 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  *
  */
 
-public class Zone implements IDestroyable
+public class Zone implements IZone
 {
 	public static final int INVALID_ID =		-1;
 	
 	
-	public static Collection<Zone> get()
+	public static Collection<IZone> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getZones();
 	}
 	
-	public static <T extends Zone> Collection<T> get( Class<T> cls )
+	public static <T extends IZone> Collection<T> get( Class<T> cls )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getZones( cls );
 	}
@@ -54,8 +54,8 @@ public class Zone implements IDestroyable
 	Area area;
 	
 	
-	public int getId()				{ return id; }
-	public Area getArea()			{ return area.clone(); }
+	@Override public int getId()				{ return id; }
+	@Override public Area getArea()				{ return area.clone(); }
 
 
 	public Zone( float minX, float minY, float maxX, float maxY )
@@ -105,42 +105,56 @@ public class Zone implements IDestroyable
 	}
 	
 
-	public void show( Player player, int color )
+	@Override
+	public void show( IPlayer player, int color )
 	{
-		SampNativeFunction.gangZoneShowForPlayer( player.id, id, color );
-		isPlayerShowed[player.id] = true;
-		isPlayerFlashing[player.id] = false;
-	}
-
-	public void hide( Player player )
-	{
-		SampNativeFunction.gangZoneHideForPlayer( player.id, id );
+		int playerId = player.getId();
 		
-		isPlayerShowed[player.id] = false;
-		isPlayerFlashing[player.id] = false;
+		SampNativeFunction.gangZoneShowForPlayer( playerId, id, color );
+		isPlayerShowed[playerId] = true;
+		isPlayerFlashing[playerId] = false;
 	}
 
-	public void flash( Player player, int color )
+	@Override
+	public void hide( IPlayer player )
 	{
-		if( isPlayerShowed[player.id] ){
-			SampNativeFunction.gangZoneFlashForPlayer( player.id, id, color );
-			isPlayerFlashing[player.id] = true;
+		int playerId = player.getId();
+		SampNativeFunction.gangZoneHideForPlayer( playerId, id );
+		
+		isPlayerShowed[playerId] = false;
+		isPlayerFlashing[playerId] = false;
+	}
+
+	@Override
+	public void flash( IPlayer player, int color )
+	{
+		int playerId = player.getId();
+		
+		if( isPlayerShowed[playerId] )
+		{
+			SampNativeFunction.gangZoneFlashForPlayer( playerId, id, color );
+			isPlayerFlashing[playerId] = true;
 		}
 	}
 
-	public void stopFlash( Player player )
+	@Override
+	public void stopFlash( IPlayer player )
 	{
-		SampNativeFunction.gangZoneStopFlashForPlayer( player.id, id );
-		isPlayerFlashing[player.id] = false;
+		int playerId = player.getId();
+		
+		SampNativeFunction.gangZoneStopFlashForPlayer( playerId, id );
+		isPlayerFlashing[playerId] = false;
 	}
 	
 
+	@Override
 	public void showForAll( Color color )
 	{
 		SampNativeFunction.gangZoneShowForAll( id, color.getValue() );
 		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = true;
 	}
 
+	@Override
 	public void hideForAll()
 	{
 		SampNativeFunction.gangZoneHideForAll( id );
@@ -152,12 +166,14 @@ public class Zone implements IDestroyable
 		}
 	}
 
+	@Override
 	public void flashForAll( Color color )
 	{
 		SampNativeFunction.gangZoneFlashForAll( id, color.getValue() );
 		for( int i=0; i<isPlayerShowed.length; i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
 	}
 	
+	@Override
 	public void stopFlashForAll()
 	{
 		SampNativeFunction.gangZoneStopFlashForAll( id );

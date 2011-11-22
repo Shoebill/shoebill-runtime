@@ -16,9 +16,10 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.object.Pickup;
+import net.gtaun.shoebill.object.IPickup;
+import net.gtaun.shoebill.object.IPlayer;
+import net.gtaun.shoebill.object.IVehicle;
 import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -54,7 +55,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerConnect( int playerId )
 	{
-		Player player = sampObjectPool.getPlayer(playerId);
+		IPlayer player = sampObjectPool.getPlayer(playerId);
 		System.out.println( "[join] " + player.getName() + " has joined the server (" + playerId + ":" + player.getIp() + ")" );
 
 		return 1;
@@ -63,7 +64,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerDisconnect( int playerId, int reason )
 	{
-		Player player = sampObjectPool.getPlayer(playerId);
+		IPlayer player = sampObjectPool.getPlayer(playerId);
 		System.out.println( "[part] " + player.getName() + " has left the server (" + playerId + ":" + reason + ")" );
 	
 		return 1;
@@ -72,7 +73,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerSpawn( int playerId )
 	{
-		Player player = sampObjectPool.getPlayer(playerId);
+		IPlayer player = sampObjectPool.getPlayer(playerId);
 		System.out.println( "[spawn] " + player.getName() + " has spawned (" + playerId + ")" );
 	
 		return 1;
@@ -81,7 +82,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerDeath( int playerId, int killerId, int reason )
 	{
-		Player player = sampObjectPool.getPlayer( playerId );
+		IPlayer player = sampObjectPool.getPlayer( playerId );
 		
 		if( killerId == Player.INVALID_ID )
 		{
@@ -89,7 +90,7 @@ public class SampEventLogger implements ISampCallbackHandler
 			return 1;
 		}
 		
-		Player killer = sampObjectPool.getPlayer( killerId );
+		IPlayer killer = sampObjectPool.getPlayer( killerId );
 		System.out.println( "[kill] " + killer.getName() + " killed " + player.getName() + " (" + SampNativeFunction.getWeaponName(reason) + ")" );
 		return 1;
 	}
@@ -109,7 +110,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerText( int playerId, String text )
 	{
-		Player player = sampObjectPool.getPlayer( playerId );
+		IPlayer player = sampObjectPool.getPlayer( playerId );
 		System.out.println( "[chat] [" + player.getName() + "]: " + text );
 		
 		return 1;
@@ -118,7 +119,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerCommandText( int playerId, String cmdtext )
 	{
-		Player player = sampObjectPool.getPlayer( playerId );
+		IPlayer player = sampObjectPool.getPlayer( playerId );
 		System.out.println( "[cmd] [" + player.getName() + "] " + cmdtext );
 		
 		return 1;
@@ -133,8 +134,8 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerEnterVehicle( int playerId, int vehicleId, int isPassenger )
 	{
-		Player player = sampObjectPool.getPlayer( playerId );
-		Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
+		IPlayer player = sampObjectPool.getPlayer( playerId );
+		IVehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 		
 		System.out.println( "[vehicle] " + player.getName() + " enter a vehicle (" + vehicle.getModel() + ")" );
 		return 1;
@@ -143,8 +144,8 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerExitVehicle( int playerId, int vehicleId )
 	{
-		Player player = sampObjectPool.getPlayer( playerId );
-		Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
+		IPlayer player = sampObjectPool.getPlayer( playerId );
+		IVehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 		
 		System.out.println( "[vehicle] " + player.getName() + " leave a vehicle (" + vehicle.getModel() + ")" );
 		return 1;
@@ -208,8 +209,8 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerPickUpPickup( int playerId, int pickupId )
 	{
-		Player player = sampObjectPool.getPlayer( playerId );
-		Pickup pickup = sampObjectPool.getPickup( pickupId );
+		IPlayer player = sampObjectPool.getPlayer( playerId );
+		IPickup pickup = sampObjectPool.getPickup( pickupId );
 		
 		System.out.println( "[pickup] " + player.getName() + " pickup " + pickup.getModel() + " (" + pickup.getType() + ")" );
 		return 1;
@@ -266,7 +267,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerInteriorChange( int playerId, int interiorId, int oldInteriorId )
 	{
-		Player player = sampObjectPool.getPlayer( playerId );
+		IPlayer player = sampObjectPool.getPlayer( playerId );
 		System.out.println( "[interior] " + player.getName() + " interior has changed to " + interiorId );
 	
 		return 1;
@@ -328,8 +329,8 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerClickPlayer( int playerId, int clickedPlayerId, int source )
 	{
-		Player player = sampObjectPool.getPlayer( playerId );
-		Player clickedPlayer = sampObjectPool.getPlayer( clickedPlayerId );
+		IPlayer player = sampObjectPool.getPlayer( playerId );
+		IPlayer clickedPlayer = sampObjectPool.getPlayer( clickedPlayerId );
 		
 		System.out.println( "[click] " + player.getName() + " has clicked " + clickedPlayer.getName() );
 		return 1;

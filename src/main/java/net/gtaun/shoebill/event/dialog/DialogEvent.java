@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.event.dialog;
 
-import net.gtaun.shoebill.object.Dialog;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.IDialog;
+import net.gtaun.shoebill.object.IPlayer;
 import net.gtaun.shoebill.util.event.Event;
 
 /**
@@ -27,14 +27,14 @@ import net.gtaun.shoebill.util.event.Event;
 
 public abstract class DialogEvent extends Event
 {
-	Dialog dialog;
-	Player player;
+	IDialog dialog;
+	IPlayer player;
 	
-	public Dialog getDialog()			{ return dialog; }
-	public Player getPlayer()			{ return player; }
+	public IDialog getDialog()			{ return dialog; }
+	public IPlayer getPlayer()			{ return player; }
 	
 	
-	public DialogEvent( Dialog dialog, Player player )
+	public DialogEvent( IDialog dialog, IPlayer player )
 	{
 		this.dialog = dialog;
 		this.player = player;

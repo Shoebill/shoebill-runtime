@@ -23,28 +23,48 @@ import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.PointRot;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.shoebill.util.event.EventDispatcher;
+import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124
  *
  */
 
-public class PlayerObject extends ObjectBase implements IDestroyable
+public class PlayerObject implements IPlayerObject
 {
-	public static Collection<PlayerObject> get( Player player )
+	public static Collection<IPlayerObject> get( IPlayer player )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPlayerObjects( player );
 	}
 	
-	public static <T extends PlayerObject> Collection<T> get( Player player, Class<T> cls )
+	public static <T extends IPlayerObject> Collection<T> get( IPlayer player, Class<T> cls )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPlayerObjects( player, cls );
 	}
 	
+
+	EventDispatcher eventDispatcher = new EventDispatcher();
 	
+	int id = -1;
 	Player player;
 	
-	public Player getPlayer()		{ return player; }
+	int model;
+	PointRot position;
+	float speed = 0;
+	IPlayer attachedPlayer;
+	IVehicle attachedVehicle;
+	float drawDistance = 0;
+	
+	
+	@Override public Player getPlayer()								{ return player; }
+	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
+	
+	@Override public int getModel()									{ return model; }
+	@Override public float getSpeed()								{ return speed; }
+	@Override public IPlayer getAttachedPlayer()					{ return attachedPlayer; }
+	@Override public IVehicle getAttachedVehicle()					{ return attachedVehicle; }
+	@Override public float getDrawDistance()						{ return drawDistance; }
 	
 	
 	public PlayerObject( Player player, int model, float x, float y, float z, float rx, float ry, float rz )
@@ -180,14 +200,16 @@ public class PlayerObject extends ObjectBase implements IDestroyable
 		SampNativeFunction.stopPlayerObject( player.id, id );
 	}
 	
-	public void attach( Player player, float x, float y, float z, float rx, float ry, float rz )
+	@Override
+	public void attach( IPlayer player, float x, float y, float z, float rx, float ry, float rz )
 	{
-		SampNativeFunction.attachPlayerObjectToPlayer( this.player.id, id, player.id, x, y, z, rx, ry, rz );
+		SampNativeFunction.attachPlayerObjectToPlayer( this.player.id, id, player.getId(), x, y, z, rx, ry, rz );
 		this.attachedPlayer = player;
 		speed = 0;
 	}
 	
-	public void attach( Vehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
+	@Override
+	public void attach( IVehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
 	{
 		return;
 	}

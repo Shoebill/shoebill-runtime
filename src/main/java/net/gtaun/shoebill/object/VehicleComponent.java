@@ -25,7 +25,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  *
  */
 
-public class VehicleComponent
+public class VehicleComponent implements IVehicleComponent
 {
 	public static final int SLOT_SPOILER =			0;
 	public static final int SLOT_HOOD =				1;

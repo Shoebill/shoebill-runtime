@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.event.vehicle;
 
-import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.Vehicle;
+import net.gtaun.shoebill.object.IPlayer;
+import net.gtaun.shoebill.object.IVehicle;
 
 /**
  * @author MK124
@@ -26,12 +26,12 @@ import net.gtaun.shoebill.object.Vehicle;
 
 public class VehicleStreamOutEvent extends VehicleEvent
 {
-	Player player;
+	IPlayer player;
 	
-	public Player getPlayer()			{ return player; }
+	public IPlayer getPlayer()			{ return player; }
 	
 	
-	public VehicleStreamOutEvent( Vehicle vehicle, Player player )
+	public VehicleStreamOutEvent( IVehicle vehicle, IPlayer player )
 	{
 		super( vehicle );
 		this.player = player;

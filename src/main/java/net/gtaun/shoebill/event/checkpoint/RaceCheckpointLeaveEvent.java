@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.event.checkpoint;
 
-import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.RaceCheckpoint;
+import net.gtaun.shoebill.object.IPlayer;
+import net.gtaun.shoebill.object.IRaceCheckpoint;
 
 /**
  * @author MK124
@@ -26,10 +26,10 @@ import net.gtaun.shoebill.object.RaceCheckpoint;
 
 public class RaceCheckpointLeaveEvent extends CheckpointEvent
 {
-	public RaceCheckpoint getCheckpoint()		{ return (RaceCheckpoint)checkpoint; }
+	public IRaceCheckpoint getCheckpoint()		{ return (IRaceCheckpoint)checkpoint; }
 	
 	
-	public RaceCheckpointLeaveEvent( Player player )
+	public RaceCheckpointLeaveEvent( IPlayer player )
 	{
 		super( player, player.getRaceCheckpoint() );
 	}

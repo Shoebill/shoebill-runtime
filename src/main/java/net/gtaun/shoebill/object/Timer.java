@@ -27,7 +27,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class Timer
+public class Timer implements ITimer
 {
 	public static final int COUNT_INFINITE = 0;
 	
@@ -40,12 +40,12 @@ public class Timer
 	int counting, realInterval;
 
 	
-	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
-	public int getInterval()							{ return interval; }
-	public int getCount()								{ return count; }
+	@Override public int getInterval()								{ return interval; }
+	@Override public int getCount()									{ return count; }
 
-	public boolean isRunning()							{ return running; }
+	@Override public boolean isRunning()							{ return running; }
 	
 
 	public Timer( int interval )
@@ -73,16 +73,19 @@ public class Timer
 	
 //---------------------------------------------------------
 	
+	@Override
 	public void setInterval( int interval )
 	{
 		this.interval = interval;
 	}
 	
+	@Override
 	public void setCount( int count )
 	{
 		this.count = count;
 	}
 	
+	@Override
 	public void start()
 	{
 		counting = count;
@@ -90,14 +93,13 @@ public class Timer
 		running = true;
 	}
 	
+	@Override
 	public void stop()
 	{
 		running = false;
 	}
 
-	
-//---------------------------------------------------------
-	
+	@Override
 	public void tick( int realint )
 	{
 		if( running == false ) return;

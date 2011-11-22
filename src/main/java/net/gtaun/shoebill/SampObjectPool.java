@@ -25,18 +25,18 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.WeakHashMap;
 
-import net.gtaun.shoebill.object.Dialog;
-import net.gtaun.shoebill.object.Label;
-import net.gtaun.shoebill.object.Menu;
-import net.gtaun.shoebill.object.ObjectBase;
-import net.gtaun.shoebill.object.Pickup;
-import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.PlayerLabel;
-import net.gtaun.shoebill.object.PlayerObject;
-import net.gtaun.shoebill.object.Textdraw;
-import net.gtaun.shoebill.object.Timer;
-import net.gtaun.shoebill.object.Vehicle;
-import net.gtaun.shoebill.object.Zone;
+import net.gtaun.shoebill.object.IDialog;
+import net.gtaun.shoebill.object.ILabel;
+import net.gtaun.shoebill.object.IMenu;
+import net.gtaun.shoebill.object.IObject;
+import net.gtaun.shoebill.object.IPickup;
+import net.gtaun.shoebill.object.IPlayer;
+import net.gtaun.shoebill.object.IPlayerLabel;
+import net.gtaun.shoebill.object.IPlayerObject;
+import net.gtaun.shoebill.object.ITextdraw;
+import net.gtaun.shoebill.object.ITimer;
+import net.gtaun.shoebill.object.IVehicle;
+import net.gtaun.shoebill.object.IZone;
 
 /**
  * @author MK124
@@ -64,19 +64,19 @@ public class SampObjectPool implements ISampObjectPool
 	}
 	
 	
-	Player[] players									= new Player[MAX_PLAYERS];
-	Vehicle[] vehicles									= new Vehicle[MAX_VEHICLES];
-	ObjectBase[] objects								= new ObjectBase[MAX_OBJECTS];
-	Map<Player, PlayerObject[]> playerObjects			= new WeakHashMap<Player, PlayerObject[]>();
-	Pickup[] pickups									= new Pickup[MAX_PICKUPS];
-	Label[] labels										= new Label[MAX_LABELS_GLOBAL];
-	Map<Player, PlayerLabel[]> playerLabels				= new WeakHashMap<Player, PlayerLabel[]>();
-	Textdraw[] textdraws								= new Textdraw[MAX_TEXT_DRAWS];
-	Zone[] zones										= new Zone[MAX_ZONES];
-	Menu[] menus										= new Menu[MAX_MENUS];
+	IPlayer[] players								= new IPlayer[MAX_PLAYERS];
+	IVehicle[] vehicles								= new IVehicle[MAX_VEHICLES];
+	IObject[] objects								= new IObject[MAX_OBJECTS];
+	Map<IPlayer, IPlayerObject[]> playerObjects		= new WeakHashMap<IPlayer, IPlayerObject[]>();
+	IPickup[] pickups								= new IPickup[MAX_PICKUPS];
+	ILabel[] labels									= new ILabel[MAX_LABELS_GLOBAL];
+	Map<IPlayer, IPlayerLabel[]> playerLabels		= new WeakHashMap<IPlayer, IPlayerLabel[]>();
+	ITextdraw[] textdraws							= new ITextdraw[MAX_TEXT_DRAWS];
+	IZone[] zones									= new IZone[MAX_ZONES];
+	IMenu[] menus									= new IMenu[MAX_MENUS];
 	
-	List<Reference<Timer>> timers						= new Vector<Reference<Timer>>();
-	Map<Integer, Reference<Dialog>> dialogs				= new HashMap<Integer, Reference<Dialog>>();
+	List<Reference<ITimer>> timers					= new Vector<Reference<ITimer>>();
+	Map<Integer, Reference<IDialog>> dialogs		= new HashMap<Integer, Reference<IDialog>>();
 	
 	int currentPlayerId = -1;
 	
@@ -88,213 +88,213 @@ public class SampObjectPool implements ISampObjectPool
 	
 	
 	@Override
-	public Player getPlayer( int id )
+	public IPlayer getPlayer( int id )
 	{
 		return players[id];
 	}
 	
 	@Override
-	public Vehicle getVehicle( int id )
+	public IVehicle getVehicle( int id )
 	{
 		return vehicles[id];
 	}
 	
 	@Override
-	public ObjectBase getObject( int id )
+	public IObject getObject( int id )
 	{
 		return objects[id];
 	}
 	
 	@Override
-	public PlayerObject getPlayerObject( Player player, int id )
+	public IPlayerObject getPlayerObject( IPlayer player, int id )
 	{
 		return playerObjects.get( player ) [id];
 	}
 	
 	@Override
-	public Pickup getPickup( int id )
+	public IPickup getPickup( int id )
 	{
 		return pickups[id];
 	}
 	
 	@Override
-	public Label getLabel( int id )
+	public ILabel getLabel( int id )
 	{
 		return labels[id];
 	}
 	
 	@Override
-	public PlayerLabel getPlayerLabel( Player player, int id )
+	public IPlayerLabel getPlayerLabel( IPlayer player, int id )
 	{
 		return playerLabels.get( player ) [id];
 	}
 	
 	@Override
-	public Textdraw getTextdraw( int id )
+	public ITextdraw getTextdraw( int id )
 	{
 		return textdraws[id];
 	}
 	
 	@Override
-	public Zone getZone( int id )
+	public IZone getZone( int id )
 	{
 		return zones[id];
 	}
 	
 	@Override
-	public Menu getMenu( int id )
+	public IMenu getMenu( int id )
 	{
 		return menus[id];
 	}
 	
 	@Override
-	public Dialog getDialog( int id )
+	public IDialog getDialog( int id )
 	{
-		for( Dialog dialog : getDialogs() ) if( dialog.getId() == id ) return dialog;
+		for( IDialog dialog : getDialogs() ) if( dialog.getId() == id ) return dialog;
 		return null;
 	}
 	
 	
 	@Override
-	public Collection<Player> getPlayers()
+	public Collection<IPlayer> getPlayers()
 	{
-		return getInstances( players, Player.class );
+		return getInstances( players, IPlayer.class );
 	}
 	
 	@Override
-	public Collection<Vehicle> getVehicles()
+	public Collection<IVehicle> getVehicles()
 	{
-		return getInstances( players, Vehicle.class );
+		return getInstances( players, IVehicle.class );
 	}
 	
 	@Override
-	public Collection<ObjectBase> getObjects()
+	public Collection<IObject> getObjects()
 	{
-		return getInstances( objects, ObjectBase.class );
+		return getInstances( objects, IObject.class );
 	}
 	
 	@Override
-	public Collection<PlayerObject> getPlayerObjects( Player player )
+	public Collection<IPlayerObject> getPlayerObjects( IPlayer player )
 	{
-		return getInstances( playerObjects.get(player), PlayerObject.class );
+		return getInstances( playerObjects.get(player), IPlayerObject.class );
 	}
 	
 	@Override
-	public Collection<Pickup> getPickups()
+	public Collection<IPickup> getPickups()
 	{
-		return getInstances( pickups, Pickup.class );
+		return getInstances( pickups, IPickup.class );
 	}
 	
 	@Override
-	public Collection<Label> getLabels()
+	public Collection<ILabel> getLabels()
 	{
-		return getInstances( labels, Label.class );
+		return getInstances( labels, ILabel.class );
 	}
 	
 	@Override
-	public Collection<PlayerLabel> getPlayerLabels( Player player )
+	public Collection<IPlayerLabel> getPlayerLabels( IPlayer player )
 	{
-		return getInstances( playerLabels.get(player), PlayerLabel.class );
+		return getInstances( playerLabels.get(player), IPlayerLabel.class );
 	}
 	
 	@Override
-	public Collection<Textdraw> getTextdraws()
+	public Collection<ITextdraw> getTextdraws()
 	{
-		return getInstances( textdraws, Textdraw.class );
+		return getInstances( textdraws, ITextdraw.class );
 	}
 	
 	@Override
-	public Collection<Zone> getZones()
+	public Collection<IZone> getZones()
 	{
-		return getInstances( zones, Zone.class );
+		return getInstances( zones, IZone.class );
 	}
 	
 	@Override
-	public Collection<Menu> getMenus()
+	public Collection<IMenu> getMenus()
 	{
-		return getInstances( menus, Menu.class );
+		return getInstances( menus, IMenu.class );
 	}
 	
 	@Override
-	public Collection<Dialog> getDialogs()
+	public Collection<IDialog> getDialogs()
 	{
-		return getDialogs( Dialog.class );
+		return getDialogs( IDialog.class );
 	}
 	
 	@Override
-	public Collection<Timer> getTimers()
+	public Collection<ITimer> getTimers()
 	{
-		return getTimers( Timer.class );
+		return getTimers( ITimer.class );
 	}
 	
 	
 	@Override
-	public <T extends Player> Collection<T> getPlayers( Class<T> cls )
+	public <T extends IPlayer> Collection<T> getPlayers( Class<T> cls )
 	{
 		return getInstances( players, cls );
 	}
 	
 	@Override
-	public <T extends Vehicle> Collection<T> getVehicles( Class<T> cls )
+	public <T extends IVehicle> Collection<T> getVehicles( Class<T> cls )
 	{
 		return getInstances( vehicles, cls );
 	}
 	
 	@Override
-	public <T extends ObjectBase> Collection<T> getObjects( Class<T> cls )
+	public <T extends IObject> Collection<T> getObjects( Class<T> cls )
 	{
 		return getInstances( objects, cls );
 	}
 	
 	@Override
-	public <T extends PlayerObject> Collection<T> getPlayerObjects( Player player, Class<T> cls )
+	public <T extends IPlayerObject> Collection<T> getPlayerObjects( IPlayer player, Class<T> cls )
 	{
 		return getInstances( playerObjects.get(player), cls );
 	}
 	
 	@Override
-	public <T extends Pickup> Collection<T> getPickups( Class<T> cls )
+	public <T extends IPickup> Collection<T> getPickups( Class<T> cls )
 	{
 		return getInstances( pickups, cls );
 	}
 	
 	@Override
-	public <T extends Label> Collection<T> getLabels( Class<T> cls )
+	public <T extends ILabel> Collection<T> getLabels( Class<T> cls )
 	{
 		return getInstances( labels, cls );
 	}
 	
 	@Override
-	public <T extends PlayerLabel> Collection<T> getPlayerLabels( Player player, Class<T> cls )
+	public <T extends IPlayerLabel> Collection<T> getPlayerLabels( IPlayer player, Class<T> cls )
 	{
 		return getInstances( playerLabels.get(player), cls );
 	}
 	
 	@Override
-	public <T extends Textdraw> Collection<T> getTextdraws( Class<T> cls )
+	public <T extends ITextdraw> Collection<T> getTextdraws( Class<T> cls )
 	{
 		return getInstances( textdraws, cls );
 	}
 	
 	@Override
-	public <T extends Zone> Collection<T> getZones( Class<T> cls )
+	public <T extends IZone> Collection<T> getZones( Class<T> cls )
 	{
 		return getInstances( zones, cls );
 	}
 	
 	@Override
-	public <T extends Menu> Collection<T> getMenus( Class<T> cls )
+	public <T extends IMenu> Collection<T> getMenus( Class<T> cls )
 	{
 		return getInstances( menus, cls );
 	}
 	
 	@Override
-	public <T extends Dialog> Collection<T> getDialogs( Class<T> cls )
+	public <T extends IDialog> Collection<T> getDialogs( Class<T> cls )
 	{
 		Collection<T> items = new Vector<T>();
-		for( Reference<Dialog> reference : dialogs.values() )
+		for( Reference<IDialog> reference : dialogs.values() )
 		{
-			Dialog dialog = reference.get();
+			IDialog dialog = reference.get();
 			if( ! cls.isInstance(dialog) ) continue;
 			
 			items.add( cls.cast(dialog) );
@@ -304,12 +304,12 @@ public class SampObjectPool implements ISampObjectPool
 	}
 	
 	@Override
-	public <T extends Timer> Collection<T> getTimers( Class<T> cls )
+	public <T extends ITimer> Collection<T> getTimers( Class<T> cls )
 	{
 		Collection<T> items = new Vector<T>();
-		for( Reference<Timer> reference : timers )
+		for( Reference<ITimer> reference : timers )
 		{
-			Timer timer = reference.get();
+			ITimer timer = reference.get();
 			if( ! cls.isInstance(timer) ) continue;
 			
 			items.add( cls.cast(timer) );
@@ -324,63 +324,63 @@ public class SampObjectPool implements ISampObjectPool
 		return currentPlayerId;
 	}
 	
-	public void setPlayer( int id, Player player )
+	public void setPlayer( int id, IPlayer player )
 	{
 		players[ id ] = player;
 	}
 	
-	public void setVehicle( int id, Vehicle vehicle )
+	public void setVehicle( int id, IVehicle vehicle )
 	{
 		vehicles[ id ] = vehicle;
 	}
 	
-	public void setObject( int id, ObjectBase object )
+	public void setObject( int id, IObject object )
 	{
 		objects[ id ] = object;
 	}
 	
-	public void setPlayerObject( Player player, int id, PlayerObject object )
+	public void setPlayerObject( IPlayer player, int id, IPlayerObject object )
 	{
 		playerObjects.get( player ) [ id ] = object;
 	}
 	
-	public void setPickup( int id, Pickup pickup )
+	public void setPickup( int id, IPickup pickup )
 	{
 		pickups[ id ] = pickup;
 	}
 	
-	public void setLabel( int id, Label label )
+	public void setLabel( int id, ILabel label )
 	{
 		labels[ id ] = label;
 	}
 	
-	public void setPlayerLabel( Player player, int id, PlayerLabel label )
+	public void setPlayerLabel( IPlayer player, int id, IPlayerLabel label )
 	{
 		playerLabels.get( player ) [ id ] = label;
 	}
 	
-	public void setTextdraw( int id, Textdraw textdraw )
+	public void setTextdraw( int id, ITextdraw textdraw )
 	{
 		textdraws[ id ] = textdraw;
 	}
 	
-	public void setZone( int id, Zone zone )
+	public void setZone( int id, IZone zone )
 	{
 		zones[ id ] = zone;
 	}
 
-	public void setMenu( int id, Menu menu )
+	public void setMenu( int id, IMenu menu )
 	{
 		menus[ id ] = menu;
 	}
 	
-	public void putTimer( Timer timer )
+	public void putTimer( ITimer timer )
 	{
-		timers.add( new WeakReference<Timer>( timer ) );
+		timers.add( new WeakReference<ITimer>( timer ) );
 	}
 	
-	public void putDialog( int id, Dialog dialog )
+	public void putDialog( int id, IDialog dialog )
 	{
-		dialogs.put( id, new WeakReference<Dialog>( dialog ) );
+		dialogs.put( id, new WeakReference<IDialog>( dialog ) );
 	}
 }

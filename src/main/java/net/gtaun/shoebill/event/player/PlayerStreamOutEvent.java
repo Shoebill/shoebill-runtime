@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.event.player;
 
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.IPlayer;
 
 /**
  * @author MK124
@@ -25,12 +25,12 @@ import net.gtaun.shoebill.object.Player;
 
 public class PlayerStreamOutEvent extends PlayerEvent
 {
-	Player forPlayer;
+	IPlayer forPlayer;
 	
-	public Player getForPlayer()		{ return forPlayer; }
+	public IPlayer getForPlayer()		{ return forPlayer; }
 	
 	
-	public PlayerStreamOutEvent( Player player, Player forPlayer )
+	public PlayerStreamOutEvent( IPlayer player, IPlayer forPlayer )
 	{
 		super( player );
 		this.forPlayer = forPlayer;

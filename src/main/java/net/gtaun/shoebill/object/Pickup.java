@@ -30,14 +30,14 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  * @author MK124, JoJLlmAn
  */
 
-public class Pickup implements IDestroyable
+public class Pickup implements IPickup
 {
-	public static Collection<Pickup> get()
+	public static Collection<IPickup> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPickups();
 	}
 	
-	public static <T extends Pickup> Collection<T> get( Class<T> cls )
+	public static <T extends IPickup> Collection<T> get( Class<T> cls )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPickups( cls );
 	}
@@ -51,13 +51,12 @@ public class Pickup implements IDestroyable
 	Point position;
 
 	
-	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	public int getModel()								{ return model; }
-	public int getType()								{ return type; }
-	public int getWorld()								{ return world; }
-	public Point getPosition()							{ return position.clone(); }
-	
+	@Override public int getModel()								{ return model; }
+	@Override public int getType()								{ return type; }
+	@Override public int getWorld()								{ return world; }
+	@Override public Point getPosition()						{ return position.clone(); }
 	
 	
 	public Pickup( int model, int type, float x, float y, float z, int virtualWorld )

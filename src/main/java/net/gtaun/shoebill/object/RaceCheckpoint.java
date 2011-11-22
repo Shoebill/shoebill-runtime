@@ -21,14 +21,17 @@ import java.util.Collection;
 import java.util.Vector;
 
 import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.shoebill.util.event.EventDispatcher;
+import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author JoJLlmAn, MK124
  *
  */
 
-public class RaceCheckpoint extends Checkpoint
+public class RaceCheckpoint extends Vector3D implements IRaceCheckpoint
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -42,36 +45,46 @@ public class RaceCheckpoint extends Checkpoint
 	
 //---------------------------------------------------------
 	
+	EventDispatcher eventDispatcher = new EventDispatcher();
+	
+	float size;
 	int type;
 	RaceCheckpoint next;
+
 	
-	public int getType()				{ return type; }
-	public RaceCheckpoint getNext()			{ return next; }
+	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
+	
+	@Override public float getSize()								{ return size; }
+	@Override public int getType()									{ return type; }
+	@Override public RaceCheckpoint getNext()						{ return next; }
 	
 	
 	public RaceCheckpoint( float x, float y, float z, float size, int type, RaceCheckpoint next )
 	{
-		super( x, y, z, size );
+		super( x, y, z );
 		
 		this.size = size;
 		this.type = type;
+		this.next = next;
 	}
 
 	public RaceCheckpoint( Point position, float size, int type, RaceCheckpoint next )
 	{
-		super( position.x, position.y, position.z, size );
+		super( position.x, position.y, position.z );
 		
 		this.size = size;
 		this.type = type;
+		this.next = next;
 	}
 	
 	
 //---------------------------------------------------------
-	
-	public void set( Player player )
+
+	@Override
+	public void set( IPlayer player )
 	{
 		if( next != null )
-			SampNativeFunction.setPlayerRaceCheckpoint( player.id, type, x, y, z, next.x, next.y, next.z, size );
+			SampNativeFunction.setPlayerRaceCheckpoint( player.getId(), type, x, y, z, next.x, next.y, next.z, size );
 		else
 		{
 			int type = this.type;
@@ -79,42 +92,46 @@ public class RaceCheckpoint extends Checkpoint
 			if( type == TYPE_NORMAL )		type = TYPE_NORMAL_FINISH;
 			else if( type == TYPE_AIR )		type = TYPE_AIR_FINISH;
 			
-			SampNativeFunction.setPlayerRaceCheckpoint( player.id, type, x, y, z, x, y, z, size );
+			SampNativeFunction.setPlayerRaceCheckpoint( player.getId(), type, x, y, z, x, y, z, size );
 		}
 		
-		player.raceCheckpoint = this;
+		((Player)player).raceCheckpoint = this;
 	}
 	
-	public void disable( Player player )
+	@Override
+	public void disable( IPlayer player )
 	{
-		if(player.raceCheckpoint != this) return;
+		if(player.getRaceCheckpoint() != this) return;
 
-		SampNativeFunction.disablePlayerRaceCheckpoint( player.id );
-		player.raceCheckpoint = null;
+		SampNativeFunction.disablePlayerRaceCheckpoint( player.getId() );
+		((Player)player).raceCheckpoint = null;
 	}
 	
-	public boolean isInCheckpoint( Player player )
+	@Override
+	public boolean isInCheckpoint( IPlayer player )
 	{
-		if( player.raceCheckpoint != this ) return false;
+		if( player.getRaceCheckpoint() != this ) return false;
 		
-		return SampNativeFunction.isPlayerInRaceCheckpoint( player.id );
+		return SampNativeFunction.isPlayerInRaceCheckpoint( player.getId() );
 	}
 	
+	@Override
 	public void update()
 	{
-		for( Player player : Player.get() )
+		for( IPlayer player : Player.get() )
 		{
 			if( player == null ) continue;			
-			if( player.raceCheckpoint == this ) set( player );
+			if( player.getRaceCheckpoint() == this ) set( player );
 		}
 	}
 	
-	public Collection<Player> getUsingPlayers()
+	@Override
+	public Collection<IPlayer> getUsingPlayers()
 	{
-		Collection<Player> players = new Vector<Player>();
-		for( Player player : Player.get() )
+		Collection<IPlayer> players = new Vector<IPlayer>();
+		for( IPlayer player : Player.get() )
 		{
-			if( player.raceCheckpoint == this ) players.add( player );
+			if( player.getRaceCheckpoint() == this ) players.add( player );
 		}
 		
 		return players;

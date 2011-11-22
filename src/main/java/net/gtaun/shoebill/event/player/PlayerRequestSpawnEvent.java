@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.event.player;
 
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.IPlayer;
 
 /**
  * @author MK124
@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.Player;
 
 public class PlayerRequestSpawnEvent extends PlayerEvent
 {
-	public PlayerRequestSpawnEvent( Player player )
+	public PlayerRequestSpawnEvent( IPlayer player )
 	{
 		super( player );
 		

@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.event.player;
 
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.IPlayer;
 
 /**
  * @author MK124
@@ -30,7 +30,7 @@ public class PlayerCommandEvent extends PlayerEvent
 	public String getCommand()				{ return command; }
 	
 	
-	public PlayerCommandEvent( Player player, String command )
+	public PlayerCommandEvent( IPlayer player, String command )
 	{
 		super( player );
 		this.command = command;

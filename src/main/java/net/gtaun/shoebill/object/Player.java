@@ -40,7 +40,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class Player
+public class Player implements IPlayer
 {
 	public static final int INVALID_ID =							0xFFFF;
 	public static final int PLAYER_NO_TEAM =						255;
@@ -120,17 +120,17 @@ public class Player
 	
 //---------------------------------------------------------
 	
-	public static Collection<Player> get()
+	public static Collection<IPlayer> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPlayers();
 	}
 	
-	public static <T extends Player> Collection<T> get( Class<T> cls )
+	public static <T extends IPlayer> Collection<T> get( Class<T> cls )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPlayers( cls );
 	}
 	
-	public static <T extends Player> T get( Class<T> cls, int id )
+	public static <T extends IPlayer> T get( Class<T> cls, int id )
 	{
 		return cls.cast( Shoebill.getInstance().getManagedObjectPool().getPlayer(id) );
 	}
@@ -142,8 +142,7 @@ public class Player
 	
 	public static void enableStuntBonusForAll( boolean enabled )
 	{
-		SampNativeFunction.enableStuntBonusForAll( enabled );
-		for( Player player : get() ) player.isStuntBonusEnabled = enabled;
+		for( IPlayer player : get() ) player.enableStuntBonus( enabled );
 	}
 	
 	public static void allowAdminTeleport( boolean allow )
@@ -153,12 +152,12 @@ public class Player
 
 	public static void sendMessageToAll( Color color, String message )
 	{
-		for( Player player : get() ) player.sendMessage( color, message );
+		for( IPlayer player : get() ) player.sendMessage( color, message );
 	}
 	
 	public static void sendMessageToAll( Color color, String format, Object... args )
 	{
-		for( Player player : get() )
+		for( IPlayer player : get() )
 		{
 			String message = String.format(format, args);
 			player.sendMessage( color, message );
@@ -190,8 +189,8 @@ public class Player
 	boolean spectating = false;
 	boolean isRecording = false;
 	
-	Player spectatingPlayer;
-	Vehicle spectatingVehicle;
+	IPlayer spectatingPlayer;
+	IVehicle spectatingVehicle;
 
 	int updateTick = -1;
 	float health, armour;
@@ -210,51 +209,52 @@ public class Player
 	Dialog dialog;
 	
 
-	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
-	public int getId()									{ return id; }
-	public int getPing()								{ return SampNativeFunction.getPlayerPing(id); }
-	public int getTeam()								{ return SampNativeFunction.getPlayerTeam(id); }
-	public int getSkin()								{ return SampNativeFunction.getPlayerSkin(id); }
-	public int getWantedLevel()							{ return SampNativeFunction.getPlayerWantedLevel(id); }
-	public int getCodepage()							{ return SampNativeFunction.getPlayerCodepage(id); };
-	public String getIp()								{ return ip; }
-	public String getName()								{ return name; }
-	public SpawnInfo getSpawnInfo()						{ return spawnInfo.clone(); }
-	public Color getColor()								{ return color; }
+	@Override public int getId()									{ return id; }
+	@Override public int getPing()									{ return SampNativeFunction.getPlayerPing(id); }
+	@Override public int getTeam()									{ return SampNativeFunction.getPlayerTeam(id); }
+	@Override public int getSkin()									{ return SampNativeFunction.getPlayerSkin(id); }
+	@Override public int getWantedLevel()							{ return SampNativeFunction.getPlayerWantedLevel(id); }
+	@Override public int getCodepage()								{ return SampNativeFunction.getPlayerCodepage(id); };
+	@Override public String getIp()									{ return ip; }
+	@Override public String getName()								{ return name; }
+	@Override public SpawnInfo getSpawnInfo()						{ return spawnInfo.clone(); }
+	@Override public Color getColor()								{ return color; }
 
-	public int getUpdateTick()							{ return updateTick; }
-	public float getHealth()							{ return health; }
-	public float getArmour()							{ return armour; }
-	public int getWeapon()								{ return SampNativeFunction.getPlayerWeapon(id); }
-	public int getAmmo()								{ return SampNativeFunction.getPlayerAmmo(id); }
-	public int getMoney()								{ return money; }
-	public int getScore()								{ return score; }
-	public int getWeather()								{ return weather; }
-	public int getCameraMode()							{ return cameraMode; }
-	public int getFightingStyle()						{ return SampNativeFunction.getPlayerFightingStyle(id); }
-	public Vehicle getVehicle()							{ return Vehicle.get(SampNativeFunction.getPlayerVehicleID(id)); }
-	public int getVehicleSeat()							{ return SampNativeFunction.getPlayerVehicleSeat(id); }
-	public int getSpecialAction()						{ return SampNativeFunction.getPlayerSpecialAction(id); }
-	public Player getSpectatingPlayer()					{ return spectatingPlayer; }
-	public Vehicle getSpectatingVehicle()				{ return spectatingVehicle; }
+	@Override public int getUpdateTick()							{ return updateTick; }
+	@Override public float getHealth()								{ return health; }
+	@Override public float getArmour()								{ return armour; }
+	@Override public int getWeapon()								{ return SampNativeFunction.getPlayerWeapon(id); }
+	@Override public int getAmmo()									{ return SampNativeFunction.getPlayerAmmo(id); }
+	@Override public int getMoney()									{ return money; }
+	@Override public int getScore()									{ return score; }
+	@Override public int getWeather()								{ return weather; }
+	@Override public int getCameraMode()							{ return cameraMode; }
+	@Override public int getFightingStyle()							{ return SampNativeFunction.getPlayerFightingStyle(id); }
+	@Override public IVehicle getVehicle()							{ return Vehicle.get(SampNativeFunction.getPlayerVehicleID(id)); }
+	@Override public int getVehicleSeat()							{ return SampNativeFunction.getPlayerVehicleSeat(id); }
+	@Override public int getSpecialAction()							{ return SampNativeFunction.getPlayerSpecialAction(id); }
+	@Override public IPlayer getSpectatingPlayer()					{ return spectatingPlayer; }
+	@Override public IVehicle getSpectatingVehicle()				{ return spectatingVehicle; }
 	
-	public PointAngle getPosition()						{ return position.clone(); }
-	public Area getWorldBound()							{ return worldBound.clone(); }
-	public Velocity getVelocity()						{ return velocity.clone(); }
-	public int getState()								{ return SampNativeFunction.getPlayerState(id); }
-	public KeyState getKeyState()						{ return keyState.clone(); }
-	public PlayerAttach getPlayerAttach()				{ return playerAttach; }
-	public PlayerSkill getSkill()						{ return skill; }
-	public Checkpoint getCheckpoint()					{ return checkpoint; }
-	public RaceCheckpoint getRaceCheckpoint()			{ return raceCheckpoint; }
+	@Override public PointAngle getPosition()						{ return position.clone(); }
+	@Override public Area getWorldBound()							{ return worldBound.clone(); }
+	@Override public Velocity getVelocity()							{ return velocity.clone(); }
+	@Override public int getState()									{ return SampNativeFunction.getPlayerState(id); }
+	@Override public KeyState getKeyState()							{ return keyState.clone(); }
+	@Override public IPlayerAttach getPlayerAttach()				{ return playerAttach; }
+	@Override public IPlayerSkill getSkill()						{ return skill; }
+	@Override public ICheckpoint getCheckpoint()					{ return checkpoint; }
+	@Override public IRaceCheckpoint getRaceCheckpoint()			{ return raceCheckpoint; }
 	
-	public Dialog getDialog()							{ return dialog; }
-	
-	public boolean isStuntBonusEnabled()				{ return isStuntBonusEnabled; }
-	public boolean isSpectating()						{ return spectating; }
-	public boolean isRecording()						{ return isRecording; }
-	public boolean isControllable()						{ return controllable; }
+	@Override public Dialog getDialog()								{ return dialog; }
+
+	@Override public boolean isOnline()								{ return id == -1; }
+	@Override public boolean isStuntBonusEnabled()					{ return isStuntBonusEnabled; }
+	@Override public boolean isSpectating()							{ return spectating; }
+	@Override public boolean isRecording()							{ return isRecording; }
+	@Override public boolean isControllable()						{ return controllable; }
 	
 	
 	protected Player()
@@ -310,11 +310,13 @@ public class Player
 	
 //---------------------------------------------------------
 	
+	@Override
 	public void setCodepage( int codepage )
 	{
 		SampNativeFunction.setPlayerCodepage( id, codepage );
 	}
 	
+	@Override
 	public void setName( String name ) throws IllegalArgumentException, IllegalLengthException, AlreadyExistException
 	{
 		if( name == null ) throw new IllegalArgumentException();
@@ -327,41 +329,48 @@ public class Player
 		this.name = name;
 	}
 	
+	@Override
 	public void setSpawnInfo( float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 )
 	{
 		SpawnInfo info = new SpawnInfo(x, y, z, interiorId, worldId, angle, skin, team, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3);
 		setSpawnInfo( info );
 	}
 	
+	@Override
 	public void setSpawnInfo( SpawnInfo info )
 	{
 		SampNativeFunction.setSpawnInfo( id, info.team, info.skin, info.position.x, info.position.y, info.position.z, info.position.angle, info.weapon1.id, info.weapon1.ammo, info.weapon2.id, info.weapon2.ammo, info.weapon3.id, info.weapon3.ammo );
 		spawnInfo = info;
 	}
 	
+	@Override
 	public void setColor( Color color )
 	{
 		this.color = color.clone();
 		SampNativeFunction.setPlayerColor( id, color.getValue() );
 	}
 
+	@Override
 	public void setHealth( float health )
 	{
 		SampNativeFunction.setPlayerHealth( id, health );
 		this.health = health;
 	}
 	
+	@Override
 	public void setArmour( float armour)
 	{
 		SampNativeFunction.setPlayerArmour( id, armour );
 		this.armour = armour;
 	}
 	
+	@Override
 	public void setAmmo( int weaponslot, int ammo )
 	{
 		SampNativeFunction.setPlayerAmmo( id, weaponslot, ammo );
 	}
 	
+	@Override
 	public void setMoney( int money )
 	{
 		SampNativeFunction.resetPlayerMoney( id );
@@ -370,39 +379,46 @@ public class Player
 		this.money = money;
 	}
 	
+	@Override
 	public void giveMoney( int money )
 	{
 		SampNativeFunction.givePlayerMoney( id, money );
 		this.money = SampNativeFunction.getPlayerMoney(id);
 	}
 	
+	@Override
 	public void setScore( int score )
 	{
 		SampNativeFunction.setPlayerScore( id, score );
 		this.score = score;
 	}
 	
+	@Override
 	public void setWeather( int weather )
 	{
 		SampNativeFunction.setPlayerWeather( id, weather );
 		this.weather = weather;
 	}
 	
+	@Override
 	public void setFightingStyle( int style )
 	{
 		SampNativeFunction.setPlayerFightingStyle( id, style );
 	}
 
-	public void setVehicle( Vehicle vehicle, int seat )
+	@Override
+	public void setVehicle( IVehicle vehicle, int seat )
 	{
 		vehicle.putPlayer( this, seat );
 	}
 	
-	public void setVehicle( Vehicle vehicle )
+	@Override
+	public void setVehicle( IVehicle vehicle )
 	{
 		vehicle.putPlayer( this, 0 );
 	}
 
+	@Override
 	public void setPosition( float x, float y, float z )
 	{
 		SampNativeFunction.setPlayerPos( id, x, y, z );
@@ -412,6 +428,7 @@ public class Player
 		this.position.z = z;
 	}
 	
+	@Override
 	public void setPositionFindZ( float x, float y, float z )
 	{
 		SampNativeFunction.setPlayerPosFindZ( id, x, y, z );
@@ -421,6 +438,7 @@ public class Player
 		this.position.z = z;
 	}
 
+	@Override
 	public void setPosition( Point position )
 	{
 		SampNativeFunction.setPlayerPos( id, position.x, position.y, position.z );
@@ -434,6 +452,7 @@ public class Player
 		this.position.set( position );
 	}
 	
+	@Override
 	public void setPositionFindZ( Point position )
 	{
 		SampNativeFunction.setPlayerPosFindZ( id, position.x, position.y, position.z );
@@ -447,6 +466,7 @@ public class Player
 		this.position.set( position );
 	}
 
+	@Override
 	public void setPosition( PointAngle position )
 	{
 		SampNativeFunction.setPlayerPos( id, position.x, position.y, position.z );
@@ -461,6 +481,7 @@ public class Player
 		this.position.set( position );
 	}
 	
+	@Override
 	public void setPositionFindZ( PointAngle position )
 	{
 		SampNativeFunction.setPlayerPosFindZ( id, position.x, position.y, position.z );
@@ -475,187 +496,217 @@ public class Player
 		this.position.set( position );
 	}
 	
+	@Override
 	public void setAngle( float angle )
 	{
 		SampNativeFunction.setPlayerFacingAngle( id, angle );
 		position.angle = angle;
 	}
 	
+	@Override
 	public void setInterior( int interior )
 	{
 		SampNativeFunction.setPlayerInterior( id, interior );
 		position.interior = interior;
 	}
 	
+	@Override
 	public void setWorld( int world )
 	{
 		SampNativeFunction.setPlayerVirtualWorld( id, world );
 		position.world = world;
 	}
 	
+	@Override
 	public void setWorldBound( Area bound )
 	{
 		SampNativeFunction.setPlayerWorldBounds( id, bound.maxX, bound.minX, bound.maxY, bound.minY );
 		worldBound.set( bound );
 	}
 	
-	public void setSpeed( Velocity spd )
+	@Override
+	public void setSpeed( Velocity speed )
 	{
-		SampNativeFunction.setPlayerVelocity( id, spd.x, spd.y, spd.z );
-		velocity.set( spd );
+		SampNativeFunction.setPlayerVelocity( id, speed.x, speed.y, speed.z );
+		velocity.set( speed );
 	}
-	
-	
-//---------------------------------------------------------
 
+	@Override
 	public void sendMessage( Color color, String message )
 	{
 		if( message == null ) throw new NullPointerException();
 		SampNativeFunction.sendClientMessage( id, color.getValue(), message );
 	}
 	
+	@Override
 	public void sendMessage( Color color, String format, Object... args )
 	{
 		String message = String.format(format, args);
 		SampNativeFunction.sendClientMessage( id, color.getValue(), message );
 	}
 	
-	public void sendChat( Player player, String message )
+	@Override
+	public void sendChat( IPlayer player, String message )
 	{
 		if( message == null ) throw new NullPointerException();
-		SampNativeFunction.sendPlayerMessageToPlayer( player.id, id, message );
+		SampNativeFunction.sendPlayerMessageToPlayer( player.getId(), id, message );
 	}
 	
+	@Override
 	public void sendChatToAll( String message )
 	{
 		if( message == null ) throw new NullPointerException();
-		for( Player player : get() ) sendChat( player, message );
+		for( IPlayer player : get() ) sendChat( player, message );
 	}
 
-	public void sendDeathMessage( Player killer, int reason )
+	@Override
+	public void sendDeathMessage( IPlayer killer, int reason )
 	{
 		if( killer == null )
 			SampNativeFunction.sendDeathMessage( INVALID_ID, id, reason );
 		else
-			SampNativeFunction.sendDeathMessage( killer.id, id, reason );
+			SampNativeFunction.sendDeathMessage( killer.getId(), id, reason );
 	}
 
+	@Override
 	public void sendGameText( int time, int style, String text )
 	{
 		if( text == null ) throw new NullPointerException();
 		SampNativeFunction.gameTextForPlayer( id, text, time, style );
 	}
 	
+	@Override
 	public void sendGameText( int time, int style, String format, Object... args )
 	{
 		String text = String.format(format, args);
 		SampNativeFunction.gameTextForPlayer( id, text, time, style );
 	}
 
+	@Override
 	public void spawn()
 	{
 		SampNativeFunction.spawnPlayer( id );
 	}
 	
+	@Override
 	public void setDrunkLevel( int level )
 	{
 		SampNativeFunction.setPlayerDrunkLevel( id, level );
 	}
 	
+	@Override
 	public int getDrunkLevel()
 	{
 		return SampNativeFunction.getPlayerDrunkLevel(id);
 	}
 
+	@Override
 	public void applyAnimation( String animlib, String animname, float delta, int loop, int lockX, int lockY, int freeze, int time, int forcesync )
 	{
 		if( animlib == null || animname == null ) throw new NullPointerException();
 		SampNativeFunction.applyAnimation( id, animlib, animname, delta, loop, lockX, lockY, freeze, time, forcesync );
 	}
 	
+	@Override
 	public void clearAnimations( int forcesync )
 	{
 		SampNativeFunction.clearAnimations( id, forcesync );
 	}
 	
+	@Override
 	public int getAnimationIndex()
 	{
 		return SampNativeFunction.getPlayerAnimationIndex(id);
 	}
 	
+	@Override
 	public void allowTeleport( boolean allow )
 	{
 		SampNativeFunction.allowPlayerTeleport(id, allow);
 	}
 
+	@Override
 	public void playSound( int sound, float x, float y, float z )
 	{
 		SampNativeFunction.playerPlaySound( id, sound, x, y, z );
 	}
 	
+	@Override
 	public void playSound( int sound, Point point )
 	{
 		SampNativeFunction.playerPlaySound( id, sound, point.x, point.y, point.z );
 	}
 	
-	public void markerForPlayer( Player player, Color color )
+	@Override
+	public void markerForPlayer( IPlayer player, Color color )
 	{
-		SampNativeFunction.setPlayerMarkerForPlayer( id, player.id, color.getValue() );
+		SampNativeFunction.setPlayerMarkerForPlayer( id, player.getId(), color.getValue() );
 	}
 	
-	public void showNameTagForPlayer( Player player, boolean show )
+	@Override
+	public void showNameTagForPlayer( IPlayer player, boolean show )
 	{
-		SampNativeFunction.showPlayerNameTagForPlayer( id, player.id, show );
+		SampNativeFunction.showPlayerNameTagForPlayer( id, player.getId(), show );
 	}
 
+	@Override
 	public void kick()
 	{
 		SampNativeFunction.kick( id );
 	}
 	
+	@Override
 	public void ban()
 	{
 		SampNativeFunction.ban( id );
 	}
 	
+	@Override
 	public void banEx( String reason )
 	{
 		if( reason == null ) throw new NullPointerException();
 		SampNativeFunction.banEx( id, reason );
 	}
 	
-	public Menu getMenu()
+	@Override
+	public IMenu getMenu()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getMenu( SampNativeFunction.getPlayerMenu(id) );
 	}
 
+	@Override
 	public void setCameraPos( float x, float y, float z )
 	{
 		SampNativeFunction.setPlayerCameraPos( id, x, y, z );
 	}
 	
+	@Override
 	public void setCameraPos( Point pos )
 	{
 		if( pos == null ) throw new NullPointerException();
 		SampNativeFunction.setPlayerCameraPos( id, pos.x, pos.y, pos.z );
 	}
 
+	@Override
 	public void setCameraLookAt( float x, float y, float z )
 	{
 		SampNativeFunction.setPlayerCameraLookAt(id, x, y, z);
 	}
 	
+	@Override
 	public void setCameraLookAt( Point lookat )
 	{
 		if( lookat == null ) throw new NullPointerException();
 		SampNativeFunction.setPlayerCameraLookAt(id, lookat.x, lookat.y, lookat.z);
 	}
 	
+	@Override
 	public void setCameraBehind()
 	{
 		SampNativeFunction.setCameraBehindPlayer(id);
 	}
 	
+	@Override
 	public Point getCameraPos()
 	{
 		Point pos = new Point();
@@ -663,6 +714,7 @@ public class Player
 		return pos;
 	}
 	
+	@Override
 	public Point getCameraFrontVector()
 	{
 		Point lookat = new Point();
@@ -670,83 +722,99 @@ public class Player
 		return lookat;
 	}
 	
+	@Override
 	public boolean isInAnyVehicle()
 	{
 		return SampNativeFunction.isPlayerInAnyVehicle( id );
 	}
 	
-	public boolean isInVehicle( Vehicle vehicle )
+	@Override
+	public boolean isInVehicle( IVehicle vehicle )
 	{
-		return SampNativeFunction.isPlayerInVehicle( id, vehicle.id );
+		return SampNativeFunction.isPlayerInVehicle( id, vehicle.getId() );
 	}
 	
+	@Override
 	public boolean isAdmin()
 	{
 		return SampNativeFunction.isPlayerAdmin(id);
 	}
 	
-	public boolean isInRangeOfPoint(Point point, int range)
+	@Override
+	public boolean isInRangeOfPoint( Point point, int range )
 	{
 		return SampNativeFunction.isPlayerInRangeOfPoint(id, range, point.x, point.y, point.z);
 	}
 	
-	public boolean isStreamedIn( Player forPlayer )
+	@Override
+	public boolean isStreamedIn( IPlayer forPlayer )
 	{
-		return SampNativeFunction.isPlayerStreamedIn(id, forPlayer.id);
+		return SampNativeFunction.isPlayerStreamedIn(id, forPlayer.getId());
 	}
 	
-	public void setCheckpoint( Checkpoint checkpoint )
+	@Override
+	public void setCheckpoint( ICheckpoint checkpoint )
 	{
 		checkpoint.set( this );
 	}
 	
+	@Override
 	public void disableCheckpoint()
 	{
 		SampNativeFunction.disablePlayerCheckpoint( id );
 		checkpoint = null;
 	}
 	
-	public void setRaceCheckpoint( RaceCheckpoint checkpoint )
+	@Override
+	public void setRaceCheckpoint( IRaceCheckpoint checkpoint )
 	{
 		checkpoint.set( this );
 	}
 	
+	@Override
 	public void disableRaceCheckpoint()
 	{
 		SampNativeFunction.disablePlayerRaceCheckpoint( id );
 		raceCheckpoint = null;
 	}
 	
+	@Override
 	public int getWeaponState()
 	{
 		return SampNativeFunction.getPlayerWeaponState( id );
 	}
 	
+	@Override
 	public void setTeam( int team )
 	{
 		SampNativeFunction.setPlayerTeam( id, team );
 	}
 	
+	@Override
 	public void setSkin( int skin )
 	{
 		SampNativeFunction.setPlayerSkin( id, skin );
 	}
 	
+	@Override
 	public void giveWeapon( int weaponid, int ammo )
 	{
 		SampNativeFunction.givePlayerWeapon( id, weaponid, ammo );
 	}
 	
+	@Override
 	public void resetWeapons()
 	{
 		SampNativeFunction.resetPlayerWeapons( id );
 	}
 	
+	@Override
 	public void setTime( int hour, int minute )
 	{
 		SampNativeFunction.setPlayerTime( id, hour, minute );
 	}
 	
+	@Override
 	public Time getTime()
 	{
 		Time time = new Time();
@@ -754,63 +822,75 @@ public class Player
 		return time;
 	}
 	
+	@Override
 	public void toggleClock( boolean toggle )
 	{
 		SampNativeFunction.togglePlayerClock( id, toggle );
 	}
 	
+	@Override
 	public void forceClassSelection()
 	{
 		SampNativeFunction.forceClassSelection( id );
 	}
 	
+	@Override
 	public void setWantedLevel( int level )
 	{
 		SampNativeFunction.setPlayerWantedLevel( id, level );
 	}
 	
+	@Override
 	public void playCrimeReport( int suspectid, int crimeid )
 	{
 		SampNativeFunction.playCrimeReportForPlayer( id, suspectid, crimeid );
 	}
 	
+	@Override
 	public void setShopName( String name )
 	{
 		if( name == null ) throw new NullPointerException();
 		SampNativeFunction.setPlayerShopName(id, name);
 	}
 	
-	public Vehicle getSurfingVehicle()
+	@Override
+	public IVehicle getSurfingVehicle()
 	{
-		return Vehicle.get(Vehicle.class, SampNativeFunction.getPlayerSurfingVehicleID(id));
+		return Vehicle.get(IVehicle.class, SampNativeFunction.getPlayerSurfingVehicleID(id));
 	}
 	
+	@Override
 	public void removeFromVehicle()
 	{
 		SampNativeFunction.removePlayerFromVehicle(id);
 	}
 	
+	@Override
 	public void toggleControllable( boolean toggle )
 	{
 		SampNativeFunction.togglePlayerControllable( id, toggle );
 		controllable = toggle;
 	}
 	
+	@Override
 	public void setSpecialAction( int action )
 	{
 		SampNativeFunction.setPlayerSpecialAction( id, action );
 	}
 	
+	@Override
 	public void setMapIcon( int iconid, Point point, int markertype, Color color, int style )
 	{
 		SampNativeFunction.setPlayerMapIcon( id, iconid, point.x, point.y, point.z, markertype, color.getValue(), style );
 	}
 	
+	@Override
 	public void removeMapIcon( int iconid )
 	{
 		SampNativeFunction.removePlayerMapIcon( id, iconid );
 	}
 	
+	@Override
 	public void enableStuntBonus( boolean enable )
 	{
 		if( enable )	SampNativeFunction.enableStuntBonusForPlayer( id, 1 );
@@ -819,6 +899,7 @@ public class Player
 		isStuntBonusEnabled = enable;
 	}
 	
+	@Override
 	public void toggleSpectating( boolean toggle )
 	{
 		SampNativeFunction.togglePlayerSpectating( id, toggle );
@@ -830,42 +911,48 @@ public class Player
 		spectatingVehicle = null;
 	}
 	
-	public void spectatePlayer( Player player, int mode )
+	@Override
+	public void spectatePlayer( IPlayer player, int mode )
 	{
 		if( !spectating ) return;
 		
-		SampNativeFunction.playerSpectatePlayer(id, player.id, mode);
+		SampNativeFunction.playerSpectatePlayer(id, player.getId(), mode);
 		spectatingPlayer = player;
 		spectatingVehicle = null;
 	}
 	
-	public void spectateVehicle( Vehicle vehicle, int mode )
+	@Override
+	public void spectateVehicle( IVehicle vehicle, int mode )
 	{
 		if( !spectating ) return;
 
-		SampNativeFunction.playerSpectateVehicle(id, vehicle.id, mode);
+		SampNativeFunction.playerSpectateVehicle(id, vehicle.getId(), mode);
 		spectatingPlayer = null;
 		spectatingVehicle = vehicle;
 	}
 	
+	@Override
 	public void startRecord( int type, String recordName )
 	{
 		SampNativeFunction.startRecordingPlayerData( id, type, recordName );
 		isRecording = true;
 	}
 	
+	@Override
 	public void stopRecord()
 	{
 		SampNativeFunction.stopRecordingPlayerData( id );
 		isRecording = false;
 	}
 	
+	@Override
 	public float distancToPoint( Point point )
 	{
 		return SampNativeFunction.getPlayerDistanceFromPoint(id, point.x, point.y, point.z);
 	}
 	
-	public ObjectBase getSurfingObject()
+	@Override
+	public IObject getSurfingObject()
 	{
 		int objectid = SampNativeFunction.getPlayerSurfingObjectID(id);
 		if( objectid == ObjectBase.INVALID_ID ) return null;
@@ -873,13 +960,9 @@ public class Player
 		return Shoebill.getInstance().getManagedObjectPool().getObject( objectid );
 	}
 	
+	@Override
 	public String getNetworkStats()
 	{
 		return SampNativeFunction.getPlayerNetworkStats(id);
-	}
-	
-	public boolean isOnline()
-	{
-		return id == -1;
 	}
 }

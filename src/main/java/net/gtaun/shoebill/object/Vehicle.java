@@ -35,27 +35,27 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public class Vehicle implements IDestroyable
+public class Vehicle implements IVehicle
 {
 	public static final int INVALID_ID	=				0xFFFF;
 	
 	
-	public static Collection<Vehicle> get()
+	public static Collection<IVehicle> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getVehicles();
 	}
 	
-	public static <T extends Vehicle> Collection<T> get( Class<T> cls )
+	public static <T extends IVehicle> Collection<T> get( Class<T> cls )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getVehicles( cls );
 	}
 	
-	public static Vehicle get( int id )
+	public static IVehicle get( int id )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getVehicle( id );
 	}
 	
-	public static <T extends Vehicle> T get( Class<T> cls, int id )
+	public static <T extends IVehicle> T get( Class<T> cls, int id )
 	{
 		return cls.cast( Shoebill.getInstance().getManagedObjectPool().getVehicle(id) );
 	}
@@ -82,18 +82,18 @@ public class Vehicle implements IDestroyable
 	VehicleDamage damage;
 
 	
-	public int getId()									{ return id; }
-	public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
+	@Override public int getId()									{ return id; }
+	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	public boolean isStatic()							{ return isStatic; }
+	@Override public boolean isStatic()							{ return isStatic; }
 	
-	public int getModel()								{ return model; }
-	public int getColor1()								{ return color1; }
-	public int getColor2()								{ return color2; }
-	public int getRespawnDelay()						{ return respawnDelay; }
+	@Override public int getModel()								{ return model; }
+	@Override public int getColor1()								{ return color1; }
+	@Override public int getColor2()								{ return color2; }
+	@Override public int getRespawnDelay()						{ return respawnDelay; }
 
-	public VehicleParam getState()						{ return param; }
-	public VehicleComponent getComponent()				{ return component; }
+	@Override public VehicleParam getState()						{ return param; }
+	@Override public VehicleComponent getComponent()				{ return component; }
 	
 	
 	public Vehicle( int model, float x, float y, float z, int interior, int world, float angle, int color1, int color2, int respawnDelay )
@@ -189,11 +189,13 @@ public class Vehicle implements IDestroyable
 	}
 	
 	
+	@Override
 	public Vehicle getTrailer()
 	{
 		return get( Vehicle.class, SampNativeFunction.getVehicleTrailer(id) );
 	}
 	
+	@Override
 	public PointAngle getPosition()
 	{
 		PointAngle position = new PointAngle();
@@ -206,26 +208,31 @@ public class Vehicle implements IDestroyable
 		return position;
 	}
 	
+	@Override
 	public float getAngle()
 	{
 		return SampNativeFunction.getVehicleZAngle(id);
 	}
 	
+	@Override
 	public int getInterior()
 	{
 		return interior;
 	}
 	
+	@Override
 	public int getWorld()
 	{
 		return SampNativeFunction.getVehicleVirtualWorld(id);
 	}
 	
+	@Override
 	public float getHealth()
 	{
 		return SampNativeFunction.getVehicleHealth(id);
 	}
 
+	@Override
 	public Velocity getVelocity()
 	{
 		Velocity velocity = new Velocity();
@@ -234,6 +241,7 @@ public class Vehicle implements IDestroyable
 		return velocity;
 	}
 	
+	@Override
 	public Quaternions getRotationQuat()
 	{
 		Quaternions quaternions = new Quaternions();
@@ -243,11 +251,13 @@ public class Vehicle implements IDestroyable
 	}
 	
 
+	@Override
 	public void setPosition( float x, float y, float z )
 	{
 		SampNativeFunction.setVehiclePos( id, x, y, z );
 	}
 	
+	@Override
 	public void setPosition( Point point )
 	{
 		SampNativeFunction.setVehiclePos( id, point.x, point.y, point.z );
@@ -255,6 +265,7 @@ public class Vehicle implements IDestroyable
 		SampNativeFunction.setVehicleVirtualWorld( id, point.world );
 	}
 	
+	@Override
 	public void setPosition( PointAngle point )
 	{
 		SampNativeFunction.setVehiclePos( id, point.x, point.y, point.z );
@@ -263,94 +274,112 @@ public class Vehicle implements IDestroyable
 		SampNativeFunction.setVehicleVirtualWorld( id, point.world );
 	}
 	
+	@Override
 	public void setHealth( float health )
 	{
 		SampNativeFunction.setVehicleHealth( id, health );
 	}
 	
+	@Override
 	public void setVelocity( Velocity velocity )
 	{
 		SampNativeFunction.setVehicleVelocity( id, velocity.x, velocity.y, velocity.z );
 	}
 	
+	@Override
 	public void setAngle( float angle )
 	{
 		SampNativeFunction.setVehicleZAngle( id, angle );
 	}
 	
+	@Override
 	public void setInterior( int interior )
 	{
 		this.interior = interior;
 		SampNativeFunction.linkVehicleToInterior( id, interior );
 	}
 	
+	@Override
 	public void setWorld( int world )
 	{
 		SampNativeFunction.setVehicleVirtualWorld( id, world );
 	}
 
 	
-	public void putPlayer( Player player, int seat )
+	@Override
+	public void putPlayer( IPlayer player, int seat )
 	{
-		SampNativeFunction.putPlayerInVehicle( player.id, id, seat );
+		SampNativeFunction.putPlayerInVehicle( player.getId(), id, seat );
 	}
 	
-	public boolean isPlayerIn( Player player )
+	@Override
+	public boolean isPlayerIn( IPlayer player )
 	{
-		return SampNativeFunction.isPlayerInVehicle(player.id, id);
+		return SampNativeFunction.isPlayerInVehicle(player.getId(), id);
 	}
 	
-	public boolean isStreamedIn( Player forPlayer )
+	@Override
+	public boolean isStreamedIn( IPlayer forPlayer )
 	{
-		return SampNativeFunction.isVehicleStreamedIn(id, forPlayer.id);
+		return SampNativeFunction.isVehicleStreamedIn(id, forPlayer.getId());
 	}
 	
-	public void setParamsForPlayer( Player player, boolean objective, boolean doorslocked )
+	@Override
+	public void setParamsForPlayer( IPlayer player, boolean objective, boolean doorslocked )
 	{
-		SampNativeFunction.setVehicleParamsForPlayer( id, player.id, objective, doorslocked );
+		SampNativeFunction.setVehicleParamsForPlayer( id, player.getId(), objective, doorslocked );
 	}
 	
+	@Override
 	public void respawn()
 	{
 		SampNativeFunction.setVehicleToRespawn( id );
 	}
 	
+	@Override
 	public void setColor( int color1, int color2 )
 	{
 		SampNativeFunction.changeVehicleColor( id, color1, color2 );
 	}
 	
-	public void setPaintjob( int paintjobid )
+	@Override
+	public void setPaintjob( int paintjobId )
 	{
-		SampNativeFunction.changeVehiclePaintjob( id, paintjobid );
+		SampNativeFunction.changeVehiclePaintjob( id, paintjobId );
 	}
 	
-	public void attachTrailer( Vehicle trailer )
+	@Override
+	public void attachTrailer( IVehicle trailer )
 	{
-		SampNativeFunction.attachTrailerToVehicle( trailer.id, id );
+		SampNativeFunction.attachTrailerToVehicle( trailer.getId(), id );
 	}
 	
+	@Override
 	public void detachTrailer()
 	{
 		SampNativeFunction.detachTrailerFromVehicle( id );
 	}
 	
+	@Override
 	public boolean isTrailerAttached()
 	{
 		return SampNativeFunction.isTrailerAttachedToVehicle(id);
 	}
 	
+	@Override
 	public void setNumberPlate( String numberplate )
 	{
 		if( numberplate == null ) throw new NullPointerException();
 		SampNativeFunction.setVehicleNumberPlate( id, numberplate );
 	}
 	
+	@Override
 	public void repair()
 	{
 		SampNativeFunction.repairVehicle( id );
 	}
 	
+	@Override
 	public void setAngularVelocity( Velocity velocity )
 	{
 		SampNativeFunction.setVehicleAngularVelocity( id, velocity.x, velocity.y, velocity.z );

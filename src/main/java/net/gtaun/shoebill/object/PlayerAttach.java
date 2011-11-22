@@ -24,7 +24,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  *
  */
 
-public class PlayerAttach
+public class PlayerAttach implements IPlayerAttach
 {
 	int playerId;
 	

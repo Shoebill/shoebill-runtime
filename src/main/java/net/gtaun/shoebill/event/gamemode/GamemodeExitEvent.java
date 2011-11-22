@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.event.gamemode;
 
-import net.gtaun.shoebill.object.Gamemode;
+import net.gtaun.shoebill.object.IGamemode;
 
 /**
  * @author MK124
@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.Gamemode;
 
 public class GamemodeExitEvent extends GamemodeEvent
 {
-	public GamemodeExitEvent( Gamemode gamemode )
+	public GamemodeExitEvent( IGamemode gamemode )
 	{
 		super( gamemode );
 	}

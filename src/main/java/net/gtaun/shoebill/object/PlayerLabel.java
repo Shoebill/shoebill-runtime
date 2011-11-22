@@ -22,6 +22,7 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.data.PointAngle;
 import net.gtaun.shoebill.data.PointRange;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -30,25 +31,41 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  *
  */
 
-public class PlayerLabel extends Label implements IDestroyable
+public class PlayerLabel implements IPlayerLabel
 {
 	public static final int INVALID_ID =			0xFFFF;
 	
 	
-	public static Collection<PlayerLabel> get( Player player )
+	public static Collection<IPlayerLabel> get( IPlayer player )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPlayerLabels( player );
 	}
 	
-	public static <T extends PlayerLabel> Collection<T> get( Player player, Class<T> cls )
+	public static <T extends IPlayerLabel> Collection<T> get( IPlayer player, Class<T> cls )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPlayerLabels( player, cls );
 	}
 	
 	
-	Player player;
+	int id = -1;
+	IPlayer player;
+	String text;
+	Color color;
+	PointRange position;
+	boolean testLOS;
 	
-	public Player getPlayer()		{ return player; }
+	float offsetX, offsetY, offsetZ;
+	IPlayer attachedPlayer;
+	IVehicle attachedVehicle;
+	
+	
+	@Override public int getId()						{ return id; }
+	@Override public IPlayer getPlayer()				{ return player; }
+	
+	@Override public String getText()					{ return text; }
+	@Override public Color getColor()					{ return color.clone(); }
+	@Override public IPlayer getAttachedPlayer()		{ return attachedPlayer; }
+	@Override public IVehicle getAttachedVehicle()		{ return attachedVehicle; }
 	
 	
 	public PlayerLabel( Player player, String text, Color color, Point point, float drawDistance, boolean testLOS )
@@ -137,8 +154,8 @@ public class PlayerLabel extends Label implements IDestroyable
 	{
 		int playerId = Player.INVALID_ID, vehicleId = Vehicle.INVALID_ID;
 		
-		if( attachedPlayer != null )	playerId = attachedPlayer.id;
-		if( attachedVehicle != null )	vehicleId = attachedVehicle.id;
+		if( attachedPlayer != null )	playerId = attachedPlayer.getId();
+		if( attachedVehicle != null )	vehicleId = attachedVehicle.getId();
 		
 		if( attachedPlayer != null || attachedVehicle != null )
 		{
@@ -147,7 +164,7 @@ public class PlayerLabel extends Label implements IDestroyable
 			offsetZ = position.z;
 		}
 		
-		id = SampNativeFunction.createPlayer3DTextLabel( player.id, text, color.getValue(),
+		id = SampNativeFunction.createPlayer3DTextLabel( player.getId(), text, color.getValue(),
 				position.x, position.y, position.z, position.distance, playerId, vehicleId, testLOS );
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -159,7 +176,7 @@ public class PlayerLabel extends Label implements IDestroyable
 	@Override
 	public void destroy()
 	{
-		SampNativeFunction.deletePlayer3DTextLabel( player.id, id );
+		SampNativeFunction.deletePlayer3DTextLabel( player.getId(), id );
 
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setPlayerLabel( player, id, null );
@@ -172,19 +189,43 @@ public class PlayerLabel extends Label implements IDestroyable
 	{
 		return id == -1;
 	}
-
+	
 	@Override
-	public void attach( Player player, float x, float y, float z )
+	public PointRange getPosition()
 	{
-		SampNativeFunction.deletePlayer3DTextLabel( this.player.id, id );
-		id = SampNativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance, player.id, Vehicle.INVALID_ID, testLOS );
+		PointAngle pos = null;
+		
+		if( attachedPlayer != null )	pos = attachedPlayer.getPosition();
+		if( attachedVehicle != null )	pos = attachedVehicle.getPosition();
+		
+		if( pos != null )
+		{
+			position.x = pos.x + offsetX;
+			position.y = pos.y + offsetY;
+			position.z = pos.z + offsetZ;
+			position.interior = pos.interior;
+			position.world = pos.world;
+		}
+		
+		return position.clone();
 	}
 
 	@Override
-	public void attach( Vehicle vehicle, float x, float y, float z )
+	public void attach( IPlayer player, float x, float y, float z )
 	{
-		SampNativeFunction.deletePlayer3DTextLabel( this.player.id, id );
-		id = SampNativeFunction.createPlayer3DTextLabel( this.player.id, text, color.getValue(), x, y, z, position.distance, Player.INVALID_ID, vehicle.id, testLOS );
+		int playerId = this.player.getId();
+		
+		SampNativeFunction.deletePlayer3DTextLabel( playerId, id );
+		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, position.distance, player.getId(), Vehicle.INVALID_ID, testLOS );
+	}
+
+	@Override
+	public void attach( IVehicle vehicle, float x, float y, float z )
+	{
+		int playerId = this.player.getId();
+		
+		SampNativeFunction.deletePlayer3DTextLabel( playerId, id );
+		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, position.distance, Player.INVALID_ID, vehicle.getId(), testLOS );
 	}
 	
 	@Override
@@ -193,6 +234,6 @@ public class PlayerLabel extends Label implements IDestroyable
 		this.color = color.clone();
 		this.text = text;
 		
-		SampNativeFunction.updatePlayer3DTextLabelText( player.id, id, color.getValue(), text );
+		SampNativeFunction.updatePlayer3DTextLabelText( player.getId(), id, color.getValue(), text );
 	}
 }

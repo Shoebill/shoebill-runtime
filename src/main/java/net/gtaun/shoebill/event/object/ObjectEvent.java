@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.event.object;
 
-import net.gtaun.shoebill.object.ObjectBase;
+import net.gtaun.shoebill.object.IObject;
 import net.gtaun.shoebill.util.event.Event;
 
 /**
@@ -26,12 +26,12 @@ import net.gtaun.shoebill.util.event.Event;
 
 public class ObjectEvent extends Event
 {
-	ObjectBase object;
+	IObject object;
 	
-	public ObjectBase getObject()		{ return object; }
+	public IObject getObject()		{ return object; }
 	
 	
-	public ObjectEvent( ObjectBase object )
+	public ObjectEvent( IObject object )
 	{
 		this.object = object;
 	}

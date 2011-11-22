@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.event.object;
 
-import net.gtaun.shoebill.object.ObjectBase;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.IPlayer;
+import net.gtaun.shoebill.object.IPlayerObject;
 import net.gtaun.shoebill.object.PlayerObject;
 
 /**
@@ -27,13 +27,13 @@ import net.gtaun.shoebill.object.PlayerObject;
 
 public class PlayerObjectMovedEvent extends ObjectEvent
 {
-	Player player;
+	IPlayer player;
 	
-	public Player getPlayer()				{ return player; }
-	public PlayerObject getObject()			{ return (PlayerObject)object; };
+	public IPlayer getPlayer()				{ return player; }
+	public IPlayerObject getObject()		{ return (PlayerObject)object; };
 	
 	
-	public PlayerObjectMovedEvent( Player player, ObjectBase object )
+	public PlayerObjectMovedEvent( IPlayer player, IPlayerObject object )
 	{
 		super( object );
 		this.player = player;
