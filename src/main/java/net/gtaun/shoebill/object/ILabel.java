@@ -18,6 +18,7 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.PointRange;
+import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124
@@ -26,6 +27,8 @@ import net.gtaun.shoebill.data.PointRange;
 
 public interface ILabel extends IDestroyable
 {
+	IEventDispatcher getEventDispatcher();
+	
 	int getId();
 	String getText();
 	Color getColor();
