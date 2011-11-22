@@ -992,6 +992,7 @@ public class Player implements IPlayer
 		DialogCancelEvent event = new DialogCancelEvent( dialog, this );
 		
 		dialog.getEventDispatcher().dispatchEvent( event );
+		getEventDispatcher().dispatchEvent( event );
 		eventDispatcher.dispatchEvent( event );
 		Shoebill.getInstance().getGlobalEventDispatcher().dispatchEvent( event );
 	}

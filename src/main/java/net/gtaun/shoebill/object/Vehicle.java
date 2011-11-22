@@ -165,7 +165,7 @@ public class Vehicle implements IVehicle
 		pool.setVehicle( id, this );
 		
 		VehicleSpawnEvent event = new VehicleSpawnEvent( this );
-		eventDispatcher.dispatchEvent( event );
+		getEventDispatcher().dispatchEvent( event );
 		Shoebill.getInstance().getGlobalEventDispatcher().dispatchEvent( event );
 	}
 	
@@ -180,7 +180,10 @@ public class Vehicle implements IVehicle
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setVehicle( id, null );
 
-		eventDispatcher.dispatchEvent( new VehicleDestroyEvent(this) );
+		VehicleDestroyEvent event = new VehicleDestroyEvent( this );
+		getEventDispatcher().dispatchEvent( event );
+		Shoebill.getInstance().getGlobalEventDispatcher().dispatchEvent( event );
+		
 		id = -1;
 	}
 	
