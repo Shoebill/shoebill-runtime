@@ -27,8 +27,8 @@ import net.gtaun.shoebill.util.event.Event;
 
 public abstract class CheckpointEvent extends Event
 {
-	IPlayer player;
-	ICheckpoint checkpoint;
+	private IPlayer player;
+	private ICheckpoint checkpoint;
 	
 	public IPlayer getPlayer()				{ return player; }
 	public ICheckpoint getCheckpoint()		{ return checkpoint; }

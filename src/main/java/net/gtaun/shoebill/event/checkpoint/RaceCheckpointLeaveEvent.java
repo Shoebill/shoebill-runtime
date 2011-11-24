@@ -26,7 +26,7 @@ import net.gtaun.shoebill.object.IRaceCheckpoint;
 
 public class RaceCheckpointLeaveEvent extends CheckpointEvent
 {
-	public IRaceCheckpoint getCheckpoint()		{ return (IRaceCheckpoint)checkpoint; }
+	@Override public IRaceCheckpoint getCheckpoint()		{ return (IRaceCheckpoint)getCheckpoint(); }
 	
 	
 	public RaceCheckpointLeaveEvent( IPlayer player )

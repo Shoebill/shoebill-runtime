@@ -27,10 +27,10 @@ import net.gtaun.shoebill.object.PlayerObject;
 
 public class PlayerObjectMovedEvent extends ObjectEvent
 {
-	IPlayer player;
+	private IPlayer player;
 	
-	public IPlayer getPlayer()				{ return player; }
-	public IPlayerObject getObject()		{ return (PlayerObject)object; };
+	public IPlayer getPlayer()						{ return player; }
+	@Override public IPlayerObject getObject()		{ return (PlayerObject)getObject(); };
 	
 	
 	public PlayerObjectMovedEvent( IPlayer player, IPlayerObject object )

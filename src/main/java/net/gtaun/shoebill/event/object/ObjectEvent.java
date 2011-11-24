@@ -26,7 +26,7 @@ import net.gtaun.shoebill.util.event.Event;
 
 public class ObjectEvent extends Event
 {
-	IObject object;
+	private IObject object;
 	
 	public IObject getObject()		{ return object; }
 	

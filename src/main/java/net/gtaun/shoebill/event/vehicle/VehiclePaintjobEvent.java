@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.IVehicle;
 
 public class VehiclePaintjobEvent extends VehicleEvent
 {
-	int paintjobId;
+	private int paintjobId;
 	
 	public int getPaintjobId()			{ return paintjobId; }
 	

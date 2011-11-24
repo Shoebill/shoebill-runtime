@@ -26,7 +26,7 @@ import net.gtaun.shoebill.util.event.Event;
 
 public abstract class PlayerEvent extends Event
 {
-	IPlayer player;
+	private IPlayer player;
 	
 	public IPlayer getPlayer()		{ return player; }
 	

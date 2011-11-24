@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.IVehicle;
 
 public class VehicleResprayEvent extends VehicleEvent
 {
-	int color1, color2;
+	private int color1, color2;
 	
 	public int getColor1()				{ return color1; }
 	public int getColor2()				{ return color2; }

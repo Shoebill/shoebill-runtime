@@ -26,7 +26,7 @@ import net.gtaun.shoebill.util.event.Event;
 
 public class PluginLoadEvent extends Event
 {
-	Plugin plugin;
+	private Plugin plugin;
 	
 	public Plugin getPlugin()		{ return plugin; }
 	

@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerKillEvent extends PlayerEvent
 {
-	IPlayer victim;
+	private IPlayer victim;
 	int reason;
 	
 	public IPlayer getVictim()				{ return victim; }

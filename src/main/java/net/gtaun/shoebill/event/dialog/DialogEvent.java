@@ -27,8 +27,8 @@ import net.gtaun.shoebill.util.event.Event;
 
 public abstract class DialogEvent extends Event
 {
-	IDialog dialog;
-	IPlayer player;
+	private IDialog dialog;
+	private IPlayer player;
 	
 	public IDialog getDialog()			{ return dialog; }
 	public IPlayer getPlayer()			{ return player; }

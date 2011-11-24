@@ -30,7 +30,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class SampEventLogger implements ISampCallbackHandler
 {
-	ISampObjectPool sampObjectPool;
+	private ISampObjectPool sampObjectPool;
 	
 	
 	public SampEventLogger( ISampObjectPool pool )

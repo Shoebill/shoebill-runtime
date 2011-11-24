@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerDisconnectEvent extends PlayerEvent
 {
-	int reason;
+	private int reason;
 	
 	public int getReason()			{ return reason; }
 	

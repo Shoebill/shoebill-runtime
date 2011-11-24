@@ -25,7 +25,7 @@ import net.gtaun.shoebill.IShoebill;
 
 public abstract class Lungfish
 {
-	IShoebill shoebill;
+	private IShoebill shoebill;
 	
 	
 	public Lungfish()

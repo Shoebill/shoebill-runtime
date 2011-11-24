@@ -26,8 +26,8 @@ import net.gtaun.shoebill.object.IVehicle;
 
 public class VehicleEnterEvent extends VehicleEvent
 {
-	IPlayer player;
-	boolean isPassenger;
+	private IPlayer player;
+	private boolean isPassenger;
 	
 	public IPlayer getPlayer()			{ return player; }
 	public boolean isPassenger()		{ return isPassenger; }

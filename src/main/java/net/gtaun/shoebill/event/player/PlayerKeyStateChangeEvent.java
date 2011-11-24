@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerKeyStateChangeEvent extends PlayerEvent
 {
-	int oldKeys;
+	private int oldKeys;
 	
 	public int getOldkeys()				{ return oldKeys; }
 	

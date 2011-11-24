@@ -26,8 +26,8 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class DialogResponseEvent extends DialogEvent
 {
-	int response, listitem;
-	String inputText;
+	private int response, listitem;
+	private String inputText;
 	
 	public int getResponse()				{ return response; }
 	public int getListitem()				{ return listitem; }

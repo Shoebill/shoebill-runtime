@@ -26,7 +26,7 @@ import net.gtaun.shoebill.object.IVehicle;
 
 public class VehicleUpdateDamageEvent extends VehicleEvent
 {
-	IPlayer player;
+	private IPlayer player;
 	
 	public IPlayer getPlayer()			{ return player; }
 	

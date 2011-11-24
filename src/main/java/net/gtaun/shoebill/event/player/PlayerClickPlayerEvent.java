@@ -25,8 +25,8 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerClickPlayerEvent extends PlayerEvent
 {
-	IPlayer clickedPlayer;
-	int source;
+	private IPlayer clickedPlayer;
+	private int source;
 	
 	public IPlayer getClickedPlayer()		{ return clickedPlayer; }
 	public int getSource()					{ return source; }

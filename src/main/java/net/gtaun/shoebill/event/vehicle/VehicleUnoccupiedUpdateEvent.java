@@ -26,8 +26,8 @@ import net.gtaun.shoebill.object.IVehicle;
 
 public class VehicleUnoccupiedUpdateEvent extends VehicleEvent
 {
-	IPlayer player;
-	int passengerSeat;
+	private IPlayer player;
+	private int passengerSeat;
 	
 	public IPlayer getPlayer()			{ return player; }
 	public int getPassengerSeat()		{ return passengerSeat; }

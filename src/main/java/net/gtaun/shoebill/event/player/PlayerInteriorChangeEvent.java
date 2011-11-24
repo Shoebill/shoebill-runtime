@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerInteriorChangeEvent extends PlayerEvent
 {
-	int oldInteriorId;
+	private int oldInteriorId;
 	
 	public int getOldInteriorId()			{ return oldInteriorId; }
 	

@@ -26,7 +26,7 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerPickupEvent extends PlayerEvent
 {
-	IPickup pickup;
+	private IPickup pickup;
 
 	public IPickup getPickup()			{ return pickup; }
 	

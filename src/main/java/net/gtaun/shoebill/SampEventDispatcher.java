@@ -76,10 +76,10 @@ import net.gtaun.shoebill.util.event.EventDispatcher;
 
 public class SampEventDispatcher implements ISampCallbackHandler
 {
-	SampObjectPool sampObjectPool;
-	EventDispatcher globalEventDispatcher;
+	private SampObjectPool sampObjectPool;
+	private EventDispatcher globalEventDispatcher;
 
-	long lastProcessTickTimeMillis;
+	private long lastProcessTickTimeMillis;
 	
 	
 	public SampEventDispatcher( SampObjectPool pool, EventDispatcher dispatcher )

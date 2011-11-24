@@ -27,7 +27,7 @@ import java.util.Vector;
 
 public class SampCallbackManager implements ISampCallbackManager
 {
-	List<ISampCallbackHandler> callbackHandlers;
+	private List<ISampCallbackHandler> callbackHandlers;
 
 
 	public SampCallbackManager()
@@ -60,7 +60,7 @@ public class SampCallbackManager implements ISampCallbackManager
 	}
 	
 
-	ISampCallbackHandler sampCallback = new ISampCallbackHandler()
+	private ISampCallbackHandler sampCallback = new ISampCallbackHandler()
 	{
 		public int onGameModeInit()
 		{

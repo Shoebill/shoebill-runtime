@@ -26,7 +26,7 @@ import net.gtaun.shoebill.util.event.Event;
 
 public abstract class GamemodeEvent extends Event
 {
-	IGamemode gamemode;
+	private IGamemode gamemode;
 	
 	public IGamemode getGamemode()		{ return gamemode; }
 	

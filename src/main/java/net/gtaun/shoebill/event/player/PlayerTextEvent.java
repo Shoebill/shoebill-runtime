@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerTextEvent extends PlayerEvent
 {
-	String text;
+	private String text;
 	
 	public String getText()				{ return text; }
 	

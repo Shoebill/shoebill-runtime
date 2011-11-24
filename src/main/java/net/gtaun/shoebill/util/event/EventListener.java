@@ -29,7 +29,7 @@ import java.util.WeakHashMap;
 
 public abstract class EventListener implements IEventListener
 {
-	final Map< Class<?>, Map<Class<?>, Method> > CLASSES_EVENT_METHOD_MAP = new WeakHashMap<Class<?>, Map<Class<?>,Method>>();
+	private final Map< Class<?>, Map<Class<?>, Method> > CLASSES_EVENT_METHOD_MAP = new WeakHashMap<Class<?>, Map<Class<?>,Method>>();
 	
 	private static Map<Class<?>, Method> generateEventMethodMap( Class<?> cls )
 	{
@@ -52,7 +52,7 @@ public abstract class EventListener implements IEventListener
 	}
 	
 	
-	Map<Class<?>, Method> eventMethodMap;
+	private Map<Class<?>, Method> eventMethodMap;
 	
 	
 	protected EventListener( Class<?> cls )

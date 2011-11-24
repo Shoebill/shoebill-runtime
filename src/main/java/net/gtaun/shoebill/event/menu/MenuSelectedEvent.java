@@ -26,7 +26,7 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class MenuSelectedEvent extends MenuEvent
 {
-	int row;
+	private int row;
 	
 	public int getRow()				{ return row; }
 	

@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerStreamOutEvent extends PlayerEvent
 {
-	IPlayer forPlayer;
+	private IPlayer forPlayer;
 	
 	public IPlayer getForPlayer()		{ return forPlayer; }
 	

@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerStateChangeEvent extends PlayerEvent
 {
-	int oldState;
+	private int oldState;
 	
 	public int getOldState()			{ return oldState; }
 	

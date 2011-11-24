@@ -26,7 +26,7 @@ import net.gtaun.shoebill.object.IVehicle;
 
 public class VehicleDeathEvent extends VehicleEvent
 {
-	IPlayer killer;
+	private IPlayer killer;
 	
 	public IPlayer getKiller()			{ return killer; }
 	

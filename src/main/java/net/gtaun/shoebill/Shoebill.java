@@ -29,18 +29,18 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public class Shoebill implements IShoebill
 {
-	static Shoebill instance;
+	private static Shoebill instance;
 	public static IShoebill getInstance()		{ return instance; }
 	
 	
-	EventDispatcher globalEventDispatcher;
+	private EventDispatcher globalEventDispatcher;
 	
-	SampCallbackManager sampCallbackManager;
-	SampObjectPool managedObjectPool;
-	PluginManager pluginManager;
+	private SampCallbackManager sampCallbackManager;
+	private SampObjectPool managedObjectPool;
+	private PluginManager pluginManager;
 	
-	SampEventLogger sampEventLogger;
-	SampEventDispatcher sampEventDispatcher;
+	private SampEventLogger sampEventLogger;
+	private SampEventDispatcher sampEventDispatcher;
 
 
 	Shoebill()
@@ -81,6 +81,6 @@ public class Shoebill implements IShoebill
 	@Override
 	public PluginManager getPluginManager()
 	{
-		return null;
+		return pluginManager;
 	}
 }

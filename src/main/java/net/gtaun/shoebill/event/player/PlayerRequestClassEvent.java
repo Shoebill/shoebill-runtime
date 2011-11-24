@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerRequestClassEvent extends PlayerEvent
 {
-	int classId;
+	private int classId;
 	
 	public int getClassId()				{ return classId; }
 	

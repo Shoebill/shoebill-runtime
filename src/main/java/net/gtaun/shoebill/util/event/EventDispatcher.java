@@ -28,7 +28,7 @@ import java.util.Vector;
 
 public class EventDispatcher implements IEventDispatcher
 {
-	public HashMap<Class<?>, List<WeakReference<IEventListener>>> listenerContainers;
+	private HashMap<Class<?>, List<WeakReference<IEventListener>>> listenerContainers;
 	
 	
 	public EventDispatcher()

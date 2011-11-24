@@ -26,7 +26,7 @@ import net.gtaun.shoebill.util.event.Event;
 
 public abstract class VehicleEvent extends Event
 {
-	IVehicle vehicle;
+	private IVehicle vehicle;
 	
 	public IVehicle getVehicle()		{ return vehicle; }
 	

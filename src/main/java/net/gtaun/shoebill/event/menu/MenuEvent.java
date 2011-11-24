@@ -27,8 +27,8 @@ import net.gtaun.shoebill.util.event.Event;
 
 public abstract class MenuEvent extends Event
 {
-	IMenu menu;
-	IPlayer player;
+	private IMenu menu;
+	private IPlayer player;
 	
 	public IMenu getMenu()			{ return menu; }
 	public IPlayer getPlayer()		{ return player; }

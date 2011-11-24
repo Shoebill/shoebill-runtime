@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerCommandEvent extends PlayerEvent
 {
-	String command;
+	private String command;
 	
 	public String getCommand()				{ return command; }
 	

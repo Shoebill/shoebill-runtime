@@ -25,8 +25,8 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerEnterExitModShopEvent extends PlayerEvent
 {
-	int enterexit;
-	int interiorId;
+	private int enterexit;
+	private int interiorId;
 	
 	public int getEnterexit()				{ return enterexit; }
 	public int getInteriorId()				{ return interiorId; }

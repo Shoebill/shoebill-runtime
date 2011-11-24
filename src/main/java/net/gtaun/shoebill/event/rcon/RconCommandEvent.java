@@ -25,7 +25,7 @@ import net.gtaun.shoebill.util.event.Event;
 
 public class RconCommandEvent extends Event
 {
-	String command;
+	private String command;
 	
 	public String getCommand()		{ return command; }
 	
