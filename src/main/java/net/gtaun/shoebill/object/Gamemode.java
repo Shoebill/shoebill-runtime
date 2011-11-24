@@ -58,12 +58,6 @@ public abstract class Gamemode implements IGamemode
 
 	
 	@Override
-	public void setServerCodepage( int codepage )
-	{
-		SampNativeFunction.setServerCodepage( codepage );
-	}
-	
-	@Override
 	public void setGameModeText( String string )
 	{
 		if( string == null ) throw new NullPointerException();
@@ -95,9 +89,9 @@ public abstract class Gamemode implements IGamemode
 	public int addPlayerClassEx( int team, int model, SpawnInfo spawninfo )
 	{
 		return SampNativeFunction.addPlayerClassEx( team, model, 
-				spawninfo.position.x, spawninfo.position.y, spawninfo.position.z, spawninfo.position.angle,
-				spawninfo.weapon1.id, spawninfo.weapon1.ammo, spawninfo.weapon2.id, spawninfo.weapon2.ammo,
-				spawninfo.weapon3.id, spawninfo.weapon3.ammo );
+			spawninfo.position.x, spawninfo.position.y, spawninfo.position.z, spawninfo.position.angle,
+			spawninfo.weapon1.id, spawninfo.weapon1.ammo, spawninfo.weapon2.id, spawninfo.weapon2.ammo,
+			spawninfo.weapon3.id, spawninfo.weapon3.ammo );
 	}
 
 	@Override

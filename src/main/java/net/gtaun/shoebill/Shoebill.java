@@ -18,6 +18,7 @@ package net.gtaun.shoebill;
 
 import net.gtaun.shoebill.samp.ISampCallbackManager;
 import net.gtaun.shoebill.samp.SampCallbackManager;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -42,7 +43,14 @@ public class Shoebill implements IShoebill
 	private SampEventLogger sampEventLogger;
 	private SampEventDispatcher sampEventDispatcher;
 
-
+	
+	@Override public IEventDispatcher getGlobalEventDispatcher()	{ return globalEventDispatcher; }
+	@Override public ISampCallbackManager getCallbackManager()		{ return sampCallbackManager; }
+	@Override public ISampObjectPool getManagedObjectPool()			{ return managedObjectPool; }
+	@Override public PluginManager getPluginManager()				{ return pluginManager; }
+	@Override public int getServerCodepage()						{ return SampNativeFunction.getServerCodepage(); }
+	
+	
 	Shoebill()
 	{
 		globalEventDispatcher = new EventDispatcher();
@@ -58,29 +66,9 @@ public class Shoebill implements IShoebill
 		sampCallbackManager.registerCallbackHandler( sampEventDispatcher );
 	}
 
-	
-	@Override
-	public IEventDispatcher getGlobalEventDispatcher()
-	{
-		return globalEventDispatcher;
-	}
-	
-	
-	@Override
-	public ISampCallbackManager getCallbackManager()
-	{
-		return sampCallbackManager;
-	}
 
-	@Override
-	public ISampObjectPool getManagedObjectPool()
+	@Override public void setServerCodepage( int codepage )
 	{
-		return managedObjectPool;
-	}
-	
-	@Override
-	public PluginManager getPluginManager()
-	{
-		return pluginManager;
+		SampNativeFunction.setServerCodepage( codepage );
 	}
 }

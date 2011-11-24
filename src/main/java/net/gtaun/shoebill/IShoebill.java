@@ -31,4 +31,7 @@ public interface IShoebill
 	ISampCallbackManager getCallbackManager();
 	ISampObjectPool getManagedObjectPool();
 	PluginManager getPluginManager();
+
+	int getServerCodepage();
+	void setServerCodepage( int codepage );
 }
