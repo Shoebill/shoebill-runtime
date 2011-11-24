@@ -14,28 +14,35 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.lungfish;
+package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.IShoebill;
+import java.io.File;
+
 
 /**
  * @author MK124
  *
  */
 
-public abstract class Lungfish
+public abstract class Plugin
 {
+	private boolean isEnabled;
+	
 	private IShoebill shoebill;
 	
+
+	public boolean isEnabled()				{ return isEnabled; }
 	
-	public Lungfish()
+	public IShoebill getShoebill()			{ return shoebill; }
+	public File getDataFolder()				{ return null; }
+	
+	
+	public Plugin()
 	{
 		
 	}
-	
-	
-	public IShoebill getShoebill()
-	{
-		return shoebill;
-	}
+
+
+	protected abstract void onEnable();
+	protected abstract void onDisable();
 }

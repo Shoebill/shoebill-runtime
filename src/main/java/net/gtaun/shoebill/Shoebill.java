@@ -67,7 +67,8 @@ public class Shoebill implements IShoebill
 	}
 
 
-	@Override public void setServerCodepage( int codepage )
+	@Override
+	public void setServerCodepage( int codepage )
 	{
 		SampNativeFunction.setServerCodepage( codepage );
 	}

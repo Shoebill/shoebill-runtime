@@ -26,6 +26,7 @@ import java.util.Vector;
 import java.util.WeakHashMap;
 
 import net.gtaun.shoebill.object.IDialog;
+import net.gtaun.shoebill.object.IGamemode;
 import net.gtaun.shoebill.object.ILabel;
 import net.gtaun.shoebill.object.IMenu;
 import net.gtaun.shoebill.object.IObject;
@@ -65,6 +66,8 @@ public class SampObjectPool implements ISampObjectPool
 	}
 	
 	
+	IGamemode gamemode;
+	
 	IPlayer[] players								= new IPlayer[MAX_PLAYERS];
 	IVehicle[] vehicles								= new IVehicle[MAX_VEHICLES];
 	IObject[] objects								= new IObject[MAX_OBJECTS];
@@ -92,6 +95,12 @@ public class SampObjectPool implements ISampObjectPool
 	public <T extends IPlayer> void setPlayerClass( Class<T> cls )
 	{
 		playerClass = cls;
+	}
+	
+	@Override
+	public IGamemode getGamemode()
+	{
+		return gamemode;
 	}
 	
 	@Override

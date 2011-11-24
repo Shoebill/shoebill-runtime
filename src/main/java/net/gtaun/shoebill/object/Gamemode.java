@@ -17,6 +17,7 @@
 
 package net.gtaun.shoebill.object;
 
+import net.gtaun.shoebill.Plugin;
 import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.samp.SampNativeFunction;
@@ -28,7 +29,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public abstract class Gamemode implements IGamemode
+public abstract class Gamemode extends Plugin implements IGamemode
 {
 	private EventDispatcher eventDispatcher = new EventDispatcher();
 	

@@ -16,31 +16,14 @@
 
 package net.gtaun.shoebill;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author MK124
  *
  */
 
-public class PluginManager implements IPluginManager
+public interface IPluginManager
 {
-	Map<String, Plugin> plugins;
-	
-	
-	PluginManager()
-	{
-		plugins = new HashMap<String, Plugin>();
-	}
-	
-	public Plugin getPlugin( String name )
-	{
-		return null;
-	}
-	
-	public Plugin loadPlugin( String name )
-	{
-		return null;
-	}
+	Plugin getPlugin( String name );
+	Plugin loadPlugin( String name );
 }
