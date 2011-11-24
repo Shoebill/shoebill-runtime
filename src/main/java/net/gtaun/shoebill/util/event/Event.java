@@ -23,8 +23,6 @@ package net.gtaun.shoebill.util.event;
 
 public abstract class Event
 {
-	protected int result;
-	
 	boolean interruptable;
 	boolean interrupted;
 	
@@ -37,15 +35,6 @@ public abstract class Event
 	public Event( boolean interruptable )
 	{
 		this.interruptable = interruptable;
-	}
-
-	public int getResult()
-	{
-		return result;
-	}
-	public void setResult( int result )
-	{
-		this.result = result;
 	}
 	
 	public boolean isInterruptable()
