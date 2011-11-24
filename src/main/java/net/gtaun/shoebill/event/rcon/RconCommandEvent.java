@@ -25,21 +25,20 @@ import net.gtaun.shoebill.util.event.Event;
 
 public class RconCommandEvent extends Event
 {
+	private int result = 0;
 	private String command;
 	
+	public int getResult()			{ return result; }
 	public String getCommand()		{ return command; }
 	
 	
 	public RconCommandEvent( String command )
 	{
 		this.command = command;
-		
-		result = 0;
 	}
 	
-	@Override
 	public void setResult( int result )
 	{
-		if( result != 0 ) result = 1;
+		this.result |= result;
 	}
 }

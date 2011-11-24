@@ -25,8 +25,10 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerTextEvent extends PlayerEvent
 {
+	private int result = 1;
 	private String text;
 	
+	public int getResult()				{ return result; }
 	public String getText()				{ return text; }
 	
 	
@@ -34,11 +36,8 @@ public class PlayerTextEvent extends PlayerEvent
 	{
 		super( player );
 		this.text = text;
-		
-		result = 1;
 	}
 	
-	@Override
 	public void setResult( int result )
 	{
 		this.result &= result;

@@ -25,8 +25,10 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class PlayerRequestClassEvent extends PlayerEvent
 {
+	private int result = 0;
 	private int classId;
 	
+	public int getResult()				{ return result; }
 	public int getClassId()				{ return classId; }
 	
 	
@@ -34,11 +36,8 @@ public class PlayerRequestClassEvent extends PlayerEvent
 	{
 		super( player );
 		this.classId = classId;
-		
-		result = 0;
 	}
 	
-	@Override
 	public void setResult( int result )
 	{
 		this.result |= result;
