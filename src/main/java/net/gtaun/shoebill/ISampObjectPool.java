@@ -38,41 +38,43 @@ import net.gtaun.shoebill.object.IZone;
 
 public interface ISampObjectPool
 {
-	public IPlayer getPlayer( int id );
-	public IVehicle getVehicle( int id );
-	public IObject getObject( int id );
-	public IPlayerObject getPlayerObject( IPlayer player, int id );
-	public IPickup getPickup( int id );
-	public ILabel getLabel( int id );
-	public IPlayerLabel getPlayerLabel( IPlayer player, int id );
-	public ITextdraw getTextdraw( int id );
-	public IZone getZone( int id );
-	public IMenu getMenu( int id );
-	public IDialog getDialog( int id );
+	<T extends IPlayer> void setPlayerClass( Class<T> cls );
 	
-	public Collection<IPlayer> getPlayers();
-	public Collection<IVehicle> getVehicles();
-	public Collection<IObject> getObjects();
-	public Collection<IPlayerObject> getPlayerObjects( IPlayer player );
-	public Collection<IPickup> getPickups();
-	public Collection<ILabel> getLabels();
-	public Collection<IPlayerLabel> getPlayerLabels( IPlayer player );
-	public Collection<ITextdraw> getTextdraws();
-	public Collection<IZone> getZones();
-	public Collection<IMenu> getMenus();
-	public Collection<IDialog> getDialogs();
-	public Collection<ITimer> getTimers();
+	IPlayer getPlayer( int id );
+	IVehicle getVehicle( int id );
+	IObject getObject( int id );
+	IPlayerObject getPlayerObject( IPlayer player, int id );
+	IPickup getPickup( int id );
+	ILabel getLabel( int id );
+	IPlayerLabel getPlayerLabel( IPlayer player, int id );
+	ITextdraw getTextdraw( int id );
+	IZone getZone( int id );
+	IMenu getMenu( int id );
+	IDialog getDialog( int id );
+	
+	Collection<IPlayer> getPlayers();
+	Collection<IVehicle> getVehicles();
+	Collection<IObject> getObjects();
+	Collection<IPlayerObject> getPlayerObjects( IPlayer player );
+	Collection<IPickup> getPickups();
+	Collection<ILabel> getLabels();
+	Collection<IPlayerLabel> getPlayerLabels( IPlayer player );
+	Collection<ITextdraw> getTextdraws();
+	Collection<IZone> getZones();
+	Collection<IMenu> getMenus();
+	Collection<IDialog> getDialogs();
+	Collection<ITimer> getTimers();
 
-	public <T extends IPlayer> Collection<T> getPlayers( Class<T> cls );
-	public <T extends IVehicle> Collection<T> getVehicles( Class<T> cls );
-	public <T extends IObject> Collection<T> getObjects( Class<T> cls );
-	public <T extends IPlayerObject> Collection<T> getPlayerObjects( IPlayer player, Class<T> cls );
-	public <T extends IPickup> Collection<T> getPickups( Class<T> cls );
-	public <T extends ILabel> Collection<T> getLabels( Class<T> cls );
-	public <T extends IPlayerLabel> Collection<T> getPlayerLabels( IPlayer player, Class<T> cls );
-	public <T extends ITextdraw> Collection<T> getTextdraws( Class<T> cls );
-	public <T extends IZone> Collection<T> getZones( Class<T> cls );
-	public <T extends IMenu> Collection<T> getMenus( Class<T> cls );
-	public <T extends IDialog> Collection<T> getDialogs( Class<T> cls );
-	public <T extends ITimer> Collection<T> getTimers( Class<T> cls );
+	<T extends IPlayer> Collection<T> getPlayers( Class<T> cls );
+	<T extends IVehicle> Collection<T> getVehicles( Class<T> cls );
+	<T extends IObject> Collection<T> getObjects( Class<T> cls );
+	<T extends IPlayerObject> Collection<T> getPlayerObjects( IPlayer player, Class<T> cls );
+	<T extends IPickup> Collection<T> getPickups( Class<T> cls );
+	<T extends ILabel> Collection<T> getLabels( Class<T> cls );
+	<T extends IPlayerLabel> Collection<T> getPlayerLabels( IPlayer player, Class<T> cls );
+	<T extends ITextdraw> Collection<T> getTextdraws( Class<T> cls );
+	<T extends IZone> Collection<T> getZones( Class<T> cls );
+	<T extends IMenu> Collection<T> getMenus( Class<T> cls );
+	<T extends IDialog> Collection<T> getDialogs( Class<T> cls );
+	<T extends ITimer> Collection<T> getTimers( Class<T> cls );
 }

@@ -17,6 +17,7 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124
@@ -25,6 +26,8 @@ import net.gtaun.shoebill.data.Color;
 
 public interface ITextdraw extends IDestroyable
 {
+	IEventDispatcher getEventDispatcher();
+	
 	int getId();
 	float getX();
 	float getY();

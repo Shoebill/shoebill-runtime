@@ -37,6 +37,7 @@ import net.gtaun.shoebill.object.ITextdraw;
 import net.gtaun.shoebill.object.ITimer;
 import net.gtaun.shoebill.object.IVehicle;
 import net.gtaun.shoebill.object.IZone;
+import net.gtaun.shoebill.object.Player;
 
 /**
  * @author MK124
@@ -56,7 +57,7 @@ public class SampObjectPool implements ISampObjectPool
 	public static final int MAX_PICKUPS =				2048;
 	
 	
-	static <T> Collection<T> getInstances( Object[] items, Class<T> cls )
+	private static <T> Collection<T> getInstances( Object[] items, Class<T> cls )
 	{
 		Collection<T> list = new Vector<T>();
 		for( Object item : items ) if( cls.isInstance(item) ) list.add( cls.cast(item) );
@@ -78,7 +79,7 @@ public class SampObjectPool implements ISampObjectPool
 	List<Reference<ITimer>> timers					= new Vector<Reference<ITimer>>();
 	Map<Integer, Reference<IDialog>> dialogs		= new HashMap<Integer, Reference<IDialog>>();
 	
-	int currentPlayerId = -1;
+	Class<?> playerClass = Player.class;
 	
 	
 	SampObjectPool()
@@ -86,6 +87,12 @@ public class SampObjectPool implements ISampObjectPool
 		
 	}
 	
+	
+	@Override
+	public <T extends IPlayer> void setPlayerClass( Class<T> cls )
+	{
+		playerClass = cls;
+	}
 	
 	@Override
 	public IPlayer getPlayer( int id )
@@ -318,11 +325,6 @@ public class SampObjectPool implements ISampObjectPool
 		return items;
 	}
 	
-	
-	public int getCurrentPlayerId()
-	{
-		return currentPlayerId;
-	}
 	
 	public void setPlayer( int id, IPlayer player )
 	{

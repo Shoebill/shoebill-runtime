@@ -54,13 +54,13 @@ public class EventDispatcher implements IEventDispatcher
 			listenerContainers.put( type, listeners );
 		}
 		
-		for( int i=0; i<listeners.size(); i++ )
-			if( listeners.get(i).get() == listener ) return;
+		for( WeakReference<IEventListener> reference : listeners )
+			if( reference.get() == listener ) return;
 		
 		WeakReference<IEventListener> reference = new WeakReference<IEventListener>( listener );
 		
-		if(priority==-1)	listeners.add( reference );
-		else				listeners.add( priority, reference );
+		if( priority == -1 )	listeners.add( reference );
+		else					listeners.add( priority, reference );
 	}
 
 	@Override
@@ -70,14 +70,19 @@ public class EventDispatcher implements IEventDispatcher
 		if( listeners == null ) return;
 		
 		for( int i=0; i<listeners.size(); i++ )
-			if( listeners.get(i).get() == listener ) listeners.remove( i );
+		{
+			if( listeners.get(i).get() != listener ) continue;
+			
+			listeners.remove( i );
+			return;
+		}
 	}
 
 	@Override
 	public boolean hasListener( Class<?> type )
 	{
 		List<WeakReference<IEventListener>> listeners = listenerContainers.get(type);		
-		if( listeners == null ) return false;
+		if( listeners == null || listeners.isEmpty() ) return false;
 		
 		return true;
 	}
@@ -88,11 +93,8 @@ public class EventDispatcher implements IEventDispatcher
 		List<WeakReference<IEventListener>> listeners = listenerContainers.get(type);		
 		if( listeners == null ) return false;
 		
-		for( int i=0; i<listeners.size(); i++ )
-		{
-			WeakReference<IEventListener> reference = listeners.get(i);
+		for( WeakReference<IEventListener> reference : listeners )
 			if( reference.get() == listener ) return true;
-		}
 		
 		return false;
 	}
@@ -103,12 +105,17 @@ public class EventDispatcher implements IEventDispatcher
 		List<WeakReference<IEventListener>> listeners = listenerContainers.get(event.getClass());		
 		if( listeners == null ) return;
 		
-		for( int i=0; i<listeners.size(); i++ )
+		List<WeakReference<IEventListener>> removes = null;
+		for( WeakReference<IEventListener> reference : listeners )
 		{
-			WeakReference<IEventListener> reference = listeners.get(i);
-			IEventListener listener = reference.get();
+			if( event.interrupted ) break;
 			
-			if( listener == null ) listeners.remove( reference );
+			IEventListener listener = reference.get();
+			if( listener == null )
+			{
+				if( removes == null ) removes = new Vector<WeakReference<IEventListener>>();
+				removes.add( reference );
+			}
 			else
 			{
 				try
@@ -119,9 +126,10 @@ public class EventDispatcher implements IEventDispatcher
 				{
 					e.printStackTrace();
 				}
-				
-				if( event.canceled ) return;
 			}
 		}
+
+		if( removes != null )
+			for( WeakReference<IEventListener> reference : removes ) listeners.remove( reference );
 	}
 }

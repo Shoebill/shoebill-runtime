@@ -118,20 +118,15 @@ public class SampEventDispatcher implements ISampCallbackHandler
 		try
 		{
 			IPlayer player;
-			sampObjectPool.currentPlayerId = playerId;
 			
 			try
 			{
-				player = Player.class.newInstance();
+				player = Player.class.getConstructor( Integer.class ).newInstance( playerId );
 			}
 			catch( Exception e )
 			{
 				e.printStackTrace();
 				return 0;
-			}
-			finally
-			{
-				sampObjectPool.currentPlayerId = -1;
 			}
 
 			sampObjectPool.setPlayer( playerId, player );
@@ -524,10 +519,6 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			IObject object = sampObjectPool.getObject( objectId );
 			ObjectMovedEvent event = new ObjectMovedEvent(object);
 			
-			//object.speed = 0;
-			//SampNativeFunction.getObjectPos(objectid, object.position);
-			//SampNativeFunction.getObjectRot(objectid, object.position);
-			
 			object.getEventDispatcher().dispatchEvent( event );
 			globalEventDispatcher.dispatchEvent( event );
 			
@@ -547,8 +538,6 @@ public class SampEventDispatcher implements ISampCallbackHandler
 		{
 			IPlayer player = sampObjectPool.getPlayer( playerId );
 			IPlayerObject object = sampObjectPool.getPlayerObject( player, objectId );
-			
-			//object.speed = 0;
 			
 			PlayerObjectMovedEvent event = new PlayerObjectMovedEvent(player, object);
 			ObjectMovedEvent objectMovedEvent = new ObjectMovedEvent( object );
@@ -600,9 +589,6 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			
 			VehicleModEvent event = new VehicleModEvent(vehicle, componentId);
 			
-			//int type = SampNativeFunction.getVehicleComponentType(componentId);
-			//vehicle.component.components[type] = SampNativeFunction.getVehicleComponentInSlot(vehicleid, type);
-	
 			vehicle.getEventDispatcher().dispatchEvent( event );
 			player.getEventDispatcher().dispatchEvent( event );
 			globalEventDispatcher.dispatchEvent( event );
@@ -693,8 +679,9 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			//SampNativeFunction.getVehicleDamageStatus(vehicleid, vehicle.damage);
 			
 			VehicleUpdateDamageEvent event = new VehicleUpdateDamageEvent(vehicle, player);
-	
+			
 			vehicle.getEventDispatcher().dispatchEvent( event );
+			if( player != null ) player.getEventDispatcher().dispatchEvent( event );
 			globalEventDispatcher.dispatchEvent( event );
 			
 			//player.on();
@@ -712,6 +699,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	@Override
 	public int onUnoccupiedVehicleUpdate( int vehicleId, int playerId, int passengerSeat )
 	{
+		
 		try 
 		{
 			IVehicle vehicle = sampObjectPool.getVehicle( vehicleId );

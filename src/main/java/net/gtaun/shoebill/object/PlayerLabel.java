@@ -25,6 +25,8 @@ import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.PointAngle;
 import net.gtaun.shoebill.data.PointRange;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.shoebill.util.event.EventDispatcher;
+import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124
@@ -47,6 +49,8 @@ public class PlayerLabel implements IPlayerLabel
 	}
 	
 	
+	private EventDispatcher eventDispatcher = new EventDispatcher();
+	
 	private int id = -1;
 	private IPlayer player;
 	private String text;
@@ -59,13 +63,15 @@ public class PlayerLabel implements IPlayerLabel
 	private IVehicle attachedVehicle;
 	
 	
-	@Override public int getId()						{ return id; }
-	@Override public IPlayer getPlayer()				{ return player; }
+	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	@Override public String getText()					{ return text; }
-	@Override public Color getColor()					{ return color.clone(); }
-	@Override public IPlayer getAttachedPlayer()		{ return attachedPlayer; }
-	@Override public IVehicle getAttachedVehicle()		{ return attachedVehicle; }
+	@Override public int getId()								{ return id; }
+	@Override public IPlayer getPlayer()						{ return player; }
+	
+	@Override public String getText()							{ return text; }
+	@Override public Color getColor()							{ return color.clone(); }
+	@Override public IPlayer getAttachedPlayer()				{ return attachedPlayer; }
+	@Override public IVehicle getAttachedVehicle()				{ return attachedVehicle; }
 	
 	
 	public PlayerLabel( Player player, String text, Color color, Point point, float drawDistance, boolean testLOS )

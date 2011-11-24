@@ -259,11 +259,9 @@ public class Player implements IPlayer
 	@Override public boolean isControllable()						{ return controllable; }
 	
 	
-	protected Player()
-	{
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
-		
-		id = pool.getCurrentPlayerId();
+	protected Player( int id )
+	{	
+		this.id = id;
 		ip = SampNativeFunction.getPlayerIp(id);
 		name = SampNativeFunction.getPlayerName(id);
 		color = new Color( SampNativeFunction.getPlayerColor(id) );
@@ -287,6 +285,10 @@ public class Player implements IPlayer
 		skill = new PlayerSkill(id);
 		
 		cameraMode = SampNativeFunction.getPlayerCameraMode(id);
+
+		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		if( pool.getPlayer(id) != null ) throw new UnsupportedOperationException();
+		pool.setPlayer( id, this );
 	}
 
 	
@@ -992,6 +994,7 @@ public class Player implements IPlayer
 		DialogCancelEvent event = new DialogCancelEvent( dialog, this );
 		
 		dialog.getEventDispatcher().dispatchEvent( event );
+		getEventDispatcher().dispatchEvent( event );
 		eventDispatcher.dispatchEvent( event );
 		Shoebill.getInstance().getGlobalEventDispatcher().dispatchEvent( event );
 	}

@@ -22,7 +22,9 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.PointRot;
+import net.gtaun.shoebill.event.object.PlayerObjectMovedEvent;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.shoebill.util.event.Event;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -44,7 +46,19 @@ public class PlayerObject implements IPlayerObject
 	}
 	
 
-	private EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher()
+	{
+		@Override
+		public void dispatchEvent( Event event )
+		{
+			if( event instanceof PlayerObjectMovedEvent )
+			{
+				speed = 0;
+			}
+			
+			super.dispatchEvent( event );
+		}
+	};
 	
 	private int id = -1;
 	private Player player;
@@ -209,6 +223,6 @@ public class PlayerObject implements IPlayerObject
 	@Override
 	public void attach( IVehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
 	{
-		return;
+		throw new UnsupportedOperationException();
 	}
 }

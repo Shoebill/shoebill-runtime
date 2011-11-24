@@ -106,7 +106,7 @@ public class Timer implements ITimer
 		if( realInterval < interval ) return;
 		
 		if( count > 0 ) counting--;
-		eventDispatcher.dispatchEvent( new TimerTickEvent(this, realInterval) );
+		getEventDispatcher().dispatchEvent( new TimerTickEvent(this, realInterval) );
 		
 		realInterval = 0;
 		if( count > 0 && counting == 0 ) stop();

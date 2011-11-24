@@ -23,7 +23,9 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.PointRot;
+import net.gtaun.shoebill.event.object.ObjectMovedEvent;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.shoebill.util.event.Event;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -48,7 +50,21 @@ public class ObjectBase implements IObject
 	}
 	
 	
-	private EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher()
+	{
+		@Override
+		public void dispatchEvent( Event event )
+		{
+			if( event instanceof ObjectMovedEvent )
+			{
+				speed = 0;
+				SampNativeFunction.getObjectPos( id, position );
+				SampNativeFunction.getObjectRot( id, position );
+			}
+			
+			super.dispatchEvent( event );
+		}
+	};
 	
 	private int id = -1;
 	private int model;
@@ -67,11 +83,6 @@ public class ObjectBase implements IObject
 	@Override public IVehicle getAttachedVehicle()					{ return attachedVehicle; }
 	@Override public float getDrawDistance()						{ return drawDistance; }
 	
-	
-	ObjectBase()
-	{
-		
-	}
 	
 	public ObjectBase( int model, float x, float y, float z, float rx, float ry, float rz )
 	{
