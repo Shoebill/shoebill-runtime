@@ -119,7 +119,7 @@ public class Vehicle implements IVehicle
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
 		
-		init( x, y, z, interior, world, angle );
+		initialize( x, y, z, interior, world, angle );
 	}
 	
 	public Vehicle( int model, float x, float y, float z, float angle, int color1, int color2, int respawnDelay )
@@ -129,7 +129,7 @@ public class Vehicle implements IVehicle
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
 
-		init( x, y, z, 0, 0, angle );
+		initialize( x, y, z, 0, 0, angle );
 	}
 	
 	public Vehicle( int model, Point point, float angle, int color1, int color2, int respawnDelay )
@@ -139,7 +139,7 @@ public class Vehicle implements IVehicle
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
 
-		init( point.x, point.y, point.z, point.interior, point.world, angle );
+		initialize( point.x, point.y, point.z, point.interior, point.world, angle );
 	}
 	
 	public Vehicle( int model, PointAngle point, int color1, int color2, int respawnDelay )
@@ -149,10 +149,10 @@ public class Vehicle implements IVehicle
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
 
-		init( point.x, point.y, point.z, point.interior, point.world, point.angle );
+		initialize( point.x, point.y, point.z, point.interior, point.world, point.angle );
 	}
 	
-	private void init( float x, float y, float z, int interior, int world, float angle )
+	private void initialize( float x, float y, float z, int interior, int world, float angle )
 	{
 		switch( model )
 		{

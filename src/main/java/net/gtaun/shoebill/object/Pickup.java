@@ -66,7 +66,7 @@ public class Pickup implements IPickup
 		this.position = new Point( x, y, z );
 		this.world = virtualWorld;
 		
-		init();
+		initialize();
 	}
 	
 	public Pickup( int model, int type, float x, float y, float z)
@@ -75,7 +75,7 @@ public class Pickup implements IPickup
 		this.type = type;
 		this.position = new Point( x, y, z );
 		
-		init();
+		initialize();
 	}
 	
 	public Pickup( int model, int type, Point point )
@@ -85,10 +85,10 @@ public class Pickup implements IPickup
 		this.position = point.clone();
 		this.world = point.world;
 		
-		init();
+		initialize();
 	}
 	
-	private void init()
+	private void initialize()
 	{
 		id = SampNativeFunction.createPickup( model, type, position.x, position.y, position.z, world );
 		

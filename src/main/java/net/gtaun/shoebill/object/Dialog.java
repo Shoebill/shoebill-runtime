@@ -53,10 +53,10 @@ public class Dialog implements IDialog
 	public Dialog( int style )
 	{
 		this.style = style;
-		init();
+		initialize();
 	}
 	
-	private void init()
+	private void initialize()
 	{
 		id = count;
 		count++;

@@ -89,7 +89,7 @@ public class ObjectBase implements IObject
 		this.model = model;
 		this.position = new PointRot( x, y, z, rx, ry, rz );
 		
-		init();
+		initialize();
 	}
 	
 	public ObjectBase( int model, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
@@ -98,7 +98,7 @@ public class ObjectBase implements IObject
 		this.position = new PointRot( x, y, z, rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
-		init();
+		initialize();
 	}
 	
 	public ObjectBase( int model, Point point, float rx, float ry, float rz )
@@ -106,7 +106,7 @@ public class ObjectBase implements IObject
 		this.model = model;
 		this.position = new PointRot( point, rx, ry, rz );
 		
-		init();
+		initialize();
 	}
 	
 	public ObjectBase( int model, Point point, float rx, float ry, float rz, float drawDistance)
@@ -115,7 +115,7 @@ public class ObjectBase implements IObject
 		this.position = new PointRot( point, rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
-		init();
+		initialize();
 	}
 	
 	public ObjectBase( int model, PointRot point )
@@ -123,7 +123,7 @@ public class ObjectBase implements IObject
 		this.model = model;
 		this.position = point.clone();
 		
-		init();
+		initialize();
 	}
 	
 	public ObjectBase( int model, PointRot point, float drawDistance )
@@ -132,10 +132,10 @@ public class ObjectBase implements IObject
 		this.position = point.clone();
 		this.drawDistance = drawDistance;
 		
-		init();
+		initialize();
 	}
 	
-	private void init()
+	private void initialize()
 	{
 		id = SampNativeFunction.createObject( model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
 		

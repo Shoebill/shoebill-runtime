@@ -76,10 +76,10 @@ public class Menu implements IMenu
 		this.col1Width = col1Width;
 		this.col2Width = col2Width;
 		
-		init();
+		initialize();
 	}
 	
-	private void init()
+	private void initialize()
 	{
 		id = SampNativeFunction.createMenu( title, columns, x, y, col1Width, col1Width );
 		

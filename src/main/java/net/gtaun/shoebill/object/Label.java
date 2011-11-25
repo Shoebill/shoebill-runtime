@@ -81,7 +81,7 @@ public class Label implements ILabel
 		this.position = new PointRange( point, drawDistance );
 		this.testLOS = testLOS;
 		
-		init();
+		initialize();
 	}
 	
 	public Label( String text, Color color, PointRange point, boolean testLOS )
@@ -93,10 +93,10 @@ public class Label implements ILabel
 		this.position = point.clone();
 		this.testLOS = testLOS;
 		
-		init();
+		initialize();
 	}
 	
-	private void init()
+	private void initialize()
 	{
 		id = SampNativeFunction.create3DTextLabel( text, color.getValue(),
 				position.x, position.y, position.z, position.distance, position.world, testLOS );

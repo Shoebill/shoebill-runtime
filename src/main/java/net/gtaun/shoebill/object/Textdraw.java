@@ -73,7 +73,7 @@ public class Textdraw implements ITextdraw
 		this.y = y;
 		this.text = text;
 		
-		init();
+		initialize();
 	}
 	
 	public Textdraw( float x, float y )
@@ -82,10 +82,10 @@ public class Textdraw implements ITextdraw
 		this.y = y;
 		this.text = "";
 		
-		init();
+		initialize();
 	}
 	
-	private void init()
+	private void initialize()
 	{
 		id = SampNativeFunction.textDrawCreate( x, y, text );
 		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = false;

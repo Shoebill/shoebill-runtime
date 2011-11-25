@@ -65,16 +65,16 @@ public class Zone implements IZone
 	public Zone( float minX, float minY, float maxX, float maxY )
 	{
 		this.area = new Area( minX, minY, maxX, maxY );
-		init();
+		initialize();
 	}
 	
 	public Zone( Area area )
 	{
 		this.area = area.clone();
-		init();
+		initialize();
 	}
 	
-	private void init()
+	private void initialize()
 	{
 		id = SampNativeFunction.gangZoneCreate( area.minX, area.minY, area.maxX, area.maxY );
 		
