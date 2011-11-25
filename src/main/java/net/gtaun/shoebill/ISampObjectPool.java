@@ -27,9 +27,11 @@ import net.gtaun.shoebill.object.IPickup;
 import net.gtaun.shoebill.object.IPlayer;
 import net.gtaun.shoebill.object.IPlayerLabel;
 import net.gtaun.shoebill.object.IPlayerObject;
+import net.gtaun.shoebill.object.IServer;
 import net.gtaun.shoebill.object.ITextdraw;
 import net.gtaun.shoebill.object.ITimer;
 import net.gtaun.shoebill.object.IVehicle;
+import net.gtaun.shoebill.object.IWorld;
 import net.gtaun.shoebill.object.IZone;
 
 /**
@@ -39,9 +41,10 @@ import net.gtaun.shoebill.object.IZone;
 
 public interface ISampObjectPool
 {
-	<T extends IPlayer> void setPlayerClass( Class<T> cls );
-	
+	IServer getServer();
+	IWorld getWorld();
 	IGamemode getGamemode();
+	
 	IPlayer getPlayer( int id );
 	IVehicle getVehicle( int id );
 	IObject getObject( int id );
@@ -79,4 +82,6 @@ public interface ISampObjectPool
 	<T extends IMenu> Collection<T> getMenus( Class<T> cls );
 	<T extends IDialog> Collection<T> getDialogs( Class<T> cls );
 	<T extends ITimer> Collection<T> getTimers( Class<T> cls );
+	
+	<T extends IPlayer> void setPlayerClass( Class<T> cls );
 }

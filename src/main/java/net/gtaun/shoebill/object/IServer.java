@@ -16,7 +16,6 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
@@ -24,15 +23,17 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  *
  */
 
-public interface IGamemode
+public interface IServer
 {
 	IEventDispatcher getEventDispatcher();
-
-	void exit();
 	
-	void setGamemodeText( String string );
-	void setTeamCount( int count );
-	int addPlayerClass( int model, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 );
-	int addPlayerClass( int model, SpawnInfo spawninfo );
-	int addPlayerClassEx( int team, int model, SpawnInfo spawninfo );
+	int getServerCodepage();
+	void setServerCodepage( int codepage );
+	
+	void sendRconCommand( String command );
+	void connectNPC( String name, String script );
+	
+	String getServerVarAsString( String varname );
+	int getServerVarAsInt( String varname );
+	boolean getServerVarAsBool( String varname );
 }

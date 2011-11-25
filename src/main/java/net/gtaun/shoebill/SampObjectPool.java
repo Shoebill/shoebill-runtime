@@ -34,9 +34,11 @@ import net.gtaun.shoebill.object.IPickup;
 import net.gtaun.shoebill.object.IPlayer;
 import net.gtaun.shoebill.object.IPlayerLabel;
 import net.gtaun.shoebill.object.IPlayerObject;
+import net.gtaun.shoebill.object.IServer;
 import net.gtaun.shoebill.object.ITextdraw;
 import net.gtaun.shoebill.object.ITimer;
 import net.gtaun.shoebill.object.IVehicle;
+import net.gtaun.shoebill.object.IWorld;
 import net.gtaun.shoebill.object.IZone;
 import net.gtaun.shoebill.object.Player;
 
@@ -66,6 +68,8 @@ public class SampObjectPool implements ISampObjectPool
 	}
 	
 	
+	IServer server;
+	IWorld world;
 	IGamemode gamemode;
 	
 	IPlayer[] players								= new IPlayer[MAX_PLAYERS];
@@ -92,9 +96,15 @@ public class SampObjectPool implements ISampObjectPool
 	
 	
 	@Override
-	public <T extends IPlayer> void setPlayerClass( Class<T> cls )
+	public IServer getServer()
 	{
-		playerClass = cls;
+		return server;
+	}
+	
+	@Override
+	public IWorld getWorld()
+	{
+		return world;
 	}
 	
 	@Override
@@ -335,6 +345,21 @@ public class SampObjectPool implements ISampObjectPool
 	}
 	
 	
+	public void setServer( IServer server )
+	{
+		this.server = server;
+	}
+	
+	public void setWorld( IWorld world )
+	{
+		this.world = world;
+	}
+	
+	public void setGamemode( IGamemode gamemode )
+	{
+		this.gamemode = gamemode;
+	}
+	
 	public void setPlayer( int id, IPlayer player )
 	{
 		players[ id ] = player;
@@ -393,5 +418,11 @@ public class SampObjectPool implements ISampObjectPool
 	public void putDialog( int id, IDialog dialog )
 	{
 		dialogs.put( id, new WeakReference<IDialog>( dialog ) );
+	}
+	
+	@Override
+	public <T extends IPlayer> void setPlayerClass( Class<T> cls )
+	{
+		playerClass = cls;
 	}
 }
