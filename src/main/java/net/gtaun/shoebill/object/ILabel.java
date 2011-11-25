@@ -32,11 +32,11 @@ public interface ILabel extends IDestroyable
 	int getId();
 	String getText();
 	Color getColor();
+	PointRange getPosition();
 	
 	IPlayer getAttachedPlayer();
 	IVehicle getAttachedVehicle();
 	
-	PointRange getPosition();
 	void attach( IPlayer player, float x, float y, float z );
 	void attach( IVehicle vehicle, float x, float y, float z );
 	void update( Color color, String text );

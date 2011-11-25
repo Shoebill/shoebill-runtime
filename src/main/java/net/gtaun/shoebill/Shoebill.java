@@ -69,8 +69,6 @@ public class Shoebill implements IShoebill
 		managedObjectPool.setServer( new Server() );
 		managedObjectPool.setWorld( new World() );
 		
-		// load gamemode/plugins...
-		
 		sampCallbackManager.registerCallbackHandler( sampEventLogger );
 		sampCallbackManager.registerCallbackHandler( sampEventDispatcher );
 	}

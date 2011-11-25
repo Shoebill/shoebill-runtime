@@ -184,7 +184,6 @@ public final class SampNativeFunction
 	public static native void setPlayerFacingAngle( int playerid, float angle );
 	public static native float getPlayerFacingAngle( int playerid );
 	public static native boolean isPlayerInRangeOfPoint( int playerid, float range, float x, float y, float z );
-	public static native float getPlayerDistanceFromPoint( int playerid, float x, float y, float z); //0.3c r3
 	public static native boolean isPlayerStreamedIn( int playerid, int forplayerid );
 	public static native void setPlayerInterior( int playerid, int interiorid );
 	public static native int getPlayerInterior( int playerid );
@@ -329,7 +328,6 @@ public final class SampNativeFunction
 	public static native void setVehiclePos( int vehicleid, float x, float y, float z );
 	public static native float getVehicleZAngle( int vehicleid );
 	public static native void getVehicleRotationQuat( int vehicleid, Quaternions quaternions );
-	public static native float getVehicleDistanceFromPoint( int vehicleid, float x, float y, float z );
 	public static native void setVehicleZAngle( int vehicleid, float angle );
 	public static native void setVehicleParamsForPlayer( int vehicleid, int playerid, boolean objective, boolean doorslocked );
 	public static native void manualVehicleEngineAndLights();
