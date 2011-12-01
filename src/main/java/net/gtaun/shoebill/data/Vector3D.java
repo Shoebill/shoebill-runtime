@@ -46,5 +46,4 @@ public class Vector3D extends Vector2D implements Cloneable, Serializable
 	{
 		return new Vector3D(x, y, z);
 	}
-
 }

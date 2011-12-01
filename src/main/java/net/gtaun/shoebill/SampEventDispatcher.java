@@ -26,12 +26,14 @@ import net.gtaun.shoebill.event.menu.MenuExitedEvent;
 import net.gtaun.shoebill.event.menu.MenuSelectedEvent;
 import net.gtaun.shoebill.event.object.ObjectMovedEvent;
 import net.gtaun.shoebill.event.object.PlayerObjectMovedEvent;
+import net.gtaun.shoebill.event.player.PlayerClickMapEvent;
 import net.gtaun.shoebill.event.player.PlayerClickPlayerEvent;
 import net.gtaun.shoebill.event.player.PlayerCommandEvent;
 import net.gtaun.shoebill.event.player.PlayerConnectEvent;
 import net.gtaun.shoebill.event.player.PlayerDeathEvent;
 import net.gtaun.shoebill.event.player.PlayerDisconnectEvent;
 import net.gtaun.shoebill.event.player.PlayerEnterExitModShopEvent;
+import net.gtaun.shoebill.event.player.PlayerGiveDamageEvent;
 import net.gtaun.shoebill.event.player.PlayerInteriorChangeEvent;
 import net.gtaun.shoebill.event.player.PlayerKeyStateChangeEvent;
 import net.gtaun.shoebill.event.player.PlayerKillEvent;
@@ -42,6 +44,7 @@ import net.gtaun.shoebill.event.player.PlayerSpawnEvent;
 import net.gtaun.shoebill.event.player.PlayerStateChangeEvent;
 import net.gtaun.shoebill.event.player.PlayerStreamInEvent;
 import net.gtaun.shoebill.event.player.PlayerStreamOutEvent;
+import net.gtaun.shoebill.event.player.PlayerTakeDamageEvent;
 import net.gtaun.shoebill.event.player.PlayerTextEvent;
 import net.gtaun.shoebill.event.player.PlayerUpdateEvent;
 import net.gtaun.shoebill.event.rcon.RconCommandEvent;
@@ -954,6 +957,72 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			globalEventDispatcher.dispatchEvent( event );
 			
 			//player.dialog = null;
+			return 1;
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	@Override
+	public int onPlayerTakeDamage( int playerId, int issuerId, float amount, int weaponId )
+	{
+		try
+		{
+			IPlayer player = sampObjectPool.getPlayer( playerId );
+			IPlayer issuer = sampObjectPool.getPlayer( issuerId );
+			
+			PlayerTakeDamageEvent event = new PlayerTakeDamageEvent( player, issuer, amount, weaponId );
+
+			player.getEventDispatcher().dispatchEvent( event );
+			globalEventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+
+	@Override
+	public int onPlayerGiveDamage( int playerId, int damagedId, float amount, int weaponId )
+	{
+		try
+		{
+			IPlayer player = sampObjectPool.getPlayer( playerId );
+			IPlayer victim = sampObjectPool.getPlayer( damagedId );
+			
+			PlayerGiveDamageEvent event = new PlayerGiveDamageEvent( player, victim, amount, weaponId );
+
+			player.getEventDispatcher().dispatchEvent( event );
+			globalEventDispatcher.dispatchEvent( event );
+			
+			return 1;
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public int onPlayerClickMap( int playerId, float x, float y, float z )
+	{
+		try
+		{
+			IPlayer player = sampObjectPool.getPlayer( playerId );
+			
+			PlayerClickMapEvent event = new PlayerClickMapEvent( player, x, y, z );
+
+			player.getEventDispatcher().dispatchEvent( event );
+			globalEventDispatcher.dispatchEvent( event );
+			
 			return 1;
 		}
 		catch( Exception e )

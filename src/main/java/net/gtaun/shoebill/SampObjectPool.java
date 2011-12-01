@@ -116,6 +116,7 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public IPlayer getPlayer( int id )
 	{
+		if( id < 0 || id >= MAX_PLAYERS ) return null;
 		return players[id];
 	}
 	

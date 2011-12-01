@@ -67,18 +67,19 @@ public class PlayerObject implements IPlayerObject
 	private PointRot position;
 	private float speed = 0;
 	private IPlayer attachedPlayer;
-	private IVehicle attachedVehicle;
 	private float drawDistance = 0;
 	
 	
 	@Override public Player getPlayer()								{ return player; }
 	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
-	
+
+	@Override public int getId()									{ return id; }
 	@Override public int getModel()									{ return model; }
 	@Override public float getSpeed()								{ return speed; }
-	@Override public IPlayer getAttachedPlayer()					{ return attachedPlayer; }
-	@Override public IVehicle getAttachedVehicle()					{ return attachedVehicle; }
 	@Override public float getDrawDistance()						{ return drawDistance; }
+	@Override public IPlayer getAttachedPlayer()					{ return attachedPlayer; }
+	@Override public IObject getAttachedObject()					{ return null; }
+	@Override public IVehicle getAttachedVehicle()					{ return null; }
 	
 	
 	public PlayerObject( Player player, int model, float x, float y, float z, float rx, float ry, float rz )
@@ -165,6 +166,12 @@ public class PlayerObject implements IPlayerObject
 	}
 	
 	@Override
+	public boolean isMoving()
+	{
+		return SampNativeFunction.isPlayerObjectMoving(player.getId(), id );
+	}
+	
+	@Override
 	public PointRot getPosition()
 	{	
 		SampNativeFunction.getPlayerObjectPos( player.getId(), id, position );
@@ -218,6 +225,12 @@ public class PlayerObject implements IPlayerObject
 		SampNativeFunction.attachPlayerObjectToPlayer( this.player.getId(), id, player.getId(), x, y, z, rx, ry, rz );
 		this.attachedPlayer = player;
 		speed = 0;
+	}
+	
+	@Override
+	public void attach( IObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation )
+	{
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

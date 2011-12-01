@@ -23,9 +23,11 @@ import net.gtaun.shoebill.data.Point;
 import net.gtaun.shoebill.data.PointAngle;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
@@ -122,7 +124,6 @@ public interface IPlayer
 	void applyAnimation( String animlib, String animname, float delta, int loop, int lockX, int lockY, int freeze, int time, int forcesync );
 	void clearAnimations( int forcesync );
 	int getAnimationIndex();
-	void allowTeleport( boolean allow );
 	void playSound( int sound, float x, float y, float z );
 	void playSound( int sound, Point point );
 	void markerForPlayer( IPlayer player, Color color );
@@ -173,6 +174,12 @@ public interface IPlayer
 	void stopRecord();
 	IObject getSurfingObject();
 	String getNetworkStats();
+	
+	IPlayer getAimedPlayer();
+	void playAudioStream( String url );
+	void playAudioStream( String url, Vector3D position, float distance );
+	void stopAudioStream();
+	void removeBuilding( int modelId, float x, float y, float z, float radius );
 
 	void showDialog( IDialog dialog, String caption, String text, String button1, String button2 );
 	void cancelDialog();

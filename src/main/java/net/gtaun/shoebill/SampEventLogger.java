@@ -327,6 +327,26 @@ public class SampEventLogger implements ISampCallbackHandler
 	}
 	
 	@Override
+	public int onPlayerTakeDamage( int playerid, int issuerId, float amount, int weaponid )
+	{
+		return 1;
+	}
+
+
+	@Override
+	public int onPlayerGiveDamage( int playerId, int damagedId, float amount, int weaponId )
+	{
+		return 1;
+	}
+
+
+	@Override
+	public int onPlayerClickMap( int playerId, float x, float y, float z )
+	{
+		return 1;
+	}
+	
+	@Override
 	public int onPlayerClickPlayer( int playerId, int clickedPlayerId, int source )
 	{
 		IPlayer player = sampObjectPool.getPlayer( playerId );

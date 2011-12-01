@@ -29,11 +29,16 @@ public interface IObject extends IDestroyable
 {
 	IEventDispatcher getEventDispatcher();
 	
+	int getId();
 	int getModel();
 	float getSpeed();
-	IPlayer getAttachedPlayer();
-	IVehicle getAttachedVehicle();
 	float getDrawDistance();
+	
+	IPlayer getAttachedPlayer();
+	IObject getAttachedObject();
+	IVehicle getAttachedVehicle();
+	
+	boolean isMoving();
 	
 	PointRot getPosition();
 	void setPosition( Point position );
@@ -42,5 +47,6 @@ public interface IObject extends IDestroyable
 	int move( float x, float y, float z, float speed );
 	void stop();
 	void attach( IPlayer player, float x, float y, float z, float rx, float ry, float rz );
+	void attach( IObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation );
 	void attach( IVehicle vehicle, float x, float y, float z, float rx, float ry, float rz );
 }

@@ -146,11 +146,6 @@ public class Player implements IPlayer
 	{
 		for( IPlayer player : get() ) player.enableStuntBonus( enabled );
 	}
-	
-	public static void allowAdminTeleport( boolean allow )
-	{
-		SampNativeFunction.allowAdminTeleport(allow);
-	}
 
 	public static void sendMessageToAll( Color color, String message )
 	{
@@ -600,12 +595,6 @@ public class Player implements IPlayer
 	{
 		return SampNativeFunction.getPlayerAnimationIndex(id);
 	}
-	
-	@Override
-	public void allowTeleport( boolean allow )
-	{
-		SampNativeFunction.allowPlayerTeleport(id, allow);
-	}
 
 	@Override
 	public void playSound( int sound, float x, float y, float z )
@@ -974,6 +963,38 @@ public class Player implements IPlayer
 	{
 		return SampNativeFunction.getPlayerNetworkStats(id);
 	}
+	
+	
+	@Override
+	public IPlayer getAimedPlayer()
+	{
+		return Shoebill.getInstance().getManagedObjectPool().getPlayer( SampNativeFunction.getPlayerTargetPlayer(id) );
+	}
+
+	@Override
+	public void playAudioStream( String url )
+	{
+		SampNativeFunction.playAudioStreamForPlayer( id, url, 0.0f, 0.0f, 0.0f, 0.0f, 0 );
+	}
+	
+	@Override
+	public void playAudioStream( String url, Vector3D position, float distance )
+	{
+		SampNativeFunction.playAudioStreamForPlayer( id, url, position.x, position.y, position.z, distance, 1 );
+	}
+	
+	@Override
+	public void stopAudioStream()
+	{
+		SampNativeFunction.stopAudioStreamForPlayer( id );
+	}
+	
+	@Override
+	public void removeBuilding( int modelId, float x, float y, float z, float radius )
+	{
+		SampNativeFunction.removeBuildingForPlayer( id, modelId, x, y, z, radius );
+	}
+	
 	
 	@Override
 	public void showDialog( IDialog dialog, String caption, String text, String button1, String button2 )

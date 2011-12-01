@@ -63,6 +63,9 @@ public interface ISampCallbackHandler
 	int onVehicleStreamIn( int vehicleId, int forPlayerId );
 	int onVehicleStreamOut( int vehicleId, int forPlayerId );
 	int onDialogResponse( int playerId, int dialogId, int response, int listitem, String inputtext );
+	int onPlayerTakeDamage( int playerid, int issuerId, float amount, int weaponid );
+	int onPlayerGiveDamage( int playerId, int damagedId, float amount, int weaponId );
+	int onPlayerClickMap( int playerId, float x, float y, float z );
 	int onPlayerClickPlayer( int playerId, int clickedPlayerId, int source );
 	void onProcessTick();
 }

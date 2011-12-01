@@ -318,6 +318,24 @@ public class SampCallbackManager implements ISampCallbackManager
 			return ret;
 		}
 
+		public int onPlayerTakeDamage( int playerId, int issuerId, float amount, int weaponId )
+		{
+			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerTakeDamage( playerId, issuerId, amount, weaponId );
+			return 1;
+		}
+
+		public int onPlayerGiveDamage( int playerId, int damagedId, float amount, int weaponId )
+		{
+			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerGiveDamage( playerId, damagedId, amount, weaponId );
+			return 1;
+		}
+
+		public int onPlayerClickMap( int playerId, float x, float y, float z )
+		{
+			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerClickMap( playerId, x, y, z );
+			return 1;
+		}
+		
 		public int onPlayerClickPlayer( int playerid, int clickedplayerid, int source )
 		{
 			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerClickPlayer( playerid, clickedplayerid, source );

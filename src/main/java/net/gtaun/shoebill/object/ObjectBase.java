@@ -71,17 +71,20 @@ public class ObjectBase implements IObject
 	private PointRot position;
 	private float speed = 0;
 	private IPlayer attachedPlayer;
+	private IObject attachedObject;
 	private IVehicle attachedVehicle;
 	private float drawDistance = 0;
 	
 	
 	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
+	@Override public int getId()									{ return id; }
 	@Override public int getModel()									{ return model; }
 	@Override public float getSpeed()								{ return speed; }
-	@Override public IPlayer getAttachedPlayer()					{ return attachedPlayer; }
-	@Override public IVehicle getAttachedVehicle()					{ return attachedVehicle; }
 	@Override public float getDrawDistance()						{ return drawDistance; }
+	@Override public IPlayer getAttachedPlayer()					{ return attachedPlayer; }
+	@Override public IObject getAttachedObject()					{ return attachedObject; }
+	@Override public IVehicle getAttachedVehicle()					{ return attachedVehicle; }
 	
 	
 	public ObjectBase( int model, float x, float y, float z, float rx, float ry, float rz )
@@ -162,6 +165,12 @@ public class ObjectBase implements IObject
 	}
 	
 	@Override
+	public boolean isMoving()
+	{
+		return SampNativeFunction.isObjectMoving( id );
+	}
+	
+	@Override
 	public PointRot getPosition()
 	{
 		SampNativeFunction.getObjectPos( id, position );
@@ -213,6 +222,15 @@ public class ObjectBase implements IObject
 	{
 		SampNativeFunction.attachObjectToPlayer( id, player.getId(), x, y, z, rx, ry, rz );
 		attachedPlayer = player;
+		speed = 0;
+	}
+	
+	@Override
+	public void attach( IObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation )
+	{
+		if( object instanceof PlayerObject ) throw new UnsupportedOperationException();
+		SampNativeFunction.attachObjectToObject( id, object.getId(), x, y, z, rz, ry, rz, syncRotation?1:0 );
+		attachedObject = object;
 		speed = 0;
 	}
 	
