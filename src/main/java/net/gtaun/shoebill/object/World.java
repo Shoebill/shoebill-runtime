@@ -16,7 +16,8 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.type.PlayerMarkerMode;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
@@ -116,9 +117,9 @@ public class World implements IWorld
 	}
 	
 	@Override
-	public void showPlayerMarkers( int mode )
+	public void showPlayerMarkers( PlayerMarkerMode mode )
 	{
-		SampNativeFunction.showPlayerMarkers( mode );
+		SampNativeFunction.showPlayerMarkers( mode.getData() );
 	}
 	
 	@Override
@@ -134,7 +135,7 @@ public class World implements IWorld
 	}
 	
 	@Override
-	public void createExplosion( Point point, int type, float radius )
+	public void createExplosion( Location point, int type, float radius )
 	{
 		SampNativeFunction.createExplosion( point.x, point.y, point.z, type, radius );
 	}

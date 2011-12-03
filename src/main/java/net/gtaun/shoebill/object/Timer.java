@@ -29,7 +29,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public class Timer implements ITimer
 {
-	public static final int COUNT_INFINITE = 0;
+	private static final int COUNT_INFINITE = 0;
 	
 
 	private EventDispatcher eventDispatcher = new EventDispatcher();

@@ -23,7 +23,7 @@ import java.io.Serializable;
  *
  */
 
-public class PointRot extends Point implements Cloneable, Serializable
+public class LocationRotational extends Location implements Cloneable, Serializable
 {
 	private static final long serialVersionUID = 3951785121331456948L;
 	
@@ -31,12 +31,12 @@ public class PointRot extends Point implements Cloneable, Serializable
 	public float rx, ry, rz;
 	
 	
-	public PointRot()
+	public LocationRotational()
 	{
 		
 	}
 
-	public PointRot( float x, float y, float z, int interiorId, int worldId, float rx, float ry, float rz )
+	public LocationRotational( float x, float y, float z, int interiorId, int worldId, float rx, float ry, float rz )
 	{
 		super( x, y, z, interiorId, worldId );
 		
@@ -45,7 +45,7 @@ public class PointRot extends Point implements Cloneable, Serializable
 		this.rz = rz;
 	}
 	
-	public PointRot( float x, float y, float z, int worldId, float rx, float ry, float rz )
+	public LocationRotational( float x, float y, float z, int worldId, float rx, float ry, float rz )
 	{
 		super( x, y, z, worldId );
 		
@@ -54,7 +54,7 @@ public class PointRot extends Point implements Cloneable, Serializable
 		this.rz = rz;
 	}
 	
-	public PointRot( float x, float y, float z, float rx, float ry, float rz )
+	public LocationRotational( float x, float y, float z, float rx, float ry, float rz )
 	{
 		super( x, y, z );
 		
@@ -63,7 +63,7 @@ public class PointRot extends Point implements Cloneable, Serializable
 		this.rz = rz;
 	}
 
-	public PointRot( Point point, float rx, float ry, float rz )
+	public LocationRotational( Location point, float rx, float ry, float rz )
 	{
 		super( point.x, point.y, point.z );
 		
@@ -73,7 +73,7 @@ public class PointRot extends Point implements Cloneable, Serializable
 	}
 	
 	
-	public void set( PointRot point )
+	public void set( LocationRotational point )
 	{
 		x = point.x;
 		y = point.y;
@@ -89,9 +89,9 @@ public class PointRot extends Point implements Cloneable, Serializable
 	public boolean equals( Object obj )
 	{
 		if( obj == this )						return true;
-		if( !(obj instanceof PointRot) )		return false;
+		if( !(obj instanceof LocationRotational) )		return false;
 		
-		PointRot point = (PointRot) obj;
+		LocationRotational point = (LocationRotational) obj;
 		if( point.x != x )						return false;
 		if( point.y != y )						return false;
 		if( point.z != z )						return false;
@@ -105,8 +105,8 @@ public class PointRot extends Point implements Cloneable, Serializable
 	}
 	
 	@Override
-	public PointRot clone()
+	public LocationRotational clone()
 	{
-		return new PointRot(x, y, z, interior, world, rx, ry, rz);
+		return new LocationRotational(x, y, z, interior, world, rx, ry, rz);
 	}
 }

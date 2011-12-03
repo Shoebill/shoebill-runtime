@@ -16,6 +16,7 @@
 
 package net.gtaun.shoebill.object;
 
+import net.gtaun.shoebill.data.type.DialogStyle;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
@@ -28,7 +29,7 @@ public interface IDialog
 	IEventDispatcher getEventDispatcher();
 	
 	int getId();
-	int getStyle();
+	DialogStyle getStyle();
 	
 	void show( IPlayer player, String caption, String text, String button1, String button2 );
 	void cancel( IPlayer player );

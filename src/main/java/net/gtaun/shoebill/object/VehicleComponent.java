@@ -17,6 +17,7 @@
 
 package net.gtaun.shoebill.object;
 
+import net.gtaun.shoebill.data.type.VehicleComponentSlot;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 
@@ -26,33 +27,10 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  */
 
 public class VehicleComponent implements IVehicleComponent
-{
-	public static final int SLOT_SPOILER =			0;
-	public static final int SLOT_HOOD =				1;
-	public static final int SLOT_ROOF =				2;
-	public static final int SLOT_SIDESKIRT =		3;
-	public static final int SLOT_LAMPS =			4;
-	public static final int SLOT_NITRO =			5;
-	public static final int SLOT_EXHAUST =			6;
-	public static final int SLOT_WHEELS =			7;
-	public static final int SLOT_STEREO =			8;
-	public static final int SLOT_HYDRAULICS =		9;
-	public static final int SLOT_FRONT_BUMPER =		10;
-	public static final int SLOT_REAR_BUMPER =		11;
-	public static final int SLOT_VENT_RIGHT =		12;
-	public static final int SLOT_VENT_LEFT =		13;
-	public static final int SLOTS =					14;
-
-	
-	public static int getComponentSlot( int componentid )
-	{
-		return SampNativeFunction.getVehicleComponentType(componentid);
-	}
-	
-	
+{	
 	private int vehicleId;
 	
-	private int[] components = new int[SLOTS];
+	private int[] components = new int[ VehicleComponentSlot.values().length ];
 	
 	
 	VehicleComponent( int vehicleId )
@@ -62,31 +40,31 @@ public class VehicleComponent implements IVehicleComponent
 	}
 	
 	
-	public void add( int componentid )
+	public void add( int componentId )
 	{
-		SampNativeFunction.addVehicleComponent( vehicleId, componentid );
+		SampNativeFunction.addVehicleComponent( vehicleId, componentId );
 		
-		int slot = SampNativeFunction.getVehicleComponentType(componentid);
+		int slot = SampNativeFunction.getVehicleComponentType(componentId);
 		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicleId, slot);
 	}
 	
-	public void remove( int componentid )
+	public void remove( int componentId )
 	{
-		SampNativeFunction.removeVehicleComponent( vehicleId, componentid );
+		SampNativeFunction.removeVehicleComponent( vehicleId, componentId );
 		
-		int slot = SampNativeFunction.getVehicleComponentType(componentid);
+		int slot = SampNativeFunction.getVehicleComponentType(componentId);
 		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicleId, slot);
 	}
 	
-	public int get( int slot )
+	public int get( VehicleComponentSlot slot )
 	{
-		return SampNativeFunction.getVehicleComponentInSlot( vehicleId, slot );
+		return SampNativeFunction.getVehicleComponentInSlot( vehicleId, slot.getData() );
 	}
 	
 	public int[] toArray()
 	{
-		int[] data = new int[SLOTS];
-		System.arraycopy( components, 0, data, 0, SLOTS );
+		int[] data = new int[ components.length ];
+		System.arraycopy( components, 0, data, 0, components.length );
 		
 		return data;
 	}
@@ -96,7 +74,7 @@ public class VehicleComponent implements IVehicleComponent
 		
 	void update()
 	{
-		for( int i=0; i<SLOTS; i++ )
+		for( int i=0; i<components.length; i++ )
 			components[i] = SampNativeFunction.getVehicleComponentInSlot(vehicleId, i);
 	}
 }

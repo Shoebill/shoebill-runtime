@@ -72,8 +72,8 @@ public abstract class Gamemode extends Plugin implements IGamemode
 	{
 		return SampNativeFunction.addPlayerClass( model, 
 			spawninfo.position.x, spawninfo.position.y, spawninfo.position.z, spawninfo.position.angle,
-			spawninfo.weapon1.id, spawninfo.weapon1.ammo, spawninfo.weapon2.id, spawninfo.weapon2.ammo,
-			spawninfo.weapon3.id, spawninfo.weapon3.ammo );
+			spawninfo.weapon1.type.getId(), spawninfo.weapon1.ammo, spawninfo.weapon2.type.getId(), spawninfo.weapon2.ammo,
+			spawninfo.weapon3.type.getId(), spawninfo.weapon3.ammo );
 	}
 	
 	@Override
@@ -81,7 +81,7 @@ public abstract class Gamemode extends Plugin implements IGamemode
 	{
 		return SampNativeFunction.addPlayerClassEx( team, model, 
 			spawninfo.position.x, spawninfo.position.y, spawninfo.position.z, spawninfo.position.angle,
-			spawninfo.weapon1.id, spawninfo.weapon1.ammo, spawninfo.weapon2.id, spawninfo.weapon2.ammo,
-			spawninfo.weapon3.id, spawninfo.weapon3.ammo );
+			spawninfo.weapon1.type.getId(), spawninfo.weapon1.ammo, spawninfo.weapon2.type.getId(), spawninfo.weapon2.ammo,
+			spawninfo.weapon3.type.getId(), spawninfo.weapon3.ammo );
 	}
 }

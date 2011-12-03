@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointRot;
+import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.LocationRotational;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
@@ -38,14 +38,15 @@ public interface IObject extends IDestroyable
 	IObject getAttachedObject();
 	IVehicle getAttachedVehicle();
 	
-	boolean isMoving();
-	
-	PointRot getPosition();
-	void setPosition( Point position );
-	void setPosition( PointRot position );
+	LocationRotational getPosition();
+	void setPosition( Location position );
+	void setPosition( LocationRotational position );
 	void setRotate( float rx, float ry, float rz );
+
+	boolean isMoving();
 	int move( float x, float y, float z, float speed );
 	void stop();
+	
 	void attach( IPlayer player, float x, float y, float z, float rx, float ry, float rz );
 	void attach( IObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation );
 	void attach( IVehicle vehicle, float x, float y, float z, float rx, float ry, float rz );

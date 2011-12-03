@@ -14,17 +14,46 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
+package net.gtaun.shoebill.data.type;
 
-import net.gtaun.shoebill.data.type.RaceCheckpointType;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
  * @author MK124
  *
  */
 
-public interface IRaceCheckpoint extends ICheckpoint
+public enum VehicleComponentSlot
 {
-	RaceCheckpointType getType();
-	IRaceCheckpoint getNext();
+	SPOILER( 0 ),
+	HOOD( 1 ),
+	ROOF( 2 ),
+	SIDESKIRT( 3 ),
+	LAMPS( 4 ),
+	NITRO( 5 ),
+	EXHAUST( 6 ),
+	WHEELS( 7 ),
+	STEREO( 8 ),
+	HYDRAULICS( 9 ),
+	FRONT_BUMPER( 10 ),
+	REAR_BUMPER( 11 ),
+	VENT_RIGHT( 12 ),
+	VENT_LEFT( 13 );
+	
+	
+	public static int getComponentSlot( int componentId )
+	{
+		return SampNativeFunction.getVehicleComponentType(componentId);
+	}
+	
+	
+	private int data;
+	
+	public int getData()	{ return data; }
+	
+	
+	private VehicleComponentSlot( int data )
+	{
+		this.data = data;
+	}
 }

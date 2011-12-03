@@ -23,7 +23,7 @@ import java.io.Serializable;
  *
  */
 
-public class PointRange extends Point implements Cloneable, Serializable
+public class LocationRadius extends Location implements Cloneable, Serializable
 {
 	private static final long serialVersionUID = -4375366678586498863L;
 	
@@ -31,31 +31,31 @@ public class PointRange extends Point implements Cloneable, Serializable
 	public float distance;
 	
 	
-	public PointRange()
+	public LocationRadius()
 	{
 		
 	}
 	
-	public PointRange( float x, float y, float z, float distance )
+	public LocationRadius( float x, float y, float z, float distance )
 	{
 		super( x, y, z );
 		this.distance = distance;
 	}
 	
-	public PointRange( float x, float y, float z, float distance, int interiorId, int worldId )
+	public LocationRadius( float x, float y, float z, float distance, int interiorId, int worldId )
 	{
 		super( x, y, z, interiorId, worldId );
 		this.distance = distance;
 	}
 	
-	public PointRange( Point point, float distance )
+	public LocationRadius( Location point, float distance )
 	{
 		super( point.x, point.y, point.z );
 		this.distance = distance;
 	}
 	
 	
-	public void set( PointRange point )
+	public void set( LocationRadius point )
 	{
 		x = point.x;
 		y = point.y;
@@ -69,9 +69,9 @@ public class PointRange extends Point implements Cloneable, Serializable
 	public boolean equals( Object obj )
 	{
 		if( obj == this )						return true;
-		if( !(obj instanceof PointRange) )		return false;
+		if( !(obj instanceof LocationRadius) )		return false;
 		
-		PointRange point = (PointRange) obj;
+		LocationRadius point = (LocationRadius) obj;
 		if( point.x != x )						return false;
 		if( point.y != y )						return false;
 		if( point.z != z )						return false;
@@ -83,8 +83,8 @@ public class PointRange extends Point implements Cloneable, Serializable
 	}
 	
 	@Override
-	public PointRange clone()
+	public LocationRadius clone()
 	{
-		return new PointRange(x, y, z, distance, interior, world);
+		return new LocationRadius(x, y, z, distance, interior, world);
 	}
 }

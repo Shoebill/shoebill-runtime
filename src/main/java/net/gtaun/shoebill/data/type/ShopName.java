@@ -14,17 +14,31 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
-
-import net.gtaun.shoebill.data.type.RaceCheckpointType;
+package net.gtaun.shoebill.data.type;
 
 /**
  * @author MK124
  *
  */
 
-public interface IRaceCheckpoint extends ICheckpoint
+public enum ShopName
 {
-	RaceCheckpointType getType();
-	IRaceCheckpoint getNext();
+	PIZZASTACK( "FDPIZA" ),
+	BURGERSHOT( "FDBURG" ),
+	CLUCKINBELL( "FDCHICK" ),
+	AMMUNATION1( "AMMUN1" ),
+	AMMUNATION2( "AMMUN2" ),
+	AMMUNATION3( "AMMUN3" ),
+	AMMUNATION5( "AMMUN5" );
+	
+	
+	private String data;
+	
+	public String getData()	{ return data; }
+	
+	
+	private ShopName( String data )
+	{
+		this.data = data;
+	}
 }

@@ -14,17 +14,42 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
+package net.gtaun.shoebill.data.type;
 
-import net.gtaun.shoebill.data.type.RaceCheckpointType;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author MK124
  *
  */
 
-public interface IRaceCheckpoint extends ICheckpoint
+public enum FightStyle
 {
-	RaceCheckpointType getType();
-	IRaceCheckpoint getNext();
+	NORMAL( 4 ),
+	BOXING( 5 ),
+	KUNGFU( 6 ),
+	KNEEHEAD( 7 ),
+	GRABKICK( 15 ),
+	ELBOW( 16 );
+	
+	
+	private static Map<Integer, FightStyle> values = new HashMap<Integer, FightStyle>();
+	public static FightStyle get( int data )		{ return values.get(data); }
+	
+	static
+	{
+		for( FightStyle style : values() ) values.put( style.data, style );
+	}
+	
+	
+	private int data;
+	
+	public int getData()	{ return data; }
+	
+	
+	private FightStyle( int data )
+	{
+		this.data = data;
+	}
 }

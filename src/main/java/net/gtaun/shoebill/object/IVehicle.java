@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointAngle;
+import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.LocationAngular;
 import net.gtaun.shoebill.data.Quaternions;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
@@ -45,7 +45,7 @@ public interface IVehicle extends IDestroyable
 	public IVehicleDamage getDamage();
 	
 	IVehicle getTrailer();
-	PointAngle getPosition();
+	LocationAngular getPosition();
 	float getAngle();
 	int getInterior();
 	int getWorld();
@@ -53,8 +53,8 @@ public interface IVehicle extends IDestroyable
 	Velocity getVelocity();
 	Quaternions getRotationQuat();
 	void setPosition( float x, float y, float z );
-	void setPosition( Point point );
-	void setPosition( PointAngle point );
+	void setPosition( Location point );
+	void setPosition( LocationAngular point );
 	void setHealth( float health );
 	void setVelocity( Velocity velocity );
 	void setAngle( float angle );

@@ -14,17 +14,27 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
-
-import net.gtaun.shoebill.data.type.RaceCheckpointType;
+package net.gtaun.shoebill.data.type;
 
 /**
  * @author MK124
  *
  */
 
-public interface IRaceCheckpoint extends ICheckpoint
+public enum RecordType
 {
-	RaceCheckpointType getType();
-	IRaceCheckpoint getNext();
+	NONE( 0 ),
+	DRIVER( 1 ),
+	ONFOOT( 2 );
+	
+	
+	private int data;
+	
+	public int getData()	{ return data; }
+	
+	
+	private RecordType( int data )
+	{
+		this.data = data;
+	}
 }

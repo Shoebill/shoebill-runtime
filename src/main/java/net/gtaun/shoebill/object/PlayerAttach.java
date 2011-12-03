@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2011 JoJLlmAn
+ * Copyright (C) 2011 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,75 +18,88 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.data.type.PlayerAttachBone;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
- * @author JoJLlmAn
+ * @author JoJLlmAn, MK124
  *
  */
 
+
 public class PlayerAttach implements IPlayerAttach
 {
+	public static final int MAX_ATTACHED_OBJECTS = 5;
+
+	
+	public class PlayerAttachSlot
+	{
+		private int slot;
+		
+		private PlayerAttachBone bone = PlayerAttachBone.NOT_USABLE;
+		private int modelId = -1;
+		
+		public PlayerAttachBone getBone()		{ return bone; }
+		public int getModelId()					{ return modelId; }
+		
+		
+		PlayerAttachSlot( int slot )
+		{
+			this.slot = slot;
+		}
+		
+		public boolean set( PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rot, Vector3D scale )
+		{
+			if( bone == PlayerAttachBone.NOT_USABLE ) return false;
+			if( ! SampNativeFunction.setPlayerAttachedObject(playerId, slot, modelId, bone.getData(), offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, scale.x, scale.y, scale.z) )
+				return false;
+			
+			this.bone = bone;
+			this.modelId = modelId;
+			
+			return true;
+		}
+		
+		public boolean remove()
+		{
+			if( bone == PlayerAttachBone.NOT_USABLE ) return false;
+			if( ! SampNativeFunction.removePlayerAttachedObject(playerId, slot) ) return false;
+			
+			bone = PlayerAttachBone.NOT_USABLE;
+			modelId = -1;
+			
+			return true;
+		}
+		
+		public boolean isUsed( int slot )
+		{
+			return bone != PlayerAttachBone.NOT_USABLE;
+		}
+	}
+	
+	
 	private int playerId;
 	
-	private int[] models = new int[5];
-	private int[] bones = new int[5];
-	
-	
-	public int[] getModels()	{ return models.clone(); }
-	public int[] getBones()		{ return bones.clone(); }
+	private PlayerAttachSlot[] slots = new PlayerAttachSlot[MAX_ATTACHED_OBJECTS];
 
 	
 	PlayerAttach( int playerid )
 	{
 		this.playerId = playerid;
 		
-		for( int i=0; i<5; i++ )
+		for( int i=0; i<MAX_ATTACHED_OBJECTS; i++ )
 		{
-			models[i] = -1;
-			bones[i] = -1;
+			slots[i] = new PlayerAttachSlot(i);
 		}
 	}
 	
-	
-	public boolean set( int slot, int modelid, int bone, Vector3D offset, Vector3D rot, Vector3D scale )
+	public PlayerAttachSlot getSlot( int slot )
 	{
-		boolean success = SampNativeFunction.setPlayerAttachedObject(playerId, slot, modelid, bone, offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, scale.x, scale.y, scale.z);
-		
-		if(success)
-		{
-			models[slot] = modelid;
-			bones[slot] = bone;
-		}
-		
-		return success;
+		return slots[ slot ];
 	}
 	
-	public boolean remove( int slot )
+	public PlayerAttachSlot[] getSlots()
 	{
-		boolean success = SampNativeFunction.removePlayerAttachedObject(playerId, slot);
-		
-		if(success)
-		{
-			models[slot] = -1;
-			bones[slot] = -1;
-		}
-		
-		return success;
-	}
-	
-	public boolean isSlotUsed( int slot )
-	{
-		return models[slot] != -1;
-	}
-	
-	public int getModel( int slot )
-	{
-		return models[slot];
-	}
-	
-	public int getBone( int slot )
-	{
-		return bones[slot];
+		return slots.clone();
 	}
 }

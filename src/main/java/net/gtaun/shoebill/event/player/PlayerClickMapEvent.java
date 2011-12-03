@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
+package net.gtaun.shoebill.event.player;
 
-import net.gtaun.shoebill.data.type.RaceCheckpointType;
+import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.object.IPlayer;
 
 /**
  * @author MK124
  *
  */
 
-public interface IRaceCheckpoint extends ICheckpoint
+public class PlayerClickMapEvent extends PlayerEvent
 {
-	RaceCheckpointType getType();
-	IRaceCheckpoint getNext();
+	private Vector3D position;
+	
+	public Vector3D getPosition()	{ return position.clone(); }
+	
+	
+	public PlayerClickMapEvent( IPlayer player, float x, float y, float z )
+	{
+		super( player );
+		position = new Vector3D( x, y, z );
+	}
 }

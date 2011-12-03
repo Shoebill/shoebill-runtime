@@ -18,6 +18,8 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.data.type.WeaponType;
+
 
 /**
  * @author MK124
@@ -29,7 +31,8 @@ public class WeaponData implements Cloneable, Serializable
 	private static final long serialVersionUID = 8584508544432627380L;
 	
 	
-	public int id, ammo;
+	public WeaponType type;
+	public int ammo;
 	
 
 	public WeaponData()
@@ -37,9 +40,9 @@ public class WeaponData implements Cloneable, Serializable
 		
 	}
 	
-	public WeaponData( int id, int ammo )
+	public WeaponData( WeaponType type, int ammo )
 	{
-		this.id = id;
+		this.type = type;
 		this.ammo = ammo;
 	}
 	
@@ -51,7 +54,7 @@ public class WeaponData implements Cloneable, Serializable
 		if( !(obj instanceof WeaponData) )	return false;
 		
 		WeaponData data = (WeaponData) obj;
-		if( data.id != id )					return false;
+		if( data.type != type )				return false;
 		if( data.ammo != ammo )				return false;
 		
 		return true;
@@ -60,6 +63,6 @@ public class WeaponData implements Cloneable, Serializable
 	@Override
 	public WeaponData clone()
 	{
-		return new WeaponData(id, ammo);
+		return new WeaponData(type, ammo);
 	}
 }

@@ -61,22 +61,22 @@ public class KeyState implements Cloneable, Serializable
     }
     
 
-    public boolean action()				{ return (keys&KEY_ACTION) != 0; }
-    public boolean crouch()				{ return (keys&KEY_CROUCH) != 0; }
-    public boolean fire()				{ return (keys&KEY_FIRE) != 0; }
-    public boolean sprint()				{ return (keys&KEY_SPRINT) != 0; }
-    public boolean secondAttack()		{ return (keys&KEY_SECONDARY_ATTACK) != 0; }
-    public boolean jump()				{ return (keys&KEY_JUMP) != 0; }
-    public boolean lookRight()			{ return (keys&KEY_LOOK_RIGHT) != 0; }
-    public boolean handBreak()			{ return (keys&KEY_HANDBRAKE) != 0; }
-    public boolean lookLeft()			{ return (keys&KEY_LOOK_LEFT) != 0; }
-    public boolean subMission()			{ return (keys&KEY_SUBMISSION) != 0; }
-    public boolean lookBehind()			{ return (keys&KEY_LOOK_BEHIND) != 0; }
-    public boolean walk()				{ return (keys&KEY_WALK) != 0; }
-    public boolean analogUp()			{ return (keys&KEY_ANALOG_UP) != 0; }
-    public boolean analogDown()			{ return (keys&KEY_ANALOG_DOWN) != 0; }
-    public boolean analogLeft()			{ return (keys&KEY_ANALOG_LEFT) != 0; }
-    public boolean analogRight()		{ return (keys&KEY_ANALOG_RIGHT) != 0; }
+    public boolean isActionPressed()			{ return (keys&KEY_ACTION) != 0; }
+    public boolean isCrouchPressed()			{ return (keys&KEY_CROUCH) != 0; }
+    public boolean isFirePressed()				{ return (keys&KEY_FIRE) != 0; }
+    public boolean isSprintPressed()			{ return (keys&KEY_SPRINT) != 0; }
+    public boolean isSecondAttackPressed()		{ return (keys&KEY_SECONDARY_ATTACK) != 0; }
+    public boolean isJumpPressed()				{ return (keys&KEY_JUMP) != 0; }
+    public boolean isLookRightPressed()			{ return (keys&KEY_LOOK_RIGHT) != 0; }
+    public boolean isHandBreakPressed()			{ return (keys&KEY_HANDBRAKE) != 0; }
+    public boolean isLookLeftPressed()			{ return (keys&KEY_LOOK_LEFT) != 0; }
+    public boolean isSubMissionPressed()		{ return (keys&KEY_SUBMISSION) != 0; }
+    public boolean isLookBehindPressed()		{ return (keys&KEY_LOOK_BEHIND) != 0; }
+    public boolean isWalkPressed()				{ return (keys&KEY_WALK) != 0; }
+    public boolean isAnalogUpPressed()			{ return (keys&KEY_ANALOG_UP) != 0; }
+    public boolean isAnalogDownPressed()		{ return (keys&KEY_ANALOG_DOWN) != 0; }
+    public boolean isAnalogLeftPressed()		{ return (keys&KEY_ANALOG_LEFT) != 0; }
+    public boolean isAnalogRightPressed()		{ return (keys&KEY_ANALOG_RIGHT) != 0; }
     
 	
 	@Override

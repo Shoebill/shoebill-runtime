@@ -17,7 +17,7 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.data.PointRange;
+import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
@@ -32,7 +32,7 @@ public interface ILabel extends IDestroyable
 	int getId();
 	String getText();
 	Color getColor();
-	PointRange getPosition();
+	LocationRadius getPosition();
 	
 	IPlayer getAttachedPlayer();
 	IVehicle getAttachedVehicle();

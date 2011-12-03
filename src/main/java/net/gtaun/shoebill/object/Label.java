@@ -21,9 +21,9 @@ import java.util.Collection;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointAngle;
-import net.gtaun.shoebill.data.PointRange;
+import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.LocationAngular;
+import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
@@ -51,7 +51,7 @@ public class Label implements ILabel
 	private int id = -1;
 	private String text;
 	private Color color;
-	private PointRange position;
+	private LocationRadius position;
 	private boolean testLOS;
 	
 	private float offsetX, offsetY, offsetZ;
@@ -72,19 +72,19 @@ public class Label implements ILabel
 		
 	}
 	
-	public Label( String text, Color color, Point point, float drawDistance, boolean testLOS )
+	public Label( String text, Color color, Location point, float drawDistance, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.text = text;
 		this.color = color.clone();
-		this.position = new PointRange( point, drawDistance );
+		this.position = new LocationRadius( point, drawDistance );
 		this.testLOS = testLOS;
 		
 		initialize();
 	}
 	
-	public Label( String text, Color color, PointRange point, boolean testLOS )
+	public Label( String text, Color color, LocationRadius point, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -124,9 +124,9 @@ public class Label implements ILabel
 	}
 
 	@Override
-	public PointRange getPosition()
+	public LocationRadius getPosition()
 	{
-		PointAngle pos = null;
+		LocationAngular pos = null;
 		
 		if( attachedPlayer != null )	pos = attachedPlayer.getPosition();
 		if( attachedVehicle != null )	pos = attachedVehicle.getPosition();

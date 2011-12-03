@@ -14,14 +14,27 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
+package net.gtaun.shoebill.data.type;
 
 /**
  * @author MK124
  *
  */
 
-public interface IPlayerSkill
+public enum PlayerMarkerMode
 {
-
+	OFF( 0 ),
+	GLOBAL( 1 ),
+	STREAMED( 2 );
+	
+	
+	private int data;
+	
+	public int getData()	{ return data; }
+	
+	
+	private PlayerMarkerMode( int data )
+	{
+		this.data = data;
+	}
 }

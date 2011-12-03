@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
@@ -31,5 +31,5 @@ public interface IPickup extends IDestroyable
 	int getModel();
 	int getType();
 	int getWorld();
-	Point getPosition();
+	Location getPosition();
 }

@@ -16,15 +16,12 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.data.type.RaceCheckpointType;
-
 /**
  * @author MK124
  *
  */
 
-public interface IRaceCheckpoint extends ICheckpoint
+public interface IPlayerWeaponSkill
 {
-	RaceCheckpointType getType();
-	IRaceCheckpoint getNext();
+
 }

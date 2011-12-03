@@ -23,68 +23,73 @@ import java.io.Serializable;
  *
  */
 
-public class PointAngle extends Point implements Cloneable, Serializable
+public class Location extends Vector3D implements Cloneable, Serializable
 {
-	private static final long serialVersionUID = -6964956260244629027L;
+	private static final long serialVersionUID = 8895946392500802993L;
 	
 	
-	public float angle;
+	//public float x, y, z;
+	public int interior, world;
 	
 
-	public PointAngle()
+	public Location()
 	{
-		
-	}
-	
-	public PointAngle( float x, float y, float z, int interiorId, int worldId, float angle )
-	{
-		super( x, y, z, interiorId, worldId );
-		this.angle = angle;
-	}
-	
-	public PointAngle( float x, float y, float z, float angle )
-	{
-		super( x, y, z );
-		this.angle = angle;
-	}
 
-	public PointAngle( Point point, float angle )
+	}
+	
+	public Location( float x, float y, float z )
 	{
-		super( point.x, point.y, point.z );
-		this.angle = angle;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+	
+	public Location( float x, float y, float z, int worldId )
+	{
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.world = worldId;
+	}
+	
+	public Location( float x, float y, float z, int interiorId, int worldId )
+	{
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.interior = interiorId;
+		this.world = worldId;
 	}
 	
 	
-	public void set( PointAngle point )
+	public void set( Location point )
 	{
 		x = point.x;
 		y = point.y;
 		z = point.z;
 		interior = point.interior;
 		world = point.world;
-		angle = point.angle;
 	}
 	
 	@Override
 	public boolean equals( Object obj )
 	{
 		if( obj == this )						return true;
-		if( !(obj instanceof PointAngle) )		return false;
-		PointAngle point = (PointAngle) obj;
-
+		if( !(obj instanceof Location) )			return false;
+		
+		Location point = (Location) obj;
 		if( point.x != x )						return false;
 		if( point.y != y )						return false;
 		if( point.z != z )						return false;
 		if( point.interior != interior )	return false;
 		if( point.world != world )			return false;
-		if( point.angle != angle )				return false;
 		
 		return true;
 	}
 	
 	@Override
-	public PointAngle clone()
+	public Location clone()
 	{
-		return new PointAngle(x, y, z, interior, world, angle);
+		return new Location(x, y, z, interior, world);
 	}
 }

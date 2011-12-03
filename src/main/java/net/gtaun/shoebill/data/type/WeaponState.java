@@ -14,17 +14,41 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
+package net.gtaun.shoebill.data.type;
 
-import net.gtaun.shoebill.data.type.RaceCheckpointType;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author MK124
  *
  */
 
-public interface IRaceCheckpoint extends ICheckpoint
+public enum WeaponState
 {
-	RaceCheckpointType getType();
-	IRaceCheckpoint getNext();
+	UNKNOWN( -1 ),
+	NO_BULLETS( 0 ),
+	LAST_BULLET( 1 ),
+	MORE_BULLETS( 2 ),
+	RELOADING( 3 );
+	
+	
+	private static Map<Integer, WeaponState> values = new HashMap<Integer, WeaponState>();
+	public static WeaponState get( int data )		{ return values.get(data); }
+	
+	static
+	{
+		for( WeaponState state : values() ) values.put( state.data, state );
+	}
+	
+	
+	private int data;
+	
+	public int getData()	{ return data; }
+	
+	
+	private WeaponState( int data )
+	{
+		this.data = data;
+	}
 }

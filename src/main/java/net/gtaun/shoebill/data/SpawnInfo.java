@@ -18,6 +18,8 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.data.type.WeaponType;
+
 /**
  * @author MK124
  *
@@ -28,22 +30,22 @@ public class SpawnInfo implements Cloneable, Serializable
 	private static final long serialVersionUID = -1494282877268559489L;
 	
 	
-	public PointAngle position;
+	public LocationAngular position;
 	public int skin, team;
 	public WeaponData weapon1, weapon2, weapon3;
 	
 	
 	public SpawnInfo()
 	{
-		position = new PointAngle();
+		position = new LocationAngular();
 		weapon1 = new WeaponData();
 		weapon2 = new WeaponData();
 		weapon3 = new WeaponData();
 	}
 	
-	public SpawnInfo( float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 )
+	public SpawnInfo( float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, WeaponType weapon1, int ammo1, WeaponType weapon2, int ammo2, WeaponType weapon3, int ammo3 )
 	{
-		position = new PointAngle(x, y, z, interiorId, worldId, angle);
+		position = new LocationAngular(x, y, z, interiorId, worldId, angle);
 		
 		this.skin = skin;
 		this.team = team;
@@ -53,7 +55,7 @@ public class SpawnInfo implements Cloneable, Serializable
 		this.weapon3 = new WeaponData(weapon3, ammo3);
 	}
 	
-	public SpawnInfo( PointAngle position, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
+	public SpawnInfo( LocationAngular position, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
 	{
 		this.position = position.clone();
 		this.skin = skin;

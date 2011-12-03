@@ -21,7 +21,7 @@ import java.util.Collection;
 
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
-import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
@@ -48,7 +48,7 @@ public class Pickup implements IPickup
 	private int id = -1;
 	private int model, type;
 	private int world = -1;
-	private Point position;
+	private Location position;
 
 	
 	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
@@ -56,14 +56,14 @@ public class Pickup implements IPickup
 	@Override public int getModel()								{ return model; }
 	@Override public int getType()								{ return type; }
 	@Override public int getWorld()								{ return world; }
-	@Override public Point getPosition()						{ return position.clone(); }
+	@Override public Location getPosition()						{ return position.clone(); }
 	
 	
 	public Pickup( int model, int type, float x, float y, float z, int virtualWorld )
 	{
 		this.model = model;
 		this.type = type;
-		this.position = new Point( x, y, z );
+		this.position = new Location( x, y, z );
 		this.world = virtualWorld;
 		
 		initialize();
@@ -73,12 +73,12 @@ public class Pickup implements IPickup
 	{
 		this.model = model;
 		this.type = type;
-		this.position = new Point( x, y, z );
+		this.position = new Location( x, y, z );
 		
 		initialize();
 	}
 	
-	public Pickup( int model, int type, Point point )
+	public Pickup( int model, int type, Location point )
 	{
 		this.model = model;
 		this.type = type;

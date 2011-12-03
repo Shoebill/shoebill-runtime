@@ -16,7 +16,8 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.type.PlayerMarkerMode;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
@@ -46,11 +47,11 @@ public interface IWorld
 	void setNameTagDrawDistance( float distance );
 	
 	void showNameTags( boolean enabled );
-	void showPlayerMarkers( int mode );
+	void showPlayerMarkers( PlayerMarkerMode mode );
 	void enableTirePopping( boolean enabled );
 	void allowInteriorWeapons( boolean allow );
 	
-	void createExplosion( Point point, int type, float radius );
+	void createExplosion( Location point, int type, float radius );
 	void enableZoneNames( boolean enabled );
 	void usePlayerPedAnims();
 

@@ -21,9 +21,9 @@ import java.util.Collection;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointAngle;
-import net.gtaun.shoebill.data.PointRange;
+import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.LocationAngular;
+import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
@@ -55,7 +55,7 @@ public class PlayerLabel implements IPlayerLabel
 	private IPlayer player;
 	private String text;
 	private Color color;
-	private PointRange position;
+	private LocationRadius position;
 	private boolean testLOS;
 	
 	private float offsetX, offsetY, offsetZ;
@@ -74,48 +74,48 @@ public class PlayerLabel implements IPlayerLabel
 	@Override public IVehicle getAttachedVehicle()				{ return attachedVehicle; }
 	
 	
-	public PlayerLabel( Player player, String text, Color color, Point point, float drawDistance, boolean testLOS )
+	public PlayerLabel( Player player, String text, Color color, Location point, float drawDistance, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.player = player;
 		this.text = text;
 		this.color = color.clone();
-		this.position = new PointRange( point, drawDistance );
+		this.position = new LocationRadius( point, drawDistance );
 		this.testLOS = testLOS;
 		
 		init();
 	}
 
-	public PlayerLabel( Player player, String text, Color color, Point point, float drawDistance, boolean testLOS, Player attachedPlayer )
+	public PlayerLabel( Player player, String text, Color color, Location point, float drawDistance, boolean testLOS, Player attachedPlayer )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.player = player;
 		this.text = text;
 		this.color = color.clone();
-		this.position = new PointRange( point, drawDistance );
+		this.position = new LocationRadius( point, drawDistance );
 		this.testLOS = testLOS;
 		this.attachedPlayer = attachedPlayer;
 		
 		init();
 	}
 	
-	public PlayerLabel( Player player, String text, Color color, Point point, float drawDistance, boolean testLOS, Vehicle attachedVehicle )
+	public PlayerLabel( Player player, String text, Color color, Location point, float drawDistance, boolean testLOS, Vehicle attachedVehicle )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.player = player;
 		this.text = text;
 		this.color = color.clone();
-		this.position = new PointRange( point, drawDistance );
+		this.position = new LocationRadius( point, drawDistance );
 		this.testLOS = testLOS;
 		this.attachedVehicle = attachedVehicle;
 		
 		init();
 	}
 
-	public PlayerLabel( Player player, String text, Color color, PointRange point, boolean testLOS )
+	public PlayerLabel( Player player, String text, Color color, LocationRadius point, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -128,7 +128,7 @@ public class PlayerLabel implements IPlayerLabel
 		init();
 	}
 	
-	public PlayerLabel( Player player, String text, Color color, PointRange point, boolean testLOS, Player attachedPlayer )
+	public PlayerLabel( Player player, String text, Color color, LocationRadius point, boolean testLOS, Player attachedPlayer )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -142,7 +142,7 @@ public class PlayerLabel implements IPlayerLabel
 		init();
 	}
 	
-	public PlayerLabel( Player player, String text, Color color, PointRange point, boolean testLOS, Vehicle attachedVehicle )
+	public PlayerLabel( Player player, String text, Color color, LocationRadius point, boolean testLOS, Vehicle attachedVehicle )
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -196,9 +196,9 @@ public class PlayerLabel implements IPlayerLabel
 	}
 	
 	@Override
-	public PointRange getPosition()
+	public LocationRadius getPosition()
 	{
-		PointAngle pos = null;
+		LocationAngular pos = null;
 		
 		if( attachedPlayer != null )	pos = attachedPlayer.getPosition();
 		if( attachedVehicle != null )	pos = attachedVehicle.getPosition();

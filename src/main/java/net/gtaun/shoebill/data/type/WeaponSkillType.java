@@ -14,17 +14,35 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
-
-import net.gtaun.shoebill.data.type.RaceCheckpointType;
+package net.gtaun.shoebill.data.type;
 
 /**
  * @author MK124
  *
  */
 
-public interface IRaceCheckpoint extends ICheckpoint
+public enum WeaponSkillType
 {
-	RaceCheckpointType getType();
-	IRaceCheckpoint getNext();
+	PISTOL( 0 ),
+	PISTOL_SILENCED( 1 ),
+	DESERT_EAGLE( 2 ),
+	SHOTGUN( 3 ),
+	SAWNOFF_SHOTGUN( 4 ),
+	SPAS12_SHOTGUN( 5 ),
+	MICRO_UZI( 6 ),
+	MP5( 7 ),
+	AK47( 8 ),
+	M4( 9 ),
+	SNIPERRIFLE( 10 );
+	
+	
+	private int data;
+	
+	public int getData()	{ return data; }
+	
+	
+	private WeaponSkillType( int data )
+	{
+		this.data = data;
+	}
 }

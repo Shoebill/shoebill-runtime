@@ -21,8 +21,8 @@ import java.util.Collection;
 
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointAngle;
+import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.LocationAngular;
 import net.gtaun.shoebill.data.Quaternions;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
@@ -132,7 +132,7 @@ public class Vehicle implements IVehicle
 		initialize( x, y, z, 0, 0, angle );
 	}
 	
-	public Vehicle( int model, Point point, float angle, int color1, int color2, int respawnDelay )
+	public Vehicle( int model, Location point, float angle, int color1, int color2, int respawnDelay )
 	{
 		this.model = model;
 		this.color1 = color1;
@@ -142,7 +142,7 @@ public class Vehicle implements IVehicle
 		initialize( point.x, point.y, point.z, point.interior, point.world, angle );
 	}
 	
-	public Vehicle( int model, PointAngle point, int color1, int color2, int respawnDelay )
+	public Vehicle( int model, LocationAngular point, int color1, int color2, int respawnDelay )
 	{
 		this.model = model;
 		this.color1 = color1;
@@ -216,9 +216,9 @@ public class Vehicle implements IVehicle
 	}
 	
 	@Override
-	public PointAngle getPosition()
+	public LocationAngular getPosition()
 	{
-		PointAngle position = new PointAngle();
+		LocationAngular position = new LocationAngular();
 
 		SampNativeFunction.getVehiclePos( id, position );
 		position.angle = SampNativeFunction.getVehicleZAngle(id);
@@ -278,7 +278,7 @@ public class Vehicle implements IVehicle
 	}
 	
 	@Override
-	public void setPosition( Point point )
+	public void setPosition( Location point )
 	{
 		SampNativeFunction.setVehiclePos( id, point.x, point.y, point.z );
 		SampNativeFunction.linkVehicleToInterior( id, point.interior );
@@ -286,7 +286,7 @@ public class Vehicle implements IVehicle
 	}
 	
 	@Override
-	public void setPosition( PointAngle point )
+	public void setPosition( LocationAngular point )
 	{
 		SampNativeFunction.setVehiclePos( id, point.x, point.y, point.z );
 		SampNativeFunction.setVehicleZAngle( id, point.angle );

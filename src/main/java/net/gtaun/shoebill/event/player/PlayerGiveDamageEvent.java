@@ -14,17 +14,31 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
+package net.gtaun.shoebill.event.player;
 
-import net.gtaun.shoebill.data.type.RaceCheckpointType;
+import net.gtaun.shoebill.object.IPlayer;
 
 /**
  * @author MK124
  *
  */
 
-public interface IRaceCheckpoint extends ICheckpoint
+public class PlayerGiveDamageEvent extends PlayerEvent
 {
-	RaceCheckpointType getType();
-	IRaceCheckpoint getNext();
+	private IPlayer victim;
+	private float amount;
+	private int weaponId;
+	
+	public IPlayer getVictim()		{ return victim; }
+	public float getAmount()		{ return amount; }
+	public int getWeaponId()		{ return weaponId; }
+	
+	
+	public PlayerGiveDamageEvent( IPlayer player, IPlayer victim, float amount, int weaponId )
+	{
+		super( player );
+		this.victim = victim;
+		this.amount = amount;
+		this.weaponId = weaponId;
+	}
 }

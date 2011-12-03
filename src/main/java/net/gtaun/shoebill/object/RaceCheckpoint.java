@@ -20,8 +20,9 @@ package net.gtaun.shoebill.object;
 import java.util.Collection;
 import java.util.Vector;
 
-import net.gtaun.shoebill.data.Point;
+import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.data.type.RaceCheckpointType;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
@@ -32,22 +33,12 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  */
 
 public class RaceCheckpoint implements IRaceCheckpoint
-{
-	public static final int TYPE_NORMAL =				0;
-	public static final int TYPE_AIR =					3;
-	public static final int TYPE_NOTHING =				2;
-
-	public static final int TYPE_NORMAL_FINISH =		1;
-	public static final int TYPE_AIR_FINISH =			4;
-
-	
-//---------------------------------------------------------
-	
+{	
 	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
 	private Vector3D position;
 	private float size;
-	private int type;
+	private RaceCheckpointType type;
 	private RaceCheckpoint next;
 
 	
@@ -55,11 +46,11 @@ public class RaceCheckpoint implements IRaceCheckpoint
 	
 	@Override public Vector3D getPosition()							{ return position.clone(); }
 	@Override public float getSize()								{ return size; }
-	@Override public int getType()									{ return type; }
+	@Override public RaceCheckpointType getType()					{ return type; }
 	@Override public RaceCheckpoint getNext()						{ return next; }
 	
 	
-	public RaceCheckpoint( float x, float y, float z, float size, int type, RaceCheckpoint next )
+	public RaceCheckpoint( float x, float y, float z, float size, RaceCheckpointType type, RaceCheckpoint next )
 	{
 		this.position = new Vector3D( x, y, z );
 		this.size = size;
@@ -67,7 +58,7 @@ public class RaceCheckpoint implements IRaceCheckpoint
 		this.next = next;
 	}
 
-	public RaceCheckpoint( Point position, float size, int type, RaceCheckpoint next )
+	public RaceCheckpoint( Location position, float size, RaceCheckpointType type, RaceCheckpoint next )
 	{
 		this.position = position.clone();
 		this.size = size;

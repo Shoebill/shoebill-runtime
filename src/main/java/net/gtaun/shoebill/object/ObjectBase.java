@@ -21,8 +21,8 @@ import java.util.Collection;
 
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
-import net.gtaun.shoebill.data.Point;
-import net.gtaun.shoebill.data.PointRot;
+import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.LocationRotational;
 import net.gtaun.shoebill.event.object.ObjectMovedEvent;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.Event;
@@ -68,7 +68,7 @@ public class ObjectBase implements IObject
 	
 	private int id = -1;
 	private int model;
-	private PointRot position;
+	private LocationRotational position;
 	private float speed = 0;
 	private IPlayer attachedPlayer;
 	private IObject attachedObject;
@@ -90,7 +90,7 @@ public class ObjectBase implements IObject
 	public ObjectBase( int model, float x, float y, float z, float rx, float ry, float rz )
 	{
 		this.model = model;
-		this.position = new PointRot( x, y, z, rx, ry, rz );
+		this.position = new LocationRotational( x, y, z, rx, ry, rz );
 		
 		initialize();
 	}
@@ -98,30 +98,30 @@ public class ObjectBase implements IObject
 	public ObjectBase( int model, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
 	{
 		this.model = model;
-		this.position = new PointRot( x, y, z, rx, ry, rz );
+		this.position = new LocationRotational( x, y, z, rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
 		initialize();
 	}
 	
-	public ObjectBase( int model, Point point, float rx, float ry, float rz )
+	public ObjectBase( int model, Location point, float rx, float ry, float rz )
 	{
 		this.model = model;
-		this.position = new PointRot( point, rx, ry, rz );
+		this.position = new LocationRotational( point, rx, ry, rz );
 		
 		initialize();
 	}
 	
-	public ObjectBase( int model, Point point, float rx, float ry, float rz, float drawDistance)
+	public ObjectBase( int model, Location point, float rx, float ry, float rz, float drawDistance)
 	{
 		this.model = model;
-		this.position = new PointRot( point, rx, ry, rz );
+		this.position = new LocationRotational( point, rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
 		initialize();
 	}
 	
-	public ObjectBase( int model, PointRot point )
+	public ObjectBase( int model, LocationRotational point )
 	{
 		this.model = model;
 		this.position = point.clone();
@@ -129,7 +129,7 @@ public class ObjectBase implements IObject
 		initialize();
 	}
 	
-	public ObjectBase( int model, PointRot point, float drawDistance )
+	public ObjectBase( int model, LocationRotational point, float drawDistance )
 	{
 		this.model = model;
 		this.position = point.clone();
@@ -165,13 +165,7 @@ public class ObjectBase implements IObject
 	}
 	
 	@Override
-	public boolean isMoving()
-	{
-		return SampNativeFunction.isObjectMoving( id );
-	}
-	
-	@Override
-	public PointRot getPosition()
+	public LocationRotational getPosition()
 	{
 		SampNativeFunction.getObjectPos( id, position );
 		SampNativeFunction.getObjectRot( id, position );
@@ -179,14 +173,14 @@ public class ObjectBase implements IObject
 	}
 	
 	@Override
-	public void setPosition( Point position )
+	public void setPosition( Location position )
 	{
 		this.position.set( position );
 		SampNativeFunction.setObjectPos( id, position.x, position.y, position.z );
 	}
 	
 	@Override
-	public void setPosition( PointRot position )
+	public void setPosition( LocationRotational position )
 	{
 		this.position = position.clone();
 		SampNativeFunction.setObjectPos( id, position.x, position.y, position.z );
@@ -201,6 +195,12 @@ public class ObjectBase implements IObject
 		position.rz = rz;
 		
 		SampNativeFunction.setObjectRot( id, rx, ry, rz );
+	}
+	
+	@Override
+	public boolean isMoving()
+	{
+		return SampNativeFunction.isObjectMoving( id );
 	}
 	
 	@Override
