@@ -62,26 +62,26 @@ public abstract class Gamemode extends Plugin implements IGamemode
 	}
 
 	@Override
-	public int addPlayerClass( int model, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 )
+	public int addPlayerClass( int modelId, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 )
 	{
-		return SampNativeFunction.addPlayerClass( model, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3 );
+		return SampNativeFunction.addPlayerClass( modelId, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3 );
 	}
 
 	@Override
-	public int addPlayerClass( int model, SpawnInfo spawninfo )
+	public int addPlayerClass( int modelId, SpawnInfo spawnInfo )
 	{
-		return SampNativeFunction.addPlayerClass( model, 
-			spawninfo.position.x, spawninfo.position.y, spawninfo.position.z, spawninfo.position.angle,
-			spawninfo.weapon1.type.getId(), spawninfo.weapon1.ammo, spawninfo.weapon2.type.getId(), spawninfo.weapon2.ammo,
-			spawninfo.weapon3.type.getId(), spawninfo.weapon3.ammo );
+		return SampNativeFunction.addPlayerClass( modelId, 
+			spawnInfo.location.x, spawnInfo.location.y, spawnInfo.location.z, spawnInfo.location.angle,
+			spawnInfo.weapon1.type.getId(), spawnInfo.weapon1.ammo, spawnInfo.weapon2.type.getId(), spawnInfo.weapon2.ammo,
+			spawnInfo.weapon3.type.getId(), spawnInfo.weapon3.ammo );
 	}
 	
 	@Override
-	public int addPlayerClassEx( int team, int model, SpawnInfo spawninfo )
+	public int addPlayerClassEx( int teamId, int modelId, SpawnInfo spawnInfo )
 	{
-		return SampNativeFunction.addPlayerClassEx( team, model, 
-			spawninfo.position.x, spawninfo.position.y, spawninfo.position.z, spawninfo.position.angle,
-			spawninfo.weapon1.type.getId(), spawninfo.weapon1.ammo, spawninfo.weapon2.type.getId(), spawninfo.weapon2.ammo,
-			spawninfo.weapon3.type.getId(), spawninfo.weapon3.ammo );
+		return SampNativeFunction.addPlayerClassEx( teamId, modelId, 
+			spawnInfo.location.x, spawnInfo.location.y, spawnInfo.location.z, spawnInfo.location.angle,
+			spawnInfo.weapon1.type.getId(), spawnInfo.weapon1.ammo, spawnInfo.weapon2.type.getId(), spawnInfo.weapon2.ammo,
+			spawnInfo.weapon3.type.getId(), spawnInfo.weapon3.ammo );
 	}
 }

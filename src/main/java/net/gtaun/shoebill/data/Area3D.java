@@ -52,6 +52,11 @@ public class Area3D extends Area implements Cloneable, Serializable
 	}
 	
 	
+	public float getVolume()
+	{
+		return (maxX-minX) * (maxY-minY) * (maxZ-minZ);
+	}
+	
 	@Override
 	public boolean equals( Object obj )
 	{

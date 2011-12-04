@@ -48,36 +48,36 @@ public class LocationAngular extends Location implements Cloneable, Serializable
 		this.angle = angle;
 	}
 
-	public LocationAngular( Location point, float angle )
+	public LocationAngular( Location location, float angle )
 	{
-		super( point.x, point.y, point.z );
+		super( location.x, location.y, location.z );
 		this.angle = angle;
 	}
 	
 	
-	public void set( LocationAngular point )
+	public void set( LocationAngular location )
 	{
-		x = point.x;
-		y = point.y;
-		z = point.z;
-		interior = point.interior;
-		world = point.world;
-		angle = point.angle;
+		x = location.x;
+		y = location.y;
+		z = location.z;
+		interiorId = location.interiorId;
+		worldId = location.worldId;
+		angle = location.angle;
 	}
 	
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )						return true;
+		if( obj == this )							return true;
 		if( !(obj instanceof LocationAngular) )		return false;
-		LocationAngular point = (LocationAngular) obj;
+		LocationAngular location = (LocationAngular) obj;
 
-		if( point.x != x )						return false;
-		if( point.y != y )						return false;
-		if( point.z != z )						return false;
-		if( point.interior != interior )	return false;
-		if( point.world != world )			return false;
-		if( point.angle != angle )				return false;
+		if( location.x != x )						return false;
+		if( location.y != y )						return false;
+		if( location.z != z )						return false;
+		if( location.interiorId != interiorId )		return false;
+		if( location.worldId != worldId )			return false;
+		if( location.angle != angle )				return false;
 		
 		return true;
 	}
@@ -85,6 +85,6 @@ public class LocationAngular extends Location implements Cloneable, Serializable
 	@Override
 	public LocationAngular clone()
 	{
-		return new LocationAngular(x, y, z, interior, world, angle);
+		return new LocationAngular(x, y, z, interiorId, worldId, angle);
 	}
 }

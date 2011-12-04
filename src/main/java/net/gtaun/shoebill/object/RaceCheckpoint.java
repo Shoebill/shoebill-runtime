@@ -36,7 +36,7 @@ public class RaceCheckpoint implements IRaceCheckpoint
 {	
 	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	private Vector3D position;
+	private Vector3D location;
 	private float size;
 	private RaceCheckpointType type;
 	private RaceCheckpoint next;
@@ -44,7 +44,7 @@ public class RaceCheckpoint implements IRaceCheckpoint
 	
 	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
-	@Override public Vector3D getPosition()							{ return position.clone(); }
+	@Override public Vector3D getLocation()							{ return location.clone(); }
 	@Override public float getSize()								{ return size; }
 	@Override public RaceCheckpointType getType()					{ return type; }
 	@Override public RaceCheckpoint getNext()						{ return next; }
@@ -52,7 +52,7 @@ public class RaceCheckpoint implements IRaceCheckpoint
 	
 	public RaceCheckpoint( float x, float y, float z, float size, RaceCheckpointType type, RaceCheckpoint next )
 	{
-		this.position = new Vector3D( x, y, z );
+		this.location = new Vector3D( x, y, z );
 		this.size = size;
 		this.type = type;
 		this.next = next;
@@ -60,7 +60,7 @@ public class RaceCheckpoint implements IRaceCheckpoint
 
 	public RaceCheckpoint( Location position, float size, RaceCheckpointType type, RaceCheckpoint next )
 	{
-		this.position = position.clone();
+		this.location = position.clone();
 		this.size = size;
 		this.type = type;
 		this.next = next;
@@ -68,9 +68,9 @@ public class RaceCheckpoint implements IRaceCheckpoint
 	
 
 	@Override
-	public void setPosition( Vector3D position )
+	public void setLocation( Vector3D location )
 	{
-		this.position = position;
+		this.location = location;
 		update();
 	}
 	

@@ -88,8 +88,8 @@ public class Vehicle implements IVehicle
 	private boolean isStatic = false;
 	
 	private int id = -1;
-	private int model;
-	private int interior;
+	private int modelId;
+	private int interiorId;
 	private int color1, color2;
 	private int respawnDelay;
 
@@ -103,7 +103,7 @@ public class Vehicle implements IVehicle
 	
 	@Override public boolean isStatic()								{ return isStatic; }
 	
-	@Override public int getModel()									{ return model; }
+	@Override public int getModel()									{ return modelId; }
 	@Override public int getColor1()								{ return color1; }
 	@Override public int getColor2()								{ return color2; }
 	@Override public int getRespawnDelay()							{ return respawnDelay; }
@@ -113,18 +113,18 @@ public class Vehicle implements IVehicle
 	@Override public IVehicleDamage getDamage()						{ return damage; }
 	
 	
-	public Vehicle( int model, float x, float y, float z, int interior, int world, float angle, int color1, int color2, int respawnDelay )
+	public Vehicle( int modelId, float x, float y, float z, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay )
 	{
 		this.color1 = color1;
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
 		
-		initialize( x, y, z, interior, world, angle );
+		initialize( x, y, z, interiorId, worldId, angle );
 	}
 	
-	public Vehicle( int model, float x, float y, float z, float angle, int color1, int color2, int respawnDelay )
+	public Vehicle( int modelId, float x, float y, float z, float angle, int color1, int color2, int respawnDelay )
 	{
-		this.model = model;
+		this.modelId = modelId;
 		this.color1 = color1;
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
@@ -132,45 +132,45 @@ public class Vehicle implements IVehicle
 		initialize( x, y, z, 0, 0, angle );
 	}
 	
-	public Vehicle( int model, Location point, float angle, int color1, int color2, int respawnDelay )
+	public Vehicle( int modelId, Location location, float angle, int color1, int color2, int respawnDelay )
 	{
-		this.model = model;
+		this.modelId = modelId;
 		this.color1 = color1;
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
 
-		initialize( point.x, point.y, point.z, point.interior, point.world, angle );
+		initialize( location.x, location.y, location.z, location.interiorId, location.worldId, angle );
 	}
 	
-	public Vehicle( int model, LocationAngular point, int color1, int color2, int respawnDelay )
+	public Vehicle( int modelId, LocationAngular location, int color1, int color2, int respawnDelay )
 	{
-		this.model = model;
+		this.modelId = modelId;
 		this.color1 = color1;
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
 
-		initialize( point.x, point.y, point.z, point.interior, point.world, point.angle );
+		initialize( location.x, location.y, location.z, location.interiorId, location.worldId, location.angle );
 	}
 	
-	private void initialize( float x, float y, float z, int interior, int world, float angle )
+	private void initialize( float x, float y, float z, int interiorId, int worldId, float angle )
 	{
-		switch( model )
+		switch( modelId )
 		{
 			case 537:
 			case 538:
 			case 569:
 			case 570:
 			case 590:
-				id = SampNativeFunction.addStaticVehicle( model, x, y, z, angle, color1, color2 );
+				id = SampNativeFunction.addStaticVehicle( modelId, x, y, z, angle, color1, color2 );
 				isStatic = true;
 				break;
 							
 			default:
-				id = SampNativeFunction.createVehicle( model, x, y, z, angle, color1, color2, respawnDelay );
+				id = SampNativeFunction.createVehicle( modelId, x, y, z, angle, color1, color2, respawnDelay );
 		}
 		
-		SampNativeFunction.linkVehicleToInterior( id, interior );
-		SampNativeFunction.setVehicleVirtualWorld( id, world );
+		SampNativeFunction.linkVehicleToInterior( id, interiorId );
+		SampNativeFunction.setVehicleVirtualWorld( id, worldId );
 
 		param = new VehicleParam( id );
 		component = new VehicleComponent( id );
@@ -216,16 +216,16 @@ public class Vehicle implements IVehicle
 	}
 	
 	@Override
-	public LocationAngular getPosition()
+	public LocationAngular getLocation()
 	{
-		LocationAngular position = new LocationAngular();
+		LocationAngular location = new LocationAngular();
 
-		SampNativeFunction.getVehiclePos( id, position );
-		position.angle = SampNativeFunction.getVehicleZAngle(id);
-		position.interior = interior;
-		position.world = SampNativeFunction.getVehicleVirtualWorld( id );
+		SampNativeFunction.getVehiclePos( id, location );
+		location.angle = SampNativeFunction.getVehicleZAngle(id);
+		location.interiorId = interiorId;
+		location.worldId = SampNativeFunction.getVehicleVirtualWorld( id );
 		
-		return position;
+		return location;
 	}
 	
 	@Override
@@ -235,13 +235,13 @@ public class Vehicle implements IVehicle
 	}
 	
 	@Override
-	public int getInterior()
+	public int getInteriorId()
 	{
-		return interior;
+		return interiorId;
 	}
 	
 	@Override
-	public int getWorld()
+	public int getWorldId()
 	{
 		return SampNativeFunction.getVehicleVirtualWorld(id);
 	}
@@ -272,26 +272,26 @@ public class Vehicle implements IVehicle
 	
 
 	@Override
-	public void setPosition( float x, float y, float z )
+	public void setLocation( float x, float y, float z )
 	{
 		SampNativeFunction.setVehiclePos( id, x, y, z );
 	}
 	
 	@Override
-	public void setPosition( Location point )
+	public void setLocation( Location location )
 	{
-		SampNativeFunction.setVehiclePos( id, point.x, point.y, point.z );
-		SampNativeFunction.linkVehicleToInterior( id, point.interior );
-		SampNativeFunction.setVehicleVirtualWorld( id, point.world );
+		SampNativeFunction.setVehiclePos( id, location.x, location.y, location.z );
+		SampNativeFunction.linkVehicleToInterior( id, location.interiorId );
+		SampNativeFunction.setVehicleVirtualWorld( id, location.worldId );
 	}
 	
 	@Override
-	public void setPosition( LocationAngular point )
+	public void setLocation( LocationAngular location )
 	{
-		SampNativeFunction.setVehiclePos( id, point.x, point.y, point.z );
-		SampNativeFunction.setVehicleZAngle( id, point.angle );
-		SampNativeFunction.linkVehicleToInterior( id, point.interior );
-		SampNativeFunction.setVehicleVirtualWorld( id, point.world );
+		SampNativeFunction.setVehiclePos( id, location.x, location.y, location.z );
+		SampNativeFunction.setVehicleZAngle( id, location.angle );
+		SampNativeFunction.linkVehicleToInterior( id, location.interiorId );
+		SampNativeFunction.setVehicleVirtualWorld( id, location.worldId );
 	}
 	
 	@Override
@@ -313,16 +313,16 @@ public class Vehicle implements IVehicle
 	}
 	
 	@Override
-	public void setInterior( int interior )
+	public void setInteriorId( int interiorId )
 	{
-		this.interior = interior;
-		SampNativeFunction.linkVehicleToInterior( id, interior );
+		this.interiorId = interiorId;
+		SampNativeFunction.linkVehicleToInterior( id, interiorId );
 	}
 	
 	@Override
-	public void setWorld( int world )
+	public void setWorldId( int worldId )
 	{
-		SampNativeFunction.setVehicleVirtualWorld( id, world );
+		SampNativeFunction.setVehicleVirtualWorld( id, worldId );
 	}
 
 	

@@ -46,51 +46,47 @@ public class Pickup implements IPickup
 	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
 	private int id = -1;
-	private int model, type;
-	private int world = -1;
-	private Location position;
+	private int modelId, type;
+	private Location location;
 
 	
 	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	@Override public int getModel()								{ return model; }
+	@Override public int getModel()								{ return modelId; }
 	@Override public int getType()								{ return type; }
-	@Override public int getWorld()								{ return world; }
-	@Override public Location getPosition()						{ return position.clone(); }
+	@Override public Location getLocation()						{ return location.clone(); }
 	
 	
-	public Pickup( int model, int type, float x, float y, float z, int virtualWorld )
+	public Pickup( int modelId, int type, float x, float y, float z, int worldId )
 	{
-		this.model = model;
+		this.modelId = modelId;
 		this.type = type;
-		this.position = new Location( x, y, z );
-		this.world = virtualWorld;
+		this.location = new Location( x, y, z, worldId );
 		
 		initialize();
 	}
 	
-	public Pickup( int model, int type, float x, float y, float z)
+	public Pickup( int modelId, int type, float x, float y, float z )
 	{
-		this.model = model;
+		this.modelId = modelId;
 		this.type = type;
-		this.position = new Location( x, y, z );
+		this.location = new Location( x, y, z );
 		
 		initialize();
 	}
 	
-	public Pickup( int model, int type, Location point )
+	public Pickup( int modelId, int type, Location location )
 	{
-		this.model = model;
+		this.modelId = modelId;
 		this.type = type;
-		this.position = point.clone();
-		this.world = point.world;
+		this.location = location.clone();
 		
 		initialize();
 	}
 	
 	private void initialize()
 	{
-		id = SampNativeFunction.createPickup( model, type, position.x, position.y, position.z, world );
+		id = SampNativeFunction.createPickup( modelId, type, location.x, location.y, location.z, location.worldId );
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setPickup( id, this );

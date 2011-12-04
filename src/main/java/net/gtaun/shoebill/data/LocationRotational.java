@@ -63,9 +63,9 @@ public class LocationRotational extends Location implements Cloneable, Serializa
 		this.rz = rz;
 	}
 
-	public LocationRotational( Location point, float rx, float ry, float rz )
+	public LocationRotational( Location location, float rx, float ry, float rz )
 	{
-		super( point.x, point.y, point.z );
+		super( location.x, location.y, location.z );
 		
 		this.rx = rx;
 		this.ry = ry;
@@ -73,33 +73,33 @@ public class LocationRotational extends Location implements Cloneable, Serializa
 	}
 	
 	
-	public void set( LocationRotational point )
+	public void set( LocationRotational location )
 	{
-		x = point.x;
-		y = point.y;
-		z = point.z;
-		interior = point.interior;
-		world = point.world;
-		rx = point.rx;
-		ry = point.ry;
-		rz = point.rz;
+		x = location.x;
+		y = location.y;
+		z = location.z;
+		interiorId = location.interiorId;
+		worldId = location.worldId;
+		rx = location.rx;
+		ry = location.ry;
+		rz = location.rz;
 	}
 	
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )						return true;
+		if( obj == this )								return true;
 		if( !(obj instanceof LocationRotational) )		return false;
 		
-		LocationRotational point = (LocationRotational) obj;
-		if( point.x != x )						return false;
-		if( point.y != y )						return false;
-		if( point.z != z )						return false;
-		if( point.interior != interior )	return false;
-		if( point.world != world )			return false;
-		if( point.rx != rx )					return false;
-		if( point.ry != ry )					return false;
-		if( point.rz != rz )					return false;
+		LocationRotational location = (LocationRotational) obj;
+		if( location.x != x )							return false;
+		if( location.y != y )							return false;
+		if( location.z != z )							return false;
+		if( location.interiorId != interiorId )			return false;
+		if( location.worldId != worldId )				return false;
+		if( location.rx != rx )							return false;
+		if( location.ry != ry )							return false;
+		if( location.rz != rz )							return false;
 		
 		return true;
 	}
@@ -107,6 +107,6 @@ public class LocationRotational extends Location implements Cloneable, Serializa
 	@Override
 	public LocationRotational clone()
 	{
-		return new LocationRotational(x, y, z, interior, world, rx, ry, rz);
+		return new LocationRotational(x, y, z, interiorId, worldId, rx, ry, rz);
 	}
 }

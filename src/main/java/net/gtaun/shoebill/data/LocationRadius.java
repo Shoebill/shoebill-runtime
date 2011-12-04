@@ -48,36 +48,36 @@ public class LocationRadius extends Location implements Cloneable, Serializable
 		this.distance = distance;
 	}
 	
-	public LocationRadius( Location point, float distance )
+	public LocationRadius( Location location, float distance )
 	{
-		super( point.x, point.y, point.z );
+		super( location.x, location.y, location.z );
 		this.distance = distance;
 	}
 	
 	
-	public void set( LocationRadius point )
+	public void set( LocationRadius location )
 	{
-		x = point.x;
-		y = point.y;
-		z = point.z;
-		interior = point.interior;
-		world = point.world;
-		distance = point.distance;
+		x = location.x;
+		y = location.y;
+		z = location.z;
+		interiorId = location.interiorId;
+		worldId = location.worldId;
+		distance = location.distance;
 	}
 	
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )						return true;
+		if( obj == this )							return true;
 		if( !(obj instanceof LocationRadius) )		return false;
 		
-		LocationRadius point = (LocationRadius) obj;
-		if( point.x != x )						return false;
-		if( point.y != y )						return false;
-		if( point.z != z )						return false;
-		if( point.interior != interior )	return false;
-		if( point.world != world )			return false;
-		if( point.distance != distance )		return false;
+		LocationRadius location = (LocationRadius) obj;
+		if( location.x != x )						return false;
+		if( location.y != y )						return false;
+		if( location.z != z )						return false;
+		if( location.interiorId != interiorId )		return false;
+		if( location.worldId != worldId )			return false;
+		if( location.distance != distance )			return false;
 		
 		return true;
 	}
@@ -85,6 +85,6 @@ public class LocationRadius extends Location implements Cloneable, Serializable
 	@Override
 	public LocationRadius clone()
 	{
-		return new LocationRadius(x, y, z, distance, interior, world);
+		return new LocationRadius(x, y, z, distance, interiorId, worldId);
 	}
 }

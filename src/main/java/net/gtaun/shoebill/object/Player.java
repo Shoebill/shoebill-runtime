@@ -132,7 +132,7 @@ public class Player implements IPlayer
 	private int money, score;
 	private int weather;
 
-	private LocationAngular position = new LocationAngular();
+	private LocationAngular location = new LocationAngular();
 	private Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
 	private Velocity velocity = new Velocity();
 	private KeyState keyState = new KeyState();
@@ -172,7 +172,7 @@ public class Player implements IPlayer
 	@Override public IPlayer getSpectatingPlayer()					{ return spectatingPlayer; }
 	@Override public IVehicle getSpectatingVehicle()				{ return spectatingVehicle; }
 	
-	@Override public LocationAngular getPosition()						{ return position.clone(); }
+	@Override public LocationAngular getLocation()					{ return location.clone(); }
 	@Override public Area getWorldBound()							{ return worldBound.clone(); }
 	@Override public Velocity getVelocity()							{ return velocity.clone(); }
 	@Override public PlayerState getState()							{ return PlayerState.values()[ SampNativeFunction.getPlayerState(id) ]; }
@@ -203,11 +203,11 @@ public class Player implements IPlayer
 		money = SampNativeFunction.getPlayerMoney(id);
 		score = SampNativeFunction.getPlayerScore(id);
 		
-		SampNativeFunction.getPlayerPos(id, position);
+		SampNativeFunction.getPlayerPos(id, location);
 		SampNativeFunction.getPlayerFacingAngle(id);
 		
-		position.interior = SampNativeFunction.getPlayerInterior(id);
-		position.world = SampNativeFunction.getPlayerVirtualWorld(id);
+		location.interiorId = SampNativeFunction.getPlayerInterior(id);
+		location.worldId = SampNativeFunction.getPlayerVirtualWorld(id);
 		
 		SampNativeFunction.getPlayerVelocity(id, velocity);
 		
@@ -251,7 +251,7 @@ public class Player implements IPlayer
 	@Override
 	public void setSpawnInfo( SpawnInfo info )
 	{
-		SampNativeFunction.setSpawnInfo( id, info.team, info.skin, info.position.x, info.position.y, info.position.z, info.position.angle, info.weapon1.type.getId(), info.weapon1.ammo, info.weapon2.type.getId(), info.weapon2.ammo, info.weapon3.type.getId(), info.weapon3.ammo );
+		SampNativeFunction.setSpawnInfo( id, info.teamId, info.skinId, info.location.x, info.location.y, info.location.z, info.location.angle, info.weapon1.type.getId(), info.weapon1.ammo, info.weapon2.type.getId(), info.weapon2.ammo, info.weapon3.type.getId(), info.weapon3.ammo );
 	}
 	
 	@Override
@@ -336,102 +336,102 @@ public class Player implements IPlayer
 	}
 
 	@Override
-	public void setPosition( float x, float y, float z )
+	public void setLocation( float x, float y, float z )
 	{
 		SampNativeFunction.setPlayerPos( id, x, y, z );
 
-		this.position.x = x;
-		this.position.y = y;
-		this.position.z = z;
+		this.location.x = x;
+		this.location.y = y;
+		this.location.z = z;
 	}
 
 	@Override
-	public void setPosition( Location position )
+	public void setLocation( Location location )
 	{
-		SampNativeFunction.setPlayerPos( id, position.x, position.y, position.z );
+		SampNativeFunction.setPlayerPos( id, location.x, location.y, location.z );
 
-		if( position.interior != this.position.interior )
-			SampNativeFunction.setPlayerInterior( id, position.interior );
+		if( location.interiorId != this.location.interiorId )
+			SampNativeFunction.setPlayerInterior( id, location.interiorId );
 		
-		if( position.world != this.position.world )
-			SampNativeFunction.setPlayerVirtualWorld( id, position.world );
+		if( location.worldId != this.location.worldId )
+			SampNativeFunction.setPlayerVirtualWorld( id, location.worldId );
 		
-		this.position.set( position );
+		this.location.set( location );
 	}
 
 	@Override
-	public void setPosition( LocationAngular position )
+	public void setLocation( LocationAngular location )
 	{
-		SampNativeFunction.setPlayerPos( id, position.x, position.y, position.z );
-		SampNativeFunction.setPlayerFacingAngle( id, position.angle );
+		SampNativeFunction.setPlayerPos( id, location.x, location.y, location.z );
+		SampNativeFunction.setPlayerFacingAngle( id, location.angle );
 
-		if( position.interior != this.position.interior )
-			SampNativeFunction.setPlayerInterior( id, position.interior );
+		if( location.interiorId != this.location.interiorId )
+			SampNativeFunction.setPlayerInterior( id, location.interiorId );
 		
-		if( position.world != this.position.world )
-			SampNativeFunction.setPlayerVirtualWorld( id, position.world );
+		if( location.worldId != this.location.worldId )
+			SampNativeFunction.setPlayerVirtualWorld( id, location.worldId );
 		
-		this.position.set( position );
+		this.location.set( location );
 	}
 	
 	@Override
-	public void setPositionFindZ( float x, float y, float z )
+	public void setLocationFindZ( float x, float y, float z )
 	{
 		SampNativeFunction.setPlayerPosFindZ( id, x, y, z );
 
-		this.position.x = x;
-		this.position.y = y;
-		this.position.z = z;
+		this.location.x = x;
+		this.location.y = y;
+		this.location.z = z;
 	}
 	
 	@Override
-	public void setPositionFindZ( Location position )
+	public void setLocationFindZ( Location location )
 	{
-		SampNativeFunction.setPlayerPosFindZ( id, position.x, position.y, position.z );
+		SampNativeFunction.setPlayerPosFindZ( id, location.x, location.y, location.z );
 
-		if( position.interior != this.position.interior )
-			SampNativeFunction.setPlayerInterior( id, position.interior );
+		if( location.interiorId != this.location.interiorId )
+			SampNativeFunction.setPlayerInterior( id, location.interiorId );
 		
-		if( position.world != this.position.world )
-			SampNativeFunction.setPlayerVirtualWorld( id, position.world );
+		if( location.worldId != this.location.worldId )
+			SampNativeFunction.setPlayerVirtualWorld( id, location.worldId );
 		
-		this.position.set( position );
+		this.location.set( location );
 	}
 	
 	@Override
-	public void setPositionFindZ( LocationAngular position )
+	public void setLocationFindZ( LocationAngular location )
 	{
-		SampNativeFunction.setPlayerPosFindZ( id, position.x, position.y, position.z );
-		SampNativeFunction.setPlayerFacingAngle( id, position.angle );
+		SampNativeFunction.setPlayerPosFindZ( id, location.x, location.y, location.z );
+		SampNativeFunction.setPlayerFacingAngle( id, location.angle );
 
-		if( position.interior != this.position.interior )
-			SampNativeFunction.setPlayerInterior( id, position.interior );
+		if( location.interiorId != this.location.interiorId )
+			SampNativeFunction.setPlayerInterior( id, location.interiorId );
 		
-		if( position.world != this.position.world )
-			SampNativeFunction.setPlayerVirtualWorld( id, position.world );
+		if( location.worldId != this.location.worldId )
+			SampNativeFunction.setPlayerVirtualWorld( id, location.worldId );
 		
-		this.position.set( position );
+		this.location.set( location );
 	}
 	
 	@Override
 	public void setAngle( float angle )
 	{
 		SampNativeFunction.setPlayerFacingAngle( id, angle );
-		position.angle = angle;
+		location.angle = angle;
 	}
 	
 	@Override
-	public void setInterior( int interiorId )
+	public void setInteriorId( int interiorId )
 	{
 		SampNativeFunction.setPlayerInterior( id, interiorId );
-		position.interior = interiorId;
+		location.interiorId = interiorId;
 	}
 	
 	@Override
-	public void setVirtualWorld( int worldId )
+	public void setWorldId( int worldId )
 	{
 		SampNativeFunction.setPlayerVirtualWorld( id, worldId );
-		position.world = worldId;
+		location.worldId = worldId;
 	}
 	
 	@Override
@@ -543,9 +543,9 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public void playSound( int sound, Location point )
+	public void playSound( int sound, Location location )
 	{
-		SampNativeFunction.playerPlaySound( id, sound, point.x, point.y, point.z );
+		SampNativeFunction.playerPlaySound( id, sound, location.x, location.y, location.z );
 	}
 	
 	@Override
@@ -666,7 +666,7 @@ public class Player implements IPlayer
 			return;
 		}
 
-		Vector3D position = checkpoint.getPosition();
+		Vector3D position = checkpoint.getLocation();
 		SampNativeFunction.setPlayerCheckpoint( id, position.x, position.y, position.z, checkpoint.getSize() );
 		this.checkpoint = checkpoint;
 	}
@@ -689,8 +689,8 @@ public class Player implements IPlayer
 		
 		IRaceCheckpoint next = checkpoint.getNext();
 		
-		Vector3D position = checkpoint.getPosition();
-		Vector3D nextPosition = next.getPosition();
+		Vector3D position = checkpoint.getLocation();
+		Vector3D nextPosition = next.getLocation();
 		
 		if( checkpoint.getNext() != null )
 		{
@@ -817,15 +817,15 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public void setMapIcon( int iconId, Location point, int markerType, Color color, MapIconStyle style )
+	public void setMapIcon( int iconId, Location location, int markerType, Color color, MapIconStyle style )
 	{
-		SampNativeFunction.setPlayerMapIcon( id, iconId, point.x, point.y, point.z, markerType, color.getValue(), style.getData() );
+		SampNativeFunction.setPlayerMapIcon( id, iconId, location.x, location.y, location.z, markerType, color.getValue(), style.getData() );
 	}
 	
 	@Override
-	public void removeMapIcon( int iconid )
+	public void removeMapIcon( int iconId )
 	{
-		SampNativeFunction.removePlayerMapIcon( id, iconid );
+		SampNativeFunction.removePlayerMapIcon( id, iconId );
 	}
 	
 	@Override

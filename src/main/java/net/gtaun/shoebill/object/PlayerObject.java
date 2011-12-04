@@ -63,7 +63,7 @@ public class PlayerObject implements IPlayerObject
 	private int id = -1;
 	private Player player;
 	
-	private int model;
+	private int modelId;
 	private LocationRotational position;
 	private float speed = 0;
 	private IPlayer attachedPlayer;
@@ -74,7 +74,7 @@ public class PlayerObject implements IPlayerObject
 	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 
 	@Override public int getId()									{ return id; }
-	@Override public int getModel()									{ return model; }
+	@Override public int getModelId()								{ return modelId; }
 	@Override public float getSpeed()								{ return speed; }
 	@Override public float getDrawDistance()						{ return drawDistance; }
 	@Override public IPlayer getAttachedPlayer()					{ return attachedPlayer; }
@@ -82,58 +82,58 @@ public class PlayerObject implements IPlayerObject
 	@Override public IVehicle getAttachedVehicle()					{ return null; }
 	
 	
-	public PlayerObject( Player player, int model, float x, float y, float z, float rx, float ry, float rz )
+	public PlayerObject( Player player, int modelId, float x, float y, float z, float rx, float ry, float rz )
 	{
 		this.player = player;
-		this.model = model;
+		this.modelId = modelId;
 		this.position = new LocationRotational( x, y, z, rx, ry, rz );
 		
 		init();
 	}
 	
-	public PlayerObject( Player player, int model, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
+	public PlayerObject( Player player, int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
 	{
 		this.player = player;
-		this.model = model;
+		this.modelId = modelId;
 		this.position = new LocationRotational( x, y, z, rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
 		init();
 	}
 	
-	public PlayerObject( Player player, int model, Location point, float rx, float ry, float rz )
+	public PlayerObject( Player player, int modelId, Location location, float rx, float ry, float rz )
 	{
 		this.player = player;
-		this.model = model;
-		this.position = new LocationRotational( point, rx, ry, rz );
+		this.modelId = modelId;
+		this.position = new LocationRotational( location, rx, ry, rz );
 		
 		init();
 	}
 	
-	public PlayerObject( Player player, int model, Location point, float rx, float ry, float rz, float drawDistance )
+	public PlayerObject( Player player, int modelId, Location location, float rx, float ry, float rz, float drawDistance )
 	{
 		this.player = player;
-		this.model = model;
-		this.position = new LocationRotational( point, rx, ry, rz );
+		this.modelId = modelId;
+		this.position = new LocationRotational( location, rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
 		init();
 	}
 	
-	public PlayerObject( Player player, int model, LocationRotational point )
+	public PlayerObject( Player player, int modelId, LocationRotational location )
 	{
 		this.player = player;
-		this.model = model;
-		this.position = point.clone();
+		this.modelId = modelId;
+		this.position = location.clone();
 		
 		init();
 	}
 	
-	public PlayerObject( Player player, int model, LocationRotational point, float drawDistance )
+	public PlayerObject( Player player, int modelId, LocationRotational location, float drawDistance )
 	{
 		this.player = player;
-		this.model = model;
-		this.position = point.clone();
+		this.modelId = modelId;
+		this.position = location.clone();
 		this.drawDistance = drawDistance;
 		
 		init();
@@ -141,7 +141,7 @@ public class PlayerObject implements IPlayerObject
 	
 	private void init()
 	{
-		id = SampNativeFunction.createPlayerObject( player.getId(), model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
+		id = SampNativeFunction.createPlayerObject( player.getId(), modelId, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setPlayerObject( player, id, this );
@@ -166,7 +166,7 @@ public class PlayerObject implements IPlayerObject
 	}
 	
 	@Override
-	public LocationRotational getPosition()
+	public LocationRotational getLocation()
 	{	
 		SampNativeFunction.getPlayerObjectPos( player.getId(), id, position );
 		SampNativeFunction.getPlayerObjectRot( player.getId(), id, position );
@@ -174,18 +174,18 @@ public class PlayerObject implements IPlayerObject
 	}
 	
 	@Override
-	public void setPosition( Location position )
+	public void setLocation( Location location )
 	{
-		this.position.set( position );
-		SampNativeFunction.setPlayerObjectPos( player.getId(), id, position.x, position.y, position.z );
+		this.position.set( location );
+		SampNativeFunction.setPlayerObjectPos( player.getId(), id, location.x, location.y, location.z );
 	}
 	
 	@Override
-	public void setPosition( LocationRotational position )
+	public void setLocation( LocationRotational location )
 	{
-		this.position = position.clone();
-		SampNativeFunction.setPlayerObjectPos( player.getId(), id, position.x, position.y, position.z );
-		SampNativeFunction.setPlayerObjectRot( player.getId(), id, position.rx, position.ry, position.rz );
+		this.position = location.clone();
+		SampNativeFunction.setPlayerObjectPos( player.getId(), id, location.x, location.y, location.z );
+		SampNativeFunction.setPlayerObjectRot( player.getId(), id, location.rx, location.ry, location.rz );
 	}
 	
 	@Override

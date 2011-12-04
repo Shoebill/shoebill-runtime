@@ -30,7 +30,7 @@ public interface IObject extends IDestroyable
 	IEventDispatcher getEventDispatcher();
 	
 	int getId();
-	int getModel();
+	int getModelId();
 	float getSpeed();
 	float getDrawDistance();
 	
@@ -38,9 +38,9 @@ public interface IObject extends IDestroyable
 	IObject getAttachedObject();
 	IVehicle getAttachedVehicle();
 	
-	LocationRotational getPosition();
-	void setPosition( Location position );
-	void setPosition( LocationRotational position );
+	LocationRotational getLocation();
+	void setLocation( Location location );
+	void setLocation( LocationRotational location );
 	void setRotate( float rx, float ry, float rz );
 
 	boolean isMoving();

@@ -34,7 +34,7 @@ public interface IPlayerAttach
 		public Vector3D getRotation();
 		public Vector3D getScale();
 		
-		public boolean set( PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rot, Vector3D scale );
+		public boolean set( PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rotation, Vector3D scale );
 		public boolean remove();
 		public boolean isUsed( int slot );
 	}

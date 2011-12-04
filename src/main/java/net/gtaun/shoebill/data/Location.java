@@ -29,7 +29,7 @@ public class Location extends Vector3D implements Cloneable, Serializable
 	
 	
 	//public float x, y, z;
-	public int interior, world;
+	public int interiorId, worldId;
 	
 
 	public Location()
@@ -49,7 +49,7 @@ public class Location extends Vector3D implements Cloneable, Serializable
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.world = worldId;
+		this.worldId = worldId;
 	}
 	
 	public Location( float x, float y, float z, int interiorId, int worldId )
@@ -57,32 +57,32 @@ public class Location extends Vector3D implements Cloneable, Serializable
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.interior = interiorId;
-		this.world = worldId;
+		this.interiorId = interiorId;
+		this.worldId = worldId;
 	}
 	
 	
-	public void set( Location point )
+	public void set( Location location )
 	{
-		x = point.x;
-		y = point.y;
-		z = point.z;
-		interior = point.interior;
-		world = point.world;
+		x = location.x;
+		y = location.y;
+		z = location.z;
+		interiorId = location.interiorId;
+		worldId = location.worldId;
 	}
 	
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )						return true;
+		if( obj == this )							return true;
 		if( !(obj instanceof Location) )			return false;
 		
-		Location point = (Location) obj;
-		if( point.x != x )						return false;
-		if( point.y != y )						return false;
-		if( point.z != z )						return false;
-		if( point.interior != interior )	return false;
-		if( point.world != world )			return false;
+		Location location = (Location) obj;
+		if( location.x != x )						return false;
+		if( location.y != y )						return false;
+		if( location.z != z )						return false;
+		if( location.interiorId != interiorId )		return false;
+		if( location.worldId != worldId )			return false;
 		
 		return true;
 	}
@@ -90,6 +90,6 @@ public class Location extends Vector3D implements Cloneable, Serializable
 	@Override
 	public Location clone()
 	{
-		return new Location(x, y, z, interior, world);
+		return new Location(x, y, z, interiorId, worldId);
 	}
 }

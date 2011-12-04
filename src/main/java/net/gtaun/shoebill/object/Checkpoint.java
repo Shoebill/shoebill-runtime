@@ -35,33 +35,33 @@ public class Checkpoint implements ICheckpoint
 {
 	private EventDispatcher eventDispatcher = new EventDispatcher();
 	
-	private Vector3D position;
+	private Vector3D location;
 	private float size;
 	
 	
 	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 
-	@Override public Vector3D getPosition()							{ return position.clone(); }
+	@Override public Vector3D getLocation()							{ return location.clone(); }
 	@Override public float getSize()								{ return size; }
 
 	
 	public Checkpoint( float x, float y, float z, float size )
 	{
-		this.position = new Vector3D( x, y, z );
+		this.location = new Vector3D( x, y, z );
 		this.size = size;
 	}
 	
-	public Checkpoint( Vector3D point, float size )
+	public Checkpoint( Vector3D location, float size )
 	{
-		this.position = point.clone();
+		this.location = location.clone();
 		this.size = size;
 	}
 	
 
 	@Override
-	public void setPosition( Vector3D position )
+	public void setLocation( Vector3D location )
 	{
-		this.position = position.clone();
+		this.location = location.clone();
 		update();
 	}
 	

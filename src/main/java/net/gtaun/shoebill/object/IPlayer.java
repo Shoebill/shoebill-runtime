@@ -73,7 +73,7 @@ public interface IPlayer
 	IPlayer getSpectatingPlayer();
 	IVehicle getSpectatingVehicle();
 	
-	LocationAngular getPosition();
+	LocationAngular getLocation();
 	Area getWorldBound();
 	Velocity getVelocity();
 	PlayerState getState();
@@ -106,15 +106,15 @@ public interface IPlayer
 	void setFightStyle( FightStyle style );
 	void setVehicle( IVehicle vehicle, int seat );
 	void setVehicle( IVehicle vehicle );
-	void setPosition( float x, float y, float z );
-	void setPositionFindZ( float x, float y, float z );
-	void setPosition( Location position );
-	void setPositionFindZ( Location position );
-	void setPosition( LocationAngular position );
-	void setPositionFindZ( LocationAngular position );
+	void setLocation( float x, float y, float z );
+	void setLocation( Location position );
+	void setLocation( LocationAngular position );
+	void setLocationFindZ( float x, float y, float z );
+	void setLocationFindZ( Location position );
+	void setLocationFindZ( LocationAngular position );
 	void setAngle( float angle );
-	void setInterior( int interior );
-	void setVirtualWorld( int world );
+	void setInteriorId( int interiorId );
+	void setWorldId( int worldId );
 	void setWorldBound( Area bound );
 	void setSpeed( Velocity speed );
 
@@ -132,7 +132,7 @@ public interface IPlayer
 	void clearAnimations( int forcesync );
 	int getAnimationIndex();
 	void playSound( int sound, float x, float y, float z );
-	void playSound( int sound, Location point );
+	void playSound( int sound, Location location );
 	void markerForPlayer( IPlayer player, Color color );
 	void showNameTagForPlayer( IPlayer player, boolean show );
 	void kick();
@@ -170,7 +170,7 @@ public interface IPlayer
 	void removeFromVehicle();
 	void toggleControllable( boolean toggle );
 	void setSpecialAction( SpecialAction action );
-	void setMapIcon( int iconId, Location point, int markerType, Color color, MapIconStyle style );
+	void setMapIcon( int iconId, Location location, int markerType, Color color, MapIconStyle style );
 	void removeMapIcon( int iconid );
 	void enableStuntBonus( boolean enable );
 	void toggleSpectating( boolean toggle );

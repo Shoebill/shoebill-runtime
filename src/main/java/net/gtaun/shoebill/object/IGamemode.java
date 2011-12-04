@@ -33,7 +33,7 @@ public interface IGamemode
 	void setGamemodeText( String string );
 	void setTeamCount( int count );
 	
-	int addPlayerClass( int model, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 );
-	int addPlayerClass( int model, SpawnInfo spawninfo );
-	int addPlayerClassEx( int team, int model, SpawnInfo spawninfo );
+	int addPlayerClass( int modelId, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 );
+	int addPlayerClass( int modelId, SpawnInfo spawnInfo );
+	int addPlayerClassEx( int teamId, int modelId, SpawnInfo spawnInfo );
 }

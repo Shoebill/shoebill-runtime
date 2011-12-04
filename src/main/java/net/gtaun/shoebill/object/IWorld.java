@@ -51,7 +51,7 @@ public interface IWorld
 	void enableTirePopping( boolean enabled );
 	void allowInteriorWeapons( boolean allow );
 	
-	void createExplosion( Location point, int type, float radius );
+	void createExplosion( Location location, int type, float radius );
 	void enableZoneNames( boolean enabled );
 	void usePlayerPedAnims();
 

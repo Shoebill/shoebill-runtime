@@ -52,7 +52,7 @@ public class KeyState implements Cloneable, Serializable
     private final int KEY_RIGHT					= 128;
 
     
-    public int keys, updown, leftright;
+    private int keys, updown, leftright;
     
     
     public KeyState()

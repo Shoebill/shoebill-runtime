@@ -58,8 +58,8 @@ public class ObjectBase implements IObject
 			if( event instanceof ObjectMovedEvent )
 			{
 				speed = 0;
-				SampNativeFunction.getObjectPos( id, position );
-				SampNativeFunction.getObjectRot( id, position );
+				SampNativeFunction.getObjectPos( id, location );
+				SampNativeFunction.getObjectRot( id, location );
 			}
 			
 			super.dispatchEvent( event );
@@ -67,8 +67,8 @@ public class ObjectBase implements IObject
 	};
 	
 	private int id = -1;
-	private int model;
-	private LocationRotational position;
+	private int modelId;
+	private LocationRotational location;
 	private float speed = 0;
 	private IPlayer attachedPlayer;
 	private IObject attachedObject;
@@ -79,7 +79,7 @@ public class ObjectBase implements IObject
 	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
 	@Override public int getId()									{ return id; }
-	@Override public int getModel()									{ return model; }
+	@Override public int getModelId()									{ return modelId; }
 	@Override public float getSpeed()								{ return speed; }
 	@Override public float getDrawDistance()						{ return drawDistance; }
 	@Override public IPlayer getAttachedPlayer()					{ return attachedPlayer; }
@@ -87,52 +87,52 @@ public class ObjectBase implements IObject
 	@Override public IVehicle getAttachedVehicle()					{ return attachedVehicle; }
 	
 	
-	public ObjectBase( int model, float x, float y, float z, float rx, float ry, float rz )
+	public ObjectBase( int modelId, float x, float y, float z, float rx, float ry, float rz )
 	{
-		this.model = model;
-		this.position = new LocationRotational( x, y, z, rx, ry, rz );
+		this.modelId = modelId;
+		this.location = new LocationRotational( x, y, z, rx, ry, rz );
 		
 		initialize();
 	}
 	
-	public ObjectBase( int model, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
+	public ObjectBase( int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
 	{
-		this.model = model;
-		this.position = new LocationRotational( x, y, z, rx, ry, rz );
+		this.modelId = modelId;
+		this.location = new LocationRotational( x, y, z, rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
 		initialize();
 	}
 	
-	public ObjectBase( int model, Location point, float rx, float ry, float rz )
+	public ObjectBase( int modelId, Location location, float rx, float ry, float rz )
 	{
-		this.model = model;
-		this.position = new LocationRotational( point, rx, ry, rz );
+		this.modelId = modelId;
+		this.location = new LocationRotational( location, rx, ry, rz );
 		
 		initialize();
 	}
 	
-	public ObjectBase( int model, Location point, float rx, float ry, float rz, float drawDistance)
+	public ObjectBase( int modelId, Location location, float rx, float ry, float rz, float drawDistance)
 	{
-		this.model = model;
-		this.position = new LocationRotational( point, rx, ry, rz );
+		this.modelId = modelId;
+		this.location = new LocationRotational( location, rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
 		initialize();
 	}
 	
-	public ObjectBase( int model, LocationRotational point )
+	public ObjectBase( int modelId, LocationRotational location )
 	{
-		this.model = model;
-		this.position = point.clone();
+		this.modelId = modelId;
+		this.location = location.clone();
 		
 		initialize();
 	}
 	
-	public ObjectBase( int model, LocationRotational point, float drawDistance )
+	public ObjectBase( int modelId, LocationRotational location, float drawDistance )
 	{
-		this.model = model;
-		this.position = point.clone();
+		this.modelId = modelId;
+		this.location = location.clone();
 		this.drawDistance = drawDistance;
 		
 		initialize();
@@ -140,7 +140,7 @@ public class ObjectBase implements IObject
 	
 	private void initialize()
 	{
-		id = SampNativeFunction.createObject( model, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
+		id = SampNativeFunction.createObject( modelId, location.x, location.y, location.z, location.rx, location.ry, location.rz, drawDistance );
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setObject( id, this );
@@ -165,34 +165,34 @@ public class ObjectBase implements IObject
 	}
 	
 	@Override
-	public LocationRotational getPosition()
+	public LocationRotational getLocation()
 	{
-		SampNativeFunction.getObjectPos( id, position );
-		SampNativeFunction.getObjectRot( id, position );
-		return position.clone();
+		SampNativeFunction.getObjectPos( id, location );
+		SampNativeFunction.getObjectRot( id, location );
+		return location.clone();
 	}
 	
 	@Override
-	public void setPosition( Location position )
+	public void setLocation( Location location )
 	{
-		this.position.set( position );
-		SampNativeFunction.setObjectPos( id, position.x, position.y, position.z );
+		this.location.set( location );
+		SampNativeFunction.setObjectPos( id, location.x, location.y, location.z );
 	}
 	
 	@Override
-	public void setPosition( LocationRotational position )
+	public void setLocation( LocationRotational location )
 	{
-		this.position = position.clone();
-		SampNativeFunction.setObjectPos( id, position.x, position.y, position.z );
-		SampNativeFunction.setObjectRot( id, position.rx, position.ry, position.rz );
+		this.location = location.clone();
+		SampNativeFunction.setObjectPos( id, location.x, location.y, location.z );
+		SampNativeFunction.setObjectRot( id, location.rx, location.ry, location.rz );
 	}
 	
 	@Override
 	public void setRotate( float rx, float ry, float rz )
 	{
-		position.rx = rx;
-		position.ry = ry;
-		position.rz = rz;
+		location.rx = rx;
+		location.ry = ry;
+		location.rz = rz;
 		
 		SampNativeFunction.setObjectRot( id, rx, ry, rz );
 	}

@@ -34,11 +34,6 @@ public class WeaponData implements Cloneable, Serializable
 	public WeaponType type;
 	public int ammo;
 	
-
-	public WeaponData()
-	{
-		
-	}
 	
 	public WeaponData( WeaponType type, int ammo )
 	{

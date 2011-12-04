@@ -22,8 +22,6 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.LocationAngular;
-import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
@@ -51,7 +49,8 @@ public class Label implements ILabel
 	private int id = -1;
 	private String text;
 	private Color color;
-	private LocationRadius position;
+	private Location location;
+	private float drawDistance;
 	private boolean testLOS;
 	
 	private float offsetX, offsetY, offsetZ;
@@ -63,34 +62,19 @@ public class Label implements ILabel
 	@Override public int getId()								{ return id; }
 	@Override public String getText()							{ return text; }
 	@Override public Color getColor()							{ return color.clone(); }
+	@Override public float getDrawDistance()					{ return drawDistance; }
 	@Override public IPlayer getAttachedPlayer()				{ return attachedPlayer; }
 	@Override public IVehicle getAttachedVehicle()				{ return attachedVehicle; }
 	
-
-	Label()
-	{
-		
-	}
 	
-	public Label( String text, Color color, Location point, float drawDistance, boolean testLOS )
+	public Label( String text, Color color, Location location, float drawDistance, boolean testLOS )
 	{
 		if( text == null ) throw new NullPointerException();
 		
 		this.text = text;
 		this.color = color.clone();
-		this.position = new LocationRadius( point, drawDistance );
-		this.testLOS = testLOS;
-		
-		initialize();
-	}
-	
-	public Label( String text, Color color, LocationRadius point, boolean testLOS )
-	{
-		if( text == null ) throw new NullPointerException();
-		
-		this.text = text;
-		this.color = color.clone();
-		this.position = point.clone();
+		this.location = location.clone();
+		this.drawDistance = drawDistance;
 		this.testLOS = testLOS;
 		
 		initialize();
@@ -99,7 +83,7 @@ public class Label implements ILabel
 	private void initialize()
 	{
 		id = SampNativeFunction.create3DTextLabel( text, color.getValue(),
-				position.x, position.y, position.z, position.distance, position.world, testLOS );
+				location.x, location.y, location.z, drawDistance, location.worldId, testLOS );
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setLabel( id, this );
@@ -124,23 +108,23 @@ public class Label implements ILabel
 	}
 
 	@Override
-	public LocationRadius getPosition()
+	public Location getLocation()
 	{
-		LocationAngular pos = null;
+		Location pos = null;
 		
-		if( attachedPlayer != null )	pos = attachedPlayer.getPosition();
-		if( attachedVehicle != null )	pos = attachedVehicle.getPosition();
+		if( attachedPlayer != null )	pos = attachedPlayer.getLocation();
+		if( attachedVehicle != null )	pos = attachedVehicle.getLocation();
 		
 		if( pos != null )
 		{
-			position.x = pos.x + offsetX;
-			position.y = pos.y + offsetY;
-			position.z = pos.z + offsetZ;
-			position.interior = pos.interior;
-			position.world = pos.world;
+			location.x = pos.x + offsetX;
+			location.y = pos.y + offsetY;
+			location.z = pos.z + offsetZ;
+			location.interiorId = pos.interiorId;
+			location.worldId = pos.worldId;
 		}
 		
-		return position.clone();
+		return location.clone();
 	}
 
 	@Override

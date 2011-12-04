@@ -32,7 +32,6 @@ public interface IVehicle extends IDestroyable
 	IEventDispatcher getEventDispatcher();
 	
 	boolean isStatic();
-	boolean isDestroyed();
 	
 	int getId();
 	int getModel();
@@ -45,21 +44,21 @@ public interface IVehicle extends IDestroyable
 	public IVehicleDamage getDamage();
 	
 	IVehicle getTrailer();
-	LocationAngular getPosition();
+	LocationAngular getLocation();
 	float getAngle();
-	int getInterior();
-	int getWorld();
+	int getInteriorId();
+	int getWorldId();
 	float getHealth();
 	Velocity getVelocity();
 	Quaternions getRotationQuat();
-	void setPosition( float x, float y, float z );
-	void setPosition( Location point );
-	void setPosition( LocationAngular point );
+	void setLocation( float x, float y, float z );
+	void setLocation( Location location );
+	void setLocation( LocationAngular location );
 	void setHealth( float health );
 	void setVelocity( Velocity velocity );
 	void setAngle( float angle );
-	void setInterior( int interior );
-	void setWorld( int world );
+	void setInteriorId( int interiorId );
+	void setWorldId( int worldId );
 	void putPlayer( IPlayer player, int seat );
 	boolean isPlayerIn( IPlayer player );
 	boolean isStreamedIn( IPlayer forplayer );

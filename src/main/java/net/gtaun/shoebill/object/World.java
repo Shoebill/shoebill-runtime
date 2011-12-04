@@ -135,9 +135,9 @@ public class World implements IWorld
 	}
 	
 	@Override
-	public void createExplosion( Location point, int type, float radius )
+	public void createExplosion( Location location, int type, float radius )
 	{
-		SampNativeFunction.createExplosion( point.x, point.y, point.z, type, radius );
+		SampNativeFunction.createExplosion( location.x, location.y, location.z, type, radius );
 	}
 	
 	@Override

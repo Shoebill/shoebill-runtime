@@ -30,36 +30,28 @@ public class SpawnInfo implements Cloneable, Serializable
 	private static final long serialVersionUID = -1494282877268559489L;
 	
 	
-	public LocationAngular position;
-	public int skin, team;
+	public LocationAngular location;
+	public int skinId, teamId;
 	public WeaponData weapon1, weapon2, weapon3;
 	
 	
-	public SpawnInfo()
-	{
-		position = new LocationAngular();
-		weapon1 = new WeaponData();
-		weapon2 = new WeaponData();
-		weapon3 = new WeaponData();
-	}
-	
 	public SpawnInfo( float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, WeaponType weapon1, int ammo1, WeaponType weapon2, int ammo2, WeaponType weapon3, int ammo3 )
 	{
-		position = new LocationAngular(x, y, z, interiorId, worldId, angle);
+		location = new LocationAngular(x, y, z, interiorId, worldId, angle);
 		
-		this.skin = skin;
-		this.team = team;
+		this.skinId = skin;
+		this.teamId = team;
 		
 		this.weapon1 = new WeaponData(weapon1, ammo1);
 		this.weapon2 = new WeaponData(weapon2, ammo2);
 		this.weapon3 = new WeaponData(weapon3, ammo3);
 	}
 	
-	public SpawnInfo( LocationAngular position, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
+	public SpawnInfo( LocationAngular location, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
 	{
-		this.position = position.clone();
-		this.skin = skin;
-		this.team = team;
+		this.location = location.clone();
+		this.skinId = skin;
+		this.teamId = team;
 		this.weapon1 = weapon1.clone();
 		this.weapon2 = weapon2.clone();
 		this.weapon3 = weapon3.clone();
@@ -73,9 +65,9 @@ public class SpawnInfo implements Cloneable, Serializable
 		if( !(obj instanceof SpawnInfo) )				return false;
 		
 		SpawnInfo info = (SpawnInfo) obj;
-		if( info.position.equals(position) == false )	return false;
-		if( info.skin != skin )							return false;
-		if( info.team != team )							return false;
+		if( info.location.equals(location) == false )	return false;
+		if( info.skinId != skinId )							return false;
+		if( info.teamId != teamId )							return false;
 		if( !info.weapon1.equals(weapon1) )				return false;
 		if( !info.weapon2.equals(weapon2) )				return false;
 		if( !info.weapon3.equals(weapon3) )				return false;
@@ -86,6 +78,6 @@ public class SpawnInfo implements Cloneable, Serializable
 	@Override
 	public SpawnInfo clone()
 	{
-		return new SpawnInfo(position.clone(), skin, team, weapon1.clone(), weapon2.clone(), weapon3.clone());
+		return new SpawnInfo(location.clone(), skinId, teamId, weapon1.clone(), weapon2.clone(), weapon3.clone());
 	}
 }

@@ -30,10 +30,10 @@ public interface ICheckpoint
 {
 	IEventDispatcher getEventDispatcher();
 	
-	Vector3D getPosition();
+	Vector3D getLocation();
 	float getSize();
 	
-	void setPosition( Vector3D position );
+	void setLocation( Vector3D location );
 	
 	void set( IPlayer player );
 	void disable( IPlayer player );

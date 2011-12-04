@@ -30,6 +30,5 @@ public interface IPickup extends IDestroyable
 	
 	int getModel();
 	int getType();
-	int getWorld();
-	Location getPosition();
+	Location getLocation();
 }
