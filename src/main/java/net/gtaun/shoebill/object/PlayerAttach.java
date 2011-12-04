@@ -32,22 +32,27 @@ public class PlayerAttach implements IPlayerAttach
 	public static final int MAX_ATTACHED_OBJECTS = 5;
 
 	
-	public class PlayerAttachSlot
+	public class PlayerAttachSlot implements IPlayerAttachSlot
 	{
 		private int slot;
 		
 		private PlayerAttachBone bone = PlayerAttachBone.NOT_USABLE;
-		private int modelId = -1;
+		private int modelId = 0;
+		private Vector3D offset, rotation, scale;
 		
-		public PlayerAttachBone getBone()		{ return bone; }
-		public int getModelId()					{ return modelId; }
+		@Override public PlayerAttachBone getBone()			{ return bone; }
+		@Override public int getModelId()					{ return modelId; }
+		@Override public Vector3D getOffset()				{ return offset; }
+		@Override public Vector3D getRotation()				{ return rotation; }
+		@Override public Vector3D getScale()				{ return scale; }
 		
 		
 		PlayerAttachSlot( int slot )
 		{
 			this.slot = slot;
 		}
-		
+
+		@Override
 		public boolean set( PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rot, Vector3D scale )
 		{
 			if( bone == PlayerAttachBone.NOT_USABLE ) return false;
@@ -57,20 +62,30 @@ public class PlayerAttach implements IPlayerAttach
 			this.bone = bone;
 			this.modelId = modelId;
 			
+			this.offset = offset.clone();
+			this.rotation = rotation.clone();
+			this.scale = scale.clone();
+			
 			return true;
 		}
-		
+
+		@Override
 		public boolean remove()
 		{
 			if( bone == PlayerAttachBone.NOT_USABLE ) return false;
 			if( ! SampNativeFunction.removePlayerAttachedObject(playerId, slot) ) return false;
 			
 			bone = PlayerAttachBone.NOT_USABLE;
-			modelId = -1;
+			modelId = 0;
+			
+			offset = null;
+			rotation = null;
+			scale = null;
 			
 			return true;
 		}
-		
+
+		@Override
 		public boolean isUsed( int slot )
 		{
 			return bone != PlayerAttachBone.NOT_USABLE;
@@ -93,12 +108,14 @@ public class PlayerAttach implements IPlayerAttach
 		}
 	}
 	
-	public PlayerAttachSlot getSlot( int slot )
+	@Override
+	public IPlayerAttachSlot getSlot( int slot )
 	{
 		return slots[ slot ];
 	}
-	
-	public PlayerAttachSlot[] getSlots()
+
+	@Override
+	public IPlayerAttachSlot[] getSlots()
 	{
 		return slots.clone();
 	}
