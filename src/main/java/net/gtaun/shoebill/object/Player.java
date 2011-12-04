@@ -117,7 +117,6 @@ public class Player implements IPlayer
 	private int id = -1;
 	private String ip;
 	private String name;
-	private SpawnInfo spawnInfo = new SpawnInfo();
 	private Color color;
 	
 	private boolean controllable = true;
@@ -155,7 +154,6 @@ public class Player implements IPlayer
 	@Override public int getCodepage()								{ return SampNativeFunction.getPlayerCodepage(id); };
 	@Override public String getIp()									{ return ip; }
 	@Override public String getName()								{ return name; }
-	@Override public SpawnInfo getSpawnInfo()						{ return spawnInfo.clone(); }
 	@Override public Color getColor()								{ return color; }
 
 	@Override public int getUpdateTick()							{ return updateTick; }
@@ -254,7 +252,6 @@ public class Player implements IPlayer
 	public void setSpawnInfo( SpawnInfo info )
 	{
 		SampNativeFunction.setSpawnInfo( id, info.team, info.skin, info.position.x, info.position.y, info.position.z, info.position.angle, info.weapon1.type.getId(), info.weapon1.ammo, info.weapon2.type.getId(), info.weapon2.ammo, info.weapon3.type.getId(), info.weapon3.ammo );
-		spawnInfo = info;
 	}
 	
 	@Override

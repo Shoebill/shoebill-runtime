@@ -55,7 +55,6 @@ public interface IPlayer
 	int getCodepage();
 	String getIp();
 	String getName();
-	SpawnInfo getSpawnInfo();
 	Color getColor();
 
 	int getUpdateTick();

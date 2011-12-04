@@ -27,13 +27,13 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 public class PlayerWeaponSkill implements IPlayerWeaponSkill
 {
 	private int[] skills = new int[ WeaponSkillType.values().length ];
-	private int playerid;
+	private int playerId;
 	
 	
 	PlayerWeaponSkill( int playerid )
 	{
 		for( int i=0; i<WeaponSkillType.values().length; i++ )	skills[i] = 999;
-		this.playerid = playerid;
+		this.playerId = playerid;
 	}
 	
 	
@@ -42,7 +42,7 @@ public class PlayerWeaponSkill implements IPlayerWeaponSkill
 		if(level > 999)		level = 999;
 		else if(level < 0)	level = 0;
 		
-		SampNativeFunction.setPlayerSkillLevel( playerid, type.getData(), level );
+		SampNativeFunction.setPlayerSkillLevel( playerId, type.getData(), level );
 		skills[ type.getData() ] = level;
 	}
 	

@@ -55,7 +55,7 @@ public enum WeaponType
     MP5					( 29,	4,		353,	"MP5" ),
     AK47				( 30,	5,		355,	"AK-47" ),
     M4					( 31,	5,		356,	"M4" ),
-    TEC9				( 32,	4,		372,	"TEC9" ),
+    TEC9				( 32,	4,		372,	"TEC-9" ),
     RIFLE				( 33,	6,		357,	"Rifle" ),
     SNIPER				( 34,	6,		358,	"Sniper Rifle" ),
     ROCKETLAUNCHER		( 35,	7,		359,	"Rocket Launcher" ),
