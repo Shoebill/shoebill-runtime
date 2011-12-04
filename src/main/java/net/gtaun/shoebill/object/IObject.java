@@ -18,17 +18,15 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationRotational;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
+import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IObject extends IDestroyable
+public interface IObject extends IEventObject, IDestroyable
 {
-	IEventDispatcher getEventDispatcher();
-	
 	int getId();
 	int getModelId();
 	float getSpeed();

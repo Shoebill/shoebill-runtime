@@ -18,25 +18,23 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.type.PlayerMarkerMode;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
+import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IWorld
+public interface IWorld extends IEventObject
 {
-	IEventDispatcher getEventDispatcher();
-	
 	float getChatRadius();
 	void setChatRadius( float radius );
 	
 	float getPlayerMarkerRadius();
 	void setPlayerMarkerRadius( float radius );
 
-	int getWeather();
-	void setWeather( int weatherid );
+	int getWeatherId();
+	void setWeatherId( int weatherId );
 
 	float getGravity();
 	void setGravity( float gravity );

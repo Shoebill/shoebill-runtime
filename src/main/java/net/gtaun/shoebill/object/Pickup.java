@@ -52,7 +52,7 @@ public class Pickup implements IPickup
 	
 	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
-	@Override public int getModel()								{ return modelId; }
+	@Override public int getModelId()								{ return modelId; }
 	@Override public int getType()								{ return type; }
 	@Override public Location getLocation()						{ return location.clone(); }
 	

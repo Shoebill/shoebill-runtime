@@ -16,17 +16,15 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.util.event.IEventDispatcher;
+import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface ITimer
+public interface ITimer extends IEventObject
 {
-	IEventDispatcher getEventDispatcher();
-	
 	int getInterval();
 	int getCount();
 

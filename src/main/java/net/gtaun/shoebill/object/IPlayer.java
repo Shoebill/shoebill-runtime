@@ -36,21 +36,19 @@ import net.gtaun.shoebill.data.type.WeaponState;
 import net.gtaun.shoebill.data.type.WeaponType;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
+import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IPlayer
+public interface IPlayer extends IEventObject
 {
-	IEventDispatcher getEventDispatcher();
-	
 	int getId();
 	int getPing();
-	int getTeam();
-	int getSkin();
+	int getTeamId();
+	int getSkinId();
 	int getWantedLevel();
 	int getCodepage();
 	String getIp();
@@ -64,7 +62,7 @@ public interface IPlayer
 	int getArmedWeaponAmmo();
 	int getMoney();
 	int getScore();
-	int getWeather();
+	int getWeatherId();
 	int getCameraMode();
 	FightStyle getFightStyle();
 	IVehicle getVehicle();
@@ -93,24 +91,24 @@ public interface IPlayer
 	
 	void setCodepage( int codepage );
 	void setName( String name ) throws IllegalArgumentException, IllegalLengthException, AlreadyExistException;
-	void setSpawnInfo( float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, WeaponType weapon1, int ammo1, WeaponType weapon2, int ammo2, WeaponType weapon3, int ammo3 );
+	void setSpawnInfo( float x, float y, float z, int interiorId, int worldId, float angle, int skinId, int teamId, WeaponType weapon1, int ammo1, WeaponType weapon2, int ammo2, WeaponType weapon3, int ammo3 );
 	void setSpawnInfo( SpawnInfo info );
 	void setColor( Color color );
 	void setHealth( float health );
 	void setArmour( float armour);
-	void setWeaponAmmo( int weaponslot, int ammo );
+	void setWeaponAmmo( int slot, int ammo );
 	void setMoney( int money );
 	void giveMoney( int money );
 	void setScore( int score );
-	void setWeather( int weather );
+	void setWeatherId( int weatherId );
 	void setFightStyle( FightStyle style );
 	void setVehicle( IVehicle vehicle, int seat );
 	void setVehicle( IVehicle vehicle );
 	void setLocation( float x, float y, float z );
-	void setLocation( Location position );
-	void setLocation( LocationAngular position );
+	void setLocation( Location location );
+	void setLocation( LocationAngular location );
 	void setLocationFindZ( float x, float y, float z );
-	void setLocationFindZ( Location position );
+	void setLocationFindZ( Location location );
 	void setLocationFindZ( LocationAngular position );
 	void setAngle( float angle );
 	void setInteriorId( int interiorId );
@@ -132,7 +130,7 @@ public interface IPlayer
 	void clearAnimations( int forcesync );
 	int getAnimationIndex();
 	void playSound( int sound, float x, float y, float z );
-	void playSound( int sound, Location location );
+	void playSound( int sound, Vector3D location );
 	void markerForPlayer( IPlayer player, Color color );
 	void showNameTagForPlayer( IPlayer player, boolean show );
 	void kick();
@@ -140,16 +138,16 @@ public interface IPlayer
 	void ban( String reason );
 	IMenu getMenu();
 	void setCameraPosition( float x, float y, float z );
-	void setCameraPosition( Location pos );
+	void setCameraPosition( Vector3D position );
 	void setCameraLookAt( float x, float y, float z );
-	void setCameraLookAt( Location lookat );
+	void setCameraLookAt( Vector3D lookat );
 	void setCameraBehind();
-	Location getCameraPosition();
-	Location getCameraFrontVector();
+	Vector3D getCameraPosition();
+	Vector3D getCameraFrontVector();
 	boolean isInAnyVehicle();
 	boolean isInVehicle( IVehicle vehicle );
 	boolean isAdmin();
-	boolean isStreamedIn( IPlayer forplayer );
+	boolean isStreamedIn( IPlayer forPlayer );
 	void setCheckpoint( ICheckpoint checkpoint );
 	void disableCheckpoint();
 	void setRaceCheckpoint( IRaceCheckpoint checkpoint );
@@ -164,15 +162,15 @@ public interface IPlayer
 	void toggleClock( boolean toggle );
 	void forceClassSelection();
 	void setWantedLevel( int level );
-	void playCrimeReport( int suspectid, int crimeid );
+	void playCrimeReport( int suspectId, int crimeId );
 	void setShopName( ShopName shop );
 	IVehicle getSurfingVehicle();
 	void removeFromVehicle();
 	void toggleControllable( boolean toggle );
 	void setSpecialAction( SpecialAction action );
-	void setMapIcon( int iconId, Location location, int markerType, Color color, MapIconStyle style );
-	void removeMapIcon( int iconid );
-	void enableStuntBonus( boolean enable );
+	void setMapIcon( int iconId, Vector3D location, int markerType, Color color, MapIconStyle style );
+	void removeMapIcon( int iconId );
+	void enableStuntBonus( boolean enabled );
 	void toggleSpectating( boolean toggle );
 	void spectate( IPlayer player, SpectateMode mode );
 	void spectate( IVehicle vehicle, SpectateMode mode );
@@ -183,7 +181,7 @@ public interface IPlayer
 	
 	IPlayer getAimedTarget();
 	void playAudioStream( String url );
-	void playAudioStream( String url, Vector3D position, float distance );
+	void playAudioStream( String url, Vector3D location, float distance );
 	void stopAudioStream();
 	void removeBuilding( int modelId, float x, float y, float z, float radius );
 

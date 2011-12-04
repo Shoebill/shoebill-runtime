@@ -20,21 +20,19 @@ import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngular;
 import net.gtaun.shoebill.data.Quaternions;
 import net.gtaun.shoebill.data.Velocity;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
+import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IVehicle extends IDestroyable
+public interface IVehicle extends IEventObject, IDestroyable
 {
-	IEventDispatcher getEventDispatcher();
-	
 	boolean isStatic();
 	
 	int getId();
-	int getModel();
+	int getModelId();
 	int getColor1();
 	int getColor2();
 	int getRespawnDelay();
@@ -61,15 +59,15 @@ public interface IVehicle extends IDestroyable
 	void setWorldId( int worldId );
 	void putPlayer( IPlayer player, int seat );
 	boolean isPlayerIn( IPlayer player );
-	boolean isStreamedIn( IPlayer forplayer );
-	void setParamsForPlayer( IPlayer player, boolean objective, boolean doorslocked );
+	boolean isStreamedIn( IPlayer forPlayer );
+	void setParamsForPlayer( IPlayer player, boolean objective, boolean doorsLocked );
 	void respawn();
 	void setColor( int color1, int color2 );
-	void setPaintjob( int paintjobid );
+	void setPaintjob( int paintjobId );
 	void attachTrailer( IVehicle trailer );
 	void detachTrailer();
 	boolean isTrailerAttached();
-	void setNumberPlate( String numberplate );
+	void setNumberPlate( String number );
 	void repair();
 	void setAngularVelocity( Velocity velocity );
 }

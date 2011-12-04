@@ -17,17 +17,15 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.SpawnInfo;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
+import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IGamemode
+public interface IGamemode extends IEventObject
 {
-	IEventDispatcher getEventDispatcher();
-
 	void exit();
 	
 	void setGamemodeText( String string );

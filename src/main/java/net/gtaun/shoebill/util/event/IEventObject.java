@@ -14,30 +14,14 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
-
-import net.gtaun.shoebill.util.event.IEventObject;
+package net.gtaun.shoebill.util.event;
 
 /**
  * @author MK124
  *
  */
 
-public interface IMenu extends IEventObject, IDestroyable
+public interface IEventObject
 {
-	int getId();
-	String getTitle();
-	int getColumns();
-	float getX();
-	float getY();
-	float getCol1Width();
-	float getCol2Width();
-	String getColumnHeader();
-	
-	void addItem( int column, String text );
-	void setColumnHeader( int column, String text );
-	void disable();
-	void disableRow( int row );
-	void show( IPlayer player );
-	void hide( IPlayer player );
+	IEventDispatcher getEventDispatcher();
 }

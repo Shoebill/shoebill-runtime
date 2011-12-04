@@ -148,8 +148,8 @@ public class Player implements IPlayer
 	
 	@Override public int getId()									{ return id; }
 	@Override public int getPing()									{ return SampNativeFunction.getPlayerPing(id); }
-	@Override public int getTeam()									{ return SampNativeFunction.getPlayerTeam(id); }
-	@Override public int getSkin()									{ return SampNativeFunction.getPlayerSkin(id); }
+	@Override public int getTeamId()								{ return SampNativeFunction.getPlayerTeam(id); }
+	@Override public int getSkinId()								{ return SampNativeFunction.getPlayerSkin(id); }
 	@Override public int getWantedLevel()							{ return SampNativeFunction.getPlayerWantedLevel(id); }
 	@Override public int getCodepage()								{ return SampNativeFunction.getPlayerCodepage(id); };
 	@Override public String getIp()									{ return ip; }
@@ -163,7 +163,7 @@ public class Player implements IPlayer
 	@Override public int getArmedWeaponAmmo()						{ return SampNativeFunction.getPlayerAmmo(id); }
 	@Override public int getMoney()									{ return money; }
 	@Override public int getScore()									{ return score; }
-	@Override public int getWeather()								{ return weather; }
+	@Override public int getWeatherId()								{ return weather; }
 	@Override public int getCameraMode()							{ return SampNativeFunction.getPlayerCameraMode(id); }
 	@Override public FightStyle getFightStyle()						{ return FightStyle.get(SampNativeFunction.getPlayerFightingStyle(id)); }
 	@Override public IVehicle getVehicle()							{ return Vehicle.get(SampNativeFunction.getPlayerVehicleID(id)); }
@@ -178,7 +178,7 @@ public class Player implements IPlayer
 	@Override public PlayerState getState()							{ return PlayerState.values()[ SampNativeFunction.getPlayerState(id) ]; }
 	@Override public KeyState getKeyState()							{ return keyState.clone(); }
 	@Override public IPlayerAttach getPlayerAttach()				{ return playerAttach; }
-	@Override public IPlayerWeaponSkill getWeaponSkill()					{ return skill; }
+	@Override public IPlayerWeaponSkill getWeaponSkill()			{ return skill; }
 	@Override public ICheckpoint getCheckpoint()					{ return checkpoint; }
 	@Override public IRaceCheckpoint getRaceCheckpoint()			{ return raceCheckpoint; }
 	
@@ -305,7 +305,7 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public void setWeather( int weather )
+	public void setWeatherId( int weather )
 	{
 		SampNativeFunction.setPlayerWeather( id, weather );
 		this.weather = weather;
@@ -543,7 +543,7 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public void playSound( int sound, Location location )
+	public void playSound( int sound, Vector3D location )
 	{
 		SampNativeFunction.playerPlaySound( id, sound, location.x, location.y, location.z );
 	}
@@ -592,10 +592,10 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public void setCameraPosition( Location pos )
+	public void setCameraPosition( Vector3D position )
 	{
-		if( pos == null ) throw new NullPointerException();
-		SampNativeFunction.setPlayerCameraPos( id, pos.x, pos.y, pos.z );
+		if( position == null ) throw new NullPointerException();
+		SampNativeFunction.setPlayerCameraPos( id, position.x, position.y, position.z );
 	}
 
 	@Override
@@ -605,7 +605,7 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public void setCameraLookAt( Location lookat )
+	public void setCameraLookAt( Vector3D lookat )
 	{
 		if( lookat == null ) throw new NullPointerException();
 		SampNativeFunction.setPlayerCameraLookAt(id, lookat.x, lookat.y, lookat.z);
@@ -618,17 +618,17 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public Location getCameraPosition()
+	public Vector3D getCameraPosition()
 	{
-		Location pos = new Location();
+		Vector3D pos = new Vector3D();
 		SampNativeFunction.getPlayerCameraPos( id, pos );
 		return pos;
 	}
 	
 	@Override
-	public Location getCameraFrontVector()
+	public Vector3D getCameraFrontVector()
 	{
-		Location lookat = new Location();
+		Vector3D lookat = new Vector3D();
 		SampNativeFunction.getPlayerCameraFrontVector( id, lookat );
 		return lookat;
 	}
@@ -817,7 +817,7 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public void setMapIcon( int iconId, Location location, int markerType, Color color, MapIconStyle style )
+	public void setMapIcon( int iconId, Vector3D location, int markerType, Color color, MapIconStyle style )
 	{
 		SampNativeFunction.setPlayerMapIcon( id, iconId, location.x, location.y, location.z, markerType, color.getValue(), style.getData() );
 	}

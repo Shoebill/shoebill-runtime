@@ -58,9 +58,9 @@ public class RaceCheckpoint implements IRaceCheckpoint
 		this.next = next;
 	}
 
-	public RaceCheckpoint( Location position, float size, RaceCheckpointType type, RaceCheckpoint next )
+	public RaceCheckpoint( Location location, float size, RaceCheckpointType type, RaceCheckpoint next )
 	{
-		this.location = position.clone();
+		this.location = location.clone();
 		this.size = size;
 		this.type = type;
 		this.next = next;

@@ -69,13 +69,13 @@ public class World implements IWorld
 		SampNativeFunction.limitPlayerMarkerRadius( radius );
 	}
 	
-	@Override public int getWeather()
+	@Override public int getWeatherId()
 	{
 		return SampNativeFunction.getServerVarAsInt("weather");
 	}
 
 	@Override
-	public void setWeather( int weatherid )
+	public void setWeatherId( int weatherid )
 	{
 		SampNativeFunction.setWeather( weatherid );
 	}

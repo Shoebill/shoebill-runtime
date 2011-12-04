@@ -98,9 +98,9 @@ public class PlayerAttach implements IPlayerAttach
 	private PlayerAttachSlot[] slots = new PlayerAttachSlot[MAX_ATTACHED_OBJECTS];
 
 	
-	PlayerAttach( int playerid )
+	PlayerAttach( int playerId )
 	{
-		this.playerId = playerid;
+		this.playerId = playerId;
 		
 		for( int i=0; i<MAX_ATTACHED_OBJECTS; i++ )
 		{

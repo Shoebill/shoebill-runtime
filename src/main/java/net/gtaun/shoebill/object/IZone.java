@@ -18,24 +18,22 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
+import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IZone extends IDestroyable
+public interface IZone extends IEventObject, IDestroyable
 {
-	IEventDispatcher getEventDispatcher();
-	
 	int getId();
 	Area getArea();
 	
-	void show( IPlayer p, int color );
-	void hide( IPlayer p );
-	void flash( IPlayer p, int color );
-	void stopFlash( IPlayer p );
+	void show( IPlayer player, int color );
+	void hide( IPlayer player );
+	void flash( IPlayer player, int color );
+	void stopFlash( IPlayer player );
 	
 	void showForAll( Color color );
 	void hideForAll();

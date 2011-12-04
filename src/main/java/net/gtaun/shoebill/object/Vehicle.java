@@ -103,7 +103,7 @@ public class Vehicle implements IVehicle
 	
 	@Override public boolean isStatic()								{ return isStatic; }
 	
-	@Override public int getModel()									{ return modelId; }
+	@Override public int getModelId()									{ return modelId; }
 	@Override public int getColor1()								{ return color1; }
 	@Override public int getColor2()								{ return color2; }
 	@Override public int getRespawnDelay()							{ return respawnDelay; }

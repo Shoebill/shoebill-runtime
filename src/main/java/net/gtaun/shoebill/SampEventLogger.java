@@ -137,7 +137,7 @@ public class SampEventLogger implements ISampCallbackHandler
 		IPlayer player = sampObjectPool.getPlayer( playerId );
 		IVehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 		
-		System.out.println( "[vehicle] " + player.getName() + " enter a vehicle (" + vehicle.getModel() + ")" );
+		System.out.println( "[vehicle] " + player.getName() + " enter a vehicle (" + vehicle.getModelId() + ")" );
 		return 1;
 	}
 	
@@ -147,7 +147,7 @@ public class SampEventLogger implements ISampCallbackHandler
 		IPlayer player = sampObjectPool.getPlayer( playerId );
 		IVehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 		
-		System.out.println( "[vehicle] " + player.getName() + " leave a vehicle (" + vehicle.getModel() + ")" );
+		System.out.println( "[vehicle] " + player.getName() + " leave a vehicle (" + vehicle.getModelId() + ")" );
 		return 1;
 	}
 	
@@ -212,7 +212,7 @@ public class SampEventLogger implements ISampCallbackHandler
 		IPlayer player = sampObjectPool.getPlayer( playerId );
 		IPickup pickup = sampObjectPool.getPickup( pickupId );
 		
-		System.out.println( "[pickup] " + player.getName() + " pickup " + pickup.getModel() + " (" + pickup.getType() + ")" );
+		System.out.println( "[pickup] " + player.getName() + " pickup " + pickup.getModelId() + " (" + pickup.getType() + ")" );
 		return 1;
 	}
 	

@@ -18,17 +18,15 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
+import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface ILabel extends IDestroyable
+public interface ILabel extends IEventObject, IDestroyable
 {
-	IEventDispatcher getEventDispatcher();
-	
 	int getId();
 	String getText();
 	Color getColor();

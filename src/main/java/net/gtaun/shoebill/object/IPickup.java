@@ -17,18 +17,16 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
+import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IPickup extends IDestroyable
+public interface IPickup extends IEventObject, IDestroyable
 {
-	IEventDispatcher getEventDispatcher();
-	
-	int getModel();
+	int getModelId();
 	int getType();
 	Location getLocation();
 }
