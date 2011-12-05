@@ -41,9 +41,12 @@ import net.gtaun.shoebill.data.type.SpectateMode;
 import net.gtaun.shoebill.data.type.WeaponState;
 import net.gtaun.shoebill.data.type.WeaponType;
 import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
+import net.gtaun.shoebill.event.player.PlayerInteriorChangeEvent;
+import net.gtaun.shoebill.event.player.PlayerUpdateEvent;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.shoebill.util.event.Event;
 import net.gtaun.shoebill.util.event.EventDispatcher;
 import net.gtaun.shoebill.util.event.IEventDispatcher;
 
@@ -112,12 +115,29 @@ public class Player implements IPlayer
 	}
 	
 	
-	private EventDispatcher eventDispatcher = new EventDispatcher();
+	private EventDispatcher eventDispatcher = new EventDispatcher()
+	{
+		@Override
+		public void dispatchEvent( Event event )
+		{
+			if( event instanceof PlayerUpdateEvent )
+			{
+				SampNativeFunction.getPlayerPos( id, location );
+				location.angle = SampNativeFunction.getPlayerFacingAngle(id);
+				SampNativeFunction.getPlayerVelocity( id, velocity );
+				SampNativeFunction.getPlayerKeys( id, keyState );
+				
+				updateFrameCount++;
+				if( updateFrameCount<0 ) updateFrameCount = 0;
+			}
+			else if( event instanceof PlayerInteriorChangeEvent )
+			{
+				location.interiorId = SampNativeFunction.getPlayerInterior(id);
+			}
+		}
+	};
 	
 	private int id = -1;
-	private String ip;
-	private String name;
-	private Color color;
 	
 	private boolean controllable = true;
 	private boolean isStuntBonusEnabled = false;
@@ -127,9 +147,7 @@ public class Player implements IPlayer
 	private IPlayer spectatingPlayer;
 	private IVehicle spectatingVehicle;
 
-	private int updateTick = -1;
-	private float health, armour;
-	private int money, score;
+	private int updateFrameCount = -1;
 	private int weather;
 
 	private LocationAngular location = new LocationAngular();
@@ -152,17 +170,17 @@ public class Player implements IPlayer
 	@Override public int getSkinId()								{ return SampNativeFunction.getPlayerSkin(id); }
 	@Override public int getWantedLevel()							{ return SampNativeFunction.getPlayerWantedLevel(id); }
 	@Override public int getCodepage()								{ return SampNativeFunction.getPlayerCodepage(id); };
-	@Override public String getIp()									{ return ip; }
-	@Override public String getName()								{ return name; }
-	@Override public Color getColor()								{ return color; }
+	@Override public String getIp()									{ return SampNativeFunction.getPlayerIp(id); }
+	@Override public String getName()								{ return SampNativeFunction.getPlayerName(id); }
+	@Override public Color getColor()								{ return new Color(SampNativeFunction.getPlayerColor(id)); }
 
-	@Override public int getUpdateTick()							{ return updateTick; }
-	@Override public float getHealth()								{ return health; }
-	@Override public float getArmour()								{ return armour; }
+	@Override public int getUpdateFrameCount()						{ return updateFrameCount; }
+	@Override public float getHealth()								{ return SampNativeFunction.getPlayerHealth(id); }
+	@Override public float getArmour()								{ return SampNativeFunction.getPlayerArmour(id); }
 	@Override public WeaponType getArmedWeapon()					{ return WeaponType.get( SampNativeFunction.getPlayerWeapon(id) ); }
 	@Override public int getArmedWeaponAmmo()						{ return SampNativeFunction.getPlayerAmmo(id); }
-	@Override public int getMoney()									{ return money; }
-	@Override public int getScore()									{ return score; }
+	@Override public int getMoney()									{ return SampNativeFunction.getPlayerMoney(id); }
+	@Override public int getScore()									{ return SampNativeFunction.getPlayerScore(id); }
 	@Override public int getWeatherId()								{ return weather; }
 	@Override public int getCameraMode()							{ return SampNativeFunction.getPlayerCameraMode(id); }
 	@Override public FightStyle getFightStyle()						{ return FightStyle.get(SampNativeFunction.getPlayerFightingStyle(id)); }
@@ -194,14 +212,6 @@ public class Player implements IPlayer
 	protected Player( int id )
 	{	
 		this.id = id;
-		ip = SampNativeFunction.getPlayerIp(id);
-		name = SampNativeFunction.getPlayerName(id);
-		color = new Color( SampNativeFunction.getPlayerColor(id) );
-		
-		health = SampNativeFunction.getPlayerHealth(id);
-		armour = SampNativeFunction.getPlayerArmour(id);
-		money = SampNativeFunction.getPlayerMoney(id);
-		score = SampNativeFunction.getPlayerScore(id);
 		
 		SampNativeFunction.getPlayerPos(id, location);
 		SampNativeFunction.getPlayerFacingAngle(id);
@@ -237,8 +247,6 @@ public class Player implements IPlayer
 		int ret = SampNativeFunction.setPlayerName(id, name);
 		if( ret == 0 )	throw new AlreadyExistException();
 		if( ret == -1 )	throw new IllegalArgumentException();
-		
-		this.name = name;
 	}
 	
 	@Override
@@ -257,7 +265,6 @@ public class Player implements IPlayer
 	@Override
 	public void setColor( Color color )
 	{
-		this.color = color.clone();
 		SampNativeFunction.setPlayerColor( id, color.getValue() );
 	}
 
@@ -265,14 +272,12 @@ public class Player implements IPlayer
 	public void setHealth( float health )
 	{
 		SampNativeFunction.setPlayerHealth( id, health );
-		this.health = health;
 	}
 	
 	@Override
 	public void setArmour( float armour)
 	{
 		SampNativeFunction.setPlayerArmour( id, armour );
-		this.armour = armour;
 	}
 	
 	@Override
@@ -286,22 +291,18 @@ public class Player implements IPlayer
 	{
 		SampNativeFunction.resetPlayerMoney( id );
 		if( money != 0 ) SampNativeFunction.givePlayerMoney( id, money );
-		
-		this.money = money;
 	}
 	
 	@Override
 	public void giveMoney( int money )
 	{
 		SampNativeFunction.givePlayerMoney( id, money );
-		this.money = SampNativeFunction.getPlayerMoney(id);
 	}
 	
 	@Override
 	public void setScore( int score )
 	{
 		SampNativeFunction.setPlayerScore( id, score );
-		this.score = score;
 	}
 	
 	@Override
@@ -787,7 +788,6 @@ public class Player implements IPlayer
 	@Override
 	public void setShopName( ShopName shop )
 	{
-		if( name == null ) throw new NullPointerException();
 		SampNativeFunction.setPlayerShopName(id, shop.getData());
 	}
 	

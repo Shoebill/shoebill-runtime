@@ -55,7 +55,7 @@ public interface IPlayer extends IEventObject
 	String getName();
 	Color getColor();
 
-	int getUpdateTick();
+	int getUpdateFrameCount();
 	float getHealth();
 	float getArmour();
 	WeaponType getArmedWeapon();
