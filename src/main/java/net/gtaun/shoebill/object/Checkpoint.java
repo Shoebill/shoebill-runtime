@@ -23,8 +23,6 @@ import java.util.Vector;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author JoJLlmAn, MK124
@@ -33,13 +31,9 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public class Checkpoint implements ICheckpoint
 {
-	private EventDispatcher eventDispatcher = new EventDispatcher();
-	
 	private Vector3D location;
 	private float size;
 	
-	
-	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 
 	@Override public Vector3D getLocation()							{ return location.clone(); }
 	@Override public float getSize()								{ return size; }

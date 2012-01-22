@@ -19,8 +19,6 @@ package net.gtaun.shoebill.object;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.type.PlayerMarkerMode;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124
@@ -29,15 +27,10 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public class World implements IWorld
 {
-	private EventDispatcher eventDispatcher = new EventDispatcher();
-
 	private float nameTagDrawDistance = 70;
 	private float chatRadius = -1;
 	private float playerMarkerRadius = -1;
 	
-	
-	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
-
 	
 	public World()
 	{

@@ -19,14 +19,13 @@ package net.gtaun.shoebill.object;
 import java.util.Collection;
 
 import net.gtaun.shoebill.data.Vector3D;
-import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface ICheckpoint extends IEventObject
+public interface ICheckpoint
 {
 	Vector3D getLocation();
 	float getSize();

@@ -20,8 +20,6 @@ package net.gtaun.shoebill.object;
 import net.gtaun.shoebill.Plugin;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124, JoJLlmAn
@@ -30,12 +28,6 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public abstract class Gamemode extends Plugin implements IGamemode
 {
-	private EventDispatcher eventDispatcher = new EventDispatcher();
-
-	
-	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
-		
-
 	protected Gamemode()
 	{
 		

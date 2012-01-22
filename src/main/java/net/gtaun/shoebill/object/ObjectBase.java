@@ -23,11 +23,7 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationRotational;
-import net.gtaun.shoebill.event.object.ObjectMovedEvent;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.Event;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124, JoJLlmAn
@@ -50,21 +46,13 @@ public class ObjectBase implements IObject
 	}
 	
 	
-	private EventDispatcher eventDispatcher = new EventDispatcher()
+	void processObjectMoved()
 	{
-		@Override
-		public void dispatchEvent( Event event )
-		{
-			if( event instanceof ObjectMovedEvent )
-			{
-				speed = 0;
-				SampNativeFunction.getObjectPos( id, location );
-				SampNativeFunction.getObjectRot( id, location );
-			}
-			
-			super.dispatchEvent( event );
-		}
+		speed = 0;
+		SampNativeFunction.getObjectPos( id, location );
+		SampNativeFunction.getObjectRot( id, location );
 	};
+	
 	
 	private int id = -1;
 	private int modelId;
@@ -75,8 +63,6 @@ public class ObjectBase implements IObject
 	private IVehicle attachedVehicle;
 	private float drawDistance = 0;
 	
-	
-	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
 	@Override public int getId()									{ return id; }
 	@Override public int getModelId()									{ return modelId; }
@@ -167,7 +153,10 @@ public class ObjectBase implements IObject
 	@Override
 	public LocationRotational getLocation()
 	{
-		SampNativeFunction.getObjectPos( id, location );
+		if( attachedPlayer != null )			location.set( attachedPlayer.getLocation() );
+		else if( attachedVehicle != null )		location.set( attachedVehicle.getLocation() );
+		else SampNativeFunction.getObjectPos( id, location );
+		
 		SampNativeFunction.getObjectRot( id, location );
 		return location.clone();
 	}

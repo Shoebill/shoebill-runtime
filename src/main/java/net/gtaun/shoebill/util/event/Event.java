@@ -41,6 +41,7 @@ public abstract class Event
 	{
 		return interruptable;
 	}
+	
 	public boolean interrupt()
 	{
 		interrupted = interruptable;

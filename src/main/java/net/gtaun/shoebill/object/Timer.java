@@ -19,8 +19,6 @@ package net.gtaun.shoebill.object;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.event.timer.TimerTickEvent;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124
@@ -32,15 +30,11 @@ public class Timer implements ITimer
 	private static final int COUNT_INFINITE = 0;
 	
 
-	private EventDispatcher eventDispatcher = new EventDispatcher();
-	
 	private int interval, count;
 	
 	private boolean running;
 	private int counting, realInterval;
 
-	
-	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
 	@Override public int getInterval()								{ return interval; }
 	@Override public int getCount()									{ return count; }
@@ -106,7 +100,8 @@ public class Timer implements ITimer
 		if( realInterval < interval ) return;
 		
 		if( count > 0 ) counting--;
-		getEventDispatcher().dispatchEvent( new TimerTickEvent(this, realInterval) );
+		TimerTickEvent event = new TimerTickEvent(this, realInterval);
+		Shoebill.getInstance().getEventManager().dispatchEvent( event, this );
 		
 		realInterval = 0;
 		if( count > 0 && counting == 0 ) stop();

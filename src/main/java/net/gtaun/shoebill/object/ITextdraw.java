@@ -17,14 +17,13 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface ITextdraw extends IEventObject, IDestroyable
+public interface ITextdraw extends IDestroyable
 {
 	int getId();
 	float getX();

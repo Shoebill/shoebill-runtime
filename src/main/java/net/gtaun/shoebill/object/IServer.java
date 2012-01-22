@@ -16,14 +16,13 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IServer extends IEventObject
+public interface IServer
 {
 	int getServerCodepage();
 	void setServerCodepage( int codepage );

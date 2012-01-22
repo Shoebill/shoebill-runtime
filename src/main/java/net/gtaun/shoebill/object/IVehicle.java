@@ -20,14 +20,13 @@ import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngular;
 import net.gtaun.shoebill.data.Quaternions;
 import net.gtaun.shoebill.data.Velocity;
-import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IVehicle extends IEventObject, IDestroyable
+public interface IVehicle extends IDestroyable
 {
 	boolean isStatic();
 	

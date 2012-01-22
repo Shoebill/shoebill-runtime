@@ -23,8 +23,6 @@ import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124
@@ -47,8 +45,6 @@ public class PlayerLabel implements IPlayerLabel
 	}
 	
 	
-	private EventDispatcher eventDispatcher = new EventDispatcher();
-	
 	private int id = -1;
 	private IPlayer player;
 	private String text;
@@ -61,8 +57,6 @@ public class PlayerLabel implements IPlayerLabel
 	private IPlayer attachedPlayer;
 	private IVehicle attachedVehicle;
 	
-	
-	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
 	@Override public int getId()								{ return id; }
 	@Override public IPlayer getPlayer()						{ return player; }

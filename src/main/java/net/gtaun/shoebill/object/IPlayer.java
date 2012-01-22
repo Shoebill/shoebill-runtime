@@ -36,14 +36,13 @@ import net.gtaun.shoebill.data.type.WeaponState;
 import net.gtaun.shoebill.data.type.WeaponType;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
-import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IPlayer extends IEventObject
+public interface IPlayer
 {
 	int getId();
 	int getPing();

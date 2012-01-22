@@ -22,11 +22,7 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationRotational;
-import net.gtaun.shoebill.event.object.PlayerObjectMovedEvent;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.Event;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124
@@ -46,19 +42,10 @@ public class PlayerObject implements IPlayerObject
 	}
 	
 
-	private EventDispatcher eventDispatcher = new EventDispatcher()
+	void onPlayerObjectMoved()
 	{
-		@Override
-		public void dispatchEvent( Event event )
-		{
-			if( event instanceof PlayerObjectMovedEvent )
-			{
-				speed = 0;
-			}
-			
-			super.dispatchEvent( event );
-		}
-	};
+		speed = 0;
+	}
 	
 	private int id = -1;
 	private Player player;
@@ -71,7 +58,6 @@ public class PlayerObject implements IPlayerObject
 	
 	
 	@Override public Player getPlayer()								{ return player; }
-	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 
 	@Override public int getId()									{ return id; }
 	@Override public int getModelId()								{ return modelId; }

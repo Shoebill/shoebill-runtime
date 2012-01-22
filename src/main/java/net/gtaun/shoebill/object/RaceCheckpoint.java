@@ -24,8 +24,6 @@ import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.type.RaceCheckpointType;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author JoJLlmAn, MK124
@@ -33,16 +31,12 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
  */
 
 public class RaceCheckpoint implements IRaceCheckpoint
-{	
-	private EventDispatcher eventDispatcher = new EventDispatcher();
-	
+{
 	private Vector3D location;
 	private float size;
 	private RaceCheckpointType type;
 	private RaceCheckpoint next;
 
-	
-	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
 	@Override public Vector3D getLocation()							{ return location.clone(); }
 	@Override public float getSize()								{ return size; }

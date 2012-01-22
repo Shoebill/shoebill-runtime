@@ -17,14 +17,13 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IPickup extends IEventObject, IDestroyable
+public interface IPickup extends IDestroyable
 {
 	int getModelId();
 	int getType();

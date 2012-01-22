@@ -41,14 +41,9 @@ import net.gtaun.shoebill.data.type.SpectateMode;
 import net.gtaun.shoebill.data.type.WeaponState;
 import net.gtaun.shoebill.data.type.WeaponType;
 import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
-import net.gtaun.shoebill.event.player.PlayerInteriorChangeEvent;
-import net.gtaun.shoebill.event.player.PlayerUpdateEvent;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.Event;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124, JoJLlmAn
@@ -115,27 +110,22 @@ public class Player implements IPlayer
 	}
 	
 	
-	private EventDispatcher eventDispatcher = new EventDispatcher()
+	void processPlayerUpdate()
 	{
-		@Override
-		public void dispatchEvent( Event event )
-		{
-			if( event instanceof PlayerUpdateEvent )
-			{
-				SampNativeFunction.getPlayerPos( id, location );
-				location.angle = SampNativeFunction.getPlayerFacingAngle(id);
-				SampNativeFunction.getPlayerVelocity( id, velocity );
-				SampNativeFunction.getPlayerKeys( id, keyState );
-				
-				updateFrameCount++;
-				if( updateFrameCount<0 ) updateFrameCount = 0;
-			}
-			else if( event instanceof PlayerInteriorChangeEvent )
-			{
-				location.interiorId = SampNativeFunction.getPlayerInterior(id);
-			}
-		}
-	};
+		SampNativeFunction.getPlayerPos( id, location );
+		location.angle = SampNativeFunction.getPlayerFacingAngle(id);
+		SampNativeFunction.getPlayerVelocity( id, velocity );
+		SampNativeFunction.getPlayerKeys( id, keyState );
+
+		updateFrameCount++;
+		if( updateFrameCount<0 ) updateFrameCount = 0;
+	}
+	
+	void processPlayerInteriorChange()
+	{
+		location.interiorId = SampNativeFunction.getPlayerInterior(id);
+	}
+	
 	
 	private int id = -1;
 	
@@ -161,8 +151,6 @@ public class Player implements IPlayer
 	
 	private IDialog dialog;
 	
-
-	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
 	@Override public int getId()									{ return id; }
 	@Override public int getPing()									{ return SampNativeFunction.getPlayerPing(id); }
@@ -947,9 +935,6 @@ public class Player implements IPlayer
 		SampNativeFunction.showPlayerDialog( id, -1, 0, "", "", "", "" );
 		
 		DialogCancelEvent event = new DialogCancelEvent( dialog, this );
-		
-		dialog.getEventDispatcher().dispatchEvent( event );
-		getEventDispatcher().dispatchEvent( event );
-		Shoebill.getInstance().getGlobalEventDispatcher().dispatchEvent( event );
+		Shoebill.getInstance().getEventManager().dispatchEvent( event, dialog, this );
 	}
 }

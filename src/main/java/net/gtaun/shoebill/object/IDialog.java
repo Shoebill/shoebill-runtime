@@ -17,14 +17,13 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.type.DialogStyle;
-import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IDialog extends IEventObject
+public interface IDialog
 {
 	int getId();
 	DialogStyle getStyle();

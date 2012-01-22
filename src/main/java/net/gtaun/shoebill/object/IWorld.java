@@ -18,14 +18,13 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.type.PlayerMarkerMode;
-import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IWorld extends IEventObject
+public interface IWorld
 {
 	float getChatRadius();
 	void setChatRadius( float radius );

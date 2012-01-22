@@ -17,7 +17,7 @@
 package net.gtaun.shoebill;
 
 import net.gtaun.shoebill.samp.ISampCallbackManager;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
+import net.gtaun.shoebill.util.event.IEventManager;
 
 /**
  * @author MK124
@@ -26,7 +26,7 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public interface IShoebill
 {
-	IEventDispatcher getGlobalEventDispatcher();
+	IEventManager getEventManager();
 	
 	ISampCallbackManager getCallbackManager();
 	ISampObjectPool getManagedObjectPool();

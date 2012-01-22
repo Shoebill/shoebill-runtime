@@ -17,8 +17,6 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124
@@ -27,12 +25,6 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 public class Server implements IServer
 {
-	private EventDispatcher eventDispatcher = new EventDispatcher();
-	
-	
-	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
-	
-	
 	public Server()
 	{
 		

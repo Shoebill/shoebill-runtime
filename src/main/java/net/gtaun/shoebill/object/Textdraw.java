@@ -23,8 +23,6 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 
 /**
@@ -48,16 +46,12 @@ public class Textdraw implements ITextdraw
 	}
 	
 	
-	private EventDispatcher eventDispatcher = new EventDispatcher();
-	
 	private int id = -1;
 	private float x, y;
 	private String text;
 	
 	private boolean[] isPlayerShowed = new boolean[SampObjectPool.MAX_PLAYERS];
 	
-	
-	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
 	@Override public int getId()								{ return id; }
 	@Override public float getX()								{ return x; }

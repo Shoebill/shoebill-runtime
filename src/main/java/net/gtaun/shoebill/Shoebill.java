@@ -16,12 +16,13 @@
 
 package net.gtaun.shoebill;
 
+import net.gtaun.shoebill.object.SampEventDispatcher;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.samp.ISampCallbackManager;
 import net.gtaun.shoebill.samp.SampCallbackManager;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
+import net.gtaun.shoebill.util.event.EventManager;
+import net.gtaun.shoebill.util.event.IEventManager;
 
 /**
  * @author MK124
@@ -34,7 +35,7 @@ public class Shoebill implements IShoebill
 	public static IShoebill getInstance()		{ return instance; }
 	
 	
-	private EventDispatcher globalEventDispatcher;
+	private EventManager globalEventDispatcher;
 	
 	private SampCallbackManager sampCallbackManager;
 	private SampObjectPool managedObjectPool;
@@ -44,7 +45,7 @@ public class Shoebill implements IShoebill
 	private SampEventDispatcher sampEventDispatcher;
 
 	
-	@Override public IEventDispatcher getGlobalEventDispatcher()	{ return globalEventDispatcher; }
+	@Override public IEventManager getEventManager()				{ return globalEventDispatcher; }
 	@Override public ISampCallbackManager getCallbackManager()		{ return sampCallbackManager; }
 	@Override public ISampObjectPool getManagedObjectPool()			{ return managedObjectPool; }
 	@Override public PluginManager getPluginManager()				{ return pluginManager; }
@@ -52,7 +53,7 @@ public class Shoebill implements IShoebill
 	
 	Shoebill()
 	{
-		globalEventDispatcher = new EventDispatcher();
+		globalEventDispatcher = new EventManager();
 		
 		sampCallbackManager = new SampCallbackManager();
 		managedObjectPool = new SampObjectPool();

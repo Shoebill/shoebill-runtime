@@ -21,15 +21,25 @@ package net.gtaun.shoebill.util.event;
  *
  */
 
-public interface IEventDispatcher
+public enum EventListenerPriority
 {
-	void addListener( Class<?> type, IEventListener listener );
-	void addListener( Class<?> type, IEventListener listener, int priority );
-	
-	void removeListener( Class<?> type, IEventListener listener );
+	BOTTOM		( (short) -32768 ),
+	LOWEST		( (short) -16384 ),
+    LOW			( (short) -8192 ),
+    NORMAL		( (short) 0 ),
+    HIGH		( (short) 8192 ),
+    HIGHEST		( (short) 16384 ),
+    MONITOR		( (short) 32767 );
 
-	boolean hasListener( Class<?> type );
-	boolean hasListener( Class<?> type, IEventListener listener );
-	
-	void dispatchEvent( Event event );
+    private final short value;
+
+    private EventListenerPriority( short value )
+    {
+        this.value = value;
+    }
+
+    public short getValue()
+    {
+        return value;
+    }
 }

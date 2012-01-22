@@ -16,14 +16,13 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface ITimer extends IEventObject
+public interface ITimer
 {
 	int getInterval();
 	int getCount();

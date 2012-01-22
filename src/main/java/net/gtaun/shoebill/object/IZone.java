@@ -18,14 +18,13 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.util.event.IEventObject;
 
 /**
  * @author MK124
  *
  */
 
-public interface IZone extends IEventObject, IDestroyable
+public interface IZone extends IDestroyable
 {
 	int getId();
 	Area getArea();

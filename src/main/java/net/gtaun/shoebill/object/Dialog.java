@@ -19,8 +19,6 @@ package net.gtaun.shoebill.object;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.type.DialogStyle;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124
@@ -30,15 +28,11 @@ import net.gtaun.shoebill.util.event.IEventDispatcher;
 public class Dialog implements IDialog
 {
 	private static int count = 0;
-	
-	
-	private EventDispatcher eventDispatcher = new EventDispatcher();
-	
+
+
 	private int id;
 	private DialogStyle style;
 
-	
-	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 
 	@Override public int getId()									{ return id; }
 	@Override public DialogStyle getStyle()							{ return style; }

@@ -26,12 +26,8 @@ import net.gtaun.shoebill.data.LocationAngular;
 import net.gtaun.shoebill.data.Quaternions;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleModEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.Event;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124, JoJLlmAn
@@ -70,20 +66,12 @@ public class Vehicle implements IVehicle
 	}
 	
 
-	private EventDispatcher eventDispatcher = new EventDispatcher()
+	void onVehicleMod()
 	{
-		@Override
-		public void dispatchEvent( Event event )
-		{
-			if( event instanceof VehicleModEvent )
-			{
-				//int type = SampNativeFunction.getVehicleComponentType(componentId);
-				//component.components[type] = SampNativeFunction.getVehicleComponentInSlot(vehicleid, type);
-			}
-			
-			super.dispatchEvent( event );
-		}
-	};
+		//int type = SampNativeFunction.getVehicleComponentType(componentId);
+		//component.components[type] = SampNativeFunction.getVehicleComponentInSlot(vehicleid, type);
+	}
+	
 	
 	private boolean isStatic = false;
 	
@@ -99,7 +87,6 @@ public class Vehicle implements IVehicle
 
 	
 	@Override public int getId()									{ return id; }
-	@Override public IEventDispatcher getEventDispatcher()			{ return eventDispatcher; }
 	
 	@Override public boolean isStatic()								{ return isStatic; }
 	
@@ -180,8 +167,7 @@ public class Vehicle implements IVehicle
 		pool.setVehicle( id, this );
 		
 		VehicleSpawnEvent event = new VehicleSpawnEvent( this );
-		getEventDispatcher().dispatchEvent( event );
-		Shoebill.getInstance().getGlobalEventDispatcher().dispatchEvent( event );
+		Shoebill.getInstance().getEventManager().dispatchEvent( event, this );
 	}
 	
 	
@@ -196,8 +182,7 @@ public class Vehicle implements IVehicle
 		pool.setVehicle( id, null );
 
 		VehicleDestroyEvent event = new VehicleDestroyEvent( this );
-		getEventDispatcher().dispatchEvent( event );
-		Shoebill.getInstance().getGlobalEventDispatcher().dispatchEvent( event );
+		Shoebill.getInstance().getEventManager().dispatchEvent( event, this );
 		
 		id = -1;
 	}

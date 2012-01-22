@@ -24,7 +24,6 @@ import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.EventDispatcher;
 
 /**
  * @author MK124, JoJLlmAn
@@ -47,16 +46,12 @@ public class Zone implements IZone
 	}
 	
 	
-	private EventDispatcher eventDispatcher = new EventDispatcher();
-	
 	private int id = -1;
 	private Area area;
 	
 	private boolean[] isPlayerShowed = new boolean[SampObjectPool.MAX_PLAYERS];
 	private boolean[] isPlayerFlashing = new boolean[SampObjectPool.MAX_PLAYERS];
 	
-	
-	@Override public EventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
 	@Override public int getId()								{ return id; }
 	@Override public Area getArea()								{ return area.clone(); }

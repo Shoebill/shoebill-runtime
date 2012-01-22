@@ -22,8 +22,6 @@ import java.util.Collection;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124, JoJLlmAn
@@ -46,16 +44,12 @@ public class Menu implements IMenu
 	}
 	
 
-	private EventDispatcher eventDispatcher = new EventDispatcher();
-	
 	private int id = -1;
 	private String title, columnHeader = "";
 	private int columns;
 	private float x, y;
 	private float col1Width, col2Width;
 	
-
-	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
 	@Override public int getId()								{ return id; }
 	@Override public String getTitle()							{ return title; }

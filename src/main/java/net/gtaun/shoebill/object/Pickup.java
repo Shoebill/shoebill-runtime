@@ -23,8 +23,6 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.EventDispatcher;
-import net.gtaun.shoebill.util.event.IEventDispatcher;
 
 /**
  * @author MK124, JoJLlmAn
@@ -43,14 +41,10 @@ public class Pickup implements IPickup
 	}
 	
 	
-	private EventDispatcher eventDispatcher = new EventDispatcher();
-	
 	private int id = -1;
 	private int modelId, type;
 	private Location location;
 
-	
-	@Override public IEventDispatcher getEventDispatcher()		{ return eventDispatcher; }
 	
 	@Override public int getModelId()								{ return modelId; }
 	@Override public int getType()								{ return type; }
