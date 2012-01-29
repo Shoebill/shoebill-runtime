@@ -1,4 +1,5 @@
 /**
+ * Copyright (C) 2011 JoJLlmAn
  * Copyright (C) 2011 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +19,7 @@ package net.gtaun.shoebill;
 
 
 /**
- * @author MK124
+ * @author MK124, JoJLlmAn
  *
  */
 
@@ -26,4 +27,5 @@ public interface IPluginManager
 {
 	Plugin getPlugin( String name );
 	Plugin loadPlugin( String name );
+	void unloadPlugin( String name );
 }

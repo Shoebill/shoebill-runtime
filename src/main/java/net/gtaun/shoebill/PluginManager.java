@@ -1,4 +1,5 @@
 /**
+ * Copyright (C) 2011 JoJLlmAn
  * Copyright (C) 2011 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +17,16 @@
 
 package net.gtaun.shoebill;
 
+import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.gtaun.shoebill.event.plugin.PluginUnloadEvent;
+
 /**
- * @author MK124
+ * @author MK124, JoJLlmAn
  *
  */
 
@@ -36,11 +42,30 @@ public class PluginManager implements IPluginManager
 	
 	public Plugin getPlugin( String name )
 	{
-		return null;
+		return plugins.get(name);
 	}
 	
 	public Plugin loadPlugin( String name )
 	{
-		return null;
+		try {
+			ClassLoader loader = URLClassLoader.newInstance(new URL[]{new URL("File://" + System.getProperty("user.dir") + "/Plugins/" + name)}, getClass().getClassLoader());
+			Class<? extends Plugin> clazz = Class.forName("net.gtaun.shoebill.plugin.Test", true, loader).asSubclass(Plugin.class);
+			Constructor<? extends Plugin> constructor = clazz.getConstructor();
+			Plugin plugin = constructor.newInstance();
+			plugins.put("Test", plugin);
+			return plugin;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public void unloadPlugin( String name )
+	{
+		if(plugins.containsKey(name))
+		{
+			Shoebill.getInstance().getEventManager().dispatchEvent(new PluginUnloadEvent(plugins.get(name)));
+			plugins.remove(name);
+		}
 	}
 }
