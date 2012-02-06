@@ -16,9 +16,12 @@
 
 package net.gtaun.shoebill;
 
+import java.io.File;
+
 import net.gtaun.shoebill.object.SampEventDispatcher;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.object.World;
+import net.gtaun.shoebill.plugin.PluginManager;
 import net.gtaun.shoebill.samp.ISampCallbackManager;
 import net.gtaun.shoebill.samp.SampCallbackManager;
 import net.gtaun.shoebill.util.event.EventManager;
@@ -57,7 +60,7 @@ public class Shoebill implements IShoebill
 		
 		sampCallbackManager = new SampCallbackManager();
 		managedObjectPool = new SampObjectPool();
-		pluginManager = new PluginManager();
+		pluginManager = new PluginManager(this, new File("/plugins/"), new File("/data/"));
 		
 		sampEventLogger = new SampEventLogger( managedObjectPool );
 		sampEventDispatcher = new SampEventDispatcher( managedObjectPool, globalEventDispatcher );

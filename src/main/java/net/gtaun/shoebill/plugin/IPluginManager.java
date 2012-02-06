@@ -15,7 +15,10 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.plugin;
+
+import java.io.File;
+
 
 
 /**
@@ -26,6 +29,9 @@ package net.gtaun.shoebill;
 public interface IPluginManager
 {
 	Plugin getPlugin( String name );
-	Plugin loadPlugin( String name );
+	
+	Plugin loadPlugin( String filename );
+	Plugin loadPlugin( File file );
+	
 	void unloadPlugin( String name );
 }

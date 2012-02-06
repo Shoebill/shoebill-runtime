@@ -42,7 +42,7 @@ public class PlayerObject implements IPlayerObject
 	}
 	
 
-	void onPlayerObjectMoved()
+	void processPlayerObjectMoved()
 	{
 		speed = 0;
 	}

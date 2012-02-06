@@ -17,8 +17,8 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.Plugin;
 import net.gtaun.shoebill.data.SpawnInfo;
+import net.gtaun.shoebill.plugin.Plugin;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**

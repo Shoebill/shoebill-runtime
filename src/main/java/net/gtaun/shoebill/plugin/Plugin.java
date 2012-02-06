@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill;
+package net.gtaun.shoebill.plugin;
 
 import java.io.File;
+
+import net.gtaun.shoebill.IShoebill;
 
 
 /**
@@ -28,20 +30,29 @@ public abstract class Plugin
 {
 	private boolean isEnabled;
 	
+	private PluginDescription description;
 	private IShoebill shoebill;
+	private File dataFolder;
 	
 
-	public boolean isEnabled()				{ return isEnabled; }
+	public boolean isEnabled()						{ return isEnabled; }
+
+	public PluginDescription getDescription()		{ return description; }
+	public IShoebill getShoebill()					{ return shoebill; }
+	public File getDataFolder()						{ return dataFolder; }
 	
-	public IShoebill getShoebill()			{ return shoebill; }
-	public File getDataFolder()				{ return null; }
 	
-	
-	public Plugin()
+	protected Plugin()
 	{
 		
 	}
-
+		
+	void setContext( PluginDescription description, IShoebill shoebill, File dataFolder )
+	{
+		this.description = description;
+		this.shoebill = shoebill;
+		this.dataFolder = dataFolder;
+	}
 
 	protected abstract void onEnable();
 	protected abstract void onDisable();

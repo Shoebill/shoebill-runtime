@@ -56,11 +56,11 @@ public class SampCallbackManager implements ISampCallbackManager
 	@Override
 	public ISampCallbackHandler getMasterCallbackHandler()
 	{
-		return sampCallback;
+		return callbackHandler;
 	}
 	
 
-	private ISampCallbackHandler sampCallback = new ISampCallbackHandler()
+	private ISampCallbackHandler callbackHandler = new ISampCallbackHandler()
 	{
 		public int onGameModeInit()
 		{

@@ -1,6 +1,5 @@
 /**
- * Copyright (C) 2011 JoJLlmAn
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +14,17 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.event.plugin;
-
-import net.gtaun.shoebill.plugin.Plugin;
-import net.gtaun.shoebill.util.event.Event;
+package net.gtaun.shoebill.plugin;
 
 /**
- * @author MK124, JoJLlmAn
+ * @author MK124
  *
  */
 
-public class PluginUnloadEvent extends Event
+public abstract class Gamemode extends Plugin
 {
-	private Plugin plugin;
-	
-	public Plugin getPlugin()		{ return plugin; }
-	
-	
-	public PluginUnloadEvent( Plugin plugin )
+	protected Gamemode()
 	{
-		this.plugin = plugin;
+		
 	}
 }

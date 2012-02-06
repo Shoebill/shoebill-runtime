@@ -56,6 +56,6 @@ public class VehicleParam implements IVehicleParam
 	public void set( int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective )
 	{
 		SampNativeFunction.setVehicleParamsEx( vehicleId, engine, lights, alarm, doors, bonnet, boot, objective );
-		SampNativeFunction.getVehicleParamsEx( vehicleId, this);
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
 	}
 }

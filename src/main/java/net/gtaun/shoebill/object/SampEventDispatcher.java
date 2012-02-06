@@ -76,15 +76,15 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	private SampObjectPool sampObjectPool;
 	private EventManager eventManager;
 
-	private long lastProcessTickTimeMillis;
+	private long lastProcessTimeMillis;
 	
 	
-	public SampEventDispatcher( SampObjectPool pool, EventManager dispatcher )
+	public SampEventDispatcher( SampObjectPool pool, EventManager manager )
 	{
 		sampObjectPool = pool;
-		eventManager = dispatcher;
+		eventManager = manager;
 		
-		lastProcessTickTimeMillis = System.currentTimeMillis();
+		lastProcessTimeMillis = System.currentTimeMillis();
 	}
 	
 	
@@ -585,6 +585,9 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			
 			if( object instanceof ObjectBase )
 			{
+				ObjectBase obj = (ObjectBase) object;
+				obj.processObjectMoved();
+				
 				ObjectMovedEvent event = new ObjectMovedEvent(object);
 				eventManager.dispatchEvent( event, object );
 			}
@@ -605,6 +608,12 @@ public class SampEventDispatcher implements ISampCallbackHandler
 		{
 			IPlayer player = sampObjectPool.getPlayer( playerId );
 			IPlayerObject object = sampObjectPool.getPlayerObject( player, objectId );
+			
+			if( object instanceof PlayerObject )
+			{
+				PlayerObject playerObject = (PlayerObject) object;
+				playerObject.processPlayerObjectMoved();
+			}
 
 			PlayerObjectMovedEvent event = new PlayerObjectMovedEvent(player, object);
 
@@ -671,6 +680,12 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			IVehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 			
 			VehicleModEvent event = new VehicleModEvent(vehicle, componentId);
+			
+			if( vehicle instanceof Vehicle )
+			{
+				Vehicle veh = (Vehicle) vehicle;
+				veh.processVehicleMod();
+			}
 			
 			if( player instanceof Player && vehicle instanceof Vehicle )
 			{
@@ -924,6 +939,9 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			
 			if( player instanceof Player )
 			{
+				Player p = (Player) player;
+				p.processPlayerInteriorChange();
+				
 				PlayerInteriorChangeEvent event = new PlayerInteriorChangeEvent(player, oldInteriorId);
 				eventManager.dispatchEvent( event, player );
 			}
@@ -986,6 +1004,9 @@ public class SampEventDispatcher implements ISampCallbackHandler
 
 			if( player instanceof Player )
 			{
+				Player p = (Player) player;
+				p.processPlayerUpdate();
+				
 				PlayerUpdateEvent event = new PlayerUpdateEvent(player);
 				eventManager.dispatchEvent( event, player );
 			}
@@ -1270,8 +1291,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 		try
 		{
 			long nowTick = System.currentTimeMillis();
-			int interval = (int) (nowTick - lastProcessTickTimeMillis);
-			lastProcessTickTimeMillis = nowTick;
+			int interval = (int) (nowTick - lastProcessTimeMillis);
+			lastProcessTimeMillis = nowTick;
 			
 			for( ITimer timer : sampObjectPool.getTimers() ) timer.tick( interval );
 		}

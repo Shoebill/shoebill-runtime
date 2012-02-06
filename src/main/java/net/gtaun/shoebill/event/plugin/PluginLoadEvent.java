@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.event.plugin;
 
-import net.gtaun.shoebill.Plugin;
+import net.gtaun.shoebill.plugin.Plugin;
 import net.gtaun.shoebill.util.event.Event;
 
 /**
