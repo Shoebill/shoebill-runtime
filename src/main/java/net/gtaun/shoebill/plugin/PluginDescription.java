@@ -17,6 +17,7 @@
 package net.gtaun.shoebill.plugin;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.gtaun.shoebill.util.config.YamlConfiguration;
@@ -35,7 +36,6 @@ public class PluginDescription
 	private List<String> authors;
 	
 
-	@SuppressWarnings("unchecked")
 	public PluginDescription( InputStream in )
 	{
 		YamlConfiguration config = new YamlConfiguration();
@@ -44,7 +44,15 @@ public class PluginDescription
 		classPath = config.getString( "class" );
 		name = config.getString( "name" );
 		version = config.getString( "version" );
-		authors = (List<String>) config.getList( "authors" );
+		
+		String author = config.getString( "authors" );	
+		authors = new ArrayList<String>();
+		String[] auth = author.split("[,;]");	
+		if(auth.length > 0)
+			for(String string : auth) authors.add(string.trim());
+		else
+			authors.add(author.trim());
+		
 		description = config.getString( "description" );
 	}
 

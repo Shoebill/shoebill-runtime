@@ -62,7 +62,7 @@ public class PluginManager implements IPluginManager
     	{
     		public boolean accept( File dir, String name )
     		{
-    			return name.substring( name.length()-4, name.length() ).equals(".yml");
+    			return name.substring( name.length()-4, name.length() ).equals(".jar");
     		}
     	} );
 		
@@ -92,12 +92,20 @@ public class PluginManager implements IPluginManager
 			
 			PluginDescription desc = new PluginDescription(in);
 			
+			if(plugins.containsKey(desc.getName()))
+			{
+				System.out.println("There's a plugin which has the same name as \"" + desc.getName() + "\".");
+				System.out.println("Abandon loading " + desc.getClassPath());
+				return null;
+			}
+			
 			ClassLoader loader = URLClassLoader.newInstance(new URL[]{file.toURI().toURL()}, getClass().getClassLoader());
-			Class<? extends Plugin> clazz = Class.forName(desc.getName(), true, loader).asSubclass(Plugin.class);
+			Class<? extends Plugin> clazz = Class.forName(desc.getClassPath(), true, loader).asSubclass(Plugin.class);
 			Constructor<? extends Plugin> constructor = clazz.getConstructor();
 			Plugin plugin = constructor.newInstance();
 			
-			plugin.setContext( desc, shoebill, new File(dataFolder, desc.getName()) );
+			plugin.setContext( desc, shoebill, new File(dataFolder + desc.getClassPath() + "/", desc.getName()) );
+			plugin.enable();
 			
 			plugins.put( plugin.getDescription().getName(), plugin );
 			return plugin;
@@ -114,6 +122,7 @@ public class PluginManager implements IPluginManager
 		if( plugins.containsKey(name) )
 		{
 			Shoebill.getInstance().getEventManager().dispatchEvent(new PluginUnloadEvent(plugins.get(name)));
+			plugins.get(name).disable();
 			plugins.remove(name);
 		}
 	}

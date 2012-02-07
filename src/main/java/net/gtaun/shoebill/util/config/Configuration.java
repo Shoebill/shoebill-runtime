@@ -47,7 +47,11 @@ public class Configuration
 	@SuppressWarnings("unchecked")
 	public Object get( String path )
 	{
-		String[] childs = path.split( "." );
+		String[] childs = {new String(path)};
+		
+		if(path.contains("."))
+			childs = path.split(".");
+		
 		HashMap<String, Object> node = root;
 		
 		for( int i=0; i<childs.length-1; i++ )
@@ -62,7 +66,7 @@ public class Configuration
 	
 	public String getString( String path )
 	{
-		return (String) get(path);
+		return get(path).toString();
 	}
 	
 	public boolean isString( String path )

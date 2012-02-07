@@ -60,7 +60,7 @@ public class Shoebill implements IShoebill
 		
 		sampCallbackManager = new SampCallbackManager();
 		managedObjectPool = new SampObjectPool();
-		pluginManager = new PluginManager(this, new File("/plugins/"), new File("/data/"));
+		pluginManager = new PluginManager(this, new File("plugins/"), new File("data/"));
 		
 		sampEventLogger = new SampEventLogger( managedObjectPool );
 		sampEventDispatcher = new SampEventDispatcher( managedObjectPool, globalEventDispatcher );

@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.HashMap;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -67,10 +68,11 @@ public class YamlConfiguration extends FileConfiguration
 		yaml = new Yaml( new SafeConstructor(), new Representer(), options );
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void read( InputStream in )
 	{
-		yaml.load( in );
+		root = (HashMap<String, Object>)yaml.load( in );
 	}
 
 	@Override

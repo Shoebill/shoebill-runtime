@@ -56,4 +56,16 @@ public abstract class Plugin
 
 	protected abstract void onEnable();
 	protected abstract void onDisable();
+	
+	void enable()
+	{
+		onEnable();
+		isEnabled = true;
+	}
+	
+	void disable()
+	{
+		onDisable();
+		isEnabled = false;
+	}
 }
