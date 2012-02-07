@@ -23,8 +23,8 @@ package net.gtaun.shoebill.util.event;
 
 public abstract class Event
 {
-	boolean interruptable;
-	boolean interrupted;
+	private boolean interruptable;
+	private boolean interrupted;
 	
 	
 	public Event()
@@ -40,6 +40,11 @@ public abstract class Event
 	public boolean isInterruptable()
 	{
 		return interruptable;
+	}
+	
+	public boolean isInterrupted()
+	{
+		return interrupted;
 	}
 	
 	public boolean interrupt()

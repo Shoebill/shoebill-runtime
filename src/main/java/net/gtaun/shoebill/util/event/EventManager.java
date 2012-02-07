@@ -96,7 +96,7 @@ public class EventManager implements IEventManager
 		if( listeners == null )
 		{
 			listeners = new Vector<Entry<IEventListener>>();
-			objectListeners.put( type, listeners );
+			objectListeners.put( object, listeners );
 		}
 		
 		for( int i=0; i<listeners.size(); i++ )
@@ -228,7 +228,7 @@ public class EventManager implements IEventManager
 			}
 		}
 		
-		while( event.interrupted )
+		while( listenerEntryQueue.isEmpty() == false && event.isInterrupted() == false )
 		{
 			Entry<IEventListener> entry = listenerEntryQueue.poll();
 			IEventListener listener = entry.getValue();
