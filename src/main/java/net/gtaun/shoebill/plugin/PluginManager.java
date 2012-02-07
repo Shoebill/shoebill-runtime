@@ -84,6 +84,8 @@ public class PluginManager implements IPluginManager
 	{
 		if( file.canRead() == false ) return null;
 		
+		System.out.println("Load plugin: " + file.getPath() );
+		
 		try
 		{
 			JarFile jarFile = new JarFile( file );
@@ -104,7 +106,10 @@ public class PluginManager implements IPluginManager
 			Constructor<? extends Plugin> constructor = clazz.getConstructor();
 			Plugin plugin = constructor.newInstance();
 			
-			plugin.setContext( desc, shoebill, new File(dataFolder + desc.getClassPath() + "/", desc.getName()) );
+			File pluginDataFolder = new File(dataFolder, desc.getClassPath());
+			if( ! pluginDataFolder.exists() ) pluginDataFolder.mkdirs();
+			
+			plugin.setContext( desc, shoebill, pluginDataFolder );
 			plugin.enable();
 			
 			plugins.put( plugin.getDescription().getName(), plugin );

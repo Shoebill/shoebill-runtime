@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.plugin.PluginManager;
+import net.gtaun.shoebill.plugin.IPluginManager;
 import net.gtaun.shoebill.samp.ISampCallbackManager;
 import net.gtaun.shoebill.util.event.IEventManager;
 
@@ -31,5 +31,5 @@ public interface IShoebill
 	
 	ISampCallbackManager getCallbackManager();
 	ISampObjectPool getManagedObjectPool();
-	PluginManager getPluginManager();
+	IPluginManager getPluginManager();
 }
