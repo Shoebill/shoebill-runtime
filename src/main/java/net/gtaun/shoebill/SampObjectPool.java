@@ -18,6 +18,7 @@ package net.gtaun.shoebill;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,8 @@ import net.gtaun.shoebill.object.IVehicle;
 import net.gtaun.shoebill.object.IWorld;
 import net.gtaun.shoebill.object.IZone;
 import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.samp.ISampCallbackHandler;
+import net.gtaun.shoebill.samp.SampCallbackHandler;
 
 /**
  * @author MK124
@@ -68,6 +71,8 @@ public class SampObjectPool implements ISampObjectPool
 	}
 	
 	
+	ISampCallbackHandler callbackHandler;
+	
 	IServer server;
 	IWorld world;
 	IGamemode gamemode;
@@ -86,12 +91,36 @@ public class SampObjectPool implements ISampObjectPool
 	List<Reference<ITimer>> timers					= new Vector<Reference<ITimer>>();
 	Map<Integer, Reference<IDialog>> dialogs		= new HashMap<Integer, Reference<IDialog>>();
 	
-	Class<?> playerClass = Player.class;
+	Class<? extends IPlayer> playerClass = Player.class;
 	
 	
 	SampObjectPool()
 	{
-		
+		callbackHandler = new SampCallbackHandler()
+		{
+			public int onPlayerConnect( int playerid )
+			{
+				try
+				{
+					Constructor<? extends IPlayer> constructor = playerClass.getConstructor( int.class );
+					IPlayer player = constructor.newInstance( playerid );
+					
+					setPlayer( playerid, player );
+				}
+				catch( Exception e )
+				{
+					e.printStackTrace();
+				}
+				
+				return 1;
+			}
+		};
+	}
+	
+	
+	ISampCallbackHandler getCallbackHandler()
+	{
+		return callbackHandler;
 	}
 	
 	

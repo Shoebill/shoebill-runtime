@@ -121,19 +121,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			IPlayer player;
-			
-			try
-			{
-				player = Player.class.getConstructor( Integer.class ).newInstance( playerId );
-			}
-			catch( Exception e )
-			{
-				e.printStackTrace();
-				return 0;
-			}
-
-			sampObjectPool.setPlayer( playerId, player );
+			IPlayer player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof Player )
 			{
