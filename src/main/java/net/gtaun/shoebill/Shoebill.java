@@ -57,6 +57,8 @@ public class Shoebill implements IShoebill
 	
 	Shoebill()
 	{
+		instance = this;
+		
 		globalEventDispatcher = new EventManager();
 		
 		sampCallbackManager = new SampCallbackManager();
