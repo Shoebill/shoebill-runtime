@@ -57,8 +57,9 @@ public class Shoebill implements IShoebill
 	
 	Shoebill()
 	{
-		globalEventDispatcher = new EventManager();
+		instance = this;
 		
+		globalEventDispatcher = new EventManager();
 		sampCallbackManager = new SampCallbackManager();
 		managedObjectPool = new SampObjectPool();
 		pluginManager = new PluginManager(this, new File("shoebill/plugins/"), new File("shoebill/data/"));
@@ -67,6 +68,12 @@ public class Shoebill implements IShoebill
 		sampEventDispatcher = new SampEventDispatcher( managedObjectPool, globalEventDispatcher );
 		
 		initialize();
+	}
+	
+	@Override
+	protected void finalize() throws Throwable
+	{
+		instance = null;
 	}
 	
 	private void initialize()
