@@ -197,7 +197,7 @@ public class Player implements IPlayer
 	@Override public boolean isControllable()						{ return controllable; }
 	
 	
-	protected Player( int id )
+	public Player( int id )
 	{	
 		this.id = id;
 		
