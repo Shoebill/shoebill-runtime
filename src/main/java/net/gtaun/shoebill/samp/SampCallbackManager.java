@@ -76,7 +76,7 @@ public class SampCallbackManager implements ISampCallbackManager
 
 		public int onPlayerConnect( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onGameModeExit();
+			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerConnect( playerid );
 			return 1;
 		}
 
