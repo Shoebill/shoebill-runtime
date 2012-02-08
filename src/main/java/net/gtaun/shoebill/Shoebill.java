@@ -22,6 +22,7 @@ import net.gtaun.shoebill.object.SampEventDispatcher;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.plugin.PluginManager;
+import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.ISampCallbackManager;
 import net.gtaun.shoebill.samp.SampCallbackManager;
 import net.gtaun.shoebill.util.event.EventManager;
@@ -75,5 +76,10 @@ public class Shoebill implements IShoebill
 		
 		sampCallbackManager.registerCallbackHandler( sampEventLogger );
 		sampCallbackManager.registerCallbackHandler( sampEventDispatcher );
+	}
+	
+	public ISampCallbackHandler getCallbackHandler()
+	{
+		return sampCallbackManager.getMasterCallbackHandler();
 	}
 }
