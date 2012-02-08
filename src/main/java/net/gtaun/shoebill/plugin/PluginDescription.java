@@ -34,50 +34,32 @@ public class PluginDescription
 	private String version;
 	private String description;
 	private List<String> authors;
+
+
+	public String getClassPath()		{ return classPath; }
+	public String getName()				{ return name; }
+	public String getVersion()			{ return version; }
+	public List<String> getAuthors()	{ return authors; }
+	public String getDescription()		{ return description; }
 	
 
 	public PluginDescription( InputStream in )
 	{
 		YamlConfiguration config = new YamlConfiguration();
 		config.read( in );
-
+		
 		classPath = config.getString( "class" );
 		name = config.getString( "name" );
 		version = config.getString( "version" );
-		
-		String author = config.getString( "authors" );	
+			
+		String author = config.getString( "authors" );
 		authors = new ArrayList<String>();
-		String[] auth = author.split("[,;]");	
-		if(auth.length > 0)
-			for(String string : auth) authors.add(string.trim());
+		String[] auth = author.split("[,;]");
+		if( auth.length > 0 )
+			for( String string : auth ) authors.add( string.trim() );
 		else
-			authors.add(author.trim());
-		
+			authors.add( author.trim() );
+			
 		description = config.getString( "description" );
-	}
-
-	public String getClassPath()
-	{
-		return classPath;
-	}
-	
-	public String getName()
-	{
-		return name;
-	}
-
-	public String getVersion()
-	{
-		return version;
-	}
-
-	public List<String> getAuthors()
-	{
-		return authors;
-	}
-
-	public String getDescription()
-	{
-		return description;
 	}
 }
