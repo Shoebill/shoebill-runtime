@@ -450,7 +450,6 @@ public class SampObjectPool implements ISampObjectPool
 		dialogs.put( id, new WeakReference<IDialog>( dialog ) );
 	}
 	
-	@Override
 	public <T extends IPlayer> void setPlayerClass( Class<T> cls )
 	{
 		playerClass = cls;

@@ -82,6 +82,4 @@ public interface ISampObjectPool
 	<T extends IMenu> Collection<T> getMenus( Class<T> cls );
 	<T extends IDialog> Collection<T> getDialogs( Class<T> cls );
 	<T extends ITimer> Collection<T> getTimers( Class<T> cls );
-	
-	<T extends IPlayer> void setPlayerClass( Class<T> cls );
 }
