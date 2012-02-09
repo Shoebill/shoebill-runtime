@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.WeakHashMap;
 
+import net.gtaun.shoebill.event.gamemode.GamemodeExitEvent;
+import net.gtaun.shoebill.event.gamemode.GamemodeInitEvent;
 import net.gtaun.shoebill.object.IDialog;
 import net.gtaun.shoebill.object.ILabel;
 import net.gtaun.shoebill.object.IMenu;
@@ -44,6 +46,7 @@ import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.plugin.Gamemode;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
+import net.gtaun.shoebill.util.event.EventManager;
 
 /**
  * @author MK124
@@ -91,13 +94,36 @@ public class SampObjectPool implements ISampObjectPool
 	List<Reference<ITimer>> timers					= new Vector<Reference<ITimer>>();
 	Map<Integer, Reference<IDialog>> dialogs		= new HashMap<Integer, Reference<IDialog>>();
 	
+	Class<? extends Gamemode> gamemodeClass;
 	Class<? extends IPlayer> playerClass = Player.class;
 	
 	
-	SampObjectPool()
+	SampObjectPool( final EventManager eventManager )
 	{
 		callbackHandler = new SampCallbackHandler()
 		{
+			public int onGameModeInit()
+			{
+				try
+				{
+					gamemode = gamemodeClass.newInstance();
+					eventManager.dispatchEvent( new GamemodeInitEvent(gamemode), gamemode );
+				}
+				catch( Exception e )
+				{
+					e.printStackTrace();
+				}
+
+				return 1;
+			}
+			
+			public int onGameModeExit()
+			{
+				eventManager.dispatchEvent( new GamemodeExitEvent(gamemode), gamemode );
+				gamemode = null;
+				return 1;
+			}
+			
 			public int onPlayerConnect( int playerid )
 			{
 				try
@@ -448,6 +474,11 @@ public class SampObjectPool implements ISampObjectPool
 	public void putDialog( int id, IDialog dialog )
 	{
 		dialogs.put( id, new WeakReference<IDialog>( dialog ) );
+	}
+	
+	public <T extends Gamemode> void setGamemodeClass( Class<T> cls )
+	{
+		gamemodeClass = cls;
 	}
 	
 	public <T extends IPlayer> void setPlayerClass( Class<T> cls )

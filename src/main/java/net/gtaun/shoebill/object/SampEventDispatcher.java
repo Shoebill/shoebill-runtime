@@ -96,15 +96,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	@Override
 	public int onGameModeExit()
 	{
-		try
-		{
-			return 1;
-		}
-		catch( Exception e )
-		{
-			e.printStackTrace();
-			return 0;
-		}
+		return 1;
 	}
 	
 	@Override
