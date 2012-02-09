@@ -17,6 +17,8 @@
 package net.gtaun.shoebill;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import net.gtaun.shoebill.object.SampEventDispatcher;
 import net.gtaun.shoebill.object.Server;
@@ -39,6 +41,7 @@ public class Shoebill implements IShoebill
 	public static IShoebill getInstance()		{ return instance; }
 	
 	
+	private ShoebillConfiguration configuration;
 	private EventManager globalEventDispatcher;
 	
 	private SampCallbackManager sampCallbackManager;
@@ -55,14 +58,21 @@ public class Shoebill implements IShoebill
 	@Override public PluginManager getPluginManager()				{ return pluginManager; }
 	
 	
-	Shoebill()
+	Shoebill() throws FileNotFoundException
 	{
 		instance = this;
 		
+		FileInputStream configFileIn;
+		configFileIn = new FileInputStream("./shoebill/config.yml");
+		
+		configuration = new ShoebillConfiguration( configFileIn );
 		globalEventDispatcher = new EventManager();
+		
 		sampCallbackManager = new SampCallbackManager();
 		managedObjectPool = new SampObjectPool();
-		pluginManager = new PluginManager(this, new File("shoebill/plugins/"), new File("shoebill/data/"));
+		
+		File workdir = configuration.getWorkdir();
+		pluginManager = new PluginManager(this, new File(workdir, "plugins"), new File(workdir, "data"));
 		
 		sampEventLogger = new SampEventLogger( managedObjectPool );
 		sampEventDispatcher = new SampEventDispatcher( managedObjectPool, globalEventDispatcher );
