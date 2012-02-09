@@ -211,7 +211,8 @@ public class EventManager implements IEventManager
 			}
 		);
 		
-		if( objects.length == 0 ) objects = new Object[] { Object.class };
+		final Object obj = new Object();
+		if( objects.length == 0 ) objects = new Object[] { obj };
 		for( Object object : objects )
 		{
 			Class<?> cls = object.getClass();
