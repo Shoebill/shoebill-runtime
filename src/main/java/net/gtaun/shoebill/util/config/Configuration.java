@@ -63,11 +63,16 @@ public class Configuration
 		
 		return node.get( childs[ childs.length-1 ] );
 	}
-	
+
 	public String getString( String path )
 	{
+		return getString(path, "");
+	}
+	
+	public String getString( String path, String def )
+	{
 		Object obj = get(path);
-		return obj == null ? "" : obj.toString();
+		return obj == null ? def : obj.toString();
 	}
 	
 	public boolean isString( String path )
@@ -77,17 +82,29 @@ public class Configuration
 	
 	public int getInt( String path )
 	{
-		return (Integer) get(path);
+		return getInt(path, 0);
+	}
+	
+	public int getInt( String path, int def )
+	{
+		Object obj = get(path);
+		return obj == null ? def : (Integer) obj;
 	}
 	
 	public boolean isInt( String path )
 	{
 		return get(path) instanceof Integer;
 	}
-	
-	public int getLong( String path )
+
+	public long getLong( String path )
 	{
-		return (Integer) get(path);
+		return getLong(path, 0L);
+	}
+	
+	public long getLong( String path, long def )
+	{
+		Object obj = get(path);
+		return obj == null ? def : (Long) obj;
 	}
 	
 	public boolean isLong( String path )
@@ -97,17 +114,29 @@ public class Configuration
 	
 	public double getDouble( String path )
 	{
-		return (Double) get(path);
+		return getDouble(path, Double.NaN);
+	}
+	
+	public double getDouble( String path, double def )
+	{
+		Object obj = get(path);
+		return obj == null ? def : (Double) obj;
 	}
 	
 	public boolean isDouble( String path )
 	{
 		return get(path) instanceof Double;
 	}
-	
+
 	public boolean getBoolean( String path )
 	{
-		return (Boolean) get(path);
+		return getBoolean(path, false);
+	}
+	
+	public boolean getBoolean( String path, boolean def )
+	{
+		Object obj = get(path);
+		return obj == null ? def : (Boolean) obj;
 	}
 	
 	public boolean isBoolean( String path )
@@ -125,4 +154,3 @@ public class Configuration
 		return get(path) instanceof List<?>;
 	}
 }
-
