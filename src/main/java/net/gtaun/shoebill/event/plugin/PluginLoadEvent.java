@@ -17,7 +17,6 @@
 package net.gtaun.shoebill.event.plugin;
 
 import net.gtaun.shoebill.plugin.Plugin;
-import net.gtaun.shoebill.util.event.Event;
 
 /**
  * @author MK124
@@ -28,6 +27,6 @@ public class PluginLoadEvent extends PluginEvent
 {
 	public PluginLoadEvent( Plugin plugin )
 	{
-		super( this );
+		super( plugin );
 	}
 }
