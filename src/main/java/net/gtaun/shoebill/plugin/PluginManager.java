@@ -29,7 +29,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import net.gtaun.shoebill.IShoebill;
-import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.event.plugin.PluginLoadEvent;
 import net.gtaun.shoebill.event.plugin.PluginUnloadEvent;
 
 /**
@@ -71,7 +71,7 @@ public class PluginManager implements IPluginManager
 	
 	public Plugin getPlugin( String name )
 	{
-		return plugins.get(name);
+		return plugins.get( name );
 	}
 	
 	public Plugin loadPlugin( String filename )
@@ -113,6 +113,7 @@ public class PluginManager implements IPluginManager
 			plugin.enable();
 			
 			plugins.put( plugin.getDescription().getName(), plugin );
+			shoebill.getEventManager().dispatchEvent( new PluginLoadEvent(plugin), this );
 			return plugin;
 		}
 		catch( Exception e )
@@ -126,9 +127,10 @@ public class PluginManager implements IPluginManager
 	{
 		if( plugins.containsKey(name) )
 		{
-			Shoebill.getInstance().getEventManager().dispatchEvent(new PluginUnloadEvent(plugins.get(name)));
-			plugins.get(name).disable();
-			plugins.remove(name);
+			Plugin plugin = getPlugin(name);
+			shoebill.getEventManager().dispatchEvent( new PluginUnloadEvent(plugin), this );
+			plugin.disable();
+			plugins.remove( name );
 		}
 	}
 }

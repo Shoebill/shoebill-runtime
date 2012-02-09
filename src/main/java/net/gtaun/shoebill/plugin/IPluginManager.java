@@ -19,8 +19,6 @@ package net.gtaun.shoebill.plugin;
 
 import java.io.File;
 
-
-
 /**
  * @author MK124, JoJLlmAn
  *
