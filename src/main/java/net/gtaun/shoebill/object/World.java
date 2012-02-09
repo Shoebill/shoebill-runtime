@@ -17,6 +17,7 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.type.PlayerMarkerMode;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -37,6 +38,36 @@ public class World implements IWorld
 		
 	}
 	
+	
+	@Override
+	public void setTeamCount( int count )
+	{
+		SampNativeFunction.setTeamCount( count );
+	}
+
+	@Override
+	public int addPlayerClass( int modelId, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 )
+	{
+		return SampNativeFunction.addPlayerClass( modelId, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3 );
+	}
+
+	@Override
+	public int addPlayerClass( int modelId, SpawnInfo spawnInfo )
+	{
+		return SampNativeFunction.addPlayerClass( modelId, 
+			spawnInfo.location.x, spawnInfo.location.y, spawnInfo.location.z, spawnInfo.location.angle,
+			spawnInfo.weapon1.type.getId(), spawnInfo.weapon1.ammo, spawnInfo.weapon2.type.getId(), spawnInfo.weapon2.ammo,
+			spawnInfo.weapon3.type.getId(), spawnInfo.weapon3.ammo );
+	}
+	
+	@Override
+	public int addPlayerClassEx( int teamId, int modelId, SpawnInfo spawnInfo )
+	{
+		return SampNativeFunction.addPlayerClassEx( teamId, modelId, 
+			spawnInfo.location.x, spawnInfo.location.y, spawnInfo.location.z, spawnInfo.location.angle,
+			spawnInfo.weapon1.type.getId(), spawnInfo.weapon1.ammo, spawnInfo.weapon2.type.getId(), spawnInfo.weapon2.ammo,
+			spawnInfo.weapon3.type.getId(), spawnInfo.weapon3.ammo );
+	}
 
 	@Override
 	public float getChatRadius()

@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.event.gamemode;
 
-import net.gtaun.shoebill.object.IGamemode;
+import net.gtaun.shoebill.plugin.Gamemode;
 
 /**
  * @author MK124
@@ -25,7 +25,7 @@ import net.gtaun.shoebill.object.IGamemode;
 
 public class GamemodeInitEvent extends GamemodeEvent
 {
-	public GamemodeInitEvent( IGamemode gamemode )
+	public GamemodeInitEvent( Gamemode gamemode )
 	{
 		super( gamemode );
 	}

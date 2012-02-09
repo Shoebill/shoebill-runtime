@@ -27,7 +27,6 @@ import java.util.Vector;
 import java.util.WeakHashMap;
 
 import net.gtaun.shoebill.object.IDialog;
-import net.gtaun.shoebill.object.IGamemode;
 import net.gtaun.shoebill.object.ILabel;
 import net.gtaun.shoebill.object.IMenu;
 import net.gtaun.shoebill.object.IObject;
@@ -42,6 +41,7 @@ import net.gtaun.shoebill.object.IVehicle;
 import net.gtaun.shoebill.object.IWorld;
 import net.gtaun.shoebill.object.IZone;
 import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.plugin.Gamemode;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 
@@ -75,7 +75,7 @@ public class SampObjectPool implements ISampObjectPool
 	
 	IServer server;
 	IWorld world;
-	IGamemode gamemode;
+	Gamemode gamemode;
 	
 	IPlayer[] players								= new IPlayer[MAX_PLAYERS];
 	IVehicle[] vehicles								= new IVehicle[MAX_VEHICLES];
@@ -137,7 +137,7 @@ public class SampObjectPool implements ISampObjectPool
 	}
 	
 	@Override
-	public IGamemode getGamemode()
+	public Gamemode getGamemode()
 	{
 		return gamemode;
 	}
@@ -385,7 +385,7 @@ public class SampObjectPool implements ISampObjectPool
 		this.world = world;
 	}
 	
-	public void setGamemode( IGamemode gamemode )
+	public void setGamemode( Gamemode gamemode )
 	{
 		this.gamemode = gamemode;
 	}

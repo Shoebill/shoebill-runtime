@@ -16,6 +16,8 @@
 
 package net.gtaun.shoebill.plugin;
 
+import net.gtaun.shoebill.samp.SampNativeFunction;
+
 /**
  * @author MK124
  *
@@ -26,5 +28,17 @@ public abstract class Gamemode extends Plugin
 	protected Gamemode()
 	{
 		
+	}
+	
+	
+	public void exit()
+	{
+		SampNativeFunction.gameModeExit();
+	}
+	
+	public void setGamemodeText( String string )
+	{
+		if( string == null ) throw new NullPointerException();
+		SampNativeFunction.setGameModeText( string );
 	}
 }

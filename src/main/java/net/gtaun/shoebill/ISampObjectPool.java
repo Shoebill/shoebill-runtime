@@ -19,7 +19,6 @@ package net.gtaun.shoebill;
 import java.util.Collection;
 
 import net.gtaun.shoebill.object.IDialog;
-import net.gtaun.shoebill.object.IGamemode;
 import net.gtaun.shoebill.object.ILabel;
 import net.gtaun.shoebill.object.IMenu;
 import net.gtaun.shoebill.object.IObject;
@@ -33,6 +32,7 @@ import net.gtaun.shoebill.object.ITimer;
 import net.gtaun.shoebill.object.IVehicle;
 import net.gtaun.shoebill.object.IWorld;
 import net.gtaun.shoebill.object.IZone;
+import net.gtaun.shoebill.plugin.Gamemode;
 
 /**
  * @author MK124
@@ -43,7 +43,7 @@ public interface ISampObjectPool
 {
 	IServer getServer();
 	IWorld getWorld();
-	IGamemode getGamemode();
+	Gamemode getGamemode();
 	
 	IPlayer getPlayer( int id );
 	IVehicle getVehicle( int id );

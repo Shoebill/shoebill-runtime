@@ -24,7 +24,6 @@ import net.gtaun.shoebill.event.checkpoint.CheckpointLeaveEvent;
 import net.gtaun.shoebill.event.checkpoint.RaceCheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.RaceCheckpointLeaveEvent;
 import net.gtaun.shoebill.event.dialog.DialogResponseEvent;
-import net.gtaun.shoebill.event.gamemode.GamemodeExitEvent;
 import net.gtaun.shoebill.event.menu.MenuExitedEvent;
 import net.gtaun.shoebill.event.menu.MenuSelectedEvent;
 import net.gtaun.shoebill.event.object.ObjectMovedEvent;
@@ -99,14 +98,6 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			IGamemode gamemode = sampObjectPool.getGamemode();
-			
-			if( gamemode instanceof Gamemode )
-			{
-				GamemodeExitEvent event = new GamemodeExitEvent(gamemode);
-				eventManager.dispatchEvent( event, gamemode );
-			}
-			
 			return 1;
 		}
 		catch( Exception e )
