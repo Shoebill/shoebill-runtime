@@ -64,56 +64,127 @@ public class SampCallbackManager implements ISampCallbackManager
 	{
 		public int onGameModeInit()
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onGameModeInit();
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onGameModeInit();
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onGameModeExit()
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onGameModeExit();
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onGameModeExit();
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerConnect( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerConnect( playerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerConnect( playerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerDisconnect( int playerid, int reason )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerDisconnect( playerid, reason );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerDisconnect( playerid, reason );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerSpawn( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerSpawn( playerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerSpawn( playerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerDeath( int playerid, int killerid, int reason )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerDeath( playerid, killerid, reason );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerDeath( playerid, killerid, reason );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onVehicleSpawn( int vehicleid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onVehicleSpawn( vehicleid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onVehicleSpawn( vehicleid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onVehicleDeath( int vehicleid, int killerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onVehicleDeath( vehicleid, killerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onVehicleDeath( vehicleid, killerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerText( int playerid, String text )
 		{
 			int ret = 1;
-			for( ISampCallbackHandler handler : callbackHandlers ) ret &= handler.onPlayerText( playerid, text );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				ret &= handler.onPlayerText( playerid, text );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
 			
 			return ret;
 		}
@@ -121,7 +192,14 @@ public class SampCallbackManager implements ISampCallbackManager
 		public int onPlayerCommandText( int playerid, String cmdtext )
 		{
 			int ret = 0;
-			for( ISampCallbackHandler handler : callbackHandlers ) ret |= handler.onPlayerCommandText( playerid, cmdtext );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				ret |= handler.onPlayerCommandText( playerid, cmdtext );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
 			
 			return ret;
 		}
@@ -129,57 +207,127 @@ public class SampCallbackManager implements ISampCallbackManager
 		public int onPlayerRequestClass( int playerid, int classid )
 		{
 			int ret = 1;
-			for( ISampCallbackHandler handler : callbackHandlers ) ret &= handler.onPlayerRequestClass( playerid, classid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				ret &= handler.onPlayerRequestClass( playerid, classid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
 			
 			return ret;
 		}
 
 		public int onPlayerEnterVehicle( int playerid, int vehicleid, int ispassenger )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerEnterVehicle( playerid, vehicleid, ispassenger );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerEnterVehicle( playerid, vehicleid, ispassenger );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerExitVehicle( int playerid, int vehicleid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerExitVehicle( playerid, vehicleid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerExitVehicle( playerid, vehicleid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerStateChange( int playerid, int newstate, int oldstate )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerStateChange( playerid, newstate, oldstate );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerStateChange( playerid, newstate, oldstate );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerEnterCheckpoint( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerEnterCheckpoint( playerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerEnterCheckpoint( playerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerLeaveCheckpoint( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerLeaveCheckpoint( playerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerLeaveCheckpoint( playerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerEnterRaceCheckpoint( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerEnterRaceCheckpoint( playerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerEnterRaceCheckpoint( playerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerLeaveRaceCheckpoint( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerLeaveRaceCheckpoint( playerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerLeaveRaceCheckpoint( playerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onRconCommand( String cmd )
 		{
 			int ret = 0;
-			for( ISampCallbackHandler handler : callbackHandlers ) ret |= handler.onRconCommand( cmd );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				ret |= handler.onRconCommand( cmd );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
 			
 			return ret;
 		}
@@ -187,164 +335,367 @@ public class SampCallbackManager implements ISampCallbackManager
 		public int onPlayerRequestSpawn( int playerid )
 		{
 			int ret = 1;
-			for( ISampCallbackHandler handler : callbackHandlers ) ret &= handler.onPlayerRequestSpawn( playerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				ret &= handler.onPlayerRequestSpawn( playerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
 			
 			return ret;
 		}
 
 		public int onObjectMoved( int objectid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onObjectMoved( objectid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onObjectMoved( objectid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerObjectMoved( int playerid, int objectid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerObjectMoved( playerid, objectid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerObjectMoved( playerid, objectid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 		
 		public int onPlayerPickUpPickup( int playerid, int pickupid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerPickUpPickup( playerid, pickupid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerPickUpPickup( playerid, pickupid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onVehicleMod( int playerid, int vehicleid, int componentid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onVehicleMod( playerid, vehicleid, componentid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onVehicleMod( playerid, vehicleid, componentid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onEnterExitModShop( int playerid, int enterexit, int interiorid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onEnterExitModShop( playerid, enterexit, interiorid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onEnterExitModShop( playerid, enterexit, interiorid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onVehiclePaintjob( int playerid, int vehicleid, int paintjobid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onVehiclePaintjob( playerid, vehicleid, paintjobid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onVehiclePaintjob( playerid, vehicleid, paintjobid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onVehicleRespray( int playerid, int vehicleid, int color1, int color2 )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onVehicleRespray( playerid, vehicleid, color1, color2 );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onVehicleRespray( playerid, vehicleid, color1, color2 );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onVehicleDamageStatusUpdate( int vehicleid, int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onVehicleDamageStatusUpdate( vehicleid, playerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onVehicleDamageStatusUpdate( vehicleid, playerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onUnoccupiedVehicleUpdate( int vehicleid, int playerid, int passenger_seat )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onUnoccupiedVehicleUpdate( vehicleid, playerid, passenger_seat );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onUnoccupiedVehicleUpdate( vehicleid, playerid, passenger_seat );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerSelectedMenuRow( int playerid, int row )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerSelectedMenuRow( playerid, row );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerSelectedMenuRow( playerid, row );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerExitedMenu( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerExitedMenu( playerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerExitedMenu( playerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerInteriorChange( int playerid, int newinteriorid, int oldinteriorid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerInteriorChange( playerid, newinteriorid, oldinteriorid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerInteriorChange( playerid, newinteriorid, oldinteriorid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerKeyStateChange( int playerid, int newkeys, int oldkeys )
 		{
 			int ret = 1;
-			for( ISampCallbackHandler handler : callbackHandlers ) ret &= handler.onPlayerKeyStateChange( playerid, newkeys, oldkeys );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				ret &= handler.onPlayerKeyStateChange( playerid, newkeys, oldkeys );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
 			
 			return ret;
 		}
 
 		public int onRconLoginAttempt( String ip, String password, int success )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onRconLoginAttempt( ip, password, success );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onRconLoginAttempt( ip, password, success );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerUpdate( int playerid )
 		{
 			int ret = 1;
-			for( ISampCallbackHandler handler : callbackHandlers ) ret &= handler.onPlayerUpdate( playerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				ret &= handler.onPlayerUpdate( playerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
 			
 			return ret;
 		}
 
 		public int onPlayerStreamIn( int playerid, int forplayerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerStreamIn( playerid, forplayerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerStreamIn( playerid, forplayerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerStreamOut( int playerid, int forplayerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerStreamOut( playerid, forplayerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerStreamOut( playerid, forplayerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onVehicleStreamIn( int vehicleid, int forplayerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onVehicleStreamIn( vehicleid, forplayerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onVehicleStreamIn( vehicleid, forplayerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onVehicleStreamOut( int vehicleid, int forplayerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onVehicleStreamOut( vehicleid, forplayerid );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onVehicleStreamOut( vehicleid, forplayerid );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onDialogResponse( int playerid, int dialogid, int response, int listitem, String inputtext )
 		{
 			int ret = 0;
-			for( ISampCallbackHandler handler : callbackHandlers ) ret |= handler.onDialogResponse( playerid, dialogid, response, listitem, inputtext );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				ret |= handler.onDialogResponse( playerid, dialogid, response, listitem, inputtext );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
 			
 			return ret;
 		}
 
 		public int onPlayerTakeDamage( int playerId, int issuerId, float amount, int weaponId )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerTakeDamage( playerId, issuerId, amount, weaponId );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerTakeDamage( playerId, issuerId, amount, weaponId );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerGiveDamage( int playerId, int damagedId, float amount, int weaponId )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerGiveDamage( playerId, damagedId, amount, weaponId );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerGiveDamage( playerId, damagedId, amount, weaponId );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public int onPlayerClickMap( int playerId, float x, float y, float z )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerClickMap( playerId, x, y, z );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerClickMap( playerId, x, y, z );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 		
 		public int onPlayerClickPlayer( int playerid, int clickedplayerid, int source )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onPlayerClickPlayer( playerid, clickedplayerid, source );
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onPlayerClickPlayer( playerid, clickedplayerid, source );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
 			return 1;
 		}
 
 		public void onProcessTick()
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) handler.onProcessTick();
+			for( ISampCallbackHandler handler : callbackHandlers ) try
+			{
+				handler.onProcessTick();
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
 		}
 	};
 }

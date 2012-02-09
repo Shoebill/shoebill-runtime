@@ -42,7 +42,7 @@ public class Shoebill implements IShoebill
 	
 	
 	private ShoebillConfiguration configuration;
-	private EventManager globalEventDispatcher;
+	private EventManager eventManager;
 	
 	private SampCallbackManager sampCallbackManager;
 	private SampObjectPool managedObjectPool;
@@ -52,7 +52,7 @@ public class Shoebill implements IShoebill
 	private SampEventDispatcher sampEventDispatcher;
 
 	
-	@Override public IEventManager getEventManager()				{ return globalEventDispatcher; }
+	@Override public IEventManager getEventManager()				{ return eventManager; }
 	@Override public ISampCallbackManager getCallbackManager()		{ return sampCallbackManager; }
 	@Override public ISampObjectPool getManagedObjectPool()			{ return managedObjectPool; }
 	@Override public PluginManager getPluginManager()				{ return pluginManager; }
@@ -66,7 +66,7 @@ public class Shoebill implements IShoebill
 		configFileIn = new FileInputStream("./shoebill/config.yml");
 		
 		configuration = new ShoebillConfiguration( configFileIn );
-		globalEventDispatcher = new EventManager();
+		eventManager = new EventManager();
 		
 		sampCallbackManager = new SampCallbackManager();
 		managedObjectPool = new SampObjectPool();
@@ -75,7 +75,7 @@ public class Shoebill implements IShoebill
 		pluginManager = new PluginManager(this, new File(workdir, "plugins"), new File(workdir, "data"));
 		
 		sampEventLogger = new SampEventLogger( managedObjectPool );
-		sampEventDispatcher = new SampEventDispatcher( managedObjectPool, globalEventDispatcher );
+		sampEventDispatcher = new SampEventDispatcher( managedObjectPool, eventManager );
 		
 		initialize();
 	}

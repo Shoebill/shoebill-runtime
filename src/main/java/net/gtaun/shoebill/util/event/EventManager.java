@@ -275,7 +275,15 @@ public class EventManager implements IEventManager
 			IEventListener listener = entry.getValue();
 			
 			if( listener == null ) continue;
-			listener.handleEvent( event );
+			
+			try
+			{
+				listener.handleEvent( event );	
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 }
