@@ -24,15 +24,10 @@ import net.gtaun.shoebill.util.event.Event;
  *
  */
 
-public class PluginLoadEvent extends Event
+public class PluginLoadEvent extends PluginEvent
 {
-	private Plugin plugin;
-	
-	public Plugin getPlugin()		{ return plugin; }
-	
-	
 	public PluginLoadEvent( Plugin plugin )
 	{
-		this.plugin = plugin;
+		super( this );
 	}
 }
