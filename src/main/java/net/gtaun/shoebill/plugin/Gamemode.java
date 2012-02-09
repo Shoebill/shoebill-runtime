@@ -16,6 +16,8 @@
 
 package net.gtaun.shoebill.plugin;
 
+import net.gtaun.shoebill.SampObjectPool;
+import net.gtaun.shoebill.object.IPlayer;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
@@ -30,6 +32,12 @@ public abstract class Gamemode extends Plugin
 		
 	}
 	
+	
+	protected void setPlayerClass( Class<? extends IPlayer> cls )
+	{
+		SampObjectPool pool = (SampObjectPool)(getShoebill().getManagedObjectPool());
+		pool.setPlayerClass( cls );
+	}
 	
 	public void exit()
 	{
