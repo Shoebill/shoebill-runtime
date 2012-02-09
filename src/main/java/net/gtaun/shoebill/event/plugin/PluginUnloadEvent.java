@@ -18,7 +18,6 @@
 package net.gtaun.shoebill.event.plugin;
 
 import net.gtaun.shoebill.plugin.Plugin;
-import net.gtaun.shoebill.util.event.Event;
 
 /**
  * @author MK124, JoJLlmAn

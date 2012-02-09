@@ -65,6 +65,18 @@ public class EventManager implements IEventManager
 	
 
 	@Override
+	public <T extends Event> void addListener( Class<T> type, IEventListener listener, EventListenerPriority priority )
+	{
+		addListener( type, Object.class, listener, priority.getValue() );
+	}
+	
+	@Override
+	public <T extends Event> void addListener( Class<T> type, IEventListener listener, short priority )
+	{
+		addListener( type, Object.class, listener, priority );
+	}
+	
+	@Override
 	public <T extends Event> void addListener( Class<T> type, Class<?> clz, IEventListener listener, EventListenerPriority priority )
 	{
 		addListener( type, (Object)clz, listener, priority.getValue() );
@@ -113,6 +125,12 @@ public class EventManager implements IEventManager
 	}
 
 
+	@Override
+	public <T extends Event> void removeListener( Class<T> type, IEventListener listener )
+	{
+		removeListener( type, Object.class, listener );
+	}
+	
 	@Override
 	public <T extends Event> void removeListener( Class<T> type, Class<?> clz, IEventListener listener )
 	{
@@ -193,16 +211,15 @@ public class EventManager implements IEventManager
 			}
 		);
 		
+		if( objects == null ) objects = new Object[] { Object.class };
 		for( Object object : objects )
 		{
-			Class<?> clz = object.getClass();
+			Class<?> cls = object.getClass();
 			
 			Map<Object, List<Entry<IEventListener>>> objectListenerContainers = objectListenerContainersMap.get(type);
 			if( objectListenerContainers == null ) return;
 			
-			List<Entry<IEventListener>> classListeners	= objectListenerContainers.get( clz );
 			List<Entry<IEventListener>> listeners		= objectListenerContainers.get( object );
-			
 			if( listeners != null ) for( int i=0; i<listeners.size(); i++ )
 			{
 				Entry<IEventListener> entry = listeners.get(i);
@@ -214,17 +231,41 @@ public class EventManager implements IEventManager
 				}
 				else listenerEntryQueue.add( entry );
 			}
-			
-			if( classListeners != null ) for( int i=0; i<classListeners.size(); i++ )
+
+			Class<?>[] interfaces = cls.getInterfaces();
+			for( Class<?> clz : interfaces )
 			{
-				Entry<IEventListener> entry = classListeners.get(i);
-				
-				if( entry.getValue() == null )
+				List<Entry<IEventListener>> classListeners	= objectListenerContainers.get( clz );
+				if( classListeners != null ) for( int i=0; i<classListeners.size(); i++ )
 				{
-					listeners.remove( i );
-					i--;
+					Entry<IEventListener> entry = classListeners.get(i);
+					
+					if( entry.getValue() == null )
+					{
+						listeners.remove( i );
+						i--;
+					}
+					else listenerEntryQueue.add( entry );
 				}
-				else listenerEntryQueue.add( entry );
+			}
+			
+			Class<?> clz = cls;
+			while( clz != null )
+			{
+				List<Entry<IEventListener>> classListeners	= objectListenerContainers.get( clz );
+				if( classListeners != null ) for( int i=0; i<classListeners.size(); i++ )
+				{
+					Entry<IEventListener> entry = classListeners.get(i);
+					
+					if( entry.getValue() == null )
+					{
+						listeners.remove( i );
+						i--;
+					}
+					else listenerEntryQueue.add( entry );
+				}
+				
+				clz = clz.getSuperclass();
 			}
 		}
 		

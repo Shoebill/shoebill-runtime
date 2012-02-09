@@ -23,11 +23,14 @@ package net.gtaun.shoebill.util.event;
 
 public interface IEventManager
 {
+	<T extends Event> void addListener( Class<T> type, IEventListener listener, EventListenerPriority priority );
+	<T extends Event> void addListener( Class<T> type, IEventListener listener, short priority );
 	<T extends Event> void addListener( Class<T> type, Class<?> clz, IEventListener listener, EventListenerPriority priority );
 	<T extends Event> void addListener( Class<T> type, Class<?> clz, IEventListener listener, short priority );
 	<T extends Event> void addListener( Class<T> type, Object object, IEventListener listener, EventListenerPriority priority );
 	<T extends Event> void addListener( Class<T> type, Object object, IEventListener listener, short priority );
 
+	<T extends Event> void removeListener( Class<T> type, IEventListener listener );
 	<T extends Event> void removeListener( Class<T> type, Class<?> clz, IEventListener listener );
 	<T extends Event> void removeListener( Class<T> type, Object object, IEventListener listener );
 
