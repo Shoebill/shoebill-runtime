@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collection;
@@ -41,8 +42,19 @@ import net.gtaun.shoebill.event.plugin.PluginUnloadEvent;
 
 public class PluginManager implements IPluginManager
 {
-	private Map<String, Plugin> plugins;
+	final FilenameFilter jarFileFliter = new FilenameFilter()
+	{
+		public boolean accept( File dir, String name )
+		{
+			final String extname = ".jar";
+			return name.length()>extname.length() && name.substring( name.length()-4, name.length() ).equals(extname);
+		}
+	};
 	
+	
+	private Map<String, Plugin> plugins;
+
+	private ClassLoader classLoader;
 	private IShoebill shoebill;
 	private File pluginFolder, dataFolder;
 	
@@ -51,23 +63,26 @@ public class PluginManager implements IPluginManager
 	{
 		plugins = new HashMap<String, Plugin>();
 		
+		File[] files = pluginFolder.listFiles( jarFileFliter );
+		URL[] urls = new URL[ files.length ];
+		for( int i=0; i<files.length; i++ ) try
+		{
+			urls[i] = files[i].toURI().toURL();
+		}
+		catch( MalformedURLException e )
+		{
+			e.printStackTrace();
+		}
+		
+		this.classLoader = URLClassLoader.newInstance(urls, getClass().getClassLoader());
 		this.shoebill = shoebill;
 		this.pluginFolder = pluginFolder;
 		this.dataFolder = dataFolder;
-		
-		loadAllPlugin();
 	}
 	
-	private void loadAllPlugin()
+	public void loadAllPlugin()
 	{
-		File[] files = pluginFolder.listFiles( new FilenameFilter()
-    	{
-    		public boolean accept( File dir, String name )
-    		{
-    			return name.substring( name.length()-4, name.length() ).equals(".jar");
-    		}
-    	} );
-		
+		File[] files = pluginFolder.listFiles( jarFileFliter );
 		for( File file : files ) loadPlugin( file );
 	}
 	
@@ -118,8 +133,7 @@ public class PluginManager implements IPluginManager
 				return null;
 			}
 			
-			ClassLoader loader = URLClassLoader.newInstance(new URL[]{file.toURI().toURL()}, getClass().getClassLoader());
-			Class<? extends Plugin> clazz = Class.forName(desc.getClassPath(), true, loader).asSubclass(Plugin.class);
+			Class<? extends Plugin> clazz = Class.forName(desc.getClassPath(), true, classLoader).asSubclass(Plugin.class);
 			Constructor<? extends Plugin> constructor = clazz.getConstructor();
 			Plugin plugin = constructor.newInstance();
 			

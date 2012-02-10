@@ -73,6 +73,7 @@ public class Shoebill implements IShoebill
 		
 		File workdir = configuration.getWorkdir();
 		pluginManager = new PluginManager(this, new File(workdir, "plugins"), new File(workdir, "data"));
+		pluginManager.loadAllPlugin();
 		
 		sampEventLogger = new SampEventLogger( managedObjectPool );
 		sampEventDispatcher = new SampEventDispatcher( managedObjectPool, eventManager );
