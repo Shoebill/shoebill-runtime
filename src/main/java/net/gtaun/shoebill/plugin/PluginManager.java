@@ -23,8 +23,10 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -72,6 +74,21 @@ public class PluginManager implements IPluginManager
 	public Plugin getPlugin( String name )
 	{
 		return plugins.get( name );
+	}
+	
+	public <T extends Plugin> T getPlugin( Class<T> cls )
+	{
+		for( Plugin plugin : plugins.values() )
+		{
+			if( cls.isInstance(plugin) ) return cls.cast( plugin );
+		}
+		
+		return null;
+	}
+	
+	public Collection<Plugin> getPlugins()
+	{
+		return plugins.values();
 	}
 	
 	public Plugin loadPlugin( String filename )
@@ -131,6 +148,17 @@ public class PluginManager implements IPluginManager
 			shoebill.getEventManager().dispatchEvent( new PluginUnloadEvent(plugin), this );
 			plugin.disable();
 			plugins.remove( name );
+		}
+	}
+	
+	public void unloadPlugin( Plugin plugin )
+	{
+		for( Entry<String, Plugin> entry : plugins.entrySet() )
+		{
+			if( entry.getValue() != plugin ) continue;
+			
+			unloadPlugin( entry.getKey() );
+			return;
 		}
 	}
 }

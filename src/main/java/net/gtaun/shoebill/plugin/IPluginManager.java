@@ -18,6 +18,7 @@
 package net.gtaun.shoebill.plugin;
 
 import java.io.File;
+import java.util.Collection;
 
 /**
  * @author MK124, JoJLlmAn
@@ -27,9 +28,12 @@ import java.io.File;
 public interface IPluginManager
 {
 	Plugin getPlugin( String name );
+	<T extends Plugin> T getPlugin( Class<T> cls );
+	Collection<Plugin> getPlugins();
 	
 	Plugin loadPlugin( String filename );
 	Plugin loadPlugin( File file );
 	
 	void unloadPlugin( String name );
+	void unloadPlugin( Plugin plugin );
 }
