@@ -52,7 +52,7 @@ public class PluginManager implements IPluginManager
 	};
 	
 	
-	private Map<String, Plugin> plugins;
+	private Map<Class<? extends Plugin>, Plugin> plugins;
 
 	private ClassLoader classLoader;
 	private IShoebill shoebill;
@@ -61,7 +61,7 @@ public class PluginManager implements IPluginManager
 	
 	public PluginManager( IShoebill shoebill, File pluginFolder, File dataFolder )
 	{
-		plugins = new HashMap<String, Plugin>();
+		plugins = new HashMap<Class<? extends Plugin>, Plugin>();
 		
 		File[] files = pluginFolder.listFiles( jarFileFliter );
 		URL[] urls = new URL[ files.length ];
@@ -85,33 +85,15 @@ public class PluginManager implements IPluginManager
 		File[] files = pluginFolder.listFiles( jarFileFliter );
 		for( File file : files ) loadPlugin( file );
 	}
-	
-	public Plugin getPlugin( String name )
-	{
-		return plugins.get( name );
-	}
-	
-	public <T extends Plugin> T getPlugin( Class<T> cls )
-	{
-		for( Plugin plugin : plugins.values() )
-		{
-			if( cls.isInstance(plugin) ) return cls.cast( plugin );
-		}
-		
-		return null;
-	}
-	
-	public Collection<Plugin> getPlugins()
-	{
-		return plugins.values();
-	}
-	
+
+	@Override
 	public Plugin loadPlugin( String filename )
 	{
 		File file = new File(pluginFolder, filename);
 		return loadPlugin( file );
 	}
-	
+
+	@Override
 	public Plugin loadPlugin( File file )
 	{
 		if( file.canRead() == false ) return null;
@@ -125,15 +107,14 @@ public class PluginManager implements IPluginManager
 			InputStream in = jarFile.getInputStream( entry );
 			
 			PluginDescription desc = new PluginDescription(in);
-			
-			if(plugins.containsKey(desc.getName()))
+			Class<? extends Plugin> clazz = Class.forName(desc.getClassPath(), true, classLoader).asSubclass(Plugin.class);
+			if( plugins.containsKey(clazz) )
 			{
 				System.out.println("There's a plugin which has the same name as \"" + desc.getName() + "\".");
 				System.out.println("Abandon loading " + desc.getClassPath());
 				return null;
 			}
 			
-			Class<? extends Plugin> clazz = Class.forName(desc.getClassPath(), true, classLoader).asSubclass(Plugin.class);
 			Constructor<? extends Plugin> constructor = clazz.getConstructor();
 			Plugin plugin = constructor.newInstance();
 			
@@ -143,7 +124,7 @@ public class PluginManager implements IPluginManager
 			plugin.setContext( desc, shoebill, pluginDataFolder );
 			plugin.enable();
 			
-			plugins.put( plugin.getDescription().getName(), plugin );
+			plugins.put( clazz, plugin );
 			shoebill.getEventManager().dispatchEvent( new PluginLoadEvent(plugin), this );
 			return plugin;
 		}
@@ -153,26 +134,36 @@ public class PluginManager implements IPluginManager
 			return null;
 		}
 	}
-	
-	public void unloadPlugin( String name )
+
+	@Override
+	public void unloadPlugin( Plugin plugin )
 	{
-		if( plugins.containsKey(name) )
+		for( Entry<Class<? extends Plugin>, Plugin> entry : plugins.entrySet() )
 		{
-			Plugin plugin = getPlugin(name);
+			if( entry.getValue() != plugin ) continue;
+
 			shoebill.getEventManager().dispatchEvent( new PluginUnloadEvent(plugin), this );
 			plugin.disable();
-			plugins.remove( name );
+			
+			plugins.remove( entry.getKey() );
+			return;
 		}
 	}
 	
-	public void unloadPlugin( Plugin plugin )
+	@Override
+	public <T extends Plugin> T getPlugin( Class<T> cls )
 	{
-		for( Entry<String, Plugin> entry : plugins.entrySet() )
+		for( Plugin plugin : plugins.values() )
 		{
-			if( entry.getValue() != plugin ) continue;
-			
-			unloadPlugin( entry.getKey() );
-			return;
+			if( cls.isInstance(plugin) ) return cls.cast( plugin );
 		}
+		
+		return null;
+	}
+
+	@Override
+	public Collection<Plugin> getPlugins()
+	{
+		return plugins.values();
 	}
 }

@@ -27,13 +27,10 @@ import java.util.Collection;
 
 public interface IPluginManager
 {
-	Plugin getPlugin( String name );
-	<T extends Plugin> T getPlugin( Class<T> cls );
-	Collection<Plugin> getPlugins();
-	
 	Plugin loadPlugin( String filename );
 	Plugin loadPlugin( File file );
-	
-	void unloadPlugin( String name );
 	void unloadPlugin( Plugin plugin );
+	
+	<T extends Plugin> T getPlugin( Class<T> cls );
+	Collection<Plugin> getPlugins();
 }
