@@ -107,18 +107,18 @@ public class PluginManager implements IPluginManager
 			InputStream in = jarFile.getInputStream( entry );
 			
 			PluginDescription desc = new PluginDescription(in);
-			Class<? extends Plugin> clazz = Class.forName(desc.getClassPath(), true, classLoader).asSubclass(Plugin.class);
+			Class<? extends Plugin> clazz = Class.forName(desc.getClassName(), true, classLoader).asSubclass(Plugin.class);
 			if( plugins.containsKey(clazz) )
 			{
-				System.out.println("There's a plugin which has the same name as \"" + desc.getName() + "\".");
-				System.out.println("Abandon loading " + desc.getClassPath());
+				System.out.println("There's a plugin which has the same class as \"" + desc.getClassName() + "\".");
+				System.out.println("Abandon loading " + desc.getClassName());
 				return null;
 			}
 			
 			Constructor<? extends Plugin> constructor = clazz.getConstructor();
 			Plugin plugin = constructor.newInstance();
 			
-			File pluginDataFolder = new File(dataFolder, desc.getClassPath());
+			File pluginDataFolder = new File(dataFolder, desc.getClassName());
 			if( ! pluginDataFolder.exists() ) pluginDataFolder.mkdirs();
 			
 			plugin.setContext( desc, shoebill, pluginDataFolder );

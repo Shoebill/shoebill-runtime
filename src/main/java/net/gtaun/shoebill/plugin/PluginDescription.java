@@ -29,14 +29,14 @@ import net.gtaun.shoebill.util.config.YamlConfiguration;
 
 public class PluginDescription
 {
-	private String classPath;
+	private String className;
 	private String name;
 	private String version;
 	private String description;
 	private List<String> authors;
 
 
-	public String getClassPath()		{ return classPath; }
+	public String getClassName()		{ return className; }
 	public String getName()				{ return name; }
 	public String getVersion()			{ return version; }
 	public List<String> getAuthors()	{ return authors; }
@@ -48,7 +48,7 @@ public class PluginDescription
 		YamlConfiguration config = new YamlConfiguration();
 		config.read( in );
 		
-		classPath = config.getString( "class" );
+		className = config.getString( "class" );
 		name = config.getString( "name" );
 		version = config.getString( "version" );
 			
