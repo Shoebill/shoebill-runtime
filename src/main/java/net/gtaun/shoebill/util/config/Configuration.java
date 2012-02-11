@@ -19,6 +19,7 @@ package net.gtaun.shoebill.util.config;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author MK124
@@ -63,6 +64,41 @@ public class Configuration
 		}
 		
 		return node.get( childs[ childs.length-1 ] );
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void set( String path, Object value )
+	{
+		if(root == null) root = new HashMap<String, Object>();
+		
+		if(!path.contains("."))
+		{
+			root.put(path, value);
+			return;
+		}
+		
+		String[] childs = path.split(".");
+		
+		HashMap<String, Object> node = root;
+		
+		for(int i=0;i<childs.length;i++)
+		{
+			Object o = node.get(childs[i]);
+			
+			if(i == childs.length - 1)
+			{
+				node.put(childs[i], value);
+				return;
+			}
+			
+			if(o == null || !(o instanceof Map))
+			{
+				o = new HashMap<String, Object>();
+				node.put(childs[i], o);
+			}
+			
+			node = (HashMap<String, Object>)o;
+		}
 	}
 
 	public String getString( String path )
