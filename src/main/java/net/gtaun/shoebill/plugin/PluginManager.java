@@ -19,6 +19,7 @@ package net.gtaun.shoebill.plugin;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
@@ -59,15 +60,17 @@ public class PluginManager implements IPluginManager
 	private File pluginFolder, dataFolder;
 	
 	
-	public PluginManager( IShoebill shoebill, File pluginFolder, File dataFolder )
+	public PluginManager( IShoebill shoebill, File pluginFolder, File gamemodeFolder, File dataFolder )
 	{
 		plugins = new HashMap<Class<? extends Plugin>, Plugin>();
 		
 		File[] files = pluginFolder.listFiles( jarFileFliter );
-		URL[] urls = new URL[ files.length ];
-		for( int i=0; i<files.length; i++ ) try
+		File[] gamemodeFiles = gamemodeFolder.listFiles();
+		URL[] urls = new URL[ files.length + gamemodeFiles.length ];
+		for( int i=0; i<files.length+gamemodeFiles.length; i++ ) try
 		{
-			urls[i] = files[i].toURI().toURL();
+			if( i<files.length )	urls[i] = files[i].toURI().toURL();
+			else					urls[i] = gamemodeFiles[i-files.length].toURI().toURL();
 		}
 		catch( MalformedURLException e )
 		{
@@ -84,6 +87,30 @@ public class PluginManager implements IPluginManager
 	{
 		File[] files = pluginFolder.listFiles( jarFileFliter );
 		for( File file : files ) loadPlugin( file );
+	}
+	
+	public Gamemode constructGamemode( File file ) throws IOException
+	{
+		JarFile jarFile = new JarFile( file );
+		JarEntry entry = jarFile.getJarEntry( "gamemode.yml" );
+		InputStream in = jarFile.getInputStream( entry );
+		
+		GamemodeDescription desc;
+		Gamemode gamemode = null;
+		
+		try
+		{
+			desc = new GamemodeDescription(in, classLoader);
+			gamemode = desc.getClazz().newInstance();
+			gamemode.setContext( desc, shoebill, new File(dataFolder, desc.getClazz().getName()) );
+			gamemode.enable();
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+		}
+		
+		return gamemode;
 	}
 
 	@Override
@@ -106,19 +133,19 @@ public class PluginManager implements IPluginManager
 			JarEntry entry = jarFile.getJarEntry( "plugin.yml" );
 			InputStream in = jarFile.getInputStream( entry );
 			
-			PluginDescription desc = new PluginDescription(in);
-			Class<? extends Plugin> clazz = Class.forName(desc.getClassName(), true, classLoader).asSubclass(Plugin.class);
+			PluginDescription desc = new PluginDescription(in, classLoader);
+			Class<? extends Plugin> clazz = desc.getClazz();
 			if( plugins.containsKey(clazz) )
 			{
-				System.out.println("There's a plugin which has the same class as \"" + desc.getClassName() + "\".");
-				System.out.println("Abandon loading " + desc.getClassName());
+				System.out.println("There's a plugin which has the same class as \"" + desc.getClazz().getName() + "\".");
+				System.out.println("Abandon loading " + desc.getClazz().getName());
 				return null;
 			}
 			
 			Constructor<? extends Plugin> constructor = clazz.getConstructor();
 			Plugin plugin = constructor.newInstance();
 			
-			File pluginDataFolder = new File(dataFolder, desc.getClassName());
+			File pluginDataFolder = new File(dataFolder, desc.getClazz().getName());
 			if( ! pluginDataFolder.exists() ) pluginDataFolder.mkdirs();
 			
 			plugin.setContext( desc, shoebill, pluginDataFolder );

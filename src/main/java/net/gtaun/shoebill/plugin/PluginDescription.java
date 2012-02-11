@@ -29,29 +29,31 @@ import net.gtaun.shoebill.util.config.YamlConfiguration;
 
 public class PluginDescription
 {
-	private String className;
+	private Class<? extends Plugin> clazz;
 	private String name;
 	private String version;
 	private String description;
 	private List<String> authors;
 
 
-	public String getClassName()		{ return className; }
-	public String getName()				{ return name; }
-	public String getVersion()			{ return version; }
-	public List<String> getAuthors()	{ return authors; }
-	public String getDescription()		{ return description; }
+	public Class<? extends Plugin> getClazz()		{ return clazz; }
+	public String getName()							{ return name; }
+	public String getVersion()						{ return version; }
+	public List<String> getAuthors()				{ return authors; }
+	public String getDescription()					{ return description; }
 	
 
-	public PluginDescription( InputStream in )
+	public PluginDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
 	{
 		YamlConfiguration config = new YamlConfiguration();
 		config.read( in );
 		
-		className = config.getString( "class" );
+		String className = config.getString( "class" );
+		clazz = classLoader.loadClass( className ).asSubclass( Plugin.class );
+		
 		name = config.getString( "name" );
 		version = config.getString( "version" );
-			
+		
 		String author = config.getString( "authors" );
 		authors = new ArrayList<String>();
 		String[] auth = author.split("[,;]");
