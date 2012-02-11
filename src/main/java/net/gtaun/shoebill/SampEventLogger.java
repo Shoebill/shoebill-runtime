@@ -55,18 +55,14 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerConnect( int playerId )
 	{
-		IPlayer player = sampObjectPool.getPlayer(playerId);
-		System.out.println( "[join] " + player.getName() + " has joined the server (" + playerId + ":" + player.getIp() + ")" );
-
+		System.out.println( "[join] " + SampNativeFunction.getPlayerName(playerId) + " has joined the server (" + playerId + ":" + SampNativeFunction.getPlayerIp(playerId) + ")" );
 		return 1;
 	}
 	
 	@Override
 	public int onPlayerDisconnect( int playerId, int reason )
 	{
-		IPlayer player = sampObjectPool.getPlayer(playerId);
-		System.out.println( "[part] " + player.getName() + " has left the server (" + playerId + ":" + reason + ")" );
-	
+		System.out.println( "[part] " + SampNativeFunction.getPlayerName(playerId) + " has left the server (" + playerId + ":" + reason + ")" );
 		return 1;
 	}
 	
