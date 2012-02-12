@@ -14,9 +14,9 @@
   </properties>
   
   <scm>
-  	<url>https://github.com/mk124/Shoebill</url>
-  	<connection>scm:git:git://github.com/mk124/Shoebill.git</connection>
-  	<developerConnection>scm:git:git@github.com:mk124/Shoebill.git</developerConnection>
+  	<url>https://github.com/Shoebill/Shoebill</url>
+  	<connection>scm:git:git://github.com/Shoebill/Shoebill.git</connection>
+  	<developerConnection>scm:git:git@github.com:Shoebill/Shoebill.git</developerConnection>
   </scm>
   
   <ciManagement>
