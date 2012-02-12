@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2012 MK124
+ * Copyright (C) 2012 JoJLlmAn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author MK124
+ * @author MK124, JoJLlmAn
  *
  */
 
@@ -184,149 +185,82 @@ public class Configuration
 	public List<?> getList( String path )
 	{
 		Object o = get(path);
-		
-		if(o != null)
-			if(o instanceof List) return (List<?>) o;
-		
-		return null;
+		return o instanceof List ? (List<?>)o : new ArrayList<Object>();
 	}
 	
 	public boolean isList( String path )
 	{
-		Object o = get(path);
-		
-		if(o != null)
-			if(o instanceof List) return true;
-		
-		return false;
+		return get(path) instanceof List;
 	}
 	
 	public List<String> getStringList(String path, List<String> def)
 	{
 		List<?> raw = getList(path);
-		
 		if (raw == null)
 		{
 			return def != null ? def : new ArrayList<String>();
 		}
 		
 		List<String> list = new ArrayList<String>();
-		
-		for (Object o : raw)
+		for( Object o : raw )
 		{
-			if (o != null)
-				list.add(o.toString());
+			if( o != null ) list.add( o.toString() );
 		}
+		
 		return list;
 	}
 	
-	public List<Integer> getIntList(String path, List<Integer> def)
+	public List<Integer> getIntList( String path, List<Integer> def )
 	{
 		List<?> raw = getList(path);
-		
 		if (raw == null)
 		{
 			return def != null ? def : new ArrayList<Integer>();
 		}
 		
 		List<Integer> list = new ArrayList<Integer>();
-		
-		for (Object o : raw)
+		for( Object o : raw )
 		{
-			Integer i = castInt(o);
-			
-			if(i != null)
-				list.add(i);
+			Integer i = Integer.parseInt( o.toString() );
+			if( i != null ) list.add(i);
 		}
+		
 		return list;
 	}
 	
 	public List<Double> getDoubleList(String path, List<Double> def)
 	{
 		List<?> raw = getList(path);
-		
 		if (raw == null)
 		{
 			return def != null ? def : new ArrayList<Double>();
 		}
 		
 		List<Double> list = new ArrayList<Double>();
-		
-		for (Object o : raw)
+		for( Object o : raw )
 		{
-			Double d = castDouble(o);
-			
-			if(d != null)
-				list.add(d);
+			Double d = Double.parseDouble( o.toString() );
+			if( d != null ) list.add(d);
 		}
+		
 		return list;
 	}
 	
 	public List<Boolean> getBooleanList(String path, List<Boolean> def)
 	{
 		List<?> raw = getList(path);
-		
 		if (raw == null)
 		{
 			return def != null ? def : new ArrayList<Boolean>();
 		}
 		
 		List<Boolean> list = new ArrayList<Boolean>();
-		
 		for (Object o : raw)
 		{
-			Boolean b = castBoolean(o);
-			
-			if(b != null)
-				list.add(b);
+			Boolean b = Boolean.parseBoolean( o.toString() );
+			if( b != null ) list.add(b);
 		}
+		
 		return list;
 	}
-	
-	private static Integer castInt(Object o) {
-        if (o == null) {
-            return null;
-        } else if (o instanceof Byte) {
-            return (int) (Byte) o;
-        } else if (o instanceof Integer) {
-            return (Integer) o;
-        } else if (o instanceof Double) {
-            return (int) (double) (Double) o;
-        } else if (o instanceof Float) {
-            return (int) (float) (Float) o;
-        } else if (o instanceof Long) {
-            return (int) (long) (Long) o;
-        } else {
-            return null;
-        }
-    }
-
-    private static Double castDouble(Object o) {
-        if (o == null) {
-            return null;
-        } else if (o instanceof Float) {
-            return (double) (Float) o;
-        } else if (o instanceof Double) {
-            return (Double) o;
-        } else if (o instanceof Byte) {
-            return (double) (Byte) o;
-        } else if (o instanceof Integer) {
-            return (double) (Integer) o;
-        } else if (o instanceof Long) {
-            return (double) (Long) o;
-        } else {
-            return null;
-        }
-    }
-
-
-    private static Boolean castBoolean(Object o) {
-        if (o == null) {
-            return null;
-        } else if (o instanceof Boolean) {
-            return (Boolean) o;
-        } else {
-            return null;
-        }
-    }
 }
