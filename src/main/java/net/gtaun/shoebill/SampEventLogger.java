@@ -48,7 +48,6 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onGameModeExit()
 	{
-		System.out.println( "--- Server Shutting Down." );
 		return 1;
 	}
 	

@@ -1146,7 +1146,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			}
 			
 			//player.dialog = null;
-			return 1;
+			return event.getResult();
 		}
 		catch( Exception e )
 		{

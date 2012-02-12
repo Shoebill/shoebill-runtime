@@ -26,9 +26,11 @@ import net.gtaun.shoebill.object.IPlayer;
 
 public class DialogResponseEvent extends DialogEvent
 {
+	private int result = 0;
 	private int response, listitem;
 	private String inputText;
-	
+
+	public int getResult()				{ return result; }
 	public int getResponse()				{ return response; }
 	public int getListitem()				{ return listitem; }
 	public String getInputText()			{ return inputText;}
@@ -40,5 +42,10 @@ public class DialogResponseEvent extends DialogEvent
 		this.response = response;
 		this.listitem = listitem;
 		this.inputText = inputtext;
+	}
+	
+	public void setResult( int result )
+	{
+		this.result |= result;
 	}
 }

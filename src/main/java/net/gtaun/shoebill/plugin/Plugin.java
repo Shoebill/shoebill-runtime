@@ -54,16 +54,16 @@ public abstract class Plugin
 		this.dataFolder = dataFolder;
 	}
 
-	protected abstract void onEnable();
-	protected abstract void onDisable();
+	protected abstract void onEnable() throws Exception;
+	protected abstract void onDisable() throws Exception;
 	
-	void enable()
+	void enable() throws Exception
 	{
 		onEnable();
 		isEnabled = true;
 	}
 	
-	void disable()
+	void disable() throws Exception
 	{
 		onDisable();
 		isEnabled = false;

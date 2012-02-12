@@ -170,7 +170,14 @@ public class PluginManager implements IPluginManager
 			if( entry.getValue() != plugin ) continue;
 
 			shoebill.getEventManager().dispatchEvent( new PluginUnloadEvent(plugin), this );
-			plugin.disable();
+			try
+			{
+				plugin.disable();
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
 			
 			plugins.remove( entry.getKey() );
 			return;

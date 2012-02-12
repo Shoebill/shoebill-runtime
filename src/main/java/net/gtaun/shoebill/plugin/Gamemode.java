@@ -41,7 +41,15 @@ public abstract class Gamemode extends Plugin
 	
 	public void exit()
 	{
-		disable();
+		try
+		{
+			disable();
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+		}
+		
 		SampNativeFunction.gameModeExit();
 	}
 	

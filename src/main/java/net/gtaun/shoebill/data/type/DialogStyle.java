@@ -24,7 +24,7 @@ package net.gtaun.shoebill.data.type;
 public enum DialogStyle
 {
 	MSGBOX( 0 ),
-	STYLE_INPUT( 1 ),
+	INPUT( 1 ),
 	LIST( 2 );
 	
 	
