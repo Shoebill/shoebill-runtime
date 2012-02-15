@@ -21,6 +21,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import net.gtaun.shoebill.event.gamemode.GamemodeExitEvent;
 import net.gtaun.shoebill.event.gamemode.GamemodeInitEvent;
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
@@ -46,6 +49,7 @@ public class Shoebill implements IShoebill
 	private static Shoebill instance;
 	public static IShoebill getInstance()		{ return instance; }
 	
+	static Logger LOGGER;
 	
 	private ShoebillConfiguration configuration;
 	private EventManager eventManager;
@@ -69,6 +73,9 @@ public class Shoebill implements IShoebill
 	Shoebill() throws IOException, ClassNotFoundException
 	{
 		instance = this;
+		
+		PropertyConfigurator.configure("./shoebill/log4j.properties");
+		LOGGER = Logger.getLogger(Shoebill.class);
 		
 		FileInputStream configFileIn;
 		configFileIn = new FileInputStream("./shoebill/config.yml");
