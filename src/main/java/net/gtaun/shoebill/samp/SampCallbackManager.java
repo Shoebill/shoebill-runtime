@@ -28,7 +28,7 @@ import java.util.Vector;
 public class SampCallbackManager implements ISampCallbackManager
 {
 	private List<ISampCallbackHandler> callbackHandlers;
-
+	
 
 	public SampCallbackManager()
 	{

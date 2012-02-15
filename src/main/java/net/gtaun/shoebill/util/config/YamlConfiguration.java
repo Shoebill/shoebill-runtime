@@ -73,8 +73,8 @@ public class YamlConfiguration extends FileConfiguration
 	public void read( InputStream in )
 	{
 		root = (HashMap<String, Object>)yaml.load( in );
+		if( root == null ) root = new HashMap<String, Object>();
 	}
-
 	@Override
 	public void write( OutputStream out )
 	{

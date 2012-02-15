@@ -54,14 +54,14 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onPlayerConnect( int playerId )
 	{
-		System.out.println( "[join] " + SampNativeFunction.getPlayerName(playerId) + " has joined the server (" + playerId + ":" + SampNativeFunction.getPlayerIp(playerId) + ")" );
+		Shoebill.LOGGER.info( "[join] " + SampNativeFunction.getPlayerName(playerId) + " has joined the server (" + playerId + ":" + SampNativeFunction.getPlayerIp(playerId) + ")" );
 		return 1;
 	}
 	
 	@Override
 	public int onPlayerDisconnect( int playerId, int reason )
 	{
-		System.out.println( "[part] " + SampNativeFunction.getPlayerName(playerId) + " has left the server (" + playerId + ":" + reason + ")" );
+		Shoebill.LOGGER.info( "[part] " + SampNativeFunction.getPlayerName(playerId) + " has left the server (" + playerId + ":" + reason + ")" );
 		return 1;
 	}
 	
@@ -69,7 +69,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	public int onPlayerSpawn( int playerId )
 	{
 		IPlayer player = sampObjectPool.getPlayer(playerId);
-		System.out.println( "[spawn] " + player.getName() + " has spawned (" + playerId + ")" );
+		Shoebill.LOGGER.info( "[spawn] " + player.getName() + " has spawned (" + playerId + ")" );
 	
 		return 1;
 	}
@@ -81,12 +81,12 @@ public class SampEventLogger implements ISampCallbackHandler
 		
 		if( killerId == Player.INVALID_ID )
 		{
-			System.out.println( "[death] " + player.getName() + " died (" + playerId + ":" + reason + ")" );
+			Shoebill.LOGGER.info( "[death] " + player.getName() + " died (" + playerId + ":" + reason + ")" );
 			return 1;
 		}
 		
 		IPlayer killer = sampObjectPool.getPlayer( killerId );
-		System.out.println( "[kill] " + killer.getName() + " killed " + player.getName() + " (" + SampNativeFunction.getWeaponName(reason) + ")" );
+		Shoebill.LOGGER.info( "[kill] " + killer.getName() + " killed " + player.getName() + " (" + SampNativeFunction.getWeaponName(reason) + ")" );
 		return 1;
 	}
 	
@@ -106,7 +106,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	public int onPlayerText( int playerId, String text )
 	{
 		IPlayer player = sampObjectPool.getPlayer( playerId );
-		System.out.println( "[chat] [" + player.getName() + "]: " + text );
+		Shoebill.LOGGER.info( "[chat] [" + player.getName() + "]: " + text );
 		
 		return 1;
 	}
@@ -115,7 +115,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	public int onPlayerCommandText( int playerId, String cmdtext )
 	{
 		IPlayer player = sampObjectPool.getPlayer( playerId );
-		System.out.println( "[cmd] [" + player.getName() + "] " + cmdtext );
+		Shoebill.LOGGER.info( "[cmd] [" + player.getName() + "] " + cmdtext );
 		
 		return 1;
 	}
@@ -132,7 +132,7 @@ public class SampEventLogger implements ISampCallbackHandler
 		IPlayer player = sampObjectPool.getPlayer( playerId );
 		IVehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 		
-		System.out.println( "[vehicle] " + player.getName() + " enter a vehicle (" + vehicle.getModelId() + ")" );
+		Shoebill.LOGGER.info( "[vehicle] " + player.getName() + " enter a vehicle (" + vehicle.getModelId() + ")" );
 		return 1;
 	}
 	
@@ -142,7 +142,7 @@ public class SampEventLogger implements ISampCallbackHandler
 		IPlayer player = sampObjectPool.getPlayer( playerId );
 		IVehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 		
-		System.out.println( "[vehicle] " + player.getName() + " leave a vehicle (" + vehicle.getModelId() + ")" );
+		Shoebill.LOGGER.info( "[vehicle] " + player.getName() + " leave a vehicle (" + vehicle.getModelId() + ")" );
 		return 1;
 	}
 	
@@ -179,7 +179,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	@Override
 	public int onRconCommand( String cmd )
 	{
-		System.out.println( "[rcon] " + " command: " + cmd );
+		Shoebill.LOGGER.info( "[rcon] " + " command: " + cmd );
 		return 1;
 	}
 	
@@ -207,7 +207,7 @@ public class SampEventLogger implements ISampCallbackHandler
 		IPlayer player = sampObjectPool.getPlayer( playerId );
 		IPickup pickup = sampObjectPool.getPickup( pickupId );
 		
-		System.out.println( "[pickup] " + player.getName() + " pickup " + pickup.getModelId() + " (" + pickup.getType() + ")" );
+		Shoebill.LOGGER.info( "[pickup] " + player.getName() + " pickup " + pickup.getModelId() + " (" + pickup.getType() + ")" );
 		return 1;
 	}
 	
@@ -263,7 +263,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	public int onPlayerInteriorChange( int playerId, int interiorId, int oldInteriorId )
 	{
 		IPlayer player = sampObjectPool.getPlayer( playerId );
-		System.out.println( "[interior] " + player.getName() + " interior has changed to " + interiorId );
+		Shoebill.LOGGER.info( "[interior] " + player.getName() + " interior has changed to " + interiorId );
 	
 		return 1;
 	}
@@ -278,9 +278,9 @@ public class SampEventLogger implements ISampCallbackHandler
 	public int onRconLoginAttempt( String ip, String password, int isSuccess )
 	{
 		if( isSuccess == 0 )
-			System.out.println( "[rcon] " + " bad rcon attempy by: " + ip + " (" + password + ")" );
+			Shoebill.LOGGER.info( "[rcon] " + " bad rcon attempy by: " + ip + " (" + password + ")" );
 		else
-			System.out.println( "[rcon] " + ip + " has logged." );
+			Shoebill.LOGGER.info( "[rcon] " + ip + " has logged." );
 		
 		return 1;
 	}
@@ -347,7 +347,7 @@ public class SampEventLogger implements ISampCallbackHandler
 		IPlayer player = sampObjectPool.getPlayer( playerId );
 		IPlayer clickedPlayer = sampObjectPool.getPlayer( clickedPlayerId );
 		
-		System.out.println( "[click] " + player.getName() + " has clicked " + clickedPlayer.getName() );
+		Shoebill.LOGGER.info( "[click] " + player.getName() + " has clicked " + clickedPlayer.getName() );
 		return 1;
 	}
 	
