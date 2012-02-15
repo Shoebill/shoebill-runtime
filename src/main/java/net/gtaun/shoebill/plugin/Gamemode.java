@@ -32,12 +32,12 @@ public abstract class Gamemode extends Plugin
 		
 	}
 	
-	
-	protected void setPlayerClass( Class<? extends IPlayer> cls )
+	protected Gamemode( Class<? extends IPlayer> cls )
 	{
 		SampObjectPool pool = (SampObjectPool)(getShoebill().getManagedObjectPool());
 		pool.setPlayerClass( cls );
 	}
+	
 	
 	public void exit()
 	{
