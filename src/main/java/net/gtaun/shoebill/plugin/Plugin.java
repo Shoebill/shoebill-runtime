@@ -19,6 +19,10 @@ package net.gtaun.shoebill.plugin;
 import java.io.File;
 
 import net.gtaun.shoebill.IShoebill;
+import net.gtaun.shoebill.util.event.Event;
+import net.gtaun.shoebill.util.event.EventListenerPriority;
+import net.gtaun.shoebill.util.event.IEventListener;
+import net.gtaun.shoebill.util.event.IEventManager;
 
 
 /**
@@ -32,6 +36,7 @@ public abstract class Plugin
 	
 	private PluginDescription description;
 	private IShoebill shoebill;
+	private IEventManager eventManager;
 	private File dataFolder;
 	
 
@@ -39,12 +44,113 @@ public abstract class Plugin
 
 	public PluginDescription getDescription()		{ return description; }
 	public IShoebill getShoebill()					{ return shoebill; }
+	public IEventManager getEventManager()			{ return eventManager; }
 	public File getDataFolder()						{ return dataFolder; }
 	
 	
 	protected Plugin()
 	{
-		
+		eventManager = new IEventManager()
+		{
+			
+			@Override
+			public <T extends Event> void removeListener( Class<T> type, Object object, IEventListener listener )
+			{
+				// XXX Auto-generated method stub
+				
+			}
+			
+			@Override
+			public <T extends Event> void removeListener( Class<T> type, Class<?> clz, IEventListener listener )
+			{
+				// XXX Auto-generated method stub
+				
+			}
+			
+			@Override
+			public <T extends Event> void removeListener( Class<T> type, IEventListener listener )
+			{
+				// XXX Auto-generated method stub
+				
+			}
+			
+			@Override
+			public <T extends Event> boolean hasListener( Class<T> type, Object object, IEventListener listener )
+			{
+				// XXX Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public <T extends Event> boolean hasListener( Class<T> type, Object object )
+			{
+				// XXX Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public <T extends Event> boolean hasListener( Class<T> type, Class<?> clz, IEventListener listener )
+			{
+				// XXX Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public <T extends Event> boolean hasListener( Class<T> type, Class<?> clz )
+			{
+				// XXX Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public <T extends Event> void dispatchEvent( T event, Object... objects )
+			{
+				// XXX Auto-generated method stub
+				
+			}
+			
+			@Override
+			public <T extends Event> void addListener( Class<T> type, Object object, IEventListener listener, short priority )
+			{
+				// XXX Auto-generated method stub
+				
+			}
+			
+			@Override
+			public <T extends Event> void addListener( Class<T> type, Object object, IEventListener listener, EventListenerPriority priority )
+			{
+				// XXX Auto-generated method stub
+				
+			}
+			
+			@Override
+			public <T extends Event> void addListener( Class<T> type, Class<?> clz, IEventListener listener, short priority )
+			{
+				// XXX Auto-generated method stub
+				
+			}
+			
+			@Override
+			public <T extends Event> void addListener( Class<T> type, Class<?> clz, IEventListener listener, EventListenerPriority priority )
+			{
+				// XXX Auto-generated method stub
+				
+			}
+			
+			@Override
+			public <T extends Event> void addListener( Class<T> type, IEventListener listener, short priority )
+			{
+				// XXX Auto-generated method stub
+				
+			}
+			
+			@Override
+			public <T extends Event> void addListener( Class<T> type, IEventListener listener, EventListenerPriority priority )
+			{
+				// XXX Auto-generated method stub
+				
+			}
+		};
 	}
 		
 	void setContext( PluginDescription description, IShoebill shoebill, File dataFolder )

@@ -25,6 +25,9 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Vector;
 
+import net.gtaun.shoebill.util.event.event.EventListenerAddedEvent;
+import net.gtaun.shoebill.util.event.event.EventListenerRemovedEvent;
+
 /**
  * @author MK124
  *
@@ -77,25 +80,25 @@ public class EventManager implements IEventManager
 	}
 	
 	@Override
-	public <T extends Event> void addListener( Class<T> type, Class<?> clz, IEventListener listener, EventListenerPriority priority )
+	public <T extends Event> void addListener( Class<T> type, Class<?> relatedClass, IEventListener listener, EventListenerPriority priority )
 	{
-		addListener( type, (Object)clz, listener, priority.getValue() );
+		addListener( type, (Object)relatedClass, listener, priority.getValue() );
 	}
 
 	@Override
-	public <T extends Event> void addListener( Class<T> type, Class<?> clz, IEventListener listener, short customPriority )
+	public <T extends Event> void addListener( Class<T> type, Class<?> relatedClass, IEventListener listener, short customPriority )
 	{
-		addListener( type, (Object)clz, listener, customPriority );
+		addListener( type, (Object)relatedClass, listener, customPriority );
 	}
 
 	@Override
-	public <T extends Event> void addListener( Class<T> type, Object object, IEventListener listener, EventListenerPriority priority )
+	public <T extends Event> void addListener( Class<T> type, Object relatedObject, IEventListener listener, EventListenerPriority priority )
 	{
-		addListener( type, object, listener, priority.getValue() );
+		addListener( type, relatedObject, listener, priority.getValue() );
 	}
 
 	@Override
-	public <T extends Event> void addListener( Class<T> type, Object object, IEventListener listener, short customPriority )
+	public <T extends Event> void addListener( Class<T> type, Object relatedObject, IEventListener listener, short customPriority )
 	{
 		Map<Object, List<Entry<IEventListener>>> objectListeners = objectListenerContainersMap.get(type);
 		if( objectListeners == null )
@@ -104,24 +107,24 @@ public class EventManager implements IEventManager
 			objectListenerContainersMap.put( type, objectListeners );
 		}
 		
-		List<Entry<IEventListener>> listeners = objectListeners.get(object);
+		List<Entry<IEventListener>> listeners = objectListeners.get(relatedObject);
 		if( listeners == null )
 		{
 			listeners = new Vector<Entry<IEventListener>>();
-			objectListeners.put( object, listeners );
+			objectListeners.put( relatedObject, listeners );
 		}
 		
 		for( int i=0; i<listeners.size(); i++ )
 		{
-			if( listeners.get(i).getValue() == listener )
-			{
-				listeners.remove( i );
-				break;
-			}
+			if( listeners.get(i).getValue() != listener ) continue;
+			removeListener( type, relatedObject, listener );
 		}
 		
 		Entry<IEventListener> entry = new Entry<IEventListener>( customPriority, listener );
 		listeners.add( entry );
+		
+		EventListenerAddedEvent event = new EventListenerAddedEvent( type, relatedObject, listener, customPriority );
+		dispatchEvent( event, this );
 	}
 
 
@@ -147,7 +150,15 @@ public class EventManager implements IEventManager
 		if( listeners == null ) return;
 		
 		for( int i=0; i<listeners.size(); i++ )
-			if( listeners.get(i).getValue() == listener ) listeners.remove( i );
+		{
+			Entry<IEventListener> entry = listeners.get(i);
+			if( entry.getValue() != listener ) continue;
+			
+			listeners.remove( i );
+			
+			EventListenerRemovedEvent event = new EventListenerRemovedEvent( type, object, listener, entry.getPriority() );
+			dispatchEvent( event, this );
+		}
 		
 		if( listeners.size() == 0 ) objectListeners.remove( listeners );
 		if( objectListeners.size() == 0 ) objectListeners.remove( listener );
