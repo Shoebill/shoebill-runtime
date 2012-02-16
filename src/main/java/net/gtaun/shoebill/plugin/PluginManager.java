@@ -105,6 +105,8 @@ public class PluginManager implements IPluginManager
 		GamemodeDescription desc;
 		Gamemode gamemode = null;
 		
+		LOGGER.info("Load gamemode: " + file.getName() );
+		
 		try
 		{
 			desc = new GamemodeDescription(in, classLoader);
@@ -132,7 +134,7 @@ public class PluginManager implements IPluginManager
 	{
 		if( file.canRead() == false ) return null;
 		
-		LOGGER.info("Load plugin: " + file.getPath() );
+		LOGGER.info("Load plugin: " + file.getName() );
 		
 		try
 		{
