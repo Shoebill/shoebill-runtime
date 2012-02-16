@@ -18,6 +18,8 @@ package net.gtaun.shoebill.plugin;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
+
 import net.gtaun.shoebill.IShoebill;
 import net.gtaun.shoebill.IShoebillLowLevel;
 import net.gtaun.shoebill.util.event.IEventManager;
@@ -77,5 +79,10 @@ public abstract class Plugin
 		eventManager.removeAllListener();
 		
 		isEnabled = false;
+	}
+	
+	public Logger getLogger()
+	{
+		return Logger.getLogger( description.getClazz() );
 	}
 }

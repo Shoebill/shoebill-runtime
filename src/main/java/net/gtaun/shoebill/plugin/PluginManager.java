@@ -32,6 +32,8 @@ import java.util.Map.Entry;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.apache.log4j.Logger;
+
 import net.gtaun.shoebill.IShoebill;
 import net.gtaun.shoebill.IShoebillLowLevel;
 import net.gtaun.shoebill.Shoebill;
@@ -45,6 +47,9 @@ import net.gtaun.shoebill.event.plugin.PluginUnloadEvent;
 
 public class PluginManager implements IPluginManager
 {
+	public static final Logger LOGGER = Logger.getLogger(PluginManager.class);
+	
+	
 	final FilenameFilter jarFileFliter = new FilenameFilter()
 	{
 		public boolean accept( File dir, String name )
@@ -67,7 +72,7 @@ public class PluginManager implements IPluginManager
 		plugins = new HashMap<Class<? extends Plugin>, Plugin>();
 		
 		File[] files = pluginFolder.listFiles( jarFileFliter );
-		File[] gamemodeFiles = gamemodeFolder.listFiles();
+		File[] gamemodeFiles = gamemodeFolder.listFiles( jarFileFliter );
 		URL[] urls = new URL[ files.length + gamemodeFiles.length ];
 		for( int i=0; i<files.length+gamemodeFiles.length; i++ ) try
 		{
@@ -127,7 +132,7 @@ public class PluginManager implements IPluginManager
 	{
 		if( file.canRead() == false ) return null;
 		
-		Shoebill.LOGGER.info("Load plugin: " + file.getPath() );
+		LOGGER.info("Load plugin: " + file.getPath() );
 		
 		try
 		{
@@ -139,8 +144,8 @@ public class PluginManager implements IPluginManager
 			Class<? extends Plugin> clazz = desc.getClazz();
 			if( plugins.containsKey(clazz) )
 			{
-				Shoebill.LOGGER.info("There's a plugin which has the same class as \"" + desc.getClazz().getName() + "\".");
-				Shoebill.LOGGER.info("Abandon loading " + desc.getClazz().getName());
+				LOGGER.info("There's a plugin which has the same class as \"" + desc.getClazz().getName() + "\".");
+				LOGGER.info("Abandon loading " + desc.getClazz().getName());
 				return null;
 			}
 			
@@ -174,6 +179,7 @@ public class PluginManager implements IPluginManager
 		for( Entry<Class<? extends Plugin>, Plugin> entry : plugins.entrySet() )
 		{
 			if( entry.getValue() != plugin ) continue;
+			LOGGER.info("Unload plugin: " + plugin.getDescription().getClazz().getName() );
 
 			PluginUnloadEvent event = new PluginUnloadEvent(plugin);
 			IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();

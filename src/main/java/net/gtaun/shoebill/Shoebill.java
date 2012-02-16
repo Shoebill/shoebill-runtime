@@ -19,8 +19,12 @@ package net.gtaun.shoebill;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.List;
+import java.util.Properties;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -46,10 +50,12 @@ import net.gtaun.shoebill.util.event.IEventManager;
 
 public class Shoebill implements IShoebill, IShoebillLowLevel
 {
+	public static final Logger LOGGER = Logger.getLogger(Shoebill.class);
+	
+	
 	private static Shoebill instance;
 	public static IShoebill getInstance()		{ return instance; }
 	
-	public static final Logger LOGGER = Logger.getLogger(Shoebill.class);
 	
 	private ShoebillConfiguration configuration;
 	private EventManager eventManager;
@@ -74,8 +80,24 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	{
 		instance = this;
 		
-		PropertyConfigurator.configure("./shoebill/log4j.properties");
+		File logPropertyFile = new File("./shoebill/log4j.properties");
+		if( logPropertyFile.exists() )
+		{
+			PropertyConfigurator.configure( logPropertyFile.toURI().toURL() );
+		}
+		else
+		{
+			InputStream in = this.getClass().getClassLoader().getResourceAsStream( "log4j.properties" );
+			Properties properties = new Properties();
+			properties.load(in);
+			PropertyConfigurator.configure( properties );
+		}
+
+		System.setOut( new PrintStream(new LoggerOutputStream(Logger.getLogger("OUT"), Level.INFO), true) );
+		System.setErr( new PrintStream(new LoggerOutputStream(Logger.getLogger("ERR"), Level.ERROR), true) );
 		
+		if( !logPropertyFile.exists() ) LOGGER.info( "Not find " + logPropertyFile.getPath() + " file, use the default configuration." );
+
 		FileInputStream configFileIn;
 		configFileIn = new FileInputStream("./shoebill/config.yml");
 		
