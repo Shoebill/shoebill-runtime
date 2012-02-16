@@ -25,11 +25,13 @@ public class LoggerOutputStream extends ByteArrayOutputStream
 	{
 		super.flush();
 		String message = this.toString();
-		super.reset();
-
-		if( message.length() > 0 && !message.equals(SEPARATOR) )
+		
+		if( message.contains(SEPARATOR) )
 		{
-			logger.log( Shoebill.class.getName(), level, message, null );
+			super.reset();
+			
+			String messages[] = message.split(SEPARATOR);
+			for( String msg : messages ) logger.log( Shoebill.class.getName(), level, msg, null );
 		}
 	}
 }

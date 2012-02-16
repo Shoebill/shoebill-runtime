@@ -96,8 +96,9 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		System.setOut( new PrintStream(new LoggerOutputStream(Logger.getLogger("SysOut"), Level.INFO), true) );
 		System.setErr( new PrintStream(new LoggerOutputStream(Logger.getLogger("SysErr"), Level.ERROR), true) );
 		
-		if( !logPropertyFile.exists() ) System.out.println( "Not find " + logPropertyFile.getPath() + " file, use the default configuration." );
-
+		if( !logPropertyFile.exists() ) LOGGER.info( "Not find " + logPropertyFile.getPath() + " file, use the default configuration." );
+		LOGGER.info( "System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")" );
+		
 		FileInputStream configFileIn;
 		configFileIn = new FileInputStream("./shoebill/config.yml");
 		
