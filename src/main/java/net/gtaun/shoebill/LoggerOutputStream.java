@@ -27,9 +27,9 @@ public class LoggerOutputStream extends ByteArrayOutputStream
 		String message = this.toString();
 		super.reset();
 
-        if( message.length() > 0 && !message.equals(SEPARATOR) )
-        {
-            logger.log( Shoebill.class.getName(), level, message, null );
-        }
+		if( message.length() > 0 && !message.equals(SEPARATOR) )
+		{
+			logger.log( Shoebill.class.getName(), level, message, null );
+		}
 	}
 }
