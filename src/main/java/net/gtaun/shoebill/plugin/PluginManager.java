@@ -144,8 +144,8 @@ public class PluginManager implements IPluginManager
 			Class<? extends Plugin> clazz = desc.getClazz();
 			if( plugins.containsKey(clazz) )
 			{
-				LOGGER.info("There's a plugin which has the same class as \"" + desc.getClazz().getName() + "\".");
-				LOGGER.info("Abandon loading " + desc.getClazz().getName());
+				LOGGER.warn("There's a plugin which has the same class as \"" + desc.getClazz().getName() + "\".");
+				LOGGER.warn("Abandon loading " + desc.getClazz().getName());
 				return null;
 			}
 			

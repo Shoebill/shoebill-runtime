@@ -93,10 +93,10 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 			PropertyConfigurator.configure( properties );
 		}
 
-		System.setOut( new PrintStream(new LoggerOutputStream(Logger.getLogger("OUT"), Level.INFO), true) );
-		System.setErr( new PrintStream(new LoggerOutputStream(Logger.getLogger("ERR"), Level.ERROR), true) );
+		System.setOut( new PrintStream(new LoggerOutputStream(Logger.getLogger("SysOut"), Level.INFO), true) );
+		System.setErr( new PrintStream(new LoggerOutputStream(Logger.getLogger("SysErr"), Level.ERROR), true) );
 		
-		if( !logPropertyFile.exists() ) LOGGER.info( "Not find " + logPropertyFile.getPath() + " file, use the default configuration." );
+		if( !logPropertyFile.exists() ) System.out.println( "Not find " + logPropertyFile.getPath() + " file, use the default configuration." );
 
 		FileInputStream configFileIn;
 		configFileIn = new FileInputStream("./shoebill/config.yml");
@@ -139,7 +139,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 					List<String> gamemodes = configuration.getGamemodes();
 					if( gamemodes == null || gamemodes.size() == 0 )
 					{
-						Shoebill.LOGGER.info( "There's no gamemode assigned in config.yml." );
+						Shoebill.LOGGER.error( "There's no gamemode assigned in config.yml." );
 						throw new NoGamemodeAssignedException();
 					}
 					
