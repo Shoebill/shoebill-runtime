@@ -127,7 +127,7 @@ public class PluginManager implements IPluginManager
 	{
 		if( file.canRead() == false ) return null;
 		
-		System.out.println("Load plugin: " + file.getPath() );
+		Shoebill.LOGGER.info("Load plugin: " + file.getPath() );
 		
 		try
 		{
@@ -139,8 +139,8 @@ public class PluginManager implements IPluginManager
 			Class<? extends Plugin> clazz = desc.getClazz();
 			if( plugins.containsKey(clazz) )
 			{
-				System.out.println("There's a plugin which has the same class as \"" + desc.getClazz().getName() + "\".");
-				System.out.println("Abandon loading " + desc.getClazz().getName());
+				Shoebill.LOGGER.info("There's a plugin which has the same class as \"" + desc.getClazz().getName() + "\".");
+				Shoebill.LOGGER.info("Abandon loading " + desc.getClazz().getName());
 				return null;
 			}
 			

@@ -49,7 +49,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	private static Shoebill instance;
 	public static IShoebill getInstance()		{ return instance; }
 	
-	static Logger LOGGER;
+	public static final Logger LOGGER = Logger.getLogger(Shoebill.class);
 	
 	private ShoebillConfiguration configuration;
 	private EventManager eventManager;
@@ -75,7 +75,6 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		instance = this;
 		
 		PropertyConfigurator.configure("./shoebill/log4j.properties");
-		LOGGER = Logger.getLogger(Shoebill.class);
 		
 		FileInputStream configFileIn;
 		configFileIn = new FileInputStream("./shoebill/config.yml");
@@ -118,7 +117,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 					List<String> gamemodes = configuration.getGamemodes();
 					if( gamemodes == null || gamemodes.size() == 0 )
 					{
-						System.out.println( "There's no gamemode assigned in config.yml." );
+						Shoebill.LOGGER.info( "There's no gamemode assigned in config.yml." );
 						throw new NoGamemodeAssignedException();
 					}
 					
