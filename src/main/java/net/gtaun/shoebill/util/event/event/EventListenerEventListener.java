@@ -16,17 +16,21 @@
 
 package net.gtaun.shoebill.util.event.event;
 
-import net.gtaun.shoebill.util.event.EventListenerEntry;
+import net.gtaun.shoebill.util.event.EventListener;
 
 /**
  * @author MK124
  *
  */
 
-public class EventListenerAddedEvent extends EventListenerEvent
+public abstract class EventListenerEventListener extends EventListener
 {
-	public EventListenerAddedEvent( EventListenerEntry entry )
+	public EventListenerEventListener()
 	{
-		super( entry );
+		super( EventListenerEventListener.class );
 	}
+	
+
+	public void onEvnetListenerAdded( EventListenerAddedEvent event )			{ }
+	public void onEvnetListenerRemoved( EventListenerRemovedEvent event )		{ }
 }

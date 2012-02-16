@@ -33,6 +33,6 @@ public abstract class RconEventListener extends EventListener
 	}
 	
 
-	public void onRconCommandEvent( RconCommandEvent event )		{ }
-	public void onRconLoginEvent( RconLoginEvent event )			{ }
+	public void onRconCommand( RconCommandEvent event )		{ }
+	public void onRconLogin( RconLoginEvent event )			{ }
 }

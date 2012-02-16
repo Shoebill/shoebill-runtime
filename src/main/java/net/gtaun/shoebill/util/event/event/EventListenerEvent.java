@@ -17,6 +17,7 @@
 package net.gtaun.shoebill.util.event.event;
 
 import net.gtaun.shoebill.util.event.Event;
+import net.gtaun.shoebill.util.event.EventListenerEntry;
 import net.gtaun.shoebill.util.event.IEventListener;
 
 /**
@@ -26,29 +27,40 @@ import net.gtaun.shoebill.util.event.IEventListener;
 
 public class EventListenerEvent extends Event
 {
-	private Class<? extends Event> type;
-	private Object relatedObject;
-	private IEventListener eventListener;
-	private short priority;
+	private EventListenerEntry entry;
 	
 
-	public Class<? extends Event> getType()			{ return type; }
-	public Object getRelatedObject()				{ return relatedObject; }
-	public IEventListener getEventListener()		{ return eventListener; }
-	public short getPriority()						{ return priority; }
+	public EventListenerEntry getEntry()			{ return entry; }
 	
 	
-	public EventListenerEvent( Class<? extends Event> type, Object relatedObject, IEventListener eventListener, short priority )
+	public EventListenerEvent( EventListenerEntry entry )
 	{
-		this.type = type;
-		this.relatedObject = relatedObject;
-		this.eventListener = eventListener;
-		this.priority = priority;
+		this.entry = entry;
+	}
+	
+
+	public Class<? extends Event> getType()
+	{
+		return entry.getType();
+	}
+	
+	public Object getRelatedObject()
+	{
+		return entry.getRelatedObject();
 	}
 	
 	public Class<?> getRelatedClass()
 	{
-		if( relatedObject instanceof Class ) return (Class<?>) relatedObject;
-		return null;
+		return entry.getRelatedClass();
+	}
+	
+	public IEventListener getListener()
+	{
+		return entry.getListener();
+	}
+	
+	public short getPriority()
+	{
+		return entry.getPriority();
 	}
 }

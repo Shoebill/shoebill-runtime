@@ -32,5 +32,5 @@ public abstract class GamemodeEventListener extends EventListener
 	}
 	
 	
-	public void onGamemodeExitEvent( GamemodeExitEvent event )		{ }
+	public void onGamemodeExit( GamemodeExitEvent event )		{ }
 }

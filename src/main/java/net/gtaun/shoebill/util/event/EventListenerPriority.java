@@ -33,6 +33,7 @@ public enum EventListenerPriority
 
     private final short value;
 
+    
     private EventListenerPriority( short value )
     {
         this.value = value;
