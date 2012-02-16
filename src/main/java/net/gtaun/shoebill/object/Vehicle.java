@@ -19,6 +19,7 @@ package net.gtaun.shoebill.object;
 
 import java.util.Collection;
 
+import net.gtaun.shoebill.IShoebillLowLevel;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
@@ -167,7 +168,8 @@ public class Vehicle implements IVehicle
 		pool.setVehicle( id, this );
 		
 		VehicleSpawnEvent event = new VehicleSpawnEvent( this );
-		Shoebill.getInstance().getEventManager().dispatchEvent( event, this );
+		IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();
+		shoebillLowLevel.getEventManager().dispatchEvent( event, this );
 	}
 	
 	
@@ -182,7 +184,8 @@ public class Vehicle implements IVehicle
 		pool.setVehicle( id, null );
 
 		VehicleDestroyEvent event = new VehicleDestroyEvent( this );
-		Shoebill.getInstance().getEventManager().dispatchEvent( event, this );
+		IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();
+		shoebillLowLevel.getEventManager().dispatchEvent( event, this );
 		
 		id = -1;
 	}

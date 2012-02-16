@@ -33,6 +33,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import net.gtaun.shoebill.IShoebill;
+import net.gtaun.shoebill.IShoebillLowLevel;
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.event.plugin.PluginLoadEvent;
 import net.gtaun.shoebill.event.plugin.PluginUnloadEvent;
 
@@ -152,7 +154,11 @@ public class PluginManager implements IPluginManager
 			plugin.enable();
 			
 			plugins.put( clazz, plugin );
-			shoebill.getEventManager().dispatchEvent( new PluginLoadEvent(plugin), this );
+			
+			PluginLoadEvent event = new PluginLoadEvent(plugin);
+			IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();
+			shoebillLowLevel.getEventManager().dispatchEvent( event, this );
+			
 			return plugin;
 		}
 		catch( Exception e )
@@ -169,7 +175,10 @@ public class PluginManager implements IPluginManager
 		{
 			if( entry.getValue() != plugin ) continue;
 
-			shoebill.getEventManager().dispatchEvent( new PluginUnloadEvent(plugin), this );
+			PluginUnloadEvent event = new PluginUnloadEvent(plugin);
+			IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();
+			shoebillLowLevel.getEventManager().dispatchEvent( event, this );
+			
 			try
 			{
 				plugin.disable();

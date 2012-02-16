@@ -44,7 +44,7 @@ import net.gtaun.shoebill.util.event.IEventManager;
  * 
  */
 
-public class Shoebill implements IShoebill
+public class Shoebill implements IShoebill, IShoebillLowLevel
 {
 	private static Shoebill instance;
 	public static IShoebill getInstance()		{ return instance; }
@@ -65,9 +65,9 @@ public class Shoebill implements IShoebill
 
 	
 	@Override public IEventManager getEventManager()				{ return eventManager; }
-	@Override public ISampCallbackManager getCallbackManager()		{ return sampCallbackManager; }
 	@Override public ISampObjectPool getManagedObjectPool()			{ return managedObjectPool; }
 	@Override public PluginManager getPluginManager()				{ return pluginManager; }
+	@Override public ISampCallbackManager getCallbackManager()		{ return sampCallbackManager; }
 	
 	
 	Shoebill() throws IOException, ClassNotFoundException

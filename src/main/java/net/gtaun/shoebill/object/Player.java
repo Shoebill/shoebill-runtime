@@ -19,6 +19,7 @@ package net.gtaun.shoebill.object;
 
 import java.util.Collection;
 
+import net.gtaun.shoebill.IShoebillLowLevel;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Area;
@@ -935,6 +936,7 @@ public class Player implements IPlayer
 		SampNativeFunction.showPlayerDialog( id, -1, 0, "", "", "", "" );
 		
 		DialogCancelEvent event = new DialogCancelEvent( dialog, this );
-		Shoebill.getInstance().getEventManager().dispatchEvent( event, dialog, this );
+		IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();
+		shoebillLowLevel.getEventManager().dispatchEvent( event, dialog, this );
 	}
 }
