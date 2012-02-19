@@ -118,6 +118,11 @@ public class Configuration
 		return get(path) instanceof String;
 	}
 	
+	public void setString( String path, Object value )
+	{
+		set(path, value.toString());
+	}
+	
 	public int getInt( String path )
 	{
 		return getInt(path, 0);
@@ -132,6 +137,16 @@ public class Configuration
 	public boolean isInt( String path )
 	{
 		return get(path) instanceof Integer;
+	}
+	
+	public void setInt( String path, Integer value )
+	{
+		set(path, value);
+	}
+	
+	public void setInt( String path, int value )
+	{
+		set(path, new Integer(value));
 	}
 
 	public long getLong( String path )
@@ -150,6 +165,16 @@ public class Configuration
 		return get(path) instanceof Long;
 	}
 	
+	public void setLong( String path, Long value )
+	{
+		set(path, value);
+	}
+	
+	public void setLong( String path, long value )
+	{
+		set(path, new Long(value));
+	}
+	
 	public double getDouble( String path )
 	{
 		return getDouble(path, Double.NaN);
@@ -164,6 +189,16 @@ public class Configuration
 	public boolean isDouble( String path )
 	{
 		return get(path) instanceof Double;
+	}
+	
+	public void setDouble( String path, Double value )
+	{
+		set(path, value);
+	}
+	
+	public void setDouble( String path, double value )
+	{
+		set(path, new Double(value));
 	}
 
 	public boolean getBoolean( String path )
@@ -180,6 +215,16 @@ public class Configuration
 	public boolean isBoolean( String path )
 	{
 		return get(path) instanceof Boolean;
+	}
+	
+	public void setBoolean( String path, Boolean value )
+	{
+		set(path, value);
+	}
+	
+	public void setBoolean( String path, boolean value )
+	{
+		set(path, new Boolean(value));
 	}
 
 	public List<?> getList( String path )
