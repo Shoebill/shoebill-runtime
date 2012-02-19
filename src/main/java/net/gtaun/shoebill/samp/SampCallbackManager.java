@@ -16,9 +16,8 @@
 
 package net.gtaun.shoebill.samp;
 
-import java.util.List;
-import java.util.Vector;
-
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author MK124
@@ -27,14 +26,14 @@ import java.util.Vector;
 
 public class SampCallbackManager implements ISampCallbackManager
 {
-	private List<ISampCallbackHandler> callbackHandlers;
+	private Queue<ISampCallbackHandler> callbackHandlers;
 	
 
 	public SampCallbackManager()
 	{
-		callbackHandlers = new Vector<ISampCallbackHandler>();
+		callbackHandlers = new ConcurrentLinkedQueue<ISampCallbackHandler>();
 	}
-
+	
 	@Override
 	public void registerCallbackHandler( ISampCallbackHandler handler )
 	{

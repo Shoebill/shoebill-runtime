@@ -121,6 +121,18 @@ public class PluginManager implements IPluginManager
 		
 		return gamemode;
 	}
+	
+	public void deconstructGamemode( Gamemode gamemode )
+	{
+		try
+		{
+			gamemode.disable();
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public Plugin loadPlugin( String filename )

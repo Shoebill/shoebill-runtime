@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
@@ -35,6 +36,7 @@ import net.gtaun.shoebill.object.SampEventDispatcher;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.plugin.Gamemode;
+import net.gtaun.shoebill.plugin.Plugin;
 import net.gtaun.shoebill.plugin.PluginManager;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.ISampCallbackManager;
@@ -68,7 +70,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	private SampEventLogger sampEventLogger;
 	private SampEventDispatcher sampEventDispatcher;
 	
-	private File gamemodeFolder;
+	private File pluginFolder, gamemodeFolder, dataFolder;
 
 	
 	@Override public IEventManager getEventManager()				{ return eventManager; }
@@ -94,8 +96,8 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 			PropertyConfigurator.configure( properties );
 		}
 
-		System.setOut( new PrintStream(new LoggerOutputStream(Logger.getLogger("SysOut"), Level.INFO), true) );
-		System.setErr( new PrintStream(new LoggerOutputStream(Logger.getLogger("SysErr"), Level.ERROR), true) );
+		System.setOut( new PrintStream(new LoggerOutputStream(Logger.getLogger("System.out"), Level.INFO), true) );
+		System.setErr( new PrintStream(new LoggerOutputStream(Logger.getLogger("System.err"), Level.ERROR), true) );
 		
 		if( !logPropertyFile.exists() ) LOGGER.info( "Not find " + logPropertyFile.getPath() + " file, use the default configuration." );
 		LOGGER.info( "System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")" );
@@ -104,79 +106,115 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		configFileIn = new FileInputStream("./shoebill/config.yml");
 		
 		configuration = new ShoebillConfiguration( configFileIn );
-		eventManager = new EventManager();
-		
-		sampCallbackManager = new SampCallbackManager();
-		managedObjectPool = new SampObjectPool( eventManager );
 		
 		File workdir = configuration.getWorkdir();
+		pluginFolder = new File(workdir, "plugins");
 		gamemodeFolder = new File(workdir, "gamemodes");
-		
-		pluginManager = new PluginManager(this, new File(workdir, "plugins"), gamemodeFolder, new File(workdir, "data"));
-		pluginManager.loadAllPlugin();
-		
-		sampEventLogger = new SampEventLogger( managedObjectPool );
-		sampEventDispatcher = new SampEventDispatcher( managedObjectPool, eventManager );
-		
-		initialize();
+		dataFolder = new File(workdir, "data");
 	}
-	
-	@Override
-	protected void finalize() throws Throwable
+
+	private void registerRootCallbackHandler()
 	{
-		instance = null;
-	}
-	
-	private void initialize() throws IOException, ClassNotFoundException
-	{
-		managedObjectPool.setServer( new Server() );
-		managedObjectPool.setWorld( new World() );
-		
 		sampCallbackManager.registerCallbackHandler( new SampCallbackHandler()
 		{
 			public int onGameModeInit()
 			{
 				try
 				{
-					List<String> gamemodes = configuration.getGamemodes();
-					if( gamemodes == null || gamemodes.size() == 0 )
-					{
-						Shoebill.LOGGER.error( "There's no gamemode assigned in config.yml." );
-						throw new NoGamemodeAssignedException();
-					}
-					
-					File file = new File( gamemodeFolder, gamemodes.get(0) );
-					Gamemode gamemode = pluginManager.constructGamemode( file );
-					managedObjectPool.setGamemode( gamemode );
-					
-					eventManager.dispatchEvent( new GamemodeInitEvent(gamemode), gamemode );
+					initialize();
+					loadPluginsAndGamemode();
 				}
 				catch( Exception e )
 				{
 					e.printStackTrace();
 				}
-
+				
 				return 1;
 			}
 			
 			public int onGameModeExit()
 			{
-				Gamemode gamemode = managedObjectPool.getGamemode();
-				if( gamemode == null ) return 1;
-				
-				eventManager.dispatchEvent( new GamemodeExitEvent(gamemode), gamemode );
-				managedObjectPool.setGamemode( null );
+				unloadPluginsAndGamemode();
+				uninitialize();
 				return 1;
 			}
 		} );
+	}
+	
+	private void initialize()
+	{
+		eventManager = new EventManager();
+		pluginManager = new PluginManager(this, pluginFolder, gamemodeFolder, dataFolder);
+
+		managedObjectPool = new SampObjectPool( eventManager );
+		managedObjectPool.setServer( new Server() );
+		managedObjectPool.setWorld( new World() );
+
+		sampEventLogger = new SampEventLogger( managedObjectPool );
+		sampEventDispatcher = new SampEventDispatcher( managedObjectPool, eventManager );
 		
 		sampCallbackManager.registerCallbackHandler( managedObjectPool.getCallbackHandler() );
 		sampCallbackManager.registerCallbackHandler( sampEventDispatcher );
 		sampCallbackManager.registerCallbackHandler( sampEventLogger );
 	}
 	
+	private void uninitialize()
+	{
+		sampCallbackManager = null;
+		sampEventLogger = null;
+		sampEventDispatcher = null;
+		managedObjectPool = null;
+		pluginManager = null;
+		eventManager = null;
+		
+		System.gc();
+	}
+	
+	private void loadPluginsAndGamemode() throws IOException
+	{
+		pluginManager.loadAllPlugin();
+		
+		List<String> gamemodes = configuration.getGamemodes();
+		if( gamemodes == null || gamemodes.size() == 0 )
+		{
+			Shoebill.LOGGER.error( "There's no gamemode assigned in config.yml." );
+			throw new NoGamemodeAssignedException();
+		}
+		
+		File file = new File( gamemodeFolder, gamemodes.get(0) );
+		Gamemode gamemode = pluginManager.constructGamemode( file );
+		if( gamemode != null )
+		{
+			managedObjectPool.setGamemode( gamemode );
+			GamemodeInitEvent event = new GamemodeInitEvent(gamemode);
+			eventManager.dispatchEvent( event, gamemode );
+		}
+	}
+	
+	private void unloadPluginsAndGamemode()
+	{
+		Gamemode gamemode = managedObjectPool.getGamemode();
+		if( gamemode != null )
+		{
+			GamemodeExitEvent event = new GamemodeExitEvent(gamemode);
+			eventManager.dispatchEvent( event, gamemode );
+			pluginManager.deconstructGamemode( gamemode );
+		}
+		
+		Collection<Plugin> plugins = pluginManager.getPlugins();
+		for( Plugin plugin : plugins ) pluginManager.unloadPlugin( plugin );
+		
+		managedObjectPool.setGamemode( null );
+	}
+
 	public ISampCallbackHandler getCallbackHandler()
 	{
+		if( sampCallbackManager == null )
+		{
+			sampCallbackManager = new SampCallbackManager();
+			registerRootCallbackHandler();
+		}
+		
 		return sampCallbackManager.getMasterCallbackHandler();
 	}
 }
