@@ -42,6 +42,7 @@ import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackManager;
 import net.gtaun.shoebill.util.event.EventManager;
 import net.gtaun.shoebill.util.event.IEventManager;
+import net.gtaun.shoebill.util.log.LoggerOutputStream;
 
 /**
  * @author MK124
