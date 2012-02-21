@@ -22,12 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Collection;
-import java.util.List;
 import java.util.Properties;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import net.gtaun.shoebill.event.gamemode.GamemodeExitEvent;
 import net.gtaun.shoebill.event.gamemode.GamemodeInitEvent;
@@ -42,9 +37,14 @@ import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.ISampCallbackManager;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackManager;
+import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventManager;
 import net.gtaun.shoebill.util.event.IEventManager;
 import net.gtaun.shoebill.util.log.LoggerOutputStream;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  * @author MK124
@@ -70,7 +70,8 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	private SampEventLogger sampEventLogger;
 	private SampEventDispatcher sampEventDispatcher;
 	
-	private File pluginFolder, gamemodeFolder, dataFolder;
+	private File pluginDir, gamemodeDir, dataDir;
+	private File gamemodeFile;
 
 	
 	@Override public IEventManager getEventManager()				{ return eventManager; }
@@ -108,9 +109,19 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		configuration = new ShoebillConfiguration( configFileIn );
 		
 		File workdir = configuration.getWorkdir();
-		pluginFolder = new File(workdir, "plugins");
-		gamemodeFolder = new File(workdir, "gamemodes");
-		dataFolder = new File(workdir, "data");
+		pluginDir = new File(workdir, "plugins");
+		gamemodeDir = new File(workdir, "gamemodes");
+		dataDir = new File(workdir, "data");
+
+		String gamemodeFilename = configuration.getGamemode();
+		if( gamemodeFilename == null )
+		{
+			Shoebill.LOGGER.error( "There's no gamemode assigned in config.yml." );
+			throw new NoGamemodeAssignedException();
+		}
+
+		gamemodeFile = new File(gamemodeDir, gamemodeFilename);
+		
 	}
 
 	private void registerRootCallbackHandler()
@@ -138,13 +149,31 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 				uninitialize();
 				return 1;
 			}
+			
+			public int onRconCommand( String cmd )
+			{
+				String[] splits = cmd.split( " " );
+				if( splits.length != 2 ) return 0;
+				if( "changegamemode".equalsIgnoreCase(splits[0]) == false ) return 0;
+				
+				String gamemode = splits[1];
+				File file = new File(gamemodeDir, gamemode);
+				if( file.exists() == false || file.isFile() == false )
+				{
+					LOGGER.info( "'" + gamemode + "' can not be found." );
+					return 0;
+				}
+				
+				changeGamemode( file );
+				return 1;
+			}
 		} );
 	}
 	
 	private void initialize()
 	{
 		eventManager = new EventManager();
-		pluginManager = new PluginManager(this, pluginFolder, gamemodeFolder, dataFolder);
+		pluginManager = new PluginManager(this, pluginDir, gamemodeDir, dataDir);
 
 		managedObjectPool = new SampObjectPool( eventManager );
 		managedObjectPool.setServer( new Server() );
@@ -174,15 +203,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	{
 		pluginManager.loadAllPlugin();
 		
-		List<String> gamemodes = configuration.getGamemodes();
-		if( gamemodes == null || gamemodes.size() == 0 )
-		{
-			Shoebill.LOGGER.error( "There's no gamemode assigned in config.yml." );
-			throw new NoGamemodeAssignedException();
-		}
-		
-		File file = new File( gamemodeFolder, gamemodes.get(0) );
-		Gamemode gamemode = pluginManager.constructGamemode( file );
+		Gamemode gamemode = pluginManager.constructGamemode( gamemodeFile );
 		if( gamemode != null )
 		{
 			managedObjectPool.setGamemode( gamemode );
@@ -216,5 +237,18 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		}
 		
 		return sampCallbackManager.getMasterCallbackHandler();
+	}
+	
+	@Override
+	public void changeGamemode( File file )
+	{
+		gamemodeFile = file;
+		reload();
+	}
+	
+	@Override
+	public void reload()
+	{
+		SampNativeFunction.sendRconCommand( "changemode Shoebill" );
 	}
 }

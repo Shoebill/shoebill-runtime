@@ -19,7 +19,6 @@ package net.gtaun.shoebill;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.List;
 
 import net.gtaun.shoebill.util.config.YamlConfiguration;
 
@@ -31,7 +30,7 @@ import net.gtaun.shoebill.util.config.YamlConfiguration;
 public class ShoebillConfiguration
 {
 	private File workdir;
-	private List<String> gamemodes;
+	private String gamemode;
 	
 	
 	public ShoebillConfiguration( InputStream in )
@@ -42,7 +41,7 @@ public class ShoebillConfiguration
 		String workdirPath = config.getString( "workdir", "./shoebill/" );
 		workdir = new File( workdirPath );
 		
-		gamemodes = config.getStringList("gamemodes", null);
+		gamemode = config.getString("gamemode", null);
 	}
 	
 	public File getWorkdir()
@@ -50,8 +49,8 @@ public class ShoebillConfiguration
 		return workdir;
 	}
 
-	public List<String> getGamemodes()
+	public String getGamemode()
 	{
-		return gamemodes;
+		return gamemode;
 	}
 }

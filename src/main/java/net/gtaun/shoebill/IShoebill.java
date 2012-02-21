@@ -16,6 +16,8 @@
 
 package net.gtaun.shoebill;
 
+import java.io.File;
+
 import net.gtaun.shoebill.plugin.IPluginManager;
 
 /**
@@ -27,4 +29,7 @@ public interface IShoebill
 {
 	ISampObjectPool getManagedObjectPool();
 	IPluginManager getPluginManager();
+	
+	void changeGamemode( File file );
+	void reload();
 }
