@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class Configuration
 {
-	protected HashMap<String, Object> root;
+	protected Map<String, Object> root;
 	
 	
 	public Configuration()
@@ -37,7 +37,7 @@ public class Configuration
 		this( new HashMap<String, Object>() );
 	}
 	
-	public Configuration( HashMap<String, Object> root )
+	public Configuration( Map<String, Object> root )
 	{
 		this.root = root;
 	}
@@ -55,7 +55,7 @@ public class Configuration
 		if( path.contains(".") )	childs = path.split(".");
 		else						childs = new String[] { new String(path) };
 		
-		HashMap<String, Object> node = root;
+		Map<String, Object> node = root;
 		
 		for( int i=0; i<childs.length-1; i++ )
 		{
@@ -80,7 +80,7 @@ public class Configuration
 		
 		String[] childs = path.split(".");
 		
-		HashMap<String, Object> node = root;
+		Map<String, Object> node = root;
 		
 		for(int i=0;i<childs.length;i++)
 		{
@@ -98,8 +98,25 @@ public class Configuration
 				node.put(childs[i], o);
 			}
 			
-			node = (HashMap<String, Object>)o;
+			node = (Map<String, Object>)o;
 		}
+	}
+	
+	public Configuration getNode( String path )
+	{
+		return new Configuration( getMap(path) );
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> getMap( String path )
+	{
+		if( path.length() == 0 ) return root;
+		return (Map<String, Object>) get(path);
+	}
+	
+	public void setMap( String path, Map<String, Object> value )
+	{
+		set(path, value);
 	}
 
 	public String getString( String path )
@@ -113,14 +130,14 @@ public class Configuration
 		return obj == null ? def : obj.toString();
 	}
 	
-	public boolean isString( String path )
-	{
-		return get(path) instanceof String;
-	}
-	
 	public void setString( String path, Object value )
 	{
 		set(path, value.toString());
+	}
+	
+	public boolean isString( String path )
+	{
+		return get(path) instanceof String;
 	}
 	
 	public int getInt( String path )
@@ -134,21 +151,16 @@ public class Configuration
 		return obj == null ? def : (Integer) obj;
 	}
 	
+	public void setInt( String path, int value )
+	{
+		set(path, value);
+	}
+
 	public boolean isInt( String path )
 	{
 		return get(path) instanceof Integer;
 	}
 	
-	public void setInt( String path, Integer value )
-	{
-		set(path, value);
-	}
-	
-	public void setInt( String path, int value )
-	{
-		set(path, new Integer(value));
-	}
-
 	public long getLong( String path )
 	{
 		return getLong(path, 0L);
@@ -160,19 +172,14 @@ public class Configuration
 		return obj == null ? def : (Long) obj;
 	}
 	
-	public boolean isLong( String path )
-	{
-		return get(path) instanceof Long;
-	}
-	
-	public void setLong( String path, Long value )
+	public void setLong( String path, long value )
 	{
 		set(path, value);
 	}
-	
-	public void setLong( String path, long value )
+
+	public boolean isLong( String path )
 	{
-		set(path, new Long(value));
+		return get(path) instanceof Long;
 	}
 	
 	public double getDouble( String path )
@@ -186,21 +193,16 @@ public class Configuration
 		return obj == null ? def : (Double) obj;
 	}
 	
+	public void setDouble( String path, double value )
+	{
+		set(path, value);
+	}
+
 	public boolean isDouble( String path )
 	{
 		return get(path) instanceof Double;
 	}
 	
-	public void setDouble( String path, Double value )
-	{
-		set(path, value);
-	}
-	
-	public void setDouble( String path, double value )
-	{
-		set(path, new Double(value));
-	}
-
 	public boolean getBoolean( String path )
 	{
 		return getBoolean(path, false);
@@ -212,25 +214,25 @@ public class Configuration
 		return obj == null ? def : (Boolean) obj;
 	}
 	
+	public void setBoolean( String path, boolean value )
+	{
+		set(path, value);
+	}
+
 	public boolean isBoolean( String path )
 	{
 		return get(path) instanceof Boolean;
 	}
 	
-	public void setBoolean( String path, Boolean value )
-	{
-		set(path, value);
-	}
-	
-	public void setBoolean( String path, boolean value )
-	{
-		set(path, new Boolean(value));
-	}
-
 	public List<?> getList( String path )
 	{
 		Object o = get(path);
 		return o instanceof List ? (List<?>)o : new ArrayList<Object>();
+	}
+	
+	public void setList( String path, List<?> value )
+	{
+		set(path, value);
 	}
 	
 	public boolean isList( String path )

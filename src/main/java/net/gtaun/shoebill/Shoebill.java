@@ -121,7 +121,6 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		}
 
 		gamemodeFile = new File(gamemodeDir, gamemodeFilename);
-		
 	}
 
 	private void registerRootCallbackHandler()
