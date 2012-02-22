@@ -19,43 +19,16 @@ package net.gtaun.shoebill.util.config;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
 
 /**
  * @author MK124
  *
  */
 
-public abstract class FileConfiguration extends Configuration
+public interface FileConfiguration extends Configuration
 {
-	protected File file;
-	
-
-	public FileConfiguration()
-	{
-		root = new HashMap<String, Object>();
-	}
-	
-	public FileConfiguration( Configuration config )
-	{
-		super( config.root );
-	}
-	
-	public FileConfiguration( File file )
-	{
-		setFile( file );
-	}
-	
-	
-	public void setFile( File file )
-	{
-		this.file = file;
-	}
-	
-	public File getFile()
-	{
-		return file;
-	}
+	public void setFile( File file );
+	public File getFile();
 	
 	public abstract void read( InputStream stream );
 	public abstract void write( OutputStream stream );

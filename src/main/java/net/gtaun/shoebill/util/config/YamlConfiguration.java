@@ -36,9 +36,10 @@ import org.yaml.snakeyaml.representer.Representer;
  *
  */
 
-public class YamlConfiguration extends FileConfiguration
+public class YamlConfiguration extends MemoryConfiguration implements FileConfiguration
 {
 	private Yaml yaml;
+	private File file;
 	
 	
 	public YamlConfiguration()
@@ -47,9 +48,9 @@ public class YamlConfiguration extends FileConfiguration
 		initialize();
 	}
 	
-	public YamlConfiguration( Configuration config )
+	public YamlConfiguration( MemoryConfiguration config )
 	{
-		super( config );
+		super( config.getRootMap() );
 		initialize();
 	}
 	
@@ -66,6 +67,18 @@ public class YamlConfiguration extends FileConfiguration
 	    options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 	    
 		yaml = new Yaml( new SafeConstructor(), new Representer(), options );
+	}
+	
+	@Override
+	public void setFile( File file )
+	{
+		this.file = file;
+	}
+
+	@Override
+	public File getFile()
+	{
+		return file;
 	}
 
 	@SuppressWarnings("unchecked")
