@@ -106,7 +106,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	public int onPlayerText( int playerId, String text )
 	{
 		IPlayer player = sampObjectPool.getPlayer( playerId );
-		Shoebill.LOGGER.info( "[chat] [" + player.getName() + "]: " + text );
+		Shoebill.LOGGER.info( "[chat] " + player.getName() + ": " + text );
 		
 		return 1;
 	}
@@ -115,7 +115,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	public int onPlayerCommandText( int playerId, String cmdtext )
 	{
 		IPlayer player = sampObjectPool.getPlayer( playerId );
-		Shoebill.LOGGER.info( "[cmd] [" + player.getName() + "] " + cmdtext );
+		Shoebill.LOGGER.info( "[cmd] " + player.getName() + ": " + cmdtext );
 		
 		return 1;
 	}
