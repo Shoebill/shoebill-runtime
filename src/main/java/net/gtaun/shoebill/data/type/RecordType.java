@@ -28,6 +28,9 @@ public enum RecordType
 	ONFOOT( 2 );
 	
 	
+	public static RecordType get( int data )		{ return values() [data]; }
+	
+	
 	private int data;
 	
 	public int getData()	{ return data; }

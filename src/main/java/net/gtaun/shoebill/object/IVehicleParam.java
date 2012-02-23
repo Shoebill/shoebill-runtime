@@ -23,5 +23,21 @@ package net.gtaun.shoebill.object;
 
 public interface IVehicleParam
 {
-
+	int getEngine();
+	int getLights();
+	int getAlarm();
+	int getDoors();
+	int getBonnet();
+	int getBoot();
+	int getObjective();
+	
+	void setEngine( int engine );
+	void setLights( int lights );
+	void setAlarm( int alarm );
+	void setDoors( int doors );
+	void setBonnet( int bonnet );
+	void setBoot( int boot );
+	void setObjective( int objective );
+	
+	void set( int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective );
 }

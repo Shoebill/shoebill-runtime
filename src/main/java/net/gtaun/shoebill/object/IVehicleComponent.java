@@ -16,6 +16,8 @@
 
 package net.gtaun.shoebill.object;
 
+import net.gtaun.shoebill.data.type.VehicleComponentSlot;
+
 /**
  * @author MK124
  *
@@ -23,5 +25,11 @@ package net.gtaun.shoebill.object;
 
 public interface IVehicleComponent
 {
-
+	void add( int componentId );
+	
+	void remove( int componentId );
+	void remove( VehicleComponentSlot slot );
+	
+	int get( VehicleComponentSlot slot );
+	int[] toArray();
 }

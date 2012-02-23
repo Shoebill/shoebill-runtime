@@ -40,6 +40,7 @@ public class VehicleComponent implements IVehicleComponent
 	}
 	
 	
+	@Override
 	public void add( int componentId )
 	{
 		SampNativeFunction.addVehicleComponent( vehicleId, componentId );
@@ -48,6 +49,7 @@ public class VehicleComponent implements IVehicleComponent
 		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicleId, slot);
 	}
 	
+	@Override
 	public void remove( int componentId )
 	{
 		SampNativeFunction.removeVehicleComponent( vehicleId, componentId );
@@ -56,11 +58,20 @@ public class VehicleComponent implements IVehicleComponent
 		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicleId, slot);
 	}
 	
+	@Override
+	public void remove( VehicleComponentSlot slot )
+	{
+		int componentId = components[ slot.getData() ];
+		SampNativeFunction.removeVehicleComponent( vehicleId, componentId );
+	}
+	
+	@Override
 	public int get( VehicleComponentSlot slot )
 	{
 		return SampNativeFunction.getVehicleComponentInSlot( vehicleId, slot.getData() );
 	}
 	
+	@Override
 	public int[] toArray()
 	{
 		int[] data = new int[ components.length ];
@@ -69,8 +80,6 @@ public class VehicleComponent implements IVehicleComponent
 		return data;
 	}
 	
-	
-//---------------------------------------------------------
 		
 	void update()
 	{

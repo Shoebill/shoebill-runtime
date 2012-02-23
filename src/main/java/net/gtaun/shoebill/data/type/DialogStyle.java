@@ -28,6 +28,9 @@ public enum DialogStyle
 	LIST( 2 );
 	
 	
+	public static DialogStyle get( int data )		{ return values() [data]; }
+	
+	
 	private int data;
 	
 	public int getData()	{ return data; }

@@ -23,5 +23,15 @@ package net.gtaun.shoebill.object;
 
 public interface IVehicleDamage
 {
-
+	int getPanels();
+	int getDoors();
+	int getLights();
+	int getTires();
+	
+	void setPanels( int panels );
+	void setDoors( int doors );
+	void setLights( int lights );
+	void setTires( int tires );
+	
+	void set( int panels, int doors, int lights, int tires );
 }

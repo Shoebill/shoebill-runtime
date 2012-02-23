@@ -28,6 +28,9 @@ public enum PlayerMarkerMode
 	STREAMED( 2 );
 	
 	
+	public static PlayerMarkerMode get( int data )		{ return values() [data]; }
+	
+	
 	private int data;
 	
 	public int getData()	{ return data; }

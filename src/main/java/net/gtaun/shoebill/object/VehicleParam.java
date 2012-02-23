@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2011 JoJLlmAn
+ * Copyright (C) 2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +20,7 @@ package net.gtaun.shoebill.object;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
- * @author JoJLlmAn
+ * @author JoJLlmAn, MK124
  *
  */
 
@@ -33,25 +34,100 @@ public class VehicleParam implements IVehicleParam
 	private int vehicleId;
 	private int engine, lights, alarm, doors, bonnet, boot, objective;
 	
-	public int getEngine()			{ return engine; }
-	public int getLights()			{ return lights; }
-	public int getAlarm()			{ return alarm; }
-	public int getDoors()			{ return doors; }
-	public int getBonnet()			{ return bonnet; }
-	public int getBoot()			{ return boot; }
-	public int getObjective()		{ return objective; }
-	
 	
 	VehicleParam( int vehicleId )
 	{
 		this.vehicleId = vehicleId;
 	}
 	
-	
-	public void update()
+
+	public int getEngine()
 	{
 		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		return engine;
 	}
+	
+	public int getLights()
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		return lights;
+	}
+	
+	public int getAlarm()
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		return alarm;
+	}
+	
+	public int getDoors()
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		return doors;
+	}
+	
+	public int getBonnet()
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		return bonnet;
+	}
+	
+	public int getBoot()
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		return boot;
+	}
+	
+	public int getObjective()
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		return objective;
+	}
+	
+
+	public void setEngine( int engine )
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		this.engine = engine;
+		
+		set( engine, lights, alarm, doors, bonnet, boot, objective );
+	}
+	
+	public void setLights( int lights )
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		set( engine, lights, alarm, doors, bonnet, boot, objective );
+	}
+	
+	public void setAlarm( int alarm )
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		set( engine, lights, alarm, doors, bonnet, boot, objective );
+	}
+	
+	public void setDoors( int doors )
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		set( engine, lights, alarm, doors, bonnet, boot, objective );
+	}
+	
+	public void setBonnet( int bonnet )
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		set( engine, lights, alarm, doors, bonnet, boot, objective );
+	}
+	
+	public void setBoot( int boot )
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		set( engine, lights, alarm, doors, bonnet, boot, objective );
+	}
+	
+	public void setObjective( int objective )
+	{
+		SampNativeFunction.getVehicleParamsEx( vehicleId, this );
+		set( engine, lights, alarm, doors, bonnet, boot, objective );
+	}
+	
 	
 	public void set( int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective )
 	{

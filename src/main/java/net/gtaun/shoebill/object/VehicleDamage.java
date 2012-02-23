@@ -28,10 +28,10 @@ public class VehicleDamage implements IVehicleDamage
 	private int vehicleId;
 	private int panels, doors, lights, tires;
 	
-	public int getPanels()		{ return panels; }
-	public int getDoors()		{ return doors; }
-	public int getLights()		{ return lights; }
-	public int getTires()		{ return tires; }
+	@Override public int getPanels()		{ return panels; }
+	@Override public int getDoors()			{ return doors; }
+	@Override public int getLights()		{ return lights; }
+	@Override public int getTires()			{ return tires; }
 	
 	
 	VehicleDamage( int vehicleId )
@@ -40,6 +40,32 @@ public class VehicleDamage implements IVehicleDamage
 	}
 	
 	
+	@Override
+	public void setPanels( int panels )
+	{
+		set( panels, doors, lights, tires );
+	}
+	
+	@Override
+	public void setDoors( int doors )
+	{
+		set( panels, doors, lights, tires );
+	}
+	
+	@Override
+	public void setLights( int lights )
+	{
+		set( panels, doors, lights, tires );
+	}
+	
+	@Override
+	public void setTires( int tires )
+	{
+		set( panels, doors, lights, tires );
+	}
+	
+	
+	@Override
 	public void set( int panels, int doors, int lights, int tires )
 	{
 		SampNativeFunction.updateVehicleDamageStatus(vehicleId, panels, doors, lights, tires);

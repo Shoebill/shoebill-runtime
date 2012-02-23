@@ -16,6 +16,9 @@
 
 package net.gtaun.shoebill.data.type;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author MK124
  *
@@ -30,6 +33,15 @@ public enum ShopName
 	AMMUNATION2( "AMMUN2" ),
 	AMMUNATION3( "AMMUN3" ),
 	AMMUNATION5( "AMMUN5" );
+	
+	
+	private static Map<String, ShopName> values = new HashMap<String, ShopName>();
+	public static ShopName get( String data )		{ return values.get(data); }
+	
+	static
+	{
+		for( ShopName shopName : values() ) values.put( shopName.data, shopName );
+	}
 	
 	
 	private String data;

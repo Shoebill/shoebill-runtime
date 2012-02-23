@@ -44,6 +44,9 @@ public enum PlayerAttachBone
 	JAW( 18 );
 	
 	
+	public static PlayerAttachBone get( int data )		{ return values() [data]; }
+	
+	
 	private int data;
 	
 	public int getData()	{ return data; }

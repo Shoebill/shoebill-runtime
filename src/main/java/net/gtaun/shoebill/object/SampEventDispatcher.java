@@ -774,7 +774,11 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			IVehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 			IPlayer player = sampObjectPool.getPlayer( playerId );
 			
-			//SampNativeFunction.getVehicleDamageStatus(vehicleid, vehicle.damage);
+			if( vehicle instanceof Vehicle )
+			{
+				Vehicle veh = (Vehicle) vehicle;
+				veh.processVehicleDamageStatusUpdate();
+			}
 			
 			VehicleUpdateDamageEvent event = new VehicleUpdateDamageEvent(vehicle, player);
 			
@@ -790,9 +794,6 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			{
 				eventManager.dispatchEvent( event, vehicle );
 			}
-			
-			//player.on();
-			//player.event.dispatchEvent( new Player(player) );
 			
 			return 1;
 		}

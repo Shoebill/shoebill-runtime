@@ -29,6 +29,9 @@ public enum MapIconStyle
 	GLOBAL_CHECKPOINT( 3 );
 	
 	
+	public static MapIconStyle get( int data )		{ return values() [data]; }
+	
+	
 	private int data;
 	
 	public int getData()	{ return data; }

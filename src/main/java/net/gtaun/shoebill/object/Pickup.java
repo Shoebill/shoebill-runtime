@@ -46,7 +46,7 @@ public class Pickup implements IPickup
 	private Location location;
 
 	
-	@Override public int getModelId()								{ return modelId; }
+	@Override public int getModelId()							{ return modelId; }
 	@Override public int getType()								{ return type; }
 	@Override public Location getLocation()						{ return location.clone(); }
 	

@@ -35,6 +35,9 @@ public enum PlayerState
 	SPECTATING( 9 );
 	
 	
+	public static PlayerState get( int data )		{ return values() [data]; }
+	
+	
 	private int data;
 	
 	public int getData()	{ return data; }

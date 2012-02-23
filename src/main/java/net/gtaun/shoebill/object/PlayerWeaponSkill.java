@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.object;
 
-import net.gtaun.shoebill.data.type.WeaponSkillType;
+import net.gtaun.shoebill.data.type.WeaponSkill;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
@@ -26,27 +26,28 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class PlayerWeaponSkill implements IPlayerWeaponSkill
 {
-	private int[] skills = new int[ WeaponSkillType.values().length ];
+	private int[] skills = new int[ WeaponSkill.values().length ];
 	private int playerId;
 	
 	
 	PlayerWeaponSkill( int playerid )
 	{
-		for( int i=0; i<WeaponSkillType.values().length; i++ )	skills[i] = 999;
+		for( int i=0; i<WeaponSkill.values().length; i++ )	skills[i] = 999;
 		this.playerId = playerid;
 	}
 	
 	
-	public void set( WeaponSkillType type, int level )
+	public void set( WeaponSkill type, int level )
 	{
 		if(level > 999)		level = 999;
 		else if(level < 0)	level = 0;
 		
-		SampNativeFunction.setPlayerSkillLevel( playerId, type.getData(), level );
-		skills[ type.getData() ] = level;
+		int typeData = type.getData();
+		SampNativeFunction.setPlayerSkillLevel( playerId, typeData, level );
+		skills[typeData] = level;
 	}
 	
-	public int get( WeaponSkillType type )
+	public int get( WeaponSkill type )
 	{
 		return skills[ type.getData() ];
 	}

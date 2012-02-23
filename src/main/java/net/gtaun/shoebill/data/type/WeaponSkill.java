@@ -21,7 +21,7 @@ package net.gtaun.shoebill.data.type;
  *
  */
 
-public enum WeaponSkillType
+public enum WeaponSkill
 {
 	PISTOL( 0 ),
 	PISTOL_SILENCED( 1 ),
@@ -36,12 +36,15 @@ public enum WeaponSkillType
 	SNIPERRIFLE( 10 );
 	
 	
+	public static WeaponSkill get( int id )		{ return values() [id]; }
+	
+	
 	private int data;
 	
 	public int getData()	{ return data; }
 	
 	
-	private WeaponSkillType( int data )
+	private WeaponSkill( int data )
 	{
 		this.data = data;
 	}

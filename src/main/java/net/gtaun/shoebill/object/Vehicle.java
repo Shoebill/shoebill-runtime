@@ -69,8 +69,12 @@ public class Vehicle implements IVehicle
 
 	void processVehicleMod()
 	{
-		//int type = SampNativeFunction.getVehicleComponentType(componentId);
-		//component.components[type] = SampNativeFunction.getVehicleComponentInSlot(vehicleid, type);
+		component.update();
+	}
+	
+	void processVehicleDamageStatusUpdate()
+	{
+		SampNativeFunction.getVehicleDamageStatus( id, damage );
 	}
 	
 	
@@ -82,9 +86,9 @@ public class Vehicle implements IVehicle
 	private int color1, color2;
 	private int respawnDelay;
 
-	private IVehicleParam param;
-	private IVehicleComponent component;
-	private IVehicleDamage damage;
+	private VehicleParam param;
+	private VehicleComponent component;
+	private VehicleDamage damage;
 
 	
 	@Override public int getId()									{ return id; }

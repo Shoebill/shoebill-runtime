@@ -80,7 +80,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	@Override public ISampCallbackManager getCallbackManager()		{ return sampCallbackManager; }
 	
 	
-	Shoebill() throws IOException, ClassNotFoundException
+	Shoebill() throws IOException
 	{
 		instance = this;
 		

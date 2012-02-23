@@ -41,6 +41,10 @@ public enum VehicleComponentSlot
 	VENT_LEFT( 13 );
 	
 	
+	public static VehicleComponentSlot get( int data )
+	{
+		return values() [data];
+	}
 	public static int getComponentSlot( int componentId )
 	{
 		return SampNativeFunction.getVehicleComponentType(componentId);

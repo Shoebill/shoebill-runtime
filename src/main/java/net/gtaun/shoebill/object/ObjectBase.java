@@ -65,7 +65,7 @@ public class ObjectBase implements IObject
 	
 	
 	@Override public int getId()									{ return id; }
-	@Override public int getModelId()									{ return modelId; }
+	@Override public int getModelId()								{ return modelId; }
 	@Override public float getSpeed()								{ return speed; }
 	@Override public float getDrawDistance()						{ return drawDistance; }
 	@Override public IPlayer getAttachedPlayer()					{ return attachedPlayer; }
