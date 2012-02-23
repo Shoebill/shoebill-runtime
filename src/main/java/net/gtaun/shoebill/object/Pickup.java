@@ -87,8 +87,6 @@ public class Pickup implements IPickup
 	}
 	
 	
-//---------------------------------------------------------
-	
 	@Override
 	public void destroy()
 	{

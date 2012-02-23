@@ -16,6 +16,8 @@
 
 package net.gtaun.shoebill.object;
 
+import net.gtaun.shoebill.data.type.WeaponSkill;
+
 /**
  * @author MK124
  *
@@ -23,5 +25,6 @@ package net.gtaun.shoebill.object;
 
 public interface IPlayerWeaponSkill
 {
-
+	void set( WeaponSkill type, int level );
+	int get( WeaponSkill type );
 }

@@ -37,8 +37,6 @@ public class Dialog implements IDialog
 	@Override public int getId()									{ return id; }
 	@Override public DialogStyle getStyle()							{ return style; }
 	
-
-//---------------------------------------------------------
 	
 	public Dialog( DialogStyle style )
 	{

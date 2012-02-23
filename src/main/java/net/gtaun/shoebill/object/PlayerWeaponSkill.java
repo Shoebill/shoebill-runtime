@@ -37,6 +37,7 @@ public class PlayerWeaponSkill implements IPlayerWeaponSkill
 	}
 	
 	
+	@Override
 	public void set( WeaponSkill type, int level )
 	{
 		if(level > 999)		level = 999;
@@ -47,6 +48,7 @@ public class PlayerWeaponSkill implements IPlayerWeaponSkill
 		skills[typeData] = level;
 	}
 	
+	@Override
 	public int get( WeaponSkill type )
 	{
 		return skills[ type.getData() ];
