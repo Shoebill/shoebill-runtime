@@ -127,6 +127,11 @@ public class Player implements IPlayer
 		location.interiorId = SampNativeFunction.getPlayerInterior(id);
 	}
 	
+	void processDialogResponse()
+	{
+		dialog = null;
+	}
+	
 	
 	private int id = -1;
 	

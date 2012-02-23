@@ -972,7 +972,6 @@ public class SampEventDispatcher implements ISampCallbackHandler
 		try
 		{
 			IPlayer player = sampObjectPool.getPlayer( playerId );
-			//player.update();
 
 			if( player instanceof Player )
 			{
@@ -1145,8 +1144,13 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			{
 				eventManager.dispatchEvent( event, dialog );
 			}
-			
-			//player.dialog = null;
+
+			if( player instanceof Player )
+			{
+				Player p = (Player) player;
+				p.processDialogResponse();
+			}
+
 			return event.getResult();
 		}
 		catch( Exception e )
