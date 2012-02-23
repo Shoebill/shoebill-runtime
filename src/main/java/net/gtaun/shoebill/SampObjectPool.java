@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import java.util.WeakHashMap;
 
 import net.gtaun.shoebill.object.IDialog;
 import net.gtaun.shoebill.object.ILabel;
@@ -53,14 +52,14 @@ import net.gtaun.shoebill.util.event.EventManager;
 
 public class SampObjectPool implements ISampObjectPool
 {
-	public static final int MAX_PLAYERS =				500;
+	public static final int MAX_PLAYERS =				800;
 	public static final int MAX_VEHICLES =				2000;
 	public static final int MAX_OBJECTS =				400;
 	public static final int MAX_ZONES =					1024;
 	public static final int MAX_TEXT_DRAWS =			2048;
 	public static final int MAX_MENUS =					128;
-	public static final int MAX_LABELS_GLOBAL =			1024;
-	public static final int MAX_LABELS_PLAYER =			1024;
+	public static final int MAX_GLOBAL_LABELS =			1024;
+	public static final int MAX_PLAYER_LABELS =			1024;
 	public static final int MAX_PICKUPS =				2048;
 	
 	
@@ -78,19 +77,19 @@ public class SampObjectPool implements ISampObjectPool
 	IWorld world;
 	Gamemode gamemode;
 	
-	IPlayer[] players								= new IPlayer[MAX_PLAYERS];
-	IVehicle[] vehicles								= new IVehicle[MAX_VEHICLES];
-	IObject[] objects								= new IObject[MAX_OBJECTS];
-	Map<IPlayer, IPlayerObject[]> playerObjects		= new WeakHashMap<IPlayer, IPlayerObject[]>();
-	IPickup[] pickups								= new IPickup[MAX_PICKUPS];
-	ILabel[] labels									= new ILabel[MAX_LABELS_GLOBAL];
-	Map<IPlayer, IPlayerLabel[]> playerLabels		= new WeakHashMap<IPlayer, IPlayerLabel[]>();
-	ITextdraw[] textdraws							= new ITextdraw[MAX_TEXT_DRAWS];
-	IZone[] zones									= new IZone[MAX_ZONES];
-	IMenu[] menus									= new IMenu[MAX_MENUS];
+	IPlayer[] players									= new IPlayer[MAX_PLAYERS];
+	IVehicle[] vehicles									= new IVehicle[MAX_VEHICLES];
+	IObject[] objects									= new IObject[MAX_OBJECTS];
+	Map<Integer, IPlayerObject[]> playerObjectsMap		= new HashMap<Integer, IPlayerObject[]>();
+	IPickup[] pickups									= new IPickup[MAX_PICKUPS];
+	ILabel[] labels										= new ILabel[MAX_GLOBAL_LABELS];
+	Map<Integer, IPlayerLabel[]> playerLabelsMap		= new HashMap<Integer, IPlayerLabel[]>();
+	ITextdraw[] textdraws								= new ITextdraw[MAX_TEXT_DRAWS];
+	IZone[] zones										= new IZone[MAX_ZONES];
+	IMenu[] menus										= new IMenu[MAX_MENUS];
 	
-	List<Reference<ITimer>> timers					= new Vector<Reference<ITimer>>();
-	Map<Integer, Reference<IDialog>> dialogs		= new HashMap<Integer, Reference<IDialog>>();
+	List<Reference<ITimer>> timers						= new Vector<Reference<ITimer>>();
+	Map<Integer, Reference<IDialog>> dialogs			= new HashMap<Integer, Reference<IDialog>>();
 	
 	Class<? extends IPlayer> playerClass = Player.class;
 	
@@ -103,6 +102,9 @@ public class SampObjectPool implements ISampObjectPool
 			{
 				try
 				{
+					playerObjectsMap.put( playerid, new IPlayerObject[MAX_OBJECTS] );
+					playerLabelsMap.put( playerid, new IPlayerLabel[MAX_PLAYER_LABELS] );
+					
 					Constructor<? extends IPlayer> constructor = playerClass.getConstructor( int.class );
 					IPlayer player = constructor.newInstance( playerid );
 					
@@ -113,6 +115,13 @@ public class SampObjectPool implements ISampObjectPool
 					e.printStackTrace();
 				}
 				
+				return 1;
+			}
+			
+			public int onPlayerDisconnect( int playerid, int reason )
+			{
+				playerObjectsMap.remove( playerid );
+				playerLabelsMap.remove( playerid );
 				return 1;
 			}
 		};
@@ -165,7 +174,8 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public IPlayerObject getPlayerObject( IPlayer player, int id )
 	{
-		return playerObjects.get( player ) [id];
+		IPlayerObject[] playerObjects = playerObjectsMap.get( player.getId() );
+		return playerObjects[id];
 	}
 	
 	@Override
@@ -183,7 +193,8 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public IPlayerLabel getPlayerLabel( IPlayer player, int id )
 	{
-		return playerLabels.get( player ) [id];
+		IPlayerLabel[] playerLabels = playerLabelsMap.get( player.getId() );
+		return playerLabels[id];
 	}
 	
 	@Override
@@ -233,7 +244,7 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public Collection<IPlayerObject> getPlayerObjects( IPlayer player )
 	{
-		return getInstances( playerObjects.get(player), IPlayerObject.class );
+		return getInstances( playerObjectsMap.get(player.getId()), IPlayerObject.class );
 	}
 	
 	@Override
@@ -251,7 +262,7 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public Collection<IPlayerLabel> getPlayerLabels( IPlayer player )
 	{
-		return getInstances( playerLabels.get(player), IPlayerLabel.class );
+		return getInstances( playerLabelsMap.get(player.getId()), IPlayerLabel.class );
 	}
 	
 	@Override
@@ -306,7 +317,7 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public <T extends IPlayerObject> Collection<T> getPlayerObjects( IPlayer player, Class<T> cls )
 	{
-		return getInstances( playerObjects.get(player), cls );
+		return getInstances( playerObjectsMap.get(player.getId()), cls );
 	}
 	
 	@Override
@@ -324,7 +335,7 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public <T extends IPlayerLabel> Collection<T> getPlayerLabels( IPlayer player, Class<T> cls )
 	{
-		return getInstances( playerLabels.get(player), cls );
+		return getInstances( playerLabelsMap.get(player.getId()), cls );
 	}
 	
 	@Override
@@ -408,7 +419,8 @@ public class SampObjectPool implements ISampObjectPool
 	
 	public void setPlayerObject( IPlayer player, int id, IPlayerObject object )
 	{
-		playerObjects.get( player ) [ id ] = object;
+		IPlayerObject[] playerObjects = playerObjectsMap.get( player.getId() );
+		playerObjects[ id ] = object;
 	}
 	
 	public void setPickup( int id, IPickup pickup )
@@ -423,7 +435,8 @@ public class SampObjectPool implements ISampObjectPool
 	
 	public void setPlayerLabel( IPlayer player, int id, IPlayerLabel label )
 	{
-		playerLabels.get( player ) [ id ] = label;
+		IPlayerLabel[] playerLabels = playerLabelsMap.get( player.getId() );
+		playerLabels[ id ] = label;
 	}
 	
 	public void setTextdraw( int id, ITextdraw textdraw )
