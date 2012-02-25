@@ -31,16 +31,13 @@ public class Dialog implements IDialog
 
 
 	private int id;
-	private DialogStyle style;
 
 
 	@Override public int getId()									{ return id; }
-	@Override public DialogStyle getStyle()							{ return style; }
 	
 	
-	public Dialog( DialogStyle style )
+	public Dialog()
 	{
-		this.style = style;
 		initialize();
 	}
 	
@@ -55,9 +52,9 @@ public class Dialog implements IDialog
 	
 	
 	@Override
-	public void show( IPlayer player, String caption, String text, String button1, String button2 )
+	public void show( IPlayer player, DialogStyle style, String caption, String text, String button1, String button2 )
 	{
-		player.showDialog( this, caption, text, button1, button2 );
+		player.showDialog( this, style, caption, text, button1, button2 );
 	}
 	
 	@Override

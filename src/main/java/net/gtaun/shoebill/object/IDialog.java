@@ -26,8 +26,7 @@ import net.gtaun.shoebill.data.type.DialogStyle;
 public interface IDialog
 {
 	int getId();
-	DialogStyle getStyle();
 	
-	void show( IPlayer player, String caption, String text, String button1, String button2 );
+	void show( IPlayer player, DialogStyle style, String caption, String text, String button1, String button2 );
 	void cancel( IPlayer player );
 }

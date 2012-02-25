@@ -25,6 +25,7 @@ import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
+import net.gtaun.shoebill.data.type.DialogStyle;
 import net.gtaun.shoebill.data.type.FightStyle;
 import net.gtaun.shoebill.data.type.MapIconStyle;
 import net.gtaun.shoebill.data.type.PlayerState;
@@ -184,6 +185,6 @@ public interface IPlayer
 	void stopAudioStream();
 	void removeBuilding( int modelId, float x, float y, float z, float radius );
 
-	void showDialog( IDialog dialog, String caption, String text, String button1, String button2 );
+	void showDialog( IDialog dialog, DialogStyle style, String caption, String text, String button1, String button2 );
 	void cancelDialog();
 }

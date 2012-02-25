@@ -31,6 +31,7 @@ import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
+import net.gtaun.shoebill.data.type.DialogStyle;
 import net.gtaun.shoebill.data.type.FightStyle;
 import net.gtaun.shoebill.data.type.MapIconStyle;
 import net.gtaun.shoebill.data.type.PlayerState;
@@ -925,12 +926,12 @@ public class Player implements IPlayer
 	
 	
 	@Override
-	public void showDialog( IDialog dialog, String caption, String text, String button1, String button2 )
+	public void showDialog( IDialog dialog, DialogStyle style, String caption, String text, String button1, String button2 )
 	{
 		if( caption == null || text == null || button1 == null || button2 == null ) throw new NullPointerException();
 		cancelDialog();
 		
-		SampNativeFunction.showPlayerDialog( id, dialog.getId(), dialog.getStyle().getData(), caption, text, button1, button2 );
+		SampNativeFunction.showPlayerDialog( id, dialog.getId(), style.getData(), caption, text, button1, button2 );
 		this.dialog = dialog;
 	}
 
