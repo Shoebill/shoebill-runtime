@@ -54,13 +54,13 @@ public class SampObjectPool implements ISampObjectPool
 {
 	public static final int MAX_PLAYERS =				800;
 	public static final int MAX_VEHICLES =				2000;
-	public static final int MAX_OBJECTS =				400;
+	public static final int MAX_OBJECTS =				1000;
 	public static final int MAX_ZONES =					1024;
 	public static final int MAX_TEXT_DRAWS =			2048;
 	public static final int MAX_MENUS =					128;
 	public static final int MAX_GLOBAL_LABELS =			1024;
 	public static final int MAX_PLAYER_LABELS =			1024;
-	public static final int MAX_PICKUPS =				2048;
+	public static final int MAX_PICKUPS =				4096;
 	
 	
 	private static <T> Collection<T> getInstances( Object[] items, Class<T> cls )
