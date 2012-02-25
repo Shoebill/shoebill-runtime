@@ -22,6 +22,7 @@ import java.util.Collection;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
@@ -30,6 +31,9 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Pickup implements IPickup
 {
+	static final int INVALID_ID =		-1;
+	
+	
 	public static Collection<IPickup> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPickups();
@@ -41,7 +45,7 @@ public class Pickup implements IPickup
 	}
 	
 	
-	private int id = -1;
+	private int id = INVALID_ID;
 	private int modelId, type;
 	private Location location;
 
@@ -51,7 +55,7 @@ public class Pickup implements IPickup
 	@Override public Location getLocation()						{ return location.clone(); }
 	
 	
-	public Pickup( int modelId, int type, float x, float y, float z, int worldId )
+	public Pickup( int modelId, int type, float x, float y, float z, int worldId ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.type = type;
@@ -60,7 +64,7 @@ public class Pickup implements IPickup
 		initialize();
 	}
 	
-	public Pickup( int modelId, int type, float x, float y, float z )
+	public Pickup( int modelId, int type, float x, float y, float z ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.type = type;
@@ -69,7 +73,7 @@ public class Pickup implements IPickup
 		initialize();
 	}
 	
-	public Pickup( int modelId, int type, Location location )
+	public Pickup( int modelId, int type, Location location ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.type = type;
@@ -78,9 +82,10 @@ public class Pickup implements IPickup
 		initialize();
 	}
 	
-	private void initialize()
+	private void initialize() throws CreationFailedException
 	{
 		id = SampNativeFunction.createPickup( modelId, type, location.x, location.y, location.z, location.worldId );
+		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setPickup( id, this );

@@ -22,6 +22,7 @@ import java.util.Collection;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 
@@ -32,7 +33,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Textdraw implements ITextdraw
 {
-	public static final int INVALID_ID =		0xFFFF;
+	static final int INVALID_ID =		0xFFFF;
 	
 	
 	public static Collection<ITextdraw> get()
@@ -46,7 +47,7 @@ public class Textdraw implements ITextdraw
 	}
 	
 	
-	private int id = -1;
+	private int id = INVALID_ID;
 	private float x, y;
 	private String text;
 	
@@ -59,9 +60,10 @@ public class Textdraw implements ITextdraw
 	@Override public String getText()							{ return text; }
 	
 	
-	public Textdraw( float x, float y, String text )
+	public Textdraw( float x, float y, String text ) throws CreationFailedException
 	{
 		if( text == null ) throw new NullPointerException();
+		if( text.length() == 0 ) text = " ";
 		
 		this.x = x;
 		this.y = y;
@@ -70,18 +72,20 @@ public class Textdraw implements ITextdraw
 		initialize();
 	}
 	
-	public Textdraw( float x, float y )
+	public Textdraw( float x, float y ) throws CreationFailedException
 	{
 		this.x = x;
 		this.y = y;
-		this.text = "";
+		this.text = " ";
 		
 		initialize();
 	}
 	
-	private void initialize()
+	private void initialize() throws CreationFailedException
 	{
 		id = SampNativeFunction.textDrawCreate( x, y, text );
+		if( id == INVALID_ID ) throw new CreationFailedException();
+		
 		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = false;
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();

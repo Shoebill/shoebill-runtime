@@ -22,6 +22,7 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
@@ -31,7 +32,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class PlayerLabel implements IPlayerLabel
 {
-	public static final int INVALID_ID =			0xFFFF;
+	static final int INVALID_ID =			0xFFFF;
 	
 	
 	public static Collection<IPlayerLabel> get( IPlayer player )
@@ -45,7 +46,7 @@ public class PlayerLabel implements IPlayerLabel
 	}
 	
 	
-	private int id = -1;
+	private int id = INVALID_ID;
 	private IPlayer player;
 	private String text;
 	private Color color;
@@ -68,7 +69,7 @@ public class PlayerLabel implements IPlayerLabel
 	@Override public IVehicle getAttachedVehicle()				{ return attachedVehicle; }
 	
 	
-	public PlayerLabel( Player player, String text, Color color, Location location, float drawDistance, boolean testLOS )
+	public PlayerLabel( IPlayer player, String text, Color color, Location location, float drawDistance, boolean testLOS ) throws CreationFailedException
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -82,7 +83,7 @@ public class PlayerLabel implements IPlayerLabel
 		initialize();
 	}
 
-	public PlayerLabel( Player player, String text, Color color, Location location, float drawDistance, boolean testLOS, Player attachedPlayer )
+	public PlayerLabel( IPlayer player, String text, Color color, Location location, float drawDistance, boolean testLOS, Player attachedPlayer ) throws CreationFailedException
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -97,7 +98,7 @@ public class PlayerLabel implements IPlayerLabel
 		initialize();
 	}
 	
-	public PlayerLabel( Player player, String text, Color color, Location location, float drawDistance, boolean testLOS, Vehicle attachedVehicle )
+	public PlayerLabel( IPlayer player, String text, Color color, Location location, float drawDistance, boolean testLOS, Vehicle attachedVehicle ) throws CreationFailedException
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -112,7 +113,7 @@ public class PlayerLabel implements IPlayerLabel
 		initialize();
 	}
 	
-	private void initialize()
+	private void initialize() throws CreationFailedException
 	{
 		int playerId = Player.INVALID_ID, vehicleId = Vehicle.INVALID_ID;
 		
@@ -126,8 +127,8 @@ public class PlayerLabel implements IPlayerLabel
 			offsetZ = location.z;
 		}
 		
-		id = SampNativeFunction.createPlayer3DTextLabel( player.getId(), text, color.getValue(),
-				location.x, location.y, location.z, drawDistance, playerId, vehicleId, testLOS );
+		id = SampNativeFunction.createPlayer3DTextLabel( player.getId(), text, color.getValue(), location.x, location.y, location.z, drawDistance, playerId, vehicleId, testLOS );
+		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setPlayerLabel( player, id, this );

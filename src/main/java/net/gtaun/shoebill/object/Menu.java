@@ -21,6 +21,7 @@ import java.util.Collection;
 
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
@@ -30,7 +31,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Menu implements IMenu
 {
-	public static final int INVALID_ID =			0xFF;
+	static final int INVALID_ID =			0xFF;
 	
 	
 	public static Collection<IMenu> get()
@@ -61,8 +62,11 @@ public class Menu implements IMenu
 	@Override public String getColumnHeader()					{ return columnHeader; }
 	
 	
-	public Menu( String title, int columns, float x, float y, float col1Width, float col2Width )
+	public Menu( String title, int columns, float x, float y, float col1Width, float col2Width ) throws CreationFailedException
 	{
+		if( title == null ) throw new NullPointerException();
+		if( title.length() == 0 ) title = " ";
+		
 		this.title = title;
 		this.columns = columns;
 		this.x = x;
@@ -73,9 +77,10 @@ public class Menu implements IMenu
 		initialize();
 	}
 	
-	private void initialize()
+	private void initialize() throws CreationFailedException
 	{
 		id = SampNativeFunction.createMenu( title, columns, x, y, col1Width, col1Width );
+		if( id == -1 ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setMenu( id, this );

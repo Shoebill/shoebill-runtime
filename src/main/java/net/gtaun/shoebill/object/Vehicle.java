@@ -28,6 +28,7 @@ import net.gtaun.shoebill.data.Quaternions;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
+import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
@@ -37,7 +38,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Vehicle implements IVehicle
 {
-	public static final int INVALID_ID	=				0xFFFF;
+	static final int INVALID_ID	=				0xFFFF;
 	
 	
 	public static Collection<IVehicle> get()
@@ -80,7 +81,7 @@ public class Vehicle implements IVehicle
 	
 	private boolean isStatic = false;
 	
-	private int id = -1;
+	private int id = INVALID_ID;
 	private int modelId;
 	private int interiorId;
 	private int color1, color2;
@@ -105,7 +106,7 @@ public class Vehicle implements IVehicle
 	@Override public IVehicleDamage getDamage()						{ return damage; }
 	
 	
-	public Vehicle( int modelId, float x, float y, float z, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay )
+	public Vehicle( int modelId, float x, float y, float z, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
 	{
 		this.color1 = color1;
 		this.color2 = color2;
@@ -114,7 +115,7 @@ public class Vehicle implements IVehicle
 		initialize( x, y, z, interiorId, worldId, angle );
 	}
 	
-	public Vehicle( int modelId, float x, float y, float z, float angle, int color1, int color2, int respawnDelay )
+	public Vehicle( int modelId, float x, float y, float z, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.color1 = color1;
@@ -124,7 +125,7 @@ public class Vehicle implements IVehicle
 		initialize( x, y, z, 0, 0, angle );
 	}
 	
-	public Vehicle( int modelId, Location location, float angle, int color1, int color2, int respawnDelay )
+	public Vehicle( int modelId, Location location, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.color1 = color1;
@@ -134,7 +135,7 @@ public class Vehicle implements IVehicle
 		initialize( location.x, location.y, location.z, location.interiorId, location.worldId, angle );
 	}
 	
-	public Vehicle( int modelId, LocationAngular location, int color1, int color2, int respawnDelay )
+	public Vehicle( int modelId, LocationAngular location, int color1, int color2, int respawnDelay ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.color1 = color1;
@@ -144,7 +145,7 @@ public class Vehicle implements IVehicle
 		initialize( location.x, location.y, location.z, location.interiorId, location.worldId, location.angle );
 	}
 	
-	private void initialize( float x, float y, float z, int interiorId, int worldId, float angle )
+	private void initialize( float x, float y, float z, int interiorId, int worldId, float angle ) throws CreationFailedException
 	{
 		switch( modelId )
 		{
@@ -160,6 +161,8 @@ public class Vehicle implements IVehicle
 			default:
 				id = SampNativeFunction.createVehicle( modelId, x, y, z, angle, color1, color2, respawnDelay );
 		}
+		
+		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampNativeFunction.linkVehicleToInterior( id, interiorId );
 		SampNativeFunction.setVehicleVirtualWorld( id, worldId );

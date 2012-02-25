@@ -22,6 +22,7 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationRotational;
+import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
@@ -31,6 +32,9 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class PlayerObject implements IPlayerObject
 {
+	static final int INVALID_ID =				0xFFFF;
+	
+	
 	public static Collection<IPlayerObject> get( IPlayer player )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPlayerObjects( player );
@@ -47,17 +51,17 @@ public class PlayerObject implements IPlayerObject
 		speed = 0;
 	}
 	
-	private int id = -1;
-	private Player player;
+	private int id = INVALID_ID;
+	private IPlayer player;
 	
 	private int modelId;
-	private LocationRotational position;
+	private LocationRotational location;
 	private float speed = 0;
 	private IPlayer attachedPlayer;
 	private float drawDistance = 0;
 	
 	
-	@Override public Player getPlayer()								{ return player; }
+	@Override public IPlayer getPlayer()							{ return player; }
 
 	@Override public int getId()									{ return id; }
 	@Override public int getModelId()								{ return modelId; }
@@ -68,66 +72,67 @@ public class PlayerObject implements IPlayerObject
 	@Override public IVehicle getAttachedVehicle()					{ return null; }
 	
 	
-	public PlayerObject( Player player, int modelId, float x, float y, float z, float rx, float ry, float rz )
+	public PlayerObject( IPlayer player, int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
 	{
 		this.player = player;
 		this.modelId = modelId;
-		this.position = new LocationRotational( x, y, z, rx, ry, rz );
+		this.location = new LocationRotational( x, y, z, rx, ry, rz );
 		
-		init();
+		initialize();
 	}
 	
-	public PlayerObject( Player player, int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
+	public PlayerObject( IPlayer player, int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
 		this.player = player;
 		this.modelId = modelId;
-		this.position = new LocationRotational( x, y, z, rx, ry, rz );
+		this.location = new LocationRotational( x, y, z, rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
-		init();
+		initialize();
 	}
 	
-	public PlayerObject( Player player, int modelId, Location location, float rx, float ry, float rz )
+	public PlayerObject( IPlayer player, int modelId, Location location, float rx, float ry, float rz ) throws CreationFailedException
 	{
 		this.player = player;
 		this.modelId = modelId;
-		this.position = new LocationRotational( location, rx, ry, rz );
+		this.location = new LocationRotational( location, rx, ry, rz );
 		
-		init();
+		initialize();
 	}
 	
-	public PlayerObject( Player player, int modelId, Location location, float rx, float ry, float rz, float drawDistance )
+	public PlayerObject( IPlayer player, int modelId, Location location, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
 		this.player = player;
 		this.modelId = modelId;
-		this.position = new LocationRotational( location, rx, ry, rz );
+		this.location = new LocationRotational( location, rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
-		init();
+		initialize();
 	}
 	
-	public PlayerObject( Player player, int modelId, LocationRotational location )
+	public PlayerObject( IPlayer player, int modelId, LocationRotational location ) throws CreationFailedException
 	{
 		this.player = player;
 		this.modelId = modelId;
-		this.position = location.clone();
+		this.location = location.clone();
 		
-		init();
+		initialize();
 	}
 	
-	public PlayerObject( Player player, int modelId, LocationRotational location, float drawDistance )
+	public PlayerObject( IPlayer player, int modelId, LocationRotational location, float drawDistance ) throws CreationFailedException
 	{
 		this.player = player;
 		this.modelId = modelId;
-		this.position = location.clone();
+		this.location = location.clone();
 		this.drawDistance = drawDistance;
 		
-		init();
+		initialize();
 	}
 	
-	private void init()
+	private void initialize() throws CreationFailedException
 	{
-		id = SampNativeFunction.createPlayerObject( player.getId(), modelId, position.x, position.y, position.z, position.rx, position.ry, position.rz, drawDistance );
+		id = SampNativeFunction.createPlayerObject( player.getId(), modelId, location.x, location.y, location.z, location.rx, location.ry, location.rz, drawDistance );
+		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setPlayerObject( player, id, this );
@@ -154,22 +159,22 @@ public class PlayerObject implements IPlayerObject
 	@Override
 	public LocationRotational getLocation()
 	{	
-		SampNativeFunction.getPlayerObjectPos( player.getId(), id, position );
-		SampNativeFunction.getPlayerObjectRot( player.getId(), id, position );
-		return position.clone();
+		SampNativeFunction.getPlayerObjectPos( player.getId(), id, location );
+		SampNativeFunction.getPlayerObjectRot( player.getId(), id, location );
+		return location.clone();
 	}
 	
 	@Override
 	public void setLocation( Location location )
 	{
-		this.position.set( location );
+		this.location.set( location );
 		SampNativeFunction.setPlayerObjectPos( player.getId(), id, location.x, location.y, location.z );
 	}
 	
 	@Override
 	public void setLocation( LocationRotational location )
 	{
-		this.position = location.clone();
+		this.location = location.clone();
 		SampNativeFunction.setPlayerObjectPos( player.getId(), id, location.x, location.y, location.z );
 		SampNativeFunction.setPlayerObjectRot( player.getId(), id, location.rx, location.ry, location.rz );
 	}
@@ -177,9 +182,9 @@ public class PlayerObject implements IPlayerObject
 	@Override
 	public void setRotate( float rx, float ry, float rz )
 	{
-		position.rx = rx;
-		position.ry = ry;
-		position.rz = rz;
+		location.rx = rx;
+		location.ry = ry;
+		location.rz = rz;
 		
 		SampNativeFunction.setPlayerObjectRot( player.getId(), id, rx, ry, rz );
 	}

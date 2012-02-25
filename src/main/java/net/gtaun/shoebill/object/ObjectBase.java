@@ -23,6 +23,7 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationRotational;
+import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
@@ -32,7 +33,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class ObjectBase implements IObject
 {
-	public static final int INVALID_ID =				0xFFFF;
+	static final int INVALID_ID =				0xFFFF;
 	
 	
 	public static Collection<IObject> get()
@@ -73,7 +74,7 @@ public class ObjectBase implements IObject
 	@Override public IVehicle getAttachedVehicle()					{ return attachedVehicle; }
 	
 	
-	public ObjectBase( int modelId, float x, float y, float z, float rx, float ry, float rz )
+	public ObjectBase( int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.location = new LocationRotational( x, y, z, rx, ry, rz );
@@ -81,7 +82,7 @@ public class ObjectBase implements IObject
 		initialize();
 	}
 	
-	public ObjectBase( int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance )
+	public ObjectBase( int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.location = new LocationRotational( x, y, z, rx, ry, rz );
@@ -90,7 +91,7 @@ public class ObjectBase implements IObject
 		initialize();
 	}
 	
-	public ObjectBase( int modelId, Location location, float rx, float ry, float rz )
+	public ObjectBase( int modelId, Location location, float rx, float ry, float rz ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.location = new LocationRotational( location, rx, ry, rz );
@@ -98,7 +99,7 @@ public class ObjectBase implements IObject
 		initialize();
 	}
 	
-	public ObjectBase( int modelId, Location location, float rx, float ry, float rz, float drawDistance)
+	public ObjectBase( int modelId, Location location, float rx, float ry, float rz, float drawDistance) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.location = new LocationRotational( location, rx, ry, rz );
@@ -107,7 +108,7 @@ public class ObjectBase implements IObject
 		initialize();
 	}
 	
-	public ObjectBase( int modelId, LocationRotational location )
+	public ObjectBase( int modelId, LocationRotational location ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.location = location.clone();
@@ -115,7 +116,7 @@ public class ObjectBase implements IObject
 		initialize();
 	}
 	
-	public ObjectBase( int modelId, LocationRotational location, float drawDistance )
+	public ObjectBase( int modelId, LocationRotational location, float drawDistance ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.location = location.clone();
@@ -124,9 +125,10 @@ public class ObjectBase implements IObject
 		initialize();
 	}
 	
-	private void initialize()
+	private void initialize() throws CreationFailedException
 	{
 		id = SampNativeFunction.createObject( modelId, location.x, location.y, location.z, location.rx, location.ry, location.rz, drawDistance );
+		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setObject( id, this );

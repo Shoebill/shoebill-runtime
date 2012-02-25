@@ -23,6 +23,7 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 /**
@@ -32,7 +33,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Zone implements IZone
 {
-	public static final int INVALID_ID =		-1;
+	static final int INVALID_ID =		-1;
 	
 	
 	public static Collection<IZone> get()
@@ -46,7 +47,7 @@ public class Zone implements IZone
 	}
 	
 	
-	private int id = -1;
+	private int id = INVALID_ID;
 	private Area area;
 	
 	private boolean[] isPlayerShowed = new boolean[SampObjectPool.MAX_PLAYERS];
@@ -57,21 +58,22 @@ public class Zone implements IZone
 	@Override public Area getArea()								{ return area.clone(); }
 
 
-	public Zone( float minX, float minY, float maxX, float maxY )
+	public Zone( float minX, float minY, float maxX, float maxY ) throws CreationFailedException
 	{
 		this.area = new Area( minX, minY, maxX, maxY );
 		initialize();
 	}
 	
-	public Zone( Area area )
+	public Zone( Area area ) throws CreationFailedException
 	{
 		this.area = area.clone();
 		initialize();
 	}
 	
-	private void initialize()
+	private void initialize() throws CreationFailedException
 	{
 		id = SampNativeFunction.gangZoneCreate( area.minX, area.minY, area.maxX, area.maxY );
+		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		for( int i=0; i<isPlayerShowed.length; i++ )
 		{
