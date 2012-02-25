@@ -23,7 +23,7 @@ import net.gtaun.shoebill.data.type.VehicleComponentSlot;
  *
  */
 
-public interface IVehicleComponent
+public interface IVehicleComponent extends IVehicleRelated
 {
 	void add( int componentId );
 	

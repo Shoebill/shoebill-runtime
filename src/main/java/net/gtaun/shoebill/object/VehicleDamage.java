@@ -25,7 +25,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class VehicleDamage implements IVehicleDamage
 {
-	private int vehicleId;
+	private IVehicle vehicle;
 	private int panels, doors, lights, tires;
 	
 	@Override public int getPanels()		{ return panels; }
@@ -34,11 +34,17 @@ public class VehicleDamage implements IVehicleDamage
 	@Override public int getTires()			{ return tires; }
 	
 	
-	VehicleDamage( int vehicleId )
+	VehicleDamage( IVehicle vehicle )
 	{
-		this.vehicleId = vehicleId;
+		this.vehicle = vehicle;
 	}
 	
+	
+	@Override
+	public IVehicle getVehicle()
+	{
+		return vehicle;
+	}
 	
 	@Override
 	public void setPanels( int panels )
@@ -68,7 +74,7 @@ public class VehicleDamage implements IVehicleDamage
 	@Override
 	public void set( int panels, int doors, int lights, int tires )
 	{
-		SampNativeFunction.updateVehicleDamageStatus(vehicleId, panels, doors, lights, tires);
-		SampNativeFunction.getVehicleDamageStatus(vehicleId, this);
+		SampNativeFunction.updateVehicleDamageStatus(vehicle.getId(), panels, doors, lights, tires);
+		SampNativeFunction.getVehicleDamageStatus(vehicle.getId(), this);
 	}
 }

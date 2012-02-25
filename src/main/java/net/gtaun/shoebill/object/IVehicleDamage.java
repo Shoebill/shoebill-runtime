@@ -21,7 +21,7 @@ package net.gtaun.shoebill.object;
  *
  */
 
-public interface IVehicleDamage
+public interface IVehicleDamage extends IVehicleRelated
 {
 	int getPanels();
 	int getDoors();

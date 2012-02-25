@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,23 +21,7 @@ package net.gtaun.shoebill.object;
  *
  */
 
-public interface IVehicleParam extends IVehicleRelated
+public interface IVehicleRelated
 {
-	int getEngine();
-	int getLights();
-	int getAlarm();
-	int getDoors();
-	int getBonnet();
-	int getBoot();
-	int getObjective();
-	
-	void setEngine( int engine );
-	void setLights( int lights );
-	void setAlarm( int alarm );
-	void setDoors( int doors );
-	void setBonnet( int bonnet );
-	void setBoot( int boot );
-	void setObjective( int objective );
-	
-	void set( int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective );
+	IVehicle getVehicle();
 }

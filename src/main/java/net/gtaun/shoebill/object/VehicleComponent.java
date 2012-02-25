@@ -28,47 +28,52 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class VehicleComponent implements IVehicleComponent
 {	
-	private int vehicleId;
-	
+	private IVehicle vehicle;
 	private int[] components = new int[ VehicleComponentSlot.values().length ];
 	
 	
-	VehicleComponent( int vehicleId )
+	VehicleComponent( IVehicle vehicle )
 	{
-		this.vehicleId = vehicleId;
+		this.vehicle = vehicle;
 		update();
 	}
 	
 	
 	@Override
+	public IVehicle getVehicle()
+	{
+		return vehicle;
+	}
+	
+	@Override
 	public void add( int componentId )
 	{
-		SampNativeFunction.addVehicleComponent( vehicleId, componentId );
+		SampNativeFunction.addVehicleComponent( vehicle.getId(), componentId );
 		
 		int slot = SampNativeFunction.getVehicleComponentType(componentId);
-		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicleId, slot);
+		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot);
 	}
 	
 	@Override
 	public void remove( int componentId )
 	{
-		SampNativeFunction.removeVehicleComponent( vehicleId, componentId );
+		SampNativeFunction.removeVehicleComponent( vehicle.getId(), componentId );
 		
 		int slot = SampNativeFunction.getVehicleComponentType(componentId);
-		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicleId, slot);
+		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot);
 	}
 	
 	@Override
 	public void remove( VehicleComponentSlot slot )
 	{
 		int componentId = components[ slot.getData() ];
-		SampNativeFunction.removeVehicleComponent( vehicleId, componentId );
+		SampNativeFunction.removeVehicleComponent( vehicle.getId(), componentId );
 	}
 	
 	@Override
 	public int get( VehicleComponentSlot slot )
 	{
-		return SampNativeFunction.getVehicleComponentInSlot( vehicleId, slot.getData() );
+		return SampNativeFunction.getVehicleComponentInSlot( vehicle.getId(), slot.getData() );
 	}
 	
 	@Override
@@ -84,6 +89,6 @@ public class VehicleComponent implements IVehicleComponent
 	void update()
 	{
 		for( int i=0; i<components.length; i++ )
-			components[i] = SampNativeFunction.getVehicleComponentInSlot(vehicleId, i);
+			components[i] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), i);
 	}
 }

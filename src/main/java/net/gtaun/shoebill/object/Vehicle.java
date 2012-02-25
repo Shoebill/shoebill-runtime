@@ -167,9 +167,9 @@ public class Vehicle implements IVehicle
 		SampNativeFunction.linkVehicleToInterior( id, interiorId );
 		SampNativeFunction.setVehicleVirtualWorld( id, worldId );
 
-		param = new VehicleParam( id );
-		component = new VehicleComponent( id );
-		damage = new VehicleDamage( id );
+		param = new VehicleParam(this);
+		component = new VehicleComponent(this);
+		damage = new VehicleDamage(this);
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setVehicle( id, this );
