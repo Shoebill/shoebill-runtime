@@ -24,7 +24,7 @@ import net.gtaun.shoebill.data.type.PlayerAttachBone;
  *
  */
 
-public interface IPlayerAttach
+public interface IPlayerAttach extends IPlayerRelated
 {
 	public interface IPlayerAttachSlot
 	{

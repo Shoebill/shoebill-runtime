@@ -218,8 +218,8 @@ public class Player implements IPlayer
 		
 		SampNativeFunction.getPlayerKeys(id, keyState);
 		
-		playerAttach = new PlayerAttach(id);
-		skill = new PlayerWeaponSkill(id);
+		playerAttach = new PlayerAttach(this);
+		skill = new PlayerWeaponSkill(this);
 
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		if( pool.getPlayer(id) != null ) throw new UnsupportedOperationException();

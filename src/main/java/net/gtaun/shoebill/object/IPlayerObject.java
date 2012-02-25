@@ -21,7 +21,7 @@ package net.gtaun.shoebill.object;
  *
  */
 
-public interface IPlayerObject extends IObject
+public interface IPlayerObject extends IObject, IPlayerRelated
 {
-	IPlayer getPlayer();
+	
 }

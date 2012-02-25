@@ -56,7 +56,7 @@ public class PlayerAttach implements IPlayerAttach
 		public boolean set( PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rot, Vector3D scale )
 		{
 			if( bone == PlayerAttachBone.NOT_USABLE ) return false;
-			if( ! SampNativeFunction.setPlayerAttachedObject(playerId, slot, modelId, bone.getData(), offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, scale.x, scale.y, scale.z) )
+			if( ! SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getData(), offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, scale.x, scale.y, scale.z) )
 				return false;
 			
 			this.bone = bone;
@@ -73,7 +73,7 @@ public class PlayerAttach implements IPlayerAttach
 		public boolean remove()
 		{
 			if( bone == PlayerAttachBone.NOT_USABLE ) return false;
-			if( ! SampNativeFunction.removePlayerAttachedObject(playerId, slot) ) return false;
+			if( ! SampNativeFunction.removePlayerAttachedObject(player.getId(), slot) ) return false;
 			
 			bone = PlayerAttachBone.NOT_USABLE;
 			modelId = 0;
@@ -93,19 +93,24 @@ public class PlayerAttach implements IPlayerAttach
 	}
 	
 	
-	private int playerId;
-	
+	private IPlayer player;
 	private PlayerAttachSlot[] slots = new PlayerAttachSlot[MAX_ATTACHED_OBJECTS];
 
 	
-	PlayerAttach( int playerId )
+	PlayerAttach( IPlayer player )
 	{
-		this.playerId = playerId;
+		this.player = player;
 		
 		for( int i=0; i<MAX_ATTACHED_OBJECTS; i++ )
 		{
 			slots[i] = new PlayerAttachSlot(i);
 		}
+	}
+	
+	@Override
+	public IPlayer getPlayer()
+	{
+		return player;
 	}
 	
 	@Override

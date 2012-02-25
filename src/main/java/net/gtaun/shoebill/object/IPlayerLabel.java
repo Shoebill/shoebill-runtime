@@ -21,7 +21,7 @@ package net.gtaun.shoebill.object;
  *
  */
 
-public interface IPlayerLabel extends ILabel
+public interface IPlayerLabel extends ILabel, IPlayerRelated
 {
-	IPlayer getPlayer();
+	
 }
