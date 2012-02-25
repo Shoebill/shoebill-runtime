@@ -17,11 +17,11 @@
 package net.gtaun.shoebill.util.event;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.gtaun.shoebill.util.event.event.EventListenerAddedEvent;
@@ -39,7 +39,7 @@ public class EventManager implements IEventManager
 	
 	public EventManager()
 	{
-		listenerEntryContainersMap = new HashMap<Class<? extends Event>, Map<Object, Queue<EventListenerEntry>>>();
+		listenerEntryContainersMap = new ConcurrentHashMap<Class<? extends Event>, Map<Object, Queue<EventListenerEntry>>>();
 	}
 	
 
@@ -90,7 +90,7 @@ public class EventManager implements IEventManager
 		Map<Object, Queue<EventListenerEntry>> objectListenerEntries = listenerEntryContainersMap.get(type);
 		if( objectListenerEntries == null )
 		{
-			objectListenerEntries = new HashMap<Object, Queue<EventListenerEntry>>();
+			objectListenerEntries = new ConcurrentHashMap<Object, Queue<EventListenerEntry>>();
 			listenerEntryContainersMap.put( type, objectListenerEntries );
 		}
 		
