@@ -45,7 +45,7 @@ public class Menu implements IMenu
 	}
 	
 
-	private int id = -1;
+	private int id = INVALID_ID;
 	private String title, columnHeader = "";
 	private int columns;
 	private float x, y;
@@ -95,13 +95,13 @@ public class Menu implements IMenu
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setMenu( id, null );
 		
-		id = -1;
+		id = INVALID_ID;
 	}
 	
 	@Override
 	public boolean isDestroyed()
 	{
-		return id == -1;
+		return id == INVALID_ID;
 	}
 	
 	@Override

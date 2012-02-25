@@ -194,13 +194,13 @@ public class Vehicle implements IVehicle
 		IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();
 		shoebillLowLevel.getEventManager().dispatchEvent( event, this );
 		
-		id = -1;
+		id = INVALID_ID;
 	}
 	
 	@Override
 	public boolean isDestroyed()
 	{
-		return id == -1;
+		return id == INVALID_ID;
 	}
 	
 	

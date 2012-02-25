@@ -128,13 +128,18 @@ public class Player implements IPlayer
 		location.interiorId = SampNativeFunction.getPlayerInterior(id);
 	}
 	
+	void processPlayerDisconnect()
+	{
+		id = INVALID_ID;
+	}
+	
 	void processDialogResponse()
 	{
 		dialog = null;
 	}
 	
 	
-	private int id = -1;
+	private int id = INVALID_ID;
 	
 	private boolean controllable = true;
 	private boolean isStuntBonusEnabled = false;
@@ -197,7 +202,7 @@ public class Player implements IPlayer
 	
 	@Override public IDialog getDialog()							{ return dialog; }
 
-	@Override public boolean isOnline()								{ return id == -1; }
+	@Override public boolean isOnline()								{ return id == INVALID_ID; }
 	@Override public boolean isStuntBonusEnabled()					{ return isStuntBonusEnabled; }
 	@Override public boolean isSpectating()							{ return spectating; }
 	@Override public boolean isRecording()							{ return isRecording; }

@@ -101,13 +101,13 @@ public class Textdraw implements ITextdraw
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setTextdraw( id, null );
 		
-		id = -1;
+		id = INVALID_ID;
 	}
 
 	@Override
 	public boolean isDestroyed()
 	{
-		return id == -1;
+		return id == INVALID_ID;
 	}
 
 	@Override

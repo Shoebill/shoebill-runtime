@@ -55,7 +55,7 @@ public class ObjectBase implements IObject
 	};
 	
 	
-	private int id = -1;
+	private int id = INVALID_ID;
 	private int modelId;
 	private LocationRotational location;
 	private float speed = 0;
@@ -143,13 +143,13 @@ public class ObjectBase implements IObject
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setObject( id, null );
 		
-		id = -1;
+		id = INVALID_ID;
 	}
 	
 	@Override
 	public boolean isDestroyed()
 	{
-		return id == -1;
+		return id == INVALID_ID;
 	}
 	
 	@Override

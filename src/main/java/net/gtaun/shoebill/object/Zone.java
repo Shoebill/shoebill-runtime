@@ -94,13 +94,13 @@ public class Zone implements IZone
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setZone( id, null );
 		
-		id = -1;
+		id = INVALID_ID;
 	}
 	
 	@Override
 	public boolean isDestroyed()
 	{
-		return id == -1;
+		return id == INVALID_ID;
 	}
 	
 

@@ -46,7 +46,7 @@ public class Label implements ILabel
 	}
 	
 	
-	private int id = -1;
+	private int id = INVALID_ID;
 	private String text;
 	private Color color;
 	private Location location;
@@ -97,13 +97,13 @@ public class Label implements ILabel
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setLabel( id, null );
 
-		id = -1;
+		id = INVALID_ID;
 	}
 	
 	@Override
 	public boolean isDestroyed()
 	{
-		return id == -1;
+		return id == INVALID_ID;
 	}
 
 	@Override

@@ -132,6 +132,9 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			{
 				PlayerDisconnectEvent event = new PlayerDisconnectEvent( player, reason );
 				eventManager.dispatchEvent( event, player );
+				
+				Player p = (Player) player;
+				p.processPlayerDisconnect();
 			}
 			
 			sampObjectPool.setPlayer( playerId, null );
