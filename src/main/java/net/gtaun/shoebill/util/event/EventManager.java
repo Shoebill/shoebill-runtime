@@ -18,6 +18,7 @@ package net.gtaun.shoebill.util.event;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -254,14 +255,12 @@ public class EventManager implements IEventManager
 			}
 		);
 		
-		final Object obj = new Object();
-		if( objects.length == 0 ) objects = new Object[] { obj };
+		Map<Object, Queue<EventListenerEntry>> objectListenerEntries = listenerEntryContainersMap.get(type);
+		if( objectListenerEntries == null ) return;
+		
 		for( Object object : objects )
 		{
 			Class<?> cls = object.getClass();
-			
-			Map<Object, Queue<EventListenerEntry>> objectListenerEntries = listenerEntryContainersMap.get(type);
-			if( objectListenerEntries == null ) return;
 			
 			Queue<EventListenerEntry> entries = objectListenerEntries.get( object );
 			if( entries != null ) for( EventListenerEntry entry : entries )
@@ -282,7 +281,7 @@ public class EventManager implements IEventManager
 			}
 			
 			Class<?> clz = cls;
-			while( clz != null )
+			while( clz != null && clz != Object.class )
 			{
 				Queue<EventListenerEntry> classListenerEntries = objectListenerEntries.get( clz );
 				if( classListenerEntries != null ) for( EventListenerEntry entry : classListenerEntries )
@@ -295,12 +294,23 @@ public class EventManager implements IEventManager
 			}
 		}
 		
+		Queue<EventListenerEntry> entries = objectListenerEntries.get( Object.class );
+		if( entries != null ) for( EventListenerEntry entry : entries )
+		{
+			if( entry.getListener() == null ) entries.remove( entry );
+			else listenerEntryQueue.add( entry );
+		}
+		
+		HashSet<EventListenerEntry> processedHandler = new HashSet<EventListenerEntry>( listenerEntryQueue.size() );
 		while( listenerEntryQueue.isEmpty() == false && event.isInterrupted() == false )
 		{
 			EventListenerEntry entry = listenerEntryQueue.poll();
 			IEventListener listener = entry.getListener();
 			
 			if( listener == null ) continue;
+			
+			if( processedHandler.contains(entry) ) return;
+			processedHandler.add( entry );
 			
 			try
 			{
