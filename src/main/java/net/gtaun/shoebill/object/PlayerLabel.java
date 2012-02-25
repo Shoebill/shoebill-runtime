@@ -83,7 +83,7 @@ public class PlayerLabel implements IPlayerLabel
 		initialize();
 	}
 
-	public PlayerLabel( IPlayer player, String text, Color color, Location location, float drawDistance, boolean testLOS, Player attachedPlayer ) throws CreationFailedException
+	public PlayerLabel( IPlayer player, String text, Color color, Location location, float drawDistance, boolean testLOS, IPlayer attachedPlayer ) throws CreationFailedException
 	{
 		if( text == null ) throw new NullPointerException();
 		
@@ -98,7 +98,7 @@ public class PlayerLabel implements IPlayerLabel
 		initialize();
 	}
 	
-	public PlayerLabel( IPlayer player, String text, Color color, Location location, float drawDistance, boolean testLOS, Vehicle attachedVehicle ) throws CreationFailedException
+	public PlayerLabel( IPlayer player, String text, Color color, Location location, float drawDistance, boolean testLOS, IVehicle attachedVehicle ) throws CreationFailedException
 	{
 		if( text == null ) throw new NullPointerException();
 		

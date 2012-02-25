@@ -205,9 +205,9 @@ public class Vehicle implements IVehicle
 	
 	
 	@Override
-	public Vehicle getTrailer()
+	public IVehicle getTrailer()
 	{
-		return get( Vehicle.class, SampNativeFunction.getVehicleTrailer(id) );
+		return get(IVehicle.class, SampNativeFunction.getVehicleTrailer(id));
 	}
 	
 	@Override
@@ -399,6 +399,4 @@ public class Vehicle implements IVehicle
 	{
 		SampNativeFunction.setVehicleAngularVelocity( id, velocity.x, velocity.y, velocity.z );
 	}
-	
-	//public static int getComponentType( int component );
 }
