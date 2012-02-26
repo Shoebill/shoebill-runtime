@@ -162,18 +162,23 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public IVehicle getVehicle( int id )
 	{
+		if( id < 0 || id >= MAX_VEHICLES ) return null;
 		return vehicles[id];
 	}
 	
 	@Override
 	public IObject getObject( int id )
 	{
+		if( id < 0 || id >= MAX_OBJECTS ) return null;
 		return objects[id];
 	}
 	
 	@Override
 	public IPlayerObject getPlayerObject( IPlayer player, int id )
 	{
+		if( player == null ) return null;
+		if( id < 0 || id >= MAX_OBJECTS ) return null;
+		
 		IPlayerObject[] playerObjects = playerObjectsMap.get( player.getId() );
 		return playerObjects[id];
 	}
@@ -181,18 +186,23 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public IPickup getPickup( int id )
 	{
+		if( id < 0 || id >= MAX_PICKUPS ) return null;
 		return pickups[id];
 	}
 	
 	@Override
 	public ILabel getLabel( int id )
 	{
+		if( id < 0 || id >= MAX_GLOBAL_LABELS ) return null;
 		return labels[id];
 	}
 	
 	@Override
 	public IPlayerLabel getPlayerLabel( IPlayer player, int id )
 	{
+		if( player == null ) return null;
+		if( id < 0 || id >= MAX_GLOBAL_LABELS ) return null;
+		
 		IPlayerLabel[] playerLabels = playerLabelsMap.get( player.getId() );
 		return playerLabels[id];
 	}
