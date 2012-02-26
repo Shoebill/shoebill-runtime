@@ -456,8 +456,8 @@ public class SampObjectPool implements ISampObjectPool
 	
 	public void setPlayerObject( IPlayer player, int id, IPlayerObject object )
 	{
-		IPlayerObject[] objects = playerObjectsArrays[player.getId()];
-		objects[ id ] = object;
+		IPlayerObject[] playerObjects = playerObjectsArrays[player.getId()];
+		playerObjects[ id ] = object;
 	}
 	
 	public void setPickup( int id, IPickup pickup )
@@ -472,8 +472,8 @@ public class SampObjectPool implements ISampObjectPool
 	
 	public void setPlayerLabel( IPlayer player, int id, IPlayerLabel label )
 	{
-		IPlayerLabel[] labels = playerLabelsArrays[player.getId()];
-		labels[ id ] = label;
+		IPlayerLabel[] playerLabels = playerLabelsArrays[player.getId()];
+		playerLabels[ id ] = label;
 	}
 	
 	public void setTextdraw( int id, ITextdraw textdraw )
