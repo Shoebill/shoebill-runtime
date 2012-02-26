@@ -90,6 +90,8 @@ public class Menu implements IMenu
 	@Override
 	public void destroy()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.destroyMenu( id );
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -107,6 +109,8 @@ public class Menu implements IMenu
 	@Override
 	public void addItem( int column, String text )
 	{
+		if( isDestroyed() ) return;
+		
 		if( text == null ) throw new NullPointerException();
 		SampNativeFunction.addMenuItem( id, column, text );
 	}
@@ -114,6 +118,7 @@ public class Menu implements IMenu
 	@Override
 	public void setColumnHeader( int column, String text )
 	{
+		if( isDestroyed() ) return;
 		if( text == null ) throw new NullPointerException();
 		
 		SampNativeFunction.setMenuColumnHeader( id, column, text );
@@ -123,24 +128,34 @@ public class Menu implements IMenu
 	@Override
 	public void disable()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.disableMenu( id );
 	}
 	
 	@Override
 	public void disableRow( int row )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.disableMenuRow( id, row );
 	}
 	
 	@Override
 	public void show( IPlayer player )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		SampNativeFunction.showMenuForPlayer( id, player.getId() );
 	}
 	
 	@Override
 	public void hide( IPlayer player )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		SampNativeFunction.hideMenuForPlayer( id, player.getId() );
 	}
 }

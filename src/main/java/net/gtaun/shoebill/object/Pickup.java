@@ -95,6 +95,8 @@ public class Pickup implements IPickup
 	@Override
 	public void destroy()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.destroyPickup( id );
 
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();

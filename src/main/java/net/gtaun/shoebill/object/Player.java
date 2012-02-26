@@ -165,35 +165,15 @@ public class Player implements IPlayer
 	
 	
 	@Override public int getId()									{ return id; }
-	@Override public int getPing()									{ return SampNativeFunction.getPlayerPing(id); }
-	@Override public int getTeamId()								{ return SampNativeFunction.getPlayerTeam(id); }
-	@Override public int getSkinId()								{ return SampNativeFunction.getPlayerSkin(id); }
-	@Override public int getWantedLevel()							{ return SampNativeFunction.getPlayerWantedLevel(id); }
-	@Override public int getCodepage()								{ return SampNativeFunction.getPlayerCodepage(id); };
-	@Override public String getIp()									{ return SampNativeFunction.getPlayerIp(id); }
-	@Override public String getName()								{ return SampNativeFunction.getPlayerName(id); }
-	@Override public Color getColor()								{ return new Color(SampNativeFunction.getPlayerColor(id)); }
 
 	@Override public int getUpdateFrameCount()						{ return updateFrameCount; }
-	@Override public float getHealth()								{ return SampNativeFunction.getPlayerHealth(id); }
-	@Override public float getArmour()								{ return SampNativeFunction.getPlayerArmour(id); }
-	@Override public WeaponType getArmedWeapon()					{ return WeaponType.get( SampNativeFunction.getPlayerWeapon(id) ); }
-	@Override public int getArmedWeaponAmmo()						{ return SampNativeFunction.getPlayerAmmo(id); }
-	@Override public int getMoney()									{ return SampNativeFunction.getPlayerMoney(id); }
-	@Override public int getScore()									{ return SampNativeFunction.getPlayerScore(id); }
 	@Override public int getWeatherId()								{ return weather; }
-	@Override public int getCameraMode()							{ return SampNativeFunction.getPlayerCameraMode(id); }
-	@Override public FightStyle getFightStyle()						{ return FightStyle.get(SampNativeFunction.getPlayerFightingStyle(id)); }
-	@Override public IVehicle getVehicle()							{ return Vehicle.get(SampNativeFunction.getPlayerVehicleID(id)); }
-	@Override public int getVehicleSeat()							{ return SampNativeFunction.getPlayerVehicleSeat(id); }
-	@Override public SpecialAction getSpecialAction()				{ return SpecialAction.get(SampNativeFunction.getPlayerSpecialAction(id)); }
 	@Override public IPlayer getSpectatingPlayer()					{ return spectatingPlayer; }
 	@Override public IVehicle getSpectatingVehicle()				{ return spectatingVehicle; }
 	
 	@Override public LocationAngular getLocation()					{ return location.clone(); }
 	@Override public Area getWorldBound()							{ return worldBound.clone(); }
 	@Override public Velocity getVelocity()							{ return velocity.clone(); }
-	@Override public PlayerState getState()							{ return PlayerState.values()[ SampNativeFunction.getPlayerState(id) ]; }
 	@Override public KeyState getKeyState()							{ return keyState.clone(); }
 	@Override public IPlayerAttach getPlayerAttach()				{ return playerAttach; }
 	@Override public IPlayerWeaponSkill getWeaponSkill()			{ return skill; }
@@ -202,7 +182,6 @@ public class Player implements IPlayer
 	
 	@Override public IDialog getDialog()							{ return dialog; }
 
-	@Override public boolean isOnline()								{ return id == INVALID_ID; }
 	@Override public boolean isStuntBonusEnabled()					{ return isStuntBonusEnabled; }
 	@Override public boolean isSpectating()							{ return spectating; }
 	@Override public boolean isRecording()							{ return isRecording; }
@@ -231,16 +210,187 @@ public class Player implements IPlayer
 		pool.setPlayer( id, this );
 	}
 
+
+	@Override
+	public boolean isOnline()
+	{
+		return id != INVALID_ID;
+	}
+	
+	
+	@Override
+	public int getPing()
+	{
+		if( isOnline() == false ) return 0;
+		
+		return SampNativeFunction.getPlayerPing(id);
+	}
+	
+	@Override
+	public int getTeamId()
+	{
+		if( isOnline() == false ) return NO_TEAM;
+		
+		return SampNativeFunction.getPlayerTeam(id);
+	}
+	
+	@Override
+	public int getSkinId()
+	{
+		if( isOnline() == false ) return 0;
+		
+		return SampNativeFunction.getPlayerSkin(id);
+	}
+	
+	@Override
+	public int getWantedLevel()
+	{
+		if( isOnline() == false ) return 0;
+		
+		return SampNativeFunction.getPlayerWantedLevel(id);
+	}
+	
+	@Override
+	public int getCodepage()
+	{
+		if( isOnline() == false ) return 0;
+		
+		return SampNativeFunction.getPlayerCodepage(id);
+	}
+	
+	@Override
+	public String getIp()
+	{
+		if( isOnline() == false ) return "0.0.0.0";
+		
+		return SampNativeFunction.getPlayerIp(id);
+	}
+	
+	@Override
+	public String getName()
+	{
+		if( isOnline() == false ) return "Unknown";
+		
+		return SampNativeFunction.getPlayerName(id);
+	}
+	
+	@Override
+	public Color getColor()
+	{
+		if( isOnline() == false ) return null;
+		
+		return new Color(SampNativeFunction.getPlayerColor(id));
+	}
+	
+	@Override
+	public float getHealth()
+	{
+		if( isOnline() == false ) return 0.0f;
+		
+		return SampNativeFunction.getPlayerHealth(id);
+	}
+	
+	@Override
+	public float getArmour()
+	{
+		if( isOnline() == false ) return 0.0f;
+		
+		return SampNativeFunction.getPlayerArmour(id);
+	}
+	
+	@Override
+	public WeaponType getArmedWeapon()
+	{
+		if( isOnline() == false ) return WeaponType.NONE;
+		
+		return WeaponType.get( SampNativeFunction.getPlayerWeapon(id) );
+	}
+	
+	@Override
+	public int getArmedWeaponAmmo()
+	{
+		if( isOnline() == false ) return 0;
+		
+		return SampNativeFunction.getPlayerAmmo(id);
+	}
+	
+	@Override
+	public int getMoney()
+	{
+		if( isOnline() == false ) return 0;
+		
+		return SampNativeFunction.getPlayerMoney(id);
+	}
+	
+	@Override
+	public int getScore()
+	{
+		if( isOnline() == false ) return 0;
+		
+		return SampNativeFunction.getPlayerScore(id);
+	}
+	
+	@Override
+	public int getCameraMode()
+	{
+		if( isOnline() == false ) return 0;
+		
+		return SampNativeFunction.getPlayerCameraMode(id);
+	}
+	
+	@Override
+	public FightStyle getFightStyle()
+	{
+		if( isOnline() == false ) return FightStyle.NORMAL;
+		
+		return FightStyle.get(SampNativeFunction.getPlayerFightingStyle(id));
+	}
+	
+	@Override
+	public IVehicle getVehicle()
+	{
+		if( isOnline() == false ) return null;
+		
+		return Vehicle.get(SampNativeFunction.getPlayerVehicleID(id));
+	}
+	
+	@Override
+	public int getVehicleSeat()
+	{
+		if( isOnline() == false ) return 0;
+		
+		return SampNativeFunction.getPlayerVehicleSeat(id);
+	}
+	
+	@Override
+	public SpecialAction getSpecialAction()
+	{
+		if( isOnline() == false ) return SpecialAction.NONE;
+		
+		return SpecialAction.get(SampNativeFunction.getPlayerSpecialAction(id));
+	}
+	
+	@Override
+	public PlayerState getState()
+	{
+		if( isOnline() == false ) return PlayerState.NONE;
+		
+		return PlayerState.values()[ SampNativeFunction.getPlayerState(id) ];
+	}
 	
 	@Override
 	public void setCodepage( int codepage )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerCodepage( id, codepage );
 	}
 	
 	@Override
 	public void setName( String name ) throws IllegalArgumentException, IllegalLengthException, AlreadyExistException
 	{
+		if( isOnline() == false ) return;
+		
 		if( name == null ) throw new IllegalArgumentException();
 		if( name.length()<3 || name.length()>20 ) throw new IllegalLengthException();
 		
@@ -252,6 +402,8 @@ public class Player implements IPlayer
 	@Override
 	public void setSpawnInfo( float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, WeaponType weapon1, int ammo1, WeaponType weapon2, int ammo2, WeaponType weapon3, int ammo3 )
 	{
+		if( isOnline() == false ) return;
+		
 		SpawnInfo info = new SpawnInfo(x, y, z, interiorId, worldId, angle, skin, team, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3);
 		setSpawnInfo( info );
 	}
@@ -259,36 +411,48 @@ public class Player implements IPlayer
 	@Override
 	public void setSpawnInfo( SpawnInfo info )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setSpawnInfo( id, info.teamId, info.skinId, info.location.x, info.location.y, info.location.z, info.location.angle, info.weapon1.type.getId(), info.weapon1.ammo, info.weapon2.type.getId(), info.weapon2.ammo, info.weapon3.type.getId(), info.weapon3.ammo );
 	}
 	
 	@Override
 	public void setColor( Color color )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerColor( id, color.getValue() );
 	}
 
 	@Override
 	public void setHealth( float health )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerHealth( id, health );
 	}
 	
 	@Override
 	public void setArmour( float armour)
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerArmour( id, armour );
 	}
 	
 	@Override
 	public void setWeaponAmmo( int weaponSlot, int ammo )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerAmmo( id, weaponSlot, ammo );
 	}
 	
 	@Override
 	public void setMoney( int money )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.resetPlayerMoney( id );
 		if( money != 0 ) SampNativeFunction.givePlayerMoney( id, money );
 	}
@@ -296,18 +460,22 @@ public class Player implements IPlayer
 	@Override
 	public void giveMoney( int money )
 	{
+		if( isOnline() == false ) return;
 		SampNativeFunction.givePlayerMoney( id, money );
 	}
 	
 	@Override
 	public void setScore( int score )
 	{
+		if( isOnline() == false ) return;
 		SampNativeFunction.setPlayerScore( id, score );
 	}
 	
 	@Override
 	public void setWeatherId( int weather )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerWeather( id, weather );
 		this.weather = weather;
 	}
@@ -315,12 +483,17 @@ public class Player implements IPlayer
 	@Override
 	public void setFightStyle( FightStyle style )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerFightingStyle( id, style.getData() );
 	}
 
 	@Override
 	public void setVehicle( IVehicle vehicle, int seat )
 	{
+		if( isOnline() == false ) return;
+		if( vehicle != null && vehicle.isDestroyed() ) return;
+		
 		if( vehicle == null )
 		{
 			removeFromVehicle();
@@ -339,6 +512,8 @@ public class Player implements IPlayer
 	@Override
 	public void setLocation( float x, float y, float z )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerPos( id, x, y, z );
 
 		this.location.x = x;
@@ -349,6 +524,8 @@ public class Player implements IPlayer
 	@Override
 	public void setLocation( Location location )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerPos( id, location.x, location.y, location.z );
 
 		if( location.interiorId != this.location.interiorId )
@@ -363,6 +540,8 @@ public class Player implements IPlayer
 	@Override
 	public void setLocation( LocationAngular location )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerPos( id, location.x, location.y, location.z );
 		SampNativeFunction.setPlayerFacingAngle( id, location.angle );
 
@@ -378,6 +557,8 @@ public class Player implements IPlayer
 	@Override
 	public void setLocationFindZ( float x, float y, float z )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerPosFindZ( id, x, y, z );
 
 		this.location.x = x;
@@ -388,6 +569,8 @@ public class Player implements IPlayer
 	@Override
 	public void setLocationFindZ( Location location )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerPosFindZ( id, location.x, location.y, location.z );
 
 		if( location.interiorId != this.location.interiorId )
@@ -402,6 +585,8 @@ public class Player implements IPlayer
 	@Override
 	public void setLocationFindZ( LocationAngular location )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerPosFindZ( id, location.x, location.y, location.z );
 		SampNativeFunction.setPlayerFacingAngle( id, location.angle );
 
@@ -417,6 +602,8 @@ public class Player implements IPlayer
 	@Override
 	public void setAngle( float angle )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerFacingAngle( id, angle );
 		location.angle = angle;
 	}
@@ -424,6 +611,8 @@ public class Player implements IPlayer
 	@Override
 	public void setInteriorId( int interiorId )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerInterior( id, interiorId );
 		location.interiorId = interiorId;
 	}
@@ -431,6 +620,8 @@ public class Player implements IPlayer
 	@Override
 	public void setWorldId( int worldId )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerVirtualWorld( id, worldId );
 		location.worldId = worldId;
 	}
@@ -438,6 +629,8 @@ public class Player implements IPlayer
 	@Override
 	public void setWorldBound( Area bound )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerWorldBounds( id, bound.maxX, bound.minX, bound.maxY, bound.minY );
 		worldBound.set( bound );
 	}
@@ -445,6 +638,8 @@ public class Player implements IPlayer
 	@Override
 	public void setSpeed( Velocity speed )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerVelocity( id, speed.x, speed.y, speed.z );
 		velocity.set( speed );
 	}
@@ -452,6 +647,8 @@ public class Player implements IPlayer
 	@Override
 	public void sendMessage( Color color, String message )
 	{
+		if( isOnline() == false ) return;
+		
 		if( message == null ) throw new NullPointerException();
 		SampNativeFunction.sendClientMessage( id, color.getValue(), message );
 	}
@@ -459,6 +656,8 @@ public class Player implements IPlayer
 	@Override
 	public void sendMessage( Color color, String format, Object... args )
 	{
+		if( isOnline() == false ) return;
+		
 		String message = String.format(format, args);
 		SampNativeFunction.sendClientMessage( id, color.getValue(), message );
 	}
@@ -466,6 +665,8 @@ public class Player implements IPlayer
 	@Override
 	public void sendChat( IPlayer player, String message )
 	{
+		if( isOnline() == false ) return;
+		
 		if( message == null ) throw new NullPointerException();
 		SampNativeFunction.sendPlayerMessageToPlayer( player.getId(), id, message );
 	}
@@ -473,6 +674,8 @@ public class Player implements IPlayer
 	@Override
 	public void sendChatToAll( String message )
 	{
+		if( isOnline() == false ) return;
+		
 		if( message == null ) throw new NullPointerException();
 		for( IPlayer player : get() ) sendChat( player, message );
 	}
@@ -480,6 +683,8 @@ public class Player implements IPlayer
 	@Override
 	public void sendDeathMessage( IPlayer killer, int reason )
 	{
+		if( isOnline() == false ) return;
+		
 		if( killer == null )
 			SampNativeFunction.sendDeathMessage( INVALID_ID, id, reason );
 		else
@@ -489,6 +694,8 @@ public class Player implements IPlayer
 	@Override
 	public void sendGameText( int time, int style, String text )
 	{
+		if( isOnline() == false ) return;
+		
 		if( text == null ) throw new NullPointerException();
 		SampNativeFunction.gameTextForPlayer( id, text, time, style );
 	}
@@ -496,6 +703,8 @@ public class Player implements IPlayer
 	@Override
 	public void sendGameText( int time, int style, String format, Object... args )
 	{
+		if( isOnline() == false ) return;
+		
 		String text = String.format(format, args);
 		SampNativeFunction.gameTextForPlayer( id, text, time, style );
 	}
@@ -503,24 +712,32 @@ public class Player implements IPlayer
 	@Override
 	public void spawn()
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.spawnPlayer( id );
 	}
 	
 	@Override
 	public void setDrunkLevel( int level )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerDrunkLevel( id, level );
 	}
 	
 	@Override
 	public int getDrunkLevel()
 	{
+		if( isOnline() == false ) return 0;
+		
 		return SampNativeFunction.getPlayerDrunkLevel(id);
 	}
 
 	@Override
 	public void applyAnimation( String animlib, String animname, float delta, int loop, int lockX, int lockY, int freeze, int time, int forcesync )
 	{
+		if( isOnline() == false ) return;
+		
 		if( animlib == null || animname == null ) throw new NullPointerException();
 		SampNativeFunction.applyAnimation( id, animlib, animname, delta, loop, lockX, lockY, freeze, time, forcesync );
 	}
@@ -528,54 +745,72 @@ public class Player implements IPlayer
 	@Override
 	public void clearAnimations( int forcesync )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.clearAnimations( id, forcesync );
 	}
 	
 	@Override
 	public int getAnimationIndex()
 	{
+		if( isOnline() == false ) return 0;
+		
 		return SampNativeFunction.getPlayerAnimationIndex(id);
 	}
 
 	@Override
 	public void playSound( int sound, float x, float y, float z )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.playerPlaySound( id, sound, x, y, z );
 	}
 	
 	@Override
 	public void playSound( int sound, Vector3D location )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.playerPlaySound( id, sound, location.x, location.y, location.z );
 	}
 	
 	@Override
 	public void markerForPlayer( IPlayer player, Color color )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerMarkerForPlayer( id, player.getId(), color.getValue() );
 	}
 	
 	@Override
 	public void showNameTagForPlayer( IPlayer player, boolean show )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.showPlayerNameTagForPlayer( id, player.getId(), show );
 	}
 
 	@Override
 	public void kick()
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.kick( id );
 	}
 	
 	@Override
 	public void ban()
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.ban( id );
 	}
 	
 	@Override
 	public void ban( String reason )
 	{
+		if( isOnline() == false ) return;
+		
 		if( reason == null ) throw new NullPointerException();
 		SampNativeFunction.banEx( id, reason );
 	}
@@ -583,18 +818,24 @@ public class Player implements IPlayer
 	@Override
 	public IMenu getMenu()
 	{
+		if( isOnline() == false ) return null;
+		
 		return Shoebill.getInstance().getManagedObjectPool().getMenu( SampNativeFunction.getPlayerMenu(id) );
 	}
 
 	@Override
 	public void setCameraPosition( float x, float y, float z )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerCameraPos( id, x, y, z );
 	}
 	
 	@Override
 	public void setCameraPosition( Vector3D position )
 	{
+		if( isOnline() == false ) return;
+		
 		if( position == null ) throw new NullPointerException();
 		SampNativeFunction.setPlayerCameraPos( id, position.x, position.y, position.z );
 	}
@@ -602,12 +843,16 @@ public class Player implements IPlayer
 	@Override
 	public void setCameraLookAt( float x, float y, float z )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerCameraLookAt(id, x, y, z);
 	}
 	
 	@Override
 	public void setCameraLookAt( Vector3D lookat )
 	{
+		if( isOnline() == false ) return;
+		
 		if( lookat == null ) throw new NullPointerException();
 		SampNativeFunction.setPlayerCameraLookAt(id, lookat.x, lookat.y, lookat.z);
 	}
@@ -615,12 +860,16 @@ public class Player implements IPlayer
 	@Override
 	public void setCameraBehind()
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setCameraBehindPlayer(id);
 	}
 	
 	@Override
 	public Vector3D getCameraPosition()
 	{
+		if( isOnline() == false ) return null;
+		
 		Vector3D pos = new Vector3D();
 		SampNativeFunction.getPlayerCameraPos( id, pos );
 		return pos;
@@ -629,6 +878,8 @@ public class Player implements IPlayer
 	@Override
 	public Vector3D getCameraFrontVector()
 	{
+		if( isOnline() == false ) return null;
+		
 		Vector3D lookat = new Vector3D();
 		SampNativeFunction.getPlayerCameraFrontVector( id, lookat );
 		return lookat;
@@ -637,30 +888,42 @@ public class Player implements IPlayer
 	@Override
 	public boolean isInAnyVehicle()
 	{
+		if( isOnline() == false ) return false;
+		
 		return SampNativeFunction.isPlayerInAnyVehicle( id );
 	}
 	
 	@Override
 	public boolean isInVehicle( IVehicle vehicle )
 	{
+		if( isOnline() == false ) return false;
+		if( vehicle.isDestroyed() ) return false;
+		
 		return SampNativeFunction.isPlayerInVehicle( id, vehicle.getId() );
 	}
 	
 	@Override
 	public boolean isAdmin()
 	{
+		if( isOnline() == false ) return false;
+		
 		return SampNativeFunction.isPlayerAdmin(id);
 	}
 	
 	@Override
 	public boolean isStreamedIn( IPlayer forPlayer )
 	{
+		if( isOnline() == false ) return false;
+		if( forPlayer.isOnline() == false ) return false;
+		
 		return SampNativeFunction.isPlayerStreamedIn(id, forPlayer.getId());
 	}
 	
 	@Override
 	public void setCheckpoint( ICheckpoint checkpoint )
 	{
+		if( isOnline() == false ) return;
+		
 		if( checkpoint == null )
 		{
 			disableCheckpoint();
@@ -675,6 +938,8 @@ public class Player implements IPlayer
 	@Override
 	public void disableCheckpoint()
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.disablePlayerCheckpoint( id );
 		checkpoint = null;
 	}
@@ -682,6 +947,8 @@ public class Player implements IPlayer
 	@Override
 	public void setRaceCheckpoint( IRaceCheckpoint checkpoint )
 	{
+		if( isOnline() == false ) return;
+		
 		if( checkpoint == null )
 		{
 			disableRaceCheckpoint();
@@ -713,6 +980,8 @@ public class Player implements IPlayer
 	@Override
 	public void disableRaceCheckpoint()
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.disablePlayerRaceCheckpoint( id );
 		raceCheckpoint = null;
 	}
@@ -720,42 +989,56 @@ public class Player implements IPlayer
 	@Override
 	public WeaponState getWeaponState()
 	{
+		if( isOnline() == false ) return WeaponState.UNKNOWN;
+		
 		return WeaponState.get( SampNativeFunction.getPlayerWeaponState(id) );
 	}
 	
 	@Override
 	public void setTeam( int team )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerTeam( id, team );
 	}
 	
 	@Override
 	public void setSkin( int skin )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerSkin( id, skin );
 	}
 	
 	@Override
 	public void giveWeapon( WeaponType type, int ammo )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.givePlayerWeapon( id, type.getId(), ammo );
 	}
 	
 	@Override
 	public void resetWeapons()
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.resetPlayerWeapons( id );
 	}
 	
 	@Override
 	public void setTime( int hour, int minute )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerTime( id, hour, minute );
 	}
 	
 	@Override
 	public Time getTime()
 	{
+		if( isOnline() == false ) return null;
+		
 		Time time = new Time();
 		SampNativeFunction.getPlayerTime( id, time );
 		return time;
@@ -764,48 +1047,64 @@ public class Player implements IPlayer
 	@Override
 	public void toggleClock( boolean toggle )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.togglePlayerClock( id, toggle );
 	}
 	
 	@Override
 	public void forceClassSelection()
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.forceClassSelection( id );
 	}
 	
 	@Override
 	public void setWantedLevel( int level )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerWantedLevel( id, level );
 	}
 	
 	@Override
 	public void playCrimeReport( int suspectId, int crimeId )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.playCrimeReportForPlayer( id, suspectId, crimeId );
 	}
 	
 	@Override
 	public void setShopName( ShopName shop )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerShopName(id, shop.getData());
 	}
 	
 	@Override
 	public IVehicle getSurfingVehicle()
 	{
+		if( isOnline() == false ) return null;
+		
 		return Vehicle.get(IVehicle.class, SampNativeFunction.getPlayerSurfingVehicleID(id));
 	}
 	
 	@Override
 	public void removeFromVehicle()
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.removePlayerFromVehicle(id);
 	}
 	
 	@Override
 	public void toggleControllable( boolean toggle )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.togglePlayerControllable( id, toggle );
 		controllable = toggle;
 	}
@@ -813,24 +1112,32 @@ public class Player implements IPlayer
 	@Override
 	public void setSpecialAction( SpecialAction action )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerSpecialAction( id, action.getData() );
 	}
 	
 	@Override
 	public void setMapIcon( int iconId, Vector3D location, int markerType, Color color, MapIconStyle style )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.setPlayerMapIcon( id, iconId, location.x, location.y, location.z, markerType, color.getValue(), style.getData() );
 	}
 	
 	@Override
 	public void removeMapIcon( int iconId )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.removePlayerMapIcon( id, iconId );
 	}
 	
 	@Override
 	public void enableStuntBonus( boolean enable )
 	{
+		if( isOnline() == false ) return;
+		
 		if( enable )	SampNativeFunction.enableStuntBonusForPlayer( id, 1 );
 		else			SampNativeFunction.enableStuntBonusForPlayer( id, 0 );
 		
@@ -840,6 +1147,8 @@ public class Player implements IPlayer
 	@Override
 	public void toggleSpectating( boolean toggle )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.togglePlayerSpectating( id, toggle );
 		spectating = toggle;
 		
@@ -852,6 +1161,8 @@ public class Player implements IPlayer
 	@Override
 	public void spectate( IPlayer player, SpectateMode mode )
 	{
+		if( isOnline() == false ) return;
+		
 		if( !spectating ) return;
 		
 		SampNativeFunction.playerSpectatePlayer(id, player.getId(), mode.getData());
@@ -862,6 +1173,8 @@ public class Player implements IPlayer
 	@Override
 	public void spectate( IVehicle vehicle, SpectateMode mode )
 	{
+		if( isOnline() == false ) return;
+		
 		if( !spectating ) return;
 
 		SampNativeFunction.playerSpectateVehicle(id, vehicle.getId(), mode.getData());
@@ -872,6 +1185,8 @@ public class Player implements IPlayer
 	@Override
 	public void startRecord( RecordType type, String recordName )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.startRecordingPlayerData( id, type.getData(), recordName );
 		isRecording = true;
 	}
@@ -879,6 +1194,8 @@ public class Player implements IPlayer
 	@Override
 	public void stopRecord()
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.stopRecordingPlayerData( id );
 		isRecording = false;
 	}
@@ -886,6 +1203,8 @@ public class Player implements IPlayer
 	@Override
 	public IObject getSurfingObject()
 	{
+		if( isOnline() == false ) return null;
+		
 		int objectid = SampNativeFunction.getPlayerSurfingObjectID(id);
 		if( objectid == ObjectBase.INVALID_ID ) return null;
 		
@@ -895,6 +1214,8 @@ public class Player implements IPlayer
 	@Override
 	public String getNetworkStats()
 	{
+		if( isOnline() == false ) return "Disconnected.";
+		
 		return SampNativeFunction.getPlayerNetworkStats(id);
 	}
 	
@@ -902,30 +1223,40 @@ public class Player implements IPlayer
 	@Override
 	public IPlayer getAimedTarget()
 	{
+		if( isOnline() == false ) return null;
+		
 		return Shoebill.getInstance().getManagedObjectPool().getPlayer( SampNativeFunction.getPlayerTargetPlayer(id) );
 	}
 
 	@Override
 	public void playAudioStream( String url )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.playAudioStreamForPlayer( id, url, 0.0f, 0.0f, 0.0f, 0.0f, 0 );
 	}
 	
 	@Override
 	public void playAudioStream( String url, Vector3D position, float distance )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.playAudioStreamForPlayer( id, url, position.x, position.y, position.z, distance, 1 );
 	}
 	
 	@Override
 	public void stopAudioStream()
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.stopAudioStreamForPlayer( id );
 	}
 	
 	@Override
 	public void removeBuilding( int modelId, float x, float y, float z, float radius )
 	{
+		if( isOnline() == false ) return;
+		
 		SampNativeFunction.removeBuildingForPlayer( id, modelId, x, y, z, radius );
 	}
 	
@@ -933,16 +1264,21 @@ public class Player implements IPlayer
 	@Override
 	public void showDialog( IDialog dialog, DialogStyle style, String caption, String text, String button1, String button2 )
 	{
+		if( isOnline() == false ) return;
+		
 		if( caption == null || text == null || button1 == null || button2 == null ) throw new NullPointerException();
 		cancelDialog();
 		
 		SampNativeFunction.showPlayerDialog( id, dialog.getId(), style.getData(), caption, text, button1, button2 );
 		this.dialog = dialog;
 	}
+	
 
 	@Override
 	public void cancelDialog()
 	{
+		if( isOnline() == false ) return;
+		
 		if( dialog == null ) return;
 		SampNativeFunction.showPlayerDialog( id, -1, 0, "", "", "", "" );
 		

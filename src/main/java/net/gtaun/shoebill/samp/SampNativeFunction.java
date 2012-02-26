@@ -62,7 +62,7 @@ public final class SampNativeFunction
 	public static native void getObjectRot( int objectid, LocationRotational location );
 	public static native boolean isValidObject( int objectid );
 	public static native void destroyObject( int objectid );
-	public static native int moveObject( int objectid, float x, float y, float z, float speed );
+	public static native int moveObject( int objectid, float x, float y, float z, float speed, float rotX, float rotY, float rotZ );
 	public static native void stopObject( int objectid );
 	public static native boolean isObjectMoving( int objectid );
 	public static native int createPlayerObject( int playerid, int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance );
@@ -72,7 +72,7 @@ public final class SampNativeFunction
 	public static native void getPlayerObjectRot( int playerid, int objectid, LocationRotational location );
 	public static native boolean isValidPlayerObject( int playerid, int objectid );
 	public static native void destroyPlayerObject( int playerid, int objectid );
-	public static native void movePlayerObject( int playerid, int objectid, float x, float y, float z, float speed );
+	public static native int movePlayerObject( int playerid, int objectid, float x, float y, float z, float speed, float rotX, float rotY, float rotZ );
 	public static native void stopPlayerObject( int playerid, int objectid );
 	public static native boolean isPlayerObjectMoving( int playerid, int objectid );
 	public static native void attachPlayerObjectToPlayer( int playerid, int objectid, int attachplayerid, float offsetX, float offsetY, float offsetZ, float rX, float rY, float rZ );

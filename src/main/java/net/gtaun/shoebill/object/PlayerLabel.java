@@ -120,12 +120,17 @@ public class PlayerLabel implements IPlayerLabel
 		if( attachedPlayer != null )	playerId = attachedPlayer.getId();
 		if( attachedVehicle != null )	vehicleId = attachedVehicle.getId();
 		
+		if( playerId == Player.INVALID_ID ) attachedPlayer = null;
+		if( vehicleId == Vehicle.INVALID_ID ) attachedVehicle = null;
+		
 		if( attachedPlayer != null || attachedVehicle != null )
 		{
 			offsetX = location.x;
 			offsetY = location.y;
 			offsetZ = location.z;
 		}
+		
+		if( player.isOnline() == false ) throw new CreationFailedException();
 		
 		id = SampNativeFunction.createPlayer3DTextLabel( player.getId(), text, color.getValue(), location.x, location.y, location.z, drawDistance, playerId, vehicleId, testLOS );
 		if( id == INVALID_ID ) throw new CreationFailedException();
@@ -138,23 +143,31 @@ public class PlayerLabel implements IPlayerLabel
 	@Override
 	public void destroy()
 	{
-		SampNativeFunction.deletePlayer3DTextLabel( player.getId(), id );
-
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
-		pool.setPlayerLabel( player, id, null );
+		if( isDestroyed() ) return;
 		
-		id = -1;
+		if( player.isOnline() )
+		{
+			SampNativeFunction.deletePlayer3DTextLabel( player.getId(), id );
+
+			SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+			pool.setPlayerLabel( player, id, null );
+		}
+		
+		id = INVALID_ID;
 	}
 	
 	@Override
 	public boolean isDestroyed()
 	{
-		return id == -1;
+		return id == INVALID_ID;
 	}
 	
 	@Override
 	public Location getLocation()
 	{
+		if( isDestroyed() ) return null;
+		if( player.isOnline() == false ) return null;
+		
 		Location pos = null;
 		
 		if( attachedPlayer != null )	pos = attachedPlayer.getLocation();
@@ -173,26 +186,43 @@ public class PlayerLabel implements IPlayerLabel
 	}
 
 	@Override
-	public void attach( IPlayer player, float x, float y, float z )
+	public void attach( IPlayer target, float x, float y, float z )
 	{
-		int playerId = this.player.getId();
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		if( target.isOnline() == false ) return;
+		
+		int playerId = player.getId();
 		
 		SampNativeFunction.deletePlayer3DTextLabel( playerId, id );
-		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, player.getId(), Vehicle.INVALID_ID, testLOS );
+		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, target.getId(), Vehicle.INVALID_ID, testLOS );
+		
+		attachedPlayer = target;
+		attachedVehicle = null;
 	}
 
 	@Override
 	public void attach( IVehicle vehicle, float x, float y, float z )
 	{
-		int playerId = this.player.getId();
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		if( vehicle.isDestroyed() ) return;
+		
+		int playerId = player.getId();
 		
 		SampNativeFunction.deletePlayer3DTextLabel( playerId, id );
 		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, Player.INVALID_ID, vehicle.getId(), testLOS );
+	
+		attachedPlayer = null;
+		attachedVehicle = vehicle;
 	}
 	
 	@Override
 	public void update( Color color, String text )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		this.color = color.clone();
 		this.text = text;
 		

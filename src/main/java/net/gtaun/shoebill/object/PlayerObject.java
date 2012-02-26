@@ -131,6 +131,8 @@ public class PlayerObject implements IPlayerObject
 	
 	private void initialize() throws CreationFailedException
 	{
+		if( player.isOnline() == false ) throw new CreationFailedException();
+		
 		id = SampNativeFunction.createPlayerObject( player.getId(), modelId, location.x, location.y, location.z, location.rx, location.ry, location.rz, drawDistance );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
@@ -142,23 +144,31 @@ public class PlayerObject implements IPlayerObject
 	@Override
 	public void destroy()
 	{
-		SampNativeFunction.destroyObject( id );
-
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
-		pool.setPlayerObject( player, id, null );
+		if( isDestroyed() ) return;
 		
-		id = -1;
+		if( player.isOnline() )
+		{
+			SampNativeFunction.destroyPlayerObject( player.getId(), id );
+
+			SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+			pool.setPlayerObject( player, id, null );
+		}
+
+		id = INVALID_ID;
 	}
 
 	@Override
 	public boolean isDestroyed()
 	{
-		return id == -1;
+		return id == INVALID_ID;
 	}
 	
 	@Override
 	public LocationRotational getLocation()
 	{	
+		if( isDestroyed() ) return null;
+		if( player.isOnline() == false ) return null;
+		
 		SampNativeFunction.getPlayerObjectPos( player.getId(), id, location );
 		SampNativeFunction.getPlayerObjectRot( player.getId(), id, location );
 		return location.clone();
@@ -167,6 +177,9 @@ public class PlayerObject implements IPlayerObject
 	@Override
 	public void setLocation( Location location )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		this.location.set( location );
 		SampNativeFunction.setPlayerObjectPos( player.getId(), id, location.x, location.y, location.z );
 	}
@@ -174,6 +187,9 @@ public class PlayerObject implements IPlayerObject
 	@Override
 	public void setLocation( LocationRotational location )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		this.location = location.clone();
 		SampNativeFunction.setPlayerObjectPos( player.getId(), id, location.x, location.y, location.z );
 		SampNativeFunction.setPlayerObjectRot( player.getId(), id, location.rx, location.ry, location.rz );
@@ -182,6 +198,9 @@ public class PlayerObject implements IPlayerObject
 	@Override
 	public void setRotate( float rx, float ry, float rz )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		location.rx = rx;
 		location.ry = ry;
 		location.rz = rz;
@@ -192,29 +211,52 @@ public class PlayerObject implements IPlayerObject
 	@Override
 	public boolean isMoving()
 	{
+		if( isDestroyed() ) return false;
+		if( player.isOnline() == false ) return false;
+		
 		return SampNativeFunction.isPlayerObjectMoving(player.getId(), id );
 	}
 	
 	@Override
 	public int move( float x, float y, float z, float speed )
 	{
-		SampNativeFunction.movePlayerObject( player.getId(), id, x, y, z, speed );
-		if(attachedPlayer == null) this.speed = speed;
-		return 0;
+		if( isDestroyed() ) return 0;
+		if( player.isOnline() == false ) return 0;
+		
+		if( attachedPlayer == null ) this.speed = speed;	
+		return SampNativeFunction.movePlayerObject( player.getId(), id, x, y, z, speed, -1000.0f, -1000.0f, -1000.0f );
+	}
+	
+	@Override
+	public int move( float x, float y, float z, float speed, float rotX, float rotY, float rotZ )
+	{
+		if( isDestroyed() ) return 0;
+		if( player.isOnline() == false ) return 0;
+		
+		if( attachedPlayer == null ) this.speed = speed;	
+		return SampNativeFunction.movePlayerObject( player.getId(), id, x, y, z, speed, rotX, rotY, rotZ );
 	}
 	
 	@Override
 	public void stop()
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		speed = 0;
 		SampNativeFunction.stopPlayerObject( player.getId(), id );
 	}
 	
 	@Override
-	public void attach( IPlayer player, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( IPlayer target, float x, float y, float z, float rx, float ry, float rz )
 	{
-		SampNativeFunction.attachPlayerObjectToPlayer( this.player.getId(), id, player.getId(), x, y, z, rx, ry, rz );
-		this.attachedPlayer = player;
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		if( target.isOnline() == false ) return;
+		
+		SampNativeFunction.attachPlayerObjectToPlayer( player.getId(), id, target.getId(), x, y, z, rx, ry, rz );
+		
+		attachedPlayer = player;
 		speed = 0;
 	}
 	

@@ -46,6 +46,8 @@ public class PlayerWeaponSkill implements IPlayerWeaponSkill
 	@Override
 	public void set( WeaponSkill type, int level )
 	{
+		if( player.isOnline() == false ) return;
+		
 		if(level > 999)		level = 999;
 		else if(level < 0)	level = 0;
 		
@@ -57,6 +59,8 @@ public class PlayerWeaponSkill implements IPlayerWeaponSkill
 	@Override
 	public int get( WeaponSkill type )
 	{
+		if( player.isOnline() == false ) return 0;
+		
 		return skills[ type.getData() ];
 	}
 }

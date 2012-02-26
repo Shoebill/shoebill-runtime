@@ -183,16 +183,17 @@ public class Vehicle implements IVehicle
 	@Override
 	public void destroy()
 	{
+		if( isDestroyed() ) return;
 		if( isStatic ) return;
+		
+		VehicleDestroyEvent event = new VehicleDestroyEvent( this );
+		IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();
+		shoebillLowLevel.getEventManager().dispatchEvent( event, this );
 		
 		SampNativeFunction.destroyVehicle( id );
 
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setVehicle( id, null );
-
-		VehicleDestroyEvent event = new VehicleDestroyEvent( this );
-		IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();
-		shoebillLowLevel.getEventManager().dispatchEvent( event, this );
 		
 		id = INVALID_ID;
 	}
@@ -207,12 +208,16 @@ public class Vehicle implements IVehicle
 	@Override
 	public IVehicle getTrailer()
 	{
+		if( isDestroyed() ) return null;
+		
 		return get(IVehicle.class, SampNativeFunction.getVehicleTrailer(id));
 	}
 	
 	@Override
 	public LocationAngular getLocation()
 	{
+		if( isDestroyed() ) return null;
+		
 		LocationAngular location = new LocationAngular();
 
 		SampNativeFunction.getVehiclePos( id, location );
@@ -226,6 +231,8 @@ public class Vehicle implements IVehicle
 	@Override
 	public float getAngle()
 	{
+		if( isDestroyed() ) return 0.0f;
+		
 		return SampNativeFunction.getVehicleZAngle(id);
 	}
 	
@@ -238,18 +245,24 @@ public class Vehicle implements IVehicle
 	@Override
 	public int getWorldId()
 	{
+		if( isDestroyed() ) return 0;
+		
 		return SampNativeFunction.getVehicleVirtualWorld(id);
 	}
 	
 	@Override
 	public float getHealth()
 	{
+		if( isDestroyed() ) return 0.0f;
+		
 		return SampNativeFunction.getVehicleHealth(id);
 	}
 
 	@Override
 	public Velocity getVelocity()
 	{
+		if( isDestroyed() ) return null;
+		
 		Velocity velocity = new Velocity();
 		SampNativeFunction.getVehicleVelocity( id, velocity );
 		
@@ -259,6 +272,8 @@ public class Vehicle implements IVehicle
 	@Override
 	public Quaternions getRotationQuat()
 	{
+		if( isDestroyed() ) return null;
+		
 		Quaternions quaternions = new Quaternions();
 		SampNativeFunction.getVehicleRotationQuat( id, quaternions );
 		
@@ -269,12 +284,16 @@ public class Vehicle implements IVehicle
 	@Override
 	public void setLocation( float x, float y, float z )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.setVehiclePos( id, x, y, z );
 	}
 	
 	@Override
 	public void setLocation( Location location )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.setVehiclePos( id, location.x, location.y, location.z );
 		SampNativeFunction.linkVehicleToInterior( id, location.interiorId );
 		SampNativeFunction.setVehicleVirtualWorld( id, location.worldId );
@@ -283,6 +302,8 @@ public class Vehicle implements IVehicle
 	@Override
 	public void setLocation( LocationAngular location )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.setVehiclePos( id, location.x, location.y, location.z );
 		SampNativeFunction.setVehicleZAngle( id, location.angle );
 		SampNativeFunction.linkVehicleToInterior( id, location.interiorId );
@@ -292,24 +313,32 @@ public class Vehicle implements IVehicle
 	@Override
 	public void setHealth( float health )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.setVehicleHealth( id, health );
 	}
 	
 	@Override
 	public void setVelocity( Velocity velocity )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.setVehicleVelocity( id, velocity.x, velocity.y, velocity.z );
 	}
 	
 	@Override
 	public void setAngle( float angle )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.setVehicleZAngle( id, angle );
 	}
 	
 	@Override
 	public void setInteriorId( int interiorId )
 	{
+		if( isDestroyed() ) return;
+		
 		this.interiorId = interiorId;
 		SampNativeFunction.linkVehicleToInterior( id, interiorId );
 	}
@@ -317,6 +346,8 @@ public class Vehicle implements IVehicle
 	@Override
 	public void setWorldId( int worldId )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.setVehicleVirtualWorld( id, worldId );
 	}
 
@@ -324,66 +355,93 @@ public class Vehicle implements IVehicle
 	@Override
 	public void putPlayer( IPlayer player, int seat )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		SampNativeFunction.putPlayerInVehicle( player.getId(), id, seat );
 	}
 	
 	@Override
 	public boolean isPlayerIn( IPlayer player )
 	{
+		if( isDestroyed() ) return false;
+		if( player.isOnline() == false ) return false;
+		
 		return SampNativeFunction.isPlayerInVehicle(player.getId(), id);
 	}
 	
 	@Override
 	public boolean isStreamedIn( IPlayer forPlayer )
 	{
+		if( isDestroyed() ) return false;
+		if( forPlayer.isOnline() == false ) return false;
+		
 		return SampNativeFunction.isVehicleStreamedIn(id, forPlayer.getId());
 	}
 	
 	@Override
 	public void setParamsForPlayer( IPlayer player, boolean objective, boolean doorslocked )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		SampNativeFunction.setVehicleParamsForPlayer( id, player.getId(), objective, doorslocked );
 	}
 	
 	@Override
 	public void respawn()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.setVehicleToRespawn( id );
 	}
 	
 	@Override
 	public void setColor( int color1, int color2 )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.changeVehicleColor( id, color1, color2 );
 	}
 	
 	@Override
 	public void setPaintjob( int paintjobId )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.changeVehiclePaintjob( id, paintjobId );
 	}
 	
 	@Override
 	public void attachTrailer( IVehicle trailer )
 	{
+		if( isDestroyed() ) return;
+		if( trailer.isDestroyed() ) return;
+		
 		SampNativeFunction.attachTrailerToVehicle( trailer.getId(), id );
 	}
 	
 	@Override
 	public void detachTrailer()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.detachTrailerFromVehicle( id );
 	}
 	
 	@Override
 	public boolean isTrailerAttached()
 	{
+		if( isDestroyed() ) return false;
+		
 		return SampNativeFunction.isTrailerAttachedToVehicle(id);
 	}
 	
 	@Override
 	public void setNumberPlate( String numberplate )
 	{
+		if( isDestroyed() ) return;
+		
 		if( numberplate == null ) throw new NullPointerException();
 		SampNativeFunction.setVehicleNumberPlate( id, numberplate );
 	}
@@ -391,12 +449,16 @@ public class Vehicle implements IVehicle
 	@Override
 	public void repair()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.repairVehicle( id );
 	}
 	
 	@Override
 	public void setAngularVelocity( Velocity velocity )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.setVehicleAngularVelocity( id, velocity.x, velocity.y, velocity.z );
 	}
 }

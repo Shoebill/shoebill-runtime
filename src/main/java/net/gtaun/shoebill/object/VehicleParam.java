@@ -50,49 +50,49 @@ public class VehicleParam implements IVehicleParam
 	@Override
 	public int getEngine()
 	{
-		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
+		if( vehicle.isDestroyed() == false ) SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		return engine;
 	}
 	
 	@Override
 	public int getLights()
 	{
-		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
+		if( vehicle.isDestroyed() == false ) SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		return lights;
 	}
 	
 	@Override
 	public int getAlarm()
 	{
-		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
+		if( vehicle.isDestroyed() == false ) SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		return alarm;
 	}
 	
 	@Override
 	public int getDoors()
 	{
-		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
+		if( vehicle.isDestroyed() == false ) SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		return doors;
 	}
 	
 	@Override
 	public int getBonnet()
 	{
-		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
+		if( vehicle.isDestroyed() == false ) SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		return bonnet;
 	}
 	
 	@Override
 	public int getBoot()
 	{
-		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
+		if( vehicle.isDestroyed() == false ) SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		return boot;
 	}
 	
 	@Override
 	public int getObjective()
 	{
-		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
+		if( vehicle.isDestroyed() == false ) SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		return objective;
 	}
 	
@@ -100,6 +100,8 @@ public class VehicleParam implements IVehicleParam
 	@Override
 	public void setEngine( int engine )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		this.engine = engine;
 		
@@ -109,6 +111,8 @@ public class VehicleParam implements IVehicleParam
 	@Override
 	public void setLights( int lights )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		set( engine, lights, alarm, doors, bonnet, boot, objective );
 	}
@@ -116,6 +120,8 @@ public class VehicleParam implements IVehicleParam
 	@Override
 	public void setAlarm( int alarm )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		set( engine, lights, alarm, doors, bonnet, boot, objective );
 	}
@@ -123,6 +129,8 @@ public class VehicleParam implements IVehicleParam
 	@Override
 	public void setDoors( int doors )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		set( engine, lights, alarm, doors, bonnet, boot, objective );
 	}
@@ -130,6 +138,8 @@ public class VehicleParam implements IVehicleParam
 	@Override
 	public void setBonnet( int bonnet )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		set( engine, lights, alarm, doors, bonnet, boot, objective );
 	}
@@ -137,6 +147,8 @@ public class VehicleParam implements IVehicleParam
 	@Override
 	public void setBoot( int boot )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		set( engine, lights, alarm, doors, bonnet, boot, objective );
 	}
@@ -144,6 +156,8 @@ public class VehicleParam implements IVehicleParam
 	@Override
 	public void setObjective( int objective )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 		set( engine, lights, alarm, doors, bonnet, boot, objective );
 	}
@@ -152,6 +166,8 @@ public class VehicleParam implements IVehicleParam
 	@Override
 	public void set( int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		SampNativeFunction.setVehicleParamsEx( vehicle.getId(), engine, lights, alarm, doors, bonnet, boot, objective );
 		SampNativeFunction.getVehicleParamsEx( vehicle.getId(), this );
 	}

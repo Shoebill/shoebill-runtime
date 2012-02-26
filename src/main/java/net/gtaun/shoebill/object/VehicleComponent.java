@@ -48,6 +48,8 @@ public class VehicleComponent implements IVehicleComponent
 	@Override
 	public void add( int componentId )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		SampNativeFunction.addVehicleComponent( vehicle.getId(), componentId );
 		
 		int slot = SampNativeFunction.getVehicleComponentType(componentId);
@@ -57,6 +59,8 @@ public class VehicleComponent implements IVehicleComponent
 	@Override
 	public void remove( int componentId )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		SampNativeFunction.removeVehicleComponent( vehicle.getId(), componentId );
 		
 		int slot = SampNativeFunction.getVehicleComponentType(componentId);
@@ -66,6 +70,8 @@ public class VehicleComponent implements IVehicleComponent
 	@Override
 	public void remove( VehicleComponentSlot slot )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		int componentId = components[ slot.getData() ];
 		SampNativeFunction.removeVehicleComponent( vehicle.getId(), componentId );
 	}
@@ -73,6 +79,7 @@ public class VehicleComponent implements IVehicleComponent
 	@Override
 	public int get( VehicleComponentSlot slot )
 	{
+		if( vehicle.isDestroyed() ) return 0;
 		return SampNativeFunction.getVehicleComponentInSlot( vehicle.getId(), slot.getData() );
 	}
 	

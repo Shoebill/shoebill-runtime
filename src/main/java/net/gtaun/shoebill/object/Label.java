@@ -92,6 +92,8 @@ public class Label implements ILabel
 	@Override
 	public void destroy()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.delete3DTextLabel( id );
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -109,6 +111,8 @@ public class Label implements ILabel
 	@Override
 	public Location getLocation()
 	{
+		if( isDestroyed() ) return null;
+		
 		Location pos = null;
 		
 		if( attachedPlayer != null )	pos = attachedPlayer.getLocation();
@@ -129,6 +133,9 @@ public class Label implements ILabel
 	@Override
 	public void attach( IPlayer player, float x, float y, float z )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		offsetX = x;
 		offsetY = y;
 		offsetZ = z;
@@ -141,6 +148,9 @@ public class Label implements ILabel
 	@Override
 	public void attach( IVehicle vehicle, float x, float y, float z )
 	{
+		if( isDestroyed() ) return;
+		if( vehicle.isDestroyed() ) return;
+		
 		offsetX = x;
 		offsetY = y;
 		offsetZ = z;
@@ -153,6 +163,7 @@ public class Label implements ILabel
 	@Override
 	public void update( Color color, String text )
 	{
+		if( isDestroyed() ) return;
 		if( text == null ) throw new NullPointerException();
 		
 		this.color = color.clone();

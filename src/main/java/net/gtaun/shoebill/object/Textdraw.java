@@ -96,6 +96,8 @@ public class Textdraw implements ITextdraw
 	@Override
 	public void destroy()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawDestroy( id );
 
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -113,72 +115,96 @@ public class Textdraw implements ITextdraw
 	@Override
 	public void setLetterSize( float x, float y )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawLetterSize( id, x, y );
 	}
 
 	@Override
 	public void setTextSize( float x, float y )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawTextSize( id, x, y );
 	}
 
 	@Override
 	public void setAlignment( int alignment )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawAlignment( id, alignment );
 	}
 
 	@Override
 	public void setColor( Color color )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawColor( id, color.getValue() );
 	}
 
 	@Override
 	public void setUseBox( boolean use )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawUseBox( id, use );
 	}
 
 	@Override
 	public void setBoxColor( Color color )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawBoxColor( id, color.getValue() );
 	}
 
 	@Override
 	public void setShadow( int size )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawSetShadow( id, size );
 	}
 
 	@Override
 	public void setOutline( int size )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawSetOutline( id, size );
 	}
 
 	@Override
 	public void setBackgroundColor( Color color )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawBackgroundColor( id, color.getValue() );
 	}
 
 	@Override
 	public void setFont( int font )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawFont( id, font );
 	}
 
 	@Override
 	public void setProportional( int set )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawSetProportional( id, set );
 	}
 
 	@Override
 	public void setText( String text )
 	{
+		if( isDestroyed() ) return;
+		
 		if( text == null ) throw new NullPointerException();
 		
 		this.text = text;
@@ -188,6 +214,9 @@ public class Textdraw implements ITextdraw
 	@Override
 	public void show( IPlayer player )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		int playerId = player.getId();
 		
 		SampNativeFunction.textDrawShowForPlayer( playerId, id );
@@ -197,6 +226,9 @@ public class Textdraw implements ITextdraw
 	@Override
 	public void hide( IPlayer player )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		int playerId = player.getId();
 		
 		SampNativeFunction.textDrawHideForPlayer( playerId, id );
@@ -206,6 +238,8 @@ public class Textdraw implements ITextdraw
 	@Override
 	public void showForAll()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawShowForAll( id );
 		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = true;
 	}
@@ -213,6 +247,8 @@ public class Textdraw implements ITextdraw
 	@Override
 	public void hideForAll()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.textDrawHideForAll( id );
 		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = false;
 	}

@@ -49,24 +49,32 @@ public class VehicleDamage implements IVehicleDamage
 	@Override
 	public void setPanels( int panels )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		set( panels, doors, lights, tires );
 	}
 	
 	@Override
 	public void setDoors( int doors )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		set( panels, doors, lights, tires );
 	}
 	
 	@Override
 	public void setLights( int lights )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		set( panels, doors, lights, tires );
 	}
 	
 	@Override
 	public void setTires( int tires )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		set( panels, doors, lights, tires );
 	}
 	
@@ -74,6 +82,8 @@ public class VehicleDamage implements IVehicleDamage
 	@Override
 	public void set( int panels, int doors, int lights, int tires )
 	{
+		if( vehicle.isDestroyed() ) return;
+		
 		SampNativeFunction.updateVehicleDamageStatus(vehicle.getId(), panels, doors, lights, tires);
 		SampNativeFunction.getVehicleDamageStatus(vehicle.getId(), this);
 	}

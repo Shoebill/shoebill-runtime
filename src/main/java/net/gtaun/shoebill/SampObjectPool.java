@@ -121,8 +121,6 @@ public class SampObjectPool implements ISampObjectPool
 			
 			public int onPlayerDisconnect( int playerid, int reason )
 			{
-				playerObjectsArrays[playerid] = null;
-				playerLabelsArrays[playerid] = null;
 				return 1;
 			}
 		};
@@ -509,6 +507,13 @@ public class SampObjectPool implements ISampObjectPool
 		}
 		
 		dialogs.put( id, new WeakReference<IDialog>( dialog ) );
+	}
+	
+	public void removePlayer( IPlayer player )
+	{
+		for( IPlayerLabel playerLabel : getPlayerLabels(player) ) playerLabel.destroy();
+		for( IPlayerObject playerObject : getPlayerObjects(player) ) playerObject.destroy();
+		setPlayer( player.getId(), null );
 	}
 	
 	public <T extends IPlayer> void setPlayerClass( Class<T> cls )

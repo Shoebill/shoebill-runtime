@@ -138,6 +138,8 @@ public class ObjectBase implements IObject
 	@Override
 	public void destroy()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.destroyObject( id );
 
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -155,6 +157,8 @@ public class ObjectBase implements IObject
 	@Override
 	public LocationRotational getLocation()
 	{
+		if( isDestroyed() ) return null;
+		
 		if( attachedPlayer != null )			location.set( attachedPlayer.getLocation() );
 		else if( attachedVehicle != null )		location.set( attachedVehicle.getLocation() );
 		else SampNativeFunction.getObjectPos( id, location );
@@ -166,6 +170,8 @@ public class ObjectBase implements IObject
 	@Override
 	public void setLocation( Location location )
 	{
+		if( isDestroyed() ) return;
+		
 		this.location.set( location );
 		SampNativeFunction.setObjectPos( id, location.x, location.y, location.z );
 	}
@@ -173,6 +179,8 @@ public class ObjectBase implements IObject
 	@Override
 	public void setLocation( LocationRotational location )
 	{
+		if( isDestroyed() ) return;
+		
 		this.location = location.clone();
 		SampNativeFunction.setObjectPos( id, location.x, location.y, location.z );
 		SampNativeFunction.setObjectRot( id, location.rx, location.ry, location.rz );
@@ -181,6 +189,8 @@ public class ObjectBase implements IObject
 	@Override
 	public void setRotate( float rx, float ry, float rz )
 	{
+		if( isDestroyed() ) return;
+		
 		location.rx = rx;
 		location.ry = ry;
 		location.rz = rz;
@@ -191,19 +201,33 @@ public class ObjectBase implements IObject
 	@Override
 	public boolean isMoving()
 	{
+		if( isDestroyed() ) return false;
 		return SampNativeFunction.isObjectMoving( id );
 	}
 	
 	@Override
 	public int move( float x, float y, float z, float speed )
 	{
+		if( isDestroyed() ) return 0;
+		
 		if(attachedPlayer == null && attachedVehicle == null) this.speed = speed;
-		return SampNativeFunction.moveObject( id, x, y, z, speed );
+		return SampNativeFunction.moveObject( id, x, y, z, speed, -1000.0f, -1000.0f, -1000.0f );
+	}
+	
+	@Override
+	public int move( float x, float y, float z, float speed, float rotX, float rotY, float rotZ )
+	{
+		if( isDestroyed() ) return 0;
+		
+		if(attachedPlayer == null && attachedVehicle == null) this.speed = speed;
+		return SampNativeFunction.moveObject( id, x, y, z, speed, rotX, rotY, rotZ );
 	}
 	
 	@Override
 	public void stop()
 	{
+		if( isDestroyed() ) return;
+		
 		speed = 0;
 		SampNativeFunction.stopObject( id );
 	}
@@ -211,6 +235,9 @@ public class ObjectBase implements IObject
 	@Override
 	public void attach( IPlayer player, float x, float y, float z, float rx, float ry, float rz )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		SampNativeFunction.attachObjectToPlayer( id, player.getId(), x, y, z, rx, ry, rz );
 		attachedPlayer = player;
 		speed = 0;
@@ -219,6 +246,9 @@ public class ObjectBase implements IObject
 	@Override
 	public void attach( IObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation )
 	{
+		if( isDestroyed() ) return;
+		if( object.isDestroyed() ) return;
+		
 		if( object instanceof PlayerObject ) throw new UnsupportedOperationException();
 		SampNativeFunction.attachObjectToObject( id, object.getId(), x, y, z, rz, ry, rz, syncRotation?1:0 );
 		attachedObject = object;
@@ -228,6 +258,9 @@ public class ObjectBase implements IObject
 	@Override
 	public void attach( IVehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
 	{
+		if( isDestroyed() ) return;
+		if( vehicle.isDestroyed() ) return;
+		
 		SampNativeFunction.attachObjectToVehicle( id, vehicle.getId(), x, y, z, rx, ry, rz );
 		attachedVehicle = vehicle;
 		speed = 0;

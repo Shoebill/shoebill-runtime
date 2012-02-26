@@ -55,6 +55,8 @@ public class PlayerAttach implements IPlayerAttach
 		@Override
 		public boolean set( PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rot, Vector3D scale )
 		{
+			if( player.isOnline() == false ) return false;
+			
 			if( bone == PlayerAttachBone.NOT_USABLE ) return false;
 			if( ! SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getData(), offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, scale.x, scale.y, scale.z) )
 				return false;
@@ -72,6 +74,8 @@ public class PlayerAttach implements IPlayerAttach
 		@Override
 		public boolean remove()
 		{
+			if( player.isOnline() == false ) return false;
+			
 			if( bone == PlayerAttachBone.NOT_USABLE ) return false;
 			if( ! SampNativeFunction.removePlayerAttachedObject(player.getId(), slot) ) return false;
 			
@@ -88,6 +92,8 @@ public class PlayerAttach implements IPlayerAttach
 		@Override
 		public boolean isUsed( int slot )
 		{
+			if( player.isOnline() == false ) return false;
+			
 			return bone != PlayerAttachBone.NOT_USABLE;
 		}
 	}

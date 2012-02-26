@@ -42,6 +42,7 @@ public interface IObject extends IDestroyable
 
 	boolean isMoving();
 	int move( float x, float y, float z, float speed );
+	int move( float x, float y, float z, float speed, float rotX, float rotY, float rotZ );
 	void stop();
 	
 	void attach( IPlayer player, float x, float y, float z, float rx, float ry, float rz );

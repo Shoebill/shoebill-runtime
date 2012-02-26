@@ -89,6 +89,8 @@ public class Zone implements IZone
 	@Override
 	public void destroy()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.gangZoneDestroy( id );
 
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -107,6 +109,9 @@ public class Zone implements IZone
 	@Override
 	public void show( IPlayer player, int color )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		int playerId = player.getId();
 		
 		SampNativeFunction.gangZoneShowForPlayer( playerId, id, color );
@@ -117,6 +122,9 @@ public class Zone implements IZone
 	@Override
 	public void hide( IPlayer player )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		int playerId = player.getId();
 		SampNativeFunction.gangZoneHideForPlayer( playerId, id );
 		
@@ -127,6 +135,9 @@ public class Zone implements IZone
 	@Override
 	public void flash( IPlayer player, int color )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		int playerId = player.getId();
 		
 		if( isPlayerShowed[playerId] )
@@ -139,6 +150,9 @@ public class Zone implements IZone
 	@Override
 	public void stopFlash( IPlayer player )
 	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
 		int playerId = player.getId();
 		
 		SampNativeFunction.gangZoneStopFlashForPlayer( playerId, id );
@@ -149,6 +163,8 @@ public class Zone implements IZone
 	@Override
 	public void showForAll( Color color )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.gangZoneShowForAll( id, color.getValue() );
 		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = true;
 	}
@@ -156,6 +172,8 @@ public class Zone implements IZone
 	@Override
 	public void hideForAll()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.gangZoneHideForAll( id );
 		
 		for( int i=0; i<isPlayerShowed.length; i++ )
@@ -168,6 +186,8 @@ public class Zone implements IZone
 	@Override
 	public void flashForAll( Color color )
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.gangZoneFlashForAll( id, color.getValue() );
 		for( int i=0; i<isPlayerShowed.length; i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
 	}
@@ -175,6 +195,8 @@ public class Zone implements IZone
 	@Override
 	public void stopFlashForAll()
 	{
+		if( isDestroyed() ) return;
+		
 		SampNativeFunction.gangZoneStopFlashForAll( id );
 		for( int i=0; i<isPlayerFlashing.length; i++ ) isPlayerFlashing[i] = false;
 	}
