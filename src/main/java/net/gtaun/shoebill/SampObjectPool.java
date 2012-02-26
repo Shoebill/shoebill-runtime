@@ -19,11 +19,12 @@ package net.gtaun.shoebill;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Vector;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.gtaun.shoebill.object.IDialog;
 import net.gtaun.shoebill.object.ILabel;
@@ -65,8 +66,8 @@ public class SampObjectPool implements ISampObjectPool
 	
 	private static <T> Collection<T> getInstances( Object[] items, Class<T> cls )
 	{
-		Collection<T> list = new Vector<T>();
-		for( Object item : items ) if( cls.isInstance(item) ) list.add( cls.cast(item) );
+		Collection<T> list = new ArrayList<T>();
+		if( items != null ) for( Object item : items ) if( cls.isInstance(item) ) list.add( cls.cast(item) );
 		return list;		
 	}
 	
@@ -80,16 +81,16 @@ public class SampObjectPool implements ISampObjectPool
 	IPlayer[] players									= new IPlayer[MAX_PLAYERS];
 	IVehicle[] vehicles									= new IVehicle[MAX_VEHICLES];
 	IObject[] objects									= new IObject[MAX_OBJECTS];
-	Map<Integer, IPlayerObject[]> playerObjectsMap		= new HashMap<Integer, IPlayerObject[]>();
+	IPlayerObject[][] playerObjectsArrays				= new IPlayerObject[MAX_PLAYERS][];
 	IPickup[] pickups									= new IPickup[MAX_PICKUPS];
 	ILabel[] labels										= new ILabel[MAX_GLOBAL_LABELS];
-	Map<Integer, IPlayerLabel[]> playerLabelsMap		= new HashMap<Integer, IPlayerLabel[]>();
+	IPlayerLabel[][] playerLabelsArrays					= new IPlayerLabel[MAX_PLAYERS][];
 	ITextdraw[] textdraws								= new ITextdraw[MAX_TEXT_DRAWS];
 	IZone[] zones										= new IZone[MAX_ZONES];
 	IMenu[] menus										= new IMenu[MAX_MENUS];
 	
-	List<Reference<ITimer>> timers						= new Vector<Reference<ITimer>>();
-	Map<Integer, Reference<IDialog>> dialogs			= new HashMap<Integer, Reference<IDialog>>();
+	Collection<Reference<ITimer>> timers				= new ConcurrentLinkedQueue<Reference<ITimer>>();
+	Map<Integer, Reference<IDialog>> dialogs			= new ConcurrentHashMap<Integer, Reference<IDialog>>();
 	
 	Class<? extends IPlayer> playerClass = Player.class;
 	
@@ -102,8 +103,8 @@ public class SampObjectPool implements ISampObjectPool
 			{
 				try
 				{
-					playerObjectsMap.put( playerid, new IPlayerObject[MAX_OBJECTS] );
-					playerLabelsMap.put( playerid, new IPlayerLabel[MAX_PLAYER_LABELS] );
+					playerObjectsArrays[playerid] = new IPlayerObject[MAX_OBJECTS];
+					playerLabelsArrays[playerid] = new IPlayerLabel[MAX_PLAYER_LABELS];
 					
 					Constructor<? extends IPlayer> constructor = playerClass.getConstructor( int.class );
 					IPlayer player = constructor.newInstance( playerid );
@@ -120,8 +121,8 @@ public class SampObjectPool implements ISampObjectPool
 			
 			public int onPlayerDisconnect( int playerid, int reason )
 			{
-				playerObjectsMap.remove( playerid );
-				playerLabelsMap.remove( playerid );
+				playerObjectsArrays[playerid] = null;
+				playerLabelsArrays[playerid] = null;
 				return 1;
 			}
 		};
@@ -177,9 +178,15 @@ public class SampObjectPool implements ISampObjectPool
 	public IPlayerObject getPlayerObject( IPlayer player, int id )
 	{
 		if( player == null ) return null;
+		
+		int playerId = player.getId();
+		if( playerId < 0 || playerId >= MAX_PLAYERS ) return null;
+		
 		if( id < 0 || id >= MAX_OBJECTS ) return null;
 		
-		IPlayerObject[] playerObjects = playerObjectsMap.get( player.getId() );
+		IPlayerObject[] playerObjects = playerObjectsArrays[playerId];
+		if( playerObjects == null ) return null;
+		
 		return playerObjects[id];
 	}
 	
@@ -201,35 +208,43 @@ public class SampObjectPool implements ISampObjectPool
 	public IPlayerLabel getPlayerLabel( IPlayer player, int id )
 	{
 		if( player == null ) return null;
-		if( id < 0 || id >= MAX_GLOBAL_LABELS ) return null;
 		
-		IPlayerLabel[] playerLabels = playerLabelsMap.get( player.getId() );
+		int playerId = player.getId();
+		if( playerId < 0 || playerId >= MAX_PLAYERS ) return null;
+		
+		if( id < 0 || id >= MAX_PLAYER_LABELS ) return null;
+		
+		IPlayerLabel[] playerLabels = playerLabelsArrays[playerId];
+		if( playerLabels == null ) return null;
+		
 		return playerLabels[id];
 	}
 	
 	@Override
 	public ITextdraw getTextdraw( int id )
 	{
+		if( id < 0 || id >= MAX_TEXT_DRAWS ) return null;
 		return textdraws[id];
 	}
 	
 	@Override
 	public IZone getZone( int id )
 	{
+		if( id < 0 || id >= MAX_ZONES ) return null;
 		return zones[id];
 	}
 	
 	@Override
 	public IMenu getMenu( int id )
 	{
+		if( id < 0 || id >= MAX_MENUS ) return null;
 		return menus[id];
 	}
 	
 	@Override
 	public IDialog getDialog( int id )
 	{
-		for( IDialog dialog : getDialogs() ) if( dialog.getId() == id ) return dialog;
-		return null;
+		return dialogs.get(id).get();
 	}
 	
 	
@@ -254,7 +269,7 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public Collection<IPlayerObject> getPlayerObjects( IPlayer player )
 	{
-		return getInstances( playerObjectsMap.get(player.getId()), IPlayerObject.class );
+		return getPlayerObjects( player, IPlayerObject.class );
 	}
 	
 	@Override
@@ -272,7 +287,7 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public Collection<IPlayerLabel> getPlayerLabels( IPlayer player )
 	{
-		return getInstances( playerLabelsMap.get(player.getId()), IPlayerLabel.class );
+		return getPlayerLabels( player, IPlayerLabel.class );
 	}
 	
 	@Override
@@ -327,7 +342,13 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public <T extends IPlayerObject> Collection<T> getPlayerObjects( IPlayer player, Class<T> cls )
 	{
-		return getInstances( playerObjectsMap.get(player.getId()), cls );
+		if( player == null ) return null;
+		
+		int playerId = player.getId();
+		if( playerId < 0 || playerId >= MAX_PLAYERS ) return new ArrayList<T>(0);
+		
+		IPlayerObject[] playerObjects = playerObjectsArrays[playerId];
+		return getInstances( playerObjects, cls );
 	}
 	
 	@Override
@@ -345,7 +366,13 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public <T extends IPlayerLabel> Collection<T> getPlayerLabels( IPlayer player, Class<T> cls )
 	{
-		return getInstances( playerLabelsMap.get(player.getId()), cls );
+		if( player == null ) return null;
+		
+		int playerId = player.getId();
+		if( playerId < 0 || playerId >= MAX_PLAYERS ) return new ArrayList<T>(0);
+		
+		IPlayerLabel[] playerLabels = playerLabelsArrays[playerId];
+		return getInstances( playerLabels, cls );
 	}
 	
 	@Override
@@ -369,7 +396,7 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public <T extends IDialog> Collection<T> getDialogs( Class<T> cls )
 	{
-		Collection<T> items = new Vector<T>();
+		Collection<T> items = new ArrayList<T>();
 		for( Reference<IDialog> reference : dialogs.values() )
 		{
 			IDialog dialog = reference.get();
@@ -384,7 +411,7 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public <T extends ITimer> Collection<T> getTimers( Class<T> cls )
 	{
-		Collection<T> items = new Vector<T>();
+		Collection<T> items = new ArrayList<T>();
 		for( Reference<ITimer> reference : timers )
 		{
 			ITimer timer = reference.get();
@@ -429,8 +456,8 @@ public class SampObjectPool implements ISampObjectPool
 	
 	public void setPlayerObject( IPlayer player, int id, IPlayerObject object )
 	{
-		IPlayerObject[] playerObjects = playerObjectsMap.get( player.getId() );
-		playerObjects[ id ] = object;
+		IPlayerObject[] objects = playerObjectsArrays[player.getId()];
+		objects[ id ] = object;
 	}
 	
 	public void setPickup( int id, IPickup pickup )
@@ -445,8 +472,8 @@ public class SampObjectPool implements ISampObjectPool
 	
 	public void setPlayerLabel( IPlayer player, int id, IPlayerLabel label )
 	{
-		IPlayerLabel[] playerLabels = playerLabelsMap.get( player.getId() );
-		playerLabels[ id ] = label;
+		IPlayerLabel[] labels = playerLabelsArrays[player.getId()];
+		labels[ id ] = label;
 	}
 	
 	public void setTextdraw( int id, ITextdraw textdraw )
@@ -466,11 +493,21 @@ public class SampObjectPool implements ISampObjectPool
 	
 	public void putTimer( ITimer timer )
 	{
+		for( Reference<ITimer> ref : timers )
+		{
+			if( ref.get() == null ) timers.remove( ref );
+		}
+		
 		timers.add( new WeakReference<ITimer>( timer ) );
 	}
 	
 	public void putDialog( int id, IDialog dialog )
 	{
+		for( Entry<Integer, Reference<IDialog>> entry : dialogs.entrySet() )
+		{
+			if( entry.getValue().get() == null ) dialogs.remove( entry.getKey() );
+		}
+		
 		dialogs.put( id, new WeakReference<IDialog>( dialog ) );
 	}
 	

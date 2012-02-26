@@ -17,8 +17,8 @@
 
 package net.gtaun.shoebill.object;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Vector;
 
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Vector3D;
@@ -93,7 +93,7 @@ public class Checkpoint implements ICheckpoint
 	@Override
 	public Collection<IPlayer> getUsingPlayers()
 	{
-		Collection<IPlayer> players = new Vector<IPlayer>();
+		Collection<IPlayer> players = new ArrayList<IPlayer>();
 		for( IPlayer player : Player.get() )
 		{
 			if( player.getCheckpoint() == this ) players.add( player );
