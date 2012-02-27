@@ -82,8 +82,8 @@ public class KeyState implements Cloneable, Serializable
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )					return true;
-		if( !(obj instanceof KeyState) )	return false;
+		if( obj == this )						return true;
+		if( obj instanceof KeyState == false )	return false;
 		
 		KeyState state = (KeyState) obj;
 		if( state.keys != keys )			return false;

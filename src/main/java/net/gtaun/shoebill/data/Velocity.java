@@ -62,7 +62,7 @@ public class Velocity extends Vector3D implements Cloneable, Serializable
 	public boolean equals( Object obj )
 	{
 		if( obj == this )						return true;
-		if( !(obj instanceof Velocity) )			return false;
+		if( obj instanceof Velocity == false )	return false;
 		
 		Velocity speed = (Velocity) obj;
 		if( speed.x != x )						return false;

@@ -62,8 +62,8 @@ public class Area implements Cloneable, Serializable
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )				return true;
-		if( !(obj instanceof Area) )	return false;
+		if( obj == this )					return true;
+		if( obj instanceof Area == false )	return false;
 		
 		Area area = (Area) obj;
 		if( area.minX != area.minX )	return false;

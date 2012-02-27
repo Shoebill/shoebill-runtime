@@ -68,10 +68,11 @@ public class LocationRadius extends Location implements Cloneable, Serializable
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )							return true;
-		if( !(obj instanceof LocationRadius) )		return false;
+		if( obj == this )								return true;
+		if( obj instanceof LocationRadius == false )	return false;
 		
 		LocationRadius location = (LocationRadius) obj;
+		
 		if( location.x != x )						return false;
 		if( location.y != y )						return false;
 		if( location.z != z )						return false;

@@ -68,8 +68,9 @@ public class LocationAngular extends Location implements Cloneable, Serializable
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )							return true;
-		if( !(obj instanceof LocationAngular) )		return false;
+		if( obj == this )								return true;
+		if( obj instanceof LocationAngular == false )	return false;
+		
 		LocationAngular location = (LocationAngular) obj;
 
 		if( location.x != x )						return false;

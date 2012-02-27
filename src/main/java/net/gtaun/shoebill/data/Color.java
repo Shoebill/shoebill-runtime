@@ -245,6 +245,16 @@ public class Color implements Cloneable, Serializable
 	
 	
 	@Override
+	public boolean equals( Object obj )
+	{
+		if( obj == this )					return true;
+		if( obj instanceof Color == false ) return false;
+		
+		Color color = (Color) obj;
+		return this.value == color.value;
+	}
+	
+	@Override
 	public Color clone()
 	{
 		return new Color( value );

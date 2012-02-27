@@ -46,8 +46,6 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 	}
 	
 	
-//---------------------------------------------------------
-	
 	public Quaternions getConjugate()
 	{
 		return new Quaternions(w,-x,-y,-z);
@@ -105,6 +103,22 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 		rotated[2] = dx*matrix[2][0] + dy*matrix[2][1] + dz*matrix[2][2];
 		
 		return rotated;
+	}
+	
+	@Override
+	public boolean equals( Object obj )
+	{
+		if( obj == this )							return true;
+		if( obj instanceof Quaternions == false )	return false;
+		
+		Quaternions quaternions = (Quaternions) obj;
+
+		if( quaternions.x != x )	return false;
+		if( quaternions.y != y )	return false;
+		if( quaternions.z != z )	return false;
+		if( quaternions.w != w )	return false;
+		
+		return true;
 	}
 	
 	@Override

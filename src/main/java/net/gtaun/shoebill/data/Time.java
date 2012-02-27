@@ -47,7 +47,7 @@ public class Time implements Cloneable, Serializable
 	public boolean equals( Object obj )
 	{
 		if( obj == this )						return true;
-		if( !(obj instanceof Time) )			return false;
+		if( obj instanceof Time == false )		return false;
 		
 		Time time = (Time) obj;
 		if( time.hour != hour )					return false;

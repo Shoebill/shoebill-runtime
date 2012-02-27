@@ -62,12 +62,12 @@ public class SpawnInfo implements Cloneable, Serializable
 	public boolean equals( Object obj )
 	{
 		if( obj == this )								return true;
-		if( !(obj instanceof SpawnInfo) )				return false;
+		if( obj instanceof SpawnInfo == false )			return false;
 		
 		SpawnInfo info = (SpawnInfo) obj;
 		if( info.location.equals(location) == false )	return false;
-		if( info.skinId != skinId )							return false;
-		if( info.teamId != teamId )							return false;
+		if( info.skinId != skinId )						return false;
+		if( info.teamId != teamId )						return false;
 		if( !info.weapon1.equals(weapon1) )				return false;
 		if( !info.weapon2.equals(weapon2) )				return false;
 		if( !info.weapon3.equals(weapon3) )				return false;

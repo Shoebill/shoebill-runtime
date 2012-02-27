@@ -60,8 +60,8 @@ public class Area3D extends Area implements Cloneable, Serializable
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )				return true;
-		if( !(obj instanceof Area3D) )	return false;
+		if( obj == this )						return true;
+		if( obj instanceof Area3D == false )	return false;
 		
 		Area3D area = (Area3D) obj;
 		if( area.minX != minX )			return false;

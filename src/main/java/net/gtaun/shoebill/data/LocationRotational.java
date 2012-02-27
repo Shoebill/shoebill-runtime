@@ -88,10 +88,11 @@ public class LocationRotational extends Location implements Cloneable, Serializa
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )								return true;
-		if( !(obj instanceof LocationRotational) )		return false;
+		if( obj == this )									return true;
+		if( obj instanceof LocationRotational == false )	return false;
 		
 		LocationRotational location = (LocationRotational) obj;
+		
 		if( location.x != x )							return false;
 		if( location.y != y )							return false;
 		if( location.z != z )							return false;

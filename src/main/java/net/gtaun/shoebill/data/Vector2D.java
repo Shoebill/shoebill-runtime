@@ -43,6 +43,20 @@ public class Vector2D implements Cloneable, Serializable
 	}
 	
 	@Override
+	public boolean equals( Object obj )
+	{
+		if( obj == this )						return true;
+		if( obj instanceof Vector2D == false )	return false;
+		
+		Vector2D vector2d = (Vector2D) obj;
+		
+		if( vector2d.x != x )	return false;
+		if( vector2d.y != y )	return false;
+		
+		return true;
+	}
+	
+	@Override
 	public Vector2D clone()
 	{
 		return new Vector2D( x, y );

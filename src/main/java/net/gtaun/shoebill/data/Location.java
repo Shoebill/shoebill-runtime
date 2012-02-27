@@ -75,7 +75,7 @@ public class Location extends Vector3D implements Cloneable, Serializable
 	public boolean equals( Object obj )
 	{
 		if( obj == this )							return true;
-		if( !(obj instanceof Location) )			return false;
+		if( obj instanceof Location == false )		return false;
 		
 		Location location = (Location) obj;
 		if( location.x != x )						return false;

@@ -40,6 +40,21 @@ public class Vector3D extends Vector2D implements Cloneable, Serializable
 		super(x, y);
 		this.z = z;
 	}
+
+	@Override
+	public boolean equals( Object obj )
+	{
+		if( obj == this )				return true;
+		if( obj instanceof Vector3D )	return false;
+		
+		Vector3D vector3d = (Vector3D) obj;
+		
+		if( vector3d.x != x )	return false;
+		if( vector3d.y != y )	return false;
+		if( vector3d.z != z )	return false;
+		
+		return true;
+	}
 	
 	@Override
 	public Vector3D clone()

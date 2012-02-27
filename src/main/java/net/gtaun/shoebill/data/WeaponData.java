@@ -45,8 +45,8 @@ public class WeaponData implements Cloneable, Serializable
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )					return true;
-		if( !(obj instanceof WeaponData) )	return false;
+		if( obj == this )							return true;
+		if( obj instanceof WeaponData == false )	return false;
 		
 		WeaponData data = (WeaponData) obj;
 		if( data.type != type )				return false;
