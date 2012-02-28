@@ -25,6 +25,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -85,9 +86,11 @@ public class YamlConfiguration extends MemoryConfiguration implements FileConfig
 	@Override
 	public void read( InputStream in )
 	{
-		root = (HashMap<String, Object>)yaml.load( in );
-		if( root == null ) root = new HashMap<String, Object>();
+		Object obj = yaml.load(in);
+		if( obj instanceof Map )	root = (Map<String, Object>) obj;
+		else						root = new HashMap<String, Object>();
 	}
+	
 	@Override
 	public void write( OutputStream out )
 	{

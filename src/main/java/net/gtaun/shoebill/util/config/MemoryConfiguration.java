@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author MK124, JoJLlmAn
  *
@@ -34,12 +36,13 @@ public class MemoryConfiguration implements Configuration
 	
 	public MemoryConfiguration()
 	{
-		this( new HashMap<String, Object>() );
+		this( null );
 	}
 
 	public MemoryConfiguration( Map<String, Object> root )
 	{
-		this.root = root;
+		if( root == null )	this.root = new HashMap<String, Object>();
+		else				this.root = root;
 	}
 	
 	public Map<String, Object> getRootMap()
@@ -50,7 +53,6 @@ public class MemoryConfiguration implements Configuration
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getMap( String path )
 	{
-		if( path.length() == 0 ) return root;
 		return (Map<String, Object>) get(path);
 	}
 	
@@ -69,17 +71,14 @@ public class MemoryConfiguration implements Configuration
 	@SuppressWarnings("unchecked")
 	public Object get( String path )
 	{
-		String[] childs;
-		
-		if( path.contains(".") )	childs = path.split(".");
-		else						childs = new String[] { new String(path) };
+		String[] childs = StringUtils.split(path, '.');
+		if( childs.length == 0 ) return root;
 		
 		Map<String, Object> node = root;
-		
 		for( int i=0; i<childs.length-1; i++ )
 		{
 			Object obj = node.get(childs[i]);
-			if( obj instanceof HashMap<?, ?> == false ) return null;
+			if( obj instanceof Map<?, ?> == false ) return null;
 			node = (HashMap<String, Object>) obj;
 		}
 		
@@ -90,36 +89,23 @@ public class MemoryConfiguration implements Configuration
 	@SuppressWarnings("unchecked")
 	public void set( String path, Object value )
 	{
-		if(root == null) root = new HashMap<String, Object>();
-		
-		if(!path.contains("."))
-		{
-			root.put(path, value);
-			return;
-		}
-		
-		String[] childs = path.split(".");
+		String[] childs = StringUtils.split(path, '.');
 		
 		Map<String, Object> node = root;
-		
-		for(int i=0;i<childs.length;i++)
+		for( int i=0; i<childs.length-1; i++ )
 		{
-			Object o = node.get(childs[i]);
-			
-			if(i == childs.length - 1)
+			Object obj = node.get(childs[i]);
+			if( obj instanceof Map<?, ?> == false )
 			{
-				node.put(childs[i], value);
-				return;
+				obj = new HashMap<String, Object>();
+				node.put( childs[i], obj );
 			}
 			
-			if(o == null || !(o instanceof Map))
-			{
-				o = new HashMap<String, Object>();
-				node.put(childs[i], o);
-			}
-			
-			node = (Map<String, Object>)o;
+			node = (Map<String, Object>) obj;
 		}
+		
+		node.put( childs[ childs.length-1 ], value );
+		return;
 	}
 	
 	@Override
