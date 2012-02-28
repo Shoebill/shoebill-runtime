@@ -17,6 +17,7 @@
 package net.gtaun.shoebill.event.listener;
 
 import net.gtaun.shoebill.event.plugin.PluginLoadEvent;
+import net.gtaun.shoebill.event.plugin.PluginUnloadEvent;
 import net.gtaun.shoebill.util.event.EventListener;
 
 /**
@@ -31,6 +32,7 @@ public abstract class PluginEventListener extends EventListener
 		super( PluginEventListener.class );
 	}
 
-	
+
 	public void onPluginLoad( PluginLoadEvent event )			{ }
+	public void onPluginUnload( PluginUnloadEvent event )		{ }
 }
