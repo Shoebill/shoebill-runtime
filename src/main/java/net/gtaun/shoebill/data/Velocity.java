@@ -18,6 +18,10 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutable;
+import net.gtaun.shoebill.util.immutable.Immutably;
+import net.gtaun.shoebill.util.immutable.ImmutablyException;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -28,12 +32,20 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class Velocity extends Vector3D implements Cloneable, Serializable
+public class Velocity extends Vector3D implements Cloneable, Serializable, Immutable
 {
 	private static final long serialVersionUID = 6111643976368753336L;
 	
 	
-	//public float x, y, z;
+	private class ImmutablyVelocity extends Velocity implements Immutably
+	{
+		private static final long serialVersionUID = Velocity.serialVersionUID;
+		
+		private ImmutablyVelocity()
+		{
+			super( Velocity.this.getX(), Velocity.this.getY(), Velocity.this.getZ() );
+		}
+	}
 	
 
 	public Velocity()
@@ -43,24 +55,37 @@ public class Velocity extends Vector3D implements Cloneable, Serializable
 	
 	public Velocity( float x, float y, float z )
 	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		super( x, y, z );
 	}
 	
 	
-	public float speed2d()		{ return (float) Math.sqrt( x*x + y*y ); }
-	public float speed3d()		{ return (float) Math.sqrt( x*x + y*y + z*z ); }
-	public float angle2d()		{ return (float) Math.acos( x/Math.abs(speed2d()) ); }
-	public float angleZ()		{ return (float) Math.acos( z/Math.abs(speed3d()) ); }
-	
-	
-
-	public void set( Velocity spd )
+	public float speed2d()
 	{
-		x = spd.x;
-		y = spd.y;
-		z = spd.z;
+		return (float) Math.sqrt( getX()*getX() + getY()*getY() );
+	}
+	
+	public float speed3d()
+	{
+		return (float) Math.sqrt( getX()*getX() + getY()*getY() + getZ()*getZ() );
+	}
+	
+	public float angle2d()
+	{
+		return (float) Math.acos( getX()/Math.abs(speed2d()) );
+	}
+	
+	public float angleZ()
+	{
+		return (float) Math.acos( getZ()/Math.abs(speed3d()) );
+	}
+	
+	public void set( Velocity velocity )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( velocity.getX() );
+		setY( velocity.getY() );
+		setZ( velocity.getZ() );
 	}
 	
 	@Override
@@ -79,6 +104,12 @@ public class Velocity extends Vector3D implements Cloneable, Serializable
 	public Velocity clone()
 	{
 		return (Velocity) super.clone();
+	}
+	
+	@Override
+	public Velocity immure()
+	{	
+		return new ImmutablyVelocity();
 	}
 	
 	@Override

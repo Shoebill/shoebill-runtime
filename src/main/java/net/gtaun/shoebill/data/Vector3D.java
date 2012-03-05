@@ -18,6 +18,10 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutable;
+import net.gtaun.shoebill.util.immutable.Immutably;
+import net.gtaun.shoebill.util.immutable.ImmutablyException;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -28,12 +32,23 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class Vector3D extends Vector2D implements Cloneable, Serializable
+public class Vector3D extends Vector2D implements Cloneable, Serializable, Immutable
 {
 	private static final long serialVersionUID = 8493095902831171278L;
 	
+
+	private class ImmutablyVector3D extends Vector3D implements Immutably
+	{
+		private static final long serialVersionUID = Vector3D.serialVersionUID;
+		
+		private ImmutablyVector3D()
+		{
+			super( Vector3D.this.getX(), Vector3D.this.getY(), Vector3D.this.getZ() );
+		}
+	}
 	
-	public float z;
+	
+	private float z;
 	
 	
 	public Vector3D()
@@ -43,7 +58,18 @@ public class Vector3D extends Vector2D implements Cloneable, Serializable
 	
 	public Vector3D( float x, float y, float z )
 	{
-		super(x, y);
+		super( x, y );
+		this.z = z;
+	}
+	
+	public float getZ()
+	{
+		return z;
+	}
+	
+	public void setZ( float z )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
 		this.z = z;
 	}
 	
@@ -63,6 +89,12 @@ public class Vector3D extends Vector2D implements Cloneable, Serializable
 	public Vector3D clone()
 	{
 		return (Vector3D) super.clone();
+	}
+	
+	@Override
+	public Vector3D immure()
+	{
+		return new ImmutablyVector3D();
 	}
 	
 	@Override

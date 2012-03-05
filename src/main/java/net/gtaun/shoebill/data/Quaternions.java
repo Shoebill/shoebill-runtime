@@ -18,6 +18,8 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutably;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -33,8 +35,18 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 	private static final long serialVersionUID = 455013800771095435L;
 	
 	
-	//public float x, y, z, w;
-	public float w;
+	private class ImmutablyQuaternions extends Quaternions implements Immutably
+	{
+		private static final long serialVersionUID = Quaternions.serialVersionUID;
+		
+		private ImmutablyQuaternions()
+		{
+			super( Quaternions.this.getX(), Quaternions.this.getY(), Quaternions.this.getZ(), Quaternions.this.getW() );
+		}
+	}
+	
+	
+	private float w;
 	
 	
 	public Quaternions()
@@ -44,21 +56,29 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 	
 	public Quaternions( float x, float y, float z, float w )
 	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		super( x, y, z );
 		this.w = w;
 	}
 	
-	
+	public float getW()
+	{
+		return w;
+	}
+
+	public void setW( float w )
+	{
+		this.w = w;
+	}
+
 	public Quaternions getConjugate()
 	{
-		return new Quaternions(-x, -y, -z, w);
+		return new Quaternions(-getX(), -getY(), -getZ(), getW());
 	}
 	
 	public float[][] transformMatrix()
 	{
 		float[][] matrix = new float[4][4];
+		float x = getX(), y = getY(), z = getZ();
 		
 		matrix[0][0] = 1 - 2 * (y*y + z*z);
 		matrix[0][1] = 	   2 * (x*y - w*z);
@@ -85,6 +105,7 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 	
 	public float[] rotatedMatrix( float dx, float dy, float dz, double angle )
 	{
+		float x = getX(), y = getY(), z = getZ();
 		float w = (float) Math.cos(angle / 2);
 		
 		float[][] matrix = new float[3][3];
@@ -126,6 +147,12 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 	public Quaternions clone()
 	{
 		return (Quaternions) super.clone();
+	}
+	
+	@Override
+	public Quaternions immure()
+	{
+		return new ImmutablyQuaternions();
 	}
 	
 	@Override

@@ -18,6 +18,9 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutably;
+import net.gtaun.shoebill.util.immutable.ImmutablyException;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -33,7 +36,18 @@ public class LocationRadius extends Location implements Cloneable, Serializable
 	private static final long serialVersionUID = -4375366678586498863L;
 	
 	
-	public float distance;
+	private class ImmutablyLocationRadius extends LocationRadius implements Immutably
+	{
+		private static final long serialVersionUID = LocationRadius.serialVersionUID;
+		
+		private ImmutablyLocationRadius()
+		{
+			super( LocationRadius.this.getX(), LocationRadius.this.getY(), LocationRadius.this.getZ(), LocationRadius.this.getInteriorId(), LocationRadius.this.getWorldId(), LocationRadius.this.getDistance() );
+		}
+	}
+	
+	
+	private float distance;
 	
 	
 	public LocationRadius()
@@ -47,7 +61,7 @@ public class LocationRadius extends Location implements Cloneable, Serializable
 		this.distance = distance;
 	}
 	
-	public LocationRadius( float x, float y, float z, float distance, int interiorId, int worldId )
+	public LocationRadius( float x, float y, float z, int interiorId, int worldId, float distance )
 	{
 		super( x, y, z, interiorId, worldId );
 		this.distance = distance;
@@ -55,21 +69,31 @@ public class LocationRadius extends Location implements Cloneable, Serializable
 	
 	public LocationRadius( Location location, float distance )
 	{
-		super( location.x, location.y, location.z );
+		super( location.getX(), location.getY(), location.getZ(), location.getInteriorId(), location.getWorldId() );
 		this.distance = distance;
 	}
 	
-	
+	public float getDistance()
+	{
+		return distance;
+	}
+
+	public void setDistance( float distance )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.distance = distance;
+	}
+
 	public void set( LocationRadius location )
 	{
-		x = location.x;
-		y = location.y;
-		z = location.z;
-		interiorId = location.interiorId;
-		worldId = location.worldId;
-		distance = location.distance;
+		if( this instanceof Immutably ) throw new ImmutablyException();
+
+		setX( location.getX() );
+		setY( location.getY() );
+		setZ( location.getZ() );
+		setInteriorId( location.getInteriorId() );
+		setWorldId( location.getWorldId() );
 	}
-	
 	
 	@Override
 	public int hashCode()
@@ -87,6 +111,12 @@ public class LocationRadius extends Location implements Cloneable, Serializable
 	public LocationRadius clone()
 	{
 		return (LocationRadius) super.clone();
+	}
+	
+	@Override
+	public LocationRadius immure()
+	{
+		return new ImmutablyLocationRadius();
 	}
 	
 	@Override

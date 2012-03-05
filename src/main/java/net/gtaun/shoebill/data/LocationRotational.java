@@ -18,6 +18,9 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutably;
+import net.gtaun.shoebill.util.immutable.ImmutablyException;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -31,6 +34,17 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class LocationRotational extends Location implements Cloneable, Serializable
 {
 	private static final long serialVersionUID = 3951785121331456948L;
+	
+	
+	private class ImmutablyLocationRotational extends LocationRotational implements Immutably
+	{
+		private static final long serialVersionUID = LocationRotational.serialVersionUID;
+		
+		private ImmutablyLocationRotational()
+		{
+			super( LocationRotational.this.getX(), LocationRotational.this.getY(), LocationRotational.this.getZ(), LocationRotational.this.getInteriorId(), LocationRotational.this.getWorldId(), LocationRotational.this.getRx(), LocationRotational.this.getRy(), LocationRotational.this.getRz() );
+		}
+	}
 	
 	
 	public float rx, ry, rz;
@@ -70,21 +84,52 @@ public class LocationRotational extends Location implements Cloneable, Serializa
 
 	public LocationRotational( Location location, float rx, float ry, float rz )
 	{
-		super( location.x, location.y, location.z );
+		super( location.getX(), location.getY(), location.getZ() );
 		
 		this.rx = rx;
 		this.ry = ry;
 		this.rz = rz;
 	}
 	
-	
+	public float getRx()
+	{
+		return rx;
+	}
+
+	public void setRx( float rx )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.rx = rx;
+	}
+
+	public float getRy()
+	{
+		return ry;
+	}
+
+	public void setRy( float ry )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.ry = ry;
+	}
+
+	public float getRz()
+	{
+		return rz;
+	}
+
+	public void setRz( float rz )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.rz = rz;
+	}
+
 	public void set( LocationRotational location )
 	{
-		x = location.x;
-		y = location.y;
-		z = location.z;
-		interiorId = location.interiorId;
-		worldId = location.worldId;
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		super.set( location );
+		
 		rx = location.rx;
 		ry = location.ry;
 		rz = location.rz;
@@ -106,6 +151,12 @@ public class LocationRotational extends Location implements Cloneable, Serializa
 	public LocationRotational clone()
 	{
 		return (LocationRotational) super.clone();
+	}
+	
+	@Override
+	public LocationRotational immure()
+	{
+		return new ImmutablyLocationRotational();
 	}
 	
 	@Override

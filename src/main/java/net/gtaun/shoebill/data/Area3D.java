@@ -18,6 +18,9 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutably;
+import net.gtaun.shoebill.util.immutable.ImmutablyException;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -33,33 +36,59 @@ public class Area3D extends Area implements Cloneable, Serializable
 	private static final long serialVersionUID = 7421659231232420433L;
 	
 	
-	public float minZ, maxZ;
+	private class ImmutablyArea3D extends Area3D implements Immutably
+	{
+		private static final long serialVersionUID = Area3D.serialVersionUID;
+
+		private ImmutablyArea3D()
+		{
+			super( Area3D.this.getMinX(), Area3D.this.getMinY(), Area3D.this.getMinZ(), Area3D.this.getMaxX(), Area3D.this.getMaxY(), Area3D.this.getMaxZ() );
+		}
+	}
+	
+	
+	private float minZ, maxZ;
 	
 	
 	public Area3D( float minX, float minY, float minZ, float maxX, float maxY, float maxZ )
 	{
-		this.minX = minX;
-		this.minY = minY;
+		super( minX, minY, maxX, maxY );
 		this.minZ = minZ;
-		this.maxX = maxX;
-		this.maxY = maxY;
 		this.maxZ = maxZ;
 	}
 	
 	public Area3D( Area area, float minZ, float maxZ )
 	{
-	    this.minX = area.minX;
-	    this.maxX = area.maxX;
-	    this.minY = area.minY;
-	    this.maxY = area.maxY;
+		super( area.getMinX(), area.getMinY(), area.getMaxX(), area.getMaxY() );
 		this.minZ = minZ;
 		this.maxZ = maxZ;
 	}
 	
-	
-	public float getVolume()
+	public float getMinZ()
 	{
-		return (maxX-minX) * (maxY-minY) * (maxZ-minZ);
+		return minZ;
+	}
+
+	public void setMinZ( float minZ )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.minZ = minZ;
+	}
+
+	public float getMaxZ()
+	{
+		return maxZ;
+	}
+
+	public void setMaxZ( float maxZ )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.maxZ = maxZ;
+	}
+
+	public float volume()
+	{
+		return (getMaxX()-getMinX()) * (getMaxY()-getMaxY()) * (getMaxZ()-getMinZ());
 	}
 	
 	@Override
@@ -78,6 +107,12 @@ public class Area3D extends Area implements Cloneable, Serializable
 	public Area3D clone()
 	{
 		return (Area3D) super.clone();
+	}
+	
+	@Override
+	public Area3D immure()
+	{
+		return new ImmutablyArea3D();
 	}
 	
 	@Override

@@ -18,6 +18,10 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutable;
+import net.gtaun.shoebill.util.immutable.Immutably;
+import net.gtaun.shoebill.util.immutable.ImmutablyException;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -28,13 +32,23 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class Location extends Vector3D implements Cloneable, Serializable
+public class Location extends Vector3D implements Cloneable, Serializable, Immutable
 {
 	private static final long serialVersionUID = 8895946392500802993L;
+
+	
+	private class ImmutableLocation extends Location implements Immutably
+	{
+		private static final long serialVersionUID = Location.serialVersionUID;
+		
+		private ImmutableLocation()
+		{
+			super( Location.this.getX(), Location.this.getY(), Location.this.getZ(), Location.this.getInteriorId(), Location.this.getWorldId() );
+		}
+	}
 	
 	
-	//public float x, y, z;
-	public int interiorId, worldId;
+	private int interiorId, worldId;
 	
 
 	public Location()
@@ -44,36 +58,51 @@ public class Location extends Vector3D implements Cloneable, Serializable
 	
 	public Location( float x, float y, float z )
 	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		super( x, y, z );
 	}
 	
 	public Location( float x, float y, float z, int worldId )
 	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		super( x, y, z );
 		this.worldId = worldId;
 	}
 	
 	public Location( float x, float y, float z, int interiorId, int worldId )
 	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		super( x, y, z );
 		this.interiorId = interiorId;
 		this.worldId = worldId;
 	}
 	
-	
+	public int getInteriorId()
+	{
+		return interiorId;
+	}
+
+	public void setInteriorId( int interiorId )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.interiorId = interiorId;
+	}
+
+	public int getWorldId()
+	{
+		return worldId;
+	}
+
+	public void setWorldId( int worldId )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.worldId = worldId;
+	}
+
 	public void set( Location location )
 	{
-		x = location.x;
-		y = location.y;
-		z = location.z;
-		interiorId = location.interiorId;
-		worldId = location.worldId;
+		setX( location.getX() );
+		setY( location.getY() );
+		setZ( location.getZ() );
+		interiorId = location.getInteriorId();
+		worldId = location.getWorldId();
 	}
 	
 	@Override
@@ -92,6 +121,12 @@ public class Location extends Vector3D implements Cloneable, Serializable
 	public Location clone()
 	{
 		return (Location) super.clone();
+	}
+	
+	@Override
+	public Location immure()
+	{
+		return new ImmutableLocation();
 	}
 	
 	@Override

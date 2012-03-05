@@ -18,6 +18,9 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutable;
+import net.gtaun.shoebill.util.immutable.Immutably;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -28,12 +31,23 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class Time implements Cloneable, Serializable
+public class Time implements Cloneable, Serializable, Immutable
 {
 	private static final long serialVersionUID = -2904498722367946789L;
 	
 	
-	public int hour, minute;
+	private class ImmutablyTime extends Time implements Immutably
+	{
+		private static final long serialVersionUID = Time.serialVersionUID;
+		
+		private ImmutablyTime()
+		{
+			super( Time.this.getHour(), Time.this.getMinute() );
+		}
+	}
+	
+	
+	private int hour, minute;
 	
 	
 	public Time()
@@ -47,6 +61,26 @@ public class Time implements Cloneable, Serializable
 		this.minute = minute;
 	}
 	
+	public int getHour()
+	{
+		return hour;
+	}
+
+	public void setHour( int hour )
+	{
+		this.hour = hour;
+	}
+
+	public int getMinute()
+	{
+		return minute;
+	}
+
+	public void setMinute( int minute )
+	{
+		this.minute = minute;
+	}
+
 	@Override
 	public int hashCode()
 	{
@@ -70,6 +104,12 @@ public class Time implements Cloneable, Serializable
 		{
 			throw new InternalError();
 		}
+	}
+	
+	@Override
+	public Time immure()
+	{
+		return new ImmutablyTime();
 	}
 	
 	@Override

@@ -24,29 +24,41 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import net.gtaun.shoebill.data.type.WeaponType;
+import net.gtaun.shoebill.util.immutable.Immutable;
+import net.gtaun.shoebill.util.immutable.Immutably;
+import net.gtaun.shoebill.util.immutable.ImmutablyException;
 
 /**
  * @author MK124
  *
  */
 
-public class SpawnInfo implements Cloneable, Serializable
+public class SpawnInfo implements Cloneable, Serializable, Immutable
 {
 	private static final long serialVersionUID = -1494282877268559489L;
 	
 	
-	public LocationAngular location;
-	public int skinId, teamId;
-	public WeaponData weapon1, weapon2, weapon3;
+	private class ImmutablySpawnInfo extends SpawnInfo implements Immutably
+	{
+		private static final long serialVersionUID = SpawnInfo.serialVersionUID;
+		
+		private ImmutablySpawnInfo()
+		{
+			super( SpawnInfo.this.getLocation().immure(), SpawnInfo.this.getSkinId(), SpawnInfo.this.getTeamId(), SpawnInfo.this.getWeapon1(), SpawnInfo.this.getWeapon2(), SpawnInfo.this.getWeapon3() );
+		}
+	}
+	
+	
+	private LocationAngular location;
+	private int skinId, teamId;
+	private WeaponData weapon1, weapon2, weapon3;
 	
 	
 	public SpawnInfo( float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, WeaponType weapon1, int ammo1, WeaponType weapon2, int ammo2, WeaponType weapon3, int ammo3 )
 	{
 		location = new LocationAngular(x, y, z, interiorId, worldId, angle);
-		
 		this.skinId = skin;
 		this.teamId = team;
-		
 		this.weapon1 = new WeaponData(weapon1, ammo1);
 		this.weapon2 = new WeaponData(weapon2, ammo2);
 		this.weapon3 = new WeaponData(weapon3, ammo3);
@@ -62,6 +74,72 @@ public class SpawnInfo implements Cloneable, Serializable
 		this.weapon3 = weapon3.clone();
 	}
 	
+	public LocationAngular getLocation()
+	{
+		return location.clone();
+	}
+
+	public void setLocation( LocationAngular location )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.location = location.clone();
+	}
+
+	public int getSkinId()
+	{
+		return skinId;
+	}
+
+	public void setSkinId( int skinId )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.skinId = skinId;
+	}
+
+	public int getTeamId()
+	{
+		return teamId;
+	}
+
+	public void setTeamId( int teamId )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.teamId = teamId;
+	}
+
+	public WeaponData getWeapon1()
+	{
+		return weapon1;
+	}
+
+	public void setWeapon1( WeaponData weapon1 )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.weapon1 = weapon1;
+	}
+
+	public WeaponData getWeapon2()
+	{
+		return weapon2;
+	}
+
+	public void setWeapon2( WeaponData weapon2 )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.weapon2 = weapon2;
+	}
+
+	public WeaponData getWeapon3()
+	{
+		return weapon3;
+	}
+
+	public void setWeapon3( WeaponData weapon3 )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.weapon3 = weapon3;
+	}
+
 	@Override
 	public int hashCode()
 	{
@@ -85,6 +163,12 @@ public class SpawnInfo implements Cloneable, Serializable
 		{
 			throw new InternalError();
 		}
+	}
+	
+	@Override
+	public Object immure()
+	{
+		return new ImmutablySpawnInfo();
 	}
 	
 	@Override

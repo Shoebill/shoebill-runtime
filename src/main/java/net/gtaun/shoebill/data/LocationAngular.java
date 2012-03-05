@@ -18,6 +18,9 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutably;
+import net.gtaun.shoebill.util.immutable.ImmutablyException;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -33,7 +36,18 @@ public class LocationAngular extends Location implements Cloneable, Serializable
 	private static final long serialVersionUID = -6964956260244629027L;
 	
 	
-	public float angle;
+	private class ImmutablyLocationAngular extends LocationAngular implements Immutably
+	{
+		private static final long serialVersionUID = LocationAngular.serialVersionUID;
+		
+		private ImmutablyLocationAngular()
+		{
+			super( LocationAngular.this.getX(), LocationAngular.this.getY(), LocationAngular.this.getZ(), LocationAngular.this.getInteriorId(), LocationAngular.this.getWorldId(), LocationAngular.this.getAngle() );
+		}
+	}
+	
+	
+	private float angle;
 	
 
 	public LocationAngular()
@@ -55,19 +69,31 @@ public class LocationAngular extends Location implements Cloneable, Serializable
 
 	public LocationAngular( Location location, float angle )
 	{
-		super( location.x, location.y, location.z );
+		super( location.getX(), location.getY(), location.getZ() );
 		this.angle = angle;
 	}
 	
-	
+	public float getAngle()
+	{
+		return angle;
+	}
+
+	public void setAngle( float angle )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.angle = angle;
+	}
+
 	public void set( LocationAngular location )
 	{
-		x = location.x;
-		y = location.y;
-		z = location.z;
-		interiorId = location.interiorId;
-		worldId = location.worldId;
-		angle = location.angle;
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( location.getX() );
+		setY( location.getY() );
+		setZ( location.getZ() );
+		setInteriorId( location.getInteriorId() );
+		setWorldId( location.getWorldId() );
+		setAngle( location.getAngle() );
 	}
 	
 	@Override
@@ -86,6 +112,12 @@ public class LocationAngular extends Location implements Cloneable, Serializable
 	public LocationAngular clone()
 	{
 		return (LocationAngular) super.clone();
+	}
+	
+	@Override
+	public LocationAngular immure()
+	{
+		return new ImmutablyLocationAngular();
 	}
 	
 	@Override

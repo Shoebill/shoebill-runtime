@@ -18,6 +18,10 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutable;
+import net.gtaun.shoebill.util.immutable.Immutably;
+import net.gtaun.shoebill.util.immutable.ImmutablyException;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -28,12 +32,23 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class Area implements Cloneable, Serializable
+public class Area implements Cloneable, Serializable, Immutable
 {
 	private static final long serialVersionUID = 4319892622317856825L;
 	
 	
-	public float minX, minY, maxX, maxY;
+	private class ImmutablyArea extends Area implements Immutably
+	{
+		private static final long serialVersionUID = Area.serialVersionUID;
+
+		private ImmutablyArea()
+		{
+			super( Area.this.getMinX(), Area.this.getMinY(), Area.this.getMaxX(), Area.this.getMaxY() );
+		}
+	}
+	
+	
+	private float minX, minY, maxX, maxY;
 	
 	
 	public Area()
@@ -50,12 +65,55 @@ public class Area implements Cloneable, Serializable
 	}
 	
 	
+	public float getMinX()
+	{
+		return minX;
+	}
+
+	public void setMinX( float minX )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.minX = minX;
+	}
+
+	public float getMinY()
+	{
+		return minY;
+	}
+
+	public void setMinY( float minY )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.minY = minY;
+	}
+
+	public float getMaxX()
+	{
+		return maxX;
+	}
+
+	public void setMaxX( float maxX )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.maxX = maxX;
+	}
+
+	public float getMaxY()
+	{
+		return maxY;
+	}
+
+	public void setMaxY( float maxY )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.maxY = maxY;
+	}
+
 	public float area()
 	{
 		return (maxX-minX) * (maxY-minY);
 	}
-
-
+	
 	public void set( Area bound )
 	{
 		minX = bound.minX;
@@ -87,6 +145,12 @@ public class Area implements Cloneable, Serializable
 		{
 			throw new InternalError();
 		}
+	}
+	
+	@Override
+	public Area immure()
+	{
+		return new ImmutablyArea();
 	}
 	
 	@Override

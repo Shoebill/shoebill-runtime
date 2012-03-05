@@ -24,19 +24,33 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import net.gtaun.shoebill.data.type.WeaponType;
+import net.gtaun.shoebill.util.immutable.Immutable;
+import net.gtaun.shoebill.util.immutable.Immutably;
+import net.gtaun.shoebill.util.immutable.ImmutablyException;
 
 /**
  * @author MK124
  *
  */
 
-public class WeaponData implements Cloneable, Serializable
+public class WeaponData implements Cloneable, Serializable, Immutable
 {
 	private static final long serialVersionUID = 8584508544432627380L;
 	
+
+	private class ImmutablyWeaponData extends WeaponData implements Immutably
+	{
+		private static final long serialVersionUID = WeaponData.serialVersionUID;
+		
+		private ImmutablyWeaponData()
+		{
+			super( WeaponData.this.getType(), WeaponData.this.getAmmo() );
+		}
+	}
 	
-	public WeaponType type;
-	public int ammo;
+	
+	private WeaponType type;
+	private int ammo;
 	
 	
 	public WeaponData()
@@ -51,6 +65,28 @@ public class WeaponData implements Cloneable, Serializable
 		this.ammo = ammo;
 	}
 	
+	public WeaponType getType()
+	{
+		return type;
+	}
+	
+	public void setType( WeaponType type )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.type = type;
+	}
+	
+	public int getAmmo()
+	{
+		return ammo;
+	}
+	
+	public void setAmmo( int ammo )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.ammo = ammo;
+	}
+	
 	@Override
 	public int hashCode()
 	{
@@ -60,7 +96,6 @@ public class WeaponData implements Cloneable, Serializable
 	@Override
 	public boolean equals( Object obj )
 	{
-		
 		return EqualsBuilder.reflectionEquals(this, obj, false);
 	}
 	
@@ -75,6 +110,12 @@ public class WeaponData implements Cloneable, Serializable
 		{
 			throw new InternalError();
 		}
+	}
+	
+	@Override
+	public WeaponData immure()
+	{
+		return new ImmutablyWeaponData();
 	}
 	
 	@Override
