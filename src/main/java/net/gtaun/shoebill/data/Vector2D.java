@@ -18,6 +18,11 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author JoJLlmAn
  *
@@ -43,23 +48,33 @@ public class Vector2D implements Cloneable, Serializable
 	}
 	
 	@Override
+	public int hashCode()
+	{
+		return HashCodeBuilder.reflectionHashCode(433024253, 472882049, this, false);
+	}
+	
+	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )						return true;
-		if( obj instanceof Vector2D == false )	return false;
-		
-		Vector2D vector2d = (Vector2D) obj;
-		
-		if( vector2d.x != x )	return false;
-		if( vector2d.y != y )	return false;
-		
-		return true;
+		return EqualsBuilder.reflectionEquals(this, obj, false);
 	}
 	
 	@Override
 	public Vector2D clone()
 	{
-		return new Vector2D( x, y );
+		try
+		{
+			return (Vector2D) super.clone();
+		}
+		catch( CloneNotSupportedException e )
+		{
+			throw new InternalError();
+		}
 	}
 	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE, false);
+	}
 }

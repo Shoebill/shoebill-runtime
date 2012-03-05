@@ -18,6 +18,11 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -59,22 +64,26 @@ public class Velocity extends Vector3D implements Cloneable, Serializable
 	}
 	
 	@Override
+	public int hashCode()
+	{
+		return HashCodeBuilder.reflectionHashCode(413158523, 941083981, this, false);
+	}
+	
+	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )						return true;
-		if( obj instanceof Velocity == false )	return false;
-		
-		Velocity speed = (Velocity) obj;
-		if( speed.x != x )						return false;
-		if( speed.y != y )						return false;
-		if( speed.z != z )						return false;
-		
-		return true;
+		return EqualsBuilder.reflectionEquals(this, obj, false);
 	}
 	
 	@Override
 	public Velocity clone()
 	{
-		return new Velocity(x, y, z);
+		return (Velocity) super.clone();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE, false);
 	}
 }

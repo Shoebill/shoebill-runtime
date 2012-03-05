@@ -18,6 +18,11 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author JoJLlmAn
  *
@@ -28,7 +33,7 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 	private static final long serialVersionUID = 455013800771095435L;
 	
 	
-	//public float w,x,y,z;
+	//public float x, y, z, w;
 	public float w;
 	
 	
@@ -37,18 +42,18 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 		
 	}
 	
-	public Quaternions( float w, float x, float y, float z )
+	public Quaternions( float x, float y, float z, float w )
 	{
-		this.w = w;
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.w = w;
 	}
 	
 	
 	public Quaternions getConjugate()
 	{
-		return new Quaternions(w,-x,-y,-z);
+		return new Quaternions(-x, -y, -z, w);
 	}
 	
 	public float[][] transformMatrix()
@@ -106,24 +111,26 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 	}
 	
 	@Override
+	public int hashCode()
+	{
+		return HashCodeBuilder.reflectionHashCode(295075147, 633910099, this, false);
+	}
+	
+	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )							return true;
-		if( obj instanceof Quaternions == false )	return false;
-		
-		Quaternions quaternions = (Quaternions) obj;
-
-		if( quaternions.x != x )	return false;
-		if( quaternions.y != y )	return false;
-		if( quaternions.z != z )	return false;
-		if( quaternions.w != w )	return false;
-		
-		return true;
+		return EqualsBuilder.reflectionEquals(this, obj, false);
 	}
 	
 	@Override
 	public Quaternions clone()
 	{
-		return new Quaternions(w,x,y,z);
+		return (Quaternions) super.clone();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE, false);
 	}
 }

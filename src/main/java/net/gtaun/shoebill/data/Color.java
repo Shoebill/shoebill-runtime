@@ -18,6 +18,11 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -188,7 +193,7 @@ public class Color implements Cloneable, Serializable
 
 	private static final long serialVersionUID = -6538397318569967446L;
 	
-	
+
 	private int value;
 	
 	
@@ -237,26 +242,45 @@ public class Color implements Cloneable, Serializable
 		return (value&0x000000FF);
 	}
 	
-	
 	public int getY()
 	{
 		return (int) (0.299f*getR() + 0.587f*getG() + 0.114f*getB() + 0.5f);
 	}
 	
+	@Override
+	public int hashCode()
+	{
+		return HashCodeBuilder.reflectionHashCode(236887699, 256203161, this, false);
+	}
 	
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )					return true;
-		if( obj instanceof Color == false ) return false;
-		
-		Color color = (Color) obj;
-		return this.value == color.value;
+		return EqualsBuilder.reflectionEquals(this, obj, false);
 	}
-	
+
 	@Override
 	public Color clone()
 	{
-		return new Color( value );
+		try
+		{
+			return (Color) super.clone();
+		}
+		catch( CloneNotSupportedException e )
+		{
+			throw new InternalError();
+		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE);
+		builder.append( "value", Integer.toHexString(value) );
+		builder.append( "r", getR() );
+		builder.append( "g", getG() );
+		builder.append( "b", getB() );
+		
+		return builder.build();
 	}
 }

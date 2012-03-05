@@ -18,6 +18,11 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -29,27 +34,27 @@ public class KeyState implements Cloneable, Serializable
 	private static final long serialVersionUID = 2902208210862136365L;
 	
 	
-	private final int KEY_ACTION				= 1;
-	private final int KEY_CROUCH				= 2;
-	private final int KEY_FIRE					= 4;
-	private final int KEY_SPRINT				= 8;
-	private final int KEY_SECONDARY_ATTACK		= 16;
-	private final int KEY_JUMP					= 32;
-    private final int KEY_LOOK_RIGHT			= 64;
-    private final int KEY_HANDBRAKE				= 128;
-    private final int KEY_LOOK_LEFT				= 256;
-	private final int KEY_SUBMISSION			= 512;
-    private final int KEY_LOOK_BEHIND			= 512;
-    private final int KEY_WALK					= 1024;
-    private final int KEY_ANALOG_UP				= 2048;
-    private final int KEY_ANALOG_DOWN			= 4096;
-    private final int KEY_ANALOG_LEFT			= 8192;
-    private final int KEY_ANALOG_RIGHT			= 16384;
+	private static final int KEY_ACTION					= 1;
+	private static final int KEY_CROUCH					= 2;
+	private static final int KEY_FIRE					= 4;
+	private static final int KEY_SPRINT					= 8;
+	private static final int KEY_SECONDARY_ATTACK		= 16;
+	private static final int KEY_JUMP					= 32;
+    private static final int KEY_LOOK_RIGHT				= 64;
+    private static final int KEY_HANDBRAKE				= 128;
+    private static final int KEY_LOOK_LEFT				= 256;
+	private static final int KEY_SUBMISSION				= 512;
+    private static final int KEY_LOOK_BEHIND			= 512;
+    private static final int KEY_WALK					= 1024;
+    private static final int KEY_ANALOG_UP				= 2048;
+    private static final int KEY_ANALOG_DOWN			= 4096;
+    private static final int KEY_ANALOG_LEFT			= 8192;
+    private static final int KEY_ANALOG_RIGHT			= 16384;
     
-    private final int KEY_UP					= -128;
-    private final int KEY_DOWN					= 128;
-    private final int KEY_LEFT					= -128;
-    private final int KEY_RIGHT					= 128;
+    private static final int KEY_UP						= -128;
+    private static final int KEY_DOWN					= 128;
+    private static final int KEY_LEFT					= -128;
+    private static final int KEY_RIGHT					= 128;
 
     
     private int keys, updown, leftright;
@@ -80,28 +85,54 @@ public class KeyState implements Cloneable, Serializable
     
 	
 	@Override
-	public boolean equals( Object obj )
+	public int hashCode()
 	{
-		if( obj == this )						return true;
-		if( obj instanceof KeyState == false )	return false;
-		
-		KeyState state = (KeyState) obj;
-		if( state.keys != keys )			return false;
-		if( state.updown != updown )		return false;
-		if( state.leftright != leftright )	return false;
-		
-		return true;
+		return HashCodeBuilder.reflectionHashCode(217645199, 236887691, this, false);
 	}
 	
 	@Override
+	public boolean equals( Object obj )
+	{
+		return EqualsBuilder.reflectionEquals(this, obj, false);
+	}
+
+	@Override
 	public KeyState clone()
 	{
-		KeyState state = new KeyState();
-		
-		state.keys = keys;
-		state.updown = updown;
-		state.leftright = leftright;
-		
-		return state;
+		try
+		{
+			return (KeyState) super.clone();
+		}
+		catch( CloneNotSupportedException e )
+		{
+			throw new InternalError();
+		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE);
+		builder.append( "keys", keys );
+		builder.append( "upDown", updown );
+		builder.append( "leftRight", leftright );
+		builder.append( "actionPressed", isActionPressed() ? 1 : 0 );
+		builder.append( "crouchPressed", isCrouchPressed() ? 1 : 0 );
+		builder.append( "firePressed", isFirePressed() ? 1 : 0 );
+		builder.append( "sprintPressed", isSprintPressed() ? 1 : 0 );
+		builder.append( "secondAttackPressed", isSecondAttackPressed() ? 1 : 0 );
+		builder.append( "jumpPressed", isJumpPressed() ? 1 : 0 );
+		builder.append( "lookRightPressed", isLookRightPressed() ? 1 : 0 );
+		builder.append( "handBreakPressed", isHandBreakPressed() ? 1 : 0 );
+		builder.append( "lookLeftPressed", isLookLeftPressed() ? 1 : 0 );
+		builder.append( "subMissionPressed", isSubMissionPressed() ? 1 : 0 );
+		builder.append( "lookBehindPressed", isLookBehindPressed() ? 1 : 0 );
+		builder.append( "walkPressed", isWalkPressed() ? 1 : 0 );
+		builder.append( "analogUpPressed", isAnalogUpPressed() ? 1 : 0 );
+		builder.append( "analogDownPressed", isAnalogDownPressed() ? 1 : 0 );
+		builder.append( "analogLeftPressed", isAnalogLeftPressed() ? 1 : 0 );
+		builder.append( "analogRightPressed", isAnalogRightPressed() ? 1 : 0 );
+	    
+		return builder.build();
 	}
 }

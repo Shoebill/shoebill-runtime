@@ -18,8 +18,12 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
-import net.gtaun.shoebill.data.type.WeaponType;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
+import net.gtaun.shoebill.data.type.WeaponType;
 
 /**
  * @author MK124
@@ -35,29 +39,47 @@ public class WeaponData implements Cloneable, Serializable
 	public int ammo;
 	
 	
+	public WeaponData()
+	{
+		type = WeaponType.NONE;
+		ammo = 0;
+	}
+	
 	public WeaponData( WeaponType type, int ammo )
 	{
 		this.type = type;
 		this.ammo = ammo;
 	}
 	
+	@Override
+	public int hashCode()
+	{
+		return HashCodeBuilder.reflectionHashCode(275604547, 817504253, this, false);
+	}
 	
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )							return true;
-		if( obj instanceof WeaponData == false )	return false;
 		
-		WeaponData data = (WeaponData) obj;
-		if( data.type != type )				return false;
-		if( data.ammo != ammo )				return false;
-		
-		return true;
+		return EqualsBuilder.reflectionEquals(this, obj, false);
 	}
 	
 	@Override
 	public WeaponData clone()
 	{
-		return new WeaponData(type, ammo);
+		try
+		{
+			return (WeaponData) super.clone();
+		}
+		catch( CloneNotSupportedException e )
+		{
+			throw new InternalError();
+		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE, false);
 	}
 }

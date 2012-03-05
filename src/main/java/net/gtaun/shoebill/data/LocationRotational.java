@@ -18,6 +18,11 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -86,28 +91,26 @@ public class LocationRotational extends Location implements Cloneable, Serializa
 	}
 	
 	@Override
+	public int hashCode()
+	{
+		return HashCodeBuilder.reflectionHashCode(573259433, 613651369, this, false);
+	}
+	
+	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )									return true;
-		if( obj instanceof LocationRotational == false )	return false;
-		
-		LocationRotational location = (LocationRotational) obj;
-		
-		if( location.x != x )							return false;
-		if( location.y != y )							return false;
-		if( location.z != z )							return false;
-		if( location.interiorId != interiorId )			return false;
-		if( location.worldId != worldId )				return false;
-		if( location.rx != rx )							return false;
-		if( location.ry != ry )							return false;
-		if( location.rz != rz )							return false;
-		
-		return true;
+		return EqualsBuilder.reflectionEquals(this, obj, false);
 	}
 	
 	@Override
 	public LocationRotational clone()
 	{
-		return new LocationRotational(x, y, z, interiorId, worldId, rx, ry, rz);
+		return (LocationRotational) super.clone();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE, false);
 	}
 }

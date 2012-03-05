@@ -18,6 +18,11 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -72,24 +77,26 @@ public class Location extends Vector3D implements Cloneable, Serializable
 	}
 	
 	@Override
-	public boolean equals( Object obj )
+	public int hashCode()
 	{
-		if( obj == this )							return true;
-		if( obj instanceof Location == false )		return false;
-		
-		Location location = (Location) obj;
-		if( location.x != x )						return false;
-		if( location.y != y )						return false;
-		if( location.z != z )						return false;
-		if( location.interiorId != interiorId )		return false;
-		if( location.worldId != worldId )			return false;
-		
-		return true;
+		return HashCodeBuilder.reflectionHashCode(198491329, 217645177, this, false);
 	}
 	
 	@Override
+	public boolean equals( Object obj )
+	{
+		return EqualsBuilder.reflectionEquals(this, obj, false);
+	}
+
+	@Override
 	public Location clone()
 	{
-		return new Location(x, y, z, interiorId, worldId);
+		return (Location) super.clone();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE, false);
 	}
 }

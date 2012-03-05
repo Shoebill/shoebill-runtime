@@ -18,6 +18,11 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -65,27 +70,28 @@ public class LocationRadius extends Location implements Cloneable, Serializable
 		distance = location.distance;
 	}
 	
+	
+	@Override
+	public int hashCode()
+	{
+		return HashCodeBuilder.reflectionHashCode(160481219, 179424673, this, false);
+	}
+	
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )								return true;
-		if( obj instanceof LocationRadius == false )	return false;
-		
-		LocationRadius location = (LocationRadius) obj;
-		
-		if( location.x != x )						return false;
-		if( location.y != y )						return false;
-		if( location.z != z )						return false;
-		if( location.interiorId != interiorId )		return false;
-		if( location.worldId != worldId )			return false;
-		if( location.distance != distance )			return false;
-		
-		return true;
+		return EqualsBuilder.reflectionEquals(this, obj, false);
 	}
 	
 	@Override
 	public LocationRadius clone()
 	{
-		return new LocationRadius(x, y, z, distance, interiorId, worldId);
+		return (LocationRadius) super.clone();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE, false);
 	}
 }

@@ -18,6 +18,11 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author JoJLlmAn
  *
@@ -36,29 +41,33 @@ public class Vector3D extends Vector2D implements Cloneable, Serializable
 
 	}
 	
-	public Vector3D( float x, float y, float z ) {
+	public Vector3D( float x, float y, float z )
+	{
 		super(x, y);
 		this.z = z;
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return HashCodeBuilder.reflectionHashCode(49979693, 573259433, this, false);
 	}
 
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )				return true;
-		if( obj instanceof Vector3D )	return false;
-		
-		Vector3D vector3d = (Vector3D) obj;
-		
-		if( vector3d.x != x )	return false;
-		if( vector3d.y != y )	return false;
-		if( vector3d.z != z )	return false;
-		
-		return true;
+		return EqualsBuilder.reflectionEquals(this, obj, false);
 	}
 	
 	@Override
 	public Vector3D clone()
 	{
-		return new Vector3D(x, y, z);
+		return (Vector3D) super.clone();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE, false);
 	}
 }

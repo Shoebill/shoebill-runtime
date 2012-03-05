@@ -18,6 +18,11 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -42,23 +47,34 @@ public class Time implements Cloneable, Serializable
 		this.minute = minute;
 	}
 	
+	@Override
+	public int hashCode()
+	{
+		return HashCodeBuilder.reflectionHashCode(67867979, 573259391, this, false);
+	}
 	
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == this )						return true;
-		if( obj instanceof Time == false )		return false;
-		
-		Time time = (Time) obj;
-		if( time.hour != hour )					return false;
-		if( time.minute != minute )				return false;
-		
-		return true;
+		return EqualsBuilder.reflectionEquals(this, obj, false);
 	}
 	
 	@Override
 	public Time clone()
 	{
-		return new Time(hour, minute);
+		try
+		{
+			return (Time) super.clone();
+		}
+		catch( CloneNotSupportedException e )
+		{
+			throw new InternalError();
+		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE, false);
 	}
 }

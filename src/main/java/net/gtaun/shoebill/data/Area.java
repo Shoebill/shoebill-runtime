@@ -18,6 +18,11 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -60,23 +65,33 @@ public class Area implements Cloneable, Serializable
 	}
 	
 	@Override
-	public boolean equals( Object obj )
+	public int hashCode()
 	{
-		if( obj == this )					return true;
-		if( obj instanceof Area == false )	return false;
-		
-		Area area = (Area) obj;
-		if( area.minX != area.minX )	return false;
-		if( area.minY != area.minY )	return false;
-		if( area.maxX != area.maxX )	return false;
-		if( area.maxY != area.maxY )	return false;
-		
-		return true;
+		return HashCodeBuilder.reflectionHashCode(275604547, 295075147, this, false);
 	}
 	
 	@Override
+	public boolean equals( Object obj )
+	{
+		return EqualsBuilder.reflectionEquals(this, obj, false);
+	}
+
+	@Override
 	public Area clone()
 	{
-		return new Area(minX, minY, maxX, maxY);
+		try
+		{
+			return (Area) super.clone();
+		}
+		catch( CloneNotSupportedException e )
+		{
+			throw new InternalError();
+		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE, false);
 	}
 }
