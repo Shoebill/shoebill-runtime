@@ -132,7 +132,7 @@ public class Vehicle implements IVehicle
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
 
-		initialize( location.x, location.y, location.z, location.interiorId, location.worldId, angle );
+		initialize( location.getX(), location.getY(), location.getZ(), location.getInteriorId(), location.getWorldId(), angle );
 	}
 	
 	public Vehicle( int modelId, LocationAngular location, int color1, int color2, int respawnDelay ) throws CreationFailedException
@@ -142,7 +142,7 @@ public class Vehicle implements IVehicle
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
 
-		initialize( location.x, location.y, location.z, location.interiorId, location.worldId, location.angle );
+		initialize( location.getX(), location.getY(), location.getZ(), location.getInteriorId(), location.getWorldId(), location.getAngle() );
 	}
 	
 	private void initialize( float x, float y, float z, int interiorId, int worldId, float angle ) throws CreationFailedException
@@ -221,9 +221,9 @@ public class Vehicle implements IVehicle
 		LocationAngular location = new LocationAngular();
 
 		SampNativeFunction.getVehiclePos( id, location );
-		location.angle = SampNativeFunction.getVehicleZAngle(id);
-		location.interiorId = interiorId;
-		location.worldId = SampNativeFunction.getVehicleVirtualWorld( id );
+		location.setAngle( SampNativeFunction.getVehicleZAngle(id) );
+		location.setInteriorId( interiorId );
+		location.setWorldId( SampNativeFunction.getVehicleVirtualWorld(id) );
 		
 		return location;
 	}
@@ -294,9 +294,9 @@ public class Vehicle implements IVehicle
 	{
 		if( isDestroyed() ) return;
 		
-		SampNativeFunction.setVehiclePos( id, location.x, location.y, location.z );
-		SampNativeFunction.linkVehicleToInterior( id, location.interiorId );
-		SampNativeFunction.setVehicleVirtualWorld( id, location.worldId );
+		SampNativeFunction.setVehiclePos( id, location.getX(), location.getY(), location.getZ() );
+		SampNativeFunction.linkVehicleToInterior( id, location.getInteriorId() );
+		SampNativeFunction.setVehicleVirtualWorld( id, location.getWorldId() );
 	}
 	
 	@Override
@@ -304,10 +304,10 @@ public class Vehicle implements IVehicle
 	{
 		if( isDestroyed() ) return;
 		
-		SampNativeFunction.setVehiclePos( id, location.x, location.y, location.z );
-		SampNativeFunction.setVehicleZAngle( id, location.angle );
-		SampNativeFunction.linkVehicleToInterior( id, location.interiorId );
-		SampNativeFunction.setVehicleVirtualWorld( id, location.worldId );
+		SampNativeFunction.setVehiclePos( id, location.getX(), location.getY(), location.getZ() );
+		SampNativeFunction.setVehicleZAngle( id, location.getAngle() );
+		SampNativeFunction.linkVehicleToInterior( id, location.getInteriorId() );
+		SampNativeFunction.setVehicleVirtualWorld( id, location.getWorldId() );
 	}
 	
 	@Override
@@ -323,7 +323,7 @@ public class Vehicle implements IVehicle
 	{
 		if( isDestroyed() ) return;
 		
-		SampNativeFunction.setVehicleVelocity( id, velocity.x, velocity.y, velocity.z );
+		SampNativeFunction.setVehicleVelocity( id, velocity.getX(), velocity.getY(), velocity.getZ() );
 	}
 	
 	@Override
@@ -459,6 +459,6 @@ public class Vehicle implements IVehicle
 	{
 		if( isDestroyed() ) return;
 		
-		SampNativeFunction.setVehicleAngularVelocity( id, velocity.x, velocity.y, velocity.z );
+		SampNativeFunction.setVehicleAngularVelocity( id, velocity.getX(), velocity.getY(), velocity.getZ() );
 	}
 }

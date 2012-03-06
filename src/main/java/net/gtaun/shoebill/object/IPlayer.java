@@ -109,12 +109,12 @@ public interface IPlayer
 	void setLocation( LocationAngular location );
 	void setLocationFindZ( float x, float y, float z );
 	void setLocationFindZ( Location location );
-	void setLocationFindZ( LocationAngular position );
+	void setLocationFindZ( LocationAngular location );
 	void setAngle( float angle );
 	void setInteriorId( int interiorId );
 	void setWorldId( int worldId );
 	void setWorldBound( Area bound );
-	void setSpeed( Velocity speed );
+	void setVelocity( Velocity speed );
 
 	void sendMessage( Color color, String message );
 	void sendMessage( Color color, String format, Object... args );

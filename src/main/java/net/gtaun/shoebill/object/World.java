@@ -17,7 +17,9 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.LocationAngular;
 import net.gtaun.shoebill.data.SpawnInfo;
+import net.gtaun.shoebill.data.WeaponData;
 import net.gtaun.shoebill.data.type.PlayerMarkerMode;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -54,19 +56,23 @@ public class World implements IWorld
 	@Override
 	public int addPlayerClass( int modelId, SpawnInfo spawnInfo )
 	{
-		return SampNativeFunction.addPlayerClass( modelId, 
-			spawnInfo.location.x, spawnInfo.location.y, spawnInfo.location.z, spawnInfo.location.angle,
-			spawnInfo.weapon1.type.getId(), spawnInfo.weapon1.ammo, spawnInfo.weapon2.type.getId(), spawnInfo.weapon2.ammo,
-			spawnInfo.weapon3.type.getId(), spawnInfo.weapon3.ammo );
+		LocationAngular loc = spawnInfo.getLocation();
+		WeaponData weapon1 = spawnInfo.getWeapon1();
+		WeaponData weapon2 = spawnInfo.getWeapon2();
+		WeaponData weapon3 = spawnInfo.getWeapon3();
+		
+		return SampNativeFunction.addPlayerClass( modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getType().getId(), weapon1.getAmmo(), weapon2.getType().getId(), weapon2.getAmmo(), weapon3.getType().getId(), weapon3.getAmmo() );
 	}
 	
 	@Override
 	public int addPlayerClassEx( int teamId, int modelId, SpawnInfo spawnInfo )
 	{
-		return SampNativeFunction.addPlayerClassEx( teamId, modelId, 
-			spawnInfo.location.x, spawnInfo.location.y, spawnInfo.location.z, spawnInfo.location.angle,
-			spawnInfo.weapon1.type.getId(), spawnInfo.weapon1.ammo, spawnInfo.weapon2.type.getId(), spawnInfo.weapon2.ammo,
-			spawnInfo.weapon3.type.getId(), spawnInfo.weapon3.ammo );
+		LocationAngular loc = spawnInfo.getLocation();
+		WeaponData weapon1 = spawnInfo.getWeapon1();
+		WeaponData weapon2 = spawnInfo.getWeapon2();
+		WeaponData weapon3 = spawnInfo.getWeapon3();
+		
+		return SampNativeFunction.addPlayerClassEx( teamId, modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getType().getId(), weapon1.getAmmo(), weapon2.getType().getId(), weapon2.getAmmo(), weapon3.getType().getId(), weapon3.getAmmo() );
 	}
 
 	@Override
@@ -161,7 +167,7 @@ public class World implements IWorld
 	@Override
 	public void createExplosion( Location location, int type, float radius )
 	{
-		SampNativeFunction.createExplosion( location.x, location.y, location.z, type, radius );
+		SampNativeFunction.createExplosion( location.getX(), location.getY(), location.getZ(), type, radius );
 	}
 	
 	@Override

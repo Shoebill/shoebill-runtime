@@ -81,7 +81,7 @@ public class Label implements ILabel
 	
 	private void initialize() throws CreationFailedException
 	{
-		id = SampNativeFunction.create3DTextLabel( text, color.getValue(), location.x, location.y, location.z, drawDistance, location.worldId, testLOS );
+		id = SampNativeFunction.create3DTextLabel( text, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, location.getWorldId(), testLOS );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -113,18 +113,18 @@ public class Label implements ILabel
 	{
 		if( isDestroyed() ) return null;
 		
-		Location pos = null;
+		Location loc = null;
 		
-		if( attachedPlayer != null )	pos = attachedPlayer.getLocation();
-		if( attachedVehicle != null )	pos = attachedVehicle.getLocation();
+		if( attachedPlayer != null )	loc = attachedPlayer.getLocation();
+		if( attachedVehicle != null )	loc = attachedVehicle.getLocation();
 		
-		if( pos != null )
+		if( loc != null )
 		{
-			location.x = pos.x + offsetX;
-			location.y = pos.y + offsetY;
-			location.z = pos.z + offsetZ;
-			location.interiorId = pos.interiorId;
-			location.worldId = pos.worldId;
+			location.setX( loc.getX() + offsetX );
+			location.setY( loc.getY() + offsetY );
+			location.setZ( loc.getZ() + offsetZ );
+			location.setInteriorId( loc.getInteriorId() );
+			location.setWorldId( loc.getWorldId() );
 		}
 		
 		return location.clone();

@@ -125,14 +125,14 @@ public class PlayerLabel implements IPlayerLabel
 		
 		if( attachedPlayer != null || attachedVehicle != null )
 		{
-			offsetX = location.x;
-			offsetY = location.y;
-			offsetZ = location.z;
+			offsetX = location.getX();
+			offsetY = location.getY();
+			offsetZ = location.getZ();
 		}
 		
 		if( player.isOnline() == false ) throw new CreationFailedException();
 		
-		id = SampNativeFunction.createPlayer3DTextLabel( player.getId(), text, color.getValue(), location.x, location.y, location.z, drawDistance, playerId, vehicleId, testLOS );
+		id = SampNativeFunction.createPlayer3DTextLabel( player.getId(), text, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, playerId, vehicleId, testLOS );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -175,11 +175,11 @@ public class PlayerLabel implements IPlayerLabel
 		
 		if( pos != null )
 		{
-			location.x = pos.x + offsetX;
-			location.y = pos.y + offsetY;
-			location.z = pos.z + offsetZ;
-			location.interiorId = pos.interiorId;
-			location.worldId = pos.worldId;
+			location.setX( pos.getX() + offsetX );
+			location.setY( pos.getY() + offsetY );
+			location.setZ( pos.getZ() + offsetZ );
+			location.setInteriorId( pos.getInteriorId() );
+			location.setWorldId( pos.getWorldId() );
 		}
 		
 		return location.clone();

@@ -84,7 +84,7 @@ public class Pickup implements IPickup
 	
 	private void initialize() throws CreationFailedException
 	{
-		id = SampNativeFunction.createPickup( modelId, type, location.x, location.y, location.z, location.worldId );
+		id = SampNativeFunction.createPickup( modelId, type, location.getX(), location.getY(), location.getZ(), location.getWorldId() );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();

@@ -133,7 +133,7 @@ public class PlayerObject implements IPlayerObject
 	{
 		if( player.isOnline() == false ) throw new CreationFailedException();
 		
-		id = SampNativeFunction.createPlayerObject( player.getId(), modelId, location.x, location.y, location.z, location.rx, location.ry, location.rz, drawDistance );
+		id = SampNativeFunction.createPlayerObject( player.getId(), modelId, location.getX(), location.getY(), location.getZ(), location.getRx(), location.getRy(), location.getRz(), drawDistance );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -181,7 +181,7 @@ public class PlayerObject implements IPlayerObject
 		if( player.isOnline() == false ) return;
 		
 		this.location.set( location );
-		SampNativeFunction.setPlayerObjectPos( player.getId(), id, location.x, location.y, location.z );
+		SampNativeFunction.setPlayerObjectPos( player.getId(), id, location.getX(), location.getY(), location.getZ() );
 	}
 	
 	@Override
@@ -191,8 +191,8 @@ public class PlayerObject implements IPlayerObject
 		if( player.isOnline() == false ) return;
 		
 		this.location = location.clone();
-		SampNativeFunction.setPlayerObjectPos( player.getId(), id, location.x, location.y, location.z );
-		SampNativeFunction.setPlayerObjectRot( player.getId(), id, location.rx, location.ry, location.rz );
+		SampNativeFunction.setPlayerObjectPos( player.getId(), id, location.getX(), location.getY(), location.getZ() );
+		SampNativeFunction.setPlayerObjectRot( player.getId(), id, location.getRx(), location.getRy(), location.getRz() );
 	}
 	
 	@Override
@@ -201,9 +201,9 @@ public class PlayerObject implements IPlayerObject
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
 		
-		location.rx = rx;
-		location.ry = ry;
-		location.rz = rz;
+		location.setRx( rx );
+		location.setRy( ry );
+		location.setRz( rz );
 		
 		SampNativeFunction.setPlayerObjectRot( player.getId(), id, rx, ry, rz );
 	}

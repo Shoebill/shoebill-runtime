@@ -72,7 +72,7 @@ public class Zone implements IZone
 	
 	private void initialize() throws CreationFailedException
 	{
-		id = SampNativeFunction.gangZoneCreate( area.minX, area.minY, area.maxX, area.maxY );
+		id = SampNativeFunction.gangZoneCreate( area.getMinX(), area.getMinY(), area.getMaxX(), area.getMaxY() );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		for( int i=0; i<isPlayerShowed.length; i++ )

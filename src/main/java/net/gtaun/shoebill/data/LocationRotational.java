@@ -47,7 +47,7 @@ public class LocationRotational extends Location implements Cloneable, Serializa
 	}
 	
 	
-	public float rx, ry, rz;
+	private float rx, ry, rz;
 	
 	
 	public LocationRotational()

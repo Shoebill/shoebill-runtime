@@ -127,7 +127,7 @@ public class ObjectBase implements IObject
 	
 	private void initialize() throws CreationFailedException
 	{
-		id = SampNativeFunction.createObject( modelId, location.x, location.y, location.z, location.rx, location.ry, location.rz, drawDistance );
+		id = SampNativeFunction.createObject( modelId, location.getX(), location.getY(), location.getZ(), location.getRx(), location.getRy(), location.getRz(), drawDistance );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -173,7 +173,7 @@ public class ObjectBase implements IObject
 		if( isDestroyed() ) return;
 		
 		this.location.set( location );
-		SampNativeFunction.setObjectPos( id, location.x, location.y, location.z );
+		SampNativeFunction.setObjectPos( id, location.getX(), location.getY(), location.getZ() );
 	}
 	
 	@Override
@@ -182,8 +182,8 @@ public class ObjectBase implements IObject
 		if( isDestroyed() ) return;
 		
 		this.location = location.clone();
-		SampNativeFunction.setObjectPos( id, location.x, location.y, location.z );
-		SampNativeFunction.setObjectRot( id, location.rx, location.ry, location.rz );
+		SampNativeFunction.setObjectPos( id, location.getX(), location.getY(), location.getZ() );
+		SampNativeFunction.setObjectRot( id, location.getRx(), location.getRy(), location.getRz() );
 	}
 	
 	@Override
@@ -191,9 +191,9 @@ public class ObjectBase implements IObject
 	{
 		if( isDestroyed() ) return;
 		
-		location.rx = rx;
-		location.ry = ry;
-		location.rz = rz;
+		location.setRx( rx );
+		location.setRy( ry );
+		location.setRz( rz );
 		
 		SampNativeFunction.setObjectRot( id, rx, ry, rz );
 	}
