@@ -31,7 +31,7 @@ public class SampCallbackManager implements ISampCallbackManager
 
 	public SampCallbackManager()
 	{
-		callbackHandlers = new ConcurrentLinkedQueue<ISampCallbackHandler>();
+		callbackHandlers = new ConcurrentLinkedQueue<>();
 	}
 	
 	@Override

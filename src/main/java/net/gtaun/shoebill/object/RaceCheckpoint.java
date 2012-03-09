@@ -94,7 +94,7 @@ public class RaceCheckpoint implements IRaceCheckpoint
 	{
 		for( IPlayer player : Player.get() )
 		{
-			if( player == null ) continue;			
+			if( player == null ) continue;
 			if( player.getRaceCheckpoint() == this ) set( player );
 		}
 	}
@@ -102,7 +102,7 @@ public class RaceCheckpoint implements IRaceCheckpoint
 	@Override
 	public Collection<IPlayer> getUsingPlayers()
 	{
-		Collection<IPlayer> players = new ArrayList<IPlayer>();
+		Collection<IPlayer> players = new ArrayList<>();
 		for( IPlayer player : Player.get() )
 		{
 			if( player.getRaceCheckpoint() == this ) players.add( player );

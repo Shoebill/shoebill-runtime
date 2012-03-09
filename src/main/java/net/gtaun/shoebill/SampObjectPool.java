@@ -66,7 +66,7 @@ public class SampObjectPool implements ISampObjectPool
 	
 	private static <T> Collection<T> getInstances( Object[] items, Class<T> cls )
 	{
-		Collection<T> list = new ArrayList<T>();
+		Collection<T> list = new ArrayList<>();
 		if( items != null ) for( Object item : items ) if( cls.isInstance(item) ) list.add( cls.cast(item) );
 		return list;		
 	}
@@ -89,8 +89,8 @@ public class SampObjectPool implements ISampObjectPool
 	IZone[] zones										= new IZone[MAX_ZONES];
 	IMenu[] menus										= new IMenu[MAX_MENUS];
 	
-	Collection<Reference<ITimer>> timers				= new ConcurrentLinkedQueue<Reference<ITimer>>();
-	Map<Integer, Reference<IDialog>> dialogs			= new ConcurrentHashMap<Integer, Reference<IDialog>>();
+	Collection<Reference<ITimer>> timers				= new ConcurrentLinkedQueue<>();
+	Map<Integer, Reference<IDialog>> dialogs			= new ConcurrentHashMap<>();
 	
 	Class<? extends IPlayer> playerClass = Player.class;
 	

@@ -90,14 +90,14 @@ public class EventManager implements IEventManager
 		Map<Object, Queue<EventListenerEntry>> objectListenerEntries = listenerEntryContainersMap.get(type);
 		if( objectListenerEntries == null )
 		{
-			objectListenerEntries = new ConcurrentHashMap<Object, Queue<EventListenerEntry>>();
+			objectListenerEntries = new ConcurrentHashMap<>();
 			listenerEntryContainersMap.put( type, objectListenerEntries );
 		}
 		
 		Queue<EventListenerEntry> entries = objectListenerEntries.get(relatedObject);
 		if( entries == null )
 		{
-			entries = new ConcurrentLinkedQueue<EventListenerEntry>();
+			entries = new ConcurrentLinkedQueue<>();
 			objectListenerEntries.put( relatedObject, entries );
 		}
 		
@@ -245,7 +245,7 @@ public class EventManager implements IEventManager
 		if( objects.length == 1 && objects[0] instanceof Object[] ) objects = (Object[]) objects[0];
 		
 		Class<? extends Event> type = event.getClass();
-		PriorityQueue<EventListenerEntry> listenerEntryQueue = new PriorityQueue<EventListenerEntry>( 16,
+		PriorityQueue<EventListenerEntry> listenerEntryQueue = new PriorityQueue<>( 16,
 			new Comparator<EventListenerEntry>()
 			{
 				public int compare( EventListenerEntry o1, EventListenerEntry o2 )
@@ -301,7 +301,7 @@ public class EventManager implements IEventManager
 			else listenerEntryQueue.add( entry );
 		}
 		
-		HashSet<EventListenerEntry> processedHandler = new HashSet<EventListenerEntry>( listenerEntryQueue.size() );
+		HashSet<EventListenerEntry> processedHandler = new HashSet<>( listenerEntryQueue.size() );
 		while( listenerEntryQueue.isEmpty() == false && event.isInterrupted() == false )
 		{
 			EventListenerEntry entry = listenerEntryQueue.poll();

@@ -55,12 +55,11 @@ public class PluginDescription
 		version = config.getString( "version" );
 		
 		String author = config.getString( "authors" );
-		authors = new ArrayList<String>();
+		authors = new ArrayList<>();
 		String[] auth = author.split("[,;]");
-		if( auth.length > 0 )
-			for( String string : auth ) authors.add( string.trim() );
-		else
-			authors.add( author.trim() );
+		
+		if( auth.length > 0 )	for( String string : auth ) authors.add( string.trim() );
+		else					authors.add( author.trim() );
 			
 		description = config.getString( "description" );
 	}

@@ -41,7 +41,7 @@ public class MemoryConfiguration implements Configuration
 
 	public MemoryConfiguration( Map<String, Object> root )
 	{
-		if( root == null )	this.root = new HashMap<String, Object>();
+		if( root == null )	this.root = new HashMap<>();
 		else				this.root = root;
 	}
 	
@@ -97,7 +97,7 @@ public class MemoryConfiguration implements Configuration
 			Object obj = node.get(childs[i]);
 			if( obj instanceof Map<?, ?> == false )
 			{
-				obj = new HashMap<String, Object>();
+				obj = new HashMap<>();
 				node.put( childs[i], obj );
 			}
 			
@@ -205,7 +205,7 @@ public class MemoryConfiguration implements Configuration
 	@Override
 	public void setDouble( String path, double value )
 	{
-		set(path, value);
+		set( path, value );
 	}
 
 	@Override
@@ -230,7 +230,7 @@ public class MemoryConfiguration implements Configuration
 	@Override
 	public void setBoolean( String path, boolean value )
 	{
-		set(path, value);
+		set( path, value );
 	}
 
 	@Override
@@ -267,7 +267,7 @@ public class MemoryConfiguration implements Configuration
 			return def != null ? def : new ArrayList<String>();
 		}
 		
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		for( Object o : raw )
 		{
 			if( o != null ) list.add( o.toString() );
@@ -285,7 +285,7 @@ public class MemoryConfiguration implements Configuration
 			return def != null ? def : new ArrayList<Integer>();
 		}
 		
-		List<Integer> list = new ArrayList<Integer>();
+		List<Integer> list = new ArrayList<>();
 		for( Object o : raw )
 		{
 			Integer i = Integer.parseInt( o.toString() );
@@ -296,7 +296,7 @@ public class MemoryConfiguration implements Configuration
 	}
 	
 	@Override
-	public List<Double> getDoubleList(String path, List<Double> def)
+	public List<Double> getDoubleList( String path, List<Double> def )
 	{
 		List<?> raw = getList(path);
 		if (raw == null)
@@ -304,7 +304,7 @@ public class MemoryConfiguration implements Configuration
 			return def != null ? def : new ArrayList<Double>();
 		}
 		
-		List<Double> list = new ArrayList<Double>();
+		List<Double> list = new ArrayList<>();
 		for( Object o : raw )
 		{
 			Double d = Double.parseDouble( o.toString() );
@@ -315,7 +315,7 @@ public class MemoryConfiguration implements Configuration
 	}
 	
 	@Override
-	public List<Boolean> getBooleanList(String path, List<Boolean> def)
+	public List<Boolean> getBooleanList( String path, List<Boolean> def )
 	{
 		List<?> raw = getList(path);
 		if (raw == null)
@@ -323,7 +323,7 @@ public class MemoryConfiguration implements Configuration
 			return def != null ? def : new ArrayList<Boolean>();
 		}
 		
-		List<Boolean> list = new ArrayList<Boolean>();
+		List<Boolean> list = new ArrayList<>();
 		for (Object o : raw)
 		{
 			Boolean b = Boolean.parseBoolean( o.toString() );

@@ -153,18 +153,27 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 			{
 				String[] splits = cmd.split( " " );
 				if( splits.length != 2 ) return 0;
-				if( "changegamemode".equalsIgnoreCase(splits[0]) == false ) return 0;
 				
-				String gamemode = splits[1];
-				File file = new File(gamemodeDir, gamemode);
-				if( file.exists() == false || file.isFile() == false )
+				String op = splits[0].toLowerCase();
+				switch( op )
 				{
-					LOGGER.info( "'" + gamemode + "' can not be found." );
+				case "changegamemode":
+					{
+						String gamemode = splits[1];
+						File file = new File(gamemodeDir, gamemode);
+						if( file.exists() == false || file.isFile() == false )
+						{
+							LOGGER.info( "'" + gamemode + "' can not be found." );
+							return 0;
+						}
+						
+						changeGamemode( file );
+						return 1;
+					}
+
+				default:
 					return 0;
 				}
-				
-				changeGamemode( file );
-				return 1;
 			}
 		} );
 	}

@@ -93,7 +93,7 @@ public class Checkpoint implements ICheckpoint
 	@Override
 	public Collection<IPlayer> getUsingPlayers()
 	{
-		Collection<IPlayer> players = new ArrayList<IPlayer>();
+		Collection<IPlayer> players = new ArrayList<>();
 		for( IPlayer player : Player.get() )
 		{
 			if( player.getCheckpoint() == this ) players.add( player );

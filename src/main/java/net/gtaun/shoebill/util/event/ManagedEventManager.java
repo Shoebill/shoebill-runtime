@@ -38,7 +38,7 @@ public class ManagedEventManager implements IEventManager
 	public ManagedEventManager( IEventManager eventManager )
 	{
 		this.eventManager = eventManager;
-		managedListeners = new HashSet<EventListenerEntry>();
+		managedListeners = new HashSet<>();
 		eventListenerEventListener = new EventListenerEventListener()
 		{
 			@Override

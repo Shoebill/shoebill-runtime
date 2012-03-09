@@ -88,7 +88,7 @@ public class YamlConfiguration extends MemoryConfiguration implements FileConfig
 	{
 		Object obj = yaml.load(in);
 		if( obj instanceof Map )	root = (Map<String, Object>) obj;
-		else						root = new HashMap<String, Object>();
+		else						root = new HashMap<>();
 	}
 	
 	@Override
