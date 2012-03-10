@@ -18,6 +18,7 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.Vector3D;
 
 /**
  * @author MK124
@@ -34,8 +35,10 @@ public interface ILabel extends IDestroyable
 	
 	IPlayer getAttachedPlayer();
 	IVehicle getAttachedVehicle();
-	
+
 	void attach( IPlayer player, float x, float y, float z );
+	void attach( IPlayer player, Vector3D offset );
 	void attach( IVehicle vehicle, float x, float y, float z );
+	void attach( IVehicle vehicle, Vector3D offset );
 	void update( Color color, String text );
 }

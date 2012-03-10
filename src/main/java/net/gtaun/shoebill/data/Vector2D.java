@@ -43,7 +43,13 @@ public class Vector2D implements Cloneable, Serializable, Immutable
 		
 		private ImmutablyVector2D()
 		{
-			super( Vector2D.this.getX(), Vector2D.this.getY() );
+			super( Vector2D.this );
+		}
+		
+		@Override
+		public Vector2D clone()
+		{
+			return new Vector2D( this );
 		}
 	}
 	
@@ -60,6 +66,12 @@ public class Vector2D implements Cloneable, Serializable, Immutable
 	{
 		this.x = x;
 		this.y = y;
+	}
+	
+	public Vector2D( Vector2D vec )
+	{
+		this.x = vec.getX();
+		this.y = vec.getY();
 	}
 	
 	public float getX()

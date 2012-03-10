@@ -18,6 +18,7 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutable;
 import net.gtaun.shoebill.util.immutable.Immutably;
 import net.gtaun.shoebill.util.immutable.ImmutablyException;
 
@@ -31,7 +32,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class LocationRadius extends Location implements Cloneable, Serializable
+public class LocationRadius extends Location implements Cloneable, Serializable, Immutable
 {
 	private static final long serialVersionUID = -4375366678586498863L;
 	
@@ -42,92 +43,138 @@ public class LocationRadius extends Location implements Cloneable, Serializable
 		
 		private ImmutablyLocationRadius()
 		{
-			super( LocationRadius.this.getX(), LocationRadius.this.getY(), LocationRadius.this.getZ(), LocationRadius.this.getInteriorId(), LocationRadius.this.getWorldId(), LocationRadius.this.getDistance() );
+			super( LocationRadius.this );
+		}
+		
+		@Override
+		public LocationRadius clone()
+		{
+			return new LocationRadius( this );
 		}
 	}
 	
 	
-	private float distance;
+	private float radius;
 	
 	
 	public LocationRadius()
 	{
 		
 	}
-	
-	public LocationRadius( float x, float y, float z, float distance )
+
+	public LocationRadius( float x, float y, float z, float radius )
 	{
 		super( x, y, z );
-		this.distance = distance;
+		this.radius = radius;
 	}
 	
-	public LocationRadius( float x, float y, float z, int interiorId, int worldId, float distance )
+	public LocationRadius( float x, float y, float z, int worldId, float radius )
+	{
+		super( x, y, z, worldId );
+		this.radius = radius;
+	}
+	
+	public LocationRadius( float x, float y, float z, int interiorId, int worldId, float radius )
 	{
 		super( x, y, z, interiorId, worldId );
-		this.distance = distance;
+		this.radius = radius;
+	}
+
+	public LocationRadius( Vector3D pos, float radius )
+	{
+		super( pos );
+		this.radius = radius;
 	}
 	
-	public LocationRadius( Location location, float distance )
+	public LocationRadius( Vector3D pos, int worldId, float radius )
 	{
-		super( location.getX(), location.getY(), location.getZ(), location.getInteriorId(), location.getWorldId() );
-		this.distance = distance;
+		super( pos, worldId );
+		this.radius = radius;
+	}
+	
+	public LocationRadius( Vector3D pos, int interiorId, int worldId, float radius )
+	{
+		super( pos, interiorId, worldId );
+		this.radius = radius;
+	}
+
+	public LocationRadius( Location loc, float radius )
+	{
+		super( loc );
+		this.radius = radius;
+	}
+	
+	public LocationRadius( LocationRadius loc )
+	{
+		super( loc );
+		this.radius = loc.getDistance();
 	}
 	
 	public float getDistance()
 	{
-		return distance;
+		return radius;
 	}
 
-	public void setDistance( float distance )
+	public void setRadius( float radius )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
-		this.distance = distance;
+		this.radius = radius;
 	}
 	
-
-	public void set( float x, float y, float z, float distance )
+	public void set( float x, float y, float z, float radius )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
 		
-		setX( x );
-		setY( y );
-		setZ( z );
-		setDistance( distance );
+		super.set( x, y, z );
+		setRadius( radius );
 	}
 	
-	public void set( float x, float y, float z, int worldId, float distance )
+	public void set( float x, float y, float z, int worldId, float radius )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
 		
-		setX( x );
-		setY( y );
-		setZ( z );
-		setWorldId( worldId );
-		setDistance( distance );
+		super.set( x, y, z, worldId );
+		setRadius( radius );
 	}
 	
-	public void set( float x, float y, float z, int interiorId, int worldId, float distance )
+	public void set( float x, float y, float z, int interiorId, int worldId, float radius )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
 		
-		setX( x );
-		setY( y );
-		setZ( z );
-		setInteriorId( interiorId );
-		setWorldId( worldId );
-		setDistance( distance );
+		super.set( x, y, z, interiorId, worldId );
+		setRadius( radius );
 	}
-
-	public void set( LocationRadius location )
+	
+	public void set( Vector3D pos, float radius )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
 
-		setX( location.getX() );
-		setY( location.getY() );
-		setZ( location.getZ() );
-		setInteriorId( location.getInteriorId() );
-		setWorldId( location.getWorldId() );
-		setDistance( location.getDistance() );
+		super.set( pos );
+		setRadius( radius );
+	}
+	
+	public void set( Vector3D pos, int worldId, float radius )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+
+		super.set( pos, worldId );
+		setRadius( radius );
+	}
+	
+	public void set( Vector3D pos, int interiorId, int worldId, float radius )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		super.set( pos, interiorId, worldId );
+		setRadius( radius );
+	}
+
+	public void set( LocationRadius loc )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+
+		super.set( loc );
+		setRadius( loc.getDistance() );
 	}
 	
 	@Override

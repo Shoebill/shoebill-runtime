@@ -43,7 +43,13 @@ public class Time implements Cloneable, Serializable, Immutable
 		
 		private ImmutablyTime()
 		{
-			super( Time.this.getHour(), Time.this.getMinute() );
+			super( Time.this );
+		}
+		
+		@Override
+		public Time clone()
+		{
+			return new Time( this );
 		}
 	}
 	
@@ -55,11 +61,17 @@ public class Time implements Cloneable, Serializable, Immutable
 	{
 		
 	}
-	
+
 	public Time( int hour, int minute )
 	{
 		this.hour = hour;
 		this.minute = minute;
+	}
+	
+	public Time( Time time )
+	{
+		this.hour = time.getHour();
+		this.minute = time.getMinute();
 	}
 	
 	public int getHour()

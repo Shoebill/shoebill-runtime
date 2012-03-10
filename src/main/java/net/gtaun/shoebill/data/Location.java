@@ -43,7 +43,13 @@ public class Location extends Vector3D implements Cloneable, Serializable, Immut
 		
 		private ImmutableLocation()
 		{
-			super( Location.this.getX(), Location.this.getY(), Location.this.getZ(), Location.this.getInteriorId(), Location.this.getWorldId() );
+			super( Location.this );
+		}
+		
+		@Override
+		public Location clone()
+		{
+			return new Location( this );
 		}
 	}
 	
@@ -73,6 +79,31 @@ public class Location extends Vector3D implements Cloneable, Serializable, Immut
 		this.interiorId = interiorId;
 		this.worldId = worldId;
 	}
+
+	public Location( Vector3D pos )
+	{
+		super( pos );
+	}
+	
+	public Location( Vector3D pos, int worldId )
+	{
+		super( pos );
+		this.worldId = worldId;
+	}
+
+	public Location( Vector3D pos, int interiorId, int worldId )
+	{
+		super( pos );
+		this.interiorId = interiorId;
+		this.worldId = worldId;
+	}
+	
+	public Location( Location loc )
+	{
+		super( loc.getX(), loc.getY(), loc.getZ() );
+		this.interiorId = loc.getInteriorId();
+		this.worldId = loc.getWorldId();
+	}
 	
 	public int getInteriorId()
 	{
@@ -96,31 +127,55 @@ public class Location extends Vector3D implements Cloneable, Serializable, Immut
 		
 		this.worldId = worldId;
 	}
+
+	public void set( float x, float y, float z )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+
+		super.set( x, y, z );
+	}
 	
 	public void set( float x, float y, float z, int worldId )
 	{
-		setX( x );
-		setY( y );
-		setZ( z );
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		super.set( x, y, z );
 		setWorldId( worldId );
 	}
 	
 	public void set( float x, float y, float z, int interiorId, int worldId )
 	{
-		setX( x );
-		setY( y );
-		setZ( z );
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		super.set( x, y, z );
+		setInteriorId( interiorId );
+		setWorldId( worldId );
+	}
+
+	public void set( Vector3D pos, int worldId )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		super.set( pos );
+		setWorldId( worldId );
+	}
+
+	public void set( Vector3D pos, int interiorId, int worldId )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		super.set( pos );
 		setInteriorId( interiorId );
 		setWorldId( worldId );
 	}
 	
-	public void set( Location location )
+	public void set( Location loc )
 	{
-		setX( location.getX() );
-		setY( location.getY() );
-		setZ( location.getZ() );
-		setInteriorId( location.getInteriorId() );
-		setWorldId( location.getWorldId() );
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		super.set( loc );
+		setInteriorId( loc.getInteriorId() );
+		setWorldId( loc.getWorldId() );
 	}
 	
 	@Override

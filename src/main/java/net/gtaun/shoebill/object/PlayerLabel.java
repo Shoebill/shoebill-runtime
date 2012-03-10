@@ -22,6 +22,7 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -54,7 +55,7 @@ public class PlayerLabel implements IPlayerLabel
 	private Location location;
 	private boolean testLOS;
 	
-	private float offsetX, offsetY, offsetZ;
+	private Vector3D offset;
 	private IPlayer attachedPlayer;
 	private IVehicle attachedVehicle;
 	
@@ -125,9 +126,7 @@ public class PlayerLabel implements IPlayerLabel
 		
 		if( attachedPlayer != null || attachedVehicle != null )
 		{
-			offsetX = location.getX();
-			offsetY = location.getY();
-			offsetZ = location.getZ();
+			offset = new Vector3D( location.getX(), location.getY(), location.getZ() );
 		}
 		
 		if( player.isOnline() == false ) throw new CreationFailedException();
@@ -175,9 +174,9 @@ public class PlayerLabel implements IPlayerLabel
 		
 		if( pos != null )
 		{
-			location.setX( pos.getX() + offsetX );
-			location.setY( pos.getY() + offsetY );
-			location.setZ( pos.getZ() + offsetZ );
+			location.setX( pos.getX() + offset.getX() );
+			location.setY( pos.getY() + offset.getY() );
+			location.setZ( pos.getZ() + offset.getZ() );
 			location.setInteriorId( pos.getInteriorId() );
 			location.setWorldId( pos.getWorldId() );
 		}
@@ -200,6 +199,12 @@ public class PlayerLabel implements IPlayerLabel
 		attachedPlayer = target;
 		attachedVehicle = null;
 	}
+	
+	@Override
+	public void attach( IPlayer target, Vector3D offset )
+	{
+		attach( target, offset.getX(), offset.getY(), offset.getZ() );
+	}
 
 	@Override
 	public void attach( IVehicle vehicle, float x, float y, float z )
@@ -215,6 +220,12 @@ public class PlayerLabel implements IPlayerLabel
 	
 		attachedPlayer = null;
 		attachedVehicle = vehicle;
+	}
+	
+	@Override
+	public void attach( IVehicle vehicle, Vector3D offset )
+	{
+		attach( vehicle, offset.getX(), offset.getY(), offset.getZ() );
 	}
 	
 	@Override

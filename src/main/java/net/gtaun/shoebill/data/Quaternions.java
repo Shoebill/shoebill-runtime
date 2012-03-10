@@ -18,6 +18,7 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutable;
 import net.gtaun.shoebill.util.immutable.Immutably;
 import net.gtaun.shoebill.util.immutable.ImmutablyException;
 
@@ -31,7 +32,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class Quaternions extends Vector3D implements Cloneable, Serializable
+public class Quaternions extends Vector3D implements Cloneable, Serializable, Immutable
 {
 	private static final long serialVersionUID = 455013800771095435L;
 	
@@ -42,7 +43,13 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 		
 		private ImmutablyQuaternions()
 		{
-			super( Quaternions.this.getX(), Quaternions.this.getY(), Quaternions.this.getZ(), Quaternions.this.getW() );
+			super( Quaternions.this );
+		}
+		
+		@Override
+		public Quaternions clone()
+		{
+			return new Quaternions( this );
 		}
 	}
 	
@@ -54,11 +61,23 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 	{
 		
 	}
-	
+
 	public Quaternions( float x, float y, float z, float w )
 	{
 		super( x, y, z );
 		this.w = w;
+	}
+
+	public Quaternions( Vector3D vec, float w )
+	{
+		super( vec );
+		this.w = w;
+	}
+	
+	public Quaternions( Quaternions quat )
+	{
+		super( quat );
+		this.w = quat.getW();
 	}
 	
 	public float getW()
@@ -70,14 +89,20 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 	{
 		this.w = w;
 	}
-	
+
 	public void set( float x, float y, float z, float w )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
 		
-		setX( x );
-		setY( y );
-		setZ( z );
+		super.set( x, y, z );
+		setW( w );
+	}
+	
+	public void set( Vector3D vec, float w )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		super.set( vec );
 		setW( w );
 	}
 	
@@ -85,9 +110,7 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
 		
-		setX( quat.getX() );
-		setY( quat.getY() );
-		setZ( quat.getZ() );
+		super.set( quat );
 		setW( quat.getW() );
 	}
 

@@ -20,7 +20,7 @@ import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.KeyState;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.LocationAngular;
+import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
@@ -71,7 +71,7 @@ public interface IPlayer
 	IPlayer getSpectatingPlayer();
 	IVehicle getSpectatingVehicle();
 	
-	LocationAngular getLocation();
+	LocationAngle getLocation();
 	Area getWorldBound();
 	Velocity getVelocity();
 	PlayerState getState();
@@ -106,10 +106,10 @@ public interface IPlayer
 	void setVehicle( IVehicle vehicle );
 	void setLocation( float x, float y, float z );
 	void setLocation( Location location );
-	void setLocation( LocationAngular location );
+	void setLocation( LocationAngle location );
 	void setLocationFindZ( float x, float y, float z );
 	void setLocationFindZ( Location location );
-	void setLocationFindZ( LocationAngular location );
+	void setLocationFindZ( LocationAngle location );
 	void setAngle( float angle );
 	void setInteriorId( int interiorId );
 	void setWorldId( int worldId );

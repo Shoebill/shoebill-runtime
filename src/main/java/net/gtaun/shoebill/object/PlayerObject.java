@@ -21,7 +21,7 @@ import java.util.Collection;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.LocationRotational;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -55,7 +55,8 @@ public class PlayerObject implements IPlayerObject
 	private IPlayer player;
 	
 	private int modelId;
-	private LocationRotational location;
+	private Location location;
+	private Vector3D rotate;
 	private float speed = 0;
 	private IPlayer attachedPlayer;
 	private float drawDistance = 0;
@@ -76,7 +77,8 @@ public class PlayerObject implements IPlayerObject
 	{
 		this.player = player;
 		this.modelId = modelId;
-		this.location = new LocationRotational( x, y, z, rx, ry, rz );
+		this.location = new Location( x, y, z );
+		this.rotate = new Vector3D( rx, ry, rz );
 		
 		initialize();
 	}
@@ -85,7 +87,8 @@ public class PlayerObject implements IPlayerObject
 	{
 		this.player = player;
 		this.modelId = modelId;
-		this.location = new LocationRotational( x, y, z, rx, ry, rz );
+		this.location = new Location( x, y, z );
+		this.rotate = new Vector3D( rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
 		initialize();
@@ -95,7 +98,8 @@ public class PlayerObject implements IPlayerObject
 	{
 		this.player = player;
 		this.modelId = modelId;
-		this.location = new LocationRotational( location, rx, ry, rz );
+		this.location = new Location( location );
+		this.rotate = new Vector3D( rx, ry, rz );
 		
 		initialize();
 	}
@@ -104,26 +108,29 @@ public class PlayerObject implements IPlayerObject
 	{
 		this.player = player;
 		this.modelId = modelId;
-		this.location = new LocationRotational( location, rx, ry, rz );
+		this.location = new Location( location );
+		this.rotate = new Vector3D( rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
 		initialize();
 	}
 	
-	public PlayerObject( IPlayer player, int modelId, LocationRotational location ) throws CreationFailedException
+	public PlayerObject( IPlayer player, int modelId, Location location, Vector3D rot ) throws CreationFailedException
 	{
 		this.player = player;
 		this.modelId = modelId;
 		this.location = location.clone();
+		this.rotate = new Vector3D( rot );
 		
 		initialize();
 	}
 	
-	public PlayerObject( IPlayer player, int modelId, LocationRotational location, float drawDistance ) throws CreationFailedException
+	public PlayerObject( IPlayer player, int modelId, Location location, Vector3D rot, float drawDistance ) throws CreationFailedException
 	{
 		this.player = player;
 		this.modelId = modelId;
 		this.location = location.clone();
+		this.rotate = new Vector3D( rot );
 		this.drawDistance = drawDistance;
 		
 		initialize();
@@ -133,7 +140,7 @@ public class PlayerObject implements IPlayerObject
 	{
 		if( player.isOnline() == false ) throw new CreationFailedException();
 		
-		id = SampNativeFunction.createPlayerObject( player.getId(), modelId, location.getX(), location.getY(), location.getZ(), location.getRx(), location.getRy(), location.getRz(), drawDistance );
+		id = SampNativeFunction.createPlayerObject( player.getId(), modelId, location.getX(), location.getY(), location.getZ(), rotate.getX(), rotate.getY(), rotate.getZ(), drawDistance );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -164,13 +171,12 @@ public class PlayerObject implements IPlayerObject
 	}
 	
 	@Override
-	public LocationRotational getLocation()
+	public Location getLocation()
 	{	
 		if( isDestroyed() ) return null;
 		if( player.isOnline() == false ) return null;
 		
 		SampNativeFunction.getPlayerObjectPos( player.getId(), id, location );
-		SampNativeFunction.getPlayerObjectRot( player.getId(), id, location );
 		return location.clone();
 	}
 	
@@ -185,27 +191,30 @@ public class PlayerObject implements IPlayerObject
 	}
 	
 	@Override
-	public void setLocation( LocationRotational location )
+	public Vector3D getRotate()
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if( isDestroyed() ) return null;
+		if( player.isOnline() == false ) return null;
 		
-		this.location = location.clone();
-		SampNativeFunction.setPlayerObjectPos( player.getId(), id, location.getX(), location.getY(), location.getZ() );
-		SampNativeFunction.setPlayerObjectRot( player.getId(), id, location.getRx(), location.getRy(), location.getRz() );
+		SampNativeFunction.getPlayerObjectRot( player.getId(), id, rotate );
+		return rotate.clone();
 	}
-	
+
 	@Override
 	public void setRotate( float rx, float ry, float rz )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
 		
-		location.setRx( rx );
-		location.setRy( ry );
-		location.setRz( rz );
+		rotate.set( rx, ry, rz );
 		
 		SampNativeFunction.setPlayerObjectRot( player.getId(), id, rx, ry, rz );
+	}
+	
+	@Override
+	public void setRotate( Vector3D rot )
+	{
+		setRotate( rot.getX(), rot.getY(), rot.getZ() );
 	}
 	
 	@Override

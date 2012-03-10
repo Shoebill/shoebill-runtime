@@ -204,7 +204,13 @@ public class Color implements Cloneable, Serializable, Immutable
 
 		private ImmutablyColor()
 		{
-			super( Color.this.getValue() );
+			super( Color.this );
+		}
+		
+		@Override
+		public Color clone()
+		{
+			return new Color( this );
 		}
 	}
 	
@@ -225,6 +231,11 @@ public class Color implements Cloneable, Serializable, Immutable
 	public Color( int r, int g, int b, int a )
 	{
 		value = r&0xFF << 24 | g&0xFF << 16 | b&0xFF << 8 | a&0xFF;
+	}
+	
+	public Color( Color color )
+	{
+		this.value = color.getValue();
 	}
 	
 	public int getValue()
@@ -300,6 +311,8 @@ public class Color implements Cloneable, Serializable, Immutable
 
 	public void set( Color color )
 	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		setValue( color.getValue() );
 	}
 	

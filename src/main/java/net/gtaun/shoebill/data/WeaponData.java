@@ -44,7 +44,13 @@ public class WeaponData implements Cloneable, Serializable, Immutable
 		
 		private ImmutablyWeaponData()
 		{
-			super( WeaponData.this.getType(), WeaponData.this.getAmmo() );
+			super( WeaponData.this );
+		}
+		
+		@Override
+		public WeaponData clone()
+		{
+			return new WeaponData( this );
 		}
 	}
 	
@@ -63,6 +69,12 @@ public class WeaponData implements Cloneable, Serializable, Immutable
 	{
 		this.type = type;
 		this.ammo = ammo;
+	}
+	
+	public WeaponData( WeaponData data )
+	{
+		this.type = data.getType();
+		this.ammo = data.getAmmo();
 	}
 	
 	public WeaponType getType()

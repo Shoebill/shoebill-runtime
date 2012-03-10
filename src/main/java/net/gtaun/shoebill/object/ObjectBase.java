@@ -22,7 +22,7 @@ import java.util.Collection;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.LocationRotational;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -51,13 +51,14 @@ public class ObjectBase implements IObject
 	{
 		speed = 0;
 		SampNativeFunction.getObjectPos( id, location );
-		SampNativeFunction.getObjectRot( id, location );
+		SampNativeFunction.getObjectRot( id, rotate );
 	};
 	
 	
 	private int id = INVALID_ID;
 	private int modelId;
-	private LocationRotational location;
+	private Location location;
+	private Vector3D rotate;
 	private float speed = 0;
 	private IPlayer attachedPlayer;
 	private IObject attachedObject;
@@ -77,7 +78,8 @@ public class ObjectBase implements IObject
 	public ObjectBase( int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
 	{
 		this.modelId = modelId;
-		this.location = new LocationRotational( x, y, z, rx, ry, rz );
+		this.location = new Location( x, y, z );
+		this.rotate = new Vector3D( rx, ry, rz );
 		
 		initialize();
 	}
@@ -85,7 +87,8 @@ public class ObjectBase implements IObject
 	public ObjectBase( int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
 		this.modelId = modelId;
-		this.location = new LocationRotational( x, y, z, rx, ry, rz );
+		this.location = new Location( x, y, z );
+		this.rotate = new Vector3D( rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
 		initialize();
@@ -94,7 +97,8 @@ public class ObjectBase implements IObject
 	public ObjectBase( int modelId, Location location, float rx, float ry, float rz ) throws CreationFailedException
 	{
 		this.modelId = modelId;
-		this.location = new LocationRotational( location, rx, ry, rz );
+		this.location = location.clone();
+		this.rotate = new Vector3D( rx, ry, rz );
 		
 		initialize();
 	}
@@ -102,24 +106,27 @@ public class ObjectBase implements IObject
 	public ObjectBase( int modelId, Location location, float rx, float ry, float rz, float drawDistance) throws CreationFailedException
 	{
 		this.modelId = modelId;
-		this.location = new LocationRotational( location, rx, ry, rz );
+		this.location = location.clone();
+		this.rotate = new Vector3D( rx, ry, rz );
 		this.drawDistance = drawDistance;
 		
 		initialize();
 	}
 	
-	public ObjectBase( int modelId, LocationRotational location ) throws CreationFailedException
+	public ObjectBase( int modelId, Location location, Vector3D rotate ) throws CreationFailedException
 	{
 		this.modelId = modelId;
-		this.location = location.clone();
+		this.location = new Location(location);
+		this.rotate = rotate.clone();
 		
 		initialize();
 	}
 	
-	public ObjectBase( int modelId, LocationRotational location, float drawDistance ) throws CreationFailedException
+	public ObjectBase( int modelId, Location location, Vector3D rotate, float drawDistance) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.location = location.clone();
+		this.rotate = new Vector3D( rotate );
 		this.drawDistance = drawDistance;
 		
 		initialize();
@@ -127,7 +134,7 @@ public class ObjectBase implements IObject
 	
 	private void initialize() throws CreationFailedException
 	{
-		id = SampNativeFunction.createObject( modelId, location.getX(), location.getY(), location.getZ(), location.getRx(), location.getRy(), location.getRz(), drawDistance );
+		id = SampNativeFunction.createObject( modelId, location.getX(), location.getY(), location.getZ(), rotate.getX(), rotate.getY(), rotate.getZ(), drawDistance );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -155,7 +162,7 @@ public class ObjectBase implements IObject
 	}
 	
 	@Override
-	public LocationRotational getLocation()
+	public Location getLocation()
 	{
 		if( isDestroyed() ) return null;
 		
@@ -163,7 +170,6 @@ public class ObjectBase implements IObject
 		else if( attachedVehicle != null )		location.set( attachedVehicle.getLocation() );
 		else SampNativeFunction.getObjectPos( id, location );
 		
-		SampNativeFunction.getObjectRot( id, location );
 		return location.clone();
 	}
 	
@@ -177,25 +183,33 @@ public class ObjectBase implements IObject
 	}
 	
 	@Override
-	public void setLocation( LocationRotational location )
-	{
-		if( isDestroyed() ) return;
-		
-		this.location = location.clone();
-		SampNativeFunction.setObjectPos( id, location.getX(), location.getY(), location.getZ() );
-		SampNativeFunction.setObjectRot( id, location.getRx(), location.getRy(), location.getRz() );
-	}
-	
-	@Override
 	public void setRotate( float rx, float ry, float rz )
 	{
 		if( isDestroyed() ) return;
 		
-		location.setRx( rx );
-		location.setRy( ry );
-		location.setRz( rz );
+		rotate.set( rx, ry, rz );
 		
 		SampNativeFunction.setObjectRot( id, rx, ry, rz );
+	}
+	
+	@Override
+	public void setRotate( Vector3D rot )
+	{
+		if( isDestroyed() ) return;
+		
+		rotate.set( rot );
+		
+		SampNativeFunction.setObjectRot( id, rot.getX(), rot.getY(), rot.getZ() );
+	}
+	
+	@Override
+	public Vector3D getRotate()
+	{
+		if( isDestroyed() ) return null;
+	
+		SampNativeFunction.getObjectPos( id, rotate );
+		
+		return rotate;
 	}
 	
 	@Override

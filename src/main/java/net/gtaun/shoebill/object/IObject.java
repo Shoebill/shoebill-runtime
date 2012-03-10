@@ -17,7 +17,7 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.LocationRotational;
+import net.gtaun.shoebill.data.Vector3D;
 
 /**
  * @author MK124
@@ -35,9 +35,10 @@ public interface IObject extends IDestroyable
 	IObject getAttachedObject();
 	IVehicle getAttachedVehicle();
 	
-	LocationRotational getLocation();
+	Location getLocation();
+	Vector3D getRotate();
 	void setLocation( Location location );
-	void setLocation( LocationRotational location );
+	void setRotate( Vector3D rotate );
 	void setRotate( float rx, float ry, float rz );
 
 	boolean isMoving();

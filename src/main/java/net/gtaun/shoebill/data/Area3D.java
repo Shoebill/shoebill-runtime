@@ -18,6 +18,7 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
+import net.gtaun.shoebill.util.immutable.Immutable;
 import net.gtaun.shoebill.util.immutable.Immutably;
 import net.gtaun.shoebill.util.immutable.ImmutablyException;
 
@@ -31,7 +32,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class Area3D extends Area implements Cloneable, Serializable
+public class Area3D extends Area implements Cloneable, Serializable, Immutable
 {
 	private static final long serialVersionUID = 7421659231232420433L;
 	
@@ -42,7 +43,13 @@ public class Area3D extends Area implements Cloneable, Serializable
 
 		private ImmutablyArea3D()
 		{
-			super( Area3D.this.getMinX(), Area3D.this.getMinY(), Area3D.this.getMinZ(), Area3D.this.getMaxX(), Area3D.this.getMaxY(), Area3D.this.getMaxZ() );
+			super( Area3D.this );
+		}
+		
+		@Override
+		public Area3D clone()
+		{
+			return new Area3D( this );
 		}
 	}
 	
@@ -56,12 +63,19 @@ public class Area3D extends Area implements Cloneable, Serializable
 		this.minZ = minZ;
 		this.maxZ = maxZ;
 	}
-	
+
 	public Area3D( Area area, float minZ, float maxZ )
 	{
-		super( area.getMinX(), area.getMinY(), area.getMaxX(), area.getMaxY() );
+		super( area );
 		this.minZ = minZ;
 		this.maxZ = maxZ;
+	}
+	
+	public Area3D( Area3D area )
+	{
+		super( area );
+		this.minZ = area.getMinZ();
+		this.maxZ = area.getMaxZ();
 	}
 	
 	public float getMinZ()
@@ -87,7 +101,7 @@ public class Area3D extends Area implements Cloneable, Serializable
 		
 		this.maxZ = maxZ;
 	}
-	
+
 	public void set( float minX, float minY, float minZ, float maxX, float maxY, float maxZ )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
@@ -97,6 +111,16 @@ public class Area3D extends Area implements Cloneable, Serializable
 		setMinZ( minZ );
 		setMaxX( maxX );
 		setMaxY( maxY );
+		setMaxZ( maxZ );
+	}
+	
+	public void set( Area area, float minZ, float maxZ )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		super.set( area );
+
+		setMinZ( minZ );
 		setMaxZ( maxZ );
 	}
 	

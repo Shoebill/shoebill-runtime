@@ -43,7 +43,13 @@ public class Vector3D extends Vector2D implements Cloneable, Serializable, Immut
 		
 		private ImmutablyVector3D()
 		{
-			super( Vector3D.this.getX(), Vector3D.this.getY(), Vector3D.this.getZ() );
+			super( Vector3D.this );
+		}
+		
+		@Override
+		public Vector3D clone()
+		{
+			return new Vector3D( this );
 		}
 	}
 	
@@ -55,11 +61,23 @@ public class Vector3D extends Vector2D implements Cloneable, Serializable, Immut
 	{
 
 	}
-	
+
 	public Vector3D( float x, float y, float z )
 	{
 		super( x, y );
 		this.z = z;
+	}
+
+	public Vector3D( Vector2D vec, float z )
+	{
+		super( vec );
+		this.z = z;
+	}
+	
+	public Vector3D( Vector3D vec )
+	{
+		super( vec );
+		this.z = vec.getZ();
 	}
 	
 	public float getZ()
@@ -77,18 +95,24 @@ public class Vector3D extends Vector2D implements Cloneable, Serializable, Immut
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
 		
-		setX( x );
-		setY( y );
+		super.set( x, y );
 		setZ( z );
 	}
 	
-	public void set( Vector3D vector )
+	public void set( Vector2D vec, float z )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
 		
-		setX( vector.getX() );
-		setY( vector.getY() );
-		setZ( vector.getZ() );
+		super.set( vec );
+		setZ( z );
+	}
+	
+	public void set( Vector3D vec )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		super.set( vec );
+		setZ( vec.getZ() );
 	}
 	
 	@Override

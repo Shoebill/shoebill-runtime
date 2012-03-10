@@ -46,40 +46,76 @@ public class SpawnInfo implements Cloneable, Serializable, Immutable
 		{
 			super( SpawnInfo.this.getLocation().immure(), SpawnInfo.this.getSkinId(), SpawnInfo.this.getTeamId(), SpawnInfo.this.getWeapon1().immure(), SpawnInfo.this.getWeapon2().immure(), SpawnInfo.this.getWeapon3().immure() );
 		}
+		
+		@Override
+		public SpawnInfo clone()
+		{
+			return new SpawnInfo( this );
+		}
 	}
 	
 	
-	private LocationAngular location;
+	private LocationAngle location;
 	private int skinId, teamId;
 	private WeaponData weapon1, weapon2, weapon3;
 	
 	
 	public SpawnInfo( float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, WeaponType weapon1, int ammo1, WeaponType weapon2, int ammo2, WeaponType weapon3, int ammo3 )
 	{
-		location = new LocationAngular(x, y, z, interiorId, worldId, angle);
+		location = new LocationAngle(x, y, z, interiorId, worldId, angle);
 		this.skinId = skin;
 		this.teamId = team;
 		this.weapon1 = new WeaponData(weapon1, ammo1);
 		this.weapon2 = new WeaponData(weapon2, ammo2);
 		this.weapon3 = new WeaponData(weapon3, ammo3);
 	}
-	
-	public SpawnInfo( LocationAngular location, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
+
+	public SpawnInfo( Vector3D vec, int interiorId, int worldId, float angle, int skin, int team, WeaponType weapon1, int ammo1, WeaponType weapon2, int ammo2, WeaponType weapon3, int ammo3 )
 	{
-		this.location = location.clone();
+		location = new LocationAngle(vec, interiorId, worldId, angle);
 		this.skinId = skin;
 		this.teamId = team;
-		this.weapon1 = weapon1.clone();
-		this.weapon2 = weapon2.clone();
-		this.weapon3 = weapon3.clone();
+		this.weapon1 = new WeaponData(weapon1, ammo1);
+		this.weapon2 = new WeaponData(weapon2, ammo2);
+		this.weapon3 = new WeaponData(weapon3, ammo3);
+	}
+
+	public SpawnInfo( Location loc, float angle, int skin, int team, WeaponType weapon1, int ammo1, WeaponType weapon2, int ammo2, WeaponType weapon3, int ammo3 )
+	{
+		location = new LocationAngle(loc, angle);
+		this.skinId = skin;
+		this.teamId = team;
+		this.weapon1 = new WeaponData(weapon1, ammo1);
+		this.weapon2 = new WeaponData(weapon2, ammo2);
+		this.weapon3 = new WeaponData(weapon3, ammo3);
+	}
+
+	public SpawnInfo( LocationAngle location, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
+	{
+		this.location = new LocationAngle(location);
+		this.skinId = skin;
+		this.teamId = team;
+		this.weapon1 = new WeaponData(weapon1);
+		this.weapon2 = new WeaponData(weapon2);
+		this.weapon3 = new WeaponData(weapon3);
+	}
+
+	public SpawnInfo( SpawnInfo info )
+	{
+		this.location = new LocationAngle(info.getLocation());
+		this.skinId = info.getSkinId();
+		this.teamId = info.getTeamId();
+		this.weapon1 = new WeaponData(weapon1);
+		this.weapon2 = new WeaponData(weapon2);
+		this.weapon3 = new WeaponData(weapon3);
 	}
 	
-	public LocationAngular getLocation()
+	public LocationAngle getLocation()
 	{
 		return location.clone();
 	}
 
-	public void setLocation( LocationAngular location )
+	public void setLocation( LocationAngle location )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
 		this.location = location.clone();

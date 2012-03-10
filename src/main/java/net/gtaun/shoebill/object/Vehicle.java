@@ -23,7 +23,7 @@ import net.gtaun.shoebill.IShoebillLowLevel;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.LocationAngular;
+import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.Quaternions;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
@@ -135,7 +135,7 @@ public class Vehicle implements IVehicle
 		initialize( location.getX(), location.getY(), location.getZ(), location.getInteriorId(), location.getWorldId(), angle );
 	}
 	
-	public Vehicle( int modelId, LocationAngular location, int color1, int color2, int respawnDelay ) throws CreationFailedException
+	public Vehicle( int modelId, LocationAngle location, int color1, int color2, int respawnDelay ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.color1 = color1;
@@ -214,11 +214,11 @@ public class Vehicle implements IVehicle
 	}
 	
 	@Override
-	public LocationAngular getLocation()
+	public LocationAngle getLocation()
 	{
 		if( isDestroyed() ) return null;
 		
-		LocationAngular location = new LocationAngular();
+		LocationAngle location = new LocationAngle();
 
 		SampNativeFunction.getVehiclePos( id, location );
 		location.setAngle( SampNativeFunction.getVehicleZAngle(id) );
@@ -300,7 +300,7 @@ public class Vehicle implements IVehicle
 	}
 	
 	@Override
-	public void setLocation( LocationAngular location )
+	public void setLocation( LocationAngle location )
 	{
 		if( isDestroyed() ) return;
 		

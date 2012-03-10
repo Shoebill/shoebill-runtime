@@ -26,7 +26,7 @@ import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.KeyState;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.LocationAngular;
+import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
@@ -153,7 +153,7 @@ public class Player implements IPlayer
 	private int updateFrameCount = -1;
 	private int weather;
 
-	private LocationAngular location = new LocationAngular();
+	private LocationAngle location = new LocationAngle();
 	private Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
 	private Velocity velocity = new Velocity();
 	private KeyState keyState = new KeyState();
@@ -172,7 +172,7 @@ public class Player implements IPlayer
 	@Override public IPlayer getSpectatingPlayer()					{ return spectatingPlayer; }
 	@Override public IVehicle getSpectatingVehicle()				{ return spectatingVehicle; }
 	
-	@Override public LocationAngular getLocation()					{ return location.clone(); }
+	@Override public LocationAngle getLocation()					{ return location.clone(); }
 	@Override public Area getWorldBound()							{ return worldBound.clone(); }
 	@Override public Velocity getVelocity()							{ return velocity.clone(); }
 	@Override public KeyState getKeyState()							{ return keyState.clone(); }
@@ -414,7 +414,7 @@ public class Player implements IPlayer
 	{
 		if( isOnline() == false ) return;
 		
-		LocationAngular loc = info.getLocation();
+		LocationAngle loc = info.getLocation();
 		WeaponData weapon1 = info.getWeapon1();
 		WeaponData weapon2 = info.getWeapon2();
 		WeaponData weapon3 = info.getWeapon3();
@@ -522,9 +522,7 @@ public class Player implements IPlayer
 		
 		SampNativeFunction.setPlayerPos( id, x, y, z );
 
-		location.setX( x );
-		location.setY( y );
-		location.setZ( z );
+		location.set( x, y, z );
 	}
 
 	@Override
@@ -541,7 +539,7 @@ public class Player implements IPlayer
 	}
 
 	@Override
-	public void setLocation( LocationAngular loc )
+	public void setLocation( LocationAngle loc )
 	{
 		if( isOnline() == false ) return;
 		
@@ -561,9 +559,7 @@ public class Player implements IPlayer
 		
 		SampNativeFunction.setPlayerPosFindZ( id, x, y, z );
 
-		location.setX( x );
-		location.setY( y );
-		location.setZ( z );
+		location.set( x, y, z );
 	}
 	
 	@Override
@@ -580,7 +576,7 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public void setLocationFindZ( LocationAngular loc )
+	public void setLocationFindZ( LocationAngle loc )
 	{
 		if( isOnline() == false ) return;
 		

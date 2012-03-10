@@ -43,7 +43,13 @@ public class Area implements Cloneable, Serializable, Immutable
 
 		private ImmutablyArea()
 		{
-			super( Area.this.getMinX(), Area.this.getMinY(), Area.this.getMaxX(), Area.this.getMaxY() );
+			super( Area.this );
+		}
+		
+		@Override
+		public Area clone()
+		{
+			return new Area( this );
 		}
 	}
 	
@@ -62,6 +68,14 @@ public class Area implements Cloneable, Serializable, Immutable
 		this.minY = minY;
 		this.maxX = maxX;
 		this.maxY = maxY;
+	}
+	
+	public Area( Area area )
+	{
+		this.minX = area.getMinX();
+		this.minY = area.getMinY();
+		this.maxX = area.getMaxX();
+		this.maxY = area.getMaxY();
 	}
 	
 	

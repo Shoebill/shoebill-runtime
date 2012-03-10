@@ -22,6 +22,7 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -53,7 +54,7 @@ public class Label implements ILabel
 	private float drawDistance;
 	private boolean testLOS;
 	
-	private float offsetX, offsetY, offsetZ;
+	private Vector3D offset;
 	private IPlayer attachedPlayer;
 	private IVehicle attachedVehicle;
 	
@@ -120,11 +121,7 @@ public class Label implements ILabel
 		
 		if( loc != null )
 		{
-			location.setX( loc.getX() + offsetX );
-			location.setY( loc.getY() + offsetY );
-			location.setZ( loc.getZ() + offsetZ );
-			location.setInteriorId( loc.getInteriorId() );
-			location.setWorldId( loc.getWorldId() );
+			location.set( loc.getX() + offset.getX(), loc.getY() + offset.getY(), loc.getZ() + offset.getZ(), loc.getInteriorId(), loc.getWorldId() );
 		}
 		
 		return location.clone();
@@ -136,13 +133,17 @@ public class Label implements ILabel
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
 		
-		offsetX = x;
-		offsetY = y;
-		offsetZ = z;
+		offset = new Vector3D( x, y, z );
 		
 		SampNativeFunction.attach3DTextLabelToPlayer( id, player.getId(), x, y, z );
 		attachedPlayer = player;
 		attachedVehicle = null;
+	}
+	
+	@Override
+	public void attach( IPlayer player, Vector3D offset )
+	{
+		attach( player, offset.getX(), offset.getY(), offset.getZ() );
 	}
 
 	@Override
@@ -150,14 +151,18 @@ public class Label implements ILabel
 	{
 		if( isDestroyed() ) return;
 		if( vehicle.isDestroyed() ) return;
-		
-		offsetX = x;
-		offsetY = y;
-		offsetZ = z;
+
+		offset = new Vector3D( x, y, z );
 		
 		SampNativeFunction.attach3DTextLabelToVehicle( id, vehicle.getId(), x, y, z );
 		attachedPlayer = null;
 		attachedVehicle = vehicle;
+	}
+
+	@Override
+	public void attach( IVehicle vehicle, Vector3D offset )
+	{
+		attach( vehicle, offset.getX(), offset.getY(), offset.getZ() );
 	}
 
 	@Override

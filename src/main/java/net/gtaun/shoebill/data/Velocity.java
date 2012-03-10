@@ -42,7 +42,13 @@ public class Velocity extends Vector3D implements Cloneable, Serializable, Immut
 		
 		private ImmutablyVelocity()
 		{
-			super( Velocity.this.getX(), Velocity.this.getY(), Velocity.this.getZ() );
+			super( Velocity.this );
+		}
+		
+		@Override
+		public Velocity clone()
+		{
+			return new Velocity( this );
 		}
 	}
 	
@@ -51,12 +57,16 @@ public class Velocity extends Vector3D implements Cloneable, Serializable, Immut
 	{
 		
 	}
-	
+
 	public Velocity( float x, float y, float z )
 	{
 		super( x, y, z );
 	}
-	
+
+	public Velocity( Vector3D vec )
+	{
+		super( vec );
+	}
 	
 	public float speed2d()
 	{
