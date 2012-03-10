@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 import net.gtaun.shoebill.util.immutable.Immutable;
 import net.gtaun.shoebill.util.immutable.Immutably;
-import net.gtaun.shoebill.util.immutable.ImmutablyException;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -77,15 +76,6 @@ public class Velocity extends Vector3D implements Cloneable, Serializable, Immut
 	public float angleZ()
 	{
 		return (float) Math.acos( getZ()/Math.abs(speed3d()) );
-	}
-	
-	public void set( Velocity velocity )
-	{
-		if( this instanceof Immutably ) throw new ImmutablyException();
-		
-		setX( velocity.getX() );
-		setY( velocity.getY() );
-		setZ( velocity.getZ() );
 	}
 	
 	@Override

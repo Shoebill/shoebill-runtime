@@ -73,6 +73,7 @@ public class Area implements Cloneable, Serializable, Immutable
 	public void setMinX( float minX )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.minX = minX;
 	}
 
@@ -84,6 +85,7 @@ public class Area implements Cloneable, Serializable, Immutable
 	public void setMinY( float minY )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.minY = minY;
 	}
 
@@ -95,6 +97,7 @@ public class Area implements Cloneable, Serializable, Immutable
 	public void setMaxX( float maxX )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.maxX = maxX;
 	}
 
@@ -106,20 +109,33 @@ public class Area implements Cloneable, Serializable, Immutable
 	public void setMaxY( float maxY )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.maxY = maxY;
+	}
+
+	public void set( float minX, float minY, float maxX, float maxY )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setMinX( minX );
+		setMinY( minY );
+		setMaxX( maxX );
+		setMaxY( maxY );
+	}
+	
+	public void set( Area area )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+
+		setMinX( area.getMinX() );
+		setMinY( area.getMinY() );
+		setMaxX( area.getMaxX() );
+		setMaxY( area.getMaxY() );
 	}
 
 	public float area()
 	{
 		return (maxX-minX) * (maxY-minY);
-	}
-	
-	public void set( Area bound )
-	{
-		minX = bound.minX;
-		maxX = bound.maxX;
-		minY = bound.minY;
-		maxX = bound.maxY;
 	}
 	
 	@Override

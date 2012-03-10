@@ -72,6 +72,24 @@ public class Vector3D extends Vector2D implements Cloneable, Serializable, Immut
 		if( this instanceof Immutably ) throw new ImmutablyException();
 		this.z = z;
 	}
+
+	public void set( float x, float y, float z )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( x );
+		setY( y );
+		setZ( z );
+	}
+	
+	public void set( Vector3D vector )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( vector.getX() );
+		setY( vector.getY() );
+		setZ( vector.getZ() );
+	}
 	
 	@Override
 	public int hashCode()

@@ -235,9 +235,10 @@ public class Color implements Cloneable, Serializable, Immutable
 	public void setValue( int value )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.value = value;
 	}
-
+	
 	public int getR()
 	{
 		return (value&0xFF00000) >> 24;
@@ -281,6 +282,25 @@ public class Color implements Cloneable, Serializable, Immutable
 	public int getY()
 	{
 		return (int) (0.299f*getR() + 0.587f*getG() + 0.114f*getB() + 0.5f);
+	}
+
+	public void set( int r, int g, int b )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		value = r&0xFF << 24 | g&0xFF << 16 | b&0xFF << 8 | 0xFF;
+	}
+	
+	public void set( int r, int g, int b, int a )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		value = r&0xFF << 24 | g&0xFF << 16 | b&0xFF << 8 | a&0xFF;
+	}
+
+	public void set( Color color )
+	{
+		setValue( color.getValue() );
 	}
 	
 	@Override

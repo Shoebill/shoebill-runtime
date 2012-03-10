@@ -124,15 +124,59 @@ public class LocationRotational extends Location implements Cloneable, Serializa
 		this.rz = rz;
 	}
 
+	public void set( float x, float y, float z, float rx, float ry, float rz )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( x );
+		setY( y );
+		setZ( z );
+		setRx( rx );
+		setRx( ry );
+		setRx( rz );
+	}
+	
+	public void set( float x, float y, float z, int worldId, float rx, float ry, float rz )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( x );
+		setY( y );
+		setZ( z );
+		setWorldId( worldId );
+		setRx( rx );
+		setRx( ry );
+		setRx( rz );
+	}
+	
+	public void set( float x, float y, float z, int interiorId, int worldId, float rx, float ry, float rz )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( x );
+		setY( y );
+		setZ( z );
+		setInteriorId( interiorId );
+		setWorldId( worldId );
+		setRx( rx );
+		setRx( ry );
+		setRx( rz );
+	}
+	
 	public void set( LocationRotational location )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
 		
 		super.set( location );
-		
-		rx = location.rx;
-		ry = location.ry;
-		rz = location.rz;
+
+		setX( location.getX() );
+		setY( location.getY() );
+		setZ( location.getZ() );
+		setInteriorId( location.getInteriorId() );
+		setWorldId( location.getWorldId() );
+		setRx( location.getRx() );
+		setRy( location.getRy() );
+		setRz( location.getRz() );
 	}
 	
 	@Override

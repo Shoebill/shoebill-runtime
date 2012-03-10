@@ -19,6 +19,7 @@ package net.gtaun.shoebill.data;
 import java.io.Serializable;
 
 import net.gtaun.shoebill.util.immutable.Immutably;
+import net.gtaun.shoebill.util.immutable.ImmutablyException;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -68,6 +69,26 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable
 	public void setW( float w )
 	{
 		this.w = w;
+	}
+	
+	public void set( float x, float y, float z, float w )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( x );
+		setY( y );
+		setZ( z );
+		setW( w );
+	}
+	
+	public void set( Quaternions quat )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( quat.getX() );
+		setY( quat.getY() );
+		setZ( quat.getZ() );
+		setW( quat.getW() );
 	}
 
 	public Quaternions getConjugate()

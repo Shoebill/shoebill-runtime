@@ -72,6 +72,7 @@ public class Area3D extends Area implements Cloneable, Serializable
 	public void setMinZ( float minZ )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.minZ = minZ;
 	}
 
@@ -83,7 +84,32 @@ public class Area3D extends Area implements Cloneable, Serializable
 	public void setMaxZ( float maxZ )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.maxZ = maxZ;
+	}
+	
+	public void set( float minX, float minY, float minZ, float maxX, float maxY, float maxZ )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setMinX( minX );
+		setMinY( minY );
+		setMinZ( minZ );
+		setMaxX( maxX );
+		setMaxY( maxY );
+		setMaxZ( maxZ );
+	}
+	
+	public void set( Area3D area )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setMinX( area.getMinX() );
+		setMinY( area.getMinY() );
+		setMinZ( area.getMinZ() );
+		setMaxX( area.getMaxX() );
+		setMaxY( area.getMaxY() );
+		setMaxZ( area.getMaxZ() );
 	}
 
 	public float volume()

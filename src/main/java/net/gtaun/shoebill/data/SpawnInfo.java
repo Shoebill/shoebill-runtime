@@ -44,7 +44,7 @@ public class SpawnInfo implements Cloneable, Serializable, Immutable
 		
 		private ImmutablySpawnInfo()
 		{
-			super( SpawnInfo.this.getLocation().immure(), SpawnInfo.this.getSkinId(), SpawnInfo.this.getTeamId(), SpawnInfo.this.getWeapon1(), SpawnInfo.this.getWeapon2(), SpawnInfo.this.getWeapon3() );
+			super( SpawnInfo.this.getLocation().immure(), SpawnInfo.this.getSkinId(), SpawnInfo.this.getTeamId(), SpawnInfo.this.getWeapon1().immure(), SpawnInfo.this.getWeapon2().immure(), SpawnInfo.this.getWeapon3().immure() );
 		}
 	}
 	

@@ -73,6 +73,7 @@ public class WeaponData implements Cloneable, Serializable, Immutable
 	public void setType( WeaponType type )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.type = type;
 	}
 	
@@ -84,7 +85,24 @@ public class WeaponData implements Cloneable, Serializable, Immutable
 	public void setAmmo( int ammo )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.ammo = ammo;
+	}
+	
+	public void set( WeaponType type, int ammo )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setType( type );
+		setAmmo( ammo );
+	}
+	
+	public void set( WeaponData data )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setType( data.getType() );
+		setAmmo( data.getAmmo() );
 	}
 	
 	@Override

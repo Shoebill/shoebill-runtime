@@ -70,6 +70,7 @@ public class Vector2D implements Cloneable, Serializable, Immutable
 	public void setX( float x )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.x = x;
 	}
 	
@@ -81,7 +82,24 @@ public class Vector2D implements Cloneable, Serializable, Immutable
 	public void setY( float y )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.y = y;
+	}
+
+	public void set( float x, float y )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( x );
+		setY( y );
+	}
+	
+	public void set( Vector2D vector )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( vector.getX() );
+		setY( vector.getY() );
 	}
 	
 	@Override

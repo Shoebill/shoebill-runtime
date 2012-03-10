@@ -83,6 +83,40 @@ public class LocationRadius extends Location implements Cloneable, Serializable
 		if( this instanceof Immutably ) throw new ImmutablyException();
 		this.distance = distance;
 	}
+	
+
+	public void set( float x, float y, float z, float distance )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( x );
+		setY( y );
+		setZ( z );
+		setDistance( distance );
+	}
+	
+	public void set( float x, float y, float z, int worldId, float distance )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( x );
+		setY( y );
+		setZ( z );
+		setWorldId( worldId );
+		setDistance( distance );
+	}
+	
+	public void set( float x, float y, float z, int interiorId, int worldId, float distance )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( x );
+		setY( y );
+		setZ( z );
+		setInteriorId( interiorId );
+		setWorldId( worldId );
+		setDistance( distance );
+	}
 
 	public void set( LocationRadius location )
 	{
@@ -93,6 +127,7 @@ public class LocationRadius extends Location implements Cloneable, Serializable
 		setZ( location.getZ() );
 		setInteriorId( location.getInteriorId() );
 		setWorldId( location.getWorldId() );
+		setDistance( location.getDistance() );
 	}
 	
 	@Override

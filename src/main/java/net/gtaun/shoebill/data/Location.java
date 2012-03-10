@@ -93,16 +93,34 @@ public class Location extends Vector3D implements Cloneable, Serializable, Immut
 	public void setWorldId( int worldId )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.worldId = worldId;
 	}
-
+	
+	public void set( float x, float y, float z, int worldId )
+	{
+		setX( x );
+		setY( y );
+		setZ( z );
+		setWorldId( worldId );
+	}
+	
+	public void set( float x, float y, float z, int interiorId, int worldId )
+	{
+		setX( x );
+		setY( y );
+		setZ( z );
+		setInteriorId( interiorId );
+		setWorldId( worldId );
+	}
+	
 	public void set( Location location )
 	{
 		setX( location.getX() );
 		setY( location.getY() );
 		setZ( location.getZ() );
-		interiorId = location.getInteriorId();
-		worldId = location.getWorldId();
+		setInteriorId( location.getInteriorId() );
+		setWorldId( location.getWorldId() );
 	}
 	
 	@Override

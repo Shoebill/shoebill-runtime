@@ -54,6 +54,18 @@ public class LocationAngular extends Location implements Cloneable, Serializable
 	{
 		
 	}
+
+	public LocationAngular( float x, float y, float z, float angle )
+	{
+		super( x, y, z );
+		this.angle = angle;
+	}
+
+	public LocationAngular( float x, float y, float z, int worldId, float angle )
+	{
+		super( x, y, z, worldId );
+		this.angle = angle;
+	}
 	
 	public LocationAngular( float x, float y, float z, int interiorId, int worldId, float angle )
 	{
@@ -61,12 +73,6 @@ public class LocationAngular extends Location implements Cloneable, Serializable
 		this.angle = angle;
 	}
 	
-	public LocationAngular( float x, float y, float z, float angle )
-	{
-		super( x, y, z );
-		this.angle = angle;
-	}
-
 	public LocationAngular( Location location, float angle )
 	{
 		super( location.getX(), location.getY(), location.getZ() );
@@ -81,6 +87,39 @@ public class LocationAngular extends Location implements Cloneable, Serializable
 	public void setAngle( float angle )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
+		this.angle = angle;
+	}
+
+	public void set( float x, float y, float z, float angle )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( x );
+		setY( y );
+		setZ( z );
+		this.angle = angle;
+	}
+	
+	public void set( float x, float y, float z, int worldId, float angle )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( x );
+		setY( y );
+		setZ( z );
+		setWorldId( worldId );
+		this.angle = angle;
+	}
+	
+	public void set( float x, float y, float z, int interiorId, int worldId, float angle )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setX( x );
+		setY( y );
+		setZ( z );
+		setInteriorId( interiorId );
+		setWorldId( worldId );
 		this.angle = angle;
 	}
 

@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 import net.gtaun.shoebill.util.immutable.Immutable;
 import net.gtaun.shoebill.util.immutable.Immutably;
+import net.gtaun.shoebill.util.immutable.ImmutablyException;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -68,6 +69,8 @@ public class Time implements Cloneable, Serializable, Immutable
 
 	public void setHour( int hour )
 	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.hour = hour;
 	}
 
@@ -78,7 +81,25 @@ public class Time implements Cloneable, Serializable, Immutable
 
 	public void setMinute( int minute )
 	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
 		this.minute = minute;
+	}
+
+	public void set( int hour, int minute )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setHour( hour );
+		setMinute( minute );
+	}
+	
+	public void set( Time time )
+	{
+		if( this instanceof Immutably ) throw new ImmutablyException();
+		
+		setHour( time.getHour() );
+		setMinute( time.getMinute() );
 	}
 
 	@Override
