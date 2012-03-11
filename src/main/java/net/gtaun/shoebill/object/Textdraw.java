@@ -19,9 +19,12 @@ package net.gtaun.shoebill.object;
 
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -48,41 +51,37 @@ public class Textdraw implements ITextdraw
 	
 	
 	private int id = INVALID_ID;
-	private float x, y;
+	private Vector2D position;
 	private String text;
 	
 	private boolean[] isPlayerShowed = new boolean[SampObjectPool.MAX_PLAYERS];
-	
-	
-	@Override public int getId()								{ return id; }
-	@Override public float getX()								{ return x; }
-	@Override public float getY()								{ return y; }
-	@Override public String getText()							{ return text; }
-	
+
+
+	public Textdraw( float x, float y ) throws CreationFailedException
+	{
+		initialize( x, y, null );
+	}
 	
 	public Textdraw( float x, float y, String text ) throws CreationFailedException
 	{
-		if( text == null ) throw new NullPointerException();
-		if( text.length() == 0 ) text = " ";
-		
-		this.x = x;
-		this.y = y;
-		this.text = text;
-		
-		initialize();
+		initialize( x, y, text );
+	}
+
+	public Textdraw( Vector2D pos ) throws CreationFailedException
+	{
+		initialize( pos.getX(), pos.getY(), null );
 	}
 	
-	public Textdraw( float x, float y ) throws CreationFailedException
+	public Textdraw( Vector2D pos, String text ) throws CreationFailedException
 	{
-		this.x = x;
-		this.y = y;
-		this.text = " ";
-		
-		initialize();
+		initialize( pos.getX(), pos.getY(), text );
 	}
 	
-	private void initialize() throws CreationFailedException
+	private void initialize( float x, float y, String text ) throws CreationFailedException
 	{
+		position = new Vector2D( x, y );
+		if( StringUtils.isEmpty(text) ) text = " ";
+		
 		id = SampNativeFunction.textDrawCreate( x, y, text );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
@@ -111,6 +110,24 @@ public class Textdraw implements ITextdraw
 	{
 		return id == INVALID_ID;
 	}
+	
+	@Override
+	public int getId()
+	{
+		return id;
+	}
+	
+	@Override
+	public Vector2D getPosition()
+	{
+		return position.clone();
+	}
+	
+	@Override
+	public String getText()
+	{
+		return text;
+	}
 
 	@Override
 	public void setLetterSize( float x, float y )
@@ -121,11 +138,27 @@ public class Textdraw implements ITextdraw
 	}
 
 	@Override
+	public void setLetterSize( Vector2D vec )
+	{
+		if( isDestroyed() ) return;
+		
+		SampNativeFunction.textDrawLetterSize( id, vec.getX(), vec.getY() );
+	}
+
+	@Override
 	public void setTextSize( float x, float y )
 	{
 		if( isDestroyed() ) return;
 		
 		SampNativeFunction.textDrawTextSize( id, x, y );
+	}
+
+	@Override
+	public void setTextSize( Vector2D vec )
+	{
+		if( isDestroyed() ) return;
+		
+		SampNativeFunction.textDrawTextSize( id, vec.getX(), vec.getY() );
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public interface IPlayerAttach extends IPlayerRelated
 		public PlayerAttachBone getBone();
 		public int getModelId();
 		public Vector3D getOffset();
-		public Vector3D getRotation();
+		public Vector3D getRotate();
 		public Vector3D getScale();
 		
 		public boolean set( PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rotation, Vector3D scale );

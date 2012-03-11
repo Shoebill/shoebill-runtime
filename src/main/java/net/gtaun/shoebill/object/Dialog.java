@@ -31,9 +31,6 @@ public class Dialog implements IDialog
 
 
 	private int id;
-
-
-	@Override public int getId()									{ return id; }
 	
 	
 	public Dialog()
@@ -50,6 +47,11 @@ public class Dialog implements IDialog
 		pool.putDialog( id, this );
 	}
 	
+	@Override
+	public int getId()
+	{
+		return id;
+	}
 	
 	@Override
 	public void show( IPlayer player, DialogStyle style, String caption, String text, String button1, String button2 )

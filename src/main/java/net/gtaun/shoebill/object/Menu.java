@@ -19,8 +19,11 @@ package net.gtaun.shoebill.object;
 
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -48,38 +51,31 @@ public class Menu implements IMenu
 	private int id = INVALID_ID;
 	private String title, columnHeader = "";
 	private int columns;
-	private float x, y;
+	private Vector2D position;
 	private float col1Width, col2Width;
 	
-	
-	@Override public int getId()								{ return id; }
-	@Override public String getTitle()							{ return title; }
-	@Override public int getColumns()							{ return columns; }
-	@Override public float getX()								{ return x; }
-	@Override public float getY()								{ return y; }
-	@Override public float getCol1Width()						{ return col1Width; }
-	@Override public float getCol2Width()						{ return col2Width; }
-	@Override public String getColumnHeader()					{ return columnHeader; }
-	
-	
+
 	public Menu( String title, int columns, float x, float y, float col1Width, float col2Width ) throws CreationFailedException
 	{
-		if( title == null ) throw new NullPointerException();
-		if( title.length() == 0 ) title = " ";
+		initialize( title, columns, x, y, col1Width, col2Width );
+	}
+	
+	public Menu( String title, int columns, Vector2D pos, float col1Width, float col2Width ) throws CreationFailedException
+	{
+		initialize( title, columns, pos.getX(), pos.getY(), col1Width, col2Width );
+	}
+	
+	private void initialize( String title, int columns, float x, float y, float col1Width, float col2Width ) throws CreationFailedException
+	{
+		if( StringUtils.isEmpty(title) ) title = " ";
 		
 		this.title = title;
 		this.columns = columns;
-		this.x = x;
-		this.y = y;
+		this.position = new Vector2D( x, y );
 		this.col1Width = col1Width;
 		this.col2Width = col2Width;
 		
-		initialize();
-	}
-	
-	private void initialize() throws CreationFailedException
-	{
-		id = SampNativeFunction.createMenu( title, columns, x, y, col1Width, col1Width );
+		id = SampNativeFunction.createMenu( title, columns, position.getX(), position.getY(), col1Width, col1Width );
 		if( id == -1 ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -104,6 +100,48 @@ public class Menu implements IMenu
 	public boolean isDestroyed()
 	{
 		return id == INVALID_ID;
+	}
+	
+	@Override
+	public int getId()
+	{
+		return id;
+	}
+	
+	@Override
+	public String getTitle()
+	{
+		return title;
+	}
+	
+	@Override
+	public int getColumns()
+	{
+		return columns;
+	}
+	
+	@Override
+	public Vector2D getPosition()
+	{
+		return position.clone();
+	}
+	
+	@Override
+	public float getCol1Width()
+	{
+		return col1Width;
+	}
+	
+	@Override
+	public float getCol2Width()
+	{
+		return col2Width;
+	}
+	
+	@Override
+	public String getColumnHeader()
+	{
+		return columnHeader;
 	}
 	
 	@Override

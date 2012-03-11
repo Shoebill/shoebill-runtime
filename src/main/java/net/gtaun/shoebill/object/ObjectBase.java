@@ -49,99 +49,70 @@ public class ObjectBase implements IObject
 	
 	void processObjectMoved()
 	{
-		speed = 0;
+		speed = 0.0F;
 		SampNativeFunction.getObjectPos( id, location );
-		SampNativeFunction.getObjectRot( id, rotate );
 	};
 	
 	
 	private int id = INVALID_ID;
 	private int modelId;
 	private Location location;
-	private Vector3D rotate;
-	private float speed = 0;
+	private float speed = 0.0F;
+	private float drawDistance = 0.0F;
+
+	@SuppressWarnings("unused")
+	private Vector3D attachedOffset;
+	@SuppressWarnings("unused")
+	private Vector3D attachedRotate;
+	
 	private IPlayer attachedPlayer;
 	private IObject attachedObject;
 	private IVehicle attachedVehicle;
-	private float drawDistance = 0;
-	
-	
-	@Override public int getId()									{ return id; }
-	@Override public int getModelId()								{ return modelId; }
-	@Override public float getSpeed()								{ return speed; }
-	@Override public float getDrawDistance()						{ return drawDistance; }
-	@Override public IPlayer getAttachedPlayer()					{ return attachedPlayer; }
-	@Override public IObject getAttachedObject()					{ return attachedObject; }
-	@Override public IVehicle getAttachedVehicle()					{ return attachedVehicle; }
 	
 	
 	public ObjectBase( int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
 	{
-		this.modelId = modelId;
-		this.location = new Location( x, y, z );
-		this.rotate = new Vector3D( rx, ry, rz );
-		
-		initialize();
+		initialize( modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), drawDistance );
 	}
 	
 	public ObjectBase( int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
+		initialize( modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), drawDistance );
+	}
+	
+	public ObjectBase( int modelId, Location loc, float rx, float ry, float rz ) throws CreationFailedException
+	{
+		initialize( modelId, new Location(loc), new Vector3D(rx, ry, rz), drawDistance );
+	}
+	
+	public ObjectBase( int modelId, Location loc, float rx, float ry, float rz, float drawDistance) throws CreationFailedException
+	{
+		initialize( modelId, new Location(loc), new Vector3D(rx, ry, rz), drawDistance );
+	}
+	
+	public ObjectBase( int modelId, Location loc, Vector3D rot ) throws CreationFailedException
+	{
+		initialize( modelId, new Location(loc), new Vector3D(rot), drawDistance );
+	}
+	
+	public ObjectBase( int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
+	{
+		initialize( modelId, new Location(loc), new Vector3D(rot), drawDistance );
+	}
+	
+	private void initialize( int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
+	{
 		this.modelId = modelId;
-		this.location = new Location( x, y, z );
-		this.rotate = new Vector3D( rx, ry, rz );
+		this.location = loc;
 		this.drawDistance = drawDistance;
 		
-		initialize();
-	}
-	
-	public ObjectBase( int modelId, Location location, float rx, float ry, float rz ) throws CreationFailedException
-	{
-		this.modelId = modelId;
-		this.location = location.clone();
-		this.rotate = new Vector3D( rx, ry, rz );
-		
-		initialize();
-	}
-	
-	public ObjectBase( int modelId, Location location, float rx, float ry, float rz, float drawDistance) throws CreationFailedException
-	{
-		this.modelId = modelId;
-		this.location = location.clone();
-		this.rotate = new Vector3D( rx, ry, rz );
-		this.drawDistance = drawDistance;
-		
-		initialize();
-	}
-	
-	public ObjectBase( int modelId, Location location, Vector3D rotate ) throws CreationFailedException
-	{
-		this.modelId = modelId;
-		this.location = new Location(location);
-		this.rotate = rotate.clone();
-		
-		initialize();
-	}
-	
-	public ObjectBase( int modelId, Location location, Vector3D rotate, float drawDistance) throws CreationFailedException
-	{
-		this.modelId = modelId;
-		this.location = location.clone();
-		this.rotate = new Vector3D( rotate );
-		this.drawDistance = drawDistance;
-		
-		initialize();
-	}
-	
-	private void initialize() throws CreationFailedException
-	{
-		id = SampNativeFunction.createObject( modelId, location.getX(), location.getY(), location.getZ(), rotate.getX(), rotate.getY(), rotate.getZ(), drawDistance );
+		id = SampNativeFunction.createObject( modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setObject( id, this );
 	}
 	
-
 	@Override
 	public void destroy()
 	{
@@ -160,6 +131,54 @@ public class ObjectBase implements IObject
 	{
 		return id == INVALID_ID;
 	}
+
+	@Override
+	public int getId()
+	{
+		return id;
+	}
+	
+	@Override
+	public int getModelId()
+	{
+		return modelId;
+	}
+	
+	@Override
+	public float getSpeed()
+	{
+		if( isDestroyed() ) return 0.0F;
+		
+		if( attachedPlayer != null && attachedPlayer.isOnline() )				return attachedPlayer.getVelocity().speed3d();
+		if( attachedObject != null && attachedObject.isDestroyed() == false )	return attachedObject.getSpeed();
+		if( attachedVehicle != null && attachedVehicle.isDestroyed() == false )	return attachedVehicle.getVelocity().speed3d();
+		
+		return speed;
+	}
+	
+	@Override
+	public float getDrawDistance()
+	{
+		return drawDistance;
+	}
+	
+	@Override
+	public IPlayer getAttachedPlayer()
+	{
+		return attachedPlayer;
+	}
+	
+	@Override
+	public IObject getAttachedObject()
+	{
+		return attachedObject;
+	}
+	
+	@Override
+	public IVehicle getAttachedVehicle()
+	{
+		return attachedVehicle;
+	}
 	
 	@Override
 	public Location getLocation()
@@ -174,32 +193,23 @@ public class ObjectBase implements IObject
 	}
 	
 	@Override
-	public void setLocation( Location location )
+	public void setLocation( Vector3D pos )
 	{
 		if( isDestroyed() ) return;
 		
-		this.location.set( location );
-		SampNativeFunction.setObjectPos( id, location.getX(), location.getY(), location.getZ() );
+		speed = 0.0F;
+		location.set( pos );
+		SampNativeFunction.setObjectPos( id, pos.getX(), pos.getY(), pos.getZ() );
 	}
 	
 	@Override
-	public void setRotate( float rx, float ry, float rz )
+	public void setLocation( Location loc )
 	{
 		if( isDestroyed() ) return;
-		
-		rotate.set( rx, ry, rz );
-		
-		SampNativeFunction.setObjectRot( id, rx, ry, rz );
-	}
-	
-	@Override
-	public void setRotate( Vector3D rot )
-	{
-		if( isDestroyed() ) return;
-		
-		rotate.set( rot );
-		
-		SampNativeFunction.setObjectRot( id, rot.getX(), rot.getY(), rot.getZ() );
+
+		speed = 0.0F;
+		location.set( loc );
+		SampNativeFunction.setObjectPos( id, loc.getX(), loc.getY(), loc.getZ() );
 	}
 	
 	@Override
@@ -207,9 +217,24 @@ public class ObjectBase implements IObject
 	{
 		if( isDestroyed() ) return null;
 	
-		SampNativeFunction.getObjectPos( id, rotate );
+		Vector3D rotate = new Vector3D();
+		SampNativeFunction.getObjectRot( id, rotate );
 		
 		return rotate;
+	}
+	
+	@Override
+	public void setRotate( float rx, float ry, float rz )
+	{
+		if( isDestroyed() ) return;
+		
+		SampNativeFunction.setObjectRot( id, rx, ry, rz );
+	}
+	
+	@Override
+	public void setRotate( Vector3D rot )
+	{
+		setRotate( rot.getX(), rot.getY(), rot.getZ() );
 	}
 	
 	@Override
@@ -218,7 +243,7 @@ public class ObjectBase implements IObject
 		if( isDestroyed() ) return false;
 		return SampNativeFunction.isObjectMoving( id );
 	}
-	
+
 	@Override
 	public int move( float x, float y, float z, float speed )
 	{
@@ -238,14 +263,26 @@ public class ObjectBase implements IObject
 	}
 	
 	@Override
+	public int move( Vector3D pos, float speed )
+	{
+		return move( pos.getX(), pos.getY(), pos.getZ(), speed );
+	}
+	
+	@Override
+	public int move( Vector3D pos, float speed, Vector3D rot )
+	{
+		return move( pos.getX(), pos.getY(), pos.getZ(), speed, rot.getX(), rot.getY(), rot.getZ() );
+	}
+	
+	@Override
 	public void stop()
 	{
 		if( isDestroyed() ) return;
 		
-		speed = 0;
+		speed = 0.0F;
 		SampNativeFunction.stopObject( id );
 	}
-	
+
 	@Override
 	public void attach( IPlayer player, float x, float y, float z, float rx, float ry, float rz )
 	{
@@ -253,10 +290,22 @@ public class ObjectBase implements IObject
 		if( player.isOnline() == false ) return;
 		
 		SampNativeFunction.attachObjectToPlayer( id, player.getId(), x, y, z, rx, ry, rz );
+
+		speed = 0.0F;
+		attachedOffset = new Vector3D( x, y, z );
+		attachedRotate = new Vector3D( rx, ry, rz );
+		
 		attachedPlayer = player;
-		speed = 0;
+		attachedObject = null;
+		attachedVehicle = null;
 	}
-	
+
+	@Override
+	public void attach( IPlayer player, Vector3D pos, Vector3D rot )
+	{
+		attach( player, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
+	}
+
 	@Override
 	public void attach( IObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation )
 	{
@@ -265,8 +314,21 @@ public class ObjectBase implements IObject
 		
 		if( object instanceof PlayerObject ) throw new UnsupportedOperationException();
 		SampNativeFunction.attachObjectToObject( id, object.getId(), x, y, z, rz, ry, rz, syncRotation?1:0 );
+
+		speed = 0.0F;
+		attachedOffset = new Vector3D( x, y, z );
+		attachedRotate = new Vector3D( rx, ry, rz );
+		
+		attachedPlayer = null;
 		attachedObject = object;
-		speed = 0;
+		attachedVehicle = null;
+	}
+	
+
+	@Override
+	public void attach( IObject object, Vector3D pos, Vector3D rot, boolean syncRotation )
+	{
+		attach( object, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ(), syncRotation );
 	}
 	
 	@Override
@@ -276,7 +338,19 @@ public class ObjectBase implements IObject
 		if( vehicle.isDestroyed() ) return;
 		
 		SampNativeFunction.attachObjectToVehicle( id, vehicle.getId(), x, y, z, rx, ry, rz );
+
+		speed = 0.0F;
+		attachedOffset = new Vector3D( x, y, z );
+		attachedRotate = new Vector3D( rx, ry, rz );
+		
+		attachedPlayer = null;
+		attachedObject = null;
 		attachedVehicle = vehicle;
-		speed = 0;
+	}
+	
+	@Override
+	public void attach( IVehicle vehicle, Vector3D pos, Vector3D rot )
+	{
+		attach( vehicle, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
 	}
 }

@@ -27,6 +27,7 @@ import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.KeyState;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
+import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
@@ -142,16 +143,16 @@ public class Player implements IPlayer
 	
 	private int id = INVALID_ID;
 	
-	private boolean controllable = true;
+	private boolean isControllable = true;
 	private boolean isStuntBonusEnabled = false;
-	private boolean spectating = false;
+	private boolean isSpectating = false;
 	private boolean isRecording = false;
 	
 	private IPlayer spectatingPlayer;
 	private IVehicle spectatingVehicle;
 
 	private int updateFrameCount = -1;
-	private int weather;
+	private int weatherId;
 
 	private LocationAngle location = new LocationAngle();
 	private Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
@@ -159,34 +160,10 @@ public class Player implements IPlayer
 	private KeyState keyState = new KeyState();
 	private IPlayerAttach playerAttach;
 	private IPlayerWeaponSkill skill;
+	
 	private ICheckpoint checkpoint;
 	private IRaceCheckpoint raceCheckpoint;
-	
 	private IDialog dialog;
-	
-	
-	@Override public int getId()									{ return id; }
-
-	@Override public int getUpdateFrameCount()						{ return updateFrameCount; }
-	@Override public int getWeatherId()								{ return weather; }
-	@Override public IPlayer getSpectatingPlayer()					{ return spectatingPlayer; }
-	@Override public IVehicle getSpectatingVehicle()				{ return spectatingVehicle; }
-	
-	@Override public LocationAngle getLocation()					{ return location.clone(); }
-	@Override public Area getWorldBound()							{ return worldBound.clone(); }
-	@Override public Velocity getVelocity()							{ return velocity.clone(); }
-	@Override public KeyState getKeyState()							{ return keyState.clone(); }
-	@Override public IPlayerAttach getPlayerAttach()				{ return playerAttach; }
-	@Override public IPlayerWeaponSkill getWeaponSkill()			{ return skill; }
-	@Override public ICheckpoint getCheckpoint()					{ return checkpoint; }
-	@Override public IRaceCheckpoint getRaceCheckpoint()			{ return raceCheckpoint; }
-	
-	@Override public IDialog getDialog()							{ return dialog; }
-
-	@Override public boolean isStuntBonusEnabled()					{ return isStuntBonusEnabled; }
-	@Override public boolean isSpectating()							{ return spectating; }
-	@Override public boolean isRecording()							{ return isRecording; }
-	@Override public boolean isControllable()						{ return controllable; }
 	
 	
 	public Player( int id )
@@ -200,7 +177,6 @@ public class Player implements IPlayer
 		location.setWorldId( SampNativeFunction.getPlayerVirtualWorld(id) );
 		
 		SampNativeFunction.getPlayerVelocity(id, velocity);
-		
 		SampNativeFunction.getPlayerKeys(id, keyState);
 		
 		playerAttach = new PlayerAttach(this);
@@ -211,13 +187,100 @@ public class Player implements IPlayer
 		pool.setPlayer( id, this );
 	}
 
-
 	@Override
 	public boolean isOnline()
 	{
 		return id != INVALID_ID;
 	}
+
+	@Override public int getId()
+	{
+		return id;
+	}
+
+	@Override
+	public int getUpdateFrameCount()
+	{
+		return updateFrameCount;
+	}
 	
+	@Override
+	public int getWeatherId()
+	{
+		return weatherId;
+	}
+	
+	@Override
+	public IPlayer getSpectatingPlayer()
+	{
+		return spectatingPlayer;
+	}
+	
+	@Override
+	public IVehicle getSpectatingVehicle()
+	{
+		return spectatingVehicle;
+	}
+	
+	@Override
+	public LocationAngle getLocation()
+	{
+		return location.clone();
+	}
+	
+	@Override
+	public Area getWorldBound()
+	{
+		return worldBound.clone();
+	}
+	
+	@Override
+	public Velocity getVelocity()
+	{
+		return velocity.clone();
+	}
+	
+	@Override
+	public KeyState getKeyState()
+	{
+		return keyState.clone();
+	}
+	
+	@Override
+	public IPlayerAttach getPlayerAttach()
+	{
+		return playerAttach;
+	}
+	
+	@Override
+	public IPlayerWeaponSkill getWeaponSkill()
+	{
+		return skill;
+	}
+	
+	@Override
+	public ICheckpoint getCheckpoint()
+	{
+		return checkpoint;
+	}
+	
+	@Override
+	public IRaceCheckpoint getRaceCheckpoint()
+	{
+		return raceCheckpoint;
+	}
+	
+	@Override
+	public IDialog getDialog()							{ return dialog; }
+
+	@Override
+	public boolean isStuntBonusEnabled()					{ return isStuntBonusEnabled; }
+	@Override
+	public boolean isSpectating()							{ return isSpectating; }
+	@Override
+	public boolean isRecording()							{ return isRecording; }
+	@Override
+	public boolean isControllable()						{ return isControllable; }
 	
 	@Override
 	public int getPing()
@@ -399,27 +462,43 @@ public class Player implements IPlayer
 		if( ret == 0 )	throw new AlreadyExistException();
 		if( ret == -1 )	throw new IllegalArgumentException();
 	}
-	
+
 	@Override
 	public void setSpawnInfo( float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, WeaponType weapon1, int ammo1, WeaponType weapon2, int ammo2, WeaponType weapon3, int ammo3 )
 	{
 		if( isOnline() == false ) return;
-		
-		SpawnInfo info = new SpawnInfo(x, y, z, interiorId, worldId, angle, skin, team, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3);
-		setSpawnInfo( info );
+
+		SampNativeFunction.setSpawnInfo( id, team, skin, x, y, z, angle, weapon1.getId(), ammo1, weapon2.getId(), ammo2, weapon3.getId(), ammo3 );
+	}
+
+	@Override
+	public void setSpawnInfo( Vector3D pos, int interiorId, int worldId, float angle, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
+	{
+		setSpawnInfo( pos.getX(), pos.getY(), pos.getZ(), interiorId, worldId, angle, skin, team, weapon1.getType(), weapon1.getAmmo(), weapon2.getType(), weapon2.getAmmo(), weapon3.getType(), weapon3.getAmmo() );
+	}
+
+	@Override
+	public void setSpawnInfo( Location loc, float angle, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
+	{
+		setSpawnInfo( loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), angle, skin, team, weapon1.getType(), weapon1.getAmmo(), weapon2.getType(), weapon2.getAmmo(), weapon3.getType(), weapon3.getAmmo() );
+	}
+	
+	@Override
+	public void setSpawnInfo( LocationAngle loc, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
+	{
+		setSpawnInfo( loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), loc.getAngle(), skin, team, weapon1.getType(), weapon1.getAmmo(), weapon2.getType(), weapon2.getAmmo(), weapon3.getType(), weapon3.getAmmo() );
 	}
 	
 	@Override
 	public void setSpawnInfo( SpawnInfo info )
 	{
 		if( isOnline() == false ) return;
-		
-		LocationAngle loc = info.getLocation();
+
 		WeaponData weapon1 = info.getWeapon1();
 		WeaponData weapon2 = info.getWeapon2();
 		WeaponData weapon3 = info.getWeapon3();
 		
-		SampNativeFunction.setSpawnInfo( id, info.getTeamId(), info.getSkinId(), loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getType().getId(), weapon1.getAmmo(), weapon2.getType().getId(), weapon2.getAmmo(), weapon3.getType().getId(), weapon3.getAmmo() );
+		setSpawnInfo( info.getLocation(), info.getSkinId(), info.getTeamId(), weapon1, weapon2, weapon3 );
 	}
 	
 	@Override
@@ -483,7 +562,7 @@ public class Player implements IPlayer
 		if( isOnline() == false ) return;
 		
 		SampNativeFunction.setPlayerWeather( id, weather );
-		this.weather = weather;
+		this.weatherId = weather;
 	}
 	
 	@Override
@@ -526,6 +605,16 @@ public class Player implements IPlayer
 	}
 
 	@Override
+	public void setLocation( Vector3D pos )
+	{
+		if( isOnline() == false ) return;
+		
+		SampNativeFunction.setPlayerPos( id, pos.getX(), pos.getY(), pos.getZ() );
+
+		location.set( pos );
+	}
+
+	@Override
 	public void setLocation( Location loc )
 	{
 		if( isOnline() == false ) return;
@@ -560,6 +649,16 @@ public class Player implements IPlayer
 		SampNativeFunction.setPlayerPosFindZ( id, x, y, z );
 
 		location.set( x, y, z );
+	}
+
+	@Override
+	public void setLocationFindZ( Vector3D pos )
+	{
+		if( isOnline() == false ) return;
+		
+		SampNativeFunction.setPlayerPosFindZ( id, pos.getX(), pos.getY(), pos.getZ() );
+
+		location.set( pos );
 	}
 	
 	@Override
@@ -626,12 +725,12 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public void setVelocity( Velocity vel )
+	public void setVelocity( Vector3D vel )
 	{
 		if( isOnline() == false ) return;
-		
-		SampNativeFunction.setPlayerVelocity( id, vel.getX(), vel.getY(), vel.getZ() );
+
 		velocity.set( vel );
+		SampNativeFunction.setPlayerVelocity( id, vel.getX(), vel.getY(), vel.getZ() );
 	}
 
 	@Override
@@ -999,13 +1098,19 @@ public class Player implements IPlayer
 		
 		SampNativeFunction.setPlayerSkin( id, skin );
 	}
-	
+
 	@Override
 	public void giveWeapon( WeaponType type, int ammo )
 	{
 		if( isOnline() == false ) return;
 		
 		SampNativeFunction.givePlayerWeapon( id, type.getId(), ammo );
+	}
+
+	@Override
+	public void giveWeapon( WeaponData data )
+	{
+		giveWeapon( data.getType(), data.getAmmo() );
 	}
 	
 	@Override
@@ -1015,13 +1120,19 @@ public class Player implements IPlayer
 		
 		SampNativeFunction.resetPlayerWeapons( id );
 	}
-	
+
 	@Override
 	public void setTime( int hour, int minute )
 	{
 		if( isOnline() == false ) return;
 		
 		SampNativeFunction.setPlayerTime( id, hour, minute );
+	}
+	
+	@Override
+	public void setTime( Time time )
+	{
+		setTime( time.getHour(), time.getMinute() );
 	}
 	
 	@Override
@@ -1096,7 +1207,7 @@ public class Player implements IPlayer
 		if( isOnline() == false ) return;
 		
 		SampNativeFunction.togglePlayerControllable( id, toggle );
-		controllable = toggle;
+		isControllable = toggle;
 	}
 	
 	@Override
@@ -1106,13 +1217,19 @@ public class Player implements IPlayer
 		
 		SampNativeFunction.setPlayerSpecialAction( id, action.getData() );
 	}
-	
+
 	@Override
-	public void setMapIcon( int iconId, Vector3D loc, int markerType, Color color, MapIconStyle style )
+	public void setMapIcon( int iconId, float x, float y, float z, int markerType, Color color, MapIconStyle style )
 	{
 		if( isOnline() == false ) return;
 		
-		SampNativeFunction.setPlayerMapIcon( id, iconId, loc.getX(), loc.getY(), loc.getZ(), markerType, color.getValue(), style.getData() );
+		SampNativeFunction.setPlayerMapIcon( id, iconId, x, y, z, markerType, color.getValue(), style.getData() );
+	}
+	
+	@Override
+	public void setMapIcon( int iconId, Vector3D pos, int markerType, Color color, MapIconStyle style )
+	{
+		setMapIcon( iconId, pos.getX(), pos.getY(), pos.getZ(), markerType, color, style );
 	}
 	
 	@Override
@@ -1140,7 +1257,7 @@ public class Player implements IPlayer
 		if( isOnline() == false ) return;
 		
 		SampNativeFunction.togglePlayerSpectating( id, toggle );
-		spectating = toggle;
+		isSpectating = toggle;
 		
 		if( toggle ) return;
 		
@@ -1153,7 +1270,7 @@ public class Player implements IPlayer
 	{
 		if( isOnline() == false ) return;
 		
-		if( !spectating ) return;
+		if( !isSpectating ) return;
 		
 		SampNativeFunction.playerSpectatePlayer(id, player.getId(), mode.getData());
 		spectatingPlayer = player;
@@ -1165,7 +1282,7 @@ public class Player implements IPlayer
 	{
 		if( isOnline() == false ) return;
 		
-		if( !spectating ) return;
+		if( !isSpectating ) return;
 
 		SampNativeFunction.playerSpectateVehicle(id, vehicle.getId(), mode.getData());
 		spectatingPlayer = null;
@@ -1225,13 +1342,25 @@ public class Player implements IPlayer
 		
 		SampNativeFunction.playAudioStreamForPlayer( id, url, 0.0f, 0.0f, 0.0f, 0.0f, 0 );
 	}
-	
+
 	@Override
-	public void playAudioStream( String url, Vector3D loc, float distance )
+	public void playAudioStream( String url, float x, float y, float z, float distance )
 	{
 		if( isOnline() == false ) return;
 		
-		SampNativeFunction.playAudioStreamForPlayer( id, url, loc.getX(), loc.getY(), loc.getZ(), distance, 1 );
+		SampNativeFunction.playAudioStreamForPlayer( id, url, x, y, z, distance, 1 );
+	}
+
+	@Override
+	public void playAudioStream( String url, Vector3D pos, float distance )
+	{
+		playAudioStream( url, pos.getX(), pos.getY(), pos.getZ(), distance );
+	}
+	
+	@Override
+	public void playAudioStream( String url, LocationRadius loc )
+	{
+		playAudioStream( url, loc.getX(), loc.getY(), loc.getZ(), loc.getRadius() );
 	}
 	
 	@Override
@@ -1241,7 +1370,7 @@ public class Player implements IPlayer
 		
 		SampNativeFunction.stopAudioStreamForPlayer( id );
 	}
-	
+
 	@Override
 	public void removeBuilding( int modelId, float x, float y, float z, float radius )
 	{
@@ -1250,6 +1379,17 @@ public class Player implements IPlayer
 		SampNativeFunction.removeBuildingForPlayer( id, modelId, x, y, z, radius );
 	}
 	
+	@Override
+	public void removeBuilding( int modelId, Vector3D pos, float radius )
+	{
+		removeBuilding( modelId, pos.getX(), pos.getY(), pos.getZ(), radius );
+	}
+	
+	@Override
+	public void removeBuilding( int modelId, LocationRadius loc )
+	{
+		removeBuilding( modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getRadius() );
+	}
 	
 	@Override
 	public void showDialog( IDialog dialog, DialogStyle style, String caption, String text, String button1, String button2 )

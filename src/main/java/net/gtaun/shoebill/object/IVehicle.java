@@ -19,6 +19,7 @@ package net.gtaun.shoebill.object;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.Quaternions;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 
 /**
@@ -40,22 +41,30 @@ public interface IVehicle extends IDestroyable
 	IVehicleComponent getComponent();
 	public IVehicleDamage getDamage();
 	
-	IVehicle getTrailer();
 	LocationAngle getLocation();
-	float getAngle();
-	int getInteriorId();
-	int getWorldId();
-	float getHealth();
-	Velocity getVelocity();
-	Quaternions getRotationQuat();
 	void setLocation( float x, float y, float z );
-	void setLocation( Location location );
-	void setLocation( LocationAngle location );
-	void setHealth( float health );
-	void setVelocity( Velocity velocity );
+	void setLocation( Vector3D pos );
+	void setLocation( Location loc );
+	void setLocation( LocationAngle loc );
+
+	float getAngle();
 	void setAngle( float angle );
+	
+	Quaternions getRotationQuat();
+
+	int getInteriorId();
 	void setInteriorId( int interiorId );
+	
+	int getWorldId();
 	void setWorldId( int worldId );
+	
+	float getHealth();
+	void setHealth( float health );
+	
+	Velocity getVelocity();
+	void setVelocity( Velocity velocity );
+	void setAngularVelocity( Velocity velocity );
+	
 	void putPlayer( IPlayer player, int seat );
 	boolean isPlayerIn( IPlayer player );
 	boolean isStreamedIn( IPlayer forPlayer );
@@ -63,10 +72,12 @@ public interface IVehicle extends IDestroyable
 	void respawn();
 	void setColor( int color1, int color2 );
 	void setPaintjob( int paintjobId );
+	
+	IVehicle getTrailer();
 	void attachTrailer( IVehicle trailer );
 	void detachTrailer();
+	
 	boolean isTrailerAttached();
 	void setNumberPlate( String number );
 	void repair();
-	void setAngularVelocity( Velocity velocity );
 }

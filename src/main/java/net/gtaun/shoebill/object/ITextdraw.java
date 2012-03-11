@@ -17,6 +17,7 @@
 package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.data.Vector2D;
 
 /**
  * @author MK124
@@ -26,12 +27,15 @@ import net.gtaun.shoebill.data.Color;
 public interface ITextdraw extends IDestroyable
 {
 	int getId();
-	float getX();
-	float getY();
+	Vector2D getPosition();
 	String getText();
-	
+
 	void setLetterSize( float x, float y );
+	void setLetterSize( Vector2D vec );
+	
 	void setTextSize( float x, float y );
+	void setTextSize( Vector2D vec );
+	
 	void setAlignment( int alignment );
 	void setColor( Color color );
 	void setUseBox( boolean use );

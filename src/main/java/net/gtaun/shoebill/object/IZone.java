@@ -29,9 +29,9 @@ public interface IZone extends IDestroyable
 	int getId();
 	Area getArea();
 	
-	void show( IPlayer player, int color );
+	void show( IPlayer player, Color color );
 	void hide( IPlayer player );
-	void flash( IPlayer player, int color );
+	void flash( IPlayer player, Color color );
 	void stopFlash( IPlayer player );
 	
 	void showForAll( Color color );

@@ -45,22 +45,19 @@ public class Timer implements ITimer
 
 	public Timer( int interval )
 	{
-		this.interval = interval;
-		this.count = COUNT_INFINITE;
-		
-		initialize();
+		initialize( interval, COUNT_INFINITE );
 	}
 	
 	public Timer( int interval, int count )
 	{
+		initialize( interval, count );
+	}
+	
+	private void initialize( int interval, int count )
+	{
 		this.interval = interval;
 		this.count = count;
 		
-		initialize();
-	}
-	
-	private void initialize()
-	{
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.putTimer( this );
 	}

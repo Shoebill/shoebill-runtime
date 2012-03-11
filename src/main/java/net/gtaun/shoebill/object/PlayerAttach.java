@@ -38,12 +38,12 @@ public class PlayerAttach implements IPlayerAttach
 		
 		private PlayerAttachBone bone = PlayerAttachBone.NOT_USABLE;
 		private int modelId = 0;
-		private Vector3D offset, rotation, scale;
+		private Vector3D offset, rotate, scale;
 		
 		@Override public PlayerAttachBone getBone()			{ return bone; }
 		@Override public int getModelId()					{ return modelId; }
 		@Override public Vector3D getOffset()				{ return offset; }
-		@Override public Vector3D getRotation()				{ return rotation; }
+		@Override public Vector3D getRotate()				{ return rotate; }
 		@Override public Vector3D getScale()				{ return scale; }
 		
 		
@@ -64,9 +64,9 @@ public class PlayerAttach implements IPlayerAttach
 			this.bone = bone;
 			this.modelId = modelId;
 			
-			this.offset = offset.clone();
-			this.rotation = rotation.clone();
-			this.scale = scale.clone();
+			this.offset = new Vector3D(offset);
+			this.rotate = new Vector3D(rot);
+			this.scale = new Vector3D(scale);
 			
 			return true;
 		}
@@ -83,7 +83,7 @@ public class PlayerAttach implements IPlayerAttach
 			modelId = 0;
 			
 			offset = null;
-			rotation = null;
+			rotate = null;
 			scale = null;
 			
 			return true;

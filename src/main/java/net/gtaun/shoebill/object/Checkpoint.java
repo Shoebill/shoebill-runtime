@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -31,31 +32,61 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Checkpoint implements ICheckpoint
 {
-	private Vector3D location;
-	private float size;
-	
-
-	@Override public Vector3D getLocation()							{ return location.clone(); }
-	@Override public float getSize()								{ return size; }
+	private LocationRadius location;
 
 	
 	public Checkpoint( float x, float y, float z, float size )
 	{
-		this.location = new Vector3D( x, y, z );
-		this.size = size;
+		location = new LocationRadius( x, y, z, size );
 	}
 	
-	public Checkpoint( Vector3D location, float size )
+	public Checkpoint( Vector3D pos, float size )
 	{
-		this.location = location.clone();
-		this.size = size;
+		location = new LocationRadius( pos, size );
 	}
 	
+	public Checkpoint( LocationRadius loc )
+	{
+		location = new LocationRadius( loc );
+	}
 
 	@Override
-	public void setLocation( Vector3D location )
+	public LocationRadius getLocation()
 	{
-		this.location = location.clone();
+		return location.clone();
+	}
+	
+	@Override
+	public void setLocation( float x, float y, float z )
+	{
+		location.set( x, y, z );
+		update();
+	}
+
+	@Override
+	public void setLocation( Vector3D pos )
+	{
+		location.set( pos );
+		update();
+	}
+	
+	@Override
+	public void setLocation( LocationRadius loc )
+	{
+		location.set( loc );
+		update();
+	}
+
+	@Override
+	public float getSize()
+	{
+		return location.getRadius();
+	}
+	
+	@Override
+	public void setSize( float size )
+	{
+		location.setRadius( size );
 		update();
 	}
 	

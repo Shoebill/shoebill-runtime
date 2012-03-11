@@ -36,17 +36,26 @@ public interface IObject extends IDestroyable
 	IVehicle getAttachedVehicle();
 	
 	Location getLocation();
+	void setLocation( Vector3D pos );
+	void setLocation( Location loc );
+	
 	Vector3D getRotate();
-	void setLocation( Location location );
-	void setRotate( Vector3D rotate );
 	void setRotate( float rx, float ry, float rz );
+	void setRotate( Vector3D rot );
 
 	boolean isMoving();
 	int move( float x, float y, float z, float speed );
-	int move( float x, float y, float z, float speed, float rotX, float rotY, float rotZ );
+	int move( float x, float y, float z, float speed, float rx, float ry, float rz );
+	int move( Vector3D pos, float speed );
+	int move( Vector3D pos, float speed, Vector3D rot );
 	void stop();
-	
+
 	void attach( IPlayer player, float x, float y, float z, float rx, float ry, float rz );
+	void attach( IPlayer player, Vector3D offset, Vector3D rot );
+	
 	void attach( IObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation );
+	void attach( IObject object, Vector3D offset, Vector3D rot, boolean syncRotation );
+
 	void attach( IVehicle vehicle, float x, float y, float z, float rx, float ry, float rz );
+	void attach( IVehicle vehicle, Vector3D offset, Vector3D rot );
 }

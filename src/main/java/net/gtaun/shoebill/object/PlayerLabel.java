@@ -18,6 +18,8 @@ package net.gtaun.shoebill.object;
 
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
@@ -69,53 +71,43 @@ public class PlayerLabel implements IPlayerLabel
 	@Override public IPlayer getAttachedPlayer()				{ return attachedPlayer; }
 	@Override public IVehicle getAttachedVehicle()				{ return attachedVehicle; }
 	
-	
-	public PlayerLabel( IPlayer player, String text, Color color, Location location, float drawDistance, boolean testLOS ) throws CreationFailedException
+
+	public PlayerLabel( IPlayer player, String text, Color color, float x, float y, float z, float drawDistance, boolean testLOS ) throws CreationFailedException
 	{
-		if( text == null ) throw new NullPointerException();
-		
-		this.player = player;
-		this.text = text;
-		this.color = color.clone();
-		this.drawDistance = drawDistance;
-		this.location = location.clone();
-		this.testLOS = testLOS;
-		
-		initialize();
+		initialize( player, text, color, new Location(x, y, z), drawDistance, testLOS, null, null );
+	}
+	
+	public PlayerLabel( IPlayer player, String text, Color color, float x, float y, float z, int worldId, float drawDistance, boolean testLOS ) throws CreationFailedException
+	{
+		initialize( player, text, color, new Location(x, y, z, worldId), drawDistance, testLOS, null, null );
+	}
+	
+	public PlayerLabel( IPlayer player, String text, Color color, Location loc, float drawDistance, boolean testLOS ) throws CreationFailedException
+	{
+		initialize( player, text, color, new Location(loc), drawDistance, testLOS, null, null );
 	}
 
-	public PlayerLabel( IPlayer player, String text, Color color, Location location, float drawDistance, boolean testLOS, IPlayer attachedPlayer ) throws CreationFailedException
+	public PlayerLabel( IPlayer player, String text, Color color, Location loc, float drawDistance, boolean testLOS, IPlayer attachedPlayer ) throws CreationFailedException
 	{
-		if( text == null ) throw new NullPointerException();
+		initialize( player, text, color, new Location(loc), drawDistance, testLOS, attachedPlayer, null );
+	}
+	
+	public PlayerLabel( IPlayer player, String text, Color color, Location loc, float drawDistance, boolean testLOS, IVehicle attachedVehicle ) throws CreationFailedException
+	{
+		initialize( player, text, color, new Location(loc), drawDistance, testLOS, null, attachedVehicle );
+	}
+	
+	private void initialize( IPlayer player, String text, Color color, Location loc, float drawDistance, boolean testLOS, IPlayer attachedPlayer, IVehicle attachedVehicle ) throws CreationFailedException
+	{
+		if( StringUtils.isEmpty(text) ) text = " ";
 		
 		this.player = player;
 		this.text = text;
-		this.color = color.clone();
+		this.color = new Color( color );
 		this.drawDistance = drawDistance;
-		this.location = location.clone();
+		this.location = new Location( loc );
 		this.testLOS = testLOS;
-		this.attachedPlayer = attachedPlayer;
 		
-		initialize();
-	}
-	
-	public PlayerLabel( IPlayer player, String text, Color color, Location location, float drawDistance, boolean testLOS, IVehicle attachedVehicle ) throws CreationFailedException
-	{
-		if( text == null ) throw new NullPointerException();
-		
-		this.player = player;
-		this.text = text;
-		this.color = color.clone();
-		this.drawDistance = drawDistance;
-		this.location = location.clone();
-		this.testLOS = testLOS;
-		this.attachedVehicle = attachedVehicle;
-		
-		initialize();
-	}
-	
-	private void initialize() throws CreationFailedException
-	{
 		int playerId = Player.INVALID_ID, vehicleId = Vehicle.INVALID_ID;
 		
 		if( attachedPlayer != null )	playerId = attachedPlayer.getId();
@@ -174,11 +166,7 @@ public class PlayerLabel implements IPlayerLabel
 		
 		if( pos != null )
 		{
-			location.setX( pos.getX() + offset.getX() );
-			location.setY( pos.getY() + offset.getY() );
-			location.setZ( pos.getZ() + offset.getZ() );
-			location.setInteriorId( pos.getInteriorId() );
-			location.setWorldId( pos.getWorldId() );
+			location.set( pos.getX() + offset.getX(), pos.getY(), pos.getZ() + offset.getZ(), pos.getInteriorId(), pos.getWorldId() );
 		}
 		
 		return location.clone();

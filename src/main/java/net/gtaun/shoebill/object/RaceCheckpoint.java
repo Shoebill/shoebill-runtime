@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.type.RaceCheckpointType;
 import net.gtaun.shoebill.samp.SampNativeFunction;
@@ -32,40 +33,88 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class RaceCheckpoint implements IRaceCheckpoint
 {
-	private Vector3D location;
-	private float size;
+	private LocationRadius location;
 	private RaceCheckpointType type;
 	private RaceCheckpoint next;
-
-	
-	@Override public Vector3D getLocation()							{ return location.clone(); }
-	@Override public float getSize()								{ return size; }
-	@Override public RaceCheckpointType getType()					{ return type; }
-	@Override public RaceCheckpoint getNext()						{ return next; }
 	
 	
 	public RaceCheckpoint( float x, float y, float z, float size, RaceCheckpointType type, RaceCheckpoint next )
 	{
-		this.location = new Vector3D( x, y, z );
-		this.size = size;
-		this.type = type;
-		this.next = next;
+		initialize( new LocationRadius(x, y, z, size), type, next );
 	}
 
-	public RaceCheckpoint( Location location, float size, RaceCheckpointType type, RaceCheckpoint next )
+	public RaceCheckpoint( Vector3D pos, float size, RaceCheckpointType type, RaceCheckpoint next )
 	{
-		this.location = location.clone();
-		this.size = size;
-		this.type = type;
-		this.next = next;
+		initialize( new LocationRadius(pos, size), type, next );
 	}
 	
+	public RaceCheckpoint( Location loc, float size, RaceCheckpointType type, RaceCheckpoint next )
+	{
+		initialize( new LocationRadius(loc, size), type, next );
+	}
+	
+	public RaceCheckpoint( LocationRadius loc, RaceCheckpointType type, RaceCheckpoint next )
+	{
+		initialize( new LocationRadius(loc), type, next );
+	}
+	
+	private void initialize( LocationRadius loc, RaceCheckpointType type, RaceCheckpoint next )
+	{
+		this.location = loc;
+		this.type = type;
+		this.next = next;
+	}
 
 	@Override
-	public void setLocation( Vector3D location )
+	public LocationRadius getLocation()
 	{
-		this.location = location;
+		return location.clone();
+	}
+
+	@Override
+	public void setLocation( float x, float y, float z )
+	{
+		location.set( x, y, z );
 		update();
+	}
+	
+	@Override
+	public void setLocation( Vector3D pos )
+	{
+		location.set( pos );
+		update();
+	}
+	
+	@Override
+	public void setLocation( LocationRadius loc )
+	{
+		location.set( loc );
+		update();
+	}
+	
+	@Override
+	public float getSize()
+	{
+		return location.getRadius();
+	}
+	
+	@Override
+	public void setSize( float size )
+	{
+		location.setRadius( size );
+		update();
+	}
+	
+	@Override
+	public RaceCheckpointType getType()
+	{
+		return type;
+	}
+	
+	@Override
+	public RaceCheckpoint getNext()
+	{
+		return next;
 	}
 	
 	@Override

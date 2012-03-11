@@ -52,27 +52,23 @@ public class Zone implements IZone
 	
 	private boolean[] isPlayerShowed = new boolean[SampObjectPool.MAX_PLAYERS];
 	private boolean[] isPlayerFlashing = new boolean[SampObjectPool.MAX_PLAYERS];
-	
-	
-	@Override public int getId()								{ return id; }
-	@Override public Area getArea()								{ return area.clone(); }
 
 
 	public Zone( float minX, float minY, float maxX, float maxY ) throws CreationFailedException
 	{
-		this.area = new Area( minX, minY, maxX, maxY );
-		initialize();
+		initialize( minX, minY, maxX, maxY );
 	}
 	
 	public Zone( Area area ) throws CreationFailedException
 	{
-		this.area = area.clone();
-		initialize();
+		initialize( area.getMinX(), area.getMinY(), area.getMaxX(), area.getMaxY() );
 	}
 	
-	private void initialize() throws CreationFailedException
+	private void initialize( float minX, float minY, float maxX, float maxY ) throws CreationFailedException
 	{
-		id = SampNativeFunction.gangZoneCreate( area.getMinX(), area.getMinY(), area.getMaxX(), area.getMaxY() );
+		area = new Area( minX, minY, maxX, maxY );
+		
+		id = SampNativeFunction.gangZoneCreate( minX, minY, maxX, maxY );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		for( int i=0; i<isPlayerShowed.length; i++ )
@@ -84,7 +80,6 @@ public class Zone implements IZone
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setZone( id, this );
 	}
-
 	
 	@Override
 	public void destroy()
@@ -105,16 +100,27 @@ public class Zone implements IZone
 		return id == INVALID_ID;
 	}
 	
+	@Override
+	public int getId()
+	{
+		return id;
+	}
+	
+	@Override
+	public Area getArea()
+	{
+		return area.clone();
+	}
 
 	@Override
-	public void show( IPlayer player, int color )
+	public void show( IPlayer player, Color color )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
 		
 		int playerId = player.getId();
 		
-		SampNativeFunction.gangZoneShowForPlayer( playerId, id, color );
+		SampNativeFunction.gangZoneShowForPlayer( playerId, id, color.getValue() );
 		isPlayerShowed[playerId] = true;
 		isPlayerFlashing[playerId] = false;
 	}
@@ -133,7 +139,7 @@ public class Zone implements IZone
 	}
 
 	@Override
-	public void flash( IPlayer player, int color )
+	public void flash( IPlayer player, Color color )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -142,7 +148,7 @@ public class Zone implements IZone
 		
 		if( isPlayerShowed[playerId] )
 		{
-			SampNativeFunction.gangZoneFlashForPlayer( playerId, id, color );
+			SampNativeFunction.gangZoneFlashForPlayer( playerId, id, color.getValue() );
 			isPlayerFlashing[playerId] = true;
 		}
 	}

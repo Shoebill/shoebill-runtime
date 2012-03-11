@@ -107,10 +107,10 @@ public class LocationRadius extends Location implements Cloneable, Serializable,
 	public LocationRadius( LocationRadius loc )
 	{
 		super( loc );
-		this.radius = loc.getDistance();
+		this.radius = loc.getRadius();
 	}
 	
-	public float getDistance()
+	public float getRadius()
 	{
 		return radius;
 	}
@@ -174,7 +174,7 @@ public class LocationRadius extends Location implements Cloneable, Serializable,
 		if( this instanceof Immutably ) throw new ImmutablyException();
 
 		super.set( loc );
-		setRadius( loc.getDistance() );
+		setRadius( loc.getRadius() );
 	}
 	
 	@Override

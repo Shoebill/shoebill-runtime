@@ -18,6 +18,7 @@ package net.gtaun.shoebill.object;
 
 import java.util.Collection;
 
+import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Vector3D;
 
 /**
@@ -27,11 +28,14 @@ import net.gtaun.shoebill.data.Vector3D;
 
 public interface ICheckpoint
 {
-	Vector3D getLocation();
+	LocationRadius getLocation();
+	void setLocation( float x, float y, float z );
+	void setLocation( Vector3D pos );
+	void setLocation( LocationRadius loc );
+
 	float getSize();
-	
-	void setLocation( Vector3D location );
-	
+	void setSize( float size );
+
 	void set( IPlayer player );
 	void disable( IPlayer player );
 	boolean isInCheckpoint( IPlayer player );

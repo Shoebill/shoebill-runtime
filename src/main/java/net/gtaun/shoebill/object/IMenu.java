@@ -16,6 +16,8 @@
 
 package net.gtaun.shoebill.object;
 
+import net.gtaun.shoebill.data.Vector2D;
+
 /**
  * @author MK124
  *
@@ -26,8 +28,7 @@ public interface IMenu extends IDestroyable
 	int getId();
 	String getTitle();
 	int getColumns();
-	float getX();
-	float getY();
+	Vector2D getPosition();
 	float getCol1Width();
 	float getCol2Width();
 	String getColumnHeader();

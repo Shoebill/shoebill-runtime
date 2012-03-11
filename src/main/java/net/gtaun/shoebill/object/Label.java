@@ -18,6 +18,8 @@ package net.gtaun.shoebill.object;
 
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
@@ -52,36 +54,36 @@ public class Label implements ILabel
 	private Color color;
 	private Location location;
 	private float drawDistance;
-	private boolean testLOS;
 	
 	private Vector3D offset;
 	private IPlayer attachedPlayer;
 	private IVehicle attachedVehicle;
 	
-	
-	@Override public int getId()								{ return id; }
-	@Override public String getText()							{ return text; }
-	@Override public Color getColor()							{ return color.clone(); }
-	@Override public float getDrawDistance()					{ return drawDistance; }
-	@Override public IPlayer getAttachedPlayer()				{ return attachedPlayer; }
-	@Override public IVehicle getAttachedVehicle()				{ return attachedVehicle; }
-	
-	
-	public Label( String text, Color color, Location location, float drawDistance, boolean testLOS ) throws CreationFailedException
+
+	public Label( String text, Color color, float x, float y, float z, int worldId, float drawDistance, boolean testLOS ) throws CreationFailedException
 	{
-		if( text == null ) throw new NullPointerException();
-		
-		this.text = text;
-		this.color = color.clone();
-		this.location = location.clone();
-		this.drawDistance = drawDistance;
-		this.testLOS = testLOS;
-		
-		initialize();
+		initialize( text, color, new Location(x, y, z, worldId), drawDistance, testLOS );
 	}
 	
-	private void initialize() throws CreationFailedException
+	public Label( String text, Color color, Vector3D pos, int worldId, float drawDistance, boolean testLOS ) throws CreationFailedException
 	{
+		initialize( text, color, new Location(pos, worldId), drawDistance, testLOS );
+	}
+	
+	public Label( String text, Color color, Location loc, float drawDistance, boolean testLOS ) throws CreationFailedException
+	{
+		initialize( text, color, new Location(loc), drawDistance, testLOS );
+	}
+	
+	private void initialize( String text, Color color, Location loc, float drawDistance, boolean testLOS ) throws CreationFailedException
+	{
+		if( StringUtils.isEmpty(text) ) text = " ";
+		
+		this.text = text;
+		this.color = new Color( color );
+		this.location = loc;
+		this.drawDistance = drawDistance;
+		
 		id = SampNativeFunction.create3DTextLabel( text, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, location.getWorldId(), testLOS );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
@@ -109,6 +111,42 @@ public class Label implements ILabel
 		return id == INVALID_ID;
 	}
 
+	@Override
+	public int getId()
+	{
+		return id;
+	}
+	
+	@Override
+	public String getText()
+	{
+		return text;
+	}
+	
+	@Override
+	public Color getColor()
+	{
+		return color.clone();
+	}
+	
+	@Override
+	public float getDrawDistance()
+	{
+		return drawDistance;
+	}
+	
+	@Override
+	public IPlayer getAttachedPlayer()
+	{
+		return attachedPlayer;
+	}
+	
+	@Override
+	public IVehicle getAttachedVehicle()
+	{
+		return attachedVehicle;
+	}
+	
 	@Override
 	public Location getLocation()
 	{

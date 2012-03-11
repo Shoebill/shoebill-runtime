@@ -48,49 +48,35 @@ public class Pickup implements IPickup
 	private int id = INVALID_ID;
 	private int modelId, type;
 	private Location location;
-
-	
-	@Override public int getModelId()							{ return modelId; }
-	@Override public int getType()								{ return type; }
-	@Override public Location getLocation()						{ return location.clone(); }
 	
 	
 	public Pickup( int modelId, int type, float x, float y, float z, int worldId ) throws CreationFailedException
 	{
-		this.modelId = modelId;
-		this.type = type;
-		this.location = new Location( x, y, z, worldId );
-		
-		initialize();
+		initialize( modelId, type, new Location(x, y, z, worldId) );
 	}
 	
 	public Pickup( int modelId, int type, float x, float y, float z ) throws CreationFailedException
 	{
-		this.modelId = modelId;
-		this.type = type;
-		this.location = new Location( x, y, z );
-		
-		initialize();
+		initialize( modelId, type, new Location(x, y, z) );
 	}
 	
-	public Pickup( int modelId, int type, Location location ) throws CreationFailedException
+	public Pickup( int modelId, int type, Location loc ) throws CreationFailedException
+	{
+		initialize( modelId, type, new Location(loc) );
+	}
+	
+	private void initialize( int modelId, int type, Location loc ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.type = type;
-		this.location = location.clone();
+		this.location = loc;
 		
-		initialize();
-	}
-	
-	private void initialize() throws CreationFailedException
-	{
-		id = SampNativeFunction.createPickup( modelId, type, location.getX(), location.getY(), location.getZ(), location.getWorldId() );
+		id = SampNativeFunction.createPickup( modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId() );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setPickup( id, this );
 	}
-	
 	
 	@Override
 	public void destroy()
@@ -109,5 +95,23 @@ public class Pickup implements IPickup
 	public boolean isDestroyed()
 	{
 		return id == INVALID_ID;
+	}
+	
+	@Override
+	public int getModelId()
+	{
+		return modelId;
+	}
+	
+	@Override
+	public int getType()
+	{
+		return type;
+	}
+	
+	@Override
+	public Location getLocation()
+	{
+		return location.clone();
 	}
 }

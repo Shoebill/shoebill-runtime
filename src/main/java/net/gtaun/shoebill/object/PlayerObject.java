@@ -48,7 +48,7 @@ public class PlayerObject implements IPlayerObject
 
 	void processPlayerObjectMoved()
 	{
-		speed = 0;
+		speed = 0.0F;
 	}
 	
 	private int id = INVALID_ID;
@@ -56,91 +56,52 @@ public class PlayerObject implements IPlayerObject
 	
 	private int modelId;
 	private Location location;
-	private Vector3D rotate;
-	private float speed = 0;
-	private IPlayer attachedPlayer;
+	private float speed = 0.0F;
 	private float drawDistance = 0;
 	
-	
-	@Override public IPlayer getPlayer()							{ return player; }
-
-	@Override public int getId()									{ return id; }
-	@Override public int getModelId()								{ return modelId; }
-	@Override public float getSpeed()								{ return speed; }
-	@Override public float getDrawDistance()						{ return drawDistance; }
-	@Override public IPlayer getAttachedPlayer()					{ return attachedPlayer; }
-	@Override public IObject getAttachedObject()					{ return null; }
-	@Override public IVehicle getAttachedVehicle()					{ return null; }
+	private IPlayer attachedPlayer;
 	
 	
 	public PlayerObject( IPlayer player, int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
 	{
-		this.player = player;
-		this.modelId = modelId;
-		this.location = new Location( x, y, z );
-		this.rotate = new Vector3D( rx, ry, rz );
-		
-		initialize();
+		initialize( player, modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), drawDistance );
 	}
 	
 	public PlayerObject( IPlayer player, int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
-		this.player = player;
-		this.modelId = modelId;
-		this.location = new Location( x, y, z );
-		this.rotate = new Vector3D( rx, ry, rz );
-		this.drawDistance = drawDistance;
-		
-		initialize();
+		initialize( player, modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), drawDistance );
 	}
 	
-	public PlayerObject( IPlayer player, int modelId, Location location, float rx, float ry, float rz ) throws CreationFailedException
+	public PlayerObject( IPlayer player, int modelId, Location loc, float rx, float ry, float rz ) throws CreationFailedException
 	{
-		this.player = player;
-		this.modelId = modelId;
-		this.location = new Location( location );
-		this.rotate = new Vector3D( rx, ry, rz );
-		
-		initialize();
+		initialize( player, modelId, new Location(loc), new Vector3D(rx, ry, rz), drawDistance );
 	}
 	
-	public PlayerObject( IPlayer player, int modelId, Location location, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
+	public PlayerObject( IPlayer player, int modelId, Location loc, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
-		this.player = player;
-		this.modelId = modelId;
-		this.location = new Location( location );
-		this.rotate = new Vector3D( rx, ry, rz );
-		this.drawDistance = drawDistance;
-		
-		initialize();
+		initialize( player, modelId, new Location(loc), new Vector3D(rx, ry, rz), drawDistance );
 	}
 	
-	public PlayerObject( IPlayer player, int modelId, Location location, Vector3D rot ) throws CreationFailedException
+	public PlayerObject( IPlayer player, int modelId, Location loc, Vector3D rot ) throws CreationFailedException
 	{
-		this.player = player;
-		this.modelId = modelId;
-		this.location = location.clone();
-		this.rotate = new Vector3D( rot );
-		
-		initialize();
+		initialize( player, modelId, new Location(loc), new Vector3D(rot), drawDistance );
 	}
 	
-	public PlayerObject( IPlayer player, int modelId, Location location, Vector3D rot, float drawDistance ) throws CreationFailedException
+	public PlayerObject( IPlayer player, int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
 	{
-		this.player = player;
-		this.modelId = modelId;
-		this.location = location.clone();
-		this.rotate = new Vector3D( rot );
-		this.drawDistance = drawDistance;
-		
-		initialize();
+		initialize( player, modelId, new Location(loc), new Vector3D(rot), drawDistance );
 	}
 	
-	private void initialize() throws CreationFailedException
+	private void initialize( IPlayer player, int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
 	{
 		if( player.isOnline() == false ) throw new CreationFailedException();
 		
-		id = SampNativeFunction.createPlayerObject( player.getId(), modelId, location.getX(), location.getY(), location.getZ(), rotate.getX(), rotate.getY(), rotate.getZ(), drawDistance );
+		this.player = player;
+		this.modelId = modelId;
+		this.location = loc;
+		this.drawDistance = drawDistance;
+		
+		id = SampNativeFunction.createPlayerObject( player.getId(), modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
@@ -169,25 +130,88 @@ public class PlayerObject implements IPlayerObject
 	{
 		return id == INVALID_ID;
 	}
+
+	@Override
+	public IPlayer getPlayer()
+	{
+		return player;
+	}
+
+	@Override
+	public int getId()
+	{
+		return id;
+	}
+	
+	@Override
+	public int getModelId()
+	{
+		return modelId;
+	}
+	
+	@Override
+	public float getSpeed()
+	{
+		if( isDestroyed() ) return 0.0F;
+		if( player.isOnline() == false ) return 0.0F;
+		
+		if( attachedPlayer != null && attachedPlayer.isOnline() ) return attachedPlayer.getVelocity().speed3d();
+		
+		return speed;
+	}
+	
+	@Override
+	public float getDrawDistance()
+	{
+		return drawDistance;
+	}
+	
+	@Override
+	public IPlayer getAttachedPlayer()
+	{
+		return attachedPlayer;
+	}
+	
+	@Override
+	public IObject getAttachedObject()
+	{
+		return null;
+	}
+	
+	@Override
+	public IVehicle getAttachedVehicle()
+	{
+		return null;
+	}
 	
 	@Override
 	public Location getLocation()
-	{	
+	{
 		if( isDestroyed() ) return null;
 		if( player.isOnline() == false ) return null;
 		
 		SampNativeFunction.getPlayerObjectPos( player.getId(), id, location );
 		return location.clone();
 	}
-	
+
 	@Override
-	public void setLocation( Location location )
+	public void setLocation( Vector3D pos )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
 		
-		this.location.set( location );
-		SampNativeFunction.setPlayerObjectPos( player.getId(), id, location.getX(), location.getY(), location.getZ() );
+		location.set( pos );
+		SampNativeFunction.setPlayerObjectPos( player.getId(), id, pos.getX(), pos.getY(), pos.getZ() );
+	}
+	
+	@Override
+	public void setLocation( Location loc )
+	{
+		if( isDestroyed() ) return;
+		if( player.isOnline() == false ) return;
+		
+		location.set( loc );
+		SampNativeFunction.setPlayerObjectPos( player.getId(), id, loc.getX(), loc.getY(), loc.getZ() );
 	}
 	
 	@Override
@@ -196,8 +220,9 @@ public class PlayerObject implements IPlayerObject
 		if( isDestroyed() ) return null;
 		if( player.isOnline() == false ) return null;
 		
+		Vector3D rotate = new Vector3D();
 		SampNativeFunction.getPlayerObjectRot( player.getId(), id, rotate );
-		return rotate.clone();
+		return rotate;
 	}
 
 	@Override
@@ -205,8 +230,6 @@ public class PlayerObject implements IPlayerObject
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
-		
-		rotate.set( rx, ry, rz );
 		
 		SampNativeFunction.setPlayerObjectRot( player.getId(), id, rx, ry, rz );
 	}
@@ -247,12 +270,24 @@ public class PlayerObject implements IPlayerObject
 	}
 	
 	@Override
+	public int move( Vector3D pos, float speed )
+	{
+		return move( pos.getX(), pos.getY(), pos.getZ(), speed );
+	}
+	
+	@Override
+	public int move( Vector3D pos, float speed, Vector3D rot )
+	{
+		return move( pos.getX(), pos.getY(), pos.getZ(), speed, rot.getX(), rot.getY(), rot.getZ() );
+	}
+	
+	@Override
 	public void stop()
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
 		
-		speed = 0;
+		speed = 0.0F;
 		SampNativeFunction.stopPlayerObject( player.getId(), id );
 	}
 	
@@ -266,17 +301,35 @@ public class PlayerObject implements IPlayerObject
 		SampNativeFunction.attachPlayerObjectToPlayer( player.getId(), id, target.getId(), x, y, z, rx, ry, rz );
 		
 		attachedPlayer = player;
-		speed = 0;
+		speed = 0.0F;
 	}
 	
+	@Override
+	public void attach( IPlayer target, Vector3D pos, Vector3D rot )
+	{
+		attach( target, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
+	}
+
 	@Override
 	public void attach( IObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation )
 	{
 		throw new UnsupportedOperationException();
 	}
-	
+
+	@Override
+	public void attach( IObject object, Vector3D pos, Vector3D rot, boolean syncRotation )
+	{
+		throw new UnsupportedOperationException();
+	}
+
 	@Override
 	public void attach( IVehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
+	{
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void attach( IVehicle vehicle, Vector3D pos, Vector3D rot )
 	{
 		throw new UnsupportedOperationException();
 	}
