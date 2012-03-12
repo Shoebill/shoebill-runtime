@@ -90,9 +90,9 @@ public class SpawnInfo implements Cloneable, Serializable, Immutable
 		this.weapon3 = new WeaponData(weapon3, ammo3);
 	}
 
-	public SpawnInfo( LocationAngle location, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
+	public SpawnInfo( LocationAngle loc, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
 	{
-		this.location = new LocationAngle(location);
+		this.location = new LocationAngle(loc);
 		this.skinId = skin;
 		this.teamId = team;
 		this.weapon1 = new WeaponData(weapon1);
@@ -115,10 +115,11 @@ public class SpawnInfo implements Cloneable, Serializable, Immutable
 		return location.clone();
 	}
 
-	public void setLocation( LocationAngle location )
+	public void setLocation( LocationAngle loc )
 	{
 		if( this instanceof Immutably ) throw new ImmutablyException();
-		this.location = location.clone();
+		
+		this.location.set( loc );
 	}
 
 	public int getSkinId()

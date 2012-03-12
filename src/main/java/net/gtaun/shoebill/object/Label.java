@@ -209,7 +209,7 @@ public class Label implements ILabel
 		if( isDestroyed() ) return;
 		if( text == null ) throw new NullPointerException();
 		
-		this.color = color.clone();
+		this.color.set( color );
 		this.text = text;
 		
 		SampNativeFunction.update3DTextLabelText( id, color.getValue(), text );

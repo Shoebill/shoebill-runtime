@@ -29,9 +29,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class PlayerAttach implements IPlayerAttach
 {
-	public static final int MAX_ATTACHED_OBJECTS = 5;
-
-	
 	public class PlayerAttachSlot implements IPlayerAttachSlot
 	{
 		private int slot;
@@ -98,6 +95,9 @@ public class PlayerAttach implements IPlayerAttach
 		}
 	}
 	
+
+	public static final int MAX_ATTACHED_OBJECTS = 5;
+
 	
 	private IPlayer player;
 	private PlayerAttachSlot[] slots = new PlayerAttachSlot[MAX_ATTACHED_OBJECTS];

@@ -222,7 +222,7 @@ public class PlayerLabel implements IPlayerLabel
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
 		
-		this.color = color.clone();
+		this.color.set( color );
 		this.text = text;
 		
 		SampNativeFunction.updatePlayer3DTextLabelText( player.getId(), id, color.getValue(), text );
