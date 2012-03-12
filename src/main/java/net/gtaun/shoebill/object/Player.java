@@ -118,7 +118,7 @@ public class Player implements IPlayer
 		SampNativeFunction.getPlayerPos( id, location );
 		location.setAngle( SampNativeFunction.getPlayerFacingAngle(id) );
 		SampNativeFunction.getPlayerVelocity( id, velocity );
-		SampNativeFunction.getPlayerKeys( id, keyState );
+		keyState.update();
 
 		updateFrameCount++;
 		if( updateFrameCount<0 ) updateFrameCount = 0;
