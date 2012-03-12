@@ -45,7 +45,7 @@ public enum SpecialAction
 	DRINK_SPRUNK( 23 );
 	
 	
-	private static Map<Integer, SpecialAction> values = new HashMap<Integer, SpecialAction>();
+	private static final Map<Integer, SpecialAction> values = new HashMap<Integer, SpecialAction>();
 	public static SpecialAction get( int data )		{ return values.get(data); }
 	
 	static
@@ -54,7 +54,7 @@ public enum SpecialAction
 	}
 	
 	
-	private int data;
+	private final int data;
 	
 	public int getData()	{ return data; }
 	

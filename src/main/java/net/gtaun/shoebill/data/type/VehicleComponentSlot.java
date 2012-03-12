@@ -51,7 +51,7 @@ public enum VehicleComponentSlot
 	}
 	
 	
-	private int data;
+	private final int data;
 	
 	public int getData()	{ return data; }
 	

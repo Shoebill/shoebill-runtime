@@ -32,7 +32,7 @@ public enum MapIconStyle
 	public static MapIconStyle get( int data )		{ return values() [data]; }
 	
 	
-	private int data;
+	private final int data;
 	
 	public int getData()	{ return data; }
 	

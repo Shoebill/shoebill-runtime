@@ -35,7 +35,7 @@ public enum ShopName
 	AMMUNATION5( "AMMUN5" );
 	
 	
-	private static Map<String, ShopName> values = new HashMap<String, ShopName>();
+	private static final Map<String, ShopName> values = new HashMap<String, ShopName>();
 	public static ShopName get( String data )		{ return values.get(data); }
 	
 	static
@@ -44,7 +44,7 @@ public enum ShopName
 	}
 	
 	
-	private String data;
+	private final String data;
 	
 	public String getData()	{ return data; }
 	

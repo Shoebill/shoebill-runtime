@@ -33,7 +33,7 @@ public enum RaceCheckpointType
 	public static RaceCheckpointType get( int data )		{ return values() [data]; }
 	
 	
-	private int data;
+	private final int data;
 	
 	public int getData()	{ return data; }
 	

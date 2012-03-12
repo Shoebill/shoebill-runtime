@@ -31,7 +31,7 @@ public enum DialogStyle
 	public static DialogStyle get( int data )		{ return values() [data]; }
 	
 	
-	private int data;
+	private final int data;
 	
 	public int getData()	{ return data; }
 	

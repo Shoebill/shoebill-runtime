@@ -39,7 +39,7 @@ public enum WeaponSkill
 	public static WeaponSkill get( int id )		{ return values() [id]; }
 	
 	
-	private int data;
+	private final int data;
 	
 	public int getData()	{ return data; }
 	

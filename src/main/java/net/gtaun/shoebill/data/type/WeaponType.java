@@ -80,7 +80,7 @@ public enum WeaponType
     DISCONNECT			( 201,	-1,		0,		"Disconnect" );
     
     
-	private static Map<Integer, WeaponType> values = new HashMap<Integer, WeaponType>();
+	private static final Map<Integer, WeaponType> values = new HashMap<Integer, WeaponType>();
 	public static WeaponType get( int id )		{ return values.get(id); }
 	
 	static
@@ -89,10 +89,10 @@ public enum WeaponType
 	}
 	
 	
-	private int id;
-	private int slot;
-	private int modelId;
-	private String name;
+	private final int id;
+	private final int slot;
+	private final int modelId;
+	private final String name;
 	
 	public int getId()				{ return id; }
 	public int getSlot()			{ return slot; }

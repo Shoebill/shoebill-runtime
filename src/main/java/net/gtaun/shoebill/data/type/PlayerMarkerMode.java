@@ -31,7 +31,7 @@ public enum PlayerMarkerMode
 	public static PlayerMarkerMode get( int data )		{ return values() [data]; }
 	
 	
-	private int data;
+	private final int data;
 	
 	public int getData()	{ return data; }
 	

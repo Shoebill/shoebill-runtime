@@ -47,7 +47,7 @@ public enum PlayerAttachBone
 	public static PlayerAttachBone get( int data )		{ return values() [data]; }
 	
 	
-	private int data;
+	private final int data;
 	
 	public int getData()	{ return data; }
 	

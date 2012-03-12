@@ -31,7 +31,7 @@ public enum SpectateMode
 	SIDE( 3 );
 	
 	
-	private static Map<Integer, SpectateMode> values = new HashMap<Integer, SpectateMode>();
+	private static final Map<Integer, SpectateMode> values = new HashMap<Integer, SpectateMode>();
 	public static SpectateMode get( int data )		{ return values.get(data); }
 	
 	static
@@ -40,7 +40,7 @@ public enum SpectateMode
 	}
 	
 
-	private int data;
+	private final int data;
 	
 	public int getData()	{ return data; }
 	

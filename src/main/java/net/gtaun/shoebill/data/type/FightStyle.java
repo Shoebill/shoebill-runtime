@@ -34,7 +34,7 @@ public enum FightStyle
 	ELBOW( 16 );
 	
 	
-	private static Map<Integer, FightStyle> values = new HashMap<Integer, FightStyle>();
+	private static final Map<Integer, FightStyle> values = new HashMap<Integer, FightStyle>();
 	public static FightStyle get( int data )		{ return values.get(data); }
 	
 	static
@@ -43,7 +43,7 @@ public enum FightStyle
 	}
 	
 	
-	private int data;
+	private final int data;
 	
 	public int getData()	{ return data; }
 	
