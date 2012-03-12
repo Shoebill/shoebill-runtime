@@ -26,30 +26,35 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-@SuppressWarnings("unused")
 public class PlayerKeyState
 {
-	private static final int KEY_ACTION					= 1;
-	private static final int KEY_CROUCH					= 2;
-	private static final int KEY_FIRE					= 4;
-	private static final int KEY_SPRINT					= 8;
-	private static final int KEY_SECONDARY_ATTACK		= 16;
-	private static final int KEY_JUMP					= 32;
-    private static final int KEY_LOOK_RIGHT				= 64;
-    private static final int KEY_HANDBRAKE				= 128;
-    private static final int KEY_LOOK_LEFT				= 256;
-	private static final int KEY_SUBMISSION				= 512;
-    private static final int KEY_LOOK_BEHIND			= 512;
-    private static final int KEY_WALK					= 1024;
-    private static final int KEY_ANALOG_UP				= 2048;
-    private static final int KEY_ANALOG_DOWN			= 4096;
-    private static final int KEY_ANALOG_LEFT			= 8192;
-    private static final int KEY_ANALOG_RIGHT			= 16384;
-    
-	private static final int KEY_UP						= -128;
-    private static final int KEY_DOWN					= 128;
-    private static final int KEY_LEFT					= -128;
-    private static final int KEY_RIGHT					= 128;
+	enum Key
+	{
+		ACTION					(1),
+		CROUCH					(2),
+		FIRE					(4),
+		SPRINT					(8),
+		SECONDARY_ATTACK		(16),
+		JUMP					(32),
+	    LOOK_RIGHT				(64),
+	    HANDBRAKE				(128),
+	    LOOK_LEFT				(256),
+		SUBMISSION				(512),
+	    LOOK_BEHIND				(512),
+	    WALK					(1024),
+	    ANALOG_UP				(2048),
+	    ANALOG_DOWN				(4096),
+	    ANALOG_LEFT				(8192),
+	    ANALOG_RIGHT			(16384);
+		
+		public final int value;
+		Key( int val )		{ value = val; }
+	}
+	
+	public static final int KEY_UP				= -128;
+	public static final int KEY_DOWN			= 128;
+	public static final int KEY_LEFT			= -128;
+    public static final int KEY_RIGHT			= 128;
 
     
     private IPlayer player;
@@ -68,48 +73,54 @@ public class PlayerKeyState
 		SampNativeFunction.getPlayerKeys( player.getId(), this );
 	}
 
+	public IPlayer getPlayer()
+	{
+		return player;
+	}
 
-	public boolean isActionPressed()			{ return (keys&KEY_ACTION) != 0; }
-    public boolean isCrouchPressed()			{ return (keys&KEY_CROUCH) != 0; }
-    public boolean isFirePressed()				{ return (keys&KEY_FIRE) != 0; }
-    public boolean isSprintPressed()			{ return (keys&KEY_SPRINT) != 0; }
-    public boolean isSecondAttackPressed()		{ return (keys&KEY_SECONDARY_ATTACK) != 0; }
-    public boolean isJumpPressed()				{ return (keys&KEY_JUMP) != 0; }
-    public boolean isLookRightPressed()			{ return (keys&KEY_LOOK_RIGHT) != 0; }
-    public boolean isHandBreakPressed()			{ return (keys&KEY_HANDBRAKE) != 0; }
-    public boolean isLookLeftPressed()			{ return (keys&KEY_LOOK_LEFT) != 0; }
-    public boolean isSubMissionPressed()		{ return (keys&KEY_SUBMISSION) != 0; }
-    public boolean isLookBehindPressed()		{ return (keys&KEY_LOOK_BEHIND) != 0; }
-    public boolean isWalkPressed()				{ return (keys&KEY_WALK) != 0; }
-    public boolean isAnalogUpPressed()			{ return (keys&KEY_ANALOG_UP) != 0; }
-    public boolean isAnalogDownPressed()		{ return (keys&KEY_ANALOG_DOWN) != 0; }
-    public boolean isAnalogLeftPressed()		{ return (keys&KEY_ANALOG_LEFT) != 0; }
-    public boolean isAnalogRightPressed()		{ return (keys&KEY_ANALOG_RIGHT) != 0; }
-    
+	public int getKeys()
+	{
+		return keys;
+	}
+
+	public int getUpdown()
+	{
+		return updown;
+	}
+
+	public int getLeftright()
+	{
+		return leftright;
+	}
+
+	public boolean isKeyPressed( Key key )
+	{
+		return (keys&key.value) != 0;
+	}
 	
 	@Override
 	public String toString()
 	{
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE);
-		builder.append( "keys", keys );
-		builder.append( "upDown", updown );
-		builder.append( "leftRight", leftright );
-		builder.append( "actionPressed", isActionPressed() ? 1 : 0 );
-		builder.append( "crouchPressed", isCrouchPressed() ? 1 : 0 );
-		builder.append( "firePressed", isFirePressed() ? 1 : 0 );
-		builder.append( "sprintPressed", isSprintPressed() ? 1 : 0 );
-		builder.append( "secondAttackPressed", isSecondAttackPressed() ? 1 : 0 );
-		builder.append( "jumpPressed", isJumpPressed() ? 1 : 0 );
-		builder.append( "lookRightPressed", isLookRightPressed() ? 1 : 0 );
-		builder.append( "handBreakPressed", isHandBreakPressed() ? 1 : 0 );
-		builder.append( "lookLeftPressed", isLookLeftPressed() ? 1 : 0 );
-		builder.append( "subMissionPressed", isSubMissionPressed() ? 1 : 0 );
-		builder.append( "lookBehindPressed", isLookBehindPressed() ? 1 : 0 );
-		builder.append( "walkPressed", isWalkPressed() ? 1 : 0 );
-		builder.append( "analogUpPressed", isAnalogUpPressed() ? 1 : 0 );
-		builder.append( "analogDownPressed", isAnalogDownPressed() ? 1 : 0 );
-		builder.append( "analogLeftPressed", isAnalogLeftPressed() ? 1 : 0 );
-		builder.append( "analogRightPressed", isAnalogRightPressed() ? 1 : 0 );
+		builder.append( "keys",			keys );
+		builder.append( "upDown",		updown );
+		builder.append( "leftRight",	leftright );
+		builder.append( "action",		isKeyPressed(Key.ACTION)			? 1 : 0 );
+		builder.append( "crouch",		isKeyPressed(Key.CROUCH)			? 1 : 0 );
+		builder.append( "fire",			isKeyPressed(Key.FIRE)				? 1 : 0 );
+		builder.append( "sprint",		isKeyPressed(Key.SPRINT)			? 1 : 0 );
+		builder.append( "secondAttack",	isKeyPressed(Key.SECONDARY_ATTACK)	? 1 : 0 );
+		builder.append( "jump",			isKeyPressed(Key.JUMP)				? 1 : 0 );
+		builder.append( "lookRight",	isKeyPressed(Key.LOOK_RIGHT)		? 1 : 0 );
+		builder.append( "handbreak",	isKeyPressed(Key.HANDBRAKE)			? 1 : 0 );
+		builder.append( "lookLeft",		isKeyPressed(Key.LOOK_LEFT)			? 1 : 0 );
+		builder.append( "subMission",	isKeyPressed(Key.SUBMISSION)		? 1 : 0 );
+		builder.append( "lookBehind",	isKeyPressed(Key.LOOK_BEHIND)		? 1 : 0 );
+		builder.append( "walk",			isKeyPressed(Key.WALK)				? 1 : 0 );
+		builder.append( "analogUp",		isKeyPressed(Key.ANALOG_UP)			? 1 : 0 );
+		builder.append( "analogDown",	isKeyPressed(Key.ANALOG_DOWN)		? 1 : 0 );
+		builder.append( "analogLeft",	isKeyPressed(Key.ANALOG_LEFT)		? 1 : 0 );
+		builder.append( "analogRight",	isKeyPressed(Key.ANALOG_RIGHT)		? 1 : 0 );
 	    
 		return builder.build();
 	}
