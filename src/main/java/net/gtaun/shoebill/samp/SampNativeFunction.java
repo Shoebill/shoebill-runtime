@@ -16,12 +16,12 @@
 
 package net.gtaun.shoebill.samp;
 
-import net.gtaun.shoebill.data.KeyState;
 import net.gtaun.shoebill.data.Quaternions;
 import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.data.WeaponData;
+import net.gtaun.shoebill.object.PlayerKeyState;
 import net.gtaun.shoebill.object.VehicleDamage;
 import net.gtaun.shoebill.object.VehicleParam;
 
@@ -124,7 +124,7 @@ public final class SampNativeFunction
 	public static native String getPlayerIp( int playerid );
 	public static native int getPlayerPing( int playerid );
 	public static native int getPlayerWeapon( int playerid );
-	public static native void getPlayerKeys( int playerid, KeyState keystate );
+	public static native void getPlayerKeys( int playerid, PlayerKeyState keystate );
 	public static native String getPlayerName( int playerid );
 	public static native void setPlayerTime( int playerid, int hour, int minute );
 	public static native void getPlayerTime( int playerid, Time time );

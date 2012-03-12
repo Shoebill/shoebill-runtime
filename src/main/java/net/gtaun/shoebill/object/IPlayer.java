@@ -18,7 +18,6 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.data.KeyState;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.LocationRadius;
@@ -50,6 +49,11 @@ public interface IPlayer
 	boolean isOnline();
 	
 	int getId();
+
+	PlayerKeyState getKeyState();
+	IPlayerAttach getPlayerAttach();
+	IPlayerWeaponSkill getWeaponSkill();
+	
 	int getPing();
 	int getTeamId();
 	int getSkinId();
@@ -79,9 +83,6 @@ public interface IPlayer
 	Area getWorldBound();
 	Velocity getVelocity();
 	PlayerState getState();
-	KeyState getKeyState();
-	IPlayerAttach getPlayerAttach();
-	IPlayerWeaponSkill getWeaponSkill();
 	ICheckpoint getCheckpoint();
 	IRaceCheckpoint getRaceCheckpoint();
 	

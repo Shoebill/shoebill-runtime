@@ -24,7 +24,6 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.data.KeyState;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.LocationRadius;
@@ -143,6 +142,9 @@ public class Player implements IPlayer
 	
 	private int id = INVALID_ID;
 	
+	private final PlayerKeyState keyState;
+	private final IPlayerAttach playerAttach;
+	
 	private boolean isControllable = true;
 	private boolean isStuntBonusEnabled = false;
 	private boolean isSpectating = false;
@@ -157,8 +159,6 @@ public class Player implements IPlayer
 	private LocationAngle location = new LocationAngle();
 	private Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
 	private Velocity velocity = new Velocity();
-	private KeyState keyState = new KeyState();
-	private IPlayerAttach playerAttach;
 	private IPlayerWeaponSkill skill;
 	
 	private ICheckpoint checkpoint;
@@ -170,6 +170,10 @@ public class Player implements IPlayer
 	{	
 		this.id = id;
 		
+		playerAttach = new PlayerAttach(this);
+		keyState = new PlayerKeyState(this);
+		skill = new PlayerWeaponSkill(this);
+		
 		SampNativeFunction.getPlayerPos(id, location);
 		SampNativeFunction.getPlayerFacingAngle(id);
 		
@@ -178,9 +182,6 @@ public class Player implements IPlayer
 		
 		SampNativeFunction.getPlayerVelocity(id, velocity);
 		SampNativeFunction.getPlayerKeys(id, keyState);
-		
-		playerAttach = new PlayerAttach(this);
-		skill = new PlayerWeaponSkill(this);
 
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		if( pool.getPlayer(id) != null ) throw new UnsupportedOperationException();
@@ -197,7 +198,19 @@ public class Player implements IPlayer
 	{
 		return id;
 	}
+	
+	@Override
+	public IPlayerAttach getPlayerAttach()
+	{
+		return playerAttach;
+	}
 
+	@Override
+	public PlayerKeyState getKeyState()
+	{
+		return keyState;
+	}
+	
 	@Override
 	public int getUpdateFrameCount()
 	{
@@ -241,18 +254,6 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public KeyState getKeyState()
-	{
-		return keyState.clone();
-	}
-	
-	@Override
-	public IPlayerAttach getPlayerAttach()
-	{
-		return playerAttach;
-	}
-	
-	@Override
 	public IPlayerWeaponSkill getWeaponSkill()
 	{
 		return skill;
@@ -271,16 +272,34 @@ public class Player implements IPlayer
 	}
 	
 	@Override
-	public IDialog getDialog()							{ return dialog; }
+	public IDialog getDialog()
+	{
+		return dialog;
+	}
 
 	@Override
-	public boolean isStuntBonusEnabled()					{ return isStuntBonusEnabled; }
+	public boolean isStuntBonusEnabled()
+	{
+		return isStuntBonusEnabled;
+	}
+	
 	@Override
-	public boolean isSpectating()							{ return isSpectating; }
+	public boolean isSpectating()
+	{
+		return isSpectating;
+	}
+	
 	@Override
-	public boolean isRecording()							{ return isRecording; }
+	public boolean isRecording()
+	{
+		return isRecording;
+	}
+	
 	@Override
-	public boolean isControllable()						{ return isControllable; }
+	public boolean isControllable()
+	{
+		return isControllable;
+	}
 	
 	@Override
 	public int getPing()
