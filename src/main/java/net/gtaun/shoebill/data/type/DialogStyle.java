@@ -23,21 +23,27 @@ package net.gtaun.shoebill.data.type;
 
 public enum DialogStyle
 {
-	MSGBOX( 0 ),
-	INPUT( 1 ),
-	LIST( 2 );
+	MSGBOX		(0),
+	INPUT		(1),
+	LIST		(2);
 	
 	
-	public static DialogStyle get( int data )		{ return values() [data]; }
+	public static DialogStyle get( int data )
+	{
+		return values() [data];
+	}
 	
 	
 	private final int data;
-	
-	public int getData()	{ return data; }
 	
 	
 	private DialogStyle( int data )
 	{
 		this.data = data;
+	}
+	
+	public int getData()
+	{
+		return data;
 	}
 }

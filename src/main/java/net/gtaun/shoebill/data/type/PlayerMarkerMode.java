@@ -23,21 +23,27 @@ package net.gtaun.shoebill.data.type;
 
 public enum PlayerMarkerMode
 {
-	OFF( 0 ),
-	GLOBAL( 1 ),
-	STREAMED( 2 );
+	OFF				(0),
+	GLOBAL			(1),
+	STREAMED		(2);
 	
 	
-	public static PlayerMarkerMode get( int data )		{ return values() [data]; }
+	public static PlayerMarkerMode get( int data )
+	{
+		return values() [data];
+	}
 	
 	
 	private final int data;
-	
-	public int getData()	{ return data; }
 	
 	
 	private PlayerMarkerMode( int data )
 	{
 		this.data = data;
+	}
+	
+	public int getData()
+	{
+		return data;
 	}
 }

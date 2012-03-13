@@ -23,23 +23,29 @@ package net.gtaun.shoebill.data.type;
 
 public enum RaceCheckpointType
 {
-	NORMAL( 0 ),
-	NORMAL_FINISH( 1 ),
-	NOTHING( 2 ),
-	AIR( 3 ),
-	AIR_FINISH( 4 );
+	NORMAL				(0),
+	NORMAL_FINISH		(1),
+	NOTHING				(2),
+	AIR					(3),
+	AIR_FINISH			(4);
 	
 	
-	public static RaceCheckpointType get( int data )		{ return values() [data]; }
+	public static RaceCheckpointType get( int data )
+	{
+		return values() [data];
+	}
 	
 	
 	private final int data;
-	
-	public int getData()	{ return data; }
 	
 	
 	private RaceCheckpointType( int data )
 	{
 		this.data = data;
+	}
+	
+	public int getData()
+	{
+		return data;
 	}
 }

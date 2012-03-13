@@ -26,27 +26,30 @@ import java.util.Map;
 
 public enum SpecialAction
 {
-	NONE( 0 ),
-	DUCK( 1 ),
-	USEJETPACK( 2 ),
-	ENTER_VEHICLE( 3 ),
-	EXIT_VEHICLE( 4 ),
-	DANCE1( 5 ),
-	DANCE2( 6 ),
-	DANCE3( 7 ),
-	DANCE4( 8 ),
-	HANDSUP( 10 ),
-	USECELLPHONE( 11 ),
-	SITTING( 12 ),
-	STOPUSECELLPHONE( 13 ),
-	DRINK_BEER( 20 ),
-	SMOKE_CIGGY( 21 ),
-	DRINK_WINE( 22 ),
-	DRINK_SPRUNK( 23 );
+	NONE					(0),
+	DUCK					(1),
+	USEJETPACK				(2),
+	ENTER_VEHICLE			(3),
+	EXIT_VEHICLE			(4),
+	DANCE1					(5),
+	DANCE2					(6),
+	DANCE3					(7),
+	DANCE4					(8),
+	HANDSUP					(10),
+	USECELLPHONE			(11),
+	SITTING					(12),
+	STOPUSECELLPHONE		(13),
+	DRINK_BEER				(20),
+	SMOKE_CIGGY				(21),
+	DRINK_WINE				(22),
+	DRINK_SPRUNK			(23);
 	
 	
 	private static final Map<Integer, SpecialAction> values = new HashMap<Integer, SpecialAction>();
-	public static SpecialAction get( int data )		{ return values.get(data); }
+	public static SpecialAction get( int data )
+	{
+		return values.get(data);
+	}
 	
 	static
 	{
@@ -56,11 +59,14 @@ public enum SpecialAction
 	
 	private final int data;
 	
-	public int getData()	{ return data; }
-	
 	
 	private SpecialAction( int data )
 	{
 		this.data = data;
+	}
+	
+	public int getData()
+	{
+		return data;
 	}
 }

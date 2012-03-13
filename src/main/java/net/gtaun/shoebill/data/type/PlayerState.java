@@ -23,28 +23,34 @@ package net.gtaun.shoebill.data.type;
 
 public enum PlayerState
 {
-	NONE( 0 ),
-	ONFOOT( 1 ),
-	DRIVER( 2 ),
-	PASSENGER( 3 ),
-	EXIT_VEHICLE( 4 ),
-	ENTER_VEHICLE_DRIVER( 5 ),
-	ENTER_VEHICLE_PASSENGER( 6 ),
-	WASTED( 7 ),
-	SPAWNED( 8 ),
-	SPECTATING( 9 );
+	NONE						(0),
+	ONFOOT						(1),
+	DRIVER						(2),
+	PASSENGER					(3),
+	EXIT_VEHICLE				(4),
+	ENTER_VEHICLE_DRIVER		(5),
+	ENTER_VEHICLE_PASSENGER		(6),
+	WASTED						(7),
+	SPAWNED						(8),
+	SPECTATING					(9);
 	
 	
-	public static PlayerState get( int data )		{ return values() [data]; }
+	public static PlayerState get( int data )
+	{
+		return values() [data];
+	}
 	
 	
 	private final int data;
-	
-	public int getData()	{ return data; }
 	
 	
 	private PlayerState( int data )
 	{
 		this.data = data;
+	}
+	
+	public int getData()
+	{
+		return data;
 	}
 }

@@ -26,16 +26,19 @@ import java.util.Map;
 
 public enum FightStyle
 {
-	NORMAL( 4 ),
-	BOXING( 5 ),
-	KUNGFU( 6 ),
-	KNEEHEAD( 7 ),
-	GRABKICK( 15 ),
-	ELBOW( 16 );
+	NORMAL			(4),
+	BOXING			(5),
+	KUNGFU			(6),
+	KNEEHEAD		(7),
+	GRABKICK		(15),
+	ELBOW			(16);
 	
 	
 	private static final Map<Integer, FightStyle> values = new HashMap<Integer, FightStyle>();
-	public static FightStyle get( int data )		{ return values.get(data); }
+	public static FightStyle get( int data )
+	{
+		return values.get(data);
+	}
 	
 	static
 	{
@@ -45,11 +48,15 @@ public enum FightStyle
 	
 	private final int data;
 	
-	public int getData()	{ return data; }
 	
 	
 	private FightStyle( int data )
 	{
 		this.data = data;
+	}
+	
+	public int getData()
+	{
+		return data;
 	}
 }

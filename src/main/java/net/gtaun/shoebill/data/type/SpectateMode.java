@@ -26,13 +26,16 @@ import java.util.Map;
 
 public enum SpectateMode
 {
-	NORMAL( 1 ),
-	FIXED( 2 ),
-	SIDE( 3 );
+	NORMAL		(1),
+	FIXED		(2),
+	SIDE		(3);
 	
 	
 	private static final Map<Integer, SpectateMode> values = new HashMap<Integer, SpectateMode>();
-	public static SpectateMode get( int data )		{ return values.get(data); }
+	public static SpectateMode get( int data )
+	{
+		return values.get(data);
+	}
 	
 	static
 	{
@@ -42,11 +45,14 @@ public enum SpectateMode
 
 	private final int data;
 	
-	public int getData()	{ return data; }
-	
 	
 	private SpectateMode( int data )
 	{
 		this.data = data;
+	}
+	
+	public int getData()
+	{
+		return data;
 	}
 }

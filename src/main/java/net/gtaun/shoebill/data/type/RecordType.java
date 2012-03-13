@@ -23,21 +23,27 @@ package net.gtaun.shoebill.data.type;
 
 public enum RecordType
 {
-	NONE( 0 ),
-	DRIVER( 1 ),
-	ONFOOT( 2 );
+	NONE		(0),
+	DRIVER		(1),
+	ONFOOT		(2);
 	
 	
-	public static RecordType get( int data )		{ return values() [data]; }
+	public static RecordType get( int data )
+	{
+		return values() [data];
+	}
 	
 	
 	private final int data;
-	
-	public int getData()	{ return data; }
 	
 	
 	private RecordType( int data )
 	{
 		this.data = data;
+	}
+	
+	public int getData()
+	{
+		return data;
 	}
 }

@@ -25,26 +25,27 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public enum VehicleComponentSlot
 {
-	SPOILER( 0 ),
-	HOOD( 1 ),
-	ROOF( 2 ),
-	SIDESKIRT( 3 ),
-	LAMPS( 4 ),
-	NITRO( 5 ),
-	EXHAUST( 6 ),
-	WHEELS( 7 ),
-	STEREO( 8 ),
-	HYDRAULICS( 9 ),
-	FRONT_BUMPER( 10 ),
-	REAR_BUMPER( 11 ),
-	VENT_RIGHT( 12 ),
-	VENT_LEFT( 13 );
+	SPOILER				(0),
+	HOOD				(1),
+	ROOF				(2),
+	SIDESKIRT			(3),
+	LAMPS				(4),
+	NITRO				(5),
+	EXHAUST				(6),
+	WHEELS				(7),
+	STEREO				(8),
+	HYDRAULICS			(9),
+	FRONT_BUMPER		(10),
+	REAR_BUMPER			(11),
+	VENT_RIGHT			(12),
+	VENT_LEFT			(13);
 	
 	
 	public static VehicleComponentSlot get( int data )
 	{
 		return values() [data];
 	}
+	
 	public static int getComponentSlot( int componentId )
 	{
 		return SampNativeFunction.getVehicleComponentType(componentId);
@@ -53,11 +54,14 @@ public enum VehicleComponentSlot
 	
 	private final int data;
 	
-	public int getData()	{ return data; }
-	
 	
 	private VehicleComponentSlot( int data )
 	{
 		this.data = data;
+	}
+	
+	public int getData()
+	{
+		return data;
 	}
 }

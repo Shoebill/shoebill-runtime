@@ -26,17 +26,20 @@ import java.util.Map;
 
 public enum ShopName
 {
-	PIZZASTACK( "FDPIZA" ),
-	BURGERSHOT( "FDBURG" ),
-	CLUCKINBELL( "FDCHICK" ),
-	AMMUNATION1( "AMMUN1" ),
-	AMMUNATION2( "AMMUN2" ),
-	AMMUNATION3( "AMMUN3" ),
-	AMMUNATION5( "AMMUN5" );
+	PIZZASTACK		( "FDPIZA" ),
+	BURGERSHOT		( "FDBURG" ),
+	CLUCKINBELL		( "FDCHICK" ),
+	AMMUNATION1		( "AMMUN1" ),
+	AMMUNATION2		( "AMMUN2" ),
+	AMMUNATION3		( "AMMUN3" ),
+	AMMUNATION5		( "AMMUN5" );
 	
 	
 	private static final Map<String, ShopName> values = new HashMap<String, ShopName>();
-	public static ShopName get( String data )		{ return values.get(data); }
+	public static ShopName get( String data )
+	{
+		return values.get(data);
+	}
 	
 	static
 	{
@@ -46,11 +49,14 @@ public enum ShopName
 	
 	private final String data;
 	
-	public String getData()	{ return data; }
-	
 	
 	private ShopName( String data )
 	{
 		this.data = data;
+	}
+	
+	public String getData()
+	{
+		return data;
 	}
 }

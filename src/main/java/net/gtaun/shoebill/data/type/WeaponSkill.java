@@ -23,29 +23,35 @@ package net.gtaun.shoebill.data.type;
 
 public enum WeaponSkill
 {
-	PISTOL( 0 ),
-	PISTOL_SILENCED( 1 ),
-	DESERT_EAGLE( 2 ),
-	SHOTGUN( 3 ),
-	SAWNOFF_SHOTGUN( 4 ),
-	SPAS12_SHOTGUN( 5 ),
-	MICRO_UZI( 6 ),
-	MP5( 7 ),
-	AK47( 8 ),
-	M4( 9 ),
-	SNIPERRIFLE( 10 );
+	PISTOL				(0),
+	PISTOL_SILENCED		(1),
+	DESERT_EAGLE		(2),
+	SHOTGUN				(3),
+	SAWNOFF_SHOTGUN		(4),
+	SPAS12_SHOTGUN		(5),
+	MICRO_UZI			(6),
+	MP5					(7),
+	AK47				(8),
+	M4					(9),
+	SNIPERRIFLE			(10);
 	
 	
-	public static WeaponSkill get( int id )		{ return values() [id]; }
+	public static WeaponSkill get( int id )
+	{
+		return values() [id];
+	}
 	
 	
 	private final int data;
-	
-	public int getData()	{ return data; }
 	
 	
 	private WeaponSkill( int data )
 	{
 		this.data = data;
+	}
+	
+	public int getData()
+	{
+		return data;
 	}
 }

@@ -23,22 +23,28 @@ package net.gtaun.shoebill.data.type;
 
 public enum MapIconStyle
 {
-	LOCAL( 0 ),
-	GLOBAL( 1 ),
-	LOCAL_CHECKPOINT( 2 ),
-	GLOBAL_CHECKPOINT( 3 );
+	LOCAL					(0),
+	GLOBAL					(1),
+	LOCAL_CHECKPOINT		(2),
+	GLOBAL_CHECKPOINT		(3);
 	
 	
-	public static MapIconStyle get( int data )		{ return values() [data]; }
+	public static MapIconStyle get( int data )
+	{
+		return values() [data];
+	}
 	
 	
 	private final int data;
-	
-	public int getData()	{ return data; }
 	
 	
 	private MapIconStyle( int data )
 	{
 		this.data = data;
+	}
+	
+	public int getData()
+	{
+		return data;
 	}
 }

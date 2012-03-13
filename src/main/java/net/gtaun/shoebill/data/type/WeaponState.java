@@ -26,15 +26,18 @@ import java.util.Map;
 
 public enum WeaponState
 {
-	UNKNOWN( -1 ),
-	NO_BULLETS( 0 ),
-	LAST_BULLET( 1 ),
-	MORE_BULLETS( 2 ),
-	RELOADING( 3 );
+	UNKNOWN				(-1),
+	NO_BULLETS			(0),
+	LAST_BULLET			(1),
+	MORE_BULLETS		(2),
+	RELOADING			(3);
 	
 	
 	private static Map<Integer, WeaponState> values = new HashMap<Integer, WeaponState>();
-	public static WeaponState get( int data )		{ return values.get(data); }
+	public static WeaponState get( int data )
+	{
+		return values.get(data);
+	}
 	
 	static
 	{
@@ -44,11 +47,14 @@ public enum WeaponState
 	
 	private final int data;
 	
-	public int getData()	{ return data; }
-	
 	
 	private WeaponState( int data )
 	{
 		this.data = data;
+	}
+	
+	public int getData()
+	{
+		return data;
 	}
 }
