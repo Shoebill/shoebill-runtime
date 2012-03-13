@@ -31,8 +31,8 @@ public class ManagedEventManager implements IEventManager
 {
 	IEventManager eventManager;
 	EventListenerEventListener eventListenerEventListener;
-	EventListenerEntry eventListenerEventListenerEntry;
-	Set<EventListenerEntry> managedListeners;
+	Entry eventListenerEventListenerEntry;
+	Set<Entry> managedListeners;
 	
 	
 	public ManagedEventManager( IEventManager eventManager )
@@ -44,12 +44,12 @@ public class ManagedEventManager implements IEventManager
 			@Override
 			public void onEvnetListenerRemoved( EventListenerRemovedEvent event )
 			{
-				EventListenerEntry entry = event.getEntry();
+				Entry entry = event.getEntry();
 				if( managedListeners.contains(entry) ) managedListeners.remove( entry );
 			}
 		};
 		
-		eventListenerEventListenerEntry = eventManager.addListener( EventListenerRemovedEvent.class, eventListenerEventListener, EventListenerPriority.MONITOR );
+		eventListenerEventListenerEntry = eventManager.addListener( EventListenerRemovedEvent.class, eventListenerEventListener, Priority.MONITOR );
 	}
 	
 	@Override
@@ -59,67 +59,67 @@ public class ManagedEventManager implements IEventManager
 	}
 	
 	
-	private void addListenerEntry( EventListenerEntry entry )
+	private void addListenerEntry( Entry entry )
 	{
 		managedListeners.add( entry );
 	}
 	
 	public void removeAllListener()
 	{
-		for( EventListenerEntry entry : managedListeners ) removeListener( entry );
+		for( Entry entry : managedListeners ) removeListener( entry );
 	}
 	
 	
 	@Override
-	public EventListenerEntry addListener( Class<? extends Event> type, IEventListener listener, EventListenerPriority priority )
+	public Entry addListener( Class<? extends Event> type, IEventListener listener, Priority priority )
 	{
-		EventListenerEntry entry = eventManager.addListener( type, listener, priority );
+		Entry entry = eventManager.addListener( type, listener, priority );
 		addListenerEntry( entry );
 		return entry;
 	}
 
 	@Override
-	public EventListenerEntry addListener( Class<? extends Event> type, IEventListener listener, short priority )
+	public Entry addListener( Class<? extends Event> type, IEventListener listener, short priority )
 	{
-		EventListenerEntry entry = eventManager.addListener( type, listener, priority );
+		Entry entry = eventManager.addListener( type, listener, priority );
 		addListenerEntry( entry );
 		return entry;
 	}
 
 	@Override
-	public EventListenerEntry addListener( Class<? extends Event> type, Class<?> clz, IEventListener listener, EventListenerPriority priority )
+	public Entry addListener( Class<? extends Event> type, Class<?> clz, IEventListener listener, Priority priority )
 	{
-		EventListenerEntry entry = eventManager.addListener( type, clz, listener, priority );
+		Entry entry = eventManager.addListener( type, clz, listener, priority );
 		addListenerEntry( entry );
 		return entry;
 	}
 
 	@Override
-	public EventListenerEntry addListener( Class<? extends Event> type, Class<?> clz, IEventListener listener, short priority )
+	public Entry addListener( Class<? extends Event> type, Class<?> clz, IEventListener listener, short priority )
 	{
-		EventListenerEntry entry = eventManager.addListener( type, clz, listener, priority );
+		Entry entry = eventManager.addListener( type, clz, listener, priority );
 		addListenerEntry( entry );
 		return entry;
 	}
 
 	@Override
-	public EventListenerEntry addListener( Class<? extends Event> type, Object object, IEventListener listener, EventListenerPriority priority )
+	public Entry addListener( Class<? extends Event> type, Object object, IEventListener listener, Priority priority )
 	{
-		EventListenerEntry entry = eventManager.addListener( type, object, listener, priority );
+		Entry entry = eventManager.addListener( type, object, listener, priority );
 		addListenerEntry( entry );
 		return entry;
 	}
 
 	@Override
-	public EventListenerEntry addListener( Class<? extends Event> type, Object object, IEventListener listener, short priority )
+	public Entry addListener( Class<? extends Event> type, Object object, IEventListener listener, short priority )
 	{
-		EventListenerEntry entry = eventManager.addListener( type, object, listener, priority );
+		Entry entry = eventManager.addListener( type, object, listener, priority );
 		addListenerEntry( entry );
 		return entry;
 	}
 	
 	@Override
-	public EventListenerEntry addListener( EventListenerEntry entry )
+	public Entry addListener( Entry entry )
 	{
 		entry = eventManager.addListener(entry);
 		addListenerEntry( entry );
@@ -145,7 +145,7 @@ public class ManagedEventManager implements IEventManager
 	}
 	
 	@Override
-	public void removeListener( EventListenerEntry entry )
+	public void removeListener( Entry entry )
 	{
 		eventManager.removeListener( entry );
 	}
@@ -175,7 +175,7 @@ public class ManagedEventManager implements IEventManager
 	}
 	
 	@Override
-	public boolean hasListener( EventListenerEntry entry )
+	public boolean hasListener( Entry entry )
 	{
 		return eventManager.hasListener( entry );
 	}

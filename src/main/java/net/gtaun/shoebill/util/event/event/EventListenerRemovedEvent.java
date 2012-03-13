@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.util.event.event;
 
-import net.gtaun.shoebill.util.event.EventListenerEntry;
+import net.gtaun.shoebill.util.event.IEventManager.Entry;
 
 /**
  * @author MK124
@@ -25,7 +25,7 @@ import net.gtaun.shoebill.util.event.EventListenerEntry;
 
 public class EventListenerRemovedEvent extends EventListenerEvent
 {
-	public EventListenerRemovedEvent( EventListenerEntry entry )
+	public EventListenerRemovedEvent( Entry entry )
 	{
 		super( entry );
 	}

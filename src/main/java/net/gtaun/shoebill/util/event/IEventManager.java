@@ -23,24 +23,78 @@ package net.gtaun.shoebill.util.event;
 
 public interface IEventManager
 {
-	EventListenerEntry addListener( Class<? extends Event> type, IEventListener listener, EventListenerPriority priority );
-	EventListenerEntry addListener( Class<? extends Event> type, IEventListener listener, short priority );
-	EventListenerEntry addListener( Class<? extends Event> type, Class<?> clz, IEventListener listener, EventListenerPriority priority );
-	EventListenerEntry addListener( Class<? extends Event> type, Class<?> clz, IEventListener listener, short priority );
-	EventListenerEntry addListener( Class<? extends Event> type, Object object, IEventListener listener, EventListenerPriority priority );
-	EventListenerEntry addListener( Class<? extends Event> type, Object object, IEventListener listener, short priority );
-	EventListenerEntry addListener( EventListenerEntry entry );
+	public class Entry
+	{
+		private Class<? extends Event> type;
+		private Object relatedObject;
+		private IEventListener listener;
+		private short priority;
+	
+		public Class<? extends Event> getType()			{ return type; }
+		public Object getRelatedObject()				{ return relatedObject; }
+		public IEventListener getListener()				{ return listener; }
+		public short getPriority()						{ return priority; }
+		
+		
+		public Entry( Class<? extends Event> type, Object relatedObject, IEventListener listener, short priority )
+		{
+			this.type = type;
+			this.relatedObject = relatedObject;
+			this.listener = listener;
+			this.priority = priority;
+		}
+		
+		
+		public Class<?> getRelatedClass()
+		{
+			if( relatedObject instanceof Class ) return (Class<?>) relatedObject;
+			return null;
+		}
+	}
+	
+	public enum Priority
+	{
+		BOTTOM		( (short) -32768 ),
+		LOWEST		( (short) -16384 ),
+	    LOW			( (short) -8192 ),
+	    NORMAL		( (short) 0 ),
+	    HIGH		( (short) 8192 ),
+	    HIGHEST		( (short) 16384 ),
+	    MONITOR		( (short) 32767 );
+	
+	    private final short value;
+	
+	    
+	    private Priority( short value )
+	    {
+	        this.value = value;
+	    }
+	
+	    public short getValue()
+	    {
+	        return value;
+	    }
+	}
+	
+	
+	Entry addListener( Class<? extends Event> type, IEventListener listener, Priority priority );
+	Entry addListener( Class<? extends Event> type, IEventListener listener, short priority );
+	Entry addListener( Class<? extends Event> type, Class<?> clz, IEventListener listener, Priority priority );
+	Entry addListener( Class<? extends Event> type, Class<?> clz, IEventListener listener, short priority );
+	Entry addListener( Class<? extends Event> type, Object object, IEventListener listener, Priority priority );
+	Entry addListener( Class<? extends Event> type, Object object, IEventListener listener, short priority );
+	Entry addListener( Entry entry );
 
 	void removeListener( Class<? extends Event> type, IEventListener listener );
 	void removeListener( Class<? extends Event> type, Class<?> clz, IEventListener listener );
 	void removeListener( Class<? extends Event> type, Object object, IEventListener listener );
-	void removeListener( EventListenerEntry entry );
+	void removeListener( Entry entry );
 
 	boolean hasListener( Class<? extends Event> type, Class<?> clz );
 	boolean hasListener( Class<? extends Event> type, Class<?> clz, IEventListener listener );
 	boolean hasListener( Class<? extends Event> type, Object object );
 	boolean hasListener( Class<? extends Event> type, Object object, IEventListener listener );
-	boolean hasListener( EventListenerEntry entry );
+	boolean hasListener( Entry entry );
 	
 	<T extends Event> void dispatchEvent( T event, Object ...objects );
 }

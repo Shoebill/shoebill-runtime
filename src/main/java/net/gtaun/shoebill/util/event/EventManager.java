@@ -34,74 +34,74 @@ import net.gtaun.shoebill.util.event.event.EventListenerRemovedEvent;
 
 public class EventManager implements IEventManager
 {
-	private Map<Class<? extends Event>, Map<Object, Queue<EventListenerEntry>>> listenerEntryContainersMap;
+	private Map<Class<? extends Event>, Map<Object, Queue<Entry>>> listenerEntryContainersMap;
 	
 	
 	public EventManager()
 	{
-		listenerEntryContainersMap = new ConcurrentHashMap<Class<? extends Event>, Map<Object, Queue<EventListenerEntry>>>();
+		listenerEntryContainersMap = new ConcurrentHashMap<Class<? extends Event>, Map<Object, Queue<Entry>>>();
 	}
 	
 
 	@Override
-	public EventListenerEntry addListener( Class<? extends Event> type, IEventListener listener, EventListenerPriority priority )
+	public Entry addListener( Class<? extends Event> type, IEventListener listener, Priority priority )
 	{
 		return addListener( type, Object.class, listener, priority.getValue() );
 	}
 	
 	@Override
-	public EventListenerEntry addListener( Class<? extends Event> type, IEventListener listener, short priority )
+	public Entry addListener( Class<? extends Event> type, IEventListener listener, short priority )
 	{
 		return addListener( type, Object.class, listener, priority );
 	}
 	
 	@Override
-	public EventListenerEntry addListener( Class<? extends Event> type, Class<?> relatedClass, IEventListener listener, EventListenerPriority priority )
+	public Entry addListener( Class<? extends Event> type, Class<?> relatedClass, IEventListener listener, Priority priority )
 	{
 		return addListener( type, (Object)relatedClass, listener, priority.getValue() );
 	}
 
 	@Override
-	public EventListenerEntry addListener( Class<? extends Event> type, Class<?> relatedClass, IEventListener listener, short customPriority )
+	public Entry addListener( Class<? extends Event> type, Class<?> relatedClass, IEventListener listener, short customPriority )
 	{
 		return addListener( type, (Object)relatedClass, listener, customPriority );
 	}
 
 	@Override
-	public EventListenerEntry addListener( Class<? extends Event> type, Object relatedObject, IEventListener listener, EventListenerPriority priority )
+	public Entry addListener( Class<? extends Event> type, Object relatedObject, IEventListener listener, Priority priority )
 	{
 		return addListener( type, relatedObject, listener, priority.getValue() );
 	}
 
 	@Override
-	public EventListenerEntry addListener( Class<? extends Event> type, Object relatedObject, IEventListener listener, short customPriority )
+	public Entry addListener( Class<? extends Event> type, Object relatedObject, IEventListener listener, short customPriority )
 	{
-		EventListenerEntry entry = new EventListenerEntry( type, relatedObject, listener, customPriority );
+		Entry entry = new Entry( type, relatedObject, listener, customPriority );
 		return addListener(entry);
 	}
 	
 	@Override
-	public EventListenerEntry addListener( EventListenerEntry entry )
+	public Entry addListener( Entry entry )
 	{
 		Class<? extends Event> type = entry.getType();
 		Object relatedObject = entry.getRelatedObject();
 		IEventListener listener = entry.getListener();
 		
-		Map<Object, Queue<EventListenerEntry>> objectListenerEntries = listenerEntryContainersMap.get(type);
+		Map<Object, Queue<Entry>> objectListenerEntries = listenerEntryContainersMap.get(type);
 		if( objectListenerEntries == null )
 		{
 			objectListenerEntries = new ConcurrentHashMap<>();
 			listenerEntryContainersMap.put( type, objectListenerEntries );
 		}
 		
-		Queue<EventListenerEntry> entries = objectListenerEntries.get(relatedObject);
+		Queue<Entry> entries = objectListenerEntries.get(relatedObject);
 		if( entries == null )
 		{
 			entries = new ConcurrentLinkedQueue<>();
 			objectListenerEntries.put( relatedObject, entries );
 		}
 		
-		for( EventListenerEntry e : entries )
+		for( Entry e : entries )
 		{
 			if( e.getListener() != listener ) continue;
 			removeListener( type, relatedObject, listener );
@@ -131,13 +131,13 @@ public class EventManager implements IEventManager
 	@Override
 	public void removeListener( Class<? extends Event> type, Object relatedObject, IEventListener listener )
 	{
-		Map<Object, Queue<EventListenerEntry>> objectListenerEntries = listenerEntryContainersMap.get(type);
+		Map<Object, Queue<Entry>> objectListenerEntries = listenerEntryContainersMap.get(type);
 		if( objectListenerEntries == null ) return;
 		
-		Queue<EventListenerEntry> entries = objectListenerEntries.get(relatedObject);
+		Queue<Entry> entries = objectListenerEntries.get(relatedObject);
 		if( entries == null ) return;
 		
-		for( EventListenerEntry entry : entries )
+		for( Entry entry : entries )
 		{
 			if( entry.getListener() != listener ) continue;
 			entries.remove( entry );
@@ -151,18 +151,18 @@ public class EventManager implements IEventManager
 	}
 	
 	@Override
-	public void removeListener( EventListenerEntry entry )
+	public void removeListener( Entry entry )
 	{
 		Class<? extends Event> type = entry.getType();
 		Object relatedObject = entry.getRelatedObject();
 		
-		Map<Object, Queue<EventListenerEntry>> objectListenerEntries = listenerEntryContainersMap.get(type);
+		Map<Object, Queue<Entry>> objectListenerEntries = listenerEntryContainersMap.get(type);
 		if( objectListenerEntries == null ) return;
 		
-		Queue<EventListenerEntry> entries = objectListenerEntries.get(relatedObject);
+		Queue<Entry> entries = objectListenerEntries.get(relatedObject);
 		if( entries == null ) return;
 		
-		for( EventListenerEntry e : entries )
+		for( Entry e : entries )
 		{
 			if( e != entry ) continue;	
 			entries.remove( entry );
@@ -192,10 +192,10 @@ public class EventManager implements IEventManager
 	@Override
 	public boolean hasListener( Class<? extends Event> type, Object object )
 	{
-		Map<Object, Queue<EventListenerEntry>> objectListenerEntries = listenerEntryContainersMap.get(type);
+		Map<Object, Queue<Entry>> objectListenerEntries = listenerEntryContainersMap.get(type);
 		if( objectListenerEntries == null ) return false;
 		
-		Queue<EventListenerEntry> entries = objectListenerEntries.get(object);
+		Queue<Entry> entries = objectListenerEntries.get(object);
 		if( entries == null ) return false;
 		
 		return true;
@@ -204,13 +204,13 @@ public class EventManager implements IEventManager
 	@Override
 	public boolean hasListener( Class<? extends Event> type, Object object, IEventListener listener )
 	{
-		Map<Object, Queue<EventListenerEntry>> objectListenerEntries = listenerEntryContainersMap.get(type);
+		Map<Object, Queue<Entry>> objectListenerEntries = listenerEntryContainersMap.get(type);
 		if( objectListenerEntries == null ) return false;
 		
-		Queue<EventListenerEntry> entries = objectListenerEntries.get(object);
+		Queue<Entry> entries = objectListenerEntries.get(object);
 		if( entries == null ) return false;
 		
-		for( EventListenerEntry entry : entries )
+		for( Entry entry : entries )
 		{
 			if( entry.getListener() == listener ) return true;
 		}
@@ -219,18 +219,18 @@ public class EventManager implements IEventManager
 	}
 	
 	@Override
-	public boolean hasListener( EventListenerEntry entry )
+	public boolean hasListener( Entry entry )
 	{
 		Class<? extends Event> type = entry.getType();
 		Object relatedObject = entry.getRelatedObject();
 		
-		Map<Object, Queue<EventListenerEntry>> objectListenerEntries = listenerEntryContainersMap.get(type);
+		Map<Object, Queue<Entry>> objectListenerEntries = listenerEntryContainersMap.get(type);
 		if( objectListenerEntries == null ) return false;
 		
-		Queue<EventListenerEntry> entries = objectListenerEntries.get(relatedObject);
+		Queue<Entry> entries = objectListenerEntries.get(relatedObject);
 		if( entries == null ) return false;
 		
-		for( EventListenerEntry e : entries )
+		for( Entry e : entries )
 		{
 			if( e == entry ) return true;
 		}
@@ -245,25 +245,25 @@ public class EventManager implements IEventManager
 		if( objects.length == 1 && objects[0] instanceof Object[] ) objects = (Object[]) objects[0];
 		
 		Class<? extends Event> type = event.getClass();
-		PriorityQueue<EventListenerEntry> listenerEntryQueue = new PriorityQueue<>( 16,
-			new Comparator<EventListenerEntry>()
+		PriorityQueue<Entry> listenerEntryQueue = new PriorityQueue<>( 16,
+			new Comparator<Entry>()
 			{
-				public int compare( EventListenerEntry o1, EventListenerEntry o2 )
+				public int compare( Entry o1, Entry o2 )
 				{
 					return o2.getPriority() - o1.getPriority();
 				}
 			}
 		);
 		
-		Map<Object, Queue<EventListenerEntry>> objectListenerEntries = listenerEntryContainersMap.get(type);
+		Map<Object, Queue<Entry>> objectListenerEntries = listenerEntryContainersMap.get(type);
 		if( objectListenerEntries == null ) return;
 		
 		for( Object object : objects )
 		{
 			Class<?> cls = object.getClass();
 			
-			Queue<EventListenerEntry> entries = objectListenerEntries.get( object );
-			if( entries != null ) for( EventListenerEntry entry : entries )
+			Queue<Entry> entries = objectListenerEntries.get( object );
+			if( entries != null ) for( Entry entry : entries )
 			{
 				if( entry.getListener() == null ) entries.remove( entry );
 				else listenerEntryQueue.add( entry );
@@ -272,8 +272,8 @@ public class EventManager implements IEventManager
 			Class<?>[] interfaces = cls.getInterfaces();
 			for( Class<?> clz : interfaces )
 			{
-				Queue<EventListenerEntry> classListenerEntries = objectListenerEntries.get( clz );
-				if( classListenerEntries != null ) for( EventListenerEntry entry : classListenerEntries )
+				Queue<Entry> classListenerEntries = objectListenerEntries.get( clz );
+				if( classListenerEntries != null ) for( Entry entry : classListenerEntries )
 				{
 					if( entry.getListener() == null ) entries.remove( entry );
 					else listenerEntryQueue.add( entry );
@@ -283,8 +283,8 @@ public class EventManager implements IEventManager
 			Class<?> clz = cls;
 			while( clz != null && clz != Object.class )
 			{
-				Queue<EventListenerEntry> classListenerEntries = objectListenerEntries.get( clz );
-				if( classListenerEntries != null ) for( EventListenerEntry entry : classListenerEntries )
+				Queue<Entry> classListenerEntries = objectListenerEntries.get( clz );
+				if( classListenerEntries != null ) for( Entry entry : classListenerEntries )
 				{
 					if( entry.getListener() == null ) entries.remove( entry );
 					else listenerEntryQueue.add( entry );
@@ -294,17 +294,17 @@ public class EventManager implements IEventManager
 			}
 		}
 		
-		Queue<EventListenerEntry> entries = objectListenerEntries.get( Object.class );
-		if( entries != null ) for( EventListenerEntry entry : entries )
+		Queue<Entry> entries = objectListenerEntries.get( Object.class );
+		if( entries != null ) for( Entry entry : entries )
 		{
 			if( entry.getListener() == null ) entries.remove( entry );
 			else listenerEntryQueue.add( entry );
 		}
 		
-		HashSet<EventListenerEntry> processedHandler = new HashSet<>( listenerEntryQueue.size() );
+		HashSet<Entry> processedHandler = new HashSet<>( listenerEntryQueue.size() );
 		while( listenerEntryQueue.isEmpty() == false && event.isInterrupted() == false )
 		{
-			EventListenerEntry entry = listenerEntryQueue.poll();
+			Entry entry = listenerEntryQueue.poll();
 			IEventListener listener = entry.getListener();
 			
 			if( listener == null ) continue;
