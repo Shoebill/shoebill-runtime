@@ -24,14 +24,14 @@ import java.io.InputStream;
  *
  */
 
-public class GamemodeDescription extends PluginDescription
+public class GamemodeDescription extends ResourceDescription
 {
 	public GamemodeDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
 	{
 		super( in, classLoader );
 	}
 	
-	
+	@Override
 	public Class<? extends Gamemode> getClazz()
 	{
 		return super.getClazz().asSubclass( Gamemode.class );

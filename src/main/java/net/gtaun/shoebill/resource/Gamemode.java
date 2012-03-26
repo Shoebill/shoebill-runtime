@@ -25,7 +25,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  *
  */
 
-public abstract class Gamemode extends Plugin
+public abstract class Gamemode extends Resource
 {
 	protected Gamemode()
 	{

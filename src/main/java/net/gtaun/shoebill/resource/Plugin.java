@@ -16,73 +16,12 @@
 
 package net.gtaun.shoebill.resource;
 
-import java.io.File;
-
-import org.apache.log4j.Logger;
-
-import net.gtaun.shoebill.IShoebill;
-import net.gtaun.shoebill.IShoebillLowLevel;
-import net.gtaun.shoebill.util.event.IEventManager;
-import net.gtaun.shoebill.util.event.ManagedEventManager;
-
-
 /**
  * @author MK124
  *
  */
 
-public abstract class Plugin
+public abstract class Plugin extends Resource
 {
-	private boolean isEnabled;
-	
-	private PluginDescription description;
-	private IShoebill shoebill;
-	private ManagedEventManager eventManager;
-	private File dataFolder;
-	
 
-	public boolean isEnabled()						{ return isEnabled; }
-
-	public PluginDescription getDescription()		{ return description; }
-	public IShoebill getShoebill()					{ return shoebill; }
-	public IEventManager getEventManager()			{ return eventManager; }
-	public File getDataFolder()						{ return dataFolder; }
-	
-	
-	protected Plugin()
-	{
-		
-	}
-		
-	void setContext( PluginDescription description, IShoebill shoebill, File dataFolder )
-	{
-		this.description = description;
-		this.shoebill = shoebill;
-		this.dataFolder = dataFolder;
-		
-		IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) shoebill;
-		eventManager = new ManagedEventManager( shoebillLowLevel.getEventManager() );
-	}
-
-	protected abstract void onEnable() throws Exception;
-	protected abstract void onDisable() throws Exception;
-	
-	void enable() throws Exception
-	{
-		onEnable();
-		isEnabled = true;
-	}
-	
-	void disable() throws Exception
-	{
-		onDisable();
-		eventManager.removeAllListener();
-		
-		isEnabled = false;
-	}
-	
-	public Logger getLogger()
-	{
-		return Logger.getLogger( description.getClazz() );
-	}
 }

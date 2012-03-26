@@ -17,50 +17,22 @@
 package net.gtaun.shoebill.resource;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import net.gtaun.shoebill.util.config.YamlConfiguration;
 
 /**
- * @author MK124
+ * @author Kee
  *
  */
 
-public class PluginDescription
+public class PluginDescription extends ResourceDescription
 {
-	private Class<? extends Plugin> clazz;
-	private String name;
-	private String version;
-	private String description;
-	private List<String> authors;
-
-
-	public Class<? extends Plugin> getClazz()		{ return clazz; }
-	public String getName()							{ return name; }
-	public String getVersion()						{ return version; }
-	public List<String> getAuthors()				{ return authors; }
-	public String getDescription()					{ return description; }
-	
-
 	public PluginDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
 	{
-		YamlConfiguration config = new YamlConfiguration();
-		config.read( in );
-		
-		String className = config.getString( "class" );
-		clazz = classLoader.loadClass( className ).asSubclass( Plugin.class );
-		
-		name = config.getString( "name" );
-		version = config.getString( "version" );
-		
-		String author = config.getString( "authors" );
-		authors = new ArrayList<>();
-		String[] auth = author.split("[,;]");
-		
-		if( auth.length > 0 )	for( String string : auth ) authors.add( string.trim() );
-		else					authors.add( author.trim() );
-			
-		description = config.getString( "description" );
+		super( in, classLoader );
+	}
+	
+	@Override
+	public Class<? extends Plugin> getClazz()
+	{
+		return getClazz();
 	}
 }
