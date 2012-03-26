@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.plugin;
+package net.gtaun.shoebill.resource;
 
 import java.io.InputStream;
 import java.util.ArrayList;

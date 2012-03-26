@@ -18,7 +18,7 @@ package net.gtaun.shoebill;
 
 import java.io.File;
 
-import net.gtaun.shoebill.plugin.IPluginManager;
+import net.gtaun.shoebill.resource.IPluginManager;
 
 /**
  * @author MK124

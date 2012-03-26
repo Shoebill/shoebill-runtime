@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.event.gamemode;
 
-import net.gtaun.shoebill.plugin.Gamemode;
+import net.gtaun.shoebill.resource.Gamemode;
 import net.gtaun.shoebill.util.event.Event;
 
 /**

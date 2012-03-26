@@ -32,7 +32,7 @@ import net.gtaun.shoebill.object.ITimer;
 import net.gtaun.shoebill.object.IVehicle;
 import net.gtaun.shoebill.object.IWorld;
 import net.gtaun.shoebill.object.IZone;
-import net.gtaun.shoebill.plugin.Gamemode;
+import net.gtaun.shoebill.resource.Gamemode;
 
 /**
  * @author MK124

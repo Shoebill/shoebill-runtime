@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.plugin;
+package net.gtaun.shoebill.resource;
 
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.object.IPlayer;
