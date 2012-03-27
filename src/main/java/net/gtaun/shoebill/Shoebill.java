@@ -56,7 +56,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class Shoebill implements IShoebill, IShoebillLowLevel
 {
-	public static final Logger LOGGER = Logger.getLogger(Shoebill.class);
+	private static final Logger LOGGER = Logger.getLogger(Shoebill.class);
 	
 	
 	private static Shoebill instance;

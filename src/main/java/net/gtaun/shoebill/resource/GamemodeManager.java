@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
 
 public class GamemodeManager implements IGamemodeManager
 {
-	public static final Logger LOGGER = Logger.getLogger(PluginManager.class);
+	private static final Logger LOGGER = Logger.getLogger(PluginManager.class);
 	
 	
 	private IShoebill shoebill;
