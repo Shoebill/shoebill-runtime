@@ -18,19 +18,22 @@ package net.gtaun.shoebill;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Collection;
 import java.util.Properties;
 
-import net.gtaun.shoebill.event.gamemode.GamemodeExitEvent;
-import net.gtaun.shoebill.event.gamemode.GamemodeInitEvent;
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
 import net.gtaun.shoebill.object.SampEventDispatcher;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.resource.Gamemode;
+import net.gtaun.shoebill.resource.GamemodeManager;
 import net.gtaun.shoebill.resource.Plugin;
 import net.gtaun.shoebill.resource.PluginManager;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
@@ -65,6 +68,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	
 	private SampCallbackManager sampCallbackManager;
 	private SampObjectPool managedObjectPool;
+	private GamemodeManager gamemodeManager;
 	private PluginManager pluginManager;
 	
 	private SampEventLogger sampEventLogger;
@@ -76,7 +80,8 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	
 	@Override public IEventManager getEventManager()				{ return eventManager; }
 	@Override public ISampObjectPool getManagedObjectPool()			{ return managedObjectPool; }
-	@Override public PluginManager getPluginManager()				{ return pluginManager; }
+	@Override public IGamemodeManager getGamemodeManager()			{ return gamemodeManager; }
+	@Override public IPluginManager getPluginManager()				{ return pluginManager; }
 	@Override public ISampCallbackManager getCallbackManager()		{ return sampCallbackManager; }
 	
 	
@@ -181,7 +186,10 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	private void initialize()
 	{
 		eventManager = new EventManager();
-		pluginManager = new PluginManager(this, pluginDir, gamemodeDir, dataDir);
+		
+		ClassLoader classLoader = genResourceClassLoader(pluginDir, gamemodeDir);
+		gamemodeManager = new GamemodeManager(this, classLoader, gamemodeDir, dataDir);
+		pluginManager = new PluginManager(this, classLoader, pluginDir, dataDir);
 
 		managedObjectPool = new SampObjectPool( eventManager );
 		managedObjectPool.setServer( new Server() );
@@ -201,39 +209,53 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		sampEventLogger = null;
 		sampEventDispatcher = null;
 		managedObjectPool = null;
+		gamemodeManager = null;
 		pluginManager = null;
 		eventManager = null;
 		
 		System.gc();
 	}
 	
+	private ClassLoader genResourceClassLoader( File pluginDir, File gamemodeDir )
+	{
+		final FilenameFilter jarFileFliter = new FilenameFilter()
+		{
+			public boolean accept( File dir, String name )
+			{
+				final String extname = ".jar";
+				return name.length()>extname.length() && name.substring( name.length()-4, name.length() ).equals(extname);
+			}
+		};
+		
+		File[] files = pluginDir.listFiles( jarFileFliter );
+		File[] gamemodeFiles = gamemodeDir.listFiles( jarFileFliter );
+		URL[] urls = new URL[ files.length + gamemodeFiles.length ];
+		for( int i=0; i<files.length+gamemodeFiles.length; i++ ) try
+		{
+			if( i<files.length )	urls[i] = files[i].toURI().toURL();
+			else					urls[i] = gamemodeFiles[i-files.length].toURI().toURL();
+		}
+		catch( MalformedURLException e )
+		{
+			e.printStackTrace();
+		}
+		
+		return URLClassLoader.newInstance(urls, getClass().getClassLoader());
+	}
+	
 	private void loadPluginsAndGamemode() throws IOException
 	{
 		pluginManager.loadAllPlugin();
-		
-		Gamemode gamemode = pluginManager.constructGamemode( gamemodeFile );
-		if( gamemode != null )
-		{
-			managedObjectPool.setGamemode( gamemode );
-			GamemodeInitEvent event = new GamemodeInitEvent(gamemode);
-			eventManager.dispatchEvent( event, gamemode );
-		}
+		gamemodeManager.changeMode( gamemodeFile );
 	}
 	
 	private void unloadPluginsAndGamemode()
 	{
 		Gamemode gamemode = managedObjectPool.getGamemode();
-		if( gamemode != null )
-		{
-			GamemodeExitEvent event = new GamemodeExitEvent(gamemode);
-			eventManager.dispatchEvent( event, gamemode );
-			pluginManager.deconstructGamemode( gamemode );
-		}
+		gamemode.exit();
 		
 		Collection<Plugin> plugins = pluginManager.getPlugins();
 		for( Plugin plugin : plugins ) pluginManager.unloadPlugin( plugin );
-		
-		managedObjectPool.setGamemode( null );
 	}
 
 	public ISampCallbackHandler getCallbackHandler()

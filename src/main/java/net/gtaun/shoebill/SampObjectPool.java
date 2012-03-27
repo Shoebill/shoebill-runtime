@@ -76,7 +76,6 @@ public class SampObjectPool implements ISampObjectPool
 	
 	IServer server;
 	IWorld world;
-	Gamemode gamemode;
 	
 	IPlayer[] players									= new IPlayer[MAX_PLAYERS];
 	IVehicle[] vehicles									= new IVehicle[MAX_VEHICLES];
@@ -148,7 +147,7 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public Gamemode getGamemode()
 	{
-		return gamemode;
+		return null;
 	}
 	
 	@Override
@@ -430,11 +429,6 @@ public class SampObjectPool implements ISampObjectPool
 	public void setWorld( IWorld world )
 	{
 		this.world = world;
-	}
-	
-	public void setGamemode( Gamemode gamemode )
-	{
-		this.gamemode = gamemode;
 	}
 	
 	public void setPlayer( int id, IPlayer player )

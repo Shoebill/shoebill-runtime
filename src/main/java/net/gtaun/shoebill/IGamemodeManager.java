@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.resource;
+package net.gtaun.shoebill;
 
-import java.io.InputStream;
+import java.io.File;
+import java.util.Collection;
+
+import net.gtaun.shoebill.resource.Gamemode;
+import net.gtaun.shoebill.resource.GamemodeDescription;
 
 /**
  * @author MK124
  *
  */
 
-public class PluginDescription extends ResourceDescription
+public interface IGamemodeManager
 {
-	public PluginDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
-	{
-		super( in, classLoader );
-	}
+	void changeMode( String filename );
+	void changeMode( File file );
 	
-	@Override
-	public Class<? extends Plugin> getClazz()
-	{
-		return getClazz();
-	}
+	Gamemode getGamemode();
+	<T extends Gamemode> T getGamemode( Class<T> cls );
+
+	Collection<GamemodeDescription> getGamemodeDescriptions();
 }

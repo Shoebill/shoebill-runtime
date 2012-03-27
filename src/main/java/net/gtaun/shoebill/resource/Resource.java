@@ -26,7 +26,7 @@ import net.gtaun.shoebill.util.event.ManagedEventManager;
 import org.apache.log4j.Logger;
 
 /**
- * @author Kee
+ * @author MK124
  *
  */
 
