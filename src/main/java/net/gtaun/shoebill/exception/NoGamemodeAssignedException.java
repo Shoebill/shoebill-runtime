@@ -24,4 +24,10 @@ package net.gtaun.shoebill.exception;
 public class NoGamemodeAssignedException extends RuntimeException
 {
 	private static final long serialVersionUID = 2316029163414458065L;
+	
+
+	public NoGamemodeAssignedException()
+	{
+		
+	}
 }

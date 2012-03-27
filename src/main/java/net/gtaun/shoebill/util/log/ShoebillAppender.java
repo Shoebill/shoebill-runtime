@@ -34,8 +34,8 @@ import org.apache.log4j.spi.LoggingEvent;
 
 public class ShoebillAppender extends FileAppender
 {
-	final DateFormat DATEFORMAT_FILE = new SimpleDateFormat( "yyyy-MM-dd'.log'" );
-	final DateFormat DATEFORMAT_DIR = new SimpleDateFormat( "yyyy-MM" );
+	private final DateFormat DATEFORMAT_FILE = new SimpleDateFormat( "yyyy-MM-dd'.log'" );
+	private final DateFormat DATEFORMAT_DIR = new SimpleDateFormat( "yyyy-MM" );
 	
 	
 	private File path;

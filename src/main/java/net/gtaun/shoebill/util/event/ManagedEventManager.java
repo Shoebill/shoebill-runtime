@@ -29,10 +29,10 @@ import net.gtaun.shoebill.util.event.event.EventListenerRemovedEvent;
 
 public class ManagedEventManager implements IEventManager
 {
-	IEventManager eventManager;
-	EventListenerEventListener eventListenerEventListener;
-	Entry eventListenerEventListenerEntry;
-	Set<Entry> managedListeners;
+	private IEventManager eventManager;
+	private EventListenerEventListener eventListenerEventListener;
+	private Entry eventListenerEventListenerEntry;
+	private Set<Entry> managedListeners;
 	
 	
 	public ManagedEventManager( IEventManager eventManager )

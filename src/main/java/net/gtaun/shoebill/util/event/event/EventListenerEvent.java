@@ -29,15 +29,16 @@ public class EventListenerEvent extends Event
 {
 	private Entry entry;
 	
-
-	public Entry getEntry()			{ return entry; }
-	
 	
 	public EventListenerEvent( Entry entry )
 	{
 		this.entry = entry;
 	}
-	
+
+	public Entry getEntry()
+	{
+		return entry;
+	}
 
 	public Class<? extends Event> getType()
 	{

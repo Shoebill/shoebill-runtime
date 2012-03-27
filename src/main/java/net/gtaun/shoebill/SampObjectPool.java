@@ -72,26 +72,26 @@ public class SampObjectPool implements ISampObjectPool
 	}
 	
 	
-	ISampCallbackHandler callbackHandler;
+	private ISampCallbackHandler callbackHandler;
 	
-	IServer server;
-	IWorld world;
+	private IServer server;
+	private IWorld world;
 	
-	IPlayer[] players									= new IPlayer[MAX_PLAYERS];
-	IVehicle[] vehicles									= new IVehicle[MAX_VEHICLES];
-	IObject[] objects									= new IObject[MAX_OBJECTS];
-	IPlayerObject[][] playerObjectsArrays				= new IPlayerObject[MAX_PLAYERS][];
-	IPickup[] pickups									= new IPickup[MAX_PICKUPS];
-	ILabel[] labels										= new ILabel[MAX_GLOBAL_LABELS];
-	IPlayerLabel[][] playerLabelsArrays					= new IPlayerLabel[MAX_PLAYERS][];
-	ITextdraw[] textdraws								= new ITextdraw[MAX_TEXT_DRAWS];
-	IZone[] zones										= new IZone[MAX_ZONES];
-	IMenu[] menus										= new IMenu[MAX_MENUS];
+	private IPlayer[] players									= new IPlayer[MAX_PLAYERS];
+	private IVehicle[] vehicles									= new IVehicle[MAX_VEHICLES];
+	private IObject[] objects									= new IObject[MAX_OBJECTS];
+	private IPlayerObject[][] playerObjectsArrays				= new IPlayerObject[MAX_PLAYERS][];
+	private IPickup[] pickups									= new IPickup[MAX_PICKUPS];
+	private ILabel[] labels										= new ILabel[MAX_GLOBAL_LABELS];
+	private IPlayerLabel[][] playerLabelsArrays					= new IPlayerLabel[MAX_PLAYERS][];
+	private ITextdraw[] textdraws								= new ITextdraw[MAX_TEXT_DRAWS];
+	private IZone[] zones										= new IZone[MAX_ZONES];
+	private IMenu[] menus										= new IMenu[MAX_MENUS];
 	
-	Collection<Reference<ITimer>> timers				= new ConcurrentLinkedQueue<>();
-	Map<Integer, Reference<IDialog>> dialogs			= new ConcurrentHashMap<>();
+	private Collection<Reference<ITimer>> timers				= new ConcurrentLinkedQueue<>();
+	private Map<Integer, Reference<IDialog>> dialogs			= new ConcurrentHashMap<>();
 	
-	Class<? extends IPlayer> playerClass = Player.class;
+	private Class<? extends IPlayer> playerClass = Player.class;
 	
 	
 	SampObjectPool( final EventManager eventManager )
