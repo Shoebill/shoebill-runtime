@@ -18,8 +18,6 @@ package net.gtaun.shoebill;
 
 import java.io.File;
 
-import net.gtaun.shoebill.plugin.IPluginManager;
-
 /**
  * @author MK124
  *
@@ -28,6 +26,7 @@ import net.gtaun.shoebill.plugin.IPluginManager;
 public interface IShoebill
 {
 	ISampObjectPool getManagedObjectPool();
+	IGamemodeManager getGamemodeManager();
 	IPluginManager getPluginManager();
 	
 	void changeGamemode( File file );

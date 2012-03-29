@@ -1,5 +1,6 @@
 /**
- * Copyright (C) 2012 MK124
+ * Copyright (C) 2011 JoJLlmAn
+ * Copyright (C) 2011 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +15,25 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.util.immutable;
+package net.gtaun.shoebill.resource;
+
+import java.io.InputStream;
 
 /**
- * @author MK124
+ * @author JoJLlmAn, MK124
  *
  */
 
-public class ImmutablyException extends RuntimeException
+public class GamemodeDescription extends ResourceDescription
 {
-	private static final long serialVersionUID = 1346439584283119125L;
-
-
-	public ImmutablyException()
+	public GamemodeDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
 	{
-		
+		super( in, classLoader );
 	}
 	
-	public ImmutablyException( String message )
+	@Override
+	public Class<? extends Gamemode> getClazz()
 	{
-		super( message );
+		return super.getClazz().asSubclass( Gamemode.class );
 	}
 }

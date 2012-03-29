@@ -15,16 +15,12 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.plugin;
+package net.gtaun.shoebill.resource;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,13 +28,15 @@ import java.util.Map.Entry;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.apache.log4j.Logger;
-
+import net.gtaun.shoebill.IPluginManager;
 import net.gtaun.shoebill.IShoebill;
 import net.gtaun.shoebill.IShoebillLowLevel;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.event.plugin.PluginLoadEvent;
 import net.gtaun.shoebill.event.plugin.PluginUnloadEvent;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
 /**
  * @author JoJLlmAn, MK124
@@ -47,97 +45,69 @@ import net.gtaun.shoebill.event.plugin.PluginUnloadEvent;
 
 public class PluginManager implements IPluginManager
 {
-	public static final Logger LOGGER = Logger.getLogger(PluginManager.class);
+	private static final Logger LOGGER = Logger.getLogger(PluginManager.class);
 	
-	
-	final FilenameFilter jarFileFliter = new FilenameFilter()
-	{
-		public boolean accept( File dir, String name )
-		{
-			final String extname = ".jar";
-			return name.length()>extname.length() && name.substring( name.length()-4, name.length() ).equals(extname);
-		}
-	};
-	
-	
-	private Map<Class<? extends Plugin>, Plugin> plugins;
 
 	private ClassLoader classLoader;
 	private IShoebill shoebill;
-	private File pluginDir, dataDir;
+	private File pluginFolder, dataFolder;
+
+	private Map<File, PluginDescription> descriptions;
+	private Map<Class<? extends Plugin>, Plugin> plugins;
 	
 	
-	public PluginManager( IShoebill shoebill, File pluginFolder, File gamemodeFolder, File dataFolder )
+	public PluginManager( IShoebill shoebill, ClassLoader classLoader, File pluginFolder, File dataFolder )
 	{
 		plugins = new HashMap<Class<? extends Plugin>, Plugin>();
 		
-		File[] files = pluginFolder.listFiles( jarFileFliter );
-		File[] gamemodeFiles = gamemodeFolder.listFiles( jarFileFliter );
-		URL[] urls = new URL[ files.length + gamemodeFiles.length ];
-		for( int i=0; i<files.length+gamemodeFiles.length; i++ ) try
+		this.shoebill = shoebill;
+		this.classLoader = classLoader;
+		this.pluginFolder = pluginFolder;
+		this.dataFolder = dataFolder;
+		
+		this.descriptions = generateDescriptions(pluginFolder);
+	}
+	
+	private PluginDescription generateDescription( File file ) throws IOException, ClassNotFoundException
+	{
+		JarFile jarFile = new JarFile( file );
+		JarEntry entry = jarFile.getJarEntry( "plugin.yml" );
+		InputStream in = jarFile.getInputStream( entry );
+		
+		PluginDescription desc = new PluginDescription(in, classLoader);
+		return desc;
+	}
+	
+	private Map<File, PluginDescription> generateDescriptions( File dir )
+	{
+		Map<File, PluginDescription> descriptions = new HashMap<>();
+		Collection<File> files = FileUtils.listFiles(dir, new String[]{ ".jar" }, true );
+		
+		for( File file : files )
 		{
-			if( i<files.length )	urls[i] = files[i].toURI().toURL();
-			else					urls[i] = gamemodeFiles[i-files.length].toURI().toURL();
-		}
-		catch( MalformedURLException e )
-		{
-			e.printStackTrace();
+			try
+			{
+				PluginDescription desc = generateDescription( file );
+				descriptions.put( file, desc );
+			}
+			catch( Exception e )
+			{
+				e.printStackTrace();
+			}
 		}
 		
-		this.classLoader = URLClassLoader.newInstance(urls, getClass().getClassLoader());
-		this.shoebill = shoebill;
-		this.pluginDir = pluginFolder;
-		this.dataDir = dataFolder;
+		return descriptions;
 	}
 	
 	public void loadAllPlugin()
 	{
-		File[] files = pluginDir.listFiles( jarFileFliter );
-		for( File file : files ) loadPlugin( file );
-	}
-	
-	public Gamemode constructGamemode( File file ) throws IOException
-	{
-		JarFile jarFile = new JarFile( file );
-		JarEntry entry = jarFile.getJarEntry( "gamemode.yml" );
-		InputStream in = jarFile.getInputStream( entry );
-		
-		GamemodeDescription desc;
-		Gamemode gamemode = null;
-		
-		LOGGER.info("Load gamemode: " + file.getName() );
-		
-		try
-		{
-			desc = new GamemodeDescription(in, classLoader);
-			gamemode = desc.getClazz().newInstance();
-			gamemode.setContext( desc, shoebill, new File(dataDir, desc.getClazz().getName()) );
-			gamemode.enable();
-		}
-		catch( Exception e )
-		{
-			e.printStackTrace();
-		}
-		
-		return gamemode;
-	}
-	
-	public void deconstructGamemode( Gamemode gamemode )
-	{
-		try
-		{
-			gamemode.disable();
-		}
-		catch( Exception e )
-		{
-			e.printStackTrace();
-		}
+		for( PluginDescription desc : descriptions.values() ) loadPlugin( desc );
 	}
 
 	@Override
 	public Plugin loadPlugin( String filename )
 	{
-		File file = new File(pluginDir, filename);
+		File file = new File(pluginFolder, filename);
 		return loadPlugin( file );
 	}
 
@@ -155,6 +125,21 @@ public class PluginManager implements IPluginManager
 			InputStream in = jarFile.getInputStream( entry );
 			
 			PluginDescription desc = new PluginDescription(in, classLoader);
+			return loadPlugin(desc);
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Override
+	public Plugin loadPlugin( PluginDescription desc )
+	{
+		try
+		{
+			LOGGER.info("Load plugin: " + desc.getName() );
 			Class<? extends Plugin> clazz = desc.getClazz();
 			if( plugins.containsKey(clazz) )
 			{
@@ -166,7 +151,7 @@ public class PluginManager implements IPluginManager
 			Constructor<? extends Plugin> constructor = clazz.getConstructor();
 			Plugin plugin = constructor.newInstance();
 			
-			File pluginDataFolder = new File(dataDir, desc.getClazz().getName());
+			File pluginDataFolder = new File(dataFolder, desc.getClazz().getName());
 			if( ! pluginDataFolder.exists() ) pluginDataFolder.mkdirs();
 			
 			plugin.setContext( desc, shoebill, pluginDataFolder );
@@ -180,7 +165,7 @@ public class PluginManager implements IPluginManager
 			
 			return plugin;
 		}
-		catch( Exception e )
+		catch (Exception e)
 		{
 			e.printStackTrace();
 			return null;
@@ -212,7 +197,7 @@ public class PluginManager implements IPluginManager
 			return;
 		}
 	}
-	
+
 	@Override
 	public <T extends Plugin> T getPlugin( Class<T> clz )
 	{

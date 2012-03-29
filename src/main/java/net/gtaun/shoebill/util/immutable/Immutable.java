@@ -17,7 +17,7 @@
 package net.gtaun.shoebill.util.immutable;
 
 /**
- * @author Kee
+ * @author MK124
  *
  */
 

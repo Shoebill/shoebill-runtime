@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.plugin;
+package net.gtaun.shoebill.resource;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -27,23 +27,16 @@ import net.gtaun.shoebill.util.config.YamlConfiguration;
  *
  */
 
-public class PluginDescription
+public class ResourceDescription
 {
-	private Class<? extends Plugin> clazz;
+	private Class<? extends Resource> clazz;
 	private String name;
 	private String version;
 	private String description;
 	private List<String> authors;
-
-
-	public Class<? extends Plugin> getClazz()		{ return clazz; }
-	public String getName()							{ return name; }
-	public String getVersion()						{ return version; }
-	public List<String> getAuthors()				{ return authors; }
-	public String getDescription()					{ return description; }
 	
 
-	public PluginDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
+	public ResourceDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
 	{
 		YamlConfiguration config = new YamlConfiguration();
 		config.read( in );
@@ -62,5 +55,30 @@ public class PluginDescription
 		else					authors.add( author.trim() );
 			
 		description = config.getString( "description" );
+	}
+
+	public Class<? extends Resource> getClazz()
+	{
+		return clazz;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public String getVersion()
+	{
+		return version;
+	}
+	
+	public List<String> getAuthors()
+	{
+		return authors;
+	}
+	
+	public String getDescription()
+	{
+		return description;
 	}
 }

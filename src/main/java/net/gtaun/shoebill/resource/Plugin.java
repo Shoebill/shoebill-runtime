@@ -14,25 +14,14 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.event.gamemode;
-
-import net.gtaun.shoebill.resource.Gamemode;
-import net.gtaun.shoebill.util.event.Event;
+package net.gtaun.shoebill.resource;
 
 /**
  * @author MK124
  *
  */
 
-public abstract class GamemodeEvent extends Event
+public abstract class Plugin extends Resource
 {
-	private Gamemode gamemode;
-	
-	public Gamemode getGamemode()		{ return gamemode; }
-	
-	
-	public GamemodeEvent( Gamemode gamemode )
-	{
-		this.gamemode = gamemode;
-	}
+
 }

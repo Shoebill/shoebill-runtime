@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.plugin;
+package net.gtaun.shoebill.resource;
 
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.object.IPlayer;
@@ -25,7 +25,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  *
  */
 
-public abstract class Gamemode extends Plugin
+public abstract class Gamemode extends Resource
 {
 	protected Gamemode()
 	{

@@ -15,10 +15,13 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.plugin;
+package net.gtaun.shoebill;
 
 import java.io.File;
 import java.util.Collection;
+
+import net.gtaun.shoebill.resource.Plugin;
+import net.gtaun.shoebill.resource.PluginDescription;
 
 /**
  * @author MK124, JoJLlmAn
@@ -29,8 +32,11 @@ public interface IPluginManager
 {
 	Plugin loadPlugin( String filename );
 	Plugin loadPlugin( File file );
+	Plugin loadPlugin( PluginDescription desc );
+	
 	void unloadPlugin( Plugin plugin );
 	
 	<T extends Plugin> T getPlugin( Class<T> cls );
+	
 	Collection<Plugin> getPlugins();
 }

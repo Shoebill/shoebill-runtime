@@ -41,7 +41,7 @@ import net.gtaun.shoebill.object.IVehicle;
 import net.gtaun.shoebill.object.IWorld;
 import net.gtaun.shoebill.object.IZone;
 import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.plugin.Gamemode;
+import net.gtaun.shoebill.resource.Gamemode;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.util.event.EventManager;
@@ -76,7 +76,6 @@ public class SampObjectPool implements ISampObjectPool
 	
 	IServer server;
 	IWorld world;
-	Gamemode gamemode;
 	
 	IPlayer[] players									= new IPlayer[MAX_PLAYERS];
 	IVehicle[] vehicles									= new IVehicle[MAX_VEHICLES];
@@ -148,7 +147,7 @@ public class SampObjectPool implements ISampObjectPool
 	@Override
 	public Gamemode getGamemode()
 	{
-		return gamemode;
+		return null;
 	}
 	
 	@Override
@@ -430,11 +429,6 @@ public class SampObjectPool implements ISampObjectPool
 	public void setWorld( IWorld world )
 	{
 		this.world = world;
-	}
-	
-	public void setGamemode( Gamemode gamemode )
-	{
-		this.gamemode = gamemode;
 	}
 	
 	public void setPlayer( int id, IPlayer player )

@@ -1,6 +1,5 @@
 /**
- * Copyright (C) 2011 JoJLlmAn
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +14,25 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.plugin;
+package net.gtaun.shoebill.resource;
 
 import java.io.InputStream;
 
 /**
- * @author JoJLlmAn, MK124
+ * @author MK124
  *
  */
 
-public class GamemodeDescription extends PluginDescription
+public class PluginDescription extends ResourceDescription
 {
-	public GamemodeDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
+	public PluginDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
 	{
 		super( in, classLoader );
 	}
 	
-	
-	public Class<? extends Gamemode> getClazz()
+	@Override
+	public Class<? extends Plugin> getClazz()
 	{
-		return super.getClazz().asSubclass( Gamemode.class );
+		return getClazz();
 	}
 }

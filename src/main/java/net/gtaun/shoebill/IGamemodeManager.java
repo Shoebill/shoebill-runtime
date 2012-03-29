@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.util.immutable;
+package net.gtaun.shoebill;
+
+import java.io.File;
+import java.util.Collection;
+
+import net.gtaun.shoebill.resource.Gamemode;
+import net.gtaun.shoebill.resource.GamemodeDescription;
 
 /**
  * @author MK124
  *
  */
 
-public class ImmutablyException extends RuntimeException
+public interface IGamemodeManager
 {
-	private static final long serialVersionUID = 1346439584283119125L;
-
-
-	public ImmutablyException()
-	{
-		
-	}
+	void changeMode( String filename );
+	void changeMode( File file );
 	
-	public ImmutablyException( String message )
-	{
-		super( message );
-	}
+	Gamemode getGamemode();
+	<T extends Gamemode> T getGamemode( Class<T> cls );
+
+	Collection<GamemodeDescription> getGamemodeDescriptions();
 }
