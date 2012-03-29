@@ -64,7 +64,7 @@ public class PluginManager implements IPluginManager
 
 	private ClassLoader classLoader;
 	private IShoebill shoebill;
-	private File pluginFolder, dataFolder;
+	private File pluginDir, dataDir;
 	
 	
 	public PluginManager( IShoebill shoebill, File pluginFolder, File gamemodeFolder, File dataFolder )
@@ -86,13 +86,13 @@ public class PluginManager implements IPluginManager
 		
 		this.classLoader = URLClassLoader.newInstance(urls, getClass().getClassLoader());
 		this.shoebill = shoebill;
-		this.pluginFolder = pluginFolder;
-		this.dataFolder = dataFolder;
+		this.pluginDir = pluginFolder;
+		this.dataDir = dataFolder;
 	}
 	
 	public void loadAllPlugin()
 	{
-		File[] files = pluginFolder.listFiles( jarFileFliter );
+		File[] files = pluginDir.listFiles( jarFileFliter );
 		for( File file : files ) loadPlugin( file );
 	}
 	
@@ -111,7 +111,7 @@ public class PluginManager implements IPluginManager
 		{
 			desc = new GamemodeDescription(in, classLoader);
 			gamemode = desc.getClazz().newInstance();
-			gamemode.setContext( desc, shoebill, new File(dataFolder, desc.getClazz().getName()) );
+			gamemode.setContext( desc, shoebill, new File(dataDir, desc.getClazz().getName()) );
 			gamemode.enable();
 		}
 		catch( Exception e )
@@ -137,7 +137,7 @@ public class PluginManager implements IPluginManager
 	@Override
 	public Plugin loadPlugin( String filename )
 	{
-		File file = new File(pluginFolder, filename);
+		File file = new File(pluginDir, filename);
 		return loadPlugin( file );
 	}
 
@@ -166,7 +166,7 @@ public class PluginManager implements IPluginManager
 			Constructor<? extends Plugin> constructor = clazz.getConstructor();
 			Plugin plugin = constructor.newInstance();
 			
-			File pluginDataFolder = new File(dataFolder, desc.getClazz().getName());
+			File pluginDataFolder = new File(dataDir, desc.getClazz().getName());
 			if( ! pluginDataFolder.exists() ) pluginDataFolder.mkdirs();
 			
 			plugin.setContext( desc, shoebill, pluginDataFolder );
@@ -214,11 +214,14 @@ public class PluginManager implements IPluginManager
 	}
 	
 	@Override
-	public <T extends Plugin> T getPlugin( Class<T> cls )
+	public <T extends Plugin> T getPlugin( Class<T> clz )
 	{
-		for( Plugin plugin : plugins.values() )
+		T plugin = clz.cast( plugins.get(clz) );
+		if( plugin != null ) return plugin;
+		
+		for( Plugin p : plugins.values() )
 		{
-			if( cls.isInstance(plugin) ) return cls.cast( plugin );
+			if( clz.isInstance(p) ) return clz.cast( p );
 		}
 		
 		return null;
