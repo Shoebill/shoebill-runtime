@@ -29,6 +29,8 @@ public interface IShoebill
 	IGamemodeManager getGamemodeManager();
 	IPluginManager getPluginManager();
 	
+	ShoebillVersion getVersion();
+	
 	void changeGamemode( File file );
 	void reload();
 }

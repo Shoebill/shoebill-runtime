@@ -18,7 +18,6 @@ package net.gtaun.shoebill;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -45,6 +44,7 @@ import net.gtaun.shoebill.util.event.EventManager;
 import net.gtaun.shoebill.util.event.IEventManager;
 import net.gtaun.shoebill.util.log.LoggerOutputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -63,6 +63,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	public static IShoebill getInstance()		{ return instance; }
 	
 	
+	private ShoebillVersion version;
 	private ShoebillConfiguration configuration;
 	private EventManager eventManager;
 	
@@ -83,6 +84,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	@Override public IGamemodeManager getGamemodeManager()			{ return gamemodeManager; }
 	@Override public IPluginManager getPluginManager()				{ return pluginManager; }
 	@Override public ISampCallbackManager getCallbackManager()		{ return sampCallbackManager; }
+	@Override public ShoebillVersion getVersion()					{ return version; }
 	
 	
 	Shoebill() throws IOException
@@ -106,6 +108,10 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		System.setErr( new PrintStream(new LoggerOutputStream(Logger.getLogger("System.err"), Level.ERROR), true) );
 		
 		if( !logPropertyFile.exists() ) LOGGER.info( "Not find " + logPropertyFile.getPath() + " file, use the default configuration." );
+		
+		version = new ShoebillVersion( this.getClass().getClassLoader().getResourceAsStream( "version.yml" ));
+		LOGGER.info( "Shoebill " + version.getVersion() + " (for " + version.getSupport() + ")" );
+		LOGGER.info( "Build date: " + version.getBuildDate() );
 		LOGGER.info( "System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")" );
 		
 		FileInputStream configFileIn;
@@ -187,7 +193,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	{
 		eventManager = new EventManager();
 		
-		ClassLoader classLoader = genResourceClassLoader(pluginDir, gamemodeDir);
+		ClassLoader classLoader = generateResourceClassLoader(pluginDir, gamemodeDir);
 		gamemodeManager = new GamemodeManager(this, classLoader, gamemodeDir, dataDir);
 		pluginManager = new PluginManager(this, classLoader, pluginDir, dataDir);
 
@@ -216,28 +222,26 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		System.gc();
 	}
 	
-	private ClassLoader genResourceClassLoader( File pluginDir, File gamemodeDir )
+	private ClassLoader generateResourceClassLoader( File pluginDir, File gamemodeDir )
 	{
-		final FilenameFilter jarFileFliter = new FilenameFilter()
-		{
-			public boolean accept( File dir, String name )
-			{
-				final String extname = ".jar";
-				return name.length()>extname.length() && name.substring( name.length()-4, name.length() ).equals(extname);
-			}
-		};
+		Collection<File> files = FileUtils.listFiles( pluginDir, new String[]{ ".jar" }, true );
+		files.addAll( FileUtils.listFiles(gamemodeDir, new String[]{ ".jar" }, true) );
 		
-		File[] files = pluginDir.listFiles( jarFileFliter );
-		File[] gamemodeFiles = gamemodeDir.listFiles( jarFileFliter );
-		URL[] urls = new URL[ files.length + gamemodeFiles.length ];
-		for( int i=0; i<files.length+gamemodeFiles.length; i++ ) try
+		URL[] urls = new URL[ files.size() ];
+		int i = 0;
+		
+		for( File file : files )
 		{
-			if( i<files.length )	urls[i] = files[i].toURI().toURL();
-			else					urls[i] = gamemodeFiles[i-files.length].toURI().toURL();
-		}
-		catch( MalformedURLException e )
-		{
-			e.printStackTrace();
+			try
+			{
+				urls[i] = file.toURI().toURL();
+			}
+			catch (MalformedURLException e)
+			{
+				e.printStackTrace();
+			}
+			
+			i++;
 		}
 		
 		return URLClassLoader.newInstance(urls, getClass().getClassLoader());
