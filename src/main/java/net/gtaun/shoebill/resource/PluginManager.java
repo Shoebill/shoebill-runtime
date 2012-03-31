@@ -199,11 +199,14 @@ public class PluginManager implements IPluginManager
 	}
 
 	@Override
-	public <T extends Plugin> T getPlugin( Class<T> cls )
+	public <T extends Plugin> T getPlugin( Class<T> clz )
 	{
-		for( Plugin plugin : plugins.values() )
+		T plugin = clz.cast( plugins.get(clz) );
+		if( plugin != null ) return plugin;
+		
+		for( Plugin p : plugins.values() )
 		{
-			if( cls.isInstance(plugin) ) return cls.cast( plugin );
+			if( clz.isInstance(p) ) return clz.cast( p );
 		}
 		
 		return null;
