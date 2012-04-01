@@ -29,6 +29,7 @@ public class ShoebillVersion
 {
 	private String version;
 	private String support;
+	private int buildNumber;
 	private String buildDate;
 	
 	
@@ -39,6 +40,7 @@ public class ShoebillVersion
 
 		version = config.getString( "version", "Unknown" );
 		support = config.getString( "support", "Unknown" );
+		buildNumber = config.getInt( "buildNumber", 0 );
 		buildDate = config.getString( "buildDate", "Unknown" );
 		
 		if( version.charAt(version.length()-1) == '.' ) version = version.substring(0, version.length()-1);
@@ -52,6 +54,11 @@ public class ShoebillVersion
 	public String getSupport()
 	{
 		return support;
+	}
+	
+	public int getBuildNumber()
+	{
+		return buildNumber;
 	}
 	
 	public String getBuildDate()

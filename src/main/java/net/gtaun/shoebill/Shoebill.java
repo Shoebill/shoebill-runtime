@@ -110,7 +110,12 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		if( !logPropertyFile.exists() ) LOGGER.info( "Not find " + logPropertyFile.getPath() + " file, use the default configuration." );
 		
 		version = new ShoebillVersion( this.getClass().getClassLoader().getResourceAsStream( "version.yml" ));
-		LOGGER.info( "Shoebill " + version.getVersion() + " (for " + version.getSupport() + ")" );
+		
+		if( version.getBuildNumber() != 0)
+			LOGGER.info( "Shoebill " + version.getVersion() + " Build " + version.getBuildNumber() + " (for " + version.getSupport() + ")" );
+		else
+			LOGGER.info( "Shoebill " + version.getVersion() + " (for " + version.getSupport() + ")" );
+		
 		LOGGER.info( "Build date: " + version.getBuildDate() );
 		LOGGER.info( "System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")" );
 		

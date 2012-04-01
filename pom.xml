@@ -7,6 +7,13 @@
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<build.number>0</build.number>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss z (Z)</maven.build.timestamp.format>
+		<build.timestamp>${maven.build.timestamp}</build.timestamp>
+	</properties>
 
 	<groupId>net.gtaun</groupId>
 	<artifactId>shoebill</artifactId>
@@ -102,13 +109,6 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
-	
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<build.number></build.number>
-		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss z (Z)</maven.build.timestamp.format>
-		<build.timestamp>${maven.build.timestamp}</build.timestamp>
-	</properties>
 
 	<build>
 		<defaultGoal>clean install</defaultGoal>
