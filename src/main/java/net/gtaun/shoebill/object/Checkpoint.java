@@ -125,7 +125,7 @@ public class Checkpoint implements ICheckpoint
 	public Collection<IPlayer> getUsingPlayers()
 	{
 		Collection<IPlayer> players = new ArrayList<>();
-		for( IPlayer player : Player.get() )
+		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			if( player.getCheckpoint() == this ) players.add( player );
 		}

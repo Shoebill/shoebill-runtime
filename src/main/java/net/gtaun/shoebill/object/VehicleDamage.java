@@ -28,11 +28,6 @@ public class VehicleDamage implements IVehicleDamage
 	private IVehicle vehicle;
 	private int panels, doors, lights, tires;
 	
-	@Override public int getPanels()		{ return panels; }
-	@Override public int getDoors()			{ return doors; }
-	@Override public int getLights()		{ return lights; }
-	@Override public int getTires()			{ return tires; }
-	
 	
 	VehicleDamage( IVehicle vehicle )
 	{
@@ -47,11 +42,23 @@ public class VehicleDamage implements IVehicleDamage
 	}
 	
 	@Override
+	public int getPanels()
+	{
+		return panels;
+	}
+	
+	@Override
 	public void setPanels( int panels )
 	{
 		if( vehicle.isDestroyed() ) return;
 		
 		set( panels, doors, lights, tires );
+	}
+
+	@Override
+	public int getDoors()
+	{
+		return doors;
 	}
 	
 	@Override
@@ -61,6 +68,12 @@ public class VehicleDamage implements IVehicleDamage
 		
 		set( panels, doors, lights, tires );
 	}
+
+	@Override
+	public int getLights()
+	{
+		return lights;
+	}
 	
 	@Override
 	public void setLights( int lights )
@@ -68,6 +81,12 @@ public class VehicleDamage implements IVehicleDamage
 		if( vehicle.isDestroyed() ) return;
 		
 		set( panels, doors, lights, tires );
+	}
+
+	@Override
+	public int getTires()
+	{
+		return tires;
 	}
 	
 	@Override
@@ -77,7 +96,6 @@ public class VehicleDamage implements IVehicleDamage
 		
 		set( panels, doors, lights, tires );
 	}
-	
 	
 	@Override
 	public void set( int panels, int doors, int lights, int tires )

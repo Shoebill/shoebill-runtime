@@ -37,16 +37,32 @@ public class PlayerAttach implements IPlayerAttach
 		private int modelId = 0;
 		private Vector3D offset, rotate, scale;
 		
-		@Override public PlayerAttachBone getBone()			{ return bone; }
-		@Override public int getModelId()					{ return modelId; }
-		@Override public Vector3D getOffset()				{ return offset; }
-		@Override public Vector3D getRotate()				{ return rotate; }
-		@Override public Vector3D getScale()				{ return scale; }
-		
 		
 		PlayerAttachSlot( int slot )
 		{
 			this.slot = slot;
+		}
+
+		@Override public PlayerAttachBone getBone()
+		{
+			return bone;
+		}
+		
+		@Override public int getModelId()
+		{
+			return modelId;
+		}
+		@Override public Vector3D getOffset()
+		{
+			return offset.clone();
+		}
+		@Override public Vector3D getRotate()
+		{
+			return rotate.clone();
+		}
+		@Override public Vector3D getScale()
+		{
+			return scale.clone();
 		}
 
 		@Override

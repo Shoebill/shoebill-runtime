@@ -32,12 +32,6 @@ public class Timer implements ITimer
 	
 	private boolean running;
 	private int counting, realInterval;
-
-	
-	@Override public int getInterval()								{ return interval; }
-	@Override public int getCount()									{ return count; }
-
-	@Override public boolean isRunning()							{ return running; }
 	
 
 	public Timer( int interval )
@@ -59,17 +53,35 @@ public class Timer implements ITimer
 		pool.putTimer( this );
 	}
 	
+
+	@Override
+	public int getInterval()
+	{
+		return interval;
+	}
 	
 	@Override
 	public void setInterval( int interval )
 	{
 		this.interval = interval;
 	}
+
+	@Override
+	public int getCount()
+	{
+		return count;
+	}
 	
 	@Override
 	public void setCount( int count )
 	{
 		this.count = count;
+	}
+
+	@Override
+	public boolean isRunning()
+	{
+		return running;
 	}
 	
 	@Override

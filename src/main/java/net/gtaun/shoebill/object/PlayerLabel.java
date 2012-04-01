@@ -45,16 +45,6 @@ public class PlayerLabel implements IPlayerLabel
 	private IPlayer attachedPlayer;
 	private IVehicle attachedVehicle;
 	
-	
-	@Override public int getId()								{ return id; }
-	@Override public IPlayer getPlayer()						{ return player; }
-	
-	@Override public String getText()							{ return text; }
-	@Override public Color getColor()							{ return color.clone(); }
-	@Override public float getDrawDistance()					{ return drawDistance; }
-	@Override public IPlayer getAttachedPlayer()				{ return attachedPlayer; }
-	@Override public IVehicle getAttachedVehicle()				{ return attachedVehicle; }
-	
 
 	public PlayerLabel( IPlayer player, String text, Color color, float x, float y, float z, float drawDistance, boolean testLOS ) throws CreationFailedException
 	{
@@ -114,6 +104,16 @@ public class PlayerLabel implements IPlayerLabel
 		pool.setPlayerLabel( player, id, this );
 	}
 	
+
+	@Override public int getId()
+	{
+		return id;
+	}
+
+	@Override public IPlayer getPlayer()
+	{
+		return player;
+	}
 	
 	@Override
 	public void destroy()
@@ -135,6 +135,31 @@ public class PlayerLabel implements IPlayerLabel
 	public boolean isDestroyed()
 	{
 		return id == INVALID_ID;
+	}
+
+	@Override public String getText()
+	{
+		return text;
+	}
+	
+	@Override public Color getColor()
+	{
+		return color.clone();
+	}
+	
+	@Override public float getDrawDistance()
+	{
+		return drawDistance;
+	}
+	
+	@Override public IPlayer getAttachedPlayer()
+	{
+		return attachedPlayer;
+	}
+	
+	@Override public IVehicle getAttachedVehicle()
+	{
+		return attachedVehicle;
 	}
 	
 	@Override
