@@ -32,10 +32,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  */
 
 public class ObjectBase implements IObject
-{
-	static final int INVALID_ID =				0xFFFF;
-	
-	
+{	
 	public static Collection<IObject> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getObjects();

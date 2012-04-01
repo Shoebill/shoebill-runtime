@@ -39,9 +39,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Vehicle implements IVehicle
 {
-	static final int INVALID_ID	=				0xFFFF;
-	
-	
 	public static Collection<IVehicle> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getVehicles();

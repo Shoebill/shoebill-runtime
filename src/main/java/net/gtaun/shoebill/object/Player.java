@@ -54,14 +54,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  */
 
 public class Player implements IPlayer
-{
-	public static final int INVALID_ID =							0xFFFF;
-	public static final int NO_TEAM =								255;
-	public static final int MAX_NAME_LENGTH =						24;
-	
-	public static final int MAX_CHATBUBBLE_LENGTH =					144;
-	
-	
+{	
 	public static Collection<IPlayer> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPlayers();

@@ -31,9 +31,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Pickup implements IPickup
 {
-	static final int INVALID_ID =		-1;
-	
-	
 	public static Collection<IPickup> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPickups();

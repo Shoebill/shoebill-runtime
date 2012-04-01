@@ -29,7 +29,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class PlayerAttach implements IPlayerAttach
 {
-	public class PlayerAttachSlot implements IPlayerAttachSlot
+	public class PlayerAttachSlot implements Slot
 	{
 		private int slot;
 		
@@ -94,9 +94,6 @@ public class PlayerAttach implements IPlayerAttach
 			return bone != PlayerAttachBone.NOT_USABLE;
 		}
 	}
-	
-
-	public static final int MAX_ATTACHED_OBJECTS = 5;
 
 	
 	private IPlayer player;
@@ -120,13 +117,13 @@ public class PlayerAttach implements IPlayerAttach
 	}
 	
 	@Override
-	public IPlayerAttachSlot getSlot( int slot )
+	public Slot getSlot( int slot )
 	{
 		return slots[ slot ];
 	}
 
 	@Override
-	public IPlayerAttachSlot[] getSlots()
+	public Slot[] getSlots()
 	{
 		return slots.clone();
 	}

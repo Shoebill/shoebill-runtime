@@ -35,9 +35,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Label implements ILabel
 {
-	static final int INVALID_ID =				0xFFFF;
-	
-	
 	public static Collection<ILabel> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getLabels();

@@ -23,5 +23,5 @@ package net.gtaun.shoebill.object;
 
 public interface IPlayerObject extends IObject, IPlayerRelated
 {
-	
+	public static final int INVALID_ID =				0xFFFF;
 }

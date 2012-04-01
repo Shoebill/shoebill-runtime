@@ -26,6 +26,9 @@ import net.gtaun.shoebill.data.Vector3D;
 
 public interface IObject extends IDestroyable
 {
+	public static final int INVALID_ID =				0xFFFF;
+	
+	
 	int getId();
 	int getModelId();
 	float getSpeed();

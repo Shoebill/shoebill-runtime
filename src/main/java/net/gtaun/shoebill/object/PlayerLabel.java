@@ -35,9 +35,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class PlayerLabel implements IPlayerLabel
 {
-	static final int INVALID_ID =			0xFFFF;
-	
-	
 	public static Collection<IPlayerLabel> get( IPlayer player )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPlayerLabels( player );

@@ -25,6 +25,9 @@ import net.gtaun.shoebill.data.Location;
 
 public interface IPickup extends IDestroyable
 {
+	public static final int INVALID_ID =		-1;
+	
+	
 	int getModelId();
 	int getType();
 	Location getLocation();

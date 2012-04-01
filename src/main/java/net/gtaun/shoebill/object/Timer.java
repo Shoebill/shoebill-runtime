@@ -28,9 +28,6 @@ import net.gtaun.shoebill.event.timer.TimerTickEvent;
 
 public class Timer implements ITimer
 {
-	public static final int COUNT_INFINITE = 0;
-	
-
 	private int interval, count;
 	
 	private boolean running;

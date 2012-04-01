@@ -26,7 +26,10 @@ import net.gtaun.shoebill.data.type.PlayerAttachBone;
 
 public interface IPlayerAttach extends IPlayerRelated
 {
-	public interface IPlayerAttachSlot
+	public static final int MAX_ATTACHED_OBJECTS = 5;
+	
+	
+	public interface Slot
 	{
 		public PlayerAttachBone getBone();
 		public int getModelId();
@@ -39,6 +42,6 @@ public interface IPlayerAttach extends IPlayerRelated
 		public boolean isUsed( int slot );
 	}
 	
-	IPlayerAttachSlot getSlot( int slot );
-	IPlayerAttachSlot[] getSlots();
+	Slot getSlot( int slot );
+	Slot[] getSlots();
 }

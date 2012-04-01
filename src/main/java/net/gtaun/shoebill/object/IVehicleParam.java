@@ -23,6 +23,11 @@ package net.gtaun.shoebill.object;
 
 public interface IVehicleParam extends IVehicleRelated
 {
+	public static final int PARAM_UNSET =			-1;
+	public static final int PARAM_OFF =				0;
+	public static final int PARAM_ON =				1;
+	
+	
 	int getEngine();
 	int getLights();
 	int getAlarm();

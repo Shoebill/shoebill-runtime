@@ -26,6 +26,9 @@ import net.gtaun.shoebill.data.Color;
 
 public interface IZone extends IDestroyable
 {
+	public static final int INVALID_ID =		-1;
+	
+	
 	int getId();
 	Area getArea();
 	

@@ -34,9 +34,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Menu implements IMenu
 {
-	static final int INVALID_ID =			0xFF;
-	
-	
 	public static Collection<IMenu> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getMenus();

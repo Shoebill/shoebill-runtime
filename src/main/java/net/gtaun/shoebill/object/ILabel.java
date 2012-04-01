@@ -27,6 +27,9 @@ import net.gtaun.shoebill.data.Vector3D;
 
 public interface ILabel extends IDestroyable
 {
+	public static final int INVALID_ID =				0xFFFF;
+	
+	
 	int getId();
 	String getText();
 	Color getColor();

@@ -32,9 +32,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class PlayerObject implements IPlayerObject
 {
-	static final int INVALID_ID =				0xFFFF;
-	
-	
 	public static Collection<IPlayerObject> get( IPlayer player )
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getPlayerObjects( player );

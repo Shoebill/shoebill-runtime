@@ -24,6 +24,9 @@ package net.gtaun.shoebill.object;
 
 public interface ITimer
 {
+	public static final int COUNT_INFINITE = 0;
+	
+	
 	int getInterval();
 	int getCount();
 

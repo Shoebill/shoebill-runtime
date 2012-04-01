@@ -25,6 +25,9 @@ import net.gtaun.shoebill.data.Vector2D;
 
 public interface IMenu extends IDestroyable
 {
+	public static final int INVALID_ID =			0xFF;
+	
+	
 	int getId();
 	String getTitle();
 	int getColumns();

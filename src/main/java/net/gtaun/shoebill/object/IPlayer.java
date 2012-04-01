@@ -46,6 +46,13 @@ import net.gtaun.shoebill.exception.IllegalLengthException;
 
 public interface IPlayer
 {
+	public static final int INVALID_ID =							0xFFFF;
+	public static final int NO_TEAM =								255;
+	public static final int MAX_NAME_LENGTH =						24;
+	
+	public static final int MAX_CHATBUBBLE_LENGTH =					144;
+	
+	
 	boolean isOnline();
 	
 	int getId();

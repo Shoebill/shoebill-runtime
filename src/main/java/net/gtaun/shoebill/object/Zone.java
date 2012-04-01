@@ -33,9 +33,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Zone implements IZone
 {
-	static final int INVALID_ID =		-1;
-	
-	
 	public static Collection<IZone> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getZones();

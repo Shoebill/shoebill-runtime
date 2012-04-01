@@ -36,9 +36,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Textdraw implements ITextdraw
 {
-	static final int INVALID_ID =		0xFFFF;
-	
-	
 	public static Collection<ITextdraw> get()
 	{
 		return Shoebill.getInstance().getManagedObjectPool().getTextdraws();

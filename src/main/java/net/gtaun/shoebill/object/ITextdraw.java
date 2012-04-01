@@ -26,6 +26,9 @@ import net.gtaun.shoebill.data.Vector2D;
 
 public interface ITextdraw extends IDestroyable
 {
+	public static final int INVALID_ID =		0xFFFF;
+	
+	
 	int getId();
 	Vector2D getPosition();
 	String getText();

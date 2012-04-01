@@ -29,6 +29,9 @@ import net.gtaun.shoebill.data.Velocity;
 
 public interface IVehicle extends IDestroyable
 {
+	public static final int INVALID_ID	=				0xFFFF;
+	
+	
 	boolean isStatic();
 	
 	int getId();
