@@ -17,8 +17,6 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Collection;
-
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
@@ -31,17 +29,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Pickup implements IPickup
 {
-	public static Collection<IPickup> get()
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getPickups();
-	}
-	
-	public static <T extends IPickup> Collection<T> get( Class<T> cls )
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getPickups( cls );
-	}
-	
-	
 	private int id = INVALID_ID;
 	private int modelId, type;
 	private Location location;

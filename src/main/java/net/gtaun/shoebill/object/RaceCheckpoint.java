@@ -20,6 +20,7 @@ package net.gtaun.shoebill.object;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Vector3D;
@@ -141,7 +142,7 @@ public class RaceCheckpoint implements IRaceCheckpoint
 	@Override
 	public void update()
 	{
-		for( IPlayer player : Player.get() )
+		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			if( player == null ) continue;
 			if( player.getRaceCheckpoint() == this ) set( player );
@@ -152,7 +153,7 @@ public class RaceCheckpoint implements IRaceCheckpoint
 	public Collection<IPlayer> getUsingPlayers()
 	{
 		Collection<IPlayer> players = new ArrayList<>();
-		for( IPlayer player : Player.get() )
+		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			if( player.getRaceCheckpoint() == this ) players.add( player );
 		}

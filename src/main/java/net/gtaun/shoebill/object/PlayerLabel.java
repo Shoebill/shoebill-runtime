@@ -16,10 +16,6 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Collection;
-
-import org.apache.commons.lang3.StringUtils;
-
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
@@ -28,6 +24,8 @@ import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author MK124
  *
@@ -35,17 +33,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class PlayerLabel implements IPlayerLabel
 {
-	public static Collection<IPlayerLabel> get( IPlayer player )
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getPlayerLabels( player );
-	}
-	
-	public static <T extends IPlayerLabel> Collection<T> get( IPlayer player, Class<T> cls )
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getPlayerLabels( player, cls );
-	}
-	
-	
 	private int id = INVALID_ID;
 	private IPlayer player;
 	private String text;

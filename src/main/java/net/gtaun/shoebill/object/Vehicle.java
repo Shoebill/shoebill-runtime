@@ -17,8 +17,6 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Collection;
-
 import net.gtaun.shoebill.IShoebillLowLevel;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
@@ -39,27 +37,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Vehicle implements IVehicle
 {
-	public static Collection<IVehicle> get()
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getVehicles();
-	}
-	
-	public static <T extends IVehicle> Collection<T> get( Class<T> cls )
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getVehicles( cls );
-	}
-	
-	public static IVehicle get( int id )
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getVehicle( id );
-	}
-	
-	public static <T extends IVehicle> T get( Class<T> cls, int id )
-	{
-		return cls.cast( Shoebill.getInstance().getManagedObjectPool().getVehicle(id) );
-	}
-	
-	
 	public static void manualEngineAndLights()
 	{
 		SampNativeFunction.manualVehicleEngineAndLights();
@@ -447,7 +424,8 @@ public class Vehicle implements IVehicle
 	{
 		if( isDestroyed() ) return null;
 		
-		return get(IVehicle.class, SampNativeFunction.getVehicleTrailer(id));
+		int trailerId = SampNativeFunction.getVehicleTrailer(id);
+		return Shoebill.getInstance().getManagedObjectPool().getVehicle(trailerId);
 	}
 	
 	@Override

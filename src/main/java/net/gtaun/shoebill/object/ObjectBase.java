@@ -17,8 +17,6 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Collection;
-
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
@@ -32,18 +30,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  */
 
 public class ObjectBase implements IObject
-{	
-	public static Collection<IObject> get()
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getObjects();
-	}
-	
-	public static <T extends IObject> Collection<T> get( Class<T> cls )
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getObjects( cls );
-	}
-	
-	
+{
 	void processObjectMoved()
 	{
 		speed = 0.0F;

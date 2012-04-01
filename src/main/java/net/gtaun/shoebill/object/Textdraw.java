@@ -17,16 +17,14 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Collection;
-
-import org.apache.commons.lang3.StringUtils;
-
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+
+import org.apache.commons.lang3.StringUtils;
 
 
 /**
@@ -36,17 +34,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Textdraw implements ITextdraw
 {
-	public static Collection<ITextdraw> get()
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getTextdraws();
-	}
-	
-	public static <T extends ITextdraw> Collection<T> get( Class<T> cls )
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getTextdraws( cls );
-	}
-	
-	
 	private int id = INVALID_ID;
 	private Vector2D position;
 	private String text;

@@ -17,8 +17,6 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Collection;
-
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Area;
@@ -33,17 +31,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Zone implements IZone
 {
-	public static Collection<IZone> get()
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getZones();
-	}
-	
-	public static <T extends IZone> Collection<T> get( Class<T> cls )
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getZones( cls );
-	}
-	
-	
 	private int id = INVALID_ID;
 	private Area area;
 	

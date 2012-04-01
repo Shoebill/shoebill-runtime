@@ -17,8 +17,6 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Collection;
-
 import net.gtaun.shoebill.IShoebillLowLevel;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
@@ -54,40 +52,26 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
  */
 
 public class Player implements IPlayer
-{	
-	public static Collection<IPlayer> get()
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getPlayers();
-	}
-	
-	public static <T extends IPlayer> Collection<T> get( Class<T> cls )
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getPlayers( cls );
-	}
-	
-	public static <T extends IPlayer> T get( Class<T> cls, int id )
-	{
-		return cls.cast( Shoebill.getInstance().getManagedObjectPool().getPlayer(id) );
-	}
-	
-	public static int getMaxPlayers()
-	{
-		return SampNativeFunction.getMaxPlayers();
-	}
-	
+{
 	public static void enableStuntBonusForAll( boolean enabled )
 	{
-		for( IPlayer player : get() ) player.enableStuntBonus( enabled );
+		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		{
+			player.enableStuntBonus( enabled );
+		}
 	}
 
 	public static void sendMessageToAll( Color color, String message )
 	{
-		for( IPlayer player : get() ) player.sendMessage( color, message );
+		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		{
+			player.sendMessage( color, message );
+		}
 	}
 	
 	public static void sendMessageToAll( Color color, String format, Object... args )
 	{
-		for( IPlayer player : get() )
+		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			String message = String.format(format, args);
 			player.sendMessage( color, message );
@@ -427,7 +411,8 @@ public class Player implements IPlayer
 	{
 		if( isOnline() == false ) return null;
 		
-		return Vehicle.get(SampNativeFunction.getPlayerVehicleID(id));
+		int vehicleId = SampNativeFunction.getPlayerVehicleID(id);
+		return Shoebill.getInstance().getManagedObjectPool().getVehicle(vehicleId);
 	}
 	
 	@Override
@@ -778,7 +763,10 @@ public class Player implements IPlayer
 		if( isOnline() == false ) return;
 		
 		if( message == null ) throw new NullPointerException();
-		for( IPlayer player : get() ) sendChat( player, message );
+		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		{
+			sendChat( player, message );
+		}
 	}
 
 	@Override
@@ -1202,7 +1190,8 @@ public class Player implements IPlayer
 	{
 		if( isOnline() == false ) return null;
 		
-		return Vehicle.get(IVehicle.class, SampNativeFunction.getPlayerSurfingVehicleID(id));
+		int vehicleId = SampNativeFunction.getPlayerSurfingVehicleID(id);
+		return Shoebill.getInstance().getManagedObjectPool().getVehicle(vehicleId);
 	}
 	
 	@Override
@@ -1257,9 +1246,7 @@ public class Player implements IPlayer
 	{
 		if( isOnline() == false ) return;
 		
-		if( enable )	SampNativeFunction.enableStuntBonusForPlayer( id, 1 );
-		else			SampNativeFunction.enableStuntBonusForPlayer( id, 0 );
-		
+		SampNativeFunction.enableStuntBonusForPlayer( id, enable ? 1 : 0 );
 		isStuntBonusEnabled = enable;
 	}
 	

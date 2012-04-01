@@ -27,6 +27,8 @@ public interface IServer
 	int getServerCodepage();
 	void setServerCodepage( int codepage );
 	
+	int getMaxPlayers();
+	
 	void sendRconCommand( String command );
 	void connectNPC( String name, String script );
 	

@@ -17,15 +17,13 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Collection;
-
-import org.apache.commons.lang3.StringUtils;
-
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author MK124, JoJLlmAn
@@ -34,17 +32,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class Menu implements IMenu
 {
-	public static Collection<IMenu> get()
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getMenus();
-	}
-	
-	public static <T extends IMenu> Collection<T> get( Class<T> cls )
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getMenus( cls );
-	}
-	
-
 	private int id = INVALID_ID;
 	private String title, columnHeader = "";
 	private int columns;

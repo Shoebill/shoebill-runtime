@@ -42,6 +42,12 @@ public class Server implements IServer
 	{
 		SampNativeFunction.setServerCodepage( codepage );
 	}
+	
+	@Override
+	public int getMaxPlayers()
+	{
+		return SampNativeFunction.getMaxPlayers();
+	}
 
 	@Override
 	public void sendRconCommand( String command )

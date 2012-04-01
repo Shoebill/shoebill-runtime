@@ -16,8 +16,6 @@
 
 package net.gtaun.shoebill.object;
 
-import java.util.Collection;
-
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
@@ -32,17 +30,6 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class PlayerObject implements IPlayerObject
 {
-	public static Collection<IPlayerObject> get( IPlayer player )
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getPlayerObjects( player );
-	}
-	
-	public static <T extends IPlayerObject> Collection<T> get( IPlayer player, Class<T> cls )
-	{
-		return Shoebill.getInstance().getManagedObjectPool().getPlayerObjects( player, cls );
-	}
-	
-
 	void processPlayerObjectMoved()
 	{
 		speed = 0.0F;
