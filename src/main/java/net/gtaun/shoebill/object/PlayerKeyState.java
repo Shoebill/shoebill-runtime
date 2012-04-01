@@ -26,37 +26,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class PlayerKeyState
+public class PlayerKeyState implements IPlayerKeyState
 {
-	enum Key
-	{
-		ACTION					(1),
-		CROUCH					(2),
-		FIRE					(4),
-		SPRINT					(8),
-		SECONDARY_ATTACK		(16),
-		JUMP					(32),
-	    LOOK_RIGHT				(64),
-	    HANDBRAKE				(128),
-	    LOOK_LEFT				(256),
-		SUBMISSION				(512),
-	    LOOK_BEHIND				(512),
-	    WALK					(1024),
-	    ANALOG_UP				(2048),
-	    ANALOG_DOWN				(4096),
-	    ANALOG_LEFT				(8192),
-	    ANALOG_RIGHT			(16384);
-		
-		public final int value;
-		Key( int val )		{ value = val; }
-	}
-	
-	public static final int KEY_UP				= -128;
-	public static final int KEY_DOWN			= 128;
-	public static final int KEY_LEFT			= -128;
-    public static final int KEY_RIGHT			= 128;
-
-    
     private IPlayer player;
     private int keys, updown, leftright;
     
@@ -95,7 +66,7 @@ public class PlayerKeyState
 
 	public boolean isKeyPressed( Key key )
 	{
-		return (keys&key.value) != 0;
+		return (keys&key.getValue()) != 0;
 	}
 	
 	@Override
