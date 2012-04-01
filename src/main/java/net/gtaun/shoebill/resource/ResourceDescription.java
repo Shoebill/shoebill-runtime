@@ -32,6 +32,7 @@ public class ResourceDescription
 	private Class<? extends Resource> clazz;
 	private String name;
 	private String version;
+	private String date;
 	private String description;
 	private List<String> authors;
 	
@@ -44,8 +45,9 @@ public class ResourceDescription
 		String className = config.getString( "class" );
 		clazz = classLoader.loadClass( className ).asSubclass( Plugin.class );
 		
-		name = config.getString( "name" );
+		name = config.getString( "name", "Unnamed" );
 		version = config.getString( "version" );
+		date = config.getString( "date" );
 		
 		String author = config.getString( "authors" );
 		authors = new ArrayList<>();
@@ -70,6 +72,11 @@ public class ResourceDescription
 	public String getVersion()
 	{
 		return version;
+	}
+	
+	public String getDate()
+	{
+		return date;
 	}
 	
 	public List<String> getAuthors()
