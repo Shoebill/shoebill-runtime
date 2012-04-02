@@ -238,8 +238,9 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	
 	private ClassLoader generateResourceClassLoader( File pluginDir, File gamemodeDir )
 	{
-		Collection<File> files = FileUtils.listFiles( pluginDir, new String[]{ ".jar" }, true );
-		files.addAll( FileUtils.listFiles(gamemodeDir, new String[]{ ".jar" }, true) );
+		String[] exts = { "jar" };
+		Collection<File> files = FileUtils.listFiles( pluginDir, exts, true );
+		files.addAll( FileUtils.listFiles(gamemodeDir, exts, true) );
 		
 		URL[] urls = new URL[ files.size() ];
 		int i = 0;

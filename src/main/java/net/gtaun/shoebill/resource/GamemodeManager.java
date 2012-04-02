@@ -45,18 +45,18 @@ public class GamemodeManager implements IGamemodeManager
 	
 	private IShoebill shoebill;
 	private ClassLoader classLoader;
-	private File gamemodeDir, dataFolder;
+	private File gamemodeDir, dataDir;
 	
 	private Map<File, GamemodeDescription> descriptions;
 	private Gamemode gamemode;
 	
 	
-	public GamemodeManager( IShoebill shoebill, ClassLoader classLoader, File gamemodeDir, File dataFolder )
+	public GamemodeManager( IShoebill shoebill, ClassLoader classLoader, File gamemodeDir, File dataDir )
 	{
 		this.shoebill = shoebill;
 		this.classLoader = classLoader;
 		this.gamemodeDir = gamemodeDir;
-		this.dataFolder = dataFolder;
+		this.dataDir = dataDir;
 		
 		this.descriptions = generateDescriptions( gamemodeDir );
 	}
@@ -64,9 +64,11 @@ public class GamemodeManager implements IGamemodeManager
 	private GamemodeDescription generateDescription( File file ) throws IOException, ClassNotFoundException
 	{
 		JarFile jarFile = new JarFile( file );
-		JarEntry entry = jarFile.getJarEntry( "plugin.yml" );
-		InputStream in = jarFile.getInputStream( entry );
+		JarEntry entry = jarFile.getJarEntry( "gamemode.yml" );
 		
+		if( entry == null ) throw new NullPointerException();
+		
+		InputStream in = jarFile.getInputStream( entry );
 		GamemodeDescription desc = new GamemodeDescription(in, classLoader);
 		return desc;
 	}
@@ -74,7 +76,7 @@ public class GamemodeManager implements IGamemodeManager
 	private Map<File, GamemodeDescription> generateDescriptions( File dir )
 	{
 		Map<File, GamemodeDescription> descriptions = new HashMap<>();
-		Collection<File> files = FileUtils.listFiles(dir, new String[]{ ".jar" }, true );
+		Collection<File> files = FileUtils.listFiles(dir, new String[]{ "jar" }, true );
 		
 		for( File file : files )
 		{
@@ -107,7 +109,7 @@ public class GamemodeManager implements IGamemodeManager
 		{
 			desc = new GamemodeDescription(in, classLoader);
 			gamemode = desc.getClazz().newInstance();
-			gamemode.setContext( desc, shoebill, new File(dataFolder, desc.getClazz().getName()) );
+			gamemode.setContext( desc, shoebill, new File(dataDir, desc.getClazz().getName()) );
 			gamemode.enable();
 		}
 		catch( Exception e )

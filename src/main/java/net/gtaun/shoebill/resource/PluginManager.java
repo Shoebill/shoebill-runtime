@@ -73,8 +73,10 @@ public class PluginManager implements IPluginManager
 	{
 		JarFile jarFile = new JarFile( file );
 		JarEntry entry = jarFile.getJarEntry( "plugin.yml" );
-		InputStream in = jarFile.getInputStream( entry );
 		
+		if( entry == null ) throw new NullPointerException();
+		
+		InputStream in = jarFile.getInputStream( entry );
 		PluginDescription desc = new PluginDescription(in, classLoader);
 		return desc;
 	}
@@ -82,19 +84,16 @@ public class PluginManager implements IPluginManager
 	private Map<File, PluginDescription> generateDescriptions( File dir )
 	{
 		Map<File, PluginDescription> descriptions = new HashMap<>();
-		Collection<File> files = FileUtils.listFiles(dir, new String[]{ ".jar" }, true );
+		Collection<File> files = FileUtils.listFiles(dir, new String[]{ "jar" }, true );
 		
-		for( File file : files )
+		for( File file : files ) try
 		{
-			try
-			{
-				PluginDescription desc = generateDescription( file );
-				descriptions.put( file, desc );
-			}
-			catch( Exception e )
-			{
-				e.printStackTrace();
-			}
+			PluginDescription desc = generateDescription( file );
+			descriptions.put( file, desc );
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
 		}
 		
 		return descriptions;

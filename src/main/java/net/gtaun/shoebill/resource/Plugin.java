@@ -23,5 +23,14 @@ package net.gtaun.shoebill.resource;
 
 public abstract class Plugin extends Resource
 {
-
+	public Plugin()
+	{
+		
+	}
+	
+	@Override
+	public PluginDescription getDescription()
+	{
+		return (PluginDescription) super.getDescription();
+	}
 }

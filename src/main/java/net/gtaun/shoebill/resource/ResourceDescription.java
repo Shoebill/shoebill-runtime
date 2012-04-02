@@ -44,7 +44,7 @@ public class ResourceDescription
 		config.read( in );
 		
 		String className = config.getString( "class" );
-		clazz = classLoader.loadClass( className ).asSubclass( Plugin.class );
+		clazz = classLoader.loadClass( className ).asSubclass( Resource.class );
 		
 		name = config.getString( "name", "Unnamed" );
 		version = config.getString( "version" );

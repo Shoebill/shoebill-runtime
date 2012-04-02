@@ -33,6 +33,6 @@ public class PluginDescription extends ResourceDescription
 	@Override
 	public Class<? extends Plugin> getClazz()
 	{
-		return getClazz();
+		return super.getClazz().asSubclass( Plugin.class );
 	}
 }

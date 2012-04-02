@@ -38,6 +38,11 @@ public abstract class Gamemode extends Resource
 		pool.setPlayerClass( cls );
 	}
 	
+	@Override
+	public GamemodeDescription getDescription()
+	{
+		return (GamemodeDescription) super.getDescription();
+	}
 	
 	public void exit()
 	{
