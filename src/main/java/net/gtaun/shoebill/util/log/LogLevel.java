@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,6 @@
 
 package net.gtaun.shoebill.util.log;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 import org.slf4j.Logger;
 
 /**
@@ -26,32 +23,38 @@ import org.slf4j.Logger;
  *
  */
 
-public class LoggerOutputStream extends ByteArrayOutputStream 
+public enum LogLevel
 {
-	private final String SEPARATOR = System.getProperty("line.separator");
+	TRACE,
+    DEBUG,
+    INFO,
+    WARN,
+    ERROR;
 	
-	private Logger logger;
-	private LogLevel level;
 	
-	
-	public LoggerOutputStream( Logger logger, LogLevel level )
+	public void log( Logger logger, String message )
 	{
-		this.logger = logger;
-		this.level = level;
-	}
-
-	@Override
-	public void flush() throws IOException
-	{
-		super.flush();
-		String message = this.toString();
-		
-		if( message.contains(SEPARATOR) )
-		{
-			super.reset();
-			
-			String messages[] = message.split(SEPARATOR);
-			for( String msg : messages ) level.log( logger, msg );
-		}
+	    switch( this )
+	    {
+	        case TRACE:
+	            logger.trace( message );
+	            break;
+	            
+	        case DEBUG:
+	            logger.debug( message );
+	            break;
+	            
+	        case INFO:
+	            logger.info( message );
+	            break;
+	            
+	        case WARN:
+	            logger.warn( message );
+	            break;
+	            
+	        case ERROR:
+	            logger.error( message );
+	            break;
+	    }
 	}
 }

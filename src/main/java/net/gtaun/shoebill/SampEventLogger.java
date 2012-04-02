@@ -16,14 +16,15 @@
 
 package net.gtaun.shoebill;
 
-import org.apache.log4j.Logger;
-
 import net.gtaun.shoebill.object.IPickup;
 import net.gtaun.shoebill.object.IPlayer;
 import net.gtaun.shoebill.object.IVehicle;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author MK124
@@ -32,7 +33,7 @@ import net.gtaun.shoebill.samp.SampNativeFunction;
 
 public class SampEventLogger implements ISampCallbackHandler
 {
-	private static final Logger LOGGER = Logger.getLogger(Shoebill.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Shoebill.class);
 	
 	
 	private ISampObjectPool sampObjectPool;

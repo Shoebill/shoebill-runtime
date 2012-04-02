@@ -23,7 +23,8 @@ import net.gtaun.shoebill.IShoebillLowLevel;
 import net.gtaun.shoebill.util.event.IEventManager;
 import net.gtaun.shoebill.util.event.ManagedEventManager;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author MK124
@@ -100,6 +101,6 @@ public abstract class Resource
 	
 	public Logger getLogger()
 	{
-		return Logger.getLogger( description.getClazz() );
+		return LoggerFactory.getLogger( description.getClazz() );
 	}
 }

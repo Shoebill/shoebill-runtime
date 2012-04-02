@@ -36,7 +36,8 @@ import net.gtaun.shoebill.event.plugin.PluginLoadEvent;
 import net.gtaun.shoebill.event.plugin.PluginUnloadEvent;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author JoJLlmAn, MK124
@@ -45,7 +46,7 @@ import org.apache.log4j.Logger;
 
 public class PluginManager implements IPluginManager
 {
-	private static final Logger LOGGER = Logger.getLogger(PluginManager.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PluginManager.class);
 	
 
 	private ClassLoader classLoader;

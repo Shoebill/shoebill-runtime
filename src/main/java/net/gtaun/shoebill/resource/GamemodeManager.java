@@ -30,7 +30,8 @@ import net.gtaun.shoebill.IGamemodeManager;
 import net.gtaun.shoebill.IShoebill;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author MK124
@@ -39,7 +40,7 @@ import org.apache.log4j.Logger;
 
 public class GamemodeManager implements IGamemodeManager
 {
-	private static final Logger LOGGER = Logger.getLogger(PluginManager.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GamemodeManager.class);
 	
 	
 	private IShoebill shoebill;

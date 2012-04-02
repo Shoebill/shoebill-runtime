@@ -42,12 +42,13 @@ import net.gtaun.shoebill.samp.SampCallbackManager;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventManager;
 import net.gtaun.shoebill.util.event.IEventManager;
+import net.gtaun.shoebill.util.log.LogLevel;
 import net.gtaun.shoebill.util.log.LoggerOutputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author MK124
@@ -56,11 +57,14 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class Shoebill implements IShoebill, IShoebillLowLevel
 {
-	private static final Logger LOGGER = Logger.getLogger(Shoebill.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Shoebill.class);
 	
 	
 	private static Shoebill instance;
-	public static IShoebill getInstance()		{ return instance; }
+	public static IShoebill getInstance()
+	{
+		return instance;
+	}
 	
 	
 	private ShoebillVersion version;
@@ -90,24 +94,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	Shoebill() throws IOException
 	{
 		instance = this;
-		
-		File logPropertyFile = new File("./shoebill/log4j.properties");
-		if( logPropertyFile.exists() )
-		{
-			PropertyConfigurator.configure( logPropertyFile.toURI().toURL() );
-		}
-		else
-		{
-			InputStream in = this.getClass().getClassLoader().getResourceAsStream( "log4j.properties" );
-			Properties properties = new Properties();
-			properties.load(in);
-			PropertyConfigurator.configure( properties );
-		}
-
-		System.setOut( new PrintStream(new LoggerOutputStream(Logger.getLogger("System.out"), Level.INFO), true) );
-		System.setErr( new PrintStream(new LoggerOutputStream(Logger.getLogger("System.err"), Level.ERROR), true) );
-		
-		if( !logPropertyFile.exists() ) LOGGER.info( "Not find " + logPropertyFile.getPath() + " file, use the default configuration." );
+		initializeLoggerConfig();
 		
 		version = new ShoebillVersion( this.getClass().getClassLoader().getResourceAsStream( "version.yml" ));
 		
@@ -137,6 +124,28 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		}
 
 		gamemodeFile = new File(gamemodeDir, gamemodeFilename);
+	}
+	
+	private void initializeLoggerConfig() throws IOException
+	{
+		File logConfigFile = new File("./shoebill/log4j.properties");
+		if( logConfigFile.exists() )
+		{
+			PropertyConfigurator.configure( logConfigFile.toURI().toURL() );
+		}
+		else
+		{
+			InputStream in = this.getClass().getClassLoader().getResourceAsStream( "log4j.properties" );
+			Properties properties = new Properties();
+			properties.load(in);
+			PropertyConfigurator.configure( properties );
+		}
+
+		System.setOut( new PrintStream(new LoggerOutputStream(LoggerFactory.getLogger("System.out"), LogLevel.INFO), true) );
+		System.setErr( new PrintStream(new LoggerOutputStream(LoggerFactory.getLogger("System.err"), LogLevel.ERROR), true) );
+		
+		if( !logConfigFile.exists() ) LOGGER.info( "Not find " + logConfigFile.getPath() + " file, use the default configuration." );
+		
 	}
 
 	private void registerRootCallbackHandler()
@@ -235,18 +244,14 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		URL[] urls = new URL[ files.size() ];
 		int i = 0;
 		
-		for( File file : files )
+		for( File file : files ) try
 		{
-			try
-			{
-				urls[i] = file.toURI().toURL();
-			}
-			catch (MalformedURLException e)
-			{
-				e.printStackTrace();
-			}
-			
+			urls[i] = file.toURI().toURL();
 			i++;
+		}
+		catch (MalformedURLException e)
+		{
+			e.printStackTrace();
 		}
 		
 		return URLClassLoader.newInstance(urls, getClass().getClassLoader());
@@ -254,6 +259,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	
 	private void loadPluginsAndGamemode() throws IOException
 	{
+		LOGGER.trace( "loadPluginsAndGamemode" );
 		pluginManager.loadAllPlugin();
 		gamemodeManager.changeMode( gamemodeFile );
 	}
