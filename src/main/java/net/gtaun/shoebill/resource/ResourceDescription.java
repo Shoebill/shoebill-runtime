@@ -32,9 +32,10 @@ public class ResourceDescription
 	private Class<? extends Resource> clazz;
 	private String name;
 	private String version;
-	private String date;
-	private String description;
 	private List<String> authors;
+	private String description;
+	private int buildNumber;
+	private String buildDate;
 	
 
 	public ResourceDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
@@ -47,7 +48,6 @@ public class ResourceDescription
 		
 		name = config.getString( "name", "Unnamed" );
 		version = config.getString( "version" );
-		date = config.getString( "date" );
 		
 		String author = config.getString( "authors" );
 		authors = new ArrayList<>();
@@ -57,6 +57,8 @@ public class ResourceDescription
 		else					authors.add( author.trim() );
 			
 		description = config.getString( "description" );
+		buildNumber = config.getInt( "buildNumber", 0 );
+		buildDate = config.getString( "buildDate", "Unknown" );
 	}
 
 	public Class<? extends Resource> getClazz()
@@ -74,11 +76,6 @@ public class ResourceDescription
 		return version;
 	}
 	
-	public String getDate()
-	{
-		return date;
-	}
-	
 	public List<String> getAuthors()
 	{
 		return authors;
@@ -87,5 +84,15 @@ public class ResourceDescription
 	public String getDescription()
 	{
 		return description;
+	}
+	
+	public int getBuildNumber()
+	{
+		return buildNumber;
+	}
+	
+	public String getBuildDate()
+	{
+		return buildDate;
 	}
 }
