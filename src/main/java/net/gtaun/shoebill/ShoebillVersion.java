@@ -27,6 +27,7 @@ import net.gtaun.shoebill.util.config.YamlConfiguration;
 
 public class ShoebillVersion
 {
+	private String name;
 	private String version;
 	private String support;
 	private int buildNumber;
@@ -44,6 +45,11 @@ public class ShoebillVersion
 		buildDate = config.getString( "buildDate", "Unknown" );
 		
 		if( version.charAt(version.length()-1) == '.' ) version = version.substring(0, version.length()-1);
+	}
+	
+	public String getName()
+	{
+		return name;
 	}
 	
 	public String getVersion()

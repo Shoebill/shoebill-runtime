@@ -98,17 +98,17 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		
 		version = new ShoebillVersion( this.getClass().getClassLoader().getResourceAsStream( "version.yml" ));
 		
-		if( version.getBuildNumber() != 0)
-			LOGGER.info( "Shoebill " + version.getVersion() + " Build " + version.getBuildNumber() + " (for " + version.getSupport() + ")" );
-		else
-			LOGGER.info( "Shoebill " + version.getVersion() + " (for " + version.getSupport() + ")" );
+		String startupMessage = "Shoebill " + version.getVersion();
 		
+		if( version.getBuildNumber() != 0) startupMessage += " Build " + version.getBuildNumber();
+		startupMessage += " (for " + version.getSupport() + ")";
+		
+		LOGGER.info( startupMessage );
 		LOGGER.info( "Build date: " + version.getBuildDate() );
 		LOGGER.info( "System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")" );
 		
 		FileInputStream configFileIn;
 		configFileIn = new FileInputStream("./shoebill/config.yml");
-		
 		configuration = new ShoebillConfiguration( configFileIn );
 		
 		File workdir = configuration.getWorkdir();

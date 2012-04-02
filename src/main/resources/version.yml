@@ -1,3 +1,4 @@
+name: Shoebill
 version: ${version}
 support: SA-MP 0.3D R2
 buildNumber: ${build.number}
