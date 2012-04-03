@@ -16,7 +16,8 @@
 
 package net.gtaun.shoebill.resource;
 
-import java.io.InputStream;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author MK124
@@ -25,9 +26,10 @@ import java.io.InputStream;
 
 public class PluginDescription extends ResourceDescription
 {
-	public PluginDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
+	public PluginDescription( File file, ClassLoader classLoader ) throws ClassNotFoundException, IOException
 	{
-		super( in, classLoader );
+		super( file, classLoader );
+		super.loadConfig( "plugin.yml" );
 	}
 	
 	@Override

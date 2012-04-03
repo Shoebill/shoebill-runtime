@@ -31,6 +31,7 @@ public interface IGamemodeManager
 {
 	void changeMode( String filename );
 	void changeMode( File file );
+	void changeMode( GamemodeDescription desc );
 	
 	Gamemode getGamemode();
 	<T extends Gamemode> T getGamemode( Class<T> cls );

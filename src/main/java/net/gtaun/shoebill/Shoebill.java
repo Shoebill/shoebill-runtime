@@ -31,9 +31,7 @@ import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
 import net.gtaun.shoebill.object.SampEventDispatcher;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.object.World;
-import net.gtaun.shoebill.resource.Gamemode;
 import net.gtaun.shoebill.resource.GamemodeManager;
-import net.gtaun.shoebill.resource.Plugin;
 import net.gtaun.shoebill.resource.PluginManager;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.ISampCallbackManager;
@@ -260,18 +258,14 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	
 	private void loadPluginsAndGamemode() throws IOException
 	{
-		LOGGER.trace( "loadPluginsAndGamemode" );
 		pluginManager.loadAllPlugin();
-		gamemodeManager.changeMode( gamemodeFile );
+		gamemodeManager.constructGamemode( gamemodeFile );
 	}
 	
 	private void unloadPluginsAndGamemode()
 	{
-		Gamemode gamemode = managedObjectPool.getGamemode();
-		gamemode.exit();
-		
-		Collection<Plugin> plugins = pluginManager.getPlugins();
-		for( Plugin plugin : plugins ) pluginManager.unloadPlugin( plugin );
+		gamemodeManager.deconstructGamemode();
+		pluginManager.unloadAllPlugin();
 	}
 
 	public ISampCallbackHandler getCallbackHandler()

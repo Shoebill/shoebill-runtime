@@ -17,7 +17,8 @@
 
 package net.gtaun.shoebill.resource;
 
-import java.io.InputStream;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author JoJLlmAn, MK124
@@ -26,9 +27,10 @@ import java.io.InputStream;
 
 public class GamemodeDescription extends ResourceDescription
 {
-	public GamemodeDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
+	public GamemodeDescription( File file, ClassLoader classLoader ) throws ClassNotFoundException, IOException
 	{
-		super( in, classLoader );
+		super( file, classLoader );
+		super.loadConfig( "gamemode.yml" );
 	}
 	
 	@Override

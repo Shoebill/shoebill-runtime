@@ -18,16 +18,14 @@ package net.gtaun.shoebill.resource;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import net.gtaun.shoebill.IGamemodeManager;
 import net.gtaun.shoebill.IShoebill;
+import net.gtaun.shoebill.Shoebill;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -61,15 +59,9 @@ public class GamemodeManager implements IGamemodeManager
 		this.descriptions = generateDescriptions( gamemodeDir );
 	}
 	
-	private GamemodeDescription generateDescription( File file ) throws IOException, ClassNotFoundException
+	private GamemodeDescription generateDescription( File file ) throws ClassNotFoundException, IOException
 	{
-		JarFile jarFile = new JarFile( file );
-		JarEntry entry = jarFile.getJarEntry( "gamemode.yml" );
-		
-		if( entry == null ) throw new NullPointerException();
-		
-		InputStream in = jarFile.getInputStream( entry );
-		GamemodeDescription desc = new GamemodeDescription(in, classLoader);
+		GamemodeDescription desc = new GamemodeDescription(file, classLoader);
 		return desc;
 	}
 	
@@ -78,36 +70,27 @@ public class GamemodeManager implements IGamemodeManager
 		Map<File, GamemodeDescription> descriptions = new HashMap<>();
 		Collection<File> files = FileUtils.listFiles(dir, new String[]{ "jar" }, true );
 		
-		for( File file : files )
+		for( File file : files ) try
 		{
-			try
-			{
-				GamemodeDescription desc = generateDescription( file );
-				descriptions.put( file, desc );
-			}
-			catch( Exception e )
-			{
-				e.printStackTrace();
-			}
+			GamemodeDescription desc = generateDescription( file );
+			descriptions.put( file, desc );
 		}
-		
+		catch( Exception e )
+		{
+			e.printStackTrace();
+		}
+				
 		return descriptions;
 	}
 	
-	private Gamemode constructGamemode( File file ) throws IOException
+	public Gamemode constructGamemode( File file )
 	{
-		JarFile jarFile = new JarFile( file );
-		JarEntry entry = jarFile.getJarEntry( "gamemode.yml" );
-		InputStream in = jarFile.getInputStream( entry );
-		
-		GamemodeDescription desc;
-		Gamemode gamemode = null;
-		
 		LOGGER.info("Load gamemode: " + file.getName() );
 		
 		try
 		{
-			desc = new GamemodeDescription(in, classLoader);
+			GamemodeDescription desc = descriptions.get( file );
+			if( desc == null ) desc = new GamemodeDescription(file, classLoader);
 			gamemode = desc.getClazz().newInstance();
 			gamemode.setContext( desc, shoebill, new File(dataDir, desc.getClazz().getName()) );
 			gamemode.enable();
@@ -120,11 +103,12 @@ public class GamemodeManager implements IGamemodeManager
 		return gamemode;
 	}
 	
-	private void deconstructGamemode( Gamemode gamemode )
+	public void deconstructGamemode()
 	{
 		try
 		{
 			gamemode.disable();
+			gamemode = null;
 		}
 		catch( Exception e )
 		{
@@ -135,13 +119,33 @@ public class GamemodeManager implements IGamemodeManager
 	@Override
 	public void changeMode( String filename )
 	{
-		return;
+		File file = new File(gamemodeDir, filename);
+		changeMode( file );
 	}
 
 	@Override
 	public void changeMode( File file )
 	{
-		return;
+		if( file.canRead() == false ) return;
+		
+		GamemodeDescription desc = descriptions.get( file );		
+		if( desc == null ) try
+		{
+			desc = new GamemodeDescription(file, classLoader);
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+		}
+		
+		if( desc == null ) return;
+		changeMode( desc );
+	}
+	
+	@Override
+	public void changeMode( GamemodeDescription desc )
+	{
+		Shoebill.getInstance().changeGamemode( desc.getFile() );
 	}
 
 	@Override

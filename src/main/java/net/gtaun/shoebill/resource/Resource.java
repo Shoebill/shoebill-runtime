@@ -38,7 +38,7 @@ public abstract class Resource
 	private ResourceDescription description;
 	private IShoebill shoebill;
 	private ManagedEventManager eventManager;
-	private File dataFolder;
+	private File dataDirectory;
 	
 	
 	protected Resource()
@@ -46,11 +46,11 @@ public abstract class Resource
 		
 	}
 		
-	void setContext( ResourceDescription description, IShoebill shoebill, File dataFolder )
+	void setContext( ResourceDescription description, IShoebill shoebill, File dataDir )
 	{
 		this.description = description;
 		this.shoebill = shoebill;
-		this.dataFolder = dataFolder;
+		this.dataDirectory = dataDir;
 		
 		IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) shoebill;
 		eventManager = new ManagedEventManager( shoebillLowLevel.getEventManager() );
@@ -94,9 +94,9 @@ public abstract class Resource
 		return eventManager;
 	}
 	
-	public File getDataFolder()
+	public File getDataDirectory()
 	{
-		return dataFolder;
+		return dataDirectory;
 	}
 	
 	public Logger getLogger()

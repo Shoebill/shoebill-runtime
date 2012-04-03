@@ -43,21 +43,7 @@ public abstract class Gamemode extends Resource
 	{
 		return (GamemodeDescription) super.getDescription();
 	}
-	
-	public void exit()
-	{
-		try
-		{
-			disable();
-		}
-		catch( Exception e )
-		{
-			e.printStackTrace();
-		}
-		
-		SampNativeFunction.gameModeExit();
-	}
-	
+
 	public void setGamemodeText( String string )
 	{
 		if( string == null ) throw new NullPointerException();

@@ -16,10 +16,16 @@
 
 package net.gtaun.shoebill.resource;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
+import net.gtaun.shoebill.util.config.Configuration;
+import net.gtaun.shoebill.util.config.FileConfiguration;
 import net.gtaun.shoebill.util.config.YamlConfiguration;
 
 /**
@@ -27,8 +33,10 @@ import net.gtaun.shoebill.util.config.YamlConfiguration;
  *
  */
 
-public class ResourceDescription
+public abstract class ResourceDescription
 {
+	private File file;
+	private ClassLoader classLoader;
 	private Class<? extends Resource> clazz;
 	private String name;
 	private String version;
@@ -38,9 +46,19 @@ public class ResourceDescription
 	private String buildDate;
 	
 
-	public ResourceDescription( InputStream in, ClassLoader classLoader ) throws ClassNotFoundException
+	protected ResourceDescription( File file, ClassLoader classLoader )
 	{
-		YamlConfiguration config = new YamlConfiguration();
+		this.file = file;
+		this.classLoader = classLoader;
+	}
+	
+	protected Configuration loadConfig( String configFilename ) throws IOException, ClassNotFoundException
+	{
+		JarFile jarFile = new JarFile( file );
+		JarEntry entry = jarFile.getJarEntry( configFilename );
+		InputStream in = jarFile.getInputStream( entry );
+
+		FileConfiguration config = new YamlConfiguration();
 		config.read( in );
 		
 		String className = config.getString( "class" );
@@ -59,6 +77,13 @@ public class ResourceDescription
 		description = config.getString( "description" );
 		buildNumber = config.getInt( "buildNumber", 0 );
 		buildDate = config.getString( "buildDate", "Unknown" );
+		
+		return config;
+	}
+
+	public File getFile()
+	{
+		return file;
 	}
 
 	public Class<? extends Resource> getClazz()

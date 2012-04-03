@@ -41,7 +41,6 @@ import net.gtaun.shoebill.object.IVehicle;
 import net.gtaun.shoebill.object.IWorld;
 import net.gtaun.shoebill.object.IZone;
 import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.resource.Gamemode;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.util.event.EventManager;
@@ -142,12 +141,6 @@ public class SampObjectPool implements ISampObjectPool
 	public IWorld getWorld()
 	{
 		return world;
-	}
-	
-	@Override
-	public Gamemode getGamemode()
-	{
-		return null;
 	}
 	
 	@Override

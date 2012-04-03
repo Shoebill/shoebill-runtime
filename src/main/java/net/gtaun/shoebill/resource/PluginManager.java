@@ -19,14 +19,11 @@ package net.gtaun.shoebill.resource;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import net.gtaun.shoebill.IPluginManager;
 import net.gtaun.shoebill.IShoebill;
@@ -51,33 +48,27 @@ public class PluginManager implements IPluginManager
 
 	private ClassLoader classLoader;
 	private IShoebill shoebill;
-	private File pluginFolder, dataFolder;
+	private File pluginDir, dataDir;
 
 	private Map<File, PluginDescription> descriptions;
 	private Map<Class<? extends Plugin>, Plugin> plugins;
 	
 	
-	public PluginManager( IShoebill shoebill, ClassLoader classLoader, File pluginFolder, File dataFolder )
+	public PluginManager( IShoebill shoebill, ClassLoader classLoader, File pluginDir, File dataDir )
 	{
 		plugins = new HashMap<Class<? extends Plugin>, Plugin>();
 		
 		this.shoebill = shoebill;
 		this.classLoader = classLoader;
-		this.pluginFolder = pluginFolder;
-		this.dataFolder = dataFolder;
+		this.pluginDir = pluginDir;
+		this.dataDir = dataDir;
 		
-		this.descriptions = generateDescriptions(pluginFolder);
+		this.descriptions = generateDescriptions(pluginDir);
 	}
 	
-	private PluginDescription generateDescription( File file ) throws IOException, ClassNotFoundException
+	private PluginDescription generateDescription( File file ) throws ClassNotFoundException, IOException
 	{
-		JarFile jarFile = new JarFile( file );
-		JarEntry entry = jarFile.getJarEntry( "plugin.yml" );
-		
-		if( entry == null ) throw new NullPointerException();
-		
-		InputStream in = jarFile.getInputStream( entry );
-		PluginDescription desc = new PluginDescription(in, classLoader);
+		PluginDescription desc = new PluginDescription(file, classLoader);
 		return desc;
 	}
 	
@@ -103,11 +94,16 @@ public class PluginManager implements IPluginManager
 	{
 		for( PluginDescription desc : descriptions.values() ) loadPlugin( desc );
 	}
+	
+	public void unloadAllPlugin()
+	{
+		for( Plugin plugin : plugins.values() ) unloadPlugin( plugin );
+	}
 
 	@Override
 	public Plugin loadPlugin( String filename )
 	{
-		File file = new File(pluginFolder, filename);
+		File file = new File(pluginDir, filename);
 		return loadPlugin( file );
 	}
 
@@ -116,22 +112,18 @@ public class PluginManager implements IPluginManager
 	{
 		if( file.canRead() == false ) return null;
 		
-		LOGGER.info("Load plugin: " + file.getName() );
-		
-		try
+		PluginDescription desc = descriptions.get( file );		
+		if( desc == null ) try
 		{
-			JarFile jarFile = new JarFile( file );
-			JarEntry entry = jarFile.getJarEntry( "plugin.yml" );
-			InputStream in = jarFile.getInputStream( entry );
-			
-			PluginDescription desc = new PluginDescription(in, classLoader);
-			return loadPlugin(desc);
+			desc = new PluginDescription(file, classLoader);
 		}
 		catch( Exception e )
 		{
 			e.printStackTrace();
-			return null;
 		}
+		
+		if( desc == null ) return null;
+		return loadPlugin(desc);
 	}
 	
 	@Override
@@ -151,10 +143,10 @@ public class PluginManager implements IPluginManager
 			Constructor<? extends Plugin> constructor = clazz.getConstructor();
 			Plugin plugin = constructor.newInstance();
 			
-			File pluginDataFolder = new File(dataFolder, desc.getClazz().getName());
-			if( ! pluginDataFolder.exists() ) pluginDataFolder.mkdirs();
+			File pluginDataDir = new File(dataDir, desc.getClazz().getName());
+			if( ! pluginDataDir.exists() ) pluginDataDir.mkdirs();
 			
-			plugin.setContext( desc, shoebill, pluginDataFolder );
+			plugin.setContext( desc, shoebill, pluginDataDir );
 			plugin.enable();
 			
 			plugins.put( clazz, plugin );
