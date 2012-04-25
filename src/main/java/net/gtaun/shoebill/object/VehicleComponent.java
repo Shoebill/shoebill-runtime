@@ -20,6 +20,9 @@ package net.gtaun.shoebill.object;
 import net.gtaun.shoebill.data.type.VehicleComponentSlot;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 
 /**
  * @author MK124, JoJLlmAn
@@ -37,7 +40,12 @@ public class VehicleComponent implements IVehicleComponent
 		this.vehicle = vehicle;
 		update();
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
 	
 	@Override
 	public IVehicle getVehicle()
@@ -96,6 +104,8 @@ public class VehicleComponent implements IVehicleComponent
 	void update()
 	{
 		for( int i=0; i<components.length; i++ )
+		{
 			components[i] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), i);
+		}
 	}
 }

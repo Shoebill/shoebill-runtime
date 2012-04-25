@@ -21,11 +21,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.gtaun.shoebill.util.event.event.EventListenerAddedEvent;
 import net.gtaun.shoebill.util.event.event.EventListenerRemovedEvent;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author MK124
@@ -41,7 +45,12 @@ public class EventManager implements IEventManager
 	{
 		listenerEntryContainersMap = new ConcurrentHashMap<Class<? extends Event>, Map<Object, Queue<Entry>>>();
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
 
 	@Override
 	public Entry addListener( Class<? extends Event> type, IEventListener listener, Priority priority )
@@ -248,6 +257,7 @@ public class EventManager implements IEventManager
 		PriorityQueue<Entry> listenerEntryQueue = new PriorityQueue<>( 16,
 			new Comparator<Entry>()
 			{
+				@Override
 				public int compare( Entry o1, Entry o2 )
 				{
 					return o2.getPriority() - o1.getPriority();
@@ -280,8 +290,7 @@ public class EventManager implements IEventManager
 				}
 			}
 			
-			Class<?> clz = cls;
-			while( clz != null && clz != Object.class )
+			for( Class<?> clz = cls; clz != null; clz = clz.getSuperclass() )
 			{
 				Queue<Entry> classListenerEntries = objectListenerEntries.get( clz );
 				if( classListenerEntries != null ) for( Entry entry : classListenerEntries )
@@ -289,19 +298,10 @@ public class EventManager implements IEventManager
 					if( entry.getListener() == null ) entries.remove( entry );
 					else listenerEntryQueue.add( entry );
 				}
-				
-				clz = clz.getSuperclass();
 			}
 		}
 		
-		Queue<Entry> entries = objectListenerEntries.get( Object.class );
-		if( entries != null ) for( Entry entry : entries )
-		{
-			if( entry.getListener() == null ) entries.remove( entry );
-			else listenerEntryQueue.add( entry );
-		}
-		
-		HashSet<Entry> processedHandler = new HashSet<>( listenerEntryQueue.size() );
+		Set<Entry> processedHandler = new HashSet<>( listenerEntryQueue.size() );
 		while( listenerEntryQueue.isEmpty() == false && event.isInterrupted() == false )
 		{
 			Entry entry = listenerEntryQueue.poll();

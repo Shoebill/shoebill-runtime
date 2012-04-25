@@ -21,6 +21,9 @@ import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.type.PlayerAttachBone;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author JoJLlmAn, MK124
  *
@@ -43,6 +46,12 @@ public class PlayerAttach implements IPlayerAttach
 			this.slot = slot;
 		}
 
+		@Override
+		public String toString()
+		{
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		}
+		
 		@Override public PlayerAttachBone getBone()
 		{
 			return bone;
@@ -72,7 +81,9 @@ public class PlayerAttach implements IPlayerAttach
 			
 			if( bone == PlayerAttachBone.NOT_USABLE ) return false;
 			if( ! SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getData(), offset.getX(), offset.getY(), offset.getZ(), rot.getX(), rot.getY(), rot.getZ(), scale.getX(), scale.getY(), scale.getZ()) ) 
+			{
 				return false;
+			}
 			
 			this.bone = bone;
 			this.modelId = modelId;
@@ -124,6 +135,12 @@ public class PlayerAttach implements IPlayerAttach
 		{
 			slots[i] = new PlayerAttachSlot(i);
 		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	@Override

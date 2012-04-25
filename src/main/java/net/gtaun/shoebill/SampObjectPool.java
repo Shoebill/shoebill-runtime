@@ -45,6 +45,9 @@ import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.util.event.EventManager;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -97,6 +100,7 @@ public class SampObjectPool implements ISampObjectPool
 	{
 		callbackHandler = new SampCallbackHandler()
 		{
+			@Override
 			public int onPlayerConnect( int playerid )
 			{
 				try
@@ -117,13 +121,19 @@ public class SampObjectPool implements ISampObjectPool
 				return 1;
 			}
 			
+			@Override
 			public int onPlayerDisconnect( int playerid, int reason )
 			{
 				return 1;
 			}
 		};
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
 	
 	ISampCallbackHandler getCallbackHandler()
 	{

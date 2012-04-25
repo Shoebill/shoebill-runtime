@@ -24,6 +24,9 @@ import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124, JoJLlmAn
  *
@@ -95,6 +98,12 @@ public class ObjectBase implements IObject
 		
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setObject( id, this );
+	}
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	@Override
@@ -171,7 +180,7 @@ public class ObjectBase implements IObject
 		
 		if( attachedPlayer != null )			location.set( attachedPlayer.getLocation() );
 		else if( attachedVehicle != null )		location.set( attachedVehicle.getLocation() );
-		else SampNativeFunction.getObjectPos( id, location );
+		else									SampNativeFunction.getObjectPos( id, location );
 		
 		return location.clone();
 	}

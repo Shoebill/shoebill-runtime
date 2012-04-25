@@ -22,6 +22,9 @@ import java.io.InputStream;
 
 import net.gtaun.shoebill.util.config.YamlConfiguration;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author JoJLlmAn, MK124
  *
@@ -42,6 +45,12 @@ public class ShoebillConfiguration
 		workdir = new File( workdirPath );
 		
 		gamemode = config.getString("gamemode", null);
+	}
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	public File getWorkdir()

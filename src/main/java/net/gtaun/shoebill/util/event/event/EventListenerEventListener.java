@@ -25,7 +25,7 @@ import net.gtaun.shoebill.util.event.EventListener;
 
 public abstract class EventListenerEventListener extends EventListener
 {
-	public EventListenerEventListener()
+	protected EventListenerEventListener()
 	{
 		super( EventListenerEventListener.class );
 	}

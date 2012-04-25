@@ -26,10 +26,7 @@ import net.gtaun.shoebill.object.IPlayer;
 public class PlayerDeathEvent extends PlayerEvent
 {
 	private IPlayer killer;
-	int reason;
-	
-	public IPlayer getKiller()				{ return killer; }
-	public int getReason()					{ return reason; }
+	private int reason;
 	
 	
 	public PlayerDeathEvent( IPlayer player, IPlayer killer, int reason )
@@ -37,6 +34,16 @@ public class PlayerDeathEvent extends PlayerEvent
 		super( player );
 		this.killer = killer;
 		this.reason = reason;
+	}
+	
+	public IPlayer getKiller()
+	{
+		return killer;
+	}
+	
+	public int getReason()
+	{
+		return reason;
 	}
 }
 

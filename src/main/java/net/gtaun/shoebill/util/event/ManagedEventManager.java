@@ -22,6 +22,9 @@ import java.util.Set;
 import net.gtaun.shoebill.util.event.event.EventListenerEventListener;
 import net.gtaun.shoebill.util.event.event.EventListenerRemovedEvent;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -55,9 +58,15 @@ public class ManagedEventManager implements IEventManager
 	@Override
 	protected void finalize() throws Throwable
 	{
+		super.finalize();
 		eventManager.removeListener( eventListenerEventListenerEntry );
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
 	
 	private void addListenerEntry( Entry entry )
 	{
@@ -121,9 +130,9 @@ public class ManagedEventManager implements IEventManager
 	@Override
 	public Entry addListener( Entry entry )
 	{
-		entry = eventManager.addListener(entry);
-		addListenerEntry( entry );
-		return entry;
+		Entry ret = eventManager.addListener(entry);
+		addListenerEntry( ret );
+		return ret;
 	}
 
 	@Override

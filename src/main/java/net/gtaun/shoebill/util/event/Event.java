@@ -16,6 +16,9 @@
 
 package net.gtaun.shoebill.util.event;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -27,14 +30,20 @@ public abstract class Event
 	private boolean interrupted;
 	
 	
-	public Event()
+	protected Event()
 	{
 		this.interruptable = true;
 	}
 	
-	public Event( boolean interruptable )
+	protected Event( boolean interruptable )
 	{
 		this.interruptable = interruptable;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 	
 	public boolean isInterruptable()

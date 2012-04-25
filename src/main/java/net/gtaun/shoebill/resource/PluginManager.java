@@ -33,6 +33,8 @@ import net.gtaun.shoebill.event.plugin.PluginLoadEvent;
 import net.gtaun.shoebill.event.plugin.PluginUnloadEvent;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,6 +66,12 @@ public class PluginManager implements IPluginManager
 		this.dataDir = dataDir;
 		
 		this.descriptions = generateDescriptions(pluginDir);
+	}
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	private PluginDescription generateDescription( File file ) throws ClassNotFoundException, IOException
@@ -157,7 +165,7 @@ public class PluginManager implements IPluginManager
 			
 			return plugin;
 		}
-		catch (Exception e)
+		catch( Throwable e )
 		{
 			e.printStackTrace();
 			return null;
@@ -180,7 +188,7 @@ public class PluginManager implements IPluginManager
 			{
 				plugin.disable();
 			}
-			catch( Exception e )
+			catch( Throwable e )
 			{
 				e.printStackTrace();
 			}

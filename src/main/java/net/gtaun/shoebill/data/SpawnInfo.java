@@ -18,15 +18,15 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import net.gtaun.shoebill.data.type.WeaponType;
 import net.gtaun.shoebill.util.immutable.Immutable;
 import net.gtaun.shoebill.util.immutable.Immutably;
 import net.gtaun.shoebill.util.immutable.ImmutablyException;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author MK124
@@ -38,13 +38,13 @@ public class SpawnInfo implements Cloneable, Serializable, Immutable
 	private static final long serialVersionUID = -1494282877268559489L;
 	
 	
-	private class ImmutablySpawnInfo extends SpawnInfo implements Immutably
+	private static final class ImmutablySpawnInfo extends SpawnInfo implements Immutably
 	{
 		private static final long serialVersionUID = SpawnInfo.serialVersionUID;
 		
-		private ImmutablySpawnInfo()
+		private ImmutablySpawnInfo( SpawnInfo spawnInfo )
 		{
-			super( SpawnInfo.this.getLocation().immure(), SpawnInfo.this.getSkinId(), SpawnInfo.this.getTeamId(), SpawnInfo.this.getWeapon1().immure(), SpawnInfo.this.getWeapon2().immure(), SpawnInfo.this.getWeapon3().immure() );
+			super( spawnInfo.getLocation().immure(), spawnInfo.getSkinId(), spawnInfo.getTeamId(), spawnInfo.getWeapon1().immure(), spawnInfo.getWeapon2().immure(), spawnInfo.getWeapon3().immure() );
 		}
 		
 		@Override
@@ -205,7 +205,7 @@ public class SpawnInfo implements Cloneable, Serializable, Immutable
 	@Override
 	public Object immure()
 	{
-		return new ImmutablySpawnInfo();
+		return new ImmutablySpawnInfo(this);
 	}
 	
 	@Override

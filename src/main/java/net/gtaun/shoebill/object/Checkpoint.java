@@ -25,6 +25,9 @@ import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author JoJLlmAn, MK124
  *
@@ -48,6 +51,12 @@ public class Checkpoint implements ICheckpoint
 	public Checkpoint( LocationRadius loc )
 	{
 		location = new LocationRadius( loc );
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public abstract class PluginEvent extends Event
 	public Plugin getPlugin()		{ return plugin; }
 	
 	
-	public PluginEvent( Plugin plugin )
+	protected PluginEvent( Plugin plugin )
 	{
 		this.plugin = plugin;
 	}

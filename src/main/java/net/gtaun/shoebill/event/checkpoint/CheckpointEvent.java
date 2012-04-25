@@ -30,13 +30,20 @@ public abstract class CheckpointEvent extends Event
 	private IPlayer player;
 	private ICheckpoint checkpoint;
 	
-	public IPlayer getPlayer()				{ return player; }
-	public ICheckpoint getCheckpoint()		{ return checkpoint; }
 	
-	
-	public CheckpointEvent( IPlayer player, ICheckpoint checkpoint )
+	protected CheckpointEvent( IPlayer player, ICheckpoint checkpoint )
 	{
 		this.player = player;
 		this.checkpoint = checkpoint;
+	}
+	
+	public IPlayer getPlayer()
+	{
+		return player;
+	}
+	
+	public ICheckpoint getCheckpoint()
+	{
+		return checkpoint;
 	}
 }

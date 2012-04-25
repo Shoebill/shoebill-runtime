@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author MK124, JoJLlmAn
@@ -31,7 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class MemoryConfiguration implements Configuration
 {
-	protected Map<String, Object> root;
+	private Map<String, Object> root;
 	
 	
 	public MemoryConfiguration()
@@ -41,11 +43,21 @@ public class MemoryConfiguration implements Configuration
 
 	public MemoryConfiguration( Map<String, Object> root )
 	{
-		if( root == null )	this.root = new HashMap<>();
-		else				this.root = root;
+		setRoot( (root != null) ? root : new HashMap<String, Object>() );
+	}
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
-	public Map<String, Object> getRootMap()
+	public void setRoot( Map<String, Object> root )
+	{
+		this.root = root;
+	}
+	
+	public Map<String, Object> getRoot()
 	{
 		return root;
 	}
@@ -124,7 +136,7 @@ public class MemoryConfiguration implements Configuration
 	public String getString( String path, String def )
 	{
 		Object obj = get(path);
-		return obj == null ? def : obj.toString();
+		return (obj == null) ? def : obj.toString();
 	}
 	
 	@Override
@@ -149,7 +161,7 @@ public class MemoryConfiguration implements Configuration
 	public int getInt( String path, int def )
 	{
 		Object obj = get(path);
-		return obj == null ? def : (Integer) obj;
+		return (obj == null) ? def : (Integer) obj;
 	}
 	
 	@Override
@@ -174,7 +186,7 @@ public class MemoryConfiguration implements Configuration
 	public long getLong( String path, long def )
 	{
 		Object obj = get(path);
-		return obj == null ? def : (Long) obj;
+		return (obj == null) ? def : (Long) obj;
 	}
 	
 	@Override
@@ -199,7 +211,7 @@ public class MemoryConfiguration implements Configuration
 	public double getDouble( String path, double def )
 	{
 		Object obj = get(path);
-		return obj == null ? def : (Double) obj;
+		return (obj == null) ? def : (Double) obj;
 	}
 	
 	@Override
@@ -224,7 +236,7 @@ public class MemoryConfiguration implements Configuration
 	public boolean getBoolean( String path, boolean def )
 	{
 		Object obj = get(path);
-		return obj == null ? def : (Boolean) obj;
+		return (obj == null) ? def : (Boolean) obj;
 	}
 	
 	@Override
@@ -264,7 +276,7 @@ public class MemoryConfiguration implements Configuration
 		List<?> raw = getList(path);
 		if (raw == null)
 		{
-			return def != null ? def : new ArrayList<String>();
+			return (def != null) ? def : new ArrayList<String>();
 		}
 		
 		List<String> list = new ArrayList<>();
@@ -282,7 +294,7 @@ public class MemoryConfiguration implements Configuration
 		List<?> raw = getList(path);
 		if (raw == null)
 		{
-			return def != null ? def : new ArrayList<Integer>();
+			return (def != null) ? def : new ArrayList<Integer>();
 		}
 		
 		List<Integer> list = new ArrayList<>();
@@ -301,7 +313,7 @@ public class MemoryConfiguration implements Configuration
 		List<?> raw = getList(path);
 		if (raw == null)
 		{
-			return def != null ? def : new ArrayList<Double>();
+			return (def != null) ? def : new ArrayList<Double>();
 		}
 		
 		List<Double> list = new ArrayList<>();
@@ -320,7 +332,7 @@ public class MemoryConfiguration implements Configuration
 		List<?> raw = getList(path);
 		if (raw == null)
 		{
-			return def != null ? def : new ArrayList<Boolean>();
+			return (def != null) ? def : new ArrayList<Boolean>();
 		}
 		
 		List<Boolean> list = new ArrayList<>();

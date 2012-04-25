@@ -28,6 +28,8 @@ import net.gtaun.shoebill.IShoebill;
 import net.gtaun.shoebill.Shoebill;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +59,12 @@ public class GamemodeManager implements IGamemodeManager
 		this.dataDir = dataDir;
 		
 		this.descriptions = generateDescriptions( gamemodeDir );
+	}
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	private GamemodeDescription generateDescription( File file ) throws ClassNotFoundException, IOException
@@ -95,7 +103,7 @@ public class GamemodeManager implements IGamemodeManager
 			gamemode.setContext( desc, shoebill, new File(dataDir, desc.getClazz().getName()) );
 			gamemode.enable();
 		}
-		catch( Exception e )
+		catch( Throwable e )
 		{
 			e.printStackTrace();
 		}
@@ -110,7 +118,7 @@ public class GamemodeManager implements IGamemodeManager
 			gamemode.disable();
 			gamemode = null;
 		}
-		catch( Exception e )
+		catch( Throwable e )
 		{
 			e.printStackTrace();
 		}

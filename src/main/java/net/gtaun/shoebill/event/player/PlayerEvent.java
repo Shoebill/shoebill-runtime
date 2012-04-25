@@ -31,7 +31,7 @@ public abstract class PlayerEvent extends Event
 	public IPlayer getPlayer()		{ return player; }
 	
 	
-	public PlayerEvent( IPlayer player )
+	protected PlayerEvent( IPlayer player )
 	{
 		this.player = player;
 	}

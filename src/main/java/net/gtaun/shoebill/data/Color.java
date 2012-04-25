@@ -198,13 +198,13 @@ public class Color implements Cloneable, Serializable, Immutable
 	private static final long serialVersionUID = -6538397318569967446L;
 
 	
-	private class ImmutablyColor extends Color implements Immutably
+	private static final class ImmutablyColor extends Color implements Immutably
 	{
 		private static final long serialVersionUID = Color.serialVersionUID;
 
-		private ImmutablyColor()
+		private ImmutablyColor( Color color )
 		{
-			super( Color.this );
+			super( color );
 		}
 		
 		@Override
@@ -282,7 +282,7 @@ public class Color implements Cloneable, Serializable, Immutable
 
 	public int getA()
 	{
-		return (value&0x000000FF);
+		return value & 0x000000FF;
 	}
 	
 	public void setA( int a )
@@ -344,7 +344,7 @@ public class Color implements Cloneable, Serializable, Immutable
 	@Override
 	public Color immure()
 	{
-		return new ImmutablyColor();
+		return new ImmutablyColor(this);
 	}
 	
 	@Override

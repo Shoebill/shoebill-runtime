@@ -36,13 +36,13 @@ public class Velocity extends Vector3D implements Cloneable, Serializable, Immut
 	private static final long serialVersionUID = 6111643976368753336L;
 	
 	
-	private class ImmutablyVelocity extends Velocity implements Immutably
+	private static final class ImmutablyVelocity extends Velocity implements Immutably
 	{
 		private static final long serialVersionUID = Velocity.serialVersionUID;
 		
-		private ImmutablyVelocity()
+		private ImmutablyVelocity( Velocity velocity )
 		{
-			super( Velocity.this );
+			super( velocity );
 		}
 		
 		@Override
@@ -109,7 +109,7 @@ public class Velocity extends Vector3D implements Cloneable, Serializable, Immut
 	@Override
 	public Velocity immure()
 	{	
-		return new ImmutablyVelocity();
+		return new ImmutablyVelocity(this);
 	}
 	
 	@Override

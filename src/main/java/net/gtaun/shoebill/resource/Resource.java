@@ -56,16 +56,16 @@ public abstract class Resource
 		eventManager = new ManagedEventManager( shoebillLowLevel.getEventManager() );
 	}
 
-	protected abstract void onEnable() throws Exception;
-	protected abstract void onDisable() throws Exception;
+	protected abstract void onEnable() throws Throwable;
+	protected abstract void onDisable() throws Throwable;
 	
-	void enable() throws Exception
+	void enable() throws Throwable
 	{
 		onEnable();
 		isEnabled = true;
 	}
 	
-	void disable() throws Exception
+	void disable() throws Throwable
 	{
 		onDisable();
 		eventManager.removeAllListener();

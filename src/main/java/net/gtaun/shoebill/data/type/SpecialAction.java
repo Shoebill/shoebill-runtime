@@ -45,15 +45,15 @@ public enum SpecialAction
 	DRINK_SPRUNK			(23);
 	
 	
-	private static final Map<Integer, SpecialAction> values = new HashMap<Integer, SpecialAction>();
+	private static final Map<Integer, SpecialAction> VALUES = new HashMap<Integer, SpecialAction>();
 	public static SpecialAction get( int data )
 	{
-		return values.get(data);
+		return VALUES.get(data);
 	}
 	
 	static
 	{
-		for( SpecialAction action : values() ) values.put( action.data, action );
+		for( SpecialAction action : values() ) VALUES.put( action.data, action );
 	}
 	
 	

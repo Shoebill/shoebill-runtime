@@ -23,6 +23,9 @@ import net.gtaun.shoebill.data.WeaponData;
 import net.gtaun.shoebill.data.type.PlayerMarkerMode;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -39,7 +42,12 @@ public class World implements IWorld
 	{
 		
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
 	
 	@Override
 	public void setTeamCount( int count )

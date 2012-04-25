@@ -37,13 +37,13 @@ public class LocationRadius extends Location implements Cloneable, Serializable,
 	private static final long serialVersionUID = -4375366678586498863L;
 	
 	
-	private class ImmutablyLocationRadius extends LocationRadius implements Immutably
+	private static final class ImmutablyLocationRadius extends LocationRadius implements Immutably
 	{
 		private static final long serialVersionUID = LocationRadius.serialVersionUID;
 		
-		private ImmutablyLocationRadius()
+		private ImmutablyLocationRadius( LocationRadius locationRadius )
 		{
-			super( LocationRadius.this );
+			super( locationRadius );
 		}
 		
 		@Override
@@ -198,7 +198,7 @@ public class LocationRadius extends Location implements Cloneable, Serializable,
 	@Override
 	public LocationRadius immure()
 	{
-		return new ImmutablyLocationRadius();
+		return new ImmutablyLocationRadius(this);
 	}
 	
 	@Override

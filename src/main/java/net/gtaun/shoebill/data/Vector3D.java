@@ -37,13 +37,13 @@ public class Vector3D extends Vector2D implements Cloneable, Serializable, Immut
 	private static final long serialVersionUID = 8493095902831171278L;
 	
 
-	private class ImmutablyVector3D extends Vector3D implements Immutably
+	private static final class ImmutablyVector3D extends Vector3D implements Immutably
 	{
 		private static final long serialVersionUID = Vector3D.serialVersionUID;
 		
-		private ImmutablyVector3D()
+		private ImmutablyVector3D( Vector3D vector3d )
 		{
-			super( Vector3D.this );
+			super( vector3d );
 		}
 		
 		@Override
@@ -136,7 +136,7 @@ public class Vector3D extends Vector2D implements Cloneable, Serializable, Immut
 	@Override
 	public Vector3D immure()
 	{
-		return new ImmutablyVector3D();
+		return new ImmutablyVector3D(this);
 	}
 	
 	@Override

@@ -65,6 +65,9 @@ import net.gtaun.shoebill.event.vehicle.VehicleUpdateDamageEvent;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.util.event.EventManager;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -85,7 +88,12 @@ public class SampEventDispatcher implements ISampCallbackHandler
 		
 		lastProcessTimeMillis = System.currentTimeMillis();
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
 	
 	@Override
 	public int onGameModeInit()
@@ -138,8 +146,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			
 			if( player instanceof Player )
 			{
-				Player p = (Player) player;
-				p.processPlayerDisconnect();
+				Player pl = (Player) player;
+				pl.processPlayerDisconnect();
 			}
 			
 			return 1;
@@ -181,7 +189,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			IPlayer player = sampObjectPool.getPlayer( playerId );
 			IPlayer killer = null;
 			
-			if( killerId != Player.INVALID_ID )
+			if( killerId != IPlayer.INVALID_ID )
 			{
 				killer = sampObjectPool.getPlayer(killerId);
 				
@@ -917,8 +925,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			
 			if( player instanceof Player )
 			{
-				Player p = (Player) player;
-				p.processPlayerInteriorChange();
+				Player pl = (Player) player;
+				pl.processPlayerInteriorChange();
 				
 				PlayerInteriorChangeEvent event = new PlayerInteriorChangeEvent(player, oldInteriorId);
 				eventManager.dispatchEvent( event, player );
@@ -981,8 +989,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 
 			if( player instanceof Player )
 			{
-				Player p = (Player) player;
-				p.processPlayerUpdate();
+				Player pl = (Player) player;
+				pl.processPlayerUpdate();
 				
 				PlayerUpdateEvent event = new PlayerUpdateEvent(player);
 				eventManager.dispatchEvent( event, player );
@@ -1153,8 +1161,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 
 			if( player instanceof Player )
 			{
-				Player p = (Player) player;
-				p.processDialogResponse();
+				Player pl = (Player) player;
+				pl.processDialogResponse();
 			}
 
 			return event.getResult();

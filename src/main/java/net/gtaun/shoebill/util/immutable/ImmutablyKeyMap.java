@@ -28,7 +28,7 @@ import java.util.Set;
  * 
  */
 
-public class ImmutablyKeyMap<K, V> implements Map<K, V>, Serializable
+public class ImmutablyKeyMap<K extends Immutable, V> implements Map<K, V>, Serializable
 {
 	private static final long serialVersionUID = -8268080368867522132L;
 	
@@ -76,13 +76,7 @@ public class ImmutablyKeyMap<K, V> implements Map<K, V>, Serializable
 	@Override
 	public V put( K key, V value )
 	{
-		if( key instanceof Immutable && key instanceof Immutably == false )
-		{
-			Immutable immutable = (Immutable) key;
-			key = (K) immutable.immure();
-		}
-		
-		return map.put( key, value );
+		return map.put( (K) key.immure(), value );
 	}
 
 	@Override

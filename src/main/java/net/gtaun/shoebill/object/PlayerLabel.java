@@ -25,6 +25,8 @@ import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author MK124
@@ -82,13 +84,13 @@ public class PlayerLabel implements IPlayerLabel
 		this.location = new Location( loc );
 		this.testLOS = testLOS;
 		
-		int playerId = Player.INVALID_ID, vehicleId = Vehicle.INVALID_ID;
+		int playerId = IPlayer.INVALID_ID, vehicleId = IVehicle.INVALID_ID;
 		
 		if( attachedPlayer != null )	playerId = attachedPlayer.getId();
 		if( attachedVehicle != null )	vehicleId = attachedVehicle.getId();
 		
-		if( playerId == Player.INVALID_ID ) attachedPlayer = null;
-		if( vehicleId == Vehicle.INVALID_ID ) attachedVehicle = null;
+		if( playerId == IPlayer.INVALID_ID ) attachedPlayer = null;
+		if( vehicleId == IVehicle.INVALID_ID ) attachedVehicle = null;
 		
 		if( attachedPlayer != null || attachedVehicle != null )
 		{
@@ -103,7 +105,12 @@ public class PlayerLabel implements IPlayerLabel
 		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
 		pool.setPlayerLabel( player, id, this );
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
 
 	@Override public int getId()
 	{
@@ -191,7 +198,7 @@ public class PlayerLabel implements IPlayerLabel
 		int playerId = player.getId();
 		
 		SampNativeFunction.deletePlayer3DTextLabel( playerId, id );
-		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, target.getId(), Vehicle.INVALID_ID, testLOS );
+		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, target.getId(), IVehicle.INVALID_ID, testLOS );
 		
 		attachedPlayer = target;
 		attachedVehicle = null;
@@ -213,7 +220,7 @@ public class PlayerLabel implements IPlayerLabel
 		int playerId = player.getId();
 		
 		SampNativeFunction.deletePlayer3DTextLabel( playerId, id );
-		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, Player.INVALID_ID, vehicle.getId(), testLOS );
+		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, IPlayer.INVALID_ID, vehicle.getId(), testLOS );
 	
 		attachedPlayer = null;
 		attachedVehicle = vehicle;

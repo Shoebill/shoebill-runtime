@@ -19,6 +19,9 @@ package net.gtaun.shoebill.object;
 
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author JoJLlmAn, MK124
  *
@@ -34,7 +37,12 @@ public class VehicleParam implements IVehicleParam
 	{
 		this.vehicle = vehicle;
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
 	
 	@Override
 	public IVehicle getVehicle()

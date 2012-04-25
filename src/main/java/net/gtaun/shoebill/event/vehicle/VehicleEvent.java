@@ -31,7 +31,7 @@ public abstract class VehicleEvent extends Event
 	public IVehicle getVehicle()		{ return vehicle; }
 	
 	
-	public VehicleEvent( IVehicle vehicle )
+	protected VehicleEvent( IVehicle vehicle )
 	{
 		this.vehicle = vehicle;
 	}

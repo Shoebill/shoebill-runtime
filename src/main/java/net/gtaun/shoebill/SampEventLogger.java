@@ -19,10 +19,11 @@ package net.gtaun.shoebill;
 import net.gtaun.shoebill.object.IPickup;
 import net.gtaun.shoebill.object.IPlayer;
 import net.gtaun.shoebill.object.IVehicle;
-import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +44,12 @@ public class SampEventLogger implements ISampCallbackHandler
 	{
 		sampObjectPool = pool;
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
 
 	@Override
 	public int onGameModeInit()
@@ -85,7 +91,7 @@ public class SampEventLogger implements ISampCallbackHandler
 	{
 		IPlayer player = sampObjectPool.getPlayer( playerId );
 		
-		if( killerId == Player.INVALID_ID )
+		if( killerId == IPlayer.INVALID_ID )
 		{
 			LOGGER.info( "[death] " + player.getName() + " died (" + playerId + ":" + reason + ")" );
 			return 1;
@@ -284,9 +290,13 @@ public class SampEventLogger implements ISampCallbackHandler
 	public int onRconLoginAttempt( String ip, String password, int isSuccess )
 	{
 		if( isSuccess == 0 )
+		{
 			LOGGER.info( "[rcon] " + " bad rcon attempy by: " + ip + " (" + password + ")" );
+		}
 		else
+		{
 			LOGGER.info( "[rcon] " + ip + " has logged." );
+		}
 		
 		return 1;
 	}

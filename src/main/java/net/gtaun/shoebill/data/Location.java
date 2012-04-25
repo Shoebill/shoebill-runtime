@@ -37,13 +37,13 @@ public class Location extends Vector3D implements Cloneable, Serializable, Immut
 	private static final long serialVersionUID = 8895946392500802993L;
 
 	
-	private class ImmutableLocation extends Location implements Immutably
+	private static final class ImmutableLocation extends Location implements Immutably
 	{
 		private static final long serialVersionUID = Location.serialVersionUID;
 		
-		private ImmutableLocation()
+		private ImmutableLocation( Location location )
 		{
-			super( Location.this );
+			super( location );
 		}
 		
 		@Override
@@ -127,13 +127,6 @@ public class Location extends Vector3D implements Cloneable, Serializable, Immut
 		
 		this.worldId = worldId;
 	}
-
-	public void set( float x, float y, float z )
-	{
-		if( this instanceof Immutably ) throw new ImmutablyException();
-
-		super.set( x, y, z );
-	}
 	
 	public void set( float x, float y, float z, int worldId )
 	{
@@ -199,7 +192,7 @@ public class Location extends Vector3D implements Cloneable, Serializable, Immut
 	@Override
 	public Location immure()
 	{
-		return new ImmutableLocation();
+		return new ImmutableLocation(this);
 	}
 	
 	@Override

@@ -19,6 +19,9 @@ package net.gtaun.shoebill.resource;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -30,6 +33,12 @@ public class PluginDescription extends ResourceDescription
 	{
 		super( file, classLoader );
 		super.loadConfig( "plugin.yml" );
+	}
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	@Override

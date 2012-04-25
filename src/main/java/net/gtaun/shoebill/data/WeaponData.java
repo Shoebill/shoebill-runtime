@@ -18,15 +18,15 @@ package net.gtaun.shoebill.data;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import net.gtaun.shoebill.data.type.WeaponType;
 import net.gtaun.shoebill.util.immutable.Immutable;
 import net.gtaun.shoebill.util.immutable.Immutably;
 import net.gtaun.shoebill.util.immutable.ImmutablyException;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author MK124
@@ -38,13 +38,13 @@ public class WeaponData implements Cloneable, Serializable, Immutable
 	private static final long serialVersionUID = 8584508544432627380L;
 	
 
-	private class ImmutablyWeaponData extends WeaponData implements Immutably
+	private static final class ImmutablyWeaponData extends WeaponData implements Immutably
 	{
 		private static final long serialVersionUID = WeaponData.serialVersionUID;
 		
-		private ImmutablyWeaponData()
+		private ImmutablyWeaponData( WeaponData weaponData )
 		{
-			super( WeaponData.this );
+			super( weaponData );
 		}
 		
 		@Override
@@ -145,7 +145,7 @@ public class WeaponData implements Cloneable, Serializable, Immutable
 	@Override
 	public WeaponData immure()
 	{
-		return new ImmutablyWeaponData();
+		return new ImmutablyWeaponData(this);
 	}
 	
 	@Override

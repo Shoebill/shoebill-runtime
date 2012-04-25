@@ -34,7 +34,7 @@ public abstract class DialogEvent extends Event
 	public IPlayer getPlayer()			{ return player; }
 	
 	
-	public DialogEvent( IDialog dialog, IPlayer player )
+	protected DialogEvent( IDialog dialog, IPlayer player )
 	{
 		this.dialog = dialog;
 		this.player = player;

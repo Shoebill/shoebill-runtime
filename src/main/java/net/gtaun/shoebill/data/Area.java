@@ -37,13 +37,13 @@ public class Area implements Cloneable, Serializable, Immutable
 	private static final long serialVersionUID = 4319892622317856825L;
 	
 	
-	private class ImmutablyArea extends Area implements Immutably
+	private static final class ImmutablyArea extends Area implements Immutably
 	{
 		private static final long serialVersionUID = Area.serialVersionUID;
 
-		private ImmutablyArea()
+		private ImmutablyArea( Area area )
 		{
-			super( Area.this );
+			super( area );
 		}
 		
 		@Override
@@ -180,7 +180,7 @@ public class Area implements Cloneable, Serializable, Immutable
 	@Override
 	public Area immure()
 	{
-		return new ImmutablyArea();
+		return new ImmutablyArea(this);
 	}
 	
 	@Override

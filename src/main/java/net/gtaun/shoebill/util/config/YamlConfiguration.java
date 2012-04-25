@@ -27,6 +27,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -51,7 +53,7 @@ public class YamlConfiguration extends MemoryConfiguration implements FileConfig
 	
 	public YamlConfiguration( MemoryConfiguration config )
 	{
-		super( config.getRootMap() );
+		super( config.getRoot() );
 		initialize();
 	}
 	
@@ -68,6 +70,12 @@ public class YamlConfiguration extends MemoryConfiguration implements FileConfig
 	    options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 	    
 		yaml = new Yaml( new SafeConstructor(), new Representer(), options );
+	}
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	@Override
@@ -87,15 +95,15 @@ public class YamlConfiguration extends MemoryConfiguration implements FileConfig
 	public void read( InputStream in )
 	{
 		Object obj = yaml.load(in);
-		if( obj instanceof Map )	root = (Map<String, Object>) obj;
-		else						root = new HashMap<>();
+		if( obj instanceof Map )	setRoot( (Map<String, Object>) obj );
+		else						setRoot( new HashMap<String, Object>() );
 	}
 	
 	@Override
 	public void write( OutputStream out )
 	{
 		Writer writer = new OutputStreamWriter(out);
-		yaml.dump( root, writer );
+		yaml.dump( getRoot(), writer );
 	}
 
 	@Override
@@ -115,12 +123,13 @@ public class YamlConfiguration extends MemoryConfiguration implements FileConfig
 	@Override
 	public void load()
 	{
+		InputStream in;
 		try
 		{
-			InputStream in = new FileInputStream(file);
+			in = new FileInputStream(file);
 			read( in );
 		}
-		catch( Exception e )
+		catch( FileNotFoundException e )
 		{
 			e.printStackTrace();
 		}

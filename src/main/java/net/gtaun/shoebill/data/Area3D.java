@@ -37,13 +37,13 @@ public class Area3D extends Area implements Cloneable, Serializable, Immutable
 	private static final long serialVersionUID = 7421659231232420433L;
 	
 	
-	private class ImmutablyArea3D extends Area3D implements Immutably
+	private static final class ImmutablyArea3D extends Area3D implements Immutably
 	{
 		private static final long serialVersionUID = Area3D.serialVersionUID;
 
-		private ImmutablyArea3D()
+		private ImmutablyArea3D( Area3D area3d )
 		{
-			super( Area3D.this );
+			super( area3d );
 		}
 		
 		@Override
@@ -162,7 +162,7 @@ public class Area3D extends Area implements Cloneable, Serializable, Immutable
 	@Override
 	public Area3D immure()
 	{
-		return new ImmutablyArea3D();
+		return new ImmutablyArea3D(this);
 	}
 	
 	@Override

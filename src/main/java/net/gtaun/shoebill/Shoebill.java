@@ -44,6 +44,8 @@ import net.gtaun.shoebill.util.log.LogLevel;
 import net.gtaun.shoebill.util.log.LoggerOutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,8 +107,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		LOGGER.info( "Build date: " + version.getBuildDate() );
 		LOGGER.info( "System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")" );
 		
-		FileInputStream configFileIn;
-		configFileIn = new FileInputStream("./shoebill/config.yml");
+		InputStream configFileIn = new FileInputStream("./shoebill/config.yml");
 		configuration = new ShoebillConfiguration( configFileIn );
 		
 		File workdir = configuration.getWorkdir();
@@ -122,6 +123,12 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		}
 
 		gamemodeFile = new File(gamemodeDir, gamemodeFilename);
+	}
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	private void initializeLoggerConfig() throws IOException
@@ -150,6 +157,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	{
 		sampCallbackManager.registerCallbackHandler( new SampCallbackHandler()
 		{
+			@Override
 			public int onGameModeInit()
 			{
 				try
@@ -165,6 +173,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 				return 1;
 			}
 			
+			@Override
 			public int onGameModeExit()
 			{
 				unloadPluginsAndGamemode();
@@ -172,6 +181,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 				return 1;
 			}
 			
+			@Override
 			public int onRconCommand( String cmd )
 			{
 				String[] splits = cmd.split( " " );
@@ -256,7 +266,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		return URLClassLoader.newInstance(urls, getClass().getClassLoader());
 	}
 	
-	private void loadPluginsAndGamemode() throws IOException
+	private void loadPluginsAndGamemode()
 	{
 		pluginManager.loadAllPlugin();
 		gamemodeManager.constructGamemode( gamemodeFile );

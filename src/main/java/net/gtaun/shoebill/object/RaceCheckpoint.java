@@ -27,6 +27,9 @@ import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.type.RaceCheckpointType;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author JoJLlmAn, MK124
  *
@@ -66,6 +69,12 @@ public class RaceCheckpoint implements IRaceCheckpoint
 		this.next = next;
 	}
 
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
+	
 	@Override
 	public LocationRadius getLocation()
 	{

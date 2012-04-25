@@ -23,7 +23,7 @@ package net.gtaun.shoebill.resource;
 
 public abstract class Plugin extends Resource
 {
-	public Plugin()
+	protected Plugin()
 	{
 		
 	}

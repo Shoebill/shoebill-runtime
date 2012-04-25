@@ -23,7 +23,7 @@ package net.gtaun.shoebill.util.immutable;
 
 public class ImmutablyException extends RuntimeException
 {
-	private static final long serialVersionUID = 1346439584283119125L;
+	static final long serialVersionUID = 1346439584283119125L;
 
 
 	public ImmutablyException()

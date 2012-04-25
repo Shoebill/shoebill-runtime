@@ -35,15 +35,15 @@ public enum ShopName
 	AMMUNATION5		( "AMMUN5" );
 	
 	
-	private static final Map<String, ShopName> values = new HashMap<String, ShopName>();
+	private static final Map<String, ShopName> VALUES = new HashMap<String, ShopName>();
 	public static ShopName get( String data )
 	{
-		return values.get(data);
+		return VALUES.get(data);
 	}
 	
 	static
 	{
-		for( ShopName shopName : values() ) values.put( shopName.data, shopName );
+		for( ShopName shopName : values() ) VALUES.put( shopName.data, shopName );
 	}
 	
 	

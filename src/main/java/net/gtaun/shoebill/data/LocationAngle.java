@@ -37,13 +37,13 @@ public class LocationAngle extends Location implements Cloneable, Serializable, 
 	private static final long serialVersionUID = -6964956260244629027L;
 	
 	
-	private class ImmutablyLocationAngular extends LocationAngle implements Immutably
+	private static final class ImmutablyLocationAngular extends LocationAngle implements Immutably
 	{
 		private static final long serialVersionUID = LocationAngle.serialVersionUID;
 		
-		private ImmutablyLocationAngular()
+		private ImmutablyLocationAngular( LocationAngle locationAngle )
 		{
-			super( LocationAngle.this );
+			super( locationAngle );
 		}
 		
 		@Override
@@ -194,7 +194,7 @@ public class LocationAngle extends Location implements Cloneable, Serializable, 
 	@Override
 	public LocationAngle immure()
 	{
-		return new ImmutablyLocationAngular();
+		return new ImmutablyLocationAngular(this);
 	}
 	
 	@Override

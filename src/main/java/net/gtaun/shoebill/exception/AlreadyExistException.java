@@ -23,5 +23,5 @@ package net.gtaun.shoebill.exception;
 
 public class AlreadyExistException extends Exception
 {
-	private static final long serialVersionUID = 2773091503398336962L;
+	static final long serialVersionUID = 2773091503398336962L;
 }

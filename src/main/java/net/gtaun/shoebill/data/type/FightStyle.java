@@ -34,15 +34,15 @@ public enum FightStyle
 	ELBOW			(16);
 	
 	
-	private static final Map<Integer, FightStyle> values = new HashMap<Integer, FightStyle>();
+	private static final Map<Integer, FightStyle> VALUES = new HashMap<Integer, FightStyle>();
 	public static FightStyle get( int data )
 	{
-		return values.get(data);
+		return VALUES.get(data);
 	}
 	
 	static
 	{
-		for( FightStyle style : values() ) values.put( style.data, style );
+		for( FightStyle style : values() ) VALUES.put( style.data, style );
 	}
 	
 	

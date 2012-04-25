@@ -80,16 +80,16 @@ public enum WeaponType
     DISCONNECT				( 201,	-1,		0,		"Disconnect" );
     
     
-	private static final Map<Integer, WeaponType> values = new HashMap<Integer, WeaponType>();
+	private static final Map<Integer, WeaponType> VALUES = new HashMap<Integer, WeaponType>();
 	
 	public static WeaponType get( int id )
 	{
-		return values.get(id);
+		return VALUES.get(id);
 	}
 	
 	static
 	{
-		for( WeaponType type : values() ) values.put( type.id, type );
+		for( WeaponType type : values() ) VALUES.put( type.id, type );
 	}
 	
 	

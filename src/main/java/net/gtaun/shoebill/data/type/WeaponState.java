@@ -33,15 +33,15 @@ public enum WeaponState
 	RELOADING			(3);
 	
 	
-	private static Map<Integer, WeaponState> values = new HashMap<Integer, WeaponState>();
+	private static final Map<Integer, WeaponState> VALUES = new HashMap<Integer, WeaponState>();
 	public static WeaponState get( int data )
 	{
-		return values.get(data);
+		return VALUES.get(data);
 	}
 	
 	static
 	{
-		for( WeaponState state : values() ) values.put( state.data, state );
+		for( WeaponState state : values() ) VALUES.put( state.data, state );
 	}
 	
 	

@@ -46,6 +46,9 @@ import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124, JoJLlmAn
  *
@@ -165,6 +168,12 @@ public class Player implements IPlayer
 		pool.setPlayer( id, this );
 	}
 
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
+	
 	@Override
 	public boolean isOnline()
 	{
@@ -775,9 +784,13 @@ public class Player implements IPlayer
 		if( isOnline() == false ) return;
 		
 		if( killer == null )
+		{
 			SampNativeFunction.sendDeathMessage( INVALID_ID, id, reason );
+		}
 		else
+		{
 			SampNativeFunction.sendDeathMessage( killer.getId(), id, reason );
+		}
 	}
 
 	@Override
@@ -1312,7 +1325,7 @@ public class Player implements IPlayer
 		if( isOnline() == false ) return null;
 		
 		int objectid = SampNativeFunction.getPlayerSurfingObjectID(id);
-		if( objectid == ObjectBase.INVALID_ID ) return null;
+		if( objectid == IObject.INVALID_ID ) return null;
 		
 		return Shoebill.getInstance().getManagedObjectPool().getObject( objectid );
 	}

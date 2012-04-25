@@ -31,7 +31,7 @@ public abstract class GamemodeEvent extends Event
 	public Gamemode getGamemode()		{ return gamemode; }
 	
 	
-	public GamemodeEvent( Gamemode gamemode )
+	protected GamemodeEvent( Gamemode gamemode )
 	{
 		this.gamemode = gamemode;
 	}

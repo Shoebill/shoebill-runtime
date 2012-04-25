@@ -16,6 +16,9 @@
 
 package net.gtaun.shoebill.util.event;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -23,7 +26,7 @@ package net.gtaun.shoebill.util.event;
 
 public interface IEventManager
 {
-	public class Entry
+	public static class Entry
 	{
 		private Class<? extends Event> type;
 		private Object relatedObject;
@@ -43,7 +46,12 @@ public interface IEventManager
 			this.listener = listener;
 			this.priority = priority;
 		}
-		
+
+		@Override
+		public String toString()
+		{
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		}
 		
 		public Class<?> getRelatedClass()
 		{

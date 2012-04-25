@@ -20,6 +20,9 @@ import java.io.InputStream;
 
 import net.gtaun.shoebill.util.config.YamlConfiguration;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author MK124
  *
@@ -45,6 +48,12 @@ public class ShoebillVersion
 		buildDate = config.getString( "buildDate", "Unknown" );
 		
 		if( version.charAt(version.length()-1) == '.' ) version = version.substring(0, version.length()-1);
+	}
+
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	public String getName()

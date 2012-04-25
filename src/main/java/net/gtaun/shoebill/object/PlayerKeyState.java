@@ -44,26 +44,31 @@ public class PlayerKeyState implements IPlayerKeyState
 		SampNativeFunction.getPlayerKeys( player.getId(), this );
 	}
 
+	@Override
 	public IPlayer getPlayer()
 	{
 		return player;
 	}
 
+	@Override
 	public int getKeys()
 	{
 		return keys;
 	}
 
+	@Override
 	public int getUpdown()
 	{
 		return updown;
 	}
 
+	@Override
 	public int getLeftright()
 	{
 		return leftright;
 	}
 
+	@Override
 	public boolean isKeyPressed( Key key )
 	{
 		return (keys&key.getValue()) != 0;

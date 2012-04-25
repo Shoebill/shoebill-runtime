@@ -23,7 +23,7 @@ package net.gtaun.shoebill.exception;
 
 public class IllegalLengthException extends Exception
 {
-	private static final long serialVersionUID = 2721213796502407892L;
+	static final long serialVersionUID = 2721213796502407892L;
 	
 	
 	public IllegalLengthException()

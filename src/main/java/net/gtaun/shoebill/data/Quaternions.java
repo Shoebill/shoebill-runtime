@@ -37,13 +37,13 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable, Im
 	private static final long serialVersionUID = 455013800771095435L;
 	
 	
-	private class ImmutablyQuaternions extends Quaternions implements Immutably
+	private static final class ImmutablyQuaternions extends Quaternions implements Immutably
 	{
 		private static final long serialVersionUID = Quaternions.serialVersionUID;
 		
-		private ImmutablyQuaternions()
+		private ImmutablyQuaternions( Quaternions quaternions )
 		{
-			super( Quaternions.this );
+			super( quaternions );
 		}
 		
 		@Override
@@ -196,7 +196,7 @@ public class Quaternions extends Vector3D implements Cloneable, Serializable, Im
 	@Override
 	public Quaternions immure()
 	{
-		return new ImmutablyQuaternions();
+		return new ImmutablyQuaternions(this);
 	}
 	
 	@Override

@@ -34,7 +34,7 @@ public abstract class MenuEvent extends Event
 	public IPlayer getPlayer()		{ return player; }
 	
 	
-	public MenuEvent( IMenu menu, IPlayer player )
+	protected MenuEvent( IMenu menu, IPlayer player )
 	{
 		this.menu = menu;
 		this.player = player;
