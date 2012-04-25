@@ -80,7 +80,7 @@ public class PlayerAttach implements IPlayerAttach
 			if( player.isOnline() == false ) return false;
 			
 			if( bone == PlayerAttachBone.NOT_USABLE ) return false;
-			if( ! SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getData(), offset.getX(), offset.getY(), offset.getZ(), rot.getX(), rot.getY(), rot.getZ(), scale.getX(), scale.getY(), scale.getZ()) ) 
+			if( ! SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getData(), offset.getX(), offset.getY(), offset.getZ(), rot.getX(), rot.getY(), rot.getZ(), scale.getX(), scale.getY(), scale.getZ()) )
 			{
 				return false;
 			}

@@ -31,16 +31,16 @@ public interface IPlayerKeyState
 		SPRINT					(8),
 		SECONDARY_ATTACK		(16),
 		JUMP					(32),
-	    LOOK_RIGHT				(64),
-	    HANDBRAKE				(128),
-	    LOOK_LEFT				(256),
+		LOOK_RIGHT				(64),
+		HANDBRAKE				(128),
+		LOOK_LEFT				(256),
 		SUBMISSION				(512),
-	    LOOK_BEHIND				(512),
-	    WALK					(1024),
-	    ANALOG_UP				(2048),
-	    ANALOG_DOWN				(4096),
-	    ANALOG_LEFT				(8192),
-	    ANALOG_RIGHT			(16384);
+		LOOK_BEHIND				(512),
+		WALK					(1024),
+		ANALOG_UP				(2048),
+		ANALOG_DOWN				(4096),
+		ANALOG_LEFT				(8192),
+		ANALOG_RIGHT			(16384);
 		
 		
 		private final int value;
@@ -60,10 +60,10 @@ public interface IPlayerKeyState
 	public static final int KEY_UP				= -128;
 	public static final int KEY_DOWN			= 128;
 	public static final int KEY_LEFT			= -128;
-    public static final int KEY_RIGHT			= 128;
-    
-    
-    IPlayer getPlayer();
+	public static final int KEY_RIGHT			= 128;
+	
+	
+	IPlayer getPlayer();
 	int getKeys();
 	int getUpdown();
 	int getLeftright();

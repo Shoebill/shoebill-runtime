@@ -65,10 +65,10 @@ public class YamlConfiguration extends MemoryConfiguration implements FileConfig
 	
 	private void initialize()
 	{
-	    DumperOptions options = new DumperOptions();
-	    options.setIndent(4);
-	    options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-	    
+		DumperOptions options = new DumperOptions();
+		options.setIndent(4);
+		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		
 		yaml = new Yaml( new SafeConstructor(), new Representer(), options );
 	}
 

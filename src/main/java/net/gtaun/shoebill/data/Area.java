@@ -149,7 +149,7 @@ public class Area implements Cloneable, Serializable, Immutable
 
 	public float area()
 	{
-		return (maxX-minX) * (maxY-minY);
+		return (maxX - minX) * (maxY - minY);
 	}
 	
 	@Override

@@ -64,24 +64,24 @@ public interface IEventManager
 	{
 		BOTTOM		( (short) -32768 ),
 		LOWEST		( (short) -16384 ),
-	    LOW			( (short) -8192 ),
-	    NORMAL		( (short) 0 ),
-	    HIGH		( (short) 8192 ),
-	    HIGHEST		( (short) 16384 ),
-	    MONITOR		( (short) 32767 );
+		LOW			( (short) -8192 ),
+		NORMAL		( (short) 0 ),
+		HIGH		( (short) 8192 ),
+		HIGHEST		( (short) 16384 ),
+		MONITOR		( (short) 32767 );
 	
-	    private final short value;
+		private final short value;
 	
-	    
-	    private Priority( short value )
-	    {
-	        this.value = value;
-	    }
+		
+		private Priority( short value )
+		{
+			this.value = value;
+		}
 	
-	    public short getValue()
-	    {
-	        return value;
-	    }
+		public short getValue()
+		{
+			return value;
+		}
 	}
 	
 	

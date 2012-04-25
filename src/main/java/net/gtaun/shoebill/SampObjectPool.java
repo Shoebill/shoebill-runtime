@@ -70,7 +70,7 @@ public class SampObjectPool implements ISampObjectPool
 	{
 		Collection<T> list = new ArrayList<>();
 		if( items != null ) for( Object item : items ) if( cls.isInstance(item) ) list.add( cls.cast(item) );
-		return list;		
+		return list;
 	}
 	
 	

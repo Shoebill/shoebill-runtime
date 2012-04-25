@@ -247,7 +247,7 @@ public class PlayerObject implements IPlayerObject
 		if( isDestroyed() ) return 0;
 		if( player.isOnline() == false ) return 0;
 		
-		if( attachedPlayer == null ) this.speed = speed;	
+		if( attachedPlayer == null ) this.speed = speed;
 		return SampNativeFunction.movePlayerObject( player.getId(), id, x, y, z, speed, -1000.0f, -1000.0f, -1000.0f );
 	}
 	
@@ -257,7 +257,7 @@ public class PlayerObject implements IPlayerObject
 		if( isDestroyed() ) return 0;
 		if( player.isOnline() == false ) return 0;
 		
-		if( attachedPlayer == null ) this.speed = speed;	
+		if( attachedPlayer == null ) this.speed = speed;
 		return SampNativeFunction.movePlayerObject( player.getId(), id, x, y, z, speed, rotX, rotY, rotZ );
 	}
 	

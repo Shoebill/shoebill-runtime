@@ -108,7 +108,7 @@ public class Velocity extends Vector3D implements Cloneable, Serializable, Immut
 	
 	@Override
 	public Velocity immure()
-	{	
+	{
 		return new ImmutablyVelocity(this);
 	}
 	

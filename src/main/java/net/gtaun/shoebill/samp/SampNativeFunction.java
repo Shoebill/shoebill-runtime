@@ -177,7 +177,7 @@ public final class SampNativeFunction
 	public static native void applyAnimation( int playerid, String animlib, String animname, float delta, int loop, int lockX, int lockY, int freeze, int time, int forcesync );
 	public static native void clearAnimations( int playerid, int forcesync  );
 	public static native int getPlayerAnimationIndex( int playerid ); // return the index of any running applied animations ( 0 if none are running )
-//	public static native int getAnimationName( int index, String animlib, int len1, String animname, int len2 ); // get the animation lib/name for the 
+//	public static native int getAnimationName( int index, String animlib, int len1, String animname, int len2 ); // get the animation lib/name for the
 	public static native int getPlayerSpecialAction( int playerid );
 	public static native void setPlayerSpecialAction( int playerid, int actionid );
 

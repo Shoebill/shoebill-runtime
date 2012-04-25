@@ -685,7 +685,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 				eventManager.dispatchEvent( event, vehicle );
 			}
 			
-			return 1;	
+			return 1;
 		}
 		catch( Exception e )
 		{
@@ -822,7 +822,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	public int onUnoccupiedVehicleUpdate( int vehicleId, int playerId, int passengerSeat )
 	{
 		
-		try 
+		try
 		{
 			IVehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 			IPlayer player = sampObjectPool.getPlayer( playerId );
@@ -844,7 +844,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e) 
+		catch (Exception e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -1277,7 +1277,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 
 	@Override
 	public void onProcessTick()
-	{	
+	{
 		try
 		{
 			long nowTick = System.currentTimeMillis();

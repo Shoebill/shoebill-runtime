@@ -30,7 +30,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 
 public class VehicleComponent implements IVehicleComponent
-{	
+{
 	private IVehicle vehicle;
 	private int[] components = new int[ VehicleComponentSlot.values().length ];
 	
@@ -101,7 +101,7 @@ public class VehicleComponent implements IVehicleComponent
 	}
 	
 		
-	void update()
+	final void update()
 	{
 		for( int i=0; i<components.length; i++ )
 		{

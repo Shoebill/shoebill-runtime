@@ -26,35 +26,35 @@ import org.slf4j.Logger;
 public enum LogLevel
 {
 	TRACE,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR;
+	DEBUG,
+	INFO,
+	WARN,
+	ERROR;
 	
 	
 	public void log( Logger logger, String message )
 	{
-	    switch( this )
-	    {
-	        case TRACE:
-	            logger.trace( message );
-	            break;
-	            
-	        case DEBUG:
-	            logger.debug( message );
-	            break;
-	            
-	        case INFO:
-	            logger.info( message );
-	            break;
-	            
-	        case WARN:
-	            logger.warn( message );
-	            break;
-	            
-	        case ERROR:
-	            logger.error( message );
-	            break;
-	    }
+		switch( this )
+		{
+			case TRACE:
+				logger.trace( message );
+				break;
+				
+			case DEBUG:
+				logger.debug( message );
+				break;
+				
+			case INFO:
+				logger.info( message );
+				break;
+				
+			case WARN:
+				logger.warn( message );
+				break;
+				
+			case ERROR:
+				logger.error( message );
+				break;
+		}
 	}
 }

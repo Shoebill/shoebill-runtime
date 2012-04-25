@@ -39,7 +39,7 @@ public class Color implements Cloneable, Serializable, Immutable
 	public static final Color AQUA =					new Color( 0x00FFFFFF ).immure();
 	public static final Color AQUAMARINE =				new Color( 0x7FFFD4FF ).immure();
 	public static final Color AZURE =					new Color( 0xF0FFFFFF ).immure();
-	                                                    
+	
 	public static final Color BEIGE =					new Color( 0xF5F5DCFF ).immure();
 	public static final Color BISQUE =					new Color( 0xFFE4C4FF ).immure();
 	public static final Color BLACK =					new Color( 0x000000FF ).immure();
@@ -48,7 +48,7 @@ public class Color implements Cloneable, Serializable, Immutable
 	public static final Color BLUEVIOLET =				new Color( 0x8A2BE2FF ).immure();
 	public static final Color BROWN =					new Color( 0xA52A2AFF ).immure();
 	public static final Color BURLYWOOD =				new Color( 0xDEB887FF ).immure();
-	                                                    
+	
 	public static final Color CADETBLUE =				new Color( 0x5F9EA0FF ).immure();
 	public static final Color CHARTREUSE =				new Color( 0x7FFF00FF ).immure();
 	public static final Color CHOCOLATE =				new Color( 0xD2691EFF ).immure();
@@ -57,7 +57,7 @@ public class Color implements Cloneable, Serializable, Immutable
 	public static final Color CORNSILK =				new Color( 0xFFF8DCFF ).immure();
 	public static final Color CRIMSON =					new Color( 0xDC143CFF ).immure();
 	public static final Color CYAN =					new Color( 0x00FFFFFF ).immure();
-	                                                    
+	
 	public static final Color DARKBLUE =				new Color( 0x00008BFF ).immure();
 	public static final Color DARLCYAN =				new Color( 0x008B8BFF ).immure();
 	public static final Color DARKGOLDENROD =			new Color( 0xB8860BFF ).immure();
@@ -79,12 +79,12 @@ public class Color implements Cloneable, Serializable, Immutable
 	public static final Color DEEPSKYBLUE =				new Color( 0x00BFFFFF ).immure();
 	public static final Color DIMGRAY =					new Color( 0x696969FF ).immure();
 	public static final Color DODGERBLUE =				new Color( 0x1E90FFFF ).immure();
-	                                                    
+	
 	public static final Color FIREBRICK =				new Color( 0xB22222FF ).immure();
 	public static final Color FLORALWHITE =				new Color( 0xFFFAF0FF ).immure();
 	public static final Color FORESTGREEN =				new Color( 0x228B22FF ).immure();
 	public static final Color FUCHSIA =					new Color( 0xFF00FFFF ).immure();
-	                                                    
+	
 	public static final Color GAINSBORO =				new Color( 0xDCDCDCFF ).immure();
 	public static final Color GHOSTWHITE =				new Color( 0xF8F8FFFF ).immure();
 	public static final Color GOLD =					new Color( 0xFFD700FF ).immure();

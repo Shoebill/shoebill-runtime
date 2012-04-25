@@ -26,7 +26,7 @@ import org.slf4j.Logger;
  *
  */
 
-public class LoggerOutputStream extends ByteArrayOutputStream 
+public class LoggerOutputStream extends ByteArrayOutputStream
 {
 	private static final String SEPARATOR = System.getProperty("line.separator");
 	

@@ -173,7 +173,7 @@ public class EventManager implements IEventManager
 		
 		for( Entry e : entries )
 		{
-			if( e != entry ) continue;	
+			if( e != entry ) continue;
 			entries.remove( entry );
 			
 			EventListenerRemovedEvent event = new EventListenerRemovedEvent(entry);
@@ -314,7 +314,7 @@ public class EventManager implements IEventManager
 			
 			try
 			{
-				listener.handleEvent( event );	
+				listener.handleEvent( event );
 			}
 			catch( Exception e )
 			{

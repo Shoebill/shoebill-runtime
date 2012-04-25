@@ -28,10 +28,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class PlayerKeyState implements IPlayerKeyState
 {
-    private IPlayer player;
-    private int keys, updown, leftright;
-    
-    
+	private IPlayer player;
+	private int keys, updown, leftright;
+	
+	
 	public PlayerKeyState( IPlayer player )
 	{
 		this.player = player;
@@ -97,7 +97,7 @@ public class PlayerKeyState implements IPlayerKeyState
 		builder.append( "analogDown",	isKeyPressed(Key.ANALOG_DOWN)		? 1 : 0 );
 		builder.append( "analogLeft",	isKeyPressed(Key.ANALOG_LEFT)		? 1 : 0 );
 		builder.append( "analogRight",	isKeyPressed(Key.ANALOG_RIGHT)		? 1 : 0 );
-	    
+		
 		return builder.build();
 	}
 }

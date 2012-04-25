@@ -147,7 +147,7 @@ public class Player implements IPlayer
 	
 	
 	public Player( int id )
-	{	
+	{
 		this.id = id;
 		
 		playerAttach = new PlayerAttach(this);

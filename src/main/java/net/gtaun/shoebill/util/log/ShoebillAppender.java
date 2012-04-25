@@ -34,7 +34,7 @@ import org.apache.log4j.spi.LoggingEvent;
  * 
  */
 
-public class ShoebillAppender extends FileAppender
+public final class ShoebillAppender extends FileAppender
 {
 	private static final DateFormat DATEFORMAT_FILE = new SimpleDateFormat( "yyyy-MM-dd'.log'" );
 	private static final DateFormat DATEFORMAT_DIR = new SimpleDateFormat( "yyyy-MM" );
@@ -108,7 +108,7 @@ public class ShoebillAppender extends FileAppender
 		calendar.set( Calendar.MINUTE, 0 );
 		calendar.set( Calendar.SECOND, 0 );
 		calendar.set( Calendar.MILLISECOND, 0 );
-		calendar.add( Calendar.DATE, 1 );		
+		calendar.add( Calendar.DATE, 1 );
 		rollOverDate = calendar.getTimeInMillis();
 	}
 

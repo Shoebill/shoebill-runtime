@@ -138,7 +138,7 @@ public class Area3D extends Area implements Cloneable, Serializable, Immutable
 
 	public float volume()
 	{
-		return (getMaxX()-getMinX()) * (getMaxY()-getMaxY()) * (getMaxZ()-getMinZ());
+		return (getMaxX() - getMinX()) * (getMaxY() - getMaxY()) * (getMaxZ() - getMinZ());
 	}
 	
 	@Override

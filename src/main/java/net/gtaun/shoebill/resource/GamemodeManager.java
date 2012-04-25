@@ -136,7 +136,7 @@ public class GamemodeManager implements IGamemodeManager
 	{
 		if( file.canRead() == false ) return;
 		
-		GamemodeDescription desc = descriptions.get( file );		
+		GamemodeDescription desc = descriptions.get( file );
 		if( desc == null ) try
 		{
 			desc = new GamemodeDescription(file, classLoader);

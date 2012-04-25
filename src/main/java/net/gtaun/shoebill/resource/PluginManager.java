@@ -120,7 +120,7 @@ public class PluginManager implements IPluginManager
 	{
 		if( file.canRead() == false ) return null;
 		
-		PluginDescription desc = descriptions.get( file );		
+		PluginDescription desc = descriptions.get( file );
 		if( desc == null ) try
 		{
 			desc = new PluginDescription(file, classLoader);
