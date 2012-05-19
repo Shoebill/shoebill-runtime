@@ -28,7 +28,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class ShoebillVersion
+public class ShoebillVersion implements IShoebillVersion
 {
 	private String name;
 	private String version;
@@ -56,26 +56,31 @@ public class ShoebillVersion
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
+	@Override
 	public String getName()
 	{
 		return name;
 	}
 	
+	@Override
 	public String getVersion()
 	{
 		return version;
 	}
 	
+	@Override
 	public String getSupport()
 	{
 		return support;
 	}
 	
+	@Override
 	public int getBuildNumber()
 	{
 		return buildNumber;
 	}
 	
+	@Override
 	public String getBuildDate()
 	{
 		return buildDate;

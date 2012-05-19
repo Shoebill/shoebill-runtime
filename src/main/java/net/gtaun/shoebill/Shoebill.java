@@ -88,7 +88,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 	@Override public IGamemodeManager getGamemodeManager()			{ return gamemodeManager; }
 	@Override public IPluginManager getPluginManager()				{ return pluginManager; }
 	@Override public ISampCallbackManager getCallbackManager()		{ return sampCallbackManager; }
-	@Override public ShoebillVersion getVersion()					{ return version; }
+	@Override public IShoebillVersion getVersion()					{ return version; }
 	
 	
 	Shoebill() throws IOException
