@@ -18,7 +18,6 @@ package net.gtaun.shoebill;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -40,7 +39,7 @@ import net.gtaun.shoebill.object.ITimer;
 import net.gtaun.shoebill.object.IVehicle;
 import net.gtaun.shoebill.object.IWorld;
 import net.gtaun.shoebill.object.IZone;
-import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.impl.PlayerImpl;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.util.event.EventManager;
@@ -93,8 +92,6 @@ public class SampObjectPool implements ISampObjectPool
 	private Collection<Reference<ITimer>> timers				= new ConcurrentLinkedQueue<>();
 	private Map<Integer, Reference<IDialog>> dialogs			= new ConcurrentHashMap<>();
 	
-	private Class<? extends IPlayer> playerClass = Player.class;
-	
 	
 	SampObjectPool( final EventManager eventManager )
 	{
@@ -108,9 +105,7 @@ public class SampObjectPool implements ISampObjectPool
 					playerObjectsArrays[playerid] = new IPlayerObject[MAX_OBJECTS];
 					playerLabelsArrays[playerid] = new IPlayerLabel[MAX_PLAYER_LABELS];
 					
-					Constructor<? extends IPlayer> constructor = playerClass.getConstructor( int.class );
-					IPlayer player = constructor.newInstance( playerid );
-					
+					IPlayer player = new PlayerImpl(playerid);
 					setPlayer( playerid, player );
 				}
 				catch( Exception e )
@@ -511,10 +506,5 @@ public class SampObjectPool implements ISampObjectPool
 		for( IPlayerLabel playerLabel : getPlayerLabels(player) ) playerLabel.destroy();
 		for( IPlayerObject playerObject : getPlayerObjects(player) ) playerObject.destroy();
 		setPlayer( player.getId(), null );
-	}
-	
-	public <T extends IPlayer> void setPlayerClass( Class<T> cls )
-	{
-		playerClass = cls;
 	}
 }

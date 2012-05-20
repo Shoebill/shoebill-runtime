@@ -28,9 +28,8 @@ import java.util.Collection;
 import java.util.Properties;
 
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
-import net.gtaun.shoebill.object.SampEventDispatcher;
-import net.gtaun.shoebill.object.Server;
-import net.gtaun.shoebill.object.World;
+import net.gtaun.shoebill.object.impl.ServerImpl;
+import net.gtaun.shoebill.object.impl.WorldImpl;
 import net.gtaun.shoebill.resource.GamemodeManager;
 import net.gtaun.shoebill.resource.PluginManager;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
@@ -220,8 +219,8 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		pluginManager = new PluginManager(this, classLoader, pluginDir, dataDir);
 
 		managedObjectPool = new SampObjectPool( eventManager );
-		managedObjectPool.setServer( new Server() );
-		managedObjectPool.setWorld( new World() );
+		managedObjectPool.setServer( new ServerImpl() );
+		managedObjectPool.setWorld( new WorldImpl() );
 
 		sampEventLogger = new SampEventLogger( managedObjectPool );
 		sampEventDispatcher = new SampEventDispatcher( managedObjectPool, eventManager );

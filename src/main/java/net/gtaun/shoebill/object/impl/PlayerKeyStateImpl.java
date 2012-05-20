@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.object;
+package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.object.IPlayer;
+import net.gtaun.shoebill.object.IPlayerKeyState;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -26,13 +28,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class PlayerKeyState implements IPlayerKeyState
+public class PlayerKeyStateImpl implements IPlayerKeyState
 {
 	private IPlayer player;
 	private int keys, updown, leftright;
 	
 	
-	public PlayerKeyState( IPlayer player )
+	public PlayerKeyStateImpl( IPlayer player )
 	{
 		this.player = player;
 	}

@@ -21,9 +21,9 @@ import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.data.WeaponData;
-import net.gtaun.shoebill.object.PlayerKeyState;
-import net.gtaun.shoebill.object.VehicleDamage;
-import net.gtaun.shoebill.object.VehicleParam;
+import net.gtaun.shoebill.object.impl.PlayerKeyStateImpl;
+import net.gtaun.shoebill.object.impl.VehicleDamageImpl;
+import net.gtaun.shoebill.object.impl.VehicleParamImpl;
 
 /**
  * @author MK124
@@ -124,7 +124,7 @@ public final class SampNativeFunction
 	public static native String getPlayerIp( int playerid );
 	public static native int getPlayerPing( int playerid );
 	public static native int getPlayerWeapon( int playerid );
-	public static native void getPlayerKeys( int playerid, PlayerKeyState keystate );
+	public static native void getPlayerKeys( int playerid, PlayerKeyStateImpl keystate );
 	public static native String getPlayerName( int playerid );
 	public static native void setPlayerTime( int playerid, int hour, int minute );
 	public static native void getPlayerTime( int playerid, Time time );
@@ -362,7 +362,7 @@ public final class SampNativeFunction
 	public static native void setVehicleParamsForPlayer( int vehicleid, int playerid, boolean objective, boolean doorslocked );
 	public static native void manualVehicleEngineAndLights();
 	public static native void setVehicleParamsEx( int vehicleid, int engine, int lights, int alarm, int doors, int bonnet, int boot, int objective );
-	public static native void getVehicleParamsEx( int vehicleid, VehicleParam state );
+	public static native void getVehicleParamsEx( int vehicleid, VehicleParamImpl state );
 	public static native void setVehicleToRespawn( int vehicleid );
 	public static native void linkVehicleToInterior( int vehicleid, int interiorid );
 	public static native void addVehicleComponent( int vehicleid, int componentid );
@@ -383,7 +383,7 @@ public final class SampNativeFunction
 	public static native void getVehicleVelocity( int vehicleid, Velocity velocity );
 	public static native void setVehicleVelocity( int vehicleid, float x, float y, float z );
 	public static native void setVehicleAngularVelocity( int vehicleid, float x, float y, float z );
-	public static native void getVehicleDamageStatus( int vehicleid, VehicleDamage damage );
+	public static native void getVehicleDamageStatus( int vehicleid, VehicleDamageImpl damage );
 	public static native void updateVehicleDamageStatus( int vehicleid, int panels, int doors, int lights, int tires );
 
 	// Virtual Worlds
