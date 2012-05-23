@@ -103,6 +103,7 @@ public class SampObjectPool implements ISampObjectPool
 				try
 				{
 					playerObjectsArrays[playerid] = new PlayerObject[MAX_OBJECTS];
+					playerObjectsArrays[playerid] = new PlayerObject[MAX_OBJECTS];
 					playerLabelsArrays[playerid] = new PlayerLabel[MAX_PLAYER_LABELS];
 					
 					Player player = new PlayerImpl(playerid);
