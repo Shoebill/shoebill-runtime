@@ -21,8 +21,8 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.IMenu;
-import net.gtaun.shoebill.object.IPlayer;
+import net.gtaun.shoebill.object.Menu;
+import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +34,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class MenuImpl implements IMenu
+public class MenuImpl implements Menu
 {
 	private int id = INVALID_ID;
 	private String title, columnHeader = "";
@@ -173,7 +173,7 @@ public class MenuImpl implements IMenu
 	}
 	
 	@Override
-	public void show( IPlayer player )
+	public void show( Player player )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -182,7 +182,7 @@ public class MenuImpl implements IMenu
 	}
 	
 	@Override
-	public void hide( IPlayer player )
+	public void hide( Player player )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;

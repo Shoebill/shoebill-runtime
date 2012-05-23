@@ -44,15 +44,15 @@ import net.gtaun.shoebill.data.type.WeaponType;
 import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
-import net.gtaun.shoebill.object.ICheckpoint;
-import net.gtaun.shoebill.object.IDialog;
-import net.gtaun.shoebill.object.IMenu;
+import net.gtaun.shoebill.object.Checkpoint;
+import net.gtaun.shoebill.object.Dialog;
+import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.IObject;
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.object.IPlayerAttach;
-import net.gtaun.shoebill.object.IPlayerWeaponSkill;
-import net.gtaun.shoebill.object.IRaceCheckpoint;
-import net.gtaun.shoebill.object.IVehicle;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.PlayerAttach;
+import net.gtaun.shoebill.object.PlayerWeaponSkill;
+import net.gtaun.shoebill.object.RaceCheckpoint;
+import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -63,11 +63,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class PlayerImpl implements IPlayer
+public class PlayerImpl implements Player
 {
 	public static void enableStuntBonusForAll( boolean enabled )
 	{
-		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			player.enableStuntBonus( enabled );
 		}
@@ -75,7 +75,7 @@ public class PlayerImpl implements IPlayer
 
 	public static void sendMessageToAll( Color color, String message )
 	{
-		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			player.sendMessage( color, message );
 		}
@@ -83,7 +83,7 @@ public class PlayerImpl implements IPlayer
 	
 	public static void sendMessageToAll( Color color, String format, Object... args )
 	{
-		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			String message = String.format(format, args);
 			player.sendMessage( color, message );
@@ -105,15 +105,15 @@ public class PlayerImpl implements IPlayer
 	private int id = INVALID_ID;
 	
 	private final PlayerKeyStateImpl keyState;
-	private final IPlayerAttach playerAttach;
+	private final PlayerAttach playerAttach;
 	
 	private boolean isControllable = true;
 	private boolean isStuntBonusEnabled = false;
 	private boolean isSpectating = false;
 	private boolean isRecording = false;
 	
-	private IPlayer spectatingPlayer;
-	private IVehicle spectatingVehicle;
+	private Player spectatingPlayer;
+	private Vehicle spectatingVehicle;
 
 	private int updateFrameCount = -1;
 	private int weatherId;
@@ -121,11 +121,11 @@ public class PlayerImpl implements IPlayer
 	private LocationAngle location = new LocationAngle();
 	private Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
 	private Velocity velocity = new Velocity();
-	private IPlayerWeaponSkill skill;
+	private PlayerWeaponSkill skill;
 	
-	private ICheckpoint checkpoint;
-	private IRaceCheckpoint raceCheckpoint;
-	private IDialog dialog;
+	private Checkpoint checkpoint;
+	private RaceCheckpoint raceCheckpoint;
+	private Dialog dialog;
 	
 	
 	public PlayerImpl( int id )
@@ -194,7 +194,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public IPlayerAttach getPlayerAttach()
+	public PlayerAttach getPlayerAttach()
 	{
 		return playerAttach;
 	}
@@ -218,13 +218,13 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public IPlayer getSpectatingPlayer()
+	public Player getSpectatingPlayer()
 	{
 		return spectatingPlayer;
 	}
 	
 	@Override
-	public IVehicle getSpectatingVehicle()
+	public Vehicle getSpectatingVehicle()
 	{
 		return spectatingVehicle;
 	}
@@ -248,25 +248,25 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public IPlayerWeaponSkill getWeaponSkill()
+	public PlayerWeaponSkill getWeaponSkill()
 	{
 		return skill;
 	}
 	
 	@Override
-	public ICheckpoint getCheckpoint()
+	public Checkpoint getCheckpoint()
 	{
 		return checkpoint;
 	}
 	
 	@Override
-	public IRaceCheckpoint getRaceCheckpoint()
+	public RaceCheckpoint getRaceCheckpoint()
 	{
 		return raceCheckpoint;
 	}
 	
 	@Override
-	public IDialog getDialog()
+	public Dialog getDialog()
 	{
 		return dialog;
 	}
@@ -424,7 +424,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public IVehicle getVehicle()
+	public Vehicle getVehicle()
 	{
 		if( isOnline() == false ) return null;
 		
@@ -588,7 +588,7 @@ public class PlayerImpl implements IPlayer
 	}
 
 	@Override
-	public void setVehicle( IVehicle vehicle, int seat )
+	public void setVehicle( Vehicle vehicle, int seat )
 	{
 		if( isOnline() == false ) return;
 		if( vehicle != null && vehicle.isDestroyed() ) return;
@@ -603,7 +603,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public void setVehicle( IVehicle vehicle )
+	public void setVehicle( Vehicle vehicle )
 	{
 		setVehicle( vehicle, 0 );
 	}
@@ -766,7 +766,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public void sendChat( IPlayer player, String message )
+	public void sendChat( Player player, String message )
 	{
 		if( isOnline() == false ) return;
 		
@@ -780,14 +780,14 @@ public class PlayerImpl implements IPlayer
 		if( isOnline() == false ) return;
 		
 		if( message == null ) throw new NullPointerException();
-		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			sendChat( player, message );
 		}
 	}
 
 	@Override
-	public void sendDeathMessage( IPlayer killer, int reason )
+	public void sendDeathMessage( Player killer, int reason )
 	{
 		if( isOnline() == false ) return;
 		
@@ -885,7 +885,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public void markerForPlayer( IPlayer player, Color color )
+	public void markerForPlayer( Player player, Color color )
 	{
 		if( isOnline() == false ) return;
 		
@@ -893,7 +893,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public void showNameTagForPlayer( IPlayer player, boolean show )
+	public void showNameTagForPlayer( Player player, boolean show )
 	{
 		if( isOnline() == false ) return;
 		
@@ -926,7 +926,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public IMenu getMenu()
+	public Menu getMenu()
 	{
 		if( isOnline() == false ) return null;
 		
@@ -1004,7 +1004,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public boolean isInVehicle( IVehicle vehicle )
+	public boolean isInVehicle( Vehicle vehicle )
 	{
 		if( isOnline() == false ) return false;
 		if( vehicle.isDestroyed() ) return false;
@@ -1021,7 +1021,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public boolean isStreamedIn( IPlayer forPlayer )
+	public boolean isStreamedIn( Player forPlayer )
 	{
 		if( isOnline() == false ) return false;
 		if( forPlayer.isOnline() == false ) return false;
@@ -1030,7 +1030,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public void setCheckpoint( ICheckpoint checkpoint )
+	public void setCheckpoint( Checkpoint checkpoint )
 	{
 		if( isOnline() == false ) return;
 		
@@ -1055,7 +1055,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public void setRaceCheckpoint( IRaceCheckpoint checkpoint )
+	public void setRaceCheckpoint( RaceCheckpoint checkpoint )
 	{
 		if( isOnline() == false ) return;
 		
@@ -1065,7 +1065,7 @@ public class PlayerImpl implements IPlayer
 			return;
 		}
 		
-		IRaceCheckpoint next = checkpoint.getNext();
+		RaceCheckpoint next = checkpoint.getNext();
 		
 		Vector3D loc = checkpoint.getLocation();
 		Vector3D nextLoc = next.getLocation();
@@ -1207,7 +1207,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public IVehicle getSurfingVehicle()
+	public Vehicle getSurfingVehicle()
 	{
 		if( isOnline() == false ) return null;
 		
@@ -1286,7 +1286,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public void spectate( IPlayer player, SpectateMode mode )
+	public void spectate( Player player, SpectateMode mode )
 	{
 		if( isOnline() == false ) return;
 		
@@ -1298,7 +1298,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public void spectate( IVehicle vehicle, SpectateMode mode )
+	public void spectate( Vehicle vehicle, SpectateMode mode )
 	{
 		if( isOnline() == false ) return;
 		
@@ -1348,7 +1348,7 @@ public class PlayerImpl implements IPlayer
 	
 	
 	@Override
-	public IPlayer getAimedTarget()
+	public Player getAimedTarget()
 	{
 		if( isOnline() == false ) return null;
 		
@@ -1412,7 +1412,7 @@ public class PlayerImpl implements IPlayer
 	}
 	
 	@Override
-	public void showDialog( IDialog dialog, DialogStyle style, String caption, String text, String button1, String button2 )
+	public void showDialog( Dialog dialog, DialogStyle style, String caption, String text, String button1, String button2 )
 	{
 		if( isOnline() == false ) return;
 		

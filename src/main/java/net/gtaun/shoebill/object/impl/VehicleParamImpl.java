@@ -17,8 +17,8 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.object.IVehicle;
-import net.gtaun.shoebill.object.IVehicleParam;
+import net.gtaun.shoebill.object.Vehicle;
+import net.gtaun.shoebill.object.VehicleParam;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -29,13 +29,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class VehicleParamImpl implements IVehicleParam
+public class VehicleParamImpl implements VehicleParam
 {
-	private IVehicle vehicle;
+	private Vehicle vehicle;
 	private int engine, lights, alarm, doors, bonnet, boot, objective;
 	
 	
-	VehicleParamImpl( IVehicle vehicle )
+	VehicleParamImpl( Vehicle vehicle )
 	{
 		this.vehicle = vehicle;
 	}
@@ -47,7 +47,7 @@ public class VehicleParamImpl implements IVehicleParam
 	}
 	
 	@Override
-	public IVehicle getVehicle()
+	public Vehicle getVehicle()
 	{
 		return vehicle;
 	}

@@ -19,8 +19,8 @@ package net.gtaun.shoebill.object.impl;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.type.DialogStyle;
-import net.gtaun.shoebill.object.IDialog;
-import net.gtaun.shoebill.object.IPlayer;
+import net.gtaun.shoebill.object.Dialog;
+import net.gtaun.shoebill.object.Player;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -30,7 +30,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class DialogImpl implements IDialog
+public class DialogImpl implements Dialog
 {
 	private static int count = 0;
 
@@ -65,13 +65,13 @@ public class DialogImpl implements IDialog
 	}
 	
 	@Override
-	public void show( IPlayer player, DialogStyle style, String caption, String text, String button1, String button2 )
+	public void show( Player player, DialogStyle style, String caption, String text, String button1, String button2 )
 	{
 		player.showDialog( this, style, caption, text, button1, button2 );
 	}
 	
 	@Override
-	public void cancel( IPlayer player )
+	public void cancel( Player player )
 	{
 		if( player.getDialog() != this ) return;
 		player.cancelDialog();

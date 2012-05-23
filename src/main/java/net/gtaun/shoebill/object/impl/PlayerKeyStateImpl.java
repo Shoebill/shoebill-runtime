@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.object.IPlayerKeyState;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.PlayerKeyState;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -28,13 +28,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class PlayerKeyStateImpl implements IPlayerKeyState
+public class PlayerKeyStateImpl implements PlayerKeyState
 {
-	private IPlayer player;
+	private Player player;
 	private int keys, updown, leftright;
 	
 	
-	public PlayerKeyStateImpl( IPlayer player )
+	public PlayerKeyStateImpl( Player player )
 	{
 		this.player = player;
 	}
@@ -47,7 +47,7 @@ public class PlayerKeyStateImpl implements IPlayerKeyState
 	}
 
 	@Override
-	public IPlayer getPlayer()
+	public Player getPlayer()
 	{
 		return player;
 	}

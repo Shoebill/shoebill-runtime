@@ -17,8 +17,8 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.data.type.WeaponSkill;
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.object.IPlayerWeaponSkill;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.PlayerWeaponSkill;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -29,13 +29,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class PlayerWeaponSkillImpl implements IPlayerWeaponSkill
+public class PlayerWeaponSkillImpl implements PlayerWeaponSkill
 {
-	private IPlayer player;
+	private Player player;
 	private int[] skills = new int[ WeaponSkill.values().length ];
 	
 	
-	PlayerWeaponSkillImpl( IPlayer player )
+	PlayerWeaponSkillImpl( Player player )
 	{
 		this.player = player;
 		for( int i=0; i<WeaponSkill.values().length; i++ )	skills[i] = 999;
@@ -48,7 +48,7 @@ public class PlayerWeaponSkillImpl implements IPlayerWeaponSkill
 	}
 	
 	@Override
-	public IPlayer getPlayer()
+	public Player getPlayer()
 	{
 		return player;
 	}

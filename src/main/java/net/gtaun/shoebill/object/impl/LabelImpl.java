@@ -22,9 +22,9 @@ import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.ILabel;
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.object.IVehicle;
+import net.gtaun.shoebill.object.Label;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -36,7 +36,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class LabelImpl implements ILabel
+public class LabelImpl implements Label
 {
 	private int id = INVALID_ID;
 	private String text;
@@ -45,8 +45,8 @@ public class LabelImpl implements ILabel
 	private float drawDistance;
 	
 	private Vector3D offset;
-	private IPlayer attachedPlayer;
-	private IVehicle attachedVehicle;
+	private Player attachedPlayer;
+	private Vehicle attachedVehicle;
 	
 
 	public LabelImpl( String text, Color color, float x, float y, float z, int worldId, float drawDistance, boolean testLOS ) throws CreationFailedException
@@ -130,13 +130,13 @@ public class LabelImpl implements ILabel
 	}
 	
 	@Override
-	public IPlayer getAttachedPlayer()
+	public Player getAttachedPlayer()
 	{
 		return attachedPlayer;
 	}
 	
 	@Override
-	public IVehicle getAttachedVehicle()
+	public Vehicle getAttachedVehicle()
 	{
 		return attachedVehicle;
 	}
@@ -160,7 +160,7 @@ public class LabelImpl implements ILabel
 	}
 
 	@Override
-	public void attach( IPlayer player, float x, float y, float z )
+	public void attach( Player player, float x, float y, float z )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -173,13 +173,13 @@ public class LabelImpl implements ILabel
 	}
 	
 	@Override
-	public void attach( IPlayer player, Vector3D offset )
+	public void attach( Player player, Vector3D offset )
 	{
 		attach( player, offset.getX(), offset.getY(), offset.getZ() );
 	}
 
 	@Override
-	public void attach( IVehicle vehicle, float x, float y, float z )
+	public void attach( Vehicle vehicle, float x, float y, float z )
 	{
 		if( isDestroyed() ) return;
 		if( vehicle.isDestroyed() ) return;
@@ -192,7 +192,7 @@ public class LabelImpl implements ILabel
 	}
 
 	@Override
-	public void attach( IVehicle vehicle, Vector3D offset )
+	public void attach( Vehicle vehicle, Vector3D offset )
 	{
 		attach( vehicle, offset.getX(), offset.getY(), offset.getZ() );
 	}

@@ -19,8 +19,8 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.type.PlayerAttachBone;
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.object.IPlayerAttach;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.PlayerAttach;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -32,7 +32,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 
 
-public class PlayerAttachImpl implements IPlayerAttach
+public class PlayerAttachImpl implements PlayerAttach
 {
 	public class PlayerAttachSlot implements Slot
 	{
@@ -125,11 +125,11 @@ public class PlayerAttachImpl implements IPlayerAttach
 	}
 
 	
-	private IPlayer player;
+	private Player player;
 	private PlayerAttachSlot[] slots = new PlayerAttachSlot[MAX_ATTACHED_OBJECTS];
 
 	
-	PlayerAttachImpl( IPlayer player )
+	PlayerAttachImpl( Player player )
 	{
 		this.player = player;
 		
@@ -146,7 +146,7 @@ public class PlayerAttachImpl implements IPlayerAttach
 	}
 	
 	@Override
-	public IPlayer getPlayer()
+	public Player getPlayer()
 	{
 		return player;
 	}

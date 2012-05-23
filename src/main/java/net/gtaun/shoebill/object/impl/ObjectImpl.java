@@ -23,8 +23,8 @@ import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.IObject;
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.object.IVehicle;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -48,9 +48,9 @@ public class ObjectImpl implements IObject
 	@SuppressWarnings("unused")
 	private Vector3D attachedRotate;
 	
-	private IPlayer attachedPlayer;
+	private Player attachedPlayer;
 	private IObject attachedObject;
-	private IVehicle attachedVehicle;
+	private Vehicle attachedVehicle;
 	
 	
 	public ObjectImpl( int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
@@ -158,7 +158,7 @@ public class ObjectImpl implements IObject
 	}
 	
 	@Override
-	public IPlayer getAttachedPlayer()
+	public Player getAttachedPlayer()
 	{
 		return attachedPlayer;
 	}
@@ -170,7 +170,7 @@ public class ObjectImpl implements IObject
 	}
 	
 	@Override
-	public IVehicle getAttachedVehicle()
+	public Vehicle getAttachedVehicle()
 	{
 		return attachedVehicle;
 	}
@@ -279,7 +279,7 @@ public class ObjectImpl implements IObject
 	}
 
 	@Override
-	public void attach( IPlayer player, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( Player player, float x, float y, float z, float rx, float ry, float rz )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -296,7 +296,7 @@ public class ObjectImpl implements IObject
 	}
 
 	@Override
-	public void attach( IPlayer player, Vector3D pos, Vector3D rot )
+	public void attach( Player player, Vector3D pos, Vector3D rot )
 	{
 		attach( player, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
 	}
@@ -327,7 +327,7 @@ public class ObjectImpl implements IObject
 	}
 	
 	@Override
-	public void attach( IVehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( Vehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
 	{
 		if( isDestroyed() ) return;
 		if( vehicle.isDestroyed() ) return;
@@ -344,7 +344,7 @@ public class ObjectImpl implements IObject
 	}
 	
 	@Override
-	public void attach( IVehicle vehicle, Vector3D pos, Vector3D rot )
+	public void attach( Vehicle vehicle, Vector3D pos, Vector3D rot )
 	{
 		attach( vehicle, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
 	}

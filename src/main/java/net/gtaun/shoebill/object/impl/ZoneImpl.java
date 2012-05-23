@@ -22,8 +22,8 @@ import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.object.IZone;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.Zone;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -34,7 +34,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class ZoneImpl implements IZone
+public class ZoneImpl implements Zone
 {
 	private int id = INVALID_ID;
 	private Area area;
@@ -108,7 +108,7 @@ public class ZoneImpl implements IZone
 	}
 
 	@Override
-	public void show( IPlayer player, Color color )
+	public void show( Player player, Color color )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -121,7 +121,7 @@ public class ZoneImpl implements IZone
 	}
 
 	@Override
-	public void hide( IPlayer player )
+	public void hide( Player player )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -134,7 +134,7 @@ public class ZoneImpl implements IZone
 	}
 
 	@Override
-	public void flash( IPlayer player, Color color )
+	public void flash( Player player, Color color )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -149,7 +149,7 @@ public class ZoneImpl implements IZone
 	}
 
 	@Override
-	public void stopFlash( IPlayer player )
+	public void stopFlash( Player player )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;

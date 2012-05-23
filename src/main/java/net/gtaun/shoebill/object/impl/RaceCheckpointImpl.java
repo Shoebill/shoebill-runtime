@@ -25,8 +25,8 @@ import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.type.RaceCheckpointType;
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.object.IRaceCheckpoint;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -37,7 +37,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class RaceCheckpointImpl implements IRaceCheckpoint
+public class RaceCheckpointImpl implements RaceCheckpoint
 {
 	private LocationRadius location;
 	private RaceCheckpointType type;
@@ -130,20 +130,20 @@ public class RaceCheckpointImpl implements IRaceCheckpoint
 	}
 	
 	@Override
-	public void set( IPlayer player )
+	public void set( Player player )
 	{
 		player.setRaceCheckpoint( this );
 	}
 	
 	@Override
-	public void disable( IPlayer player )
+	public void disable( Player player )
 	{
 		if( player.getRaceCheckpoint() != this ) return;
 		player.disableRaceCheckpoint();
 	}
 	
 	@Override
-	public boolean isInCheckpoint( IPlayer player )
+	public boolean isInCheckpoint( Player player )
 	{
 		if( player.getRaceCheckpoint() != this ) return false;
 		
@@ -153,7 +153,7 @@ public class RaceCheckpointImpl implements IRaceCheckpoint
 	@Override
 	public void update()
 	{
-		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			if( player == null ) continue;
 			if( player.getRaceCheckpoint() == this ) set( player );
@@ -161,10 +161,10 @@ public class RaceCheckpointImpl implements IRaceCheckpoint
 	}
 	
 	@Override
-	public Collection<IPlayer> getUsingPlayers()
+	public Collection<Player> getUsingPlayers()
 	{
-		Collection<IPlayer> players = new ArrayList<>();
-		for( IPlayer player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		Collection<Player> players = new ArrayList<>();
+		for( Player player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			if( player.getRaceCheckpoint() == this ) players.add( player );
 		}

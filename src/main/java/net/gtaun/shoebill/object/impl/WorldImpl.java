@@ -21,7 +21,7 @@ import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.WeaponData;
 import net.gtaun.shoebill.data.type.PlayerMarkerMode;
-import net.gtaun.shoebill.object.IWorld;
+import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -32,7 +32,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class WorldImpl implements IWorld
+public class WorldImpl implements World
 {
 	private float nameTagDrawDistance = 70;
 	private float chatRadius = -1;

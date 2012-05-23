@@ -22,8 +22,8 @@ import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.object.ITextdraw;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.Textdraw;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -36,7 +36,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class TextdrawImpl implements ITextdraw
+public class TextdrawImpl implements Textdraw
 {
 	private int id = INVALID_ID;
 	private Vector2D position;
@@ -238,7 +238,7 @@ public class TextdrawImpl implements ITextdraw
 	}
 
 	@Override
-	public void show( IPlayer player )
+	public void show( Player player )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -250,7 +250,7 @@ public class TextdrawImpl implements ITextdraw
 	}
 
 	@Override
-	public void hide( IPlayer player )
+	public void hide( Player player )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;

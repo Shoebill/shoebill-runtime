@@ -22,9 +22,9 @@ import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.IObject;
-import net.gtaun.shoebill.object.IPlayer;
-import net.gtaun.shoebill.object.IPlayerObject;
-import net.gtaun.shoebill.object.IVehicle;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.PlayerObject;
+import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -35,50 +35,50 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class PlayerObjectImpl implements IPlayerObject
+public class PlayerObjectImpl implements PlayerObject
 {	
 	private int id = INVALID_ID;
-	private IPlayer player;
+	private Player player;
 	
 	private int modelId;
 	private Location location;
 	private float speed = 0.0F;
 	private float drawDistance = 0;
 	
-	private IPlayer attachedPlayer;
+	private Player attachedPlayer;
 	
 	
-	public PlayerObjectImpl( IPlayer player, int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
 	{
 		initialize( player, modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), drawDistance );
 	}
 	
-	public PlayerObjectImpl( IPlayer player, int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
 		initialize( player, modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), drawDistance );
 	}
 	
-	public PlayerObjectImpl( IPlayer player, int modelId, Location loc, float rx, float ry, float rz ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, Location loc, float rx, float ry, float rz ) throws CreationFailedException
 	{
 		initialize( player, modelId, new Location(loc), new Vector3D(rx, ry, rz), drawDistance );
 	}
 	
-	public PlayerObjectImpl( IPlayer player, int modelId, Location loc, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, Location loc, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
 		initialize( player, modelId, new Location(loc), new Vector3D(rx, ry, rz), drawDistance );
 	}
 	
-	public PlayerObjectImpl( IPlayer player, int modelId, Location loc, Vector3D rot ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, Location loc, Vector3D rot ) throws CreationFailedException
 	{
 		initialize( player, modelId, new Location(loc), new Vector3D(rot), drawDistance );
 	}
 	
-	public PlayerObjectImpl( IPlayer player, int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
 	{
 		initialize( player, modelId, new Location(loc), new Vector3D(rot), drawDistance );
 	}
 	
-	private void initialize( IPlayer player, int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
+	private void initialize( Player player, int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
 	{
 		if( player.isOnline() == false ) throw new CreationFailedException();
 		
@@ -128,7 +128,7 @@ public class PlayerObjectImpl implements IPlayerObject
 	}
 
 	@Override
-	public IPlayer getPlayer()
+	public Player getPlayer()
 	{
 		return player;
 	}
@@ -163,7 +163,7 @@ public class PlayerObjectImpl implements IPlayerObject
 	}
 	
 	@Override
-	public IPlayer getAttachedPlayer()
+	public Player getAttachedPlayer()
 	{
 		return attachedPlayer;
 	}
@@ -175,7 +175,7 @@ public class PlayerObjectImpl implements IPlayerObject
 	}
 	
 	@Override
-	public IVehicle getAttachedVehicle()
+	public Vehicle getAttachedVehicle()
 	{
 		return null;
 	}
@@ -288,7 +288,7 @@ public class PlayerObjectImpl implements IPlayerObject
 	}
 	
 	@Override
-	public void attach( IPlayer target, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( Player target, float x, float y, float z, float rx, float ry, float rz )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -301,7 +301,7 @@ public class PlayerObjectImpl implements IPlayerObject
 	}
 	
 	@Override
-	public void attach( IPlayer target, Vector3D pos, Vector3D rot )
+	public void attach( Player target, Vector3D pos, Vector3D rot )
 	{
 		attach( target, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
 	}
@@ -319,13 +319,13 @@ public class PlayerObjectImpl implements IPlayerObject
 	}
 
 	@Override
-	public void attach( IVehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( Vehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
 	{
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void attach( IVehicle vehicle, Vector3D pos, Vector3D rot )
+	public void attach( Vehicle vehicle, Vector3D pos, Vector3D rot )
 	{
 		throw new UnsupportedOperationException();
 	}
