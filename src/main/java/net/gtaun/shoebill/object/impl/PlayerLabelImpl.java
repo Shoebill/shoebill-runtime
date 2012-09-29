@@ -22,9 +22,9 @@ import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.PlayerLabel;
-import net.gtaun.shoebill.object.Vehicle;
+import net.gtaun.shoebill.object.primitive.PlayerPrim;
+import net.gtaun.shoebill.object.primitive.PlayerLabelPrim;
+import net.gtaun.shoebill.object.primitive.VehiclePrim;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -36,10 +36,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class PlayerLabelImpl implements PlayerLabel
+public class PlayerLabelImpl implements PlayerLabelPrim
 {
 	private int id = INVALID_ID;
-	private Player player;
+	private PlayerPrim player;
 	private String text;
 	private Color color;
 	private float drawDistance;
@@ -47,36 +47,36 @@ public class PlayerLabelImpl implements PlayerLabel
 	private boolean testLOS;
 	
 	private Point3D offset;
-	private Player attachedPlayer;
-	private Vehicle attachedVehicle;
+	private PlayerPrim attachedPlayer;
+	private VehiclePrim attachedVehicle;
 	
 
-	public PlayerLabelImpl( Player player, String text, Color color, float x, float y, float z, float drawDistance, boolean testLOS ) throws CreationFailedException
+	public PlayerLabelImpl( PlayerPrim player, String text, Color color, float x, float y, float z, float drawDistance, boolean testLOS ) throws CreationFailedException
 	{
 		initialize( player, text, color, new Location(x, y, z), drawDistance, testLOS, null, null );
 	}
 	
-	public PlayerLabelImpl( Player player, String text, Color color, float x, float y, float z, int worldId, float drawDistance, boolean testLOS ) throws CreationFailedException
+	public PlayerLabelImpl( PlayerPrim player, String text, Color color, float x, float y, float z, int worldId, float drawDistance, boolean testLOS ) throws CreationFailedException
 	{
 		initialize( player, text, color, new Location(x, y, z, worldId), drawDistance, testLOS, null, null );
 	}
 	
-	public PlayerLabelImpl( Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS ) throws CreationFailedException
+	public PlayerLabelImpl( PlayerPrim player, String text, Color color, Location loc, float drawDistance, boolean testLOS ) throws CreationFailedException
 	{
 		initialize( player, text, color, new Location(loc), drawDistance, testLOS, null, null );
 	}
 
-	public PlayerLabelImpl( Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer ) throws CreationFailedException
+	public PlayerLabelImpl( PlayerPrim player, String text, Color color, Location loc, float drawDistance, boolean testLOS, PlayerPrim attachedPlayer ) throws CreationFailedException
 	{
 		initialize( player, text, color, new Location(loc), drawDistance, testLOS, attachedPlayer, null );
 	}
 	
-	public PlayerLabelImpl( Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle ) throws CreationFailedException
+	public PlayerLabelImpl( PlayerPrim player, String text, Color color, Location loc, float drawDistance, boolean testLOS, VehiclePrim attachedVehicle ) throws CreationFailedException
 	{
 		initialize( player, text, color, new Location(loc), drawDistance, testLOS, null, attachedVehicle );
 	}
 	
-	private void initialize( Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer, Vehicle attachedVehicle ) throws CreationFailedException
+	private void initialize( PlayerPrim player, String text, Color color, Location loc, float drawDistance, boolean testLOS, PlayerPrim attachedPlayer, VehiclePrim attachedVehicle ) throws CreationFailedException
 	{
 		if( StringUtils.isEmpty(text) ) text = " ";
 		
@@ -87,13 +87,13 @@ public class PlayerLabelImpl implements PlayerLabel
 		this.location = new Location( loc );
 		this.testLOS = testLOS;
 		
-		int playerId = Player.INVALID_ID, vehicleId = Vehicle.INVALID_ID;
+		int playerId = PlayerPrim.INVALID_ID, vehicleId = VehiclePrim.INVALID_ID;
 		
 		if( attachedPlayer != null )	playerId = attachedPlayer.getId();
 		if( attachedVehicle != null )	vehicleId = attachedVehicle.getId();
 		
-		if( playerId == Player.INVALID_ID ) attachedPlayer = null;
-		if( vehicleId == Vehicle.INVALID_ID ) attachedVehicle = null;
+		if( playerId == PlayerPrim.INVALID_ID ) attachedPlayer = null;
+		if( vehicleId == VehiclePrim.INVALID_ID ) attachedVehicle = null;
 		
 		if( attachedPlayer != null || attachedVehicle != null )
 		{
@@ -120,7 +120,7 @@ public class PlayerLabelImpl implements PlayerLabel
 		return id;
 	}
 
-	@Override public Player getPlayer()
+	@Override public PlayerPrim getPlayer()
 	{
 		return player;
 	}
@@ -162,12 +162,12 @@ public class PlayerLabelImpl implements PlayerLabel
 		return drawDistance;
 	}
 	
-	@Override public Player getAttachedPlayer()
+	@Override public PlayerPrim getAttachedPlayer()
 	{
 		return attachedPlayer;
 	}
 	
-	@Override public Vehicle getAttachedVehicle()
+	@Override public VehiclePrim getAttachedVehicle()
 	{
 		return attachedVehicle;
 	}
@@ -192,7 +192,7 @@ public class PlayerLabelImpl implements PlayerLabel
 	}
 
 	@Override
-	public void attach( Player target, float x, float y, float z )
+	public void attach( PlayerPrim target, float x, float y, float z )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -201,20 +201,20 @@ public class PlayerLabelImpl implements PlayerLabel
 		int playerId = player.getId();
 		
 		SampNativeFunction.deletePlayer3DTextLabel( playerId, id );
-		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, target.getId(), Vehicle.INVALID_ID, testLOS );
+		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, target.getId(), VehiclePrim.INVALID_ID, testLOS );
 		
 		attachedPlayer = target;
 		attachedVehicle = null;
 	}
 	
 	@Override
-	public void attach( Player target, Point3D offset )
+	public void attach( PlayerPrim target, Point3D offset )
 	{
 		attach( target, offset.getX(), offset.getY(), offset.getZ() );
 	}
 
 	@Override
-	public void attach( Vehicle vehicle, float x, float y, float z )
+	public void attach( VehiclePrim vehicle, float x, float y, float z )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -223,14 +223,14 @@ public class PlayerLabelImpl implements PlayerLabel
 		int playerId = player.getId();
 		
 		SampNativeFunction.deletePlayer3DTextLabel( playerId, id );
-		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, Player.INVALID_ID, vehicle.getId(), testLOS );
+		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, PlayerPrim.INVALID_ID, vehicle.getId(), testLOS );
 	
 		attachedPlayer = null;
 		attachedVehicle = vehicle;
 	}
 	
 	@Override
-	public void attach( Vehicle vehicle, Point3D offset )
+	public void attach( VehiclePrim vehicle, Point3D offset )
 	{
 		attach( vehicle, offset.getX(), offset.getY(), offset.getZ() );
 	}

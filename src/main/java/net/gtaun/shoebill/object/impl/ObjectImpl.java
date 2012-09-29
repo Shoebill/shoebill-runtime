@@ -22,9 +22,9 @@ import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.IObject;
-import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.Vehicle;
+import net.gtaun.shoebill.object.primitive.ObjectPrim;
+import net.gtaun.shoebill.object.primitive.PlayerPrim;
+import net.gtaun.shoebill.object.primitive.VehiclePrim;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -35,7 +35,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class ObjectImpl implements IObject
+public class ObjectImpl implements ObjectPrim
 {	
 	private int id = INVALID_ID;
 	private int modelId;
@@ -48,9 +48,9 @@ public class ObjectImpl implements IObject
 	@SuppressWarnings("unused")
 	private Point3D attachedRotate;
 	
-	private Player attachedPlayer;
-	private IObject attachedObject;
-	private Vehicle attachedVehicle;
+	private PlayerPrim attachedPlayer;
+	private ObjectPrim attachedObject;
+	private VehiclePrim attachedVehicle;
 	
 	
 	public ObjectImpl( int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
@@ -158,19 +158,19 @@ public class ObjectImpl implements IObject
 	}
 	
 	@Override
-	public Player getAttachedPlayer()
+	public PlayerPrim getAttachedPlayer()
 	{
 		return attachedPlayer;
 	}
 	
 	@Override
-	public IObject getAttachedObject()
+	public ObjectPrim getAttachedObject()
 	{
 		return attachedObject;
 	}
 	
 	@Override
-	public Vehicle getAttachedVehicle()
+	public VehiclePrim getAttachedVehicle()
 	{
 		return attachedVehicle;
 	}
@@ -279,7 +279,7 @@ public class ObjectImpl implements IObject
 	}
 
 	@Override
-	public void attach( Player player, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( PlayerPrim player, float x, float y, float z, float rx, float ry, float rz )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -296,13 +296,13 @@ public class ObjectImpl implements IObject
 	}
 
 	@Override
-	public void attach( Player player, Point3D pos, Point3D rot )
+	public void attach( PlayerPrim player, Point3D pos, Point3D rot )
 	{
 		attach( player, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
 	}
 
 	@Override
-	public void attach( IObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation )
+	public void attach( ObjectPrim object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation )
 	{
 		if( isDestroyed() ) return;
 		if( object.isDestroyed() ) return;
@@ -321,13 +321,13 @@ public class ObjectImpl implements IObject
 	
 
 	@Override
-	public void attach( IObject object, Point3D pos, Point3D rot, boolean syncRotation )
+	public void attach( ObjectPrim object, Point3D pos, Point3D rot, boolean syncRotation )
 	{
 		attach( object, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ(), syncRotation );
 	}
 	
 	@Override
-	public void attach( Vehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( VehiclePrim vehicle, float x, float y, float z, float rx, float ry, float rz )
 	{
 		if( isDestroyed() ) return;
 		if( vehicle.isDestroyed() ) return;
@@ -344,7 +344,7 @@ public class ObjectImpl implements IObject
 	}
 	
 	@Override
-	public void attach( Vehicle vehicle, Point3D pos, Point3D rot )
+	public void attach( VehiclePrim vehicle, Point3D pos, Point3D rot )
 	{
 		attach( vehicle, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
 	}

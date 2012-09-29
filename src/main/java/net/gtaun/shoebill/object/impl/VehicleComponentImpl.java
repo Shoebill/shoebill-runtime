@@ -18,8 +18,8 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.data.constant.VehicleComponentSlot;
-import net.gtaun.shoebill.object.Vehicle;
-import net.gtaun.shoebill.object.VehicleComponent;
+import net.gtaun.shoebill.object.primitive.VehicleComponent;
+import net.gtaun.shoebill.object.primitive.VehiclePrim;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -33,11 +33,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class VehicleComponentImpl implements VehicleComponent
 {
-	private Vehicle vehicle;
+	private VehiclePrim vehicle;
 	private int[] components = new int[ VehicleComponentSlot.values().length ];
 	
 	
-	VehicleComponentImpl( Vehicle vehicle )
+	VehicleComponentImpl( VehiclePrim vehicle )
 	{
 		this.vehicle = vehicle;
 		update();
@@ -50,7 +50,7 @@ public class VehicleComponentImpl implements VehicleComponent
 	}
 	
 	@Override
-	public Vehicle getVehicle()
+	public VehiclePrim getVehicle()
 	{
 		return vehicle;
 	}

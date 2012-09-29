@@ -60,14 +60,6 @@ import net.gtaun.shoebill.event.vehicle.VehicleStreamInEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleStreamOutEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleUnoccupiedUpdateEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleUpdateDamageEvent;
-import net.gtaun.shoebill.object.Dialog;
-import net.gtaun.shoebill.object.Menu;
-import net.gtaun.shoebill.object.IObject;
-import net.gtaun.shoebill.object.Pickup;
-import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.PlayerObject;
-import net.gtaun.shoebill.object.Timer;
-import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.impl.DialogImpl;
 import net.gtaun.shoebill.object.impl.MenuImpl;
 import net.gtaun.shoebill.object.impl.ObjectImpl;
@@ -75,6 +67,14 @@ import net.gtaun.shoebill.object.impl.PickupImpl;
 import net.gtaun.shoebill.object.impl.PlayerImpl;
 import net.gtaun.shoebill.object.impl.PlayerObjectImpl;
 import net.gtaun.shoebill.object.impl.VehicleImpl;
+import net.gtaun.shoebill.object.primitive.DialogPrim;
+import net.gtaun.shoebill.object.primitive.MenuPrim;
+import net.gtaun.shoebill.object.primitive.ObjectPrim;
+import net.gtaun.shoebill.object.primitive.PickupPrim;
+import net.gtaun.shoebill.object.primitive.PlayerPrim;
+import net.gtaun.shoebill.object.primitive.PlayerObjectPrim;
+import net.gtaun.shoebill.object.primitive.TimerPrim;
+import net.gtaun.shoebill.object.primitive.VehiclePrim;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.util.event.EventManager;
 
@@ -125,7 +125,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -147,7 +147,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -177,7 +177,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -199,10 +199,10 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Player killer = null;
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim killer = null;
 			
-			if( killerId != Player.INVALID_ID )
+			if( killerId != PlayerPrim.INVALID_ID )
 			{
 				killer = sampObjectPool.getPlayer(killerId);
 				
@@ -233,7 +233,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
+			VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
 			
 			if( vehicle instanceof VehicleImpl )
 			{
@@ -255,8 +255,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
-			Player killer = sampObjectPool.getPlayer( killerId );
+			VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
+			PlayerPrim killer = sampObjectPool.getPlayer( killerId );
 
 			VehicleDeathEvent event = new VehicleDeathEvent(vehicle, killer);
 			
@@ -287,7 +287,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -315,7 +315,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -339,7 +339,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -364,8 +364,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
 
 			VehicleEnterEvent event = new VehicleEnterEvent(vehicle, player, isPassenger != 0);
 			
@@ -396,8 +396,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
 			
 			VehicleExitEvent event = new VehicleExitEvent(vehicle, player);
 			
@@ -428,7 +428,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -450,7 +450,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -472,7 +472,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -494,7 +494,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -516,7 +516,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -555,7 +555,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -579,7 +579,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			IObject object = sampObjectPool.getObject( objectId );
+			ObjectPrim object = sampObjectPool.getObject( objectId );
 			
 			if( object instanceof ObjectImpl )
 			{
@@ -604,8 +604,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			PlayerObject object = sampObjectPool.getPlayerObject( player, objectId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			PlayerObjectPrim object = sampObjectPool.getPlayerObject( player, objectId );
 			
 			if( object instanceof PlayerObjectImpl )
 			{
@@ -642,8 +642,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Pickup pickup = sampObjectPool.getPickup( pickupId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			PickupPrim pickup = sampObjectPool.getPickup( pickupId );
 
 			PlayerPickupEvent event = new PlayerPickupEvent(player, pickup);
 			
@@ -674,8 +674,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
 			
 			VehicleModEvent event = new VehicleModEvent(vehicle, componentId);
 			
@@ -712,7 +712,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -734,8 +734,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
 			
 			VehiclePaintjobEvent event = new VehiclePaintjobEvent(vehicle, paintjobId);
 
@@ -766,8 +766,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
 			
 			VehicleResprayEvent event = new VehicleResprayEvent( vehicle, color1, color2 );
 
@@ -798,8 +798,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
-			Player player = sampObjectPool.getPlayer( playerId );
+			VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( vehicle instanceof VehicleImpl )
 			{
@@ -837,8 +837,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 		
 		try
 		{
-			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
-			Player player = sampObjectPool.getPlayer( playerId );
+			VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			VehicleUnoccupiedUpdateEvent event = new VehicleUnoccupiedUpdateEvent( vehicle, player, passengerSeat );
 			
@@ -869,8 +869,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Menu menu = player.getMenu();
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			MenuPrim menu = player.getMenu();
 			
 			MenuSelectedEvent event = new MenuSelectedEvent( menu, player, row );
 
@@ -901,8 +901,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Menu menu = player.getMenu();
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			MenuPrim menu = player.getMenu();
 			
 			MenuExitedEvent event = new MenuExitedEvent( menu, player );
 			
@@ -934,7 +934,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -959,7 +959,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -998,7 +998,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 
 			if( player instanceof PlayerImpl )
 			{
@@ -1023,8 +1023,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Player forPlayer = sampObjectPool.getPlayer( forPlayerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim forPlayer = sampObjectPool.getPlayer( forPlayerId );
 
 			PlayerStreamInEvent event = new PlayerStreamInEvent(player, forPlayer);
 			
@@ -1056,8 +1056,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Player forPlayer = sampObjectPool.getPlayer( forPlayerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim forPlayer = sampObjectPool.getPlayer( forPlayerId );
 			
 			PlayerStreamOutEvent event = new PlayerStreamOutEvent(player, forPlayer);
 
@@ -1088,8 +1088,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
-			Player player = sampObjectPool.getPlayer( forPlayerId );
+			VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
+			PlayerPrim player = sampObjectPool.getPlayer( forPlayerId );
 			
 			VehicleStreamInEvent event = new VehicleStreamInEvent(vehicle, player);
 			
@@ -1120,8 +1120,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
-			Player player = sampObjectPool.getPlayer( forPlayerId );
+			VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
+			PlayerPrim player = sampObjectPool.getPlayer( forPlayerId );
 			
 			VehicleStreamOutEvent event = new VehicleStreamOutEvent(vehicle, player);
 
@@ -1152,8 +1152,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Dialog dialog = sampObjectPool.getDialog( dialogId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			DialogPrim dialog = sampObjectPool.getDialog( dialogId );
 			
 			if( dialog == null ) return 0;
 			
@@ -1192,8 +1192,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Player issuer = sampObjectPool.getPlayer( issuerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim issuer = sampObjectPool.getPlayer( issuerId );
 
 			if( player instanceof PlayerImpl )
 			{
@@ -1216,8 +1216,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Player victim = sampObjectPool.getPlayer( damagedId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim victim = sampObjectPool.getPlayer( damagedId );
 
 			if( player instanceof PlayerImpl )
 			{
@@ -1239,7 +1239,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
 			
 			if( player instanceof PlayerImpl )
 			{
@@ -1261,8 +1261,8 @@ public class SampEventDispatcher implements ISampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer( playerId );
-			Player clickedPlayer = sampObjectPool.getPlayer( clickedPlayerId );
+			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			PlayerPrim clickedPlayer = sampObjectPool.getPlayer( clickedPlayerId );
 
 			PlayerClickPlayerEvent event = new PlayerClickPlayerEvent( player, clickedPlayer, source );
 
@@ -1297,7 +1297,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 			int interval = (int) (nowTick - lastProcessTimeMillis);
 			lastProcessTimeMillis = nowTick;
 			
-			for( Timer timer : sampObjectPool.getTimers() ) timer.tick( interval );
+			for( TimerPrim timer : sampObjectPool.getTimers() ) timer.tick( interval );
 		}
 		catch( Exception e )
 		{

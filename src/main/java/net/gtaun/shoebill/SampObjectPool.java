@@ -25,21 +25,21 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import net.gtaun.shoebill.object.Dialog;
-import net.gtaun.shoebill.object.Label;
-import net.gtaun.shoebill.object.Menu;
-import net.gtaun.shoebill.object.IObject;
-import net.gtaun.shoebill.object.Pickup;
-import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.PlayerLabel;
-import net.gtaun.shoebill.object.PlayerObject;
-import net.gtaun.shoebill.object.Server;
-import net.gtaun.shoebill.object.Textdraw;
-import net.gtaun.shoebill.object.Timer;
-import net.gtaun.shoebill.object.Vehicle;
-import net.gtaun.shoebill.object.World;
-import net.gtaun.shoebill.object.Zone;
 import net.gtaun.shoebill.object.impl.PlayerImpl;
+import net.gtaun.shoebill.object.primitive.DialogPrim;
+import net.gtaun.shoebill.object.primitive.LabelPrim;
+import net.gtaun.shoebill.object.primitive.MenuPrim;
+import net.gtaun.shoebill.object.primitive.ObjectPrim;
+import net.gtaun.shoebill.object.primitive.PickupPrim;
+import net.gtaun.shoebill.object.primitive.PlayerPrim;
+import net.gtaun.shoebill.object.primitive.PlayerLabelPrim;
+import net.gtaun.shoebill.object.primitive.PlayerObjectPrim;
+import net.gtaun.shoebill.object.primitive.ServerPrim;
+import net.gtaun.shoebill.object.primitive.TextdrawPrim;
+import net.gtaun.shoebill.object.primitive.TimerPrim;
+import net.gtaun.shoebill.object.primitive.VehiclePrim;
+import net.gtaun.shoebill.object.primitive.WorldPrim;
+import net.gtaun.shoebill.object.primitive.ZonePrim;
 import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.util.event.EventManager;
@@ -75,22 +75,22 @@ public class SampObjectPool implements ISampObjectPool
 	
 	private ISampCallbackHandler callbackHandler;
 	
-	private Server server;
-	private World world;
+	private ServerPrim server;
+	private WorldPrim world;
 	
-	private Player[] players									= new Player[MAX_PLAYERS];
-	private Vehicle[] vehicles									= new Vehicle[MAX_VEHICLES];
-	private IObject[] objects									= new IObject[MAX_OBJECTS];
-	private PlayerObject[][] playerObjectsArrays				= new PlayerObject[MAX_PLAYERS][];
-	private Pickup[] pickups									= new Pickup[MAX_PICKUPS];
-	private Label[] labels										= new Label[MAX_GLOBAL_LABELS];
-	private PlayerLabel[][] playerLabelsArrays					= new PlayerLabel[MAX_PLAYERS][];
-	private Textdraw[] textdraws								= new Textdraw[MAX_TEXT_DRAWS];
-	private Zone[] zones										= new Zone[MAX_ZONES];
-	private Menu[] menus										= new Menu[MAX_MENUS];
+	private PlayerPrim[] players									= new PlayerPrim[MAX_PLAYERS];
+	private VehiclePrim[] vehicles									= new VehiclePrim[MAX_VEHICLES];
+	private ObjectPrim[] objects									= new ObjectPrim[MAX_OBJECTS];
+	private PlayerObjectPrim[][] playerObjectsArrays				= new PlayerObjectPrim[MAX_PLAYERS][];
+	private PickupPrim[] pickups									= new PickupPrim[MAX_PICKUPS];
+	private LabelPrim[] labels										= new LabelPrim[MAX_GLOBAL_LABELS];
+	private PlayerLabelPrim[][] playerLabelsArrays					= new PlayerLabelPrim[MAX_PLAYERS][];
+	private TextdrawPrim[] textdraws								= new TextdrawPrim[MAX_TEXT_DRAWS];
+	private ZonePrim[] zones										= new ZonePrim[MAX_ZONES];
+	private MenuPrim[] menus										= new MenuPrim[MAX_MENUS];
 	
-	private Collection<Reference<Timer>> timers				= new ConcurrentLinkedQueue<>();
-	private Map<Integer, Reference<Dialog>> dialogs			= new ConcurrentHashMap<>();
+	private Collection<Reference<TimerPrim>> timers				= new ConcurrentLinkedQueue<>();
+	private Map<Integer, Reference<DialogPrim>> dialogs			= new ConcurrentHashMap<>();
 	
 	
 	SampObjectPool( final EventManager eventManager )
@@ -102,11 +102,11 @@ public class SampObjectPool implements ISampObjectPool
 			{
 				try
 				{
-					playerObjectsArrays[playerid] = new PlayerObject[MAX_OBJECTS];
-					playerObjectsArrays[playerid] = new PlayerObject[MAX_OBJECTS];
-					playerLabelsArrays[playerid] = new PlayerLabel[MAX_PLAYER_LABELS];
+					playerObjectsArrays[playerid] = new PlayerObjectPrim[MAX_OBJECTS];
+					playerObjectsArrays[playerid] = new PlayerObjectPrim[MAX_OBJECTS];
+					playerLabelsArrays[playerid] = new PlayerLabelPrim[MAX_PLAYER_LABELS];
 					
-					Player player = new PlayerImpl(playerid);
+					PlayerPrim player = new PlayerImpl(playerid);
 					setPlayer( playerid, player );
 				}
 				catch( Exception e )
@@ -138,40 +138,40 @@ public class SampObjectPool implements ISampObjectPool
 	
 	
 	@Override
-	public Server getServer()
+	public ServerPrim getServer()
 	{
 		return server;
 	}
 	
 	@Override
-	public World getWorld()
+	public WorldPrim getWorld()
 	{
 		return world;
 	}
 	
 	@Override
-	public Player getPlayer( int id )
+	public PlayerPrim getPlayer( int id )
 	{
 		if( id < 0 || id >= MAX_PLAYERS ) return null;
 		return players[id];
 	}
 	
 	@Override
-	public Vehicle getVehicle( int id )
+	public VehiclePrim getVehicle( int id )
 	{
 		if( id < 0 || id >= MAX_VEHICLES ) return null;
 		return vehicles[id];
 	}
 	
 	@Override
-	public IObject getObject( int id )
+	public ObjectPrim getObject( int id )
 	{
 		if( id < 0 || id >= MAX_OBJECTS ) return null;
 		return objects[id];
 	}
 	
 	@Override
-	public PlayerObject getPlayerObject( Player player, int id )
+	public PlayerObjectPrim getPlayerObject( PlayerPrim player, int id )
 	{
 		if( player == null ) return null;
 		
@@ -180,28 +180,28 @@ public class SampObjectPool implements ISampObjectPool
 		
 		if( id < 0 || id >= MAX_OBJECTS ) return null;
 		
-		PlayerObject[] playerObjects = playerObjectsArrays[playerId];
+		PlayerObjectPrim[] playerObjects = playerObjectsArrays[playerId];
 		if( playerObjects == null ) return null;
 		
 		return playerObjects[id];
 	}
 	
 	@Override
-	public Pickup getPickup( int id )
+	public PickupPrim getPickup( int id )
 	{
 		if( id < 0 || id >= MAX_PICKUPS ) return null;
 		return pickups[id];
 	}
 	
 	@Override
-	public Label getLabel( int id )
+	public LabelPrim getLabel( int id )
 	{
 		if( id < 0 || id >= MAX_GLOBAL_LABELS ) return null;
 		return labels[id];
 	}
 	
 	@Override
-	public PlayerLabel getPlayerLabel( Player player, int id )
+	public PlayerLabelPrim getPlayerLabel( PlayerPrim player, int id )
 	{
 		if( player == null ) return null;
 		
@@ -210,192 +210,192 @@ public class SampObjectPool implements ISampObjectPool
 		
 		if( id < 0 || id >= MAX_PLAYER_LABELS ) return null;
 		
-		PlayerLabel[] playerLabels = playerLabelsArrays[playerId];
+		PlayerLabelPrim[] playerLabels = playerLabelsArrays[playerId];
 		if( playerLabels == null ) return null;
 		
 		return playerLabels[id];
 	}
 	
 	@Override
-	public Textdraw getTextdraw( int id )
+	public TextdrawPrim getTextdraw( int id )
 	{
 		if( id < 0 || id >= MAX_TEXT_DRAWS ) return null;
 		return textdraws[id];
 	}
 	
 	@Override
-	public Zone getZone( int id )
+	public ZonePrim getZone( int id )
 	{
 		if( id < 0 || id >= MAX_ZONES ) return null;
 		return zones[id];
 	}
 	
 	@Override
-	public Menu getMenu( int id )
+	public MenuPrim getMenu( int id )
 	{
 		if( id < 0 || id >= MAX_MENUS ) return null;
 		return menus[id];
 	}
 	
 	@Override
-	public Dialog getDialog( int id )
+	public DialogPrim getDialog( int id )
 	{
 		return dialogs.get(id).get();
 	}
 	
 	
 	@Override
-	public Collection<Player> getPlayers()
+	public Collection<PlayerPrim> getPlayers()
 	{
-		return getInstances( players, Player.class );
+		return getInstances( players, PlayerPrim.class );
 	}
 	
 	@Override
-	public Collection<Vehicle> getVehicles()
+	public Collection<VehiclePrim> getVehicles()
 	{
-		return getInstances( players, Vehicle.class );
+		return getInstances( players, VehiclePrim.class );
 	}
 	
 	@Override
-	public Collection<IObject> getObjects()
+	public Collection<ObjectPrim> getObjects()
 	{
-		return getInstances( objects, IObject.class );
+		return getInstances( objects, ObjectPrim.class );
 	}
 	
 	@Override
-	public Collection<PlayerObject> getPlayerObjects( Player player )
+	public Collection<PlayerObjectPrim> getPlayerObjects( PlayerPrim player )
 	{
-		return getPlayerObjects( player, PlayerObject.class );
+		return getPlayerObjects( player, PlayerObjectPrim.class );
 	}
 	
 	@Override
-	public Collection<Pickup> getPickups()
+	public Collection<PickupPrim> getPickups()
 	{
-		return getInstances( pickups, Pickup.class );
+		return getInstances( pickups, PickupPrim.class );
 	}
 	
 	@Override
-	public Collection<Label> getLabels()
+	public Collection<LabelPrim> getLabels()
 	{
-		return getInstances( labels, Label.class );
+		return getInstances( labels, LabelPrim.class );
 	}
 	
 	@Override
-	public Collection<PlayerLabel> getPlayerLabels( Player player )
+	public Collection<PlayerLabelPrim> getPlayerLabels( PlayerPrim player )
 	{
-		return getPlayerLabels( player, PlayerLabel.class );
+		return getPlayerLabels( player, PlayerLabelPrim.class );
 	}
 	
 	@Override
-	public Collection<Textdraw> getTextdraws()
+	public Collection<TextdrawPrim> getTextdraws()
 	{
-		return getInstances( textdraws, Textdraw.class );
+		return getInstances( textdraws, TextdrawPrim.class );
 	}
 	
 	@Override
-	public Collection<Zone> getZones()
+	public Collection<ZonePrim> getZones()
 	{
-		return getInstances( zones, Zone.class );
+		return getInstances( zones, ZonePrim.class );
 	}
 	
 	@Override
-	public Collection<Menu> getMenus()
+	public Collection<MenuPrim> getMenus()
 	{
-		return getInstances( menus, Menu.class );
+		return getInstances( menus, MenuPrim.class );
 	}
 	
 	@Override
-	public Collection<Dialog> getDialogs()
+	public Collection<DialogPrim> getDialogs()
 	{
-		return getDialogs( Dialog.class );
+		return getDialogs( DialogPrim.class );
 	}
 	
 	@Override
-	public Collection<Timer> getTimers()
+	public Collection<TimerPrim> getTimers()
 	{
-		return getTimers( Timer.class );
+		return getTimers( TimerPrim.class );
 	}
 	
 	
 	@Override
-	public <T extends Player> Collection<T> getPlayers( Class<T> cls )
+	public <T extends PlayerPrim> Collection<T> getPlayers( Class<T> cls )
 	{
 		return getInstances( players, cls );
 	}
 	
 	@Override
-	public <T extends Vehicle> Collection<T> getVehicles( Class<T> cls )
+	public <T extends VehiclePrim> Collection<T> getVehicles( Class<T> cls )
 	{
 		return getInstances( vehicles, cls );
 	}
 	
 	@Override
-	public <T extends IObject> Collection<T> getObjects( Class<T> cls )
+	public <T extends ObjectPrim> Collection<T> getObjects( Class<T> cls )
 	{
 		return getInstances( objects, cls );
 	}
 	
 	@Override
-	public <T extends PlayerObject> Collection<T> getPlayerObjects( Player player, Class<T> cls )
+	public <T extends PlayerObjectPrim> Collection<T> getPlayerObjects( PlayerPrim player, Class<T> cls )
 	{
 		if( player == null ) return null;
 		
 		int playerId = player.getId();
 		if( playerId < 0 || playerId >= MAX_PLAYERS ) return new ArrayList<T>(0);
 		
-		PlayerObject[] playerObjects = playerObjectsArrays[playerId];
+		PlayerObjectPrim[] playerObjects = playerObjectsArrays[playerId];
 		return getInstances( playerObjects, cls );
 	}
 	
 	@Override
-	public <T extends Pickup> Collection<T> getPickups( Class<T> cls )
+	public <T extends PickupPrim> Collection<T> getPickups( Class<T> cls )
 	{
 		return getInstances( pickups, cls );
 	}
 	
 	@Override
-	public <T extends Label> Collection<T> getLabels( Class<T> cls )
+	public <T extends LabelPrim> Collection<T> getLabels( Class<T> cls )
 	{
 		return getInstances( labels, cls );
 	}
 	
 	@Override
-	public <T extends PlayerLabel> Collection<T> getPlayerLabels( Player player, Class<T> cls )
+	public <T extends PlayerLabelPrim> Collection<T> getPlayerLabels( PlayerPrim player, Class<T> cls )
 	{
 		if( player == null ) return null;
 		
 		int playerId = player.getId();
 		if( playerId < 0 || playerId >= MAX_PLAYERS ) return new ArrayList<T>(0);
 		
-		PlayerLabel[] playerLabels = playerLabelsArrays[playerId];
+		PlayerLabelPrim[] playerLabels = playerLabelsArrays[playerId];
 		return getInstances( playerLabels, cls );
 	}
 	
 	@Override
-	public <T extends Textdraw> Collection<T> getTextdraws( Class<T> cls )
+	public <T extends TextdrawPrim> Collection<T> getTextdraws( Class<T> cls )
 	{
 		return getInstances( textdraws, cls );
 	}
 	
 	@Override
-	public <T extends Zone> Collection<T> getZones( Class<T> cls )
+	public <T extends ZonePrim> Collection<T> getZones( Class<T> cls )
 	{
 		return getInstances( zones, cls );
 	}
 	
 	@Override
-	public <T extends Menu> Collection<T> getMenus( Class<T> cls )
+	public <T extends MenuPrim> Collection<T> getMenus( Class<T> cls )
 	{
 		return getInstances( menus, cls );
 	}
 	
 	@Override
-	public <T extends Dialog> Collection<T> getDialogs( Class<T> cls )
+	public <T extends DialogPrim> Collection<T> getDialogs( Class<T> cls )
 	{
 		Collection<T> items = new ArrayList<T>();
-		for( Reference<Dialog> reference : dialogs.values() )
+		for( Reference<DialogPrim> reference : dialogs.values() )
 		{
-			Dialog dialog = reference.get();
+			DialogPrim dialog = reference.get();
 			if( ! cls.isInstance(dialog) ) continue;
 			
 			items.add( cls.cast(dialog) );
@@ -405,12 +405,12 @@ public class SampObjectPool implements ISampObjectPool
 	}
 	
 	@Override
-	public <T extends Timer> Collection<T> getTimers( Class<T> cls )
+	public <T extends TimerPrim> Collection<T> getTimers( Class<T> cls )
 	{
 		Collection<T> items = new ArrayList<T>();
-		for( Reference<Timer> reference : timers )
+		for( Reference<TimerPrim> reference : timers )
 		{
-			Timer timer = reference.get();
+			TimerPrim timer = reference.get();
 			if( ! cls.isInstance(timer) ) continue;
 			
 			items.add( cls.cast(timer) );
@@ -420,92 +420,92 @@ public class SampObjectPool implements ISampObjectPool
 	}
 	
 	
-	public void setServer( Server server )
+	public void setServer( ServerPrim server )
 	{
 		this.server = server;
 	}
 	
-	public void setWorld( World world )
+	public void setWorld( WorldPrim world )
 	{
 		this.world = world;
 	}
 	
-	public void setPlayer( int id, Player player )
+	public void setPlayer( int id, PlayerPrim player )
 	{
 		players[ id ] = player;
 	}
 	
-	public void setVehicle( int id, Vehicle vehicle )
+	public void setVehicle( int id, VehiclePrim vehicle )
 	{
 		vehicles[ id ] = vehicle;
 	}
 	
-	public void setObject( int id, IObject object )
+	public void setObject( int id, ObjectPrim object )
 	{
 		objects[ id ] = object;
 	}
 	
-	public void setPlayerObject( Player player, int id, PlayerObject object )
+	public void setPlayerObject( PlayerPrim player, int id, PlayerObjectPrim object )
 	{
-		PlayerObject[] playerObjects = playerObjectsArrays[player.getId()];
+		PlayerObjectPrim[] playerObjects = playerObjectsArrays[player.getId()];
 		playerObjects[ id ] = object;
 	}
 	
-	public void setPickup( int id, Pickup pickup )
+	public void setPickup( int id, PickupPrim pickup )
 	{
 		pickups[ id ] = pickup;
 	}
 	
-	public void setLabel( int id, Label label )
+	public void setLabel( int id, LabelPrim label )
 	{
 		labels[ id ] = label;
 	}
 	
-	public void setPlayerLabel( Player player, int id, PlayerLabel label )
+	public void setPlayerLabel( PlayerPrim player, int id, PlayerLabelPrim label )
 	{
-		PlayerLabel[] playerLabels = playerLabelsArrays[player.getId()];
+		PlayerLabelPrim[] playerLabels = playerLabelsArrays[player.getId()];
 		playerLabels[ id ] = label;
 	}
 	
-	public void setTextdraw( int id, Textdraw textdraw )
+	public void setTextdraw( int id, TextdrawPrim textdraw )
 	{
 		textdraws[ id ] = textdraw;
 	}
 	
-	public void setZone( int id, Zone zone )
+	public void setZone( int id, ZonePrim zone )
 	{
 		zones[ id ] = zone;
 	}
 
-	public void setMenu( int id, Menu menu )
+	public void setMenu( int id, MenuPrim menu )
 	{
 		menus[ id ] = menu;
 	}
 	
-	public void putTimer( Timer timer )
+	public void putTimer( TimerPrim timer )
 	{
-		for( Reference<Timer> ref : timers )
+		for( Reference<TimerPrim> ref : timers )
 		{
 			if( ref.get() == null ) timers.remove( ref );
 		}
 		
-		timers.add( new WeakReference<Timer>( timer ) );
+		timers.add( new WeakReference<TimerPrim>( timer ) );
 	}
 	
-	public void putDialog( int id, Dialog dialog )
+	public void putDialog( int id, DialogPrim dialog )
 	{
-		for( Entry<Integer, Reference<Dialog>> entry : dialogs.entrySet() )
+		for( Entry<Integer, Reference<DialogPrim>> entry : dialogs.entrySet() )
 		{
 			if( entry.getValue().get() == null ) dialogs.remove( entry.getKey() );
 		}
 		
-		dialogs.put( id, new WeakReference<Dialog>( dialog ) );
+		dialogs.put( id, new WeakReference<DialogPrim>( dialog ) );
 	}
 	
-	public void removePlayer( Player player )
+	public void removePlayer( PlayerPrim player )
 	{
-		for( PlayerLabel playerLabel : getPlayerLabels(player) ) playerLabel.destroy();
-		for( PlayerObject playerObject : getPlayerObjects(player) ) playerObject.destroy();
+		for( PlayerLabelPrim playerLabel : getPlayerLabels(player) ) playerLabel.destroy();
+		for( PlayerObjectPrim playerObject : getPlayerObjects(player) ) playerObject.destroy();
 		setPlayer( player.getId(), null );
 	}
 }

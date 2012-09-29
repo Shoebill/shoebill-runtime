@@ -19,8 +19,8 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.data.constant.PlayerAttachBone;
-import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.PlayerAttach;
+import net.gtaun.shoebill.object.primitive.PlayerAttach;
+import net.gtaun.shoebill.object.primitive.PlayerPrim;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -125,11 +125,11 @@ public class PlayerAttachImpl implements PlayerAttach
 	}
 
 	
-	private Player player;
+	private PlayerPrim player;
 	private PlayerAttachSlot[] slots = new PlayerAttachSlot[MAX_ATTACHED_OBJECTS];
 
 	
-	PlayerAttachImpl( Player player )
+	PlayerAttachImpl( PlayerPrim player )
 	{
 		this.player = player;
 		
@@ -146,7 +146,7 @@ public class PlayerAttachImpl implements PlayerAttach
 	}
 	
 	@Override
-	public Player getPlayer()
+	public PlayerPrim getPlayer()
 	{
 		return player;
 	}

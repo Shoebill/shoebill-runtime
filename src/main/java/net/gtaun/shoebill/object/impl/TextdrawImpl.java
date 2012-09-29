@@ -22,8 +22,8 @@ import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Point2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.Textdraw;
+import net.gtaun.shoebill.object.primitive.PlayerPrim;
+import net.gtaun.shoebill.object.primitive.TextdrawPrim;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -36,7 +36,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class TextdrawImpl implements Textdraw
+public class TextdrawImpl implements TextdrawPrim
 {
 	private int id = INVALID_ID;
 	private Point2D position;
@@ -238,7 +238,7 @@ public class TextdrawImpl implements Textdraw
 	}
 
 	@Override
-	public void show( Player player )
+	public void show( PlayerPrim player )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -250,7 +250,7 @@ public class TextdrawImpl implements Textdraw
 	}
 
 	@Override
-	public void hide( Player player )
+	public void hide( PlayerPrim player )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
