@@ -30,6 +30,8 @@ import java.util.Properties;
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
 import net.gtaun.shoebill.object.impl.ServerImpl;
 import net.gtaun.shoebill.object.impl.WorldImpl;
+import net.gtaun.shoebill.proxy.ProxyManager;
+import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.resource.GamemodeManagerImpl;
 import net.gtaun.shoebill.resource.PluginManagerImpl;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
@@ -37,10 +39,14 @@ import net.gtaun.shoebill.samp.SampCallbackManager;
 import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.shoebill.trait.TraitManager;
+import net.gtaun.shoebill.trait.TraitManagerImpl;
 import net.gtaun.shoebill.util.event.EventManager;
 import net.gtaun.shoebill.util.event.IEventManager;
 import net.gtaun.shoebill.util.log.LogLevel;
 import net.gtaun.shoebill.util.log.LoggerOutputStream;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.Mixin;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -80,14 +86,6 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	
 	private File pluginDir, gamemodeDir, dataDir;
 	private File gamemodeFile;
-
-	
-	@Override public IEventManager getEventManager()				{ return eventManager; }
-	@Override public SampObjectPool getManagedObjectPool()			{ return managedObjectPool; }
-	@Override public GamemodeManager getGamemodeManager()			{ return gamemodeManager; }
-	@Override public PluginManager getPluginManager()				{ return pluginManager; }
-	@Override public SampCallbackManager getCallbackManager()		{ return sampCallbackManager; }
-	@Override public ShoebillVersion getVersion()					{ return version; }
 	
 	
 	ShoebillImpl() throws IOException
@@ -287,6 +285,47 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		
 		return sampCallbackManager.getMasterCallbackHandler();
 	}
+
+	@Override
+	public SampObjectPool getManagedObjectPool()
+	{
+		return managedObjectPool;
+	}
+	
+	@Override
+	public GamemodeManager getGamemodeManager()
+	{
+		return gamemodeManager;
+	}
+	
+	@Override
+	public PluginManager getPluginManager()
+	{
+		return pluginManager;
+	}
+	
+	@Override
+	public <T> T createTraitMixinObject(Class<T> mixinInterface, Class<?> superclass)
+	{
+		ProxyManagerImpl proxyManager = new ProxyManagerImpl();
+		TraitManagerImpl traitManager = new TraitManagerImpl();
+		
+		Enhancer enhancer = new Enhancer();
+		enhancer.setSuperclass(superclass);
+		enhancer.setCallback(proxyManager.getCallback());
+		Object superobject = enhancer.create();
+		
+		Class<?>[] interfaces = {mixinInterface, ProxyManager.class, TraitManager.class};
+		Object[] objects = {superobject, proxyManager, traitManager};
+		Object object = Mixin.create(interfaces, objects);
+		return mixinInterface.cast(object);
+	}
+	
+	@Override
+	public ShoebillVersion getVersion()
+	{
+		return version;
+	}
 	
 	@Override
 	public void changeGamemode( File file )
@@ -299,5 +338,16 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	public void reload()
 	{
 		SampNativeFunction.sendRconCommand( "changemode Shoebill" );
+	}
+	
+	@Override
+	public IEventManager getEventManager()
+	{
+		return eventManager;
+	}
+	@Override
+	public SampCallbackManager getCallbackManager()
+	{
+		return sampCallbackManager;
 	}
 }
