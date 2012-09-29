@@ -21,9 +21,9 @@ package net.gtaun.shoebill.samp;
  *
  */
 
-public abstract class SampCallbackHandler implements ISampCallbackHandler
+public abstract class AbstractSampCallbackHandler implements SampCallbackHandler
 {
-	protected SampCallbackHandler()
+	protected AbstractSampCallbackHandler()
 	{
 		
 	}

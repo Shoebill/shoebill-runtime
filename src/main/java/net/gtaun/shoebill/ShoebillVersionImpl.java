@@ -28,7 +28,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class ShoebillVersion implements IShoebillVersion
+public class ShoebillVersionImpl implements ShoebillVersion
 {
 	private String name;
 	private String version;
@@ -37,7 +37,7 @@ public class ShoebillVersion implements IShoebillVersion
 	private String buildDate;
 	
 	
-	public ShoebillVersion( InputStream in )
+	public ShoebillVersionImpl( InputStream in )
 	{
 		YamlConfiguration config = new YamlConfiguration();
 		config.read( in );

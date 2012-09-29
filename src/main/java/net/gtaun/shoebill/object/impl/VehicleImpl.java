@@ -17,9 +17,9 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.IShoebillLowLevel;
-import net.gtaun.shoebill.SampObjectPool;
-import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.ShoebillLowLevel;
+import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.Quaternion;
@@ -126,11 +126,11 @@ public class VehicleImpl implements VehiclePrim
 		component = new VehicleComponentImpl(this);
 		damage = new VehicleDamageImpl(this);
 		
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		pool.setVehicle( id, this );
 		
 		VehicleSpawnEvent event = new VehicleSpawnEvent( this );
-		IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();
+		ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) ShoebillImpl.getInstance();
 		shoebillLowLevel.getEventManager().dispatchEvent( event, this );
 	}
 
@@ -157,12 +157,12 @@ public class VehicleImpl implements VehiclePrim
 		if( isStatic ) return;
 		
 		VehicleDestroyEvent event = new VehicleDestroyEvent( this );
-		IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();
+		ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) ShoebillImpl.getInstance();
 		shoebillLowLevel.getEventManager().dispatchEvent( event, this );
 		
 		SampNativeFunction.destroyVehicle( id );
 
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		pool.setVehicle( id, null );
 		
 		id = INVALID_ID;
@@ -437,7 +437,7 @@ public class VehicleImpl implements VehiclePrim
 		if( isDestroyed() ) return null;
 		
 		int trailerId = SampNativeFunction.getVehicleTrailer(id);
-		return Shoebill.getInstance().getManagedObjectPool().getVehicle(trailerId);
+		return ShoebillImpl.getInstance().getManagedObjectPool().getVehicle(trailerId);
 	}
 	
 	@Override

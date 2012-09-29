@@ -26,12 +26,12 @@ import java.util.Map;
  *
  */
 
-public class TraitManager implements ITraitManager
+public class TraitManagerImpl implements TraitManager
 {
 	private Map<Class<? extends Trait>, Trait> traits = new HashMap<>();
 	
 	
-	public TraitManager()
+	public TraitManagerImpl()
 	{
 		
 	}

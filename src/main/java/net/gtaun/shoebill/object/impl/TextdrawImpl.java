@@ -17,8 +17,8 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectPool;
-import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Point2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
@@ -42,7 +42,7 @@ public class TextdrawImpl implements TextdrawPrim
 	private Point2D position;
 	private String text;
 	
-	private boolean[] isPlayerShowed = new boolean[SampObjectPool.MAX_PLAYERS];
+	private boolean[] isPlayerShowed = new boolean[SampObjectPoolImpl.MAX_PLAYERS];
 
 
 	public TextdrawImpl( float x, float y ) throws CreationFailedException
@@ -75,7 +75,7 @@ public class TextdrawImpl implements TextdrawPrim
 		
 		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = false;
 		
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		pool.setTextdraw( id, this );
 	}
 
@@ -92,7 +92,7 @@ public class TextdrawImpl implements TextdrawPrim
 		
 		SampNativeFunction.textDrawDestroy( id );
 
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		pool.setTextdraw( id, null );
 		
 		id = INVALID_ID;

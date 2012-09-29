@@ -17,9 +17,9 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.IShoebillLowLevel;
-import net.gtaun.shoebill.SampObjectPool;
-import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.ShoebillLowLevel;
+import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
@@ -67,7 +67,7 @@ public class PlayerImpl implements PlayerPrim
 {
 	public static void enableStuntBonusForAll( boolean enabled )
 	{
-		for( PlayerPrim player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		for( PlayerPrim player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			player.enableStuntBonus( enabled );
 		}
@@ -75,7 +75,7 @@ public class PlayerImpl implements PlayerPrim
 
 	public static void sendMessageToAll( Color color, String message )
 	{
-		for( PlayerPrim player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		for( PlayerPrim player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			player.sendMessage( color, message );
 		}
@@ -83,7 +83,7 @@ public class PlayerImpl implements PlayerPrim
 	
 	public static void sendMessageToAll( Color color, String format, Object... args )
 	{
-		for( PlayerPrim player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		for( PlayerPrim player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			String message = String.format(format, args);
 			player.sendMessage( color, message );
@@ -145,7 +145,7 @@ public class PlayerImpl implements PlayerPrim
 		SampNativeFunction.getPlayerVelocity(id, velocity);
 		SampNativeFunction.getPlayerKeys(id, keyState);
 
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		if( pool.getPlayer(id) != null ) throw new UnsupportedOperationException();
 		pool.setPlayer( id, this );
 	}
@@ -429,7 +429,7 @@ public class PlayerImpl implements PlayerPrim
 		if( isOnline() == false ) return null;
 		
 		int vehicleId = SampNativeFunction.getPlayerVehicleID(id);
-		return Shoebill.getInstance().getManagedObjectPool().getVehicle(vehicleId);
+		return ShoebillImpl.getInstance().getManagedObjectPool().getVehicle(vehicleId);
 	}
 	
 	@Override
@@ -780,7 +780,7 @@ public class PlayerImpl implements PlayerPrim
 		if( isOnline() == false ) return;
 		
 		if( message == null ) throw new NullPointerException();
-		for( PlayerPrim player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		for( PlayerPrim player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			sendChat( player, message );
 		}
@@ -930,7 +930,7 @@ public class PlayerImpl implements PlayerPrim
 	{
 		if( isOnline() == false ) return null;
 		
-		return Shoebill.getInstance().getManagedObjectPool().getMenu( SampNativeFunction.getPlayerMenu(id) );
+		return ShoebillImpl.getInstance().getManagedObjectPool().getMenu( SampNativeFunction.getPlayerMenu(id) );
 	}
 
 	@Override
@@ -1212,7 +1212,7 @@ public class PlayerImpl implements PlayerPrim
 		if( isOnline() == false ) return null;
 		
 		int vehicleId = SampNativeFunction.getPlayerSurfingVehicleID(id);
-		return Shoebill.getInstance().getManagedObjectPool().getVehicle(vehicleId);
+		return ShoebillImpl.getInstance().getManagedObjectPool().getVehicle(vehicleId);
 	}
 	
 	@Override
@@ -1335,7 +1335,7 @@ public class PlayerImpl implements PlayerPrim
 		int objectid = SampNativeFunction.getPlayerSurfingObjectID(id);
 		if( objectid == ObjectPrim.INVALID_ID ) return null;
 		
-		return Shoebill.getInstance().getManagedObjectPool().getObject( objectid );
+		return ShoebillImpl.getInstance().getManagedObjectPool().getObject( objectid );
 	}
 	
 	@Override
@@ -1352,7 +1352,7 @@ public class PlayerImpl implements PlayerPrim
 	{
 		if( isOnline() == false ) return null;
 		
-		return Shoebill.getInstance().getManagedObjectPool().getPlayer( SampNativeFunction.getPlayerTargetPlayer(id) );
+		return ShoebillImpl.getInstance().getManagedObjectPool().getPlayer( SampNativeFunction.getPlayerTargetPlayer(id) );
 	}
 
 	@Override
@@ -1433,7 +1433,7 @@ public class PlayerImpl implements PlayerPrim
 		SampNativeFunction.showPlayerDialog( id, -1, 0, "", "", "", "" );
 		
 		DialogCancelEvent event = new DialogCancelEvent( dialog, this );
-		IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();
+		ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) ShoebillImpl.getInstance();
 		shoebillLowLevel.getEventManager().dispatchEvent( event, dialog, this );
 	}
 }

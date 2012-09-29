@@ -17,8 +17,8 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectPool;
-import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.exception.CreationFailedException;
@@ -39,8 +39,8 @@ public class ZoneImpl implements ZonePrim
 	private int id = INVALID_ID;
 	private Area area;
 	
-	private boolean[] isPlayerShowed = new boolean[SampObjectPool.MAX_PLAYERS];
-	private boolean[] isPlayerFlashing = new boolean[SampObjectPool.MAX_PLAYERS];
+	private boolean[] isPlayerShowed = new boolean[SampObjectPoolImpl.MAX_PLAYERS];
+	private boolean[] isPlayerFlashing = new boolean[SampObjectPoolImpl.MAX_PLAYERS];
 
 
 	public ZoneImpl( float minX, float minY, float maxX, float maxY ) throws CreationFailedException
@@ -66,7 +66,7 @@ public class ZoneImpl implements ZonePrim
 			isPlayerFlashing[i] = false;
 		}
 		
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		pool.setZone( id, this );
 	}
 
@@ -83,7 +83,7 @@ public class ZoneImpl implements ZonePrim
 		
 		SampNativeFunction.gangZoneDestroy( id );
 
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		pool.setZone( id, null );
 		
 		id = INVALID_ID;

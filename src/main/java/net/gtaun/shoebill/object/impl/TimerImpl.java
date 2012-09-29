@@ -16,9 +16,9 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.IShoebillLowLevel;
-import net.gtaun.shoebill.SampObjectPool;
-import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.ShoebillLowLevel;
+import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.event.timer.TimerTickEvent;
 import net.gtaun.shoebill.object.primitive.TimerPrim;
 
@@ -53,7 +53,7 @@ public class TimerImpl implements TimerPrim
 		this.interval = interval;
 		this.count = count;
 		
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		pool.putTimer( this );
 	}
 
@@ -117,7 +117,7 @@ public class TimerImpl implements TimerPrim
 		
 		if( count > 0 ) counting--;
 		TimerTickEvent event = new TimerTickEvent(this, realInterval);
-		IShoebillLowLevel shoebillLowLevel = (IShoebillLowLevel) Shoebill.getInstance();
+		ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) ShoebillImpl.getInstance();
 		shoebillLowLevel.getEventManager().dispatchEvent( event, this );
 		
 		realInterval = 0;

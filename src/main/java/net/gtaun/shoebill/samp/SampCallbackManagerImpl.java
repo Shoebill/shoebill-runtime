@@ -27,12 +27,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  */
 
-public class SampCallbackManager implements ISampCallbackManager
+public class SampCallbackManagerImpl implements SampCallbackManager
 {
-	private Queue<ISampCallbackHandler> callbackHandlers;
+	private Queue<SampCallbackHandler> callbackHandlers;
 	
 
-	public SampCallbackManager()
+	public SampCallbackManagerImpl()
 	{
 		callbackHandlers = new ConcurrentLinkedQueue<>();
 	}
@@ -44,36 +44,36 @@ public class SampCallbackManager implements ISampCallbackManager
 	}
 	
 	@Override
-	public void registerCallbackHandler( ISampCallbackHandler handler )
+	public void registerCallbackHandler( SampCallbackHandler handler )
 	{
 		callbackHandlers.add( handler );
 	}
 
 	@Override
-	public void unregisterCallbackHandler( ISampCallbackHandler handler )
+	public void unregisterCallbackHandler( SampCallbackHandler handler )
 	{
 		callbackHandlers.remove( handler );
 	}
 
 	@Override
-	public boolean hasCallbackHandler( ISampCallbackHandler handler )
+	public boolean hasCallbackHandler( SampCallbackHandler handler )
 	{
 		return callbackHandlers.contains( handler );
 	}
 
 	@Override
-	public ISampCallbackHandler getMasterCallbackHandler()
+	public SampCallbackHandler getMasterCallbackHandler()
 	{
 		return callbackHandler;
 	}
 	
 
-	private ISampCallbackHandler callbackHandler = new ISampCallbackHandler()
+	private SampCallbackHandler callbackHandler = new SampCallbackHandler()
 	{
 		@Override
 		public int onGameModeInit()
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onGameModeInit();
 			}
@@ -88,7 +88,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onGameModeExit()
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onGameModeExit();
 			}
@@ -103,7 +103,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerConnect( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerConnect( playerid );
 			}
@@ -118,7 +118,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerDisconnect( int playerid, int reason )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerDisconnect( playerid, reason );
 			}
@@ -133,7 +133,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerSpawn( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerSpawn( playerid );
 			}
@@ -148,7 +148,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerDeath( int playerid, int killerid, int reason )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerDeath( playerid, killerid, reason );
 			}
@@ -163,7 +163,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onVehicleSpawn( int vehicleid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onVehicleSpawn( vehicleid );
 			}
@@ -178,7 +178,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onVehicleDeath( int vehicleid, int killerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onVehicleDeath( vehicleid, killerid );
 			}
@@ -194,7 +194,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		public int onPlayerText( int playerid, String text )
 		{
 			int ret = 1;
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				ret &= handler.onPlayerText( playerid, text );
 			}
@@ -210,7 +210,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		public int onPlayerCommandText( int playerid, String cmdtext )
 		{
 			int ret = 0;
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				ret |= handler.onPlayerCommandText( playerid, cmdtext );
 			}
@@ -226,7 +226,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		public int onPlayerRequestClass( int playerid, int classid )
 		{
 			int ret = 1;
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				ret &= handler.onPlayerRequestClass( playerid, classid );
 			}
@@ -241,7 +241,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerEnterVehicle( int playerid, int vehicleid, int ispassenger )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerEnterVehicle( playerid, vehicleid, ispassenger );
 			}
@@ -256,7 +256,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerExitVehicle( int playerid, int vehicleid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerExitVehicle( playerid, vehicleid );
 			}
@@ -271,7 +271,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerStateChange( int playerid, int newstate, int oldstate )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerStateChange( playerid, newstate, oldstate );
 			}
@@ -286,7 +286,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerEnterCheckpoint( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerEnterCheckpoint( playerid );
 			}
@@ -301,7 +301,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerLeaveCheckpoint( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerLeaveCheckpoint( playerid );
 			}
@@ -316,7 +316,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerEnterRaceCheckpoint( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerEnterRaceCheckpoint( playerid );
 			}
@@ -331,7 +331,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerLeaveRaceCheckpoint( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerLeaveRaceCheckpoint( playerid );
 			}
@@ -347,7 +347,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		public int onRconCommand( String cmd )
 		{
 			int ret = 0;
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				ret |= handler.onRconCommand( cmd );
 			}
@@ -363,7 +363,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		public int onPlayerRequestSpawn( int playerid )
 		{
 			int ret = 1;
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				ret &= handler.onPlayerRequestSpawn( playerid );
 			}
@@ -378,7 +378,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onObjectMoved( int objectid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onObjectMoved( objectid );
 			}
@@ -393,7 +393,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerObjectMoved( int playerid, int objectid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerObjectMoved( playerid, objectid );
 			}
@@ -408,7 +408,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerPickUpPickup( int playerid, int pickupid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerPickUpPickup( playerid, pickupid );
 			}
@@ -423,7 +423,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onVehicleMod( int playerid, int vehicleid, int componentid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onVehicleMod( playerid, vehicleid, componentid );
 			}
@@ -438,7 +438,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onEnterExitModShop( int playerid, int enterexit, int interiorid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onEnterExitModShop( playerid, enterexit, interiorid );
 			}
@@ -453,7 +453,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onVehiclePaintjob( int playerid, int vehicleid, int paintjobid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onVehiclePaintjob( playerid, vehicleid, paintjobid );
 			}
@@ -468,7 +468,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onVehicleRespray( int playerid, int vehicleid, int color1, int color2 )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onVehicleRespray( playerid, vehicleid, color1, color2 );
 			}
@@ -483,7 +483,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onVehicleDamageStatusUpdate( int vehicleid, int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onVehicleDamageStatusUpdate( vehicleid, playerid );
 			}
@@ -498,7 +498,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onUnoccupiedVehicleUpdate( int vehicleid, int playerid, int passenger_seat )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onUnoccupiedVehicleUpdate( vehicleid, playerid, passenger_seat );
 			}
@@ -513,7 +513,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerSelectedMenuRow( int playerid, int row )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerSelectedMenuRow( playerid, row );
 			}
@@ -528,7 +528,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerExitedMenu( int playerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerExitedMenu( playerid );
 			}
@@ -543,7 +543,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerInteriorChange( int playerid, int newinteriorid, int oldinteriorid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerInteriorChange( playerid, newinteriorid, oldinteriorid );
 			}
@@ -559,7 +559,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		public int onPlayerKeyStateChange( int playerid, int newkeys, int oldkeys )
 		{
 			int ret = 1;
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				ret &= handler.onPlayerKeyStateChange( playerid, newkeys, oldkeys );
 			}
@@ -574,7 +574,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onRconLoginAttempt( String ip, String password, int success )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onRconLoginAttempt( ip, password, success );
 			}
@@ -590,7 +590,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		public int onPlayerUpdate( int playerid )
 		{
 			int ret = 1;
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				ret &= handler.onPlayerUpdate( playerid );
 			}
@@ -605,7 +605,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerStreamIn( int playerid, int forplayerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerStreamIn( playerid, forplayerid );
 			}
@@ -620,7 +620,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerStreamOut( int playerid, int forplayerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerStreamOut( playerid, forplayerid );
 			}
@@ -635,7 +635,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onVehicleStreamIn( int vehicleid, int forplayerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onVehicleStreamIn( vehicleid, forplayerid );
 			}
@@ -650,7 +650,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onVehicleStreamOut( int vehicleid, int forplayerid )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onVehicleStreamOut( vehicleid, forplayerid );
 			}
@@ -666,7 +666,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		public int onDialogResponse( int playerid, int dialogid, int response, int listitem, String inputtext )
 		{
 			int ret = 0;
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				ret |= handler.onDialogResponse( playerid, dialogid, response, listitem, inputtext );
 			}
@@ -681,7 +681,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerTakeDamage( int playerId, int issuerId, float amount, int weaponId )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerTakeDamage( playerId, issuerId, amount, weaponId );
 			}
@@ -696,7 +696,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerGiveDamage( int playerId, int damagedId, float amount, int weaponId )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerGiveDamage( playerId, damagedId, amount, weaponId );
 			}
@@ -711,7 +711,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerClickMap( int playerId, float x, float y, float z )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerClickMap( playerId, x, y, z );
 			}
@@ -726,7 +726,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public int onPlayerClickPlayer( int playerid, int clickedplayerid, int source )
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onPlayerClickPlayer( playerid, clickedplayerid, source );
 			}
@@ -741,7 +741,7 @@ public class SampCallbackManager implements ISampCallbackManager
 		@Override
 		public void onProcessTick()
 		{
-			for( ISampCallbackHandler handler : callbackHandlers ) try
+			for( SampCallbackHandler handler : callbackHandlers ) try
 			{
 				handler.onProcessTick();
 			}

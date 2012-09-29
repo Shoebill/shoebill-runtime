@@ -20,7 +20,7 @@ package net.gtaun.shoebill.object.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Point3D;
@@ -153,7 +153,7 @@ public class RaceCheckpointImpl implements RaceCheckpointPrim
 	@Override
 	public void update()
 	{
-		for( PlayerPrim player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		for( PlayerPrim player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			if( player == null ) continue;
 			if( player.getRaceCheckpoint() == this ) set( player );
@@ -164,7 +164,7 @@ public class RaceCheckpointImpl implements RaceCheckpointPrim
 	public Collection<PlayerPrim> getUsingPlayers()
 	{
 		Collection<PlayerPrim> players = new ArrayList<>();
-		for( PlayerPrim player : Shoebill.getInstance().getManagedObjectPool().getPlayers() )
+		for( PlayerPrim player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			if( player.getRaceCheckpoint() == this ) players.add( player );
 		}

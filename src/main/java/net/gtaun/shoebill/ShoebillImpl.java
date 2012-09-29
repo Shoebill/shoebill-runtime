@@ -30,12 +30,12 @@ import java.util.Properties;
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
 import net.gtaun.shoebill.object.impl.ServerImpl;
 import net.gtaun.shoebill.object.impl.WorldImpl;
-import net.gtaun.shoebill.resource.GamemodeManager;
-import net.gtaun.shoebill.resource.PluginManager;
-import net.gtaun.shoebill.samp.ISampCallbackHandler;
-import net.gtaun.shoebill.samp.ISampCallbackManager;
+import net.gtaun.shoebill.resource.GamemodeManagerImpl;
+import net.gtaun.shoebill.resource.PluginManagerImpl;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackManager;
+import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
+import net.gtaun.shoebill.samp.SampCallbackManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.util.event.EventManager;
 import net.gtaun.shoebill.util.event.IEventManager;
@@ -54,26 +54,26 @@ import org.slf4j.LoggerFactory;
  * 
  */
 
-public class Shoebill implements IShoebill, IShoebillLowLevel
+public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(Shoebill.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);
 	
 	
-	private static Shoebill instance;
-	public static IShoebill getInstance()
+	private static ShoebillImpl instance;
+	public static Shoebill getInstance()
 	{
 		return instance;
 	}
 	
 	
-	private ShoebillVersion version;
+	private ShoebillVersionImpl version;
 	private ShoebillConfiguration configuration;
 	private EventManager eventManager;
 	
-	private SampCallbackManager sampCallbackManager;
-	private SampObjectPool managedObjectPool;
-	private GamemodeManager gamemodeManager;
-	private PluginManager pluginManager;
+	private SampCallbackManagerImpl sampCallbackManager;
+	private SampObjectPoolImpl managedObjectPool;
+	private GamemodeManagerImpl gamemodeManager;
+	private PluginManagerImpl pluginManager;
 	
 	private SampEventLogger sampEventLogger;
 	private SampEventDispatcher sampEventDispatcher;
@@ -83,19 +83,19 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 
 	
 	@Override public IEventManager getEventManager()				{ return eventManager; }
-	@Override public ISampObjectPool getManagedObjectPool()			{ return managedObjectPool; }
-	@Override public IGamemodeManager getGamemodeManager()			{ return gamemodeManager; }
-	@Override public IPluginManager getPluginManager()				{ return pluginManager; }
-	@Override public ISampCallbackManager getCallbackManager()		{ return sampCallbackManager; }
-	@Override public IShoebillVersion getVersion()					{ return version; }
+	@Override public SampObjectPool getManagedObjectPool()			{ return managedObjectPool; }
+	@Override public GamemodeManager getGamemodeManager()			{ return gamemodeManager; }
+	@Override public PluginManager getPluginManager()				{ return pluginManager; }
+	@Override public SampCallbackManager getCallbackManager()		{ return sampCallbackManager; }
+	@Override public ShoebillVersion getVersion()					{ return version; }
 	
 	
-	Shoebill() throws IOException
+	ShoebillImpl() throws IOException
 	{
 		instance = this;
 		initializeLoggerConfig();
 		
-		version = new ShoebillVersion( this.getClass().getClassLoader().getResourceAsStream( "version.yml" ));
+		version = new ShoebillVersionImpl( this.getClass().getClassLoader().getResourceAsStream( "version.yml" ));
 		
 		String startupMessage = "Shoebill " + version.getVersion();
 		
@@ -117,7 +117,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		String gamemodeFilename = configuration.getGamemode();
 		if( gamemodeFilename == null )
 		{
-			Shoebill.LOGGER.error( "There's no gamemode assigned in config.yml." );
+			ShoebillImpl.LOGGER.error( "There's no gamemode assigned in config.yml." );
 			throw new NoGamemodeAssignedException();
 		}
 
@@ -154,7 +154,7 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 
 	private void registerRootCallbackHandler()
 	{
-		sampCallbackManager.registerCallbackHandler( new SampCallbackHandler()
+		sampCallbackManager.registerCallbackHandler( new AbstractSampCallbackHandler()
 		{
 			@Override
 			public int onGameModeInit()
@@ -215,10 +215,10 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		eventManager = new EventManager();
 		
 		ClassLoader classLoader = generateResourceClassLoader(pluginDir, gamemodeDir);
-		gamemodeManager = new GamemodeManager(this, classLoader, gamemodeDir, dataDir);
-		pluginManager = new PluginManager(this, classLoader, pluginDir, dataDir);
+		gamemodeManager = new GamemodeManagerImpl(this, classLoader, gamemodeDir, dataDir);
+		pluginManager = new PluginManagerImpl(this, classLoader, pluginDir, dataDir);
 
-		managedObjectPool = new SampObjectPool( eventManager );
+		managedObjectPool = new SampObjectPoolImpl( eventManager );
 		managedObjectPool.setServer( new ServerImpl() );
 		managedObjectPool.setWorld( new WorldImpl() );
 
@@ -277,11 +277,11 @@ public class Shoebill implements IShoebill, IShoebillLowLevel
 		pluginManager.unloadAllPlugin();
 	}
 
-	public ISampCallbackHandler getCallbackHandler()
+	public SampCallbackHandler getCallbackHandler()
 	{
 		if( sampCallbackManager == null )
 		{
-			sampCallbackManager = new SampCallbackManager();
+			sampCallbackManager = new SampCallbackManagerImpl();
 			registerRootCallbackHandler();
 		}
 		

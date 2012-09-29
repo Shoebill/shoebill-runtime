@@ -75,7 +75,7 @@ import net.gtaun.shoebill.object.primitive.PlayerPrim;
 import net.gtaun.shoebill.object.primitive.PlayerObjectPrim;
 import net.gtaun.shoebill.object.primitive.TimerPrim;
 import net.gtaun.shoebill.object.primitive.VehiclePrim;
-import net.gtaun.shoebill.samp.ISampCallbackHandler;
+import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.util.event.EventManager;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -86,15 +86,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class SampEventDispatcher implements ISampCallbackHandler
+public class SampEventDispatcher implements SampCallbackHandler
 {
-	private SampObjectPool sampObjectPool;
+	private SampObjectPoolImpl sampObjectPool;
 	private EventManager eventManager;
 
 	private long lastProcessTimeMillis;
 	
 	
-	public SampEventDispatcher( SampObjectPool pool, EventManager manager )
+	public SampEventDispatcher( SampObjectPoolImpl pool, EventManager manager )
 	{
 		sampObjectPool = pool;
 		eventManager = manager;
@@ -539,7 +539,7 @@ public class SampEventDispatcher implements ISampCallbackHandler
 		try
 		{
 			RconCommandEvent event = new RconCommandEvent(cmd);
-			eventManager.dispatchEvent( event, Shoebill.getInstance().getManagedObjectPool().getServer() );
+			eventManager.dispatchEvent( event, ShoebillImpl.getInstance().getManagedObjectPool().getServer() );
 			
 			return event.getResult();
 		}

@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectPool;
-import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
@@ -90,7 +90,7 @@ public class PlayerObjectImpl implements PlayerObjectPrim
 		id = SampNativeFunction.createPlayerObject( player.getId(), modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		pool.setPlayerObject( player, id, this );
 	}
 
@@ -114,7 +114,7 @@ public class PlayerObjectImpl implements PlayerObjectPrim
 		{
 			SampNativeFunction.destroyPlayerObject( player.getId(), id );
 
-			SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+			SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 			pool.setPlayerObject( player, id, null );
 		}
 

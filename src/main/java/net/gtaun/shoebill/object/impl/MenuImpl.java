@@ -17,8 +17,8 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectPool;
-import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Point2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.primitive.MenuPrim;
@@ -66,7 +66,7 @@ public class MenuImpl implements MenuPrim
 		id = SampNativeFunction.createMenu( title, columns, position.getX(), position.getY(), col1Width, col1Width );
 		if( id == -1 ) throw new CreationFailedException();
 		
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		pool.setMenu( id, this );
 	}
 
@@ -83,7 +83,7 @@ public class MenuImpl implements MenuPrim
 		
 		SampNativeFunction.destroyMenu( id );
 		
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		pool.setMenu( id, null );
 		
 		id = INVALID_ID;

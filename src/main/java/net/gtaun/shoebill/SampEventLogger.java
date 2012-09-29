@@ -19,7 +19,7 @@ package net.gtaun.shoebill;
 import net.gtaun.shoebill.object.primitive.PickupPrim;
 import net.gtaun.shoebill.object.primitive.PlayerPrim;
 import net.gtaun.shoebill.object.primitive.VehiclePrim;
-import net.gtaun.shoebill.samp.ISampCallbackHandler;
+import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -32,15 +32,15 @@ import org.slf4j.LoggerFactory;
  *
  */
 
-public class SampEventLogger implements ISampCallbackHandler
+public class SampEventLogger implements SampCallbackHandler
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(Shoebill.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);
 	
 	
-	private ISampObjectPool sampObjectPool;
+	private SampObjectPool sampObjectPool;
 	
 	
-	public SampEventLogger( ISampObjectPool pool )
+	public SampEventLogger( SampObjectPool pool )
 	{
 		sampObjectPool = pool;
 	}

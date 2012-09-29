@@ -17,8 +17,8 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectPool;
-import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.primitive.PickupPrim;
@@ -62,7 +62,7 @@ public class PickupImpl implements PickupPrim
 		id = SampNativeFunction.createPickup( modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId() );
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		pool.setPickup( id, this );
 	}
 
@@ -79,7 +79,7 @@ public class PickupImpl implements PickupPrim
 		
 		SampNativeFunction.destroyPickup( id );
 
-		SampObjectPool pool = (SampObjectPool) Shoebill.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		pool.setPickup( id, null );
 		
 		id = INVALID_ID;

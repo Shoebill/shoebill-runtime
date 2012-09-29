@@ -40,8 +40,8 @@ import net.gtaun.shoebill.object.primitive.TimerPrim;
 import net.gtaun.shoebill.object.primitive.VehiclePrim;
 import net.gtaun.shoebill.object.primitive.WorldPrim;
 import net.gtaun.shoebill.object.primitive.ZonePrim;
-import net.gtaun.shoebill.samp.ISampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
+import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
 import net.gtaun.shoebill.util.event.EventManager;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -52,7 +52,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class SampObjectPool implements ISampObjectPool
+public class SampObjectPoolImpl implements SampObjectPool
 {
 	public static final int MAX_PLAYERS =				800;
 	public static final int MAX_VEHICLES =				2000;
@@ -73,7 +73,7 @@ public class SampObjectPool implements ISampObjectPool
 	}
 	
 	
-	private ISampCallbackHandler callbackHandler;
+	private SampCallbackHandler callbackHandler;
 	
 	private ServerPrim server;
 	private WorldPrim world;
@@ -93,9 +93,9 @@ public class SampObjectPool implements ISampObjectPool
 	private Map<Integer, Reference<DialogPrim>> dialogs			= new ConcurrentHashMap<>();
 	
 	
-	SampObjectPool( final EventManager eventManager )
+	SampObjectPoolImpl( final EventManager eventManager )
 	{
-		callbackHandler = new SampCallbackHandler()
+		callbackHandler = new AbstractSampCallbackHandler()
 		{
 			@Override
 			public int onPlayerConnect( int playerid )
@@ -131,7 +131,7 @@ public class SampObjectPool implements ISampObjectPool
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
-	ISampCallbackHandler getCallbackHandler()
+	SampCallbackHandler getCallbackHandler()
 	{
 		return callbackHandler;
 	}
