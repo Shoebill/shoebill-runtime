@@ -19,7 +19,7 @@ package net.gtaun.shoebill.object.impl;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.IObject;
 import net.gtaun.shoebill.object.Player;
@@ -50,35 +50,35 @@ public class PlayerObjectImpl implements PlayerObject
 	
 	public PlayerObjectImpl( Player player, int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
 	{
-		initialize( player, modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), drawDistance );
+		initialize( player, modelId, new Location(x, y, z), new Point3D(rx, ry, rz), drawDistance );
 	}
 	
 	public PlayerObjectImpl( Player player, int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
-		initialize( player, modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), drawDistance );
+		initialize( player, modelId, new Location(x, y, z), new Point3D(rx, ry, rz), drawDistance );
 	}
 	
 	public PlayerObjectImpl( Player player, int modelId, Location loc, float rx, float ry, float rz ) throws CreationFailedException
 	{
-		initialize( player, modelId, new Location(loc), new Vector3D(rx, ry, rz), drawDistance );
+		initialize( player, modelId, new Location(loc), new Point3D(rx, ry, rz), drawDistance );
 	}
 	
 	public PlayerObjectImpl( Player player, int modelId, Location loc, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
-		initialize( player, modelId, new Location(loc), new Vector3D(rx, ry, rz), drawDistance );
+		initialize( player, modelId, new Location(loc), new Point3D(rx, ry, rz), drawDistance );
 	}
 	
-	public PlayerObjectImpl( Player player, int modelId, Location loc, Vector3D rot ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, Location loc, Point3D rot ) throws CreationFailedException
 	{
-		initialize( player, modelId, new Location(loc), new Vector3D(rot), drawDistance );
+		initialize( player, modelId, new Location(loc), new Point3D(rot), drawDistance );
 	}
 	
-	public PlayerObjectImpl( Player player, int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, Location loc, Point3D rot, float drawDistance ) throws CreationFailedException
 	{
-		initialize( player, modelId, new Location(loc), new Vector3D(rot), drawDistance );
+		initialize( player, modelId, new Location(loc), new Point3D(rot), drawDistance );
 	}
 	
-	private void initialize( Player player, int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
+	private void initialize( Player player, int modelId, Location loc, Point3D rot, float drawDistance ) throws CreationFailedException
 	{
 		if( player.isOnline() == false ) throw new CreationFailedException();
 		
@@ -191,7 +191,7 @@ public class PlayerObjectImpl implements PlayerObject
 	}
 
 	@Override
-	public void setLocation( Vector3D pos )
+	public void setLocation( Point3D pos )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -211,12 +211,12 @@ public class PlayerObjectImpl implements PlayerObject
 	}
 	
 	@Override
-	public Vector3D getRotate()
+	public Point3D getRotate()
 	{
 		if( isDestroyed() ) return null;
 		if( player.isOnline() == false ) return null;
 		
-		Vector3D rotate = new Vector3D();
+		Point3D rotate = new Point3D();
 		SampNativeFunction.getPlayerObjectRot( player.getId(), id, rotate );
 		return rotate;
 	}
@@ -231,7 +231,7 @@ public class PlayerObjectImpl implements PlayerObject
 	}
 	
 	@Override
-	public void setRotate( Vector3D rot )
+	public void setRotate( Point3D rot )
 	{
 		setRotate( rot.getX(), rot.getY(), rot.getZ() );
 	}
@@ -266,13 +266,13 @@ public class PlayerObjectImpl implements PlayerObject
 	}
 	
 	@Override
-	public int move( Vector3D pos, float speed )
+	public int move( Point3D pos, float speed )
 	{
 		return move( pos.getX(), pos.getY(), pos.getZ(), speed );
 	}
 	
 	@Override
-	public int move( Vector3D pos, float speed, Vector3D rot )
+	public int move( Point3D pos, float speed, Point3D rot )
 	{
 		return move( pos.getX(), pos.getY(), pos.getZ(), speed, rot.getX(), rot.getY(), rot.getZ() );
 	}
@@ -301,7 +301,7 @@ public class PlayerObjectImpl implements PlayerObject
 	}
 	
 	@Override
-	public void attach( Player target, Vector3D pos, Vector3D rot )
+	public void attach( Player target, Point3D pos, Point3D rot )
 	{
 		attach( target, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
 	}
@@ -313,7 +313,7 @@ public class PlayerObjectImpl implements PlayerObject
 	}
 
 	@Override
-	public void attach( IObject object, Vector3D pos, Vector3D rot, boolean syncRotation )
+	public void attach( IObject object, Point3D pos, Point3D rot, boolean syncRotation )
 	{
 		throw new UnsupportedOperationException();
 	}
@@ -325,7 +325,7 @@ public class PlayerObjectImpl implements PlayerObject
 	}
 
 	@Override
-	public void attach( Vehicle vehicle, Vector3D pos, Vector3D rot )
+	public void attach( Vehicle vehicle, Point3D pos, Point3D rot )
 	{
 		throw new UnsupportedOperationException();
 	}

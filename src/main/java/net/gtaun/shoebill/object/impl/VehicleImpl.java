@@ -22,8 +22,8 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
-import net.gtaun.shoebill.data.Quaternions;
-import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.data.Quaternion;
+import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
@@ -74,12 +74,12 @@ public class VehicleImpl implements Vehicle
 		initialize( modelId, x, y, z, 0, 0, angle, color1, color2, respawnDelay );
 	}
 
-	public VehicleImpl( int modelId, Vector3D pos, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
+	public VehicleImpl( int modelId, Point3D pos, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
 	{
 		initialize( modelId, pos.getX(), pos.getY(), pos.getZ(), 0, 0, angle, color1, color2, respawnDelay );
 	}
 	
-	public VehicleImpl( int modelId, Vector3D pos, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
+	public VehicleImpl( int modelId, Point3D pos, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
 	{
 		initialize( modelId, pos.getX(), pos.getY(), pos.getZ(), interiorId, worldId, angle, color1, color2, respawnDelay );
 	}
@@ -252,7 +252,7 @@ public class VehicleImpl implements Vehicle
 	}
 
 	@Override
-	public void setLocation( Vector3D pos )
+	public void setLocation( Point3D pos )
 	{
 		setLocation( pos.getX(), pos.getY(), pos.getZ() );
 	}
@@ -295,11 +295,11 @@ public class VehicleImpl implements Vehicle
 	}
 
 	@Override
-	public Quaternions getRotationQuat()
+	public Quaternion getRotationQuat()
 	{
 		if( isDestroyed() ) return null;
 		
-		Quaternions quaternions = new Quaternions();
+		Quaternion quaternions = new Quaternion();
 		SampNativeFunction.getVehicleRotationQuat( id, quaternions );
 		
 		return quaternions;

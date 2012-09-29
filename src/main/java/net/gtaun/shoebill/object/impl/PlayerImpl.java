@@ -27,20 +27,20 @@ import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
-import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.data.WeaponData;
-import net.gtaun.shoebill.data.type.DialogStyle;
-import net.gtaun.shoebill.data.type.FightStyle;
-import net.gtaun.shoebill.data.type.MapIconStyle;
-import net.gtaun.shoebill.data.type.PlayerState;
-import net.gtaun.shoebill.data.type.RaceCheckpointType;
-import net.gtaun.shoebill.data.type.RecordType;
-import net.gtaun.shoebill.data.type.ShopName;
-import net.gtaun.shoebill.data.type.SpecialAction;
-import net.gtaun.shoebill.data.type.SpectateMode;
-import net.gtaun.shoebill.data.type.WeaponState;
-import net.gtaun.shoebill.data.type.WeaponType;
+import net.gtaun.shoebill.data.constant.DialogStyle;
+import net.gtaun.shoebill.data.constant.FightStyle;
+import net.gtaun.shoebill.data.constant.MapIconStyle;
+import net.gtaun.shoebill.data.constant.PlayerState;
+import net.gtaun.shoebill.data.constant.RaceCheckpointType;
+import net.gtaun.shoebill.data.constant.RecordType;
+import net.gtaun.shoebill.data.constant.ShopName;
+import net.gtaun.shoebill.data.constant.SpecialAction;
+import net.gtaun.shoebill.data.constant.SpectateMode;
+import net.gtaun.shoebill.data.constant.WeaponState;
+import net.gtaun.shoebill.data.constant.WeaponType;
 import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
@@ -486,7 +486,7 @@ public class PlayerImpl implements Player
 	}
 
 	@Override
-	public void setSpawnInfo( Vector3D pos, int interiorId, int worldId, float angle, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
+	public void setSpawnInfo( Point3D pos, int interiorId, int worldId, float angle, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
 	{
 		setSpawnInfo( pos.getX(), pos.getY(), pos.getZ(), interiorId, worldId, angle, skin, team, weapon1.getType(), weapon1.getAmmo(), weapon2.getType(), weapon2.getAmmo(), weapon3.getType(), weapon3.getAmmo() );
 	}
@@ -619,7 +619,7 @@ public class PlayerImpl implements Player
 	}
 
 	@Override
-	public void setLocation( Vector3D pos )
+	public void setLocation( Point3D pos )
 	{
 		if( isOnline() == false ) return;
 		
@@ -666,7 +666,7 @@ public class PlayerImpl implements Player
 	}
 
 	@Override
-	public void setLocationFindZ( Vector3D pos )
+	public void setLocationFindZ( Point3D pos )
 	{
 		if( isOnline() == false ) return;
 		
@@ -739,7 +739,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setVelocity( Vector3D vel )
+	public void setVelocity( Point3D vel )
 	{
 		if( isOnline() == false ) return;
 
@@ -877,7 +877,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void playSound( int sound, Vector3D loc )
+	public void playSound( int sound, Point3D loc )
 	{
 		if( isOnline() == false ) return;
 		
@@ -942,7 +942,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setCameraPosition( Vector3D pos )
+	public void setCameraPosition( Point3D pos )
 	{
 		if( isOnline() == false ) return;
 		
@@ -959,7 +959,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setCameraLookAt( Vector3D lookAt )
+	public void setCameraLookAt( Point3D lookAt )
 	{
 		if( isOnline() == false ) return;
 		
@@ -976,21 +976,21 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public Vector3D getCameraPosition()
+	public Point3D getCameraPosition()
 	{
 		if( isOnline() == false ) return null;
 		
-		Vector3D pos = new Vector3D();
+		Point3D pos = new Point3D();
 		SampNativeFunction.getPlayerCameraPos( id, pos );
 		return pos;
 	}
 	
 	@Override
-	public Vector3D getCameraFrontVector()
+	public Point3D getCameraFrontVector()
 	{
 		if( isOnline() == false ) return null;
 		
-		Vector3D lookAt = new Vector3D();
+		Point3D lookAt = new Point3D();
 		SampNativeFunction.getPlayerCameraFrontVector( id, lookAt );
 		return lookAt;
 	}
@@ -1040,7 +1040,7 @@ public class PlayerImpl implements Player
 			return;
 		}
 
-		Vector3D loc = checkpoint.getLocation();
+		Point3D loc = checkpoint.getLocation();
 		SampNativeFunction.setPlayerCheckpoint( id, loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize() );
 		this.checkpoint = checkpoint;
 	}
@@ -1067,8 +1067,8 @@ public class PlayerImpl implements Player
 		
 		RaceCheckpoint next = checkpoint.getNext();
 		
-		Vector3D loc = checkpoint.getLocation();
-		Vector3D nextLoc = next.getLocation();
+		Point3D loc = checkpoint.getLocation();
+		Point3D nextLoc = next.getLocation();
 		
 		if( checkpoint.getNext() != null )
 		{
@@ -1249,7 +1249,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setMapIcon( int iconId, Vector3D pos, int markerType, Color color, MapIconStyle style )
+	public void setMapIcon( int iconId, Point3D pos, int markerType, Color color, MapIconStyle style )
 	{
 		setMapIcon( iconId, pos.getX(), pos.getY(), pos.getZ(), markerType, color, style );
 	}
@@ -1372,7 +1372,7 @@ public class PlayerImpl implements Player
 	}
 
 	@Override
-	public void playAudioStream( String url, Vector3D pos, float distance )
+	public void playAudioStream( String url, Point3D pos, float distance )
 	{
 		playAudioStream( url, pos.getX(), pos.getY(), pos.getZ(), distance );
 	}
@@ -1400,7 +1400,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void removeBuilding( int modelId, Vector3D pos, float radius )
+	public void removeBuilding( int modelId, Point3D pos, float radius )
 	{
 		removeBuilding( modelId, pos.getX(), pos.getY(), pos.getZ(), radius );
 	}

@@ -20,7 +20,7 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Label;
 import net.gtaun.shoebill.object.Player;
@@ -44,7 +44,7 @@ public class LabelImpl implements Label
 	private Location location;
 	private float drawDistance;
 	
-	private Vector3D offset;
+	private Point3D offset;
 	private Player attachedPlayer;
 	private Vehicle attachedVehicle;
 	
@@ -54,7 +54,7 @@ public class LabelImpl implements Label
 		initialize( text, color, new Location(x, y, z, worldId), drawDistance, testLOS );
 	}
 	
-	public LabelImpl( String text, Color color, Vector3D pos, int worldId, float drawDistance, boolean testLOS ) throws CreationFailedException
+	public LabelImpl( String text, Color color, Point3D pos, int worldId, float drawDistance, boolean testLOS ) throws CreationFailedException
 	{
 		initialize( text, color, new Location(pos, worldId), drawDistance, testLOS );
 	}
@@ -165,7 +165,7 @@ public class LabelImpl implements Label
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
 		
-		offset = new Vector3D( x, y, z );
+		offset = new Point3D( x, y, z );
 		
 		SampNativeFunction.attach3DTextLabelToPlayer( id, player.getId(), x, y, z );
 		attachedPlayer = player;
@@ -173,7 +173,7 @@ public class LabelImpl implements Label
 	}
 	
 	@Override
-	public void attach( Player player, Vector3D offset )
+	public void attach( Player player, Point3D offset )
 	{
 		attach( player, offset.getX(), offset.getY(), offset.getZ() );
 	}
@@ -184,7 +184,7 @@ public class LabelImpl implements Label
 		if( isDestroyed() ) return;
 		if( vehicle.isDestroyed() ) return;
 
-		offset = new Vector3D( x, y, z );
+		offset = new Point3D( x, y, z );
 		
 		SampNativeFunction.attach3DTextLabelToVehicle( id, vehicle.getId(), x, y, z );
 		attachedPlayer = null;
@@ -192,7 +192,7 @@ public class LabelImpl implements Label
 	}
 
 	@Override
-	public void attach( Vehicle vehicle, Vector3D offset )
+	public void attach( Vehicle vehicle, Point3D offset )
 	{
 		attach( vehicle, offset.getX(), offset.getY(), offset.getZ() );
 	}

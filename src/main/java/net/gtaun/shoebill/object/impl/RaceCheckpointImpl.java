@@ -23,8 +23,8 @@ import java.util.Collection;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationRadius;
-import net.gtaun.shoebill.data.Vector3D;
-import net.gtaun.shoebill.data.type.RaceCheckpointType;
+import net.gtaun.shoebill.data.Point3D;
+import net.gtaun.shoebill.data.constant.RaceCheckpointType;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.samp.SampNativeFunction;
@@ -49,7 +49,7 @@ public class RaceCheckpointImpl implements RaceCheckpoint
 		initialize( new LocationRadius(x, y, z, size), type, next );
 	}
 
-	public RaceCheckpointImpl( Vector3D pos, float size, RaceCheckpointType type, RaceCheckpointImpl next )
+	public RaceCheckpointImpl( Point3D pos, float size, RaceCheckpointType type, RaceCheckpointImpl next )
 	{
 		initialize( new LocationRadius(pos, size), type, next );
 	}
@@ -91,7 +91,7 @@ public class RaceCheckpointImpl implements RaceCheckpoint
 	}
 	
 	@Override
-	public void setLocation( Vector3D pos )
+	public void setLocation( Point3D pos )
 	{
 		location.set( pos );
 		update();

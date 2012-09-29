@@ -17,8 +17,8 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.data.Vector3D;
-import net.gtaun.shoebill.data.type.PlayerAttachBone;
+import net.gtaun.shoebill.data.Point3D;
+import net.gtaun.shoebill.data.constant.PlayerAttachBone;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerAttach;
 import net.gtaun.shoebill.samp.SampNativeFunction;
@@ -40,7 +40,7 @@ public class PlayerAttachImpl implements PlayerAttach
 		
 		private PlayerAttachBone bone = PlayerAttachBone.NOT_USABLE;
 		private int modelId = 0;
-		private Vector3D offset, rotate, scale;
+		private Point3D offset, rotate, scale;
 		
 		
 		PlayerAttachSlot( int slot )
@@ -63,21 +63,21 @@ public class PlayerAttachImpl implements PlayerAttach
 		{
 			return modelId;
 		}
-		@Override public Vector3D getOffset()
+		@Override public Point3D getOffset()
 		{
 			return offset.clone();
 		}
-		@Override public Vector3D getRotate()
+		@Override public Point3D getRotate()
 		{
 			return rotate.clone();
 		}
-		@Override public Vector3D getScale()
+		@Override public Point3D getScale()
 		{
 			return scale.clone();
 		}
 
 		@Override
-		public boolean set( PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rot, Vector3D scale )
+		public boolean set( PlayerAttachBone bone, int modelId, Point3D offset, Point3D rot, Point3D scale )
 		{
 			if( player.isOnline() == false ) return false;
 			
@@ -90,9 +90,9 @@ public class PlayerAttachImpl implements PlayerAttach
 			this.bone = bone;
 			this.modelId = modelId;
 			
-			this.offset = new Vector3D(offset);
-			this.rotate = new Vector3D(rot);
-			this.scale = new Vector3D(scale);
+			this.offset = new Point3D(offset);
+			this.rotate = new Point3D(rot);
+			this.scale = new Point3D(scale);
 			
 			return true;
 		}

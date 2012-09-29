@@ -19,7 +19,7 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
-import net.gtaun.shoebill.data.Vector2D;
+import net.gtaun.shoebill.data.Point2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Player;
@@ -39,7 +39,7 @@ public class MenuImpl implements Menu
 	private int id = INVALID_ID;
 	private String title, columnHeader = "";
 	private int columns;
-	private Vector2D position;
+	private Point2D position;
 	private float col1Width, col2Width;
 	
 
@@ -48,7 +48,7 @@ public class MenuImpl implements Menu
 		initialize( title, columns, x, y, col1Width, col2Width );
 	}
 	
-	public MenuImpl( String title, int columns, Vector2D pos, float col1Width, float col2Width ) throws CreationFailedException
+	public MenuImpl( String title, int columns, Point2D pos, float col1Width, float col2Width ) throws CreationFailedException
 	{
 		initialize( title, columns, pos.getX(), pos.getY(), col1Width, col2Width );
 	}
@@ -59,7 +59,7 @@ public class MenuImpl implements Menu
 		
 		this.title = title;
 		this.columns = columns;
-		this.position = new Vector2D( x, y );
+		this.position = new Point2D( x, y );
 		this.col1Width = col1Width;
 		this.col2Width = col2Width;
 		
@@ -114,7 +114,7 @@ public class MenuImpl implements Menu
 	}
 	
 	@Override
-	public Vector2D getPosition()
+	public Point2D getPosition()
 	{
 		return position.clone();
 	}

@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.data.type.WeaponSkill;
+import net.gtaun.shoebill.data.constant.WeaponSkill;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerWeaponSkill;
 import net.gtaun.shoebill.samp.SampNativeFunction;

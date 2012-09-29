@@ -20,7 +20,7 @@ import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerLabel;
@@ -46,7 +46,7 @@ public class PlayerLabelImpl implements PlayerLabel
 	private Location location;
 	private boolean testLOS;
 	
-	private Vector3D offset;
+	private Point3D offset;
 	private Player attachedPlayer;
 	private Vehicle attachedVehicle;
 	
@@ -97,7 +97,7 @@ public class PlayerLabelImpl implements PlayerLabel
 		
 		if( attachedPlayer != null || attachedVehicle != null )
 		{
-			offset = new Vector3D( location.getX(), location.getY(), location.getZ() );
+			offset = new Point3D( location.getX(), location.getY(), location.getZ() );
 		}
 		
 		if( player.isOnline() == false ) throw new CreationFailedException();
@@ -208,7 +208,7 @@ public class PlayerLabelImpl implements PlayerLabel
 	}
 	
 	@Override
-	public void attach( Player target, Vector3D offset )
+	public void attach( Player target, Point3D offset )
 	{
 		attach( target, offset.getX(), offset.getY(), offset.getZ() );
 	}
@@ -230,7 +230,7 @@ public class PlayerLabelImpl implements PlayerLabel
 	}
 	
 	@Override
-	public void attach( Vehicle vehicle, Vector3D offset )
+	public void attach( Vehicle vehicle, Point3D offset )
 	{
 		attach( vehicle, offset.getX(), offset.getY(), offset.getZ() );
 	}

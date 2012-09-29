@@ -17,7 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.data.type.VehicleComponentSlot;
+import net.gtaun.shoebill.data.constant.VehicleComponentSlot;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.VehicleComponent;
 import net.gtaun.shoebill.samp.SampNativeFunction;

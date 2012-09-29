@@ -20,7 +20,7 @@ import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.WeaponData;
-import net.gtaun.shoebill.data.type.PlayerMarkerMode;
+import net.gtaun.shoebill.data.constant.PlayerMarkerMode;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 

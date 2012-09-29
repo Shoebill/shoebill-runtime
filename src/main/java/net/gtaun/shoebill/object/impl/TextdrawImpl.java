@@ -20,7 +20,7 @@ package net.gtaun.shoebill.object.impl;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.data.Vector2D;
+import net.gtaun.shoebill.data.Point2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.Textdraw;
@@ -39,7 +39,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class TextdrawImpl implements Textdraw
 {
 	private int id = INVALID_ID;
-	private Vector2D position;
+	private Point2D position;
 	private String text;
 	
 	private boolean[] isPlayerShowed = new boolean[SampObjectPool.MAX_PLAYERS];
@@ -55,19 +55,19 @@ public class TextdrawImpl implements Textdraw
 		initialize( x, y, text );
 	}
 
-	public TextdrawImpl( Vector2D pos ) throws CreationFailedException
+	public TextdrawImpl( Point2D pos ) throws CreationFailedException
 	{
 		initialize( pos.getX(), pos.getY(), null );
 	}
 	
-	public TextdrawImpl( Vector2D pos, String text ) throws CreationFailedException
+	public TextdrawImpl( Point2D pos, String text ) throws CreationFailedException
 	{
 		initialize( pos.getX(), pos.getY(), text );
 	}
 	
 	private void initialize( float x, float y, String text ) throws CreationFailedException
 	{
-		position = new Vector2D( x, y );
+		position = new Point2D( x, y );
 		if( StringUtils.isEmpty(text) ) text = " ";
 		
 		id = SampNativeFunction.textDrawCreate( x, y, text );
@@ -111,7 +111,7 @@ public class TextdrawImpl implements Textdraw
 	}
 	
 	@Override
-	public Vector2D getPosition()
+	public Point2D getPosition()
 	{
 		return position.clone();
 	}
@@ -131,7 +131,7 @@ public class TextdrawImpl implements Textdraw
 	}
 
 	@Override
-	public void setLetterSize( Vector2D vec )
+	public void setLetterSize( Point2D vec )
 	{
 		if( isDestroyed() ) return;
 		
@@ -147,7 +147,7 @@ public class TextdrawImpl implements Textdraw
 	}
 
 	@Override
-	public void setTextSize( Vector2D vec )
+	public void setTextSize( Point2D vec )
 	{
 		if( isDestroyed() ) return;
 		

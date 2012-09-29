@@ -20,7 +20,7 @@ package net.gtaun.shoebill.object.impl;
 import net.gtaun.shoebill.SampObjectPool;
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.IObject;
 import net.gtaun.shoebill.object.Player;
@@ -44,9 +44,9 @@ public class ObjectImpl implements IObject
 	private float drawDistance = 0.0F;
 
 	@SuppressWarnings("unused")
-	private Vector3D attachedOffset;
+	private Point3D attachedOffset;
 	@SuppressWarnings("unused")
-	private Vector3D attachedRotate;
+	private Point3D attachedRotate;
 	
 	private Player attachedPlayer;
 	private IObject attachedObject;
@@ -55,35 +55,35 @@ public class ObjectImpl implements IObject
 	
 	public ObjectImpl( int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
 	{
-		initialize( modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), drawDistance );
+		initialize( modelId, new Location(x, y, z), new Point3D(rx, ry, rz), drawDistance );
 	}
 	
 	public ObjectImpl( int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
-		initialize( modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), drawDistance );
+		initialize( modelId, new Location(x, y, z), new Point3D(rx, ry, rz), drawDistance );
 	}
 	
 	public ObjectImpl( int modelId, Location loc, float rx, float ry, float rz ) throws CreationFailedException
 	{
-		initialize( modelId, new Location(loc), new Vector3D(rx, ry, rz), drawDistance );
+		initialize( modelId, new Location(loc), new Point3D(rx, ry, rz), drawDistance );
 	}
 	
 	public ObjectImpl( int modelId, Location loc, float rx, float ry, float rz, float drawDistance) throws CreationFailedException
 	{
-		initialize( modelId, new Location(loc), new Vector3D(rx, ry, rz), drawDistance );
+		initialize( modelId, new Location(loc), new Point3D(rx, ry, rz), drawDistance );
 	}
 	
-	public ObjectImpl( int modelId, Location loc, Vector3D rot ) throws CreationFailedException
+	public ObjectImpl( int modelId, Location loc, Point3D rot ) throws CreationFailedException
 	{
-		initialize( modelId, new Location(loc), new Vector3D(rot), drawDistance );
+		initialize( modelId, new Location(loc), new Point3D(rot), drawDistance );
 	}
 	
-	public ObjectImpl( int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
+	public ObjectImpl( int modelId, Location loc, Point3D rot, float drawDistance ) throws CreationFailedException
 	{
-		initialize( modelId, new Location(loc), new Vector3D(rot), drawDistance );
+		initialize( modelId, new Location(loc), new Point3D(rot), drawDistance );
 	}
 	
-	private void initialize( int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
+	private void initialize( int modelId, Location loc, Point3D rot, float drawDistance ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.location = loc;
@@ -188,7 +188,7 @@ public class ObjectImpl implements IObject
 	}
 	
 	@Override
-	public void setLocation( Vector3D pos )
+	public void setLocation( Point3D pos )
 	{
 		if( isDestroyed() ) return;
 		
@@ -208,11 +208,11 @@ public class ObjectImpl implements IObject
 	}
 	
 	@Override
-	public Vector3D getRotate()
+	public Point3D getRotate()
 	{
 		if( isDestroyed() ) return null;
 	
-		Vector3D rotate = new Vector3D();
+		Point3D rotate = new Point3D();
 		SampNativeFunction.getObjectRot( id, rotate );
 		
 		return rotate;
@@ -227,7 +227,7 @@ public class ObjectImpl implements IObject
 	}
 	
 	@Override
-	public void setRotate( Vector3D rot )
+	public void setRotate( Point3D rot )
 	{
 		setRotate( rot.getX(), rot.getY(), rot.getZ() );
 	}
@@ -258,13 +258,13 @@ public class ObjectImpl implements IObject
 	}
 	
 	@Override
-	public int move( Vector3D pos, float speed )
+	public int move( Point3D pos, float speed )
 	{
 		return move( pos.getX(), pos.getY(), pos.getZ(), speed );
 	}
 	
 	@Override
-	public int move( Vector3D pos, float speed, Vector3D rot )
+	public int move( Point3D pos, float speed, Point3D rot )
 	{
 		return move( pos.getX(), pos.getY(), pos.getZ(), speed, rot.getX(), rot.getY(), rot.getZ() );
 	}
@@ -287,8 +287,8 @@ public class ObjectImpl implements IObject
 		SampNativeFunction.attachObjectToPlayer( id, player.getId(), x, y, z, rx, ry, rz );
 
 		speed = 0.0F;
-		attachedOffset = new Vector3D( x, y, z );
-		attachedRotate = new Vector3D( rx, ry, rz );
+		attachedOffset = new Point3D( x, y, z );
+		attachedRotate = new Point3D( rx, ry, rz );
 		
 		attachedPlayer = player;
 		attachedObject = null;
@@ -296,7 +296,7 @@ public class ObjectImpl implements IObject
 	}
 
 	@Override
-	public void attach( Player player, Vector3D pos, Vector3D rot )
+	public void attach( Player player, Point3D pos, Point3D rot )
 	{
 		attach( player, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
 	}
@@ -311,8 +311,8 @@ public class ObjectImpl implements IObject
 		SampNativeFunction.attachObjectToObject( id, object.getId(), x, y, z, rz, ry, rz, syncRotation?1:0 );
 
 		speed = 0.0F;
-		attachedOffset = new Vector3D( x, y, z );
-		attachedRotate = new Vector3D( rx, ry, rz );
+		attachedOffset = new Point3D( x, y, z );
+		attachedRotate = new Point3D( rx, ry, rz );
 		
 		attachedPlayer = null;
 		attachedObject = object;
@@ -321,7 +321,7 @@ public class ObjectImpl implements IObject
 	
 
 	@Override
-	public void attach( IObject object, Vector3D pos, Vector3D rot, boolean syncRotation )
+	public void attach( IObject object, Point3D pos, Point3D rot, boolean syncRotation )
 	{
 		attach( object, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ(), syncRotation );
 	}
@@ -335,8 +335,8 @@ public class ObjectImpl implements IObject
 		SampNativeFunction.attachObjectToVehicle( id, vehicle.getId(), x, y, z, rx, ry, rz );
 
 		speed = 0.0F;
-		attachedOffset = new Vector3D( x, y, z );
-		attachedRotate = new Vector3D( rx, ry, rz );
+		attachedOffset = new Point3D( x, y, z );
+		attachedRotate = new Point3D( rx, ry, rz );
 		
 		attachedPlayer = null;
 		attachedObject = null;
@@ -344,7 +344,7 @@ public class ObjectImpl implements IObject
 	}
 	
 	@Override
-	public void attach( Vehicle vehicle, Vector3D pos, Vector3D rot )
+	public void attach( Vehicle vehicle, Point3D pos, Point3D rot )
 	{
 		attach( vehicle, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
 	}
