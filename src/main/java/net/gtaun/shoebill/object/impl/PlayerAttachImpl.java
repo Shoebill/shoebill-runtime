@@ -17,8 +17,8 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.constant.PlayerAttachBone;
 import net.gtaun.shoebill.data.Point3D;
-import net.gtaun.shoebill.data.constant.PlayerAttachBone;
 import net.gtaun.shoebill.object.primitive.PlayerAttach;
 import net.gtaun.shoebill.object.primitive.PlayerPrim;
 import net.gtaun.shoebill.samp.SampNativeFunction;

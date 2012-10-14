@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.constant.RaceCheckpointType;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Point3D;
-import net.gtaun.shoebill.data.constant.RaceCheckpointType;
 import net.gtaun.shoebill.object.primitive.PlayerPrim;
 import net.gtaun.shoebill.object.primitive.RaceCheckpointPrim;
 import net.gtaun.shoebill.samp.SampNativeFunction;

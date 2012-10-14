@@ -16,11 +16,11 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.constant.PlayerMarkerMode;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.WeaponData;
-import net.gtaun.shoebill.data.constant.PlayerMarkerMode;
 import net.gtaun.shoebill.object.primitive.WorldPrim;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 

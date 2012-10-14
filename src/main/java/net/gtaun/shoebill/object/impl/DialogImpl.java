@@ -18,7 +18,7 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectPoolImpl;
 import net.gtaun.shoebill.ShoebillImpl;
-import net.gtaun.shoebill.data.constant.DialogStyle;
+import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.object.primitive.DialogPrim;
 import net.gtaun.shoebill.object.primitive.PlayerPrim;
 
