@@ -93,7 +93,7 @@ public class ObjectImpl implements ObjectPrim
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		pool.setObject( id, this );
+		// pool.setObject( id, this );
 	}
 	
 	public void processObjectMoved()

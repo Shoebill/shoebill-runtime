@@ -67,7 +67,7 @@ public class MenuImpl implements MenuPrim
 		if( id == -1 ) throw new CreationFailedException();
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		pool.setMenu( id, this );
+		// pool.setMenu( id, this );
 	}
 
 	@Override

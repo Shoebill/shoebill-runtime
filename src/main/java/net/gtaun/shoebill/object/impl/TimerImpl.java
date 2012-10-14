@@ -54,7 +54,7 @@ public class TimerImpl implements TimerPrim
 		this.count = count;
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		pool.putTimer( this );
+		// pool.putTimer( this );
 	}
 
 	@Override

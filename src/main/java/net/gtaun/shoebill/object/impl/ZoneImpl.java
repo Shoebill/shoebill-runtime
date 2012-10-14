@@ -67,7 +67,7 @@ public class ZoneImpl implements ZonePrim
 		}
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		pool.setZone( id, this );
+		// pool.setZone( id, this );
 	}
 
 	@Override

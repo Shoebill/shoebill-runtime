@@ -60,6 +60,8 @@ import net.gtaun.shoebill.event.vehicle.VehicleStreamInEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleStreamOutEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleUnoccupiedUpdateEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleUpdateDamageEvent;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.impl.DialogImpl;
 import net.gtaun.shoebill.object.impl.MenuImpl;
 import net.gtaun.shoebill.object.impl.ObjectImpl;
@@ -72,7 +74,6 @@ import net.gtaun.shoebill.object.primitive.MenuPrim;
 import net.gtaun.shoebill.object.primitive.ObjectPrim;
 import net.gtaun.shoebill.object.primitive.PickupPrim;
 import net.gtaun.shoebill.object.primitive.PlayerPrim;
-import net.gtaun.shoebill.object.primitive.PlayerObjectPrim;
 import net.gtaun.shoebill.object.primitive.TimerPrim;
 import net.gtaun.shoebill.object.primitive.VehiclePrim;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
@@ -86,6 +87,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
+// TODO: Fix it
 public class SampEventDispatcher implements SampCallbackHandler
 {
 	private SampObjectPoolImpl sampObjectPool;
@@ -147,16 +149,14 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			PlayerPrim player = sampObjectPool.getPlayer( playerId );
+			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				PlayerDisconnectEvent event = new PlayerDisconnectEvent( player, reason );
-				eventManager.dispatchEvent( event, player );
-			}
+			PlayerDisconnectEvent event = new PlayerDisconnectEvent( player, reason );
+			eventManager.dispatchEvent( event, player );
 			
 			sampObjectPool.removePlayer( player );
 			
+			// TODO: Fix it
 			if( player instanceof PlayerImpl )
 			{
 				PlayerImpl pl = (PlayerImpl) player;
@@ -604,8 +604,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			PlayerPrim player = sampObjectPool.getPlayer( playerId );
-			PlayerObjectPrim object = sampObjectPool.getPlayerObject( player, objectId );
+			Player player = sampObjectPool.getPlayer( playerId );
+			PlayerObject object = sampObjectPool.getPlayerObject( player, objectId );
 			
 			if( object instanceof PlayerObjectImpl )
 			{

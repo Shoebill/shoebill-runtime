@@ -76,7 +76,7 @@ public class TextdrawImpl implements TextdrawPrim
 		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = false;
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		pool.setTextdraw( id, this );
+		// pool.setTextdraw( id, this );
 	}
 
 	@Override

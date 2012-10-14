@@ -124,7 +124,7 @@ public class CheckpointImpl implements CheckpointPrim
 	@Override
 	public void update()
 	{
-		Collection<PlayerPrim> players = ShoebillImpl.getInstance().getManagedObjectPool().getPlayers();
+		Collection<? extends PlayerPrim> players = ShoebillImpl.getInstance().getManagedObjectPool().getPlayers();
 		for( PlayerPrim player : players )
 		{
 			if( player == null ) continue;

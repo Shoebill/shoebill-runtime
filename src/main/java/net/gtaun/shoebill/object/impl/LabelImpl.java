@@ -77,7 +77,7 @@ public class LabelImpl implements LabelPrim
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		pool.setLabel( id, this );
+		// pool.setLabel( id, this );
 	}
 	
 	@Override

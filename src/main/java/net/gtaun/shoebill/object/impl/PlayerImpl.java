@@ -147,7 +147,7 @@ public class PlayerImpl implements PlayerPrim
 
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		if( pool.getPlayer(id) != null ) throw new UnsupportedOperationException();
-		pool.setPlayer( id, this );
+		// pool.setPlayer( id, this );
 	}
 	
 	public void processPlayerUpdate()

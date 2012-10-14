@@ -28,6 +28,8 @@ import java.util.Collection;
 import java.util.Properties;
 
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
+import net.gtaun.shoebill.object.Server;
+import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.object.impl.ServerImpl;
 import net.gtaun.shoebill.object.impl.WorldImpl;
 import net.gtaun.shoebill.proxy.ProxyManager;
@@ -217,8 +219,8 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		pluginManager = new PluginManagerImpl(this, classLoader, pluginDir, dataDir);
 
 		managedObjectPool = new SampObjectPoolImpl( eventManager );
-		managedObjectPool.setServer( new ServerImpl() );
-		managedObjectPool.setWorld( new WorldImpl() );
+		managedObjectPool.setServer(createTraitMixinObject(Server.class, ServerImpl.class));
+		managedObjectPool.setWorld(createTraitMixinObject(World.class, WorldImpl.class));
 
 		sampEventLogger = new SampEventLogger( managedObjectPool );
 		sampEventDispatcher = new SampEventDispatcher( managedObjectPool, eventManager );
@@ -307,13 +309,19 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	@Override
 	public <T> T createTraitMixinObject(Class<T> mixinInterface, Class<?> superclass)
 	{
+		return createTraitMixinObject(mixinInterface, superclass, new Class<?>[]{}, new Object[]{});
+	}
+	
+	@Override
+	public <T> T createTraitMixinObject(Class<T> mixinInterface, Class<?> superclass, Class<?>[] argTypes, Object[] args)
+	{
 		ProxyManagerImpl proxyManager = new ProxyManagerImpl();
 		TraitManagerImpl traitManager = new TraitManagerImpl();
 		
 		Enhancer enhancer = new Enhancer();
 		enhancer.setSuperclass(superclass);
 		enhancer.setCallback(proxyManager.getCallback());
-		Object superobject = enhancer.create();
+		Object superobject = enhancer.create(argTypes, args);
 		
 		Class<?>[] interfaces = {mixinInterface, ProxyManager.class, TraitManager.class};
 		Object[] objects = {superobject, proxyManager, traitManager};

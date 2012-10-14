@@ -63,7 +63,7 @@ public class PickupImpl implements PickupPrim
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		pool.setPickup( id, this );
+		// pool.setPickup( id, this );
 	}
 
 	@Override

@@ -106,7 +106,7 @@ public class PlayerLabelImpl implements PlayerLabelPrim
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		pool.setPlayerLabel( player, id, this );
+		// pool.setPlayerLabel( player, id, this );
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class PlayerLabelImpl implements PlayerLabelPrim
 			SampNativeFunction.deletePlayer3DTextLabel( player.getId(), id );
 
 			SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-			pool.setPlayerLabel( player, id, null );
+			// pool.setPlayerLabel( player, id, null );
 		}
 		
 		id = INVALID_ID;

@@ -49,7 +49,7 @@ public class DialogImpl implements DialogPrim
 		count++;
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		pool.putDialog( id, this );
+		// pool.putDialog( id, this );
 	}
 	
 	@Override

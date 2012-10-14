@@ -127,7 +127,7 @@ public class VehicleImpl implements VehiclePrim
 		damage = new VehicleDamageImpl(this);
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		pool.setVehicle( id, this );
+		// pool.setVehicle( id, this );
 		
 		VehicleSpawnEvent event = new VehicleSpawnEvent( this );
 		ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) ShoebillImpl.getInstance();

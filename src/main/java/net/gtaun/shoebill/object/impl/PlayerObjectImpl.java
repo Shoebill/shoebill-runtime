@@ -91,7 +91,7 @@ public class PlayerObjectImpl implements PlayerObjectPrim
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		pool.setPlayerObject( player, id, this );
+		// pool.setPlayerObject( player, id, this );
 	}
 
 	public void processPlayerObjectMoved()
@@ -115,7 +115,7 @@ public class PlayerObjectImpl implements PlayerObjectPrim
 			SampNativeFunction.destroyPlayerObject( player.getId(), id );
 
 			SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-			pool.setPlayerObject( player, id, null );
+			// pool.setPlayerObject( player, id, null );
 		}
 
 		id = INVALID_ID;
