@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2011-2012 MK124
  * Copyright (C) 2011 JoJLlmAn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillLowLevel;
@@ -53,18 +52,21 @@ import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerWeaponSkill;
 import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.Vehicle;
+import net.gtaun.shoebill.proxy.ProxyManager;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
+ * 
+ * 
  * @author MK124, JoJLlmAn
- *
  */
-
 public class PlayerImpl implements Player
 {
+	private ProxyManager proxyManager;
+	
 	public static void enableStuntBonusForAll( boolean enabled )
 	{
 		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
@@ -174,6 +176,12 @@ public class PlayerImpl implements Player
 	public void processDialogResponse()
 	{
 		dialog = null;
+	}
+
+	@Override
+	public ProxyManager getProxyManager()
+	{
+		return proxyManager;
 	}
 
 	@Override

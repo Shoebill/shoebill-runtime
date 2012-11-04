@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2011 JoJLlmAn
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2011-2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package net.gtaun.shoebill.object.impl;
 
 import java.util.ArrayList;
@@ -27,18 +26,21 @@ import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.RaceCheckpoint;
+import net.gtaun.shoebill.proxy.ProxyManager;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
+ * 
+ * 
  * @author JoJLlmAn, MK124
- *
  */
-
 public class RaceCheckpointImpl implements RaceCheckpoint
 {
+	private ProxyManager proxyManager;
+	
 	private LocationRadius location;
 	private RaceCheckpointType type;
 	private RaceCheckpointImpl next;
@@ -69,6 +71,12 @@ public class RaceCheckpointImpl implements RaceCheckpoint
 		this.location = loc;
 		this.type = type;
 		this.next = next;
+	}
+
+	@Override
+	public ProxyManager getProxyManager()
+	{
+		return proxyManager;
 	}
 
 	@Override

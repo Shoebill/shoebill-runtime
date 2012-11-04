@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2011-2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillLowLevel;
@@ -21,17 +20,20 @@ import net.gtaun.shoebill.SampObjectPoolImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.event.timer.TimerTickEvent;
 import net.gtaun.shoebill.object.Timer;
+import net.gtaun.shoebill.proxy.ProxyManager;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
+ * 
+ * 
  * @author MK124
- *
  */
-
 public class TimerImpl implements Timer
 {
+	private ProxyManager proxyManager;
+	
 	private int interval, count;
 	
 	private boolean running;
@@ -55,6 +57,12 @@ public class TimerImpl implements Timer
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		// pool.putTimer( this );
+	}
+
+	@Override
+	public ProxyManager getProxyManager()
+	{
+		return proxyManager;
 	}
 
 	@Override

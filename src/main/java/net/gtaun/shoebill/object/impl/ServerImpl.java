@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2011-2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,21 +17,30 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.object.Server;
+import net.gtaun.shoebill.proxy.ProxyManager;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
+ * 
+ * 
  * @author MK124
- *
  */
-
 public class ServerImpl implements Server
 {
+	private ProxyManager proxyManager;
+	
 	public ServerImpl()
 	{
 		
+	}
+
+	@Override
+	public ProxyManager getProxyManager()
+	{
+		return proxyManager;
 	}
 
 	@Override
