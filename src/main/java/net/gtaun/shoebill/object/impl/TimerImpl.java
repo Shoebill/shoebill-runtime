@@ -20,7 +20,7 @@ import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.SampObjectPoolImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.event.timer.TimerTickEvent;
-import net.gtaun.shoebill.object.primitive.TimerPrim;
+import net.gtaun.shoebill.object.Timer;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -30,7 +30,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class TimerImpl implements TimerPrim
+public class TimerImpl implements Timer
 {
 	private int interval, count;
 	

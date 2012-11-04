@@ -16,9 +16,9 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.object.primitive.PickupPrim;
-import net.gtaun.shoebill.object.primitive.PlayerPrim;
-import net.gtaun.shoebill.object.primitive.VehiclePrim;
+import net.gtaun.shoebill.object.Pickup;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -80,7 +80,7 @@ public class SampEventLogger implements SampCallbackHandler
 	@Override
 	public int onPlayerSpawn( int playerId )
 	{
-		PlayerPrim player = sampObjectPool.getPlayer(playerId);
+		Player player = sampObjectPool.getPlayer(playerId);
 		LOGGER.info( "[spawn] " + player.getName() + " has spawned (" + playerId + ")" );
 	
 		return 1;
@@ -89,15 +89,15 @@ public class SampEventLogger implements SampCallbackHandler
 	@Override
 	public int onPlayerDeath( int playerId, int killerId, int reason )
 	{
-		PlayerPrim player = sampObjectPool.getPlayer( playerId );
+		Player player = sampObjectPool.getPlayer( playerId );
 		
-		if( killerId == PlayerPrim.INVALID_ID )
+		if( killerId == Player.INVALID_ID )
 		{
 			LOGGER.info( "[death] " + player.getName() + " died (" + playerId + ":" + reason + ")" );
 			return 1;
 		}
 		
-		PlayerPrim killer = sampObjectPool.getPlayer( killerId );
+		Player killer = sampObjectPool.getPlayer( killerId );
 		LOGGER.info( "[kill] " + killer.getName() + " killed " + player.getName() + " (" + SampNativeFunction.getWeaponName(reason) + ")" );
 		return 1;
 	}
@@ -117,7 +117,7 @@ public class SampEventLogger implements SampCallbackHandler
 	@Override
 	public int onPlayerText( int playerId, String text )
 	{
-		PlayerPrim player = sampObjectPool.getPlayer( playerId );
+		Player player = sampObjectPool.getPlayer( playerId );
 		LOGGER.info( "[chat] " + player.getName() + ": " + text );
 		
 		return 1;
@@ -126,7 +126,7 @@ public class SampEventLogger implements SampCallbackHandler
 	@Override
 	public int onPlayerCommandText( int playerId, String cmdtext )
 	{
-		PlayerPrim player = sampObjectPool.getPlayer( playerId );
+		Player player = sampObjectPool.getPlayer( playerId );
 		LOGGER.info( "[cmd] " + player.getName() + ": " + cmdtext );
 		
 		return 1;
@@ -141,8 +141,8 @@ public class SampEventLogger implements SampCallbackHandler
 	@Override
 	public int onPlayerEnterVehicle( int playerId, int vehicleId, int isPassenger )
 	{
-		PlayerPrim player = sampObjectPool.getPlayer( playerId );
-		VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
+		Player player = sampObjectPool.getPlayer( playerId );
+		Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 		
 		LOGGER.info( "[vehicle] " + player.getName() + " enter a vehicle (" + vehicle.getModelId() + ")" );
 		return 1;
@@ -151,8 +151,8 @@ public class SampEventLogger implements SampCallbackHandler
 	@Override
 	public int onPlayerExitVehicle( int playerId, int vehicleId )
 	{
-		PlayerPrim player = sampObjectPool.getPlayer( playerId );
-		VehiclePrim vehicle = sampObjectPool.getVehicle( vehicleId );
+		Player player = sampObjectPool.getPlayer( playerId );
+		Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 		
 		LOGGER.info( "[vehicle] " + player.getName() + " leave a vehicle (" + vehicle.getModelId() + ")" );
 		return 1;
@@ -216,8 +216,8 @@ public class SampEventLogger implements SampCallbackHandler
 	@Override
 	public int onPlayerPickUpPickup( int playerId, int pickupId )
 	{
-		PlayerPrim player = sampObjectPool.getPlayer( playerId );
-		PickupPrim pickup = sampObjectPool.getPickup( pickupId );
+		Player player = sampObjectPool.getPlayer( playerId );
+		Pickup pickup = sampObjectPool.getPickup( pickupId );
 		
 		LOGGER.info( "[pickup] " + player.getName() + " pickup " + pickup.getModelId() + " (" + pickup.getType() + ")" );
 		return 1;
@@ -274,7 +274,7 @@ public class SampEventLogger implements SampCallbackHandler
 	@Override
 	public int onPlayerInteriorChange( int playerId, int interiorId, int oldInteriorId )
 	{
-		PlayerPrim player = sampObjectPool.getPlayer( playerId );
+		Player player = sampObjectPool.getPlayer( playerId );
 		LOGGER.info( "[interior] " + player.getName() + " interior has changed to " + interiorId );
 	
 		return 1;
@@ -360,8 +360,8 @@ public class SampEventLogger implements SampCallbackHandler
 	@Override
 	public int onPlayerClickPlayer( int playerId, int clickedPlayerId, int source )
 	{
-		PlayerPrim player = sampObjectPool.getPlayer( playerId );
-		PlayerPrim clickedPlayer = sampObjectPool.getPlayer( clickedPlayerId );
+		Player player = sampObjectPool.getPlayer( playerId );
+		Player clickedPlayer = sampObjectPool.getPlayer( clickedPlayerId );
 		
 		LOGGER.info( "[click] " + player.getName() + " has clicked " + clickedPlayer.getName() );
 		return 1;

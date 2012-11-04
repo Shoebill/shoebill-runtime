@@ -21,10 +21,10 @@ import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.primitive.ObjectPrim;
-import net.gtaun.shoebill.object.primitive.PlayerPrim;
-import net.gtaun.shoebill.object.primitive.PlayerObjectPrim;
-import net.gtaun.shoebill.object.primitive.VehiclePrim;
+import net.gtaun.shoebill.object.SampObject;
+import net.gtaun.shoebill.object.PlayerObject;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -35,50 +35,50 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class PlayerObjectImpl implements PlayerObjectPrim
+public class PlayerObjectImpl implements PlayerObject
 {	
 	private int id = INVALID_ID;
-	private PlayerPrim player;
+	private Player player;
 	
 	private int modelId;
 	private Location location;
 	private float speed = 0.0F;
 	private float drawDistance = 0;
 	
-	private PlayerPrim attachedPlayer;
+	private Player attachedPlayer;
 	
 	
-	public PlayerObjectImpl( PlayerPrim player, int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
 	{
 		initialize( player, modelId, new Location(x, y, z), new Point3D(rx, ry, rz), drawDistance );
 	}
 	
-	public PlayerObjectImpl( PlayerPrim player, int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
 		initialize( player, modelId, new Location(x, y, z), new Point3D(rx, ry, rz), drawDistance );
 	}
 	
-	public PlayerObjectImpl( PlayerPrim player, int modelId, Location loc, float rx, float ry, float rz ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, Location loc, float rx, float ry, float rz ) throws CreationFailedException
 	{
 		initialize( player, modelId, new Location(loc), new Point3D(rx, ry, rz), drawDistance );
 	}
 	
-	public PlayerObjectImpl( PlayerPrim player, int modelId, Location loc, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, Location loc, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
 	{
 		initialize( player, modelId, new Location(loc), new Point3D(rx, ry, rz), drawDistance );
 	}
 	
-	public PlayerObjectImpl( PlayerPrim player, int modelId, Location loc, Point3D rot ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, Location loc, Point3D rot ) throws CreationFailedException
 	{
 		initialize( player, modelId, new Location(loc), new Point3D(rot), drawDistance );
 	}
 	
-	public PlayerObjectImpl( PlayerPrim player, int modelId, Location loc, Point3D rot, float drawDistance ) throws CreationFailedException
+	public PlayerObjectImpl( Player player, int modelId, Location loc, Point3D rot, float drawDistance ) throws CreationFailedException
 	{
 		initialize( player, modelId, new Location(loc), new Point3D(rot), drawDistance );
 	}
 	
-	private void initialize( PlayerPrim player, int modelId, Location loc, Point3D rot, float drawDistance ) throws CreationFailedException
+	private void initialize( Player player, int modelId, Location loc, Point3D rot, float drawDistance ) throws CreationFailedException
 	{
 		if( player.isOnline() == false ) throw new CreationFailedException();
 		
@@ -128,7 +128,7 @@ public class PlayerObjectImpl implements PlayerObjectPrim
 	}
 
 	@Override
-	public PlayerPrim getPlayer()
+	public Player getPlayer()
 	{
 		return player;
 	}
@@ -163,19 +163,19 @@ public class PlayerObjectImpl implements PlayerObjectPrim
 	}
 	
 	@Override
-	public PlayerPrim getAttachedPlayer()
+	public Player getAttachedPlayer()
 	{
 		return attachedPlayer;
 	}
 	
 	@Override
-	public ObjectPrim getAttachedObject()
+	public SampObject getAttachedObject()
 	{
 		return null;
 	}
 	
 	@Override
-	public VehiclePrim getAttachedVehicle()
+	public Vehicle getAttachedVehicle()
 	{
 		return null;
 	}
@@ -288,7 +288,7 @@ public class PlayerObjectImpl implements PlayerObjectPrim
 	}
 	
 	@Override
-	public void attach( PlayerPrim target, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( Player target, float x, float y, float z, float rx, float ry, float rz )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -301,31 +301,31 @@ public class PlayerObjectImpl implements PlayerObjectPrim
 	}
 	
 	@Override
-	public void attach( PlayerPrim target, Point3D pos, Point3D rot )
+	public void attach( Player target, Point3D pos, Point3D rot )
 	{
 		attach( target, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
 	}
 
 	@Override
-	public void attach( ObjectPrim object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation )
+	public void attach( SampObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation )
 	{
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void attach( ObjectPrim object, Point3D pos, Point3D rot, boolean syncRotation )
+	public void attach( SampObject object, Point3D pos, Point3D rot, boolean syncRotation )
 	{
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void attach( VehiclePrim vehicle, float x, float y, float z, float rx, float ry, float rz )
+	public void attach( Vehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
 	{
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void attach( VehiclePrim vehicle, Point3D pos, Point3D rot )
+	public void attach( Vehicle vehicle, Point3D pos, Point3D rot )
 	{
 		throw new UnsupportedOperationException();
 	}

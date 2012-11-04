@@ -28,11 +28,11 @@ import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.primitive.PlayerPrim;
-import net.gtaun.shoebill.object.primitive.VehicleComponent;
-import net.gtaun.shoebill.object.primitive.VehicleDamage;
-import net.gtaun.shoebill.object.primitive.VehicleParam;
-import net.gtaun.shoebill.object.primitive.VehiclePrim;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.VehicleComponent;
+import net.gtaun.shoebill.object.VehicleDamage;
+import net.gtaun.shoebill.object.VehicleParam;
+import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -43,7 +43,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class VehicleImpl implements VehiclePrim
+public class VehicleImpl implements Vehicle
 {
 	public static void manualEngineAndLights()
 	{
@@ -372,7 +372,7 @@ public class VehicleImpl implements VehiclePrim
 	}
 
 	@Override
-	public void putPlayer( PlayerPrim player, int seat )
+	public void putPlayer( Player player, int seat )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -381,7 +381,7 @@ public class VehicleImpl implements VehiclePrim
 	}
 	
 	@Override
-	public boolean isPlayerIn( PlayerPrim player )
+	public boolean isPlayerIn( Player player )
 	{
 		if( isDestroyed() ) return false;
 		if( player.isOnline() == false ) return false;
@@ -390,7 +390,7 @@ public class VehicleImpl implements VehiclePrim
 	}
 	
 	@Override
-	public boolean isStreamedIn( PlayerPrim forPlayer )
+	public boolean isStreamedIn( Player forPlayer )
 	{
 		if( isDestroyed() ) return false;
 		if( forPlayer.isOnline() == false ) return false;
@@ -399,7 +399,7 @@ public class VehicleImpl implements VehiclePrim
 	}
 	
 	@Override
-	public void setParamsForPlayer( PlayerPrim player, boolean objective, boolean doorslocked )
+	public void setParamsForPlayer( Player player, boolean objective, boolean doorslocked )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -432,7 +432,7 @@ public class VehicleImpl implements VehiclePrim
 	}
 
 	@Override
-	public VehiclePrim getTrailer()
+	public Vehicle getTrailer()
 	{
 		if( isDestroyed() ) return null;
 		
@@ -441,7 +441,7 @@ public class VehicleImpl implements VehiclePrim
 	}
 	
 	@Override
-	public void attachTrailer( VehiclePrim trailer )
+	public void attachTrailer( Vehicle trailer )
 	{
 		if( isDestroyed() ) return;
 		if( trailer.isDestroyed() ) return;

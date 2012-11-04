@@ -106,8 +106,8 @@ public class SampObjectPoolImpl implements SampObjectPool
 					playerObjectsArrays[playerid] = new PlayerObject[MAX_OBJECTS];
 					playerLabelsArrays[playerid] = new PlayerLabel[MAX_PLAYER_LABELS];
 					
-					Player player = ShoebillImpl.getInstance().createTraitMixinObject(Player.class, PlayerImpl.class, new Class<?>[]{int.class}, new Object[]{playerid});
-					setPlayer( playerid, player );
+					//Player player = ShoebillImpl.getInstance().createTraitMixinObject(Player.class, PlayerImpl.class, new Class<?>[]{int.class}, new Object[]{playerid});
+					//setPlayer( playerid, player );
 				}
 				catch( Exception e )
 				{

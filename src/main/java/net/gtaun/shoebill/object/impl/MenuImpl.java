@@ -21,8 +21,8 @@ import net.gtaun.shoebill.SampObjectPoolImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Point2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.primitive.MenuPrim;
-import net.gtaun.shoebill.object.primitive.PlayerPrim;
+import net.gtaun.shoebill.object.Menu;
+import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +34,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class MenuImpl implements MenuPrim
+public class MenuImpl implements Menu
 {
 	private int id = INVALID_ID;
 	private String title, columnHeader = "";
@@ -173,7 +173,7 @@ public class MenuImpl implements MenuPrim
 	}
 	
 	@Override
-	public void show( PlayerPrim player )
+	public void show( Player player )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;
@@ -182,7 +182,7 @@ public class MenuImpl implements MenuPrim
 	}
 	
 	@Override
-	public void hide( PlayerPrim player )
+	public void hide( Player player )
 	{
 		if( isDestroyed() ) return;
 		if( player.isOnline() == false ) return;

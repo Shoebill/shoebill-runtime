@@ -17,8 +17,8 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.object.primitive.VehicleParam;
-import net.gtaun.shoebill.object.primitive.VehiclePrim;
+import net.gtaun.shoebill.object.VehicleParam;
+import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -31,11 +31,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class VehicleParamImpl implements VehicleParam
 {
-	private VehiclePrim vehicle;
+	private Vehicle vehicle;
 	private int engine, lights, alarm, doors, bonnet, boot, objective;
 	
 	
-	VehicleParamImpl( VehiclePrim vehicle )
+	VehicleParamImpl( Vehicle vehicle )
 	{
 		this.vehicle = vehicle;
 	}
@@ -47,7 +47,7 @@ public class VehicleParamImpl implements VehicleParam
 	}
 	
 	@Override
-	public VehiclePrim getVehicle()
+	public Vehicle getVehicle()
 	{
 		return vehicle;
 	}

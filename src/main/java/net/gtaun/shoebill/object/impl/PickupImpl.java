@@ -21,7 +21,7 @@ import net.gtaun.shoebill.SampObjectPoolImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.primitive.PickupPrim;
+import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -31,7 +31,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author MK124, JoJLlmAn
  */
 
-public class PickupImpl implements PickupPrim
+public class PickupImpl implements Pickup
 {
 	private int id = INVALID_ID;
 	private int modelId, type;

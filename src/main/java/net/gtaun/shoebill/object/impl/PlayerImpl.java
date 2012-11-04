@@ -44,15 +44,15 @@ import net.gtaun.shoebill.data.WeaponData;
 import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
-import net.gtaun.shoebill.object.primitive.CheckpointPrim;
-import net.gtaun.shoebill.object.primitive.DialogPrim;
-import net.gtaun.shoebill.object.primitive.MenuPrim;
-import net.gtaun.shoebill.object.primitive.ObjectPrim;
-import net.gtaun.shoebill.object.primitive.PlayerAttach;
-import net.gtaun.shoebill.object.primitive.PlayerPrim;
-import net.gtaun.shoebill.object.primitive.PlayerWeaponSkill;
-import net.gtaun.shoebill.object.primitive.RaceCheckpointPrim;
-import net.gtaun.shoebill.object.primitive.VehiclePrim;
+import net.gtaun.shoebill.object.Checkpoint;
+import net.gtaun.shoebill.object.Dialog;
+import net.gtaun.shoebill.object.Menu;
+import net.gtaun.shoebill.object.SampObject;
+import net.gtaun.shoebill.object.PlayerAttach;
+import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.PlayerWeaponSkill;
+import net.gtaun.shoebill.object.RaceCheckpoint;
+import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -63,11 +63,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 
-public class PlayerImpl implements PlayerPrim
+public class PlayerImpl implements Player
 {
 	public static void enableStuntBonusForAll( boolean enabled )
 	{
-		for( PlayerPrim player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			player.enableStuntBonus( enabled );
 		}
@@ -75,15 +75,15 @@ public class PlayerImpl implements PlayerPrim
 
 	public static void sendMessageToAll( Color color, String message )
 	{
-		for( PlayerPrim player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			player.sendMessage( color, message );
 		}
 	}
 	
-	public static void sendMessageToAll( Color color, String format, Object... args )
+	public static void sendMessageToAll( Color color, String format, SampObject... args )
 	{
-		for( PlayerPrim player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			String message = String.format(format, args);
 			player.sendMessage( color, message );
@@ -95,7 +95,7 @@ public class PlayerImpl implements PlayerPrim
 		SampNativeFunction.gameTextForAll( text, time, style );
 	}
 	
-	public static void gameTextToAll( int time, int style, String format, Object... args )
+	public static void gameTextToAll( int time, int style, String format, SampObject... args )
 	{
 		String text = String.format(format, args);
 		SampNativeFunction.gameTextForAll( text, time, style );
@@ -112,8 +112,8 @@ public class PlayerImpl implements PlayerPrim
 	private boolean isSpectating = false;
 	private boolean isRecording = false;
 	
-	private PlayerPrim spectatingPlayer;
-	private VehiclePrim spectatingVehicle;
+	private Player spectatingPlayer;
+	private Vehicle spectatingVehicle;
 
 	private int updateFrameCount = -1;
 	private int weatherId;
@@ -123,9 +123,9 @@ public class PlayerImpl implements PlayerPrim
 	private Velocity velocity = new Velocity();
 	private PlayerWeaponSkill skill;
 	
-	private CheckpointPrim checkpoint;
-	private RaceCheckpointPrim raceCheckpoint;
-	private DialogPrim dialog;
+	private Checkpoint checkpoint;
+	private RaceCheckpoint raceCheckpoint;
+	private Dialog dialog;
 	
 	
 	public PlayerImpl( int id )
@@ -218,13 +218,13 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public PlayerPrim getSpectatingPlayer()
+	public Player getSpectatingPlayer()
 	{
 		return spectatingPlayer;
 	}
 	
 	@Override
-	public VehiclePrim getSpectatingVehicle()
+	public Vehicle getSpectatingVehicle()
 	{
 		return spectatingVehicle;
 	}
@@ -254,19 +254,19 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public CheckpointPrim getCheckpoint()
+	public Checkpoint getCheckpoint()
 	{
 		return checkpoint;
 	}
 	
 	@Override
-	public RaceCheckpointPrim getRaceCheckpoint()
+	public RaceCheckpoint getRaceCheckpoint()
 	{
 		return raceCheckpoint;
 	}
 	
 	@Override
-	public DialogPrim getDialog()
+	public Dialog getDialog()
 	{
 		return dialog;
 	}
@@ -424,7 +424,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public VehiclePrim getVehicle()
+	public Vehicle getVehicle()
 	{
 		if( isOnline() == false ) return null;
 		
@@ -588,7 +588,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 
 	@Override
-	public void setVehicle( VehiclePrim vehicle, int seat )
+	public void setVehicle( Vehicle vehicle, int seat )
 	{
 		if( isOnline() == false ) return;
 		if( vehicle != null && vehicle.isDestroyed() ) return;
@@ -603,7 +603,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public void setVehicle( VehiclePrim vehicle )
+	public void setVehicle( Vehicle vehicle )
 	{
 		setVehicle( vehicle, 0 );
 	}
@@ -757,7 +757,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public void sendMessage( Color color, String format, Object... args )
+	public void sendMessage( Color color, String format, SampObject... args )
 	{
 		if( isOnline() == false ) return;
 		
@@ -766,7 +766,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public void sendChat( PlayerPrim player, String message )
+	public void sendChat( Player player, String message )
 	{
 		if( isOnline() == false ) return;
 		
@@ -780,14 +780,14 @@ public class PlayerImpl implements PlayerPrim
 		if( isOnline() == false ) return;
 		
 		if( message == null ) throw new NullPointerException();
-		for( PlayerPrim player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
 		{
 			sendChat( player, message );
 		}
 	}
 
 	@Override
-	public void sendDeathMessage( PlayerPrim killer, int reason )
+	public void sendDeathMessage( Player killer, int reason )
 	{
 		if( isOnline() == false ) return;
 		
@@ -811,7 +811,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public void sendGameText( int time, int style, String format, Object... args )
+	public void sendGameText( int time, int style, String format, SampObject... args )
 	{
 		if( isOnline() == false ) return;
 		
@@ -885,7 +885,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public void markerForPlayer( PlayerPrim player, Color color )
+	public void markerForPlayer( Player player, Color color )
 	{
 		if( isOnline() == false ) return;
 		
@@ -893,7 +893,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public void showNameTagForPlayer( PlayerPrim player, boolean show )
+	public void showNameTagForPlayer( Player player, boolean show )
 	{
 		if( isOnline() == false ) return;
 		
@@ -926,7 +926,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public MenuPrim getMenu()
+	public Menu getMenu()
 	{
 		if( isOnline() == false ) return null;
 		
@@ -1004,7 +1004,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public boolean isInVehicle( VehiclePrim vehicle )
+	public boolean isInVehicle( Vehicle vehicle )
 	{
 		if( isOnline() == false ) return false;
 		if( vehicle.isDestroyed() ) return false;
@@ -1021,7 +1021,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public boolean isStreamedIn( PlayerPrim forPlayer )
+	public boolean isStreamedIn( Player forPlayer )
 	{
 		if( isOnline() == false ) return false;
 		if( forPlayer.isOnline() == false ) return false;
@@ -1030,7 +1030,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public void setCheckpoint( CheckpointPrim checkpoint )
+	public void setCheckpoint( Checkpoint checkpoint )
 	{
 		if( isOnline() == false ) return;
 		
@@ -1055,7 +1055,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public void setRaceCheckpoint( RaceCheckpointPrim checkpoint )
+	public void setRaceCheckpoint( RaceCheckpoint checkpoint )
 	{
 		if( isOnline() == false ) return;
 		
@@ -1065,7 +1065,7 @@ public class PlayerImpl implements PlayerPrim
 			return;
 		}
 		
-		RaceCheckpointPrim next = checkpoint.getNext();
+		RaceCheckpoint next = checkpoint.getNext();
 		
 		Point3D loc = checkpoint.getLocation();
 		Point3D nextLoc = next.getLocation();
@@ -1207,7 +1207,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public VehiclePrim getSurfingVehicle()
+	public Vehicle getSurfingVehicle()
 	{
 		if( isOnline() == false ) return null;
 		
@@ -1286,7 +1286,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public void spectate( PlayerPrim player, SpectateMode mode )
+	public void spectate( Player player, SpectateMode mode )
 	{
 		if( isOnline() == false ) return;
 		
@@ -1298,7 +1298,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public void spectate( VehiclePrim vehicle, SpectateMode mode )
+	public void spectate( Vehicle vehicle, SpectateMode mode )
 	{
 		if( isOnline() == false ) return;
 		
@@ -1328,12 +1328,12 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public ObjectPrim getSurfingObject()
+	public SampObject getSurfingObject()
 	{
 		if( isOnline() == false ) return null;
 		
 		int objectid = SampNativeFunction.getPlayerSurfingObjectID(id);
-		if( objectid == ObjectPrim.INVALID_ID ) return null;
+		if( objectid == SampObject.INVALID_ID ) return null;
 		
 		return ShoebillImpl.getInstance().getManagedObjectPool().getObject( objectid );
 	}
@@ -1348,7 +1348,7 @@ public class PlayerImpl implements PlayerPrim
 	
 	
 	@Override
-	public PlayerPrim getAimedTarget()
+	public Player getAimedTarget()
 	{
 		if( isOnline() == false ) return null;
 		
@@ -1412,7 +1412,7 @@ public class PlayerImpl implements PlayerPrim
 	}
 	
 	@Override
-	public void showDialog( DialogPrim dialog, DialogStyle style, String caption, String text, String button1, String button2 )
+	public void showDialog( Dialog dialog, DialogStyle style, String caption, String text, String button1, String button2 )
 	{
 		if( isOnline() == false ) return;
 		

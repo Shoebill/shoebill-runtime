@@ -16,8 +16,8 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.object.primitive.PlayerKeyState;
-import net.gtaun.shoebill.object.primitive.PlayerPrim;
+import net.gtaun.shoebill.object.PlayerKeyState;
+import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -30,11 +30,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class PlayerKeyStateImpl implements PlayerKeyState
 {
-	private PlayerPrim player;
+	private Player player;
 	private int keys, updown, leftright;
 	
 	
-	public PlayerKeyStateImpl( PlayerPrim player )
+	public PlayerKeyStateImpl( Player player )
 	{
 		this.player = player;
 	}
@@ -47,7 +47,7 @@ public class PlayerKeyStateImpl implements PlayerKeyState
 	}
 
 	@Override
-	public PlayerPrim getPlayer()
+	public Player getPlayer()
 	{
 		return player;
 	}
