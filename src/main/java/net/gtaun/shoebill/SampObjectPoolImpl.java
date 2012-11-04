@@ -41,7 +41,7 @@ import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.object.Zone;
 import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
-import net.gtaun.shoebill.util.event.EventManager;
+import net.gtaun.util.event.EventManagerImpl;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -92,7 +92,7 @@ public class SampObjectPoolImpl implements SampObjectPool
 	private Map<Integer, Reference<Dialog>>		dialogs		= new ConcurrentHashMap<>();
 	
 	
-	SampObjectPoolImpl( final EventManager eventManager )
+	SampObjectPoolImpl( final EventManagerImpl eventManager )
 	{
 		callbackHandler = new AbstractSampCallbackHandler()
 		{

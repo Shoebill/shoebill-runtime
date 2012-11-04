@@ -35,10 +35,10 @@ import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackManager;
 import net.gtaun.shoebill.samp.SampCallbackManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.shoebill.util.event.EventManager;
-import net.gtaun.shoebill.util.event.IEventManager;
 import net.gtaun.shoebill.util.log.LogLevel;
 import net.gtaun.shoebill.util.log.LoggerOutputStream;
+import net.gtaun.util.event.EventManagerImpl;
+import net.gtaun.util.event.EventManager;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -66,7 +66,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	
 	private ShoebillVersionImpl version;
 	private ShoebillConfiguration configuration;
-	private EventManager eventManager;
+	private EventManagerImpl eventManager;
 	
 	private SampCallbackManagerImpl sampCallbackManager;
 	private SampObjectPoolImpl managedObjectPool;
@@ -202,7 +202,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	
 	private void initialize()
 	{
-		eventManager = new EventManager();
+		eventManager = new EventManagerImpl();
 		
 		ClassLoader classLoader = generateResourceClassLoader(pluginDir, gamemodeDir);
 		gamemodeManager = new GamemodeManagerImpl(this, classLoader, gamemodeDir, dataDir);
@@ -316,7 +316,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	}
 	
 	@Override
-	public IEventManager getEventManager()
+	public EventManager getEventManager()
 	{
 		return eventManager;
 	}

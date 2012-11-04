@@ -76,7 +76,7 @@ import net.gtaun.shoebill.object.impl.PlayerImpl;
 import net.gtaun.shoebill.object.impl.PlayerObjectImpl;
 import net.gtaun.shoebill.object.impl.VehicleImpl;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
-import net.gtaun.shoebill.util.event.EventManager;
+import net.gtaun.util.event.EventManagerImpl;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -90,12 +90,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class SampEventDispatcher implements SampCallbackHandler
 {
 	private SampObjectPoolImpl sampObjectPool;
-	private EventManager eventManager;
+	private EventManagerImpl eventManager;
 
 	private long lastProcessTimeMillis;
 	
 	
-	public SampEventDispatcher( SampObjectPoolImpl pool, EventManager manager )
+	public SampEventDispatcher( SampObjectPoolImpl pool, EventManagerImpl manager )
 	{
 		sampObjectPool = pool;
 		eventManager = manager;
