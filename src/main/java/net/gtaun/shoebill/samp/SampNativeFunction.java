@@ -18,7 +18,7 @@ package net.gtaun.shoebill.samp;
 
 import net.gtaun.shoebill.data.Quaternion;
 import net.gtaun.shoebill.data.Time;
-import net.gtaun.shoebill.data.Point3D;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.data.WeaponData;
 import net.gtaun.shoebill.object.impl.PlayerKeyStateImpl;
@@ -56,9 +56,9 @@ public final class SampNativeFunction
 	public static native void attachObjectToObject( int objectid, int attachtoid, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, int syncRotation );
 	public static native void attachObjectToPlayer( int objectid, int playerid, float offsetX, float offsetY, float offsetZ, float rX, float rY, float rZ );
 	public static native void setObjectPos( int objectid, float x, float y, float z );
-	public static native void getObjectPos( int objectid, Point3D rot );
+	public static native void getObjectPos( int objectid, Vector3D rot );
 	public static native void setObjectRot( int objectid, float rotX, float rotY, float rotZ );
-	public static native void getObjectRot( int objectid, Point3D rot );
+	public static native void getObjectRot( int objectid, Vector3D rot );
 	public static native boolean isValidObject( int objectid );
 	public static native void destroyObject( int objectid );
 	public static native int moveObject( int objectid, float x, float y, float z, float speed, float rotX, float rotY, float rotZ );
@@ -66,9 +66,9 @@ public final class SampNativeFunction
 	public static native boolean isObjectMoving( int objectid );
 	public static native int createPlayerObject( int playerid, int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance );
 	public static native void setPlayerObjectPos( int playerid, int objectid, float x, float y, float z );
-	public static native void getPlayerObjectPos( int playerid, int objectid, Point3D rot );
+	public static native void getPlayerObjectPos( int playerid, int objectid, Vector3D rot );
 	public static native void setPlayerObjectRot( int playerid, int objectid, float rotX, float rotY, float rotZ );
-	public static native void getPlayerObjectRot( int playerid, int objectid, Point3D rot );
+	public static native void getPlayerObjectRot( int playerid, int objectid, Vector3D rot );
 	public static native boolean isValidPlayerObject( int playerid, int objectid );
 	public static native void destroyPlayerObject( int playerid, int objectid );
 	public static native int movePlayerObject( int playerid, int objectid, float x, float y, float z, float speed, float rotX, float rotY, float rotZ );
@@ -87,7 +87,7 @@ public final class SampNativeFunction
 	// Player info
 	public static native void setPlayerPos( int playerid, float x, float y, float z );
 	public static native void setPlayerPosFindZ( int playerid, float x, float y, float z );
-	public static native void getPlayerPos( int playerid, Point3D location );
+	public static native void getPlayerPos( int playerid, Vector3D location );
 	public static native void setPlayerFacingAngle( int playerid, float angle );
 	public static native float getPlayerFacingAngle( int playerid );
 	public static native boolean isPlayerInRangeOfPoint( int playerid, float range, float x, float y, float z );
@@ -198,8 +198,8 @@ public final class SampNativeFunction
 	public static native void setPlayerCameraPos( int playerid, float x, float y, float z );
 	public static native void setPlayerCameraLookAt( int playerid, float x, float y, float z );
 	public static native void setCameraBehindPlayer( int playerid );
-	public static native void getPlayerCameraPos( int playerid, Point3D location );
-	public static native void getPlayerCameraFrontVector( int playerid, Point3D location );
+	public static native void getPlayerCameraPos( int playerid, Vector3D location );
+	public static native void getPlayerCameraFrontVector( int playerid, Vector3D location );
 	public static native int getPlayerCameraMode( int playerid );
 
 	// Player conditionals
@@ -354,7 +354,7 @@ public final class SampNativeFunction
 	public static native int createVehicle( int model, float x, float y, float z, float rotation, int color1, int color2, int respawnDelay );
 	public static native void destroyVehicle( int vehicleid );
 	public static native boolean isVehicleStreamedIn( int vehicleid, int forplayerid );
-	public static native void getVehiclePos( int vehicleid, Point3D location );
+	public static native void getVehiclePos( int vehicleid, Vector3D location );
 	public static native void setVehiclePos( int vehicleid, float x, float y, float z );
 	public static native float getVehicleZAngle( int vehicleid );
 	public static native void getVehicleRotationQuat( int vehicleid, Quaternion quaternions );

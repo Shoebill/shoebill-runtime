@@ -21,7 +21,7 @@ import java.util.Collection;
 
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.LocationRadius;
-import net.gtaun.shoebill.data.Point3D;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.object.Checkpoint;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.proxy.ProxyManager;
@@ -48,7 +48,7 @@ public class CheckpointImpl implements Checkpoint
 		location = new LocationRadius( x, y, z, size );
 	}
 	
-	public CheckpointImpl( Point3D pos, float size )
+	public CheckpointImpl( Vector3D pos, float size )
 	{
 		location = new LocationRadius( pos, size );
 	}
@@ -84,7 +84,7 @@ public class CheckpointImpl implements Checkpoint
 	}
 
 	@Override
-	public void setLocation( Point3D pos )
+	public void setLocation( Vector3D pos )
 	{
 		location.set( pos );
 		update();

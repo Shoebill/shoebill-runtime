@@ -22,7 +22,7 @@ import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
-import net.gtaun.shoebill.data.Point3D;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Quaternion;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.events.vehicle.VehicleDestroyEvent;
@@ -233,7 +233,7 @@ public class VehicleImpl implements Vehicle
 	}
 
 	@Override
-	public void setLocation( Point3D pos )
+	public void setLocation( Vector3D pos )
 	{
 		setLocation( pos.getX(), pos.getY(), pos.getZ() );
 	}

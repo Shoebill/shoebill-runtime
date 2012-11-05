@@ -18,7 +18,7 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectPoolImpl;
 import net.gtaun.shoebill.ShoebillImpl;
-import net.gtaun.shoebill.data.Point2D;
+import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Player;
@@ -41,7 +41,7 @@ public class MenuImpl implements Menu
 	private int id = INVALID_ID;
 	private String title, columnHeader = "";
 	private int columns;
-	private Point2D position;
+	private Vector2D position;
 	private float col1Width, col2Width;
 	
 
@@ -56,7 +56,7 @@ public class MenuImpl implements Menu
 		
 		this.title = title;
 		this.columns = columns;
-		this.position = new Point2D( x, y );
+		this.position = new Vector2D( x, y );
 		this.col1Width = col1Width;
 		this.col2Width = col2Width;
 		
@@ -114,7 +114,7 @@ public class MenuImpl implements Menu
 	}
 	
 	@Override
-	public Point2D getPosition()
+	public Vector2D getPosition()
 	{
 		return position.clone();
 	}

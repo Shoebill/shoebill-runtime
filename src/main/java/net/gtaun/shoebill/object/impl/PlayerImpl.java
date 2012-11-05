@@ -35,7 +35,7 @@ import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.LocationRadius;
-import net.gtaun.shoebill.data.Point3D;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Velocity;
@@ -493,7 +493,7 @@ public class PlayerImpl implements Player
 	}
 
 	@Override
-	public void setSpawnInfo( Point3D pos, int interiorId, int worldId, float angle, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
+	public void setSpawnInfo( Vector3D pos, int interiorId, int worldId, float angle, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3 )
 	{
 		setSpawnInfo( pos.getX(), pos.getY(), pos.getZ(), interiorId, worldId, angle, skin, team, weapon1.getType(), weapon1.getAmmo(), weapon2.getType(), weapon2.getAmmo(), weapon3.getType(), weapon3.getAmmo() );
 	}
@@ -626,7 +626,7 @@ public class PlayerImpl implements Player
 	}
 
 	@Override
-	public void setLocation( Point3D pos )
+	public void setLocation( Vector3D pos )
 	{
 		if( isOnline() == false ) return;
 		
@@ -673,7 +673,7 @@ public class PlayerImpl implements Player
 	}
 
 	@Override
-	public void setLocationFindZ( Point3D pos )
+	public void setLocationFindZ( Vector3D pos )
 	{
 		if( isOnline() == false ) return;
 		
@@ -746,7 +746,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setVelocity( Point3D vel )
+	public void setVelocity( Vector3D vel )
 	{
 		if( isOnline() == false ) return;
 
@@ -884,7 +884,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void playSound( int sound, Point3D loc )
+	public void playSound( int sound, Vector3D loc )
 	{
 		if( isOnline() == false ) return;
 		
@@ -949,7 +949,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setCameraPosition( Point3D pos )
+	public void setCameraPosition( Vector3D pos )
 	{
 		if( isOnline() == false ) return;
 		
@@ -966,7 +966,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setCameraLookAt( Point3D lookAt )
+	public void setCameraLookAt( Vector3D lookAt )
 	{
 		if( isOnline() == false ) return;
 		
@@ -983,21 +983,21 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public Point3D getCameraPosition()
+	public Vector3D getCameraPosition()
 	{
 		if( isOnline() == false ) return null;
 		
-		Point3D pos = new Point3D();
+		Vector3D pos = new Vector3D();
 		SampNativeFunction.getPlayerCameraPos( id, pos );
 		return pos;
 	}
 	
 	@Override
-	public Point3D getCameraFrontVector()
+	public Vector3D getCameraFrontVector()
 	{
 		if( isOnline() == false ) return null;
 		
-		Point3D lookAt = new Point3D();
+		Vector3D lookAt = new Vector3D();
 		SampNativeFunction.getPlayerCameraFrontVector( id, lookAt );
 		return lookAt;
 	}
@@ -1047,7 +1047,7 @@ public class PlayerImpl implements Player
 			return;
 		}
 
-		Point3D loc = checkpoint.getLocation();
+		Vector3D loc = checkpoint.getLocation();
 		SampNativeFunction.setPlayerCheckpoint( id, loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize() );
 		this.checkpoint = checkpoint;
 	}
@@ -1074,8 +1074,8 @@ public class PlayerImpl implements Player
 		
 		RaceCheckpoint next = checkpoint.getNext();
 		
-		Point3D loc = checkpoint.getLocation();
-		Point3D nextLoc = next.getLocation();
+		Vector3D loc = checkpoint.getLocation();
+		Vector3D nextLoc = next.getLocation();
 		
 		if( checkpoint.getNext() != null )
 		{
@@ -1256,7 +1256,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setMapIcon( int iconId, Point3D pos, int markerType, Color color, MapIconStyle style )
+	public void setMapIcon( int iconId, Vector3D pos, int markerType, Color color, MapIconStyle style )
 	{
 		setMapIcon( iconId, pos.getX(), pos.getY(), pos.getZ(), markerType, color, style );
 	}
@@ -1379,7 +1379,7 @@ public class PlayerImpl implements Player
 	}
 
 	@Override
-	public void playAudioStream( String url, Point3D pos, float distance )
+	public void playAudioStream( String url, Vector3D pos, float distance )
 	{
 		playAudioStream( url, pos.getX(), pos.getY(), pos.getZ(), distance );
 	}
@@ -1407,7 +1407,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void removeBuilding( int modelId, Point3D pos, float radius )
+	public void removeBuilding( int modelId, Vector3D pos, float radius )
 	{
 		removeBuilding( modelId, pos.getX(), pos.getY(), pos.getZ(), radius );
 	}

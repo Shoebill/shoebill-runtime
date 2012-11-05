@@ -19,7 +19,7 @@ package net.gtaun.shoebill;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
-import net.gtaun.shoebill.data.Point3D;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Dialog;
 import net.gtaun.shoebill.object.Label;
@@ -61,10 +61,10 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 {
 	private static final Class<?>[] PLAYER_CONSTRUCTOR_ARGUMENT_TYPES = {int.class};
 	private static final Class<?>[] VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES = {int.class, LocationAngle.class, int.class, int.class, int.class};
-	private static final Class<?>[] OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = {int.class, Location.class, Point3D.class, float.class};
-	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = {Player.class, int.class, Location.class, Point3D.class, float.class};
-	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES = {Player.class, int.class, Location.class, Point3D.class, float.class, Player.class};
-	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES = {Player.class, int.class, Location.class, Point3D.class, float.class, Vehicle.class};
+	private static final Class<?>[] OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = {int.class, Location.class, Vector3D.class, float.class};
+	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = {Player.class, int.class, Location.class, Vector3D.class, float.class};
+	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES = {Player.class, int.class, Location.class, Vector3D.class, float.class, Player.class};
+	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES = {Player.class, int.class, Location.class, Vector3D.class, float.class, Vehicle.class};
 	private static final Class<?>[] PICKUP_CONSTRUCTOR_ARGUMENT_TYPES = {int.class, int.class, Location.class};
 	private static final Class<?>[] LABEL_CONSTRUCTOR_ARGUMENT_TYPES = {String.class, Color.class, Location.class, float.class, boolean.class};
 	private static final Class<?>[] PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES = {Player.class, String.class, Color.class, Location.class, float.class, boolean.class};
@@ -148,7 +148,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	}
 
 	@Override
-	public SampObject createObject(int modelId, Location loc, Point3D rot, float drawDistance) throws CreationFailedException
+	public SampObject createObject(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
 		final Object[] args = {modelId, loc, rot, drawDistance};
 		SampObject object = (SampObject) objectFactory.create(OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, args);
@@ -157,7 +157,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	}
 
 	@Override
-	public PlayerObject createPlayerObject(Player player, int modelId, Location loc, Point3D rot, float drawDistance) throws CreationFailedException
+	public PlayerObject createPlayerObject(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
 		final Object[] args = {player, modelId, loc, rot, drawDistance};
 		PlayerObject object = (PlayerObject) playerObjectFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, args);

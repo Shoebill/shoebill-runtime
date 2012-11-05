@@ -20,7 +20,7 @@ package net.gtaun.shoebill.object.impl;
 import net.gtaun.shoebill.SampObjectPoolImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.Point3D;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.SampObject;
@@ -47,21 +47,21 @@ public class ObjectImpl implements SampObject
 	private float drawDistance = 0.0F;
 
 	@SuppressWarnings("unused")
-	private Point3D attachedOffset;
+	private Vector3D attachedOffset;
 	@SuppressWarnings("unused")
-	private Point3D attachedRotate;
+	private Vector3D attachedRotate;
 	
 	private Player attachedPlayer;
 	private SampObject attachedObject;
 	private Vehicle attachedVehicle;
 	
 	
-	public ObjectImpl( int modelId, Location loc, Point3D rot, float drawDistance ) throws CreationFailedException
+	public ObjectImpl( int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
 	{
-		initialize( modelId, new Location(loc), new Point3D(rot), drawDistance );
+		initialize( modelId, new Location(loc), new Vector3D(rot), drawDistance );
 	}
 	
-	private void initialize( int modelId, Location loc, Point3D rot, float drawDistance ) throws CreationFailedException
+	private void initialize( int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.location = loc;
@@ -169,7 +169,7 @@ public class ObjectImpl implements SampObject
 	}
 	
 	@Override
-	public void setLocation( Point3D pos )
+	public void setLocation( Vector3D pos )
 	{
 		if( isDestroyed() ) return;
 		
@@ -189,11 +189,11 @@ public class ObjectImpl implements SampObject
 	}
 	
 	@Override
-	public Point3D getRotate()
+	public Vector3D getRotate()
 	{
 		if( isDestroyed() ) return null;
 	
-		Point3D rotate = new Point3D();
+		Vector3D rotate = new Vector3D();
 		SampNativeFunction.getObjectRot( id, rotate );
 		
 		return rotate;
@@ -208,7 +208,7 @@ public class ObjectImpl implements SampObject
 	}
 	
 	@Override
-	public void setRotate( Point3D rot )
+	public void setRotate( Vector3D rot )
 	{
 		setRotate( rot.getX(), rot.getY(), rot.getZ() );
 	}
@@ -239,13 +239,13 @@ public class ObjectImpl implements SampObject
 	}
 	
 	@Override
-	public int move( Point3D pos, float speed )
+	public int move( Vector3D pos, float speed )
 	{
 		return move( pos.getX(), pos.getY(), pos.getZ(), speed );
 	}
 	
 	@Override
-	public int move( Point3D pos, float speed, Point3D rot )
+	public int move( Vector3D pos, float speed, Vector3D rot )
 	{
 		return move( pos.getX(), pos.getY(), pos.getZ(), speed, rot.getX(), rot.getY(), rot.getZ() );
 	}
@@ -268,8 +268,8 @@ public class ObjectImpl implements SampObject
 		SampNativeFunction.attachObjectToPlayer( id, player.getId(), x, y, z, rx, ry, rz );
 
 		speed = 0.0F;
-		attachedOffset = new Point3D( x, y, z );
-		attachedRotate = new Point3D( rx, ry, rz );
+		attachedOffset = new Vector3D( x, y, z );
+		attachedRotate = new Vector3D( rx, ry, rz );
 		
 		attachedPlayer = player;
 		attachedObject = null;
@@ -277,7 +277,7 @@ public class ObjectImpl implements SampObject
 	}
 
 	@Override
-	public void attach( Player player, Point3D pos, Point3D rot )
+	public void attach( Player player, Vector3D pos, Vector3D rot )
 	{
 		attach( player, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
 	}
@@ -292,8 +292,8 @@ public class ObjectImpl implements SampObject
 		SampNativeFunction.attachObjectToObject( id, object.getId(), x, y, z, rz, ry, rz, syncRotation?1:0 );
 
 		speed = 0.0F;
-		attachedOffset = new Point3D( x, y, z );
-		attachedRotate = new Point3D( rx, ry, rz );
+		attachedOffset = new Vector3D( x, y, z );
+		attachedRotate = new Vector3D( rx, ry, rz );
 		
 		attachedPlayer = null;
 		attachedObject = object;
@@ -302,7 +302,7 @@ public class ObjectImpl implements SampObject
 	
 
 	@Override
-	public void attach( SampObject object, Point3D pos, Point3D rot, boolean syncRotation )
+	public void attach( SampObject object, Vector3D pos, Vector3D rot, boolean syncRotation )
 	{
 		attach( object, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ(), syncRotation );
 	}
@@ -316,8 +316,8 @@ public class ObjectImpl implements SampObject
 		SampNativeFunction.attachObjectToVehicle( id, vehicle.getId(), x, y, z, rx, ry, rz );
 
 		speed = 0.0F;
-		attachedOffset = new Point3D( x, y, z );
-		attachedRotate = new Point3D( rx, ry, rz );
+		attachedOffset = new Vector3D( x, y, z );
+		attachedRotate = new Vector3D( rx, ry, rz );
 		
 		attachedPlayer = null;
 		attachedObject = null;
@@ -325,7 +325,7 @@ public class ObjectImpl implements SampObject
 	}
 	
 	@Override
-	public void attach( Vehicle vehicle, Point3D pos, Point3D rot )
+	public void attach( Vehicle vehicle, Vector3D pos, Vector3D rot )
 	{
 		attach( vehicle, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
 	}

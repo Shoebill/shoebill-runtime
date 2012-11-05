@@ -20,7 +20,7 @@ package net.gtaun.shoebill.object.impl;
 import net.gtaun.shoebill.SampObjectPoolImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Color;
-import net.gtaun.shoebill.data.Point2D;
+import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.Textdraw;
@@ -41,7 +41,7 @@ public class TextdrawImpl implements Textdraw
 	private ProxyManager proxyManager;
 	
 	private int id = INVALID_ID;
-	private Point2D position;
+	private Vector2D position;
 	private String text;
 	
 	private boolean[] isPlayerShowed = new boolean[SampObjectPoolImpl.MAX_PLAYERS];
@@ -54,7 +54,7 @@ public class TextdrawImpl implements Textdraw
 	
 	private void initialize( float x, float y, String text ) throws CreationFailedException
 	{
-		position = new Point2D( x, y );
+		position = new Vector2D( x, y );
 		if( StringUtils.isEmpty(text) ) text = " ";
 		
 		id = SampNativeFunction.textDrawCreate( x, y, text );
@@ -101,7 +101,7 @@ public class TextdrawImpl implements Textdraw
 	}
 	
 	@Override
-	public Point2D getPosition()
+	public Vector2D getPosition()
 	{
 		return position.clone();
 	}
@@ -121,7 +121,7 @@ public class TextdrawImpl implements Textdraw
 	}
 
 	@Override
-	public void setLetterSize( Point2D vec )
+	public void setLetterSize( Vector2D vec )
 	{
 		if( isDestroyed() ) return;
 		
@@ -137,7 +137,7 @@ public class TextdrawImpl implements Textdraw
 	}
 
 	@Override
-	public void setTextSize( Point2D vec )
+	public void setTextSize( Vector2D vec )
 	{
 		if( isDestroyed() ) return;
 		

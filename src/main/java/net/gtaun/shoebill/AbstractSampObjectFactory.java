@@ -20,8 +20,8 @@ import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
-import net.gtaun.shoebill.data.Point2D;
-import net.gtaun.shoebill.data.Point3D;
+import net.gtaun.shoebill.data.Vector2D;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Label;
 import net.gtaun.shoebill.object.Menu;
@@ -60,13 +60,13 @@ public abstract class AbstractSampObjectFactory implements SampObjectFactory
 	}
 
 	@Override
-	public Vehicle createVehicle(int modelId, Point3D pos, float angle, int color1, int color2, int respawnDelay) throws CreationFailedException
+	public Vehicle createVehicle(int modelId, Vector3D pos, float angle, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
 		return createVehicle(modelId, new LocationAngle(pos, 0, 0, angle), color1, color2, respawnDelay);
 	}
 
 	@Override
-	public Vehicle createVehicle(int modelId, Point3D pos, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay) throws CreationFailedException
+	public Vehicle createVehicle(int modelId, Vector3D pos, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
 		return createVehicle(modelId, new LocationAngle(pos, interiorId, worldId, angle), color1, color2, respawnDelay);
 	}
@@ -80,29 +80,29 @@ public abstract class AbstractSampObjectFactory implements SampObjectFactory
 	@Override
 	public SampObject createObject(int modelId, float x, float y, float z, float rx, float ry, float rz) throws CreationFailedException
 	{
-		return createObject(modelId, new Location(x, y, z), new Point3D(rx, ry, rz), 0);
+		return createObject(modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), 0);
 	}
 
 	@Override
 	public SampObject createObject(int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance) throws CreationFailedException
 	{
-		return createObject(modelId, new Location(x, y, z), new Point3D(rx, ry, rz), drawDistance);
+		return createObject(modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), drawDistance);
 	}
 
 	@Override
 	public SampObject createObject(int modelId, Location loc, float rx, float ry, float rz) throws CreationFailedException
 	{
-		return createObject(modelId, loc, new Point3D(rx, ry, rz), 0);
+		return createObject(modelId, loc, new Vector3D(rx, ry, rz), 0);
 	}
 
 	@Override
 	public SampObject createObject(int modelId, Location loc, float rx, float ry, float rz, float drawDistance) throws CreationFailedException
 	{
-		return createObject(modelId, loc, new Point3D(rx, ry, rz), drawDistance);
+		return createObject(modelId, loc, new Vector3D(rx, ry, rz), drawDistance);
 	}
 
 	@Override
-	public SampObject createObject(int modelId, Location loc, Point3D rot) throws CreationFailedException
+	public SampObject createObject(int modelId, Location loc, Vector3D rot) throws CreationFailedException
 	{
 		return createObject(modelId, loc, rot, 0);
 	}
@@ -110,29 +110,29 @@ public abstract class AbstractSampObjectFactory implements SampObjectFactory
 	@Override
 	public PlayerObject createPlayerObject(Player player, int modelId, float x, float y, float z, float rx, float ry, float rz) throws CreationFailedException
 	{
-		return createPlayerObject(player, modelId, new Location(x, y, z), new Point3D(rx, ry, rz), 0);
+		return createPlayerObject(player, modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), 0);
 	}
 
 	@Override
 	public PlayerObject createPlayerObject(Player player, int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance) throws CreationFailedException
 	{
-		return createPlayerObject(player, modelId, new Location(x, y, z), new Point3D(rx, ry, rz), drawDistance);
+		return createPlayerObject(player, modelId, new Location(x, y, z), new Vector3D(rx, ry, rz), drawDistance);
 	}
 
 	@Override
 	public PlayerObject createPlayerObject(Player player, int modelId, Location loc, float rx, float ry, float rz) throws CreationFailedException
 	{
-		return createPlayerObject(player, modelId, loc, new Point3D(rx, ry, rz), 0);
+		return createPlayerObject(player, modelId, loc, new Vector3D(rx, ry, rz), 0);
 	}
 
 	@Override
 	public PlayerObject createPlayerObject(Player player, int modelId, Location loc, float rx, float ry, float rz, float drawDistance) throws CreationFailedException
 	{
-		return createPlayerObject(player, modelId, loc, new Point3D(rx, ry, rz), drawDistance);
+		return createPlayerObject(player, modelId, loc, new Vector3D(rx, ry, rz), drawDistance);
 	}
 
 	@Override
-	public PlayerObject createPlayerObject(Player player, int modelId, Location loc, Point3D rot) throws CreationFailedException
+	public PlayerObject createPlayerObject(Player player, int modelId, Location loc, Vector3D rot) throws CreationFailedException
 	{
 		return createPlayerObject(player, modelId, loc, rot, 0);
 	}
@@ -156,7 +156,7 @@ public abstract class AbstractSampObjectFactory implements SampObjectFactory
 	}
 
 	@Override
-	public Label createLabel(String text, Color color, Point3D pos, int worldId, float drawDistance, boolean testLOS) throws CreationFailedException
+	public Label createLabel(String text, Color color, Vector3D pos, int worldId, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
 		return createLabel(text, color, new Location(pos, worldId), drawDistance, testLOS);
 	}
@@ -180,13 +180,13 @@ public abstract class AbstractSampObjectFactory implements SampObjectFactory
 	}
 
 	@Override
-	public Textdraw createTextdraw(Point2D pos)
+	public Textdraw createTextdraw(Vector2D pos)
 	{
 		return createTextdraw(pos.getX(), pos.getY(), " ");
 	}
 
 	@Override
-	public Textdraw createTextdraw(Point2D pos, String text)
+	public Textdraw createTextdraw(Vector2D pos, String text)
 	{
 		return createTextdraw(pos.getX(), pos.getY(), text);
 	}
@@ -198,7 +198,7 @@ public abstract class AbstractSampObjectFactory implements SampObjectFactory
 	}
 
 	@Override
-	public Menu createMenu(String title, int columns, Point2D pos, float col1Width, float col2Width)
+	public Menu createMenu(String title, int columns, Vector2D pos, float col1Width, float col2Width)
 	{
 		return createMenu(title, columns, pos.getX(), pos.getY(), col1Width, col2Width);
 	}
