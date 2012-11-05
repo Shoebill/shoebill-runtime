@@ -15,8 +15,6 @@
  */
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectPoolImpl;
-import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.object.Dialog;
 import net.gtaun.shoebill.object.Player;
@@ -49,9 +47,6 @@ public class DialogImpl implements Dialog
 	{
 		id = count;
 		count++;
-		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		// pool.putDialog( id, this );
 	}
 	
 	@Override

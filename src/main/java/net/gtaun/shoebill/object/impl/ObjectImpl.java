@@ -21,8 +21,8 @@ import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.proxy.ProxyManager;
 import net.gtaun.shoebill.samp.SampNativeFunction;
@@ -93,9 +93,6 @@ public class ObjectImpl implements SampObject
 		
 		id = SampNativeFunction.createObject( modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance );
 		if( id == INVALID_ID ) throw new CreationFailedException();
-		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		// pool.setObject( id, this );
 	}
 	
 	@Override

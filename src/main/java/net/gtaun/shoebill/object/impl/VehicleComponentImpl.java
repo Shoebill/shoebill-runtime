@@ -18,8 +18,8 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.constant.VehicleComponentSlot;
-import net.gtaun.shoebill.object.VehicleComponent;
 import net.gtaun.shoebill.object.Vehicle;
+import net.gtaun.shoebill.object.VehicleComponent;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;

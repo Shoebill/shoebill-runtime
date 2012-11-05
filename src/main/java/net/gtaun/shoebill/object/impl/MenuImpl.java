@@ -67,9 +67,6 @@ public class MenuImpl implements Menu
 		
 		id = SampNativeFunction.createMenu( title, columns, position.getX(), position.getY(), col1Width, col1Width );
 		if( id == -1 ) throw new CreationFailedException();
-		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		// pool.setMenu( id, this );
 	}
 	
 	@Override

@@ -77,9 +77,6 @@ public class LabelImpl implements Label
 		
 		id = SampNativeFunction.create3DTextLabel( text, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, location.getWorldId(), testLOS );
 		if( id == INVALID_ID ) throw new CreationFailedException();
-		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		// pool.setLabel( id, this );
 	}
 	
 	@Override

@@ -64,9 +64,6 @@ public class PickupImpl implements Pickup
 		
 		id = SampNativeFunction.createPickup( modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId() );
 		if( id == INVALID_ID ) throw new CreationFailedException();
-		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		// pool.setPickup( id, this );
 	}
 	
 	@Override

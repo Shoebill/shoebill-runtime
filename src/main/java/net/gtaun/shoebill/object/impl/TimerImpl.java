@@ -15,9 +15,8 @@
  */
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.ShoebillLowLevel;
-import net.gtaun.shoebill.SampObjectPoolImpl;
 import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.event.timer.TimerTickEvent;
 import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.proxy.ProxyManager;
@@ -54,9 +53,6 @@ public class TimerImpl implements Timer
 	{
 		this.interval = interval;
 		this.count = count;
-		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		// pool.putTimer( this );
 	}
 
 	@Override

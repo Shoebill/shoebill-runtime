@@ -76,9 +76,6 @@ public class TextdrawImpl implements Textdraw
 		if( id == INVALID_ID ) throw new CreationFailedException();
 		
 		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = false;
-		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		// pool.setTextdraw( id, this );
 	}
 
 	@Override

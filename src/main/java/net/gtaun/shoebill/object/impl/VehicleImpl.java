@@ -16,22 +16,22 @@
  */
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.SampObjectPoolImpl;
 import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
-import net.gtaun.shoebill.data.Quaternion;
 import net.gtaun.shoebill.data.Point3D;
+import net.gtaun.shoebill.data.Quaternion;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.VehicleComponent;
 import net.gtaun.shoebill.object.VehicleDamage;
 import net.gtaun.shoebill.object.VehicleParam;
-import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.proxy.ProxyManager;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
@@ -127,9 +127,6 @@ public class VehicleImpl implements Vehicle
 		param = new VehicleParamImpl(this);
 		component = new VehicleComponentImpl(this);
 		damage = new VehicleDamageImpl(this);
-		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		// pool.setVehicle( id, this );
 		
 		VehicleSpawnEvent event = new VehicleSpawnEvent( this );
 		ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) ShoebillImpl.getInstance();

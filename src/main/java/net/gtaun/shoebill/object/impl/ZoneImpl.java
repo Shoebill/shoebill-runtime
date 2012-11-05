@@ -67,9 +67,6 @@ public class ZoneImpl implements Zone
 			isPlayerShowed[i] = false;
 			isPlayerFlashing[i] = false;
 		}
-		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
-		// pool.setZone( id, this );
 	}
 
 	@Override

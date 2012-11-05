@@ -16,9 +16,9 @@
  */
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.SampObjectPoolImpl;
 import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.constant.FightStyle;
 import net.gtaun.shoebill.constant.MapIconStyle;
@@ -35,9 +35,9 @@ import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.LocationRadius;
+import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
-import net.gtaun.shoebill.data.Point3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.data.WeaponData;
 import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
@@ -46,11 +46,11 @@ import net.gtaun.shoebill.exception.IllegalLengthException;
 import net.gtaun.shoebill.object.Checkpoint;
 import net.gtaun.shoebill.object.Dialog;
 import net.gtaun.shoebill.object.Menu;
-import net.gtaun.shoebill.object.SampObject;
-import net.gtaun.shoebill.object.PlayerAttach;
 import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.PlayerAttach;
 import net.gtaun.shoebill.object.PlayerWeaponSkill;
 import net.gtaun.shoebill.object.RaceCheckpoint;
+import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.proxy.ProxyManager;
 import net.gtaun.shoebill.samp.SampNativeFunction;
@@ -83,7 +83,7 @@ public class PlayerImpl implements Player
 		}
 	}
 	
-	public static void sendMessageToAll( Color color, String format, SampObject... args )
+	public static void sendMessageToAll( Color color, String format, Object... args )
 	{
 		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
 		{
@@ -97,7 +97,7 @@ public class PlayerImpl implements Player
 		SampNativeFunction.gameTextForAll( text, time, style );
 	}
 	
-	public static void gameTextToAll( int time, int style, String format, SampObject... args )
+	public static void gameTextToAll( int time, int style, String format, Object... args )
 	{
 		String text = String.format(format, args);
 		SampNativeFunction.gameTextForAll( text, time, style );
@@ -149,7 +149,6 @@ public class PlayerImpl implements Player
 
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
 		if( pool.getPlayer(id) != null ) throw new UnsupportedOperationException();
-		// pool.setPlayer( id, this );
 	}
 	
 	public void processPlayerUpdate()
@@ -765,7 +764,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void sendMessage( Color color, String format, SampObject... args )
+	public void sendMessage( Color color, String format, Object... args )
 	{
 		if( isOnline() == false ) return;
 		
@@ -819,7 +818,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void sendGameText( int time, int style, String format, SampObject... args )
+	public void sendGameText( int time, int style, String format, Object... args )
 	{
 		if( isOnline() == false ) return;
 		
