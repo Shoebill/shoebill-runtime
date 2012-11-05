@@ -17,7 +17,7 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.ShoebillLowLevel;
-import net.gtaun.shoebill.event.timer.TimerTickEvent;
+import net.gtaun.shoebill.events.timer.TimerTickEvent;
 import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.proxy.ProxyManager;
 
