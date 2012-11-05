@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.constant.DialogStyle;

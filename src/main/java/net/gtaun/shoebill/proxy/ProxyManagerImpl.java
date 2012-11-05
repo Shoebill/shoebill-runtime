@@ -16,24 +16,46 @@
 
 package net.gtaun.shoebill.proxy;
 
+import java.lang.reflect.Method;
+
+import net.gtaun.shoebill.object.Proxyable;
 import net.sf.cglib.proxy.Callback;
+import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 
 /**
+ * 
+ * 
  * @author MK124
  */
 public class ProxyManagerImpl implements ProxyManager
 {
+	private static final Callback PROXYABLE_METHOD_INTERCEPTOR = new MethodInterceptor()
+	{
+		@Override
+		public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable
+		{
+			Proxyable proxyable = (Proxyable)obj;
+			ProxyManagerImpl manager = (ProxyManagerImpl) proxyable.getProxyManager();
+			return manager.interceptor.intercept(obj, method, args, proxy);
+		}
+	};
+	
+	public static Enhancer createProxyableFactory(Class<? extends Proxyable> clz)
+	{
+		Enhancer factory = new Enhancer();
+		factory.setSuperclass(clz);
+		factory.setCallback(PROXYABLE_METHOD_INTERCEPTOR);
+		return factory;
+	}
+	
+	
 	private MethodInterceptor interceptor;
 	
 	
 	public ProxyManagerImpl()
 	{
 		
-	}
-	
-	public Callback getCallback()
-	{
-		return interceptor;
 	}
 }

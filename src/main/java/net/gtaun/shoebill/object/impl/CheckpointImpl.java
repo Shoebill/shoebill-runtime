@@ -133,7 +133,7 @@ public class CheckpointImpl implements Checkpoint
 	@Override
 	public void update()
 	{
-		Collection<? extends Player> players = ShoebillImpl.getInstance().getManagedObjectPool().getPlayers();
+		Collection<? extends Player> players = ShoebillImpl.getInstance().getSampObjectPool().getPlayers();
 		for( Player player : players )
 		{
 			if( player == null ) continue;
@@ -145,7 +145,7 @@ public class CheckpointImpl implements Checkpoint
 	public Collection<Player> getUsingPlayers()
 	{
 		Collection<Player> players = new ArrayList<>();
-		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers() )
 		{
 			if( player.getCheckpoint() == this ) players.add( player );
 		}

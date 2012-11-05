@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectPoolImpl;
@@ -50,11 +51,6 @@ public class ZoneImpl implements Zone
 		initialize( minX, minY, maxX, maxY );
 	}
 	
-	public ZoneImpl( Area area ) throws CreationFailedException
-	{
-		initialize( area.getMinX(), area.getMinY(), area.getMaxX(), area.getMaxY() );
-	}
-	
 	private void initialize( float minX, float minY, float maxX, float maxY ) throws CreationFailedException
 	{
 		area = new Area( minX, minY, maxX, maxY );
@@ -88,7 +84,7 @@ public class ZoneImpl implements Zone
 		
 		SampNativeFunction.gangZoneDestroy( id );
 
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
 		pool.setZone( id, null );
 		
 		id = INVALID_ID;

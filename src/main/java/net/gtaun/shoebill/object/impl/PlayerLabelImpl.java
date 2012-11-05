@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.data.Color;
@@ -51,16 +52,6 @@ public class PlayerLabelImpl implements PlayerLabel
 	private Vehicle attachedVehicle;
 	
 
-	public PlayerLabelImpl( Player player, String text, Color color, float x, float y, float z, float drawDistance, boolean testLOS ) throws CreationFailedException
-	{
-		initialize( player, text, color, new Location(x, y, z), drawDistance, testLOS, null, null );
-	}
-	
-	public PlayerLabelImpl( Player player, String text, Color color, float x, float y, float z, int worldId, float drawDistance, boolean testLOS ) throws CreationFailedException
-	{
-		initialize( player, text, color, new Location(x, y, z, worldId), drawDistance, testLOS, null, null );
-	}
-	
 	public PlayerLabelImpl( Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS ) throws CreationFailedException
 	{
 		initialize( player, text, color, new Location(loc), drawDistance, testLOS, null, null );

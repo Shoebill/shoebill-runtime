@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectPoolImpl;
@@ -40,16 +41,6 @@ public class PickupImpl implements Pickup
 	private int modelId, type;
 	private Location location;
 	
-	
-	public PickupImpl( int modelId, int type, float x, float y, float z, int worldId ) throws CreationFailedException
-	{
-		initialize( modelId, type, new Location(x, y, z, worldId) );
-	}
-	
-	public PickupImpl( int modelId, int type, float x, float y, float z ) throws CreationFailedException
-	{
-		initialize( modelId, type, new Location(x, y, z) );
-	}
 	
 	public PickupImpl( int modelId, int type, Location loc ) throws CreationFailedException
 	{
@@ -85,7 +76,7 @@ public class PickupImpl implements Pickup
 		
 		SampNativeFunction.destroyPickup( id );
 
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
 		pool.setPickup( id, null );
 		
 		id = INVALID_ID;
@@ -95,6 +86,12 @@ public class PickupImpl implements Pickup
 	public boolean isDestroyed()
 	{
 		return id == INVALID_ID;
+	}
+	
+	@Override
+	public int getId()
+	{
+		return id;
 	}
 	
 	@Override

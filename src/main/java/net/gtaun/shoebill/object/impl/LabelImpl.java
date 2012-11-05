@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectPoolImpl;
@@ -50,16 +51,6 @@ public class LabelImpl implements Label
 	private Player attachedPlayer;
 	private Vehicle attachedVehicle;
 	
-
-	public LabelImpl( String text, Color color, float x, float y, float z, int worldId, float drawDistance, boolean testLOS ) throws CreationFailedException
-	{
-		initialize( text, color, new Location(x, y, z, worldId), drawDistance, testLOS );
-	}
-	
-	public LabelImpl( String text, Color color, Point3D pos, int worldId, float drawDistance, boolean testLOS ) throws CreationFailedException
-	{
-		initialize( text, color, new Location(pos, worldId), drawDistance, testLOS );
-	}
 	
 	public LabelImpl( String text, Color color, Location loc, float drawDistance, boolean testLOS ) throws CreationFailedException
 	{
@@ -98,7 +89,7 @@ public class LabelImpl implements Label
 		
 		SampNativeFunction.delete3DTextLabel( id );
 		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
 		pool.setLabel( id, null );
 
 		id = INVALID_ID;

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectPoolImpl;
@@ -55,31 +56,6 @@ public class ObjectImpl implements SampObject
 	private Vehicle attachedVehicle;
 	
 	
-	public ObjectImpl( int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
-	{
-		initialize( modelId, new Location(x, y, z), new Point3D(rx, ry, rz), drawDistance );
-	}
-	
-	public ObjectImpl( int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
-	{
-		initialize( modelId, new Location(x, y, z), new Point3D(rx, ry, rz), drawDistance );
-	}
-	
-	public ObjectImpl( int modelId, Location loc, float rx, float ry, float rz ) throws CreationFailedException
-	{
-		initialize( modelId, new Location(loc), new Point3D(rx, ry, rz), drawDistance );
-	}
-	
-	public ObjectImpl( int modelId, Location loc, float rx, float ry, float rz, float drawDistance) throws CreationFailedException
-	{
-		initialize( modelId, new Location(loc), new Point3D(rx, ry, rz), drawDistance );
-	}
-	
-	public ObjectImpl( int modelId, Location loc, Point3D rot ) throws CreationFailedException
-	{
-		initialize( modelId, new Location(loc), new Point3D(rot), drawDistance );
-	}
-	
 	public ObjectImpl( int modelId, Location loc, Point3D rot, float drawDistance ) throws CreationFailedException
 	{
 		initialize( modelId, new Location(loc), new Point3D(rot), drawDistance );
@@ -120,7 +96,7 @@ public class ObjectImpl implements SampObject
 		
 		SampNativeFunction.destroyObject( id );
 
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
 		pool.setObject( id, null );
 		
 		id = INVALID_ID;

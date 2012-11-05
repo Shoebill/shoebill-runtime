@@ -69,7 +69,7 @@ public class PlayerImpl implements Player
 	
 	public static void enableStuntBonusForAll( boolean enabled )
 	{
-		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers() )
 		{
 			player.enableStuntBonus( enabled );
 		}
@@ -77,7 +77,7 @@ public class PlayerImpl implements Player
 
 	public static void sendMessageToAll( Color color, String message )
 	{
-		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers() )
 		{
 			player.sendMessage( color, message );
 		}
@@ -85,7 +85,7 @@ public class PlayerImpl implements Player
 	
 	public static void sendMessageToAll( Color color, String format, Object... args )
 	{
-		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers() )
 		{
 			String message = String.format(format, args);
 			player.sendMessage( color, message );
@@ -147,7 +147,7 @@ public class PlayerImpl implements Player
 		SampNativeFunction.getPlayerVelocity(id, velocity);
 		SampNativeFunction.getPlayerKeys(id, keyState);
 
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
 		if( pool.getPlayer(id) != null ) throw new UnsupportedOperationException();
 	}
 	
@@ -436,7 +436,7 @@ public class PlayerImpl implements Player
 		if( isOnline() == false ) return null;
 		
 		int vehicleId = SampNativeFunction.getPlayerVehicleID(id);
-		return ShoebillImpl.getInstance().getManagedObjectPool().getVehicle(vehicleId);
+		return ShoebillImpl.getInstance().getSampObjectPool().getVehicle(vehicleId);
 	}
 	
 	@Override
@@ -787,7 +787,7 @@ public class PlayerImpl implements Player
 		if( isOnline() == false ) return;
 		
 		if( message == null ) throw new NullPointerException();
-		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers() )
 		{
 			sendChat( player, message );
 		}
@@ -937,7 +937,7 @@ public class PlayerImpl implements Player
 	{
 		if( isOnline() == false ) return null;
 		
-		return ShoebillImpl.getInstance().getManagedObjectPool().getMenu( SampNativeFunction.getPlayerMenu(id) );
+		return ShoebillImpl.getInstance().getSampObjectPool().getMenu( SampNativeFunction.getPlayerMenu(id) );
 	}
 
 	@Override
@@ -1219,7 +1219,7 @@ public class PlayerImpl implements Player
 		if( isOnline() == false ) return null;
 		
 		int vehicleId = SampNativeFunction.getPlayerSurfingVehicleID(id);
-		return ShoebillImpl.getInstance().getManagedObjectPool().getVehicle(vehicleId);
+		return ShoebillImpl.getInstance().getSampObjectPool().getVehicle(vehicleId);
 	}
 	
 	@Override
@@ -1342,7 +1342,7 @@ public class PlayerImpl implements Player
 		int objectid = SampNativeFunction.getPlayerSurfingObjectID(id);
 		if( objectid == SampObject.INVALID_ID ) return null;
 		
-		return ShoebillImpl.getInstance().getManagedObjectPool().getObject( objectid );
+		return ShoebillImpl.getInstance().getSampObjectPool().getObject( objectid );
 	}
 	
 	@Override
@@ -1359,7 +1359,7 @@ public class PlayerImpl implements Player
 	{
 		if( isOnline() == false ) return null;
 		
-		return ShoebillImpl.getInstance().getManagedObjectPool().getPlayer( SampNativeFunction.getPlayerTargetPlayer(id) );
+		return ShoebillImpl.getInstance().getSampObjectPool().getPlayer( SampNativeFunction.getPlayerTargetPlayer(id) );
 	}
 
 	@Override

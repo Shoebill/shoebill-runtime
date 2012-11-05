@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectPoolImpl;
@@ -65,31 +66,6 @@ public class VehicleImpl implements Vehicle
 	private VehicleComponentImpl component;
 	private VehicleDamageImpl damage;
 	
-	
-	public VehicleImpl( int modelId, float x, float y, float z, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
-	{
-		initialize( modelId, x, y, z, interiorId, worldId, angle, color1, color2, respawnDelay );
-	}
-
-	public VehicleImpl( int modelId, float x, float y, float z, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
-	{
-		initialize( modelId, x, y, z, 0, 0, angle, color1, color2, respawnDelay );
-	}
-
-	public VehicleImpl( int modelId, Point3D pos, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
-	{
-		initialize( modelId, pos.getX(), pos.getY(), pos.getZ(), 0, 0, angle, color1, color2, respawnDelay );
-	}
-	
-	public VehicleImpl( int modelId, Point3D pos, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
-	{
-		initialize( modelId, pos.getX(), pos.getY(), pos.getZ(), interiorId, worldId, angle, color1, color2, respawnDelay );
-	}
-	
-	public VehicleImpl( int modelId, Location loc, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
-	{
-		initialize( modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), angle, color1, color2, respawnDelay );
-	}
 	
 	public VehicleImpl( int modelId, LocationAngle loc, int color1, int color2, int respawnDelay ) throws CreationFailedException
 	{
@@ -167,7 +143,7 @@ public class VehicleImpl implements Vehicle
 		
 		SampNativeFunction.destroyVehicle( id );
 
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
 		pool.setVehicle( id, null );
 		
 		id = INVALID_ID;
@@ -442,7 +418,7 @@ public class VehicleImpl implements Vehicle
 		if( isDestroyed() ) return null;
 		
 		int trailerId = SampNativeFunction.getVehicleTrailer(id);
-		return ShoebillImpl.getInstance().getManagedObjectPool().getVehicle(trailerId);
+		return ShoebillImpl.getInstance().getSampObjectPool().getVehicle(trailerId);
 	}
 	
 	@Override

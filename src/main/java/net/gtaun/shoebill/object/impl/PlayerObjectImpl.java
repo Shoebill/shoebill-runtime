@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.data.Location;
@@ -47,31 +48,6 @@ public class PlayerObjectImpl implements PlayerObject
 	
 	private Player attachedPlayer;
 	
-	
-	public PlayerObjectImpl( Player player, int modelId, float x, float y, float z, float rx, float ry, float rz ) throws CreationFailedException
-	{
-		initialize( player, modelId, new Location(x, y, z), new Point3D(rx, ry, rz), drawDistance );
-	}
-	
-	public PlayerObjectImpl( Player player, int modelId, float x, float y, float z, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
-	{
-		initialize( player, modelId, new Location(x, y, z), new Point3D(rx, ry, rz), drawDistance );
-	}
-	
-	public PlayerObjectImpl( Player player, int modelId, Location loc, float rx, float ry, float rz ) throws CreationFailedException
-	{
-		initialize( player, modelId, new Location(loc), new Point3D(rx, ry, rz), drawDistance );
-	}
-	
-	public PlayerObjectImpl( Player player, int modelId, Location loc, float rx, float ry, float rz, float drawDistance ) throws CreationFailedException
-	{
-		initialize( player, modelId, new Location(loc), new Point3D(rx, ry, rz), drawDistance );
-	}
-	
-	public PlayerObjectImpl( Player player, int modelId, Location loc, Point3D rot ) throws CreationFailedException
-	{
-		initialize( player, modelId, new Location(loc), new Point3D(rot), drawDistance );
-	}
 	
 	public PlayerObjectImpl( Player player, int modelId, Location loc, Point3D rot, float drawDistance ) throws CreationFailedException
 	{

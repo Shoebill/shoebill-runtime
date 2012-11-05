@@ -50,11 +50,6 @@ public class MenuImpl implements Menu
 		initialize( title, columns, x, y, col1Width, col2Width );
 	}
 	
-	public MenuImpl( String title, int columns, Point2D pos, float col1Width, float col2Width ) throws CreationFailedException
-	{
-		initialize( title, columns, pos.getX(), pos.getY(), col1Width, col2Width );
-	}
-	
 	private void initialize( String title, int columns, float x, float y, float col1Width, float col2Width ) throws CreationFailedException
 	{
 		if( StringUtils.isEmpty(title) ) title = " ";
@@ -88,7 +83,7 @@ public class MenuImpl implements Menu
 		
 		SampNativeFunction.destroyMenu( id );
 		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
 		pool.setMenu( id, null );
 		
 		id = INVALID_ID;

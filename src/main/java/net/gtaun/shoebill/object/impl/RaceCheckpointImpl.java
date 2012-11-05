@@ -161,7 +161,7 @@ public class RaceCheckpointImpl implements RaceCheckpoint
 	@Override
 	public void update()
 	{
-		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers() )
 		{
 			if( player == null ) continue;
 			if( player.getRaceCheckpoint() == this ) set( player );
@@ -172,7 +172,7 @@ public class RaceCheckpointImpl implements RaceCheckpoint
 	public Collection<Player> getUsingPlayers()
 	{
 		Collection<Player> players = new ArrayList<>();
-		for( Player player : ShoebillImpl.getInstance().getManagedObjectPool().getPlayers() )
+		for( Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers() )
 		{
 			if( player.getRaceCheckpoint() == this ) players.add( player );
 		}

@@ -47,24 +47,9 @@ public class TextdrawImpl implements Textdraw
 	private boolean[] isPlayerShowed = new boolean[SampObjectPoolImpl.MAX_PLAYERS];
 
 
-	public TextdrawImpl( float x, float y ) throws CreationFailedException
-	{
-		initialize( x, y, null );
-	}
-	
 	public TextdrawImpl( float x, float y, String text ) throws CreationFailedException
 	{
 		initialize( x, y, text );
-	}
-
-	public TextdrawImpl( Point2D pos ) throws CreationFailedException
-	{
-		initialize( pos.getX(), pos.getY(), null );
-	}
-	
-	public TextdrawImpl( Point2D pos, String text ) throws CreationFailedException
-	{
-		initialize( pos.getX(), pos.getY(), text );
 	}
 	
 	private void initialize( float x, float y, String text ) throws CreationFailedException
@@ -97,7 +82,7 @@ public class TextdrawImpl implements Textdraw
 		
 		SampNativeFunction.textDrawDestroy( id );
 
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getManagedObjectPool();
+		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
 		pool.setTextdraw( id, null );
 		
 		id = INVALID_ID;
