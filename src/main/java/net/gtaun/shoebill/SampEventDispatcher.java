@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2011-2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,13 +68,7 @@ import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
-import net.gtaun.shoebill.object.impl.DialogImpl;
-import net.gtaun.shoebill.object.impl.MenuImpl;
-import net.gtaun.shoebill.object.impl.ObjectImpl;
-import net.gtaun.shoebill.object.impl.PickupImpl;
 import net.gtaun.shoebill.object.impl.PlayerImpl;
-import net.gtaun.shoebill.object.impl.PlayerObjectImpl;
-import net.gtaun.shoebill.object.impl.VehicleImpl;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.EventManagerImpl;
 
@@ -82,11 +76,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
+ * 
+ * 
  * @author MK124
- *
  */
-
-// TODO: Fix it
 public class SampEventDispatcher implements SampCallbackHandler
 {
 	private SampObjectPoolImpl sampObjectPool;
@@ -128,11 +121,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				PlayerConnectEvent event = new PlayerConnectEvent( player );
-				eventManager.dispatchEvent( event, player );
-			}
+			PlayerConnectEvent event = new PlayerConnectEvent( player );
+			eventManager.dispatchEvent( event, player );
 			
 			return 1;
 		}
@@ -154,14 +144,6 @@ public class SampEventDispatcher implements SampCallbackHandler
 			eventManager.dispatchEvent( event, player );
 			
 			sampObjectPool.removePlayer( player );
-			
-			// TODO: Fix it
-			if( player instanceof PlayerImpl )
-			{
-				PlayerImpl pl = (PlayerImpl) player;
-				pl.processPlayerDisconnect();
-			}
-			
 			return 1;
 		}
 		catch( Exception e )
@@ -178,11 +160,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				PlayerSpawnEvent event = new PlayerSpawnEvent( player );
-				eventManager.dispatchEvent( event, player );
-			}
+			PlayerSpawnEvent event = new PlayerSpawnEvent( player );
+			eventManager.dispatchEvent( event, player );
 			
 			return 1;
 		}
@@ -204,19 +183,12 @@ public class SampEventDispatcher implements SampCallbackHandler
 			if( killerId != Player.INVALID_ID )
 			{
 				killer = sampObjectPool.getPlayer(killerId);
-				
-				if( killer instanceof PlayerImpl )
-				{
-					PlayerKillEvent event = new PlayerKillEvent( killer, player, reason );
-					eventManager.dispatchEvent( event, killer );
-				}
+				PlayerKillEvent event = new PlayerKillEvent( killer, player, reason );
+				eventManager.dispatchEvent( event, killer );
 			}
 			
-			if( player instanceof PlayerImpl )
-			{
-				PlayerDeathEvent event = new PlayerDeathEvent( player, killer, reason );
-				eventManager.dispatchEvent( event, player );
-			}
+			PlayerDeathEvent event = new PlayerDeathEvent( player, killer, reason );
+			eventManager.dispatchEvent( event, player );
 			
 			return 1;
 		}
@@ -234,11 +206,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 			
-			if( vehicle instanceof VehicleImpl )
-			{
-				VehicleSpawnEvent event = new VehicleSpawnEvent(vehicle);
-				eventManager.dispatchEvent( event, vehicle );
-			}
+			VehicleSpawnEvent event = new VehicleSpawnEvent(vehicle);
+			eventManager.dispatchEvent( event, vehicle );
 			
 			return 1;
 		}
@@ -258,19 +227,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Player killer = sampObjectPool.getPlayer( killerId );
 
 			VehicleDeathEvent event = new VehicleDeathEvent(vehicle, killer);
-			
-			if( vehicle instanceof VehicleImpl && killer instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle, killer );
-			}
-			else if( vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle );
-			}
-			else if( killer instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, killer );
-			}
+			eventManager.dispatchEvent( event, vehicle, killer );
 			
 			return 1;
 		}
@@ -288,16 +245,13 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
+			PlayerTextEvent event = new PlayerTextEvent( player, text );
+			eventManager.dispatchEvent( event, player );
+			
+			if( event.getResult() != 0 )
 			{
-				PlayerTextEvent event = new PlayerTextEvent( player, text );
-				eventManager.dispatchEvent( event, player );
-				
-				if( event.getResult() != 0 )
-				{
-					PlayerImpl.sendMessageToAll( Color.WHITE, "{FE8B13}" + player.getName() + ": {FFFFFF}" + text );
-					return 1;
-				}
+				PlayerImpl.sendMessageToAll( Color.WHITE, "{FE8B13}" + player.getName() + ": {FFFFFF}" + text );
+				return 1;
 			}
 			
 			return 0;
@@ -316,15 +270,10 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				PlayerCommandEvent event = new PlayerCommandEvent( player, cmdtext );
-				eventManager.dispatchEvent( event, player );
+			PlayerCommandEvent event = new PlayerCommandEvent( player, cmdtext );
+			eventManager.dispatchEvent( event, player );
 				
-				return event.getResult();
-			}
-			
-			return 0;
+			return event.getResult();
 		}
 		catch( Exception e )
 		{
@@ -340,15 +289,10 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				PlayerRequestClassEvent event = new PlayerRequestClassEvent( player, classId );
-				eventManager.dispatchEvent( event, player );
+			PlayerRequestClassEvent event = new PlayerRequestClassEvent( player, classId );
+			eventManager.dispatchEvent( event, player );
 				
-				return event.getResult();
-			}
-			
-			return 0;
+			return event.getResult();
 		}
 		catch( Exception e )
 		{
@@ -367,19 +311,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 
 			VehicleEnterEvent event = new VehicleEnterEvent(vehicle, player, isPassenger != 0);
-			
-			if( player instanceof PlayerImpl && vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle );
-			}
+			eventManager.dispatchEvent( event, vehicle, player );
 			
 			return 1;
 		}
@@ -399,19 +331,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 			
 			VehicleExitEvent event = new VehicleExitEvent(vehicle, player);
-			
-			if( player instanceof PlayerImpl && vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle );
-			}
+			eventManager.dispatchEvent( event, vehicle, player );
 			
 			return 1;
 		}
@@ -429,11 +349,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				PlayerStateChangeEvent event = new PlayerStateChangeEvent( player, oldState );
-				eventManager.dispatchEvent( event, player );
-			}
+			PlayerStateChangeEvent event = new PlayerStateChangeEvent( player, oldState );
+			eventManager.dispatchEvent( event, player );
 			
 			return 1;
 		}
@@ -451,11 +368,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				CheckpointEnterEvent event = new CheckpointEnterEvent( player );
-				eventManager.dispatchEvent( event, player.getCheckpoint(), player );
-			}
+			CheckpointEnterEvent event = new CheckpointEnterEvent( player );
+			eventManager.dispatchEvent( event, player.getCheckpoint(), player );
 			
 			return 1;
 		}
@@ -472,12 +386,9 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
-			
-			if( player instanceof PlayerImpl )
-			{
-				CheckpointLeaveEvent event = new CheckpointLeaveEvent(player);
-				eventManager.dispatchEvent( event, player.getCheckpoint(), player );
-			}
+
+			CheckpointLeaveEvent event = new CheckpointLeaveEvent(player);
+			eventManager.dispatchEvent( event, player.getCheckpoint(), player );
 			
 			return 1;
 		}
@@ -495,11 +406,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				RaceCheckpointEnterEvent event = new RaceCheckpointEnterEvent(player);
-				eventManager.dispatchEvent( event, player.getRaceCheckpoint(), player );
-			}
+			RaceCheckpointEnterEvent event = new RaceCheckpointEnterEvent(player);
+			eventManager.dispatchEvent( event, player.getRaceCheckpoint(), player );
 			
 			return 1;
 		}
@@ -517,11 +425,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				RaceCheckpointLeaveEvent event = new RaceCheckpointLeaveEvent(player);
-				eventManager.dispatchEvent( event, player.getRaceCheckpoint(), player );
-			}
+			RaceCheckpointLeaveEvent event = new RaceCheckpointLeaveEvent(player);
+			eventManager.dispatchEvent( event, player.getRaceCheckpoint(), player );
 			
 			return 1;
 		}
@@ -556,15 +461,10 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				PlayerRequestSpawnEvent event = new PlayerRequestSpawnEvent( player );
-				eventManager.dispatchEvent( event, player );
+			PlayerRequestSpawnEvent event = new PlayerRequestSpawnEvent( player );
+			eventManager.dispatchEvent( event, player );
 				
-				return event.getResult();
-			}
-			
-			return 0;
+			return event.getResult();
 		}
 		catch( Exception e )
 		{
@@ -579,15 +479,9 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			SampObject object = sampObjectPool.getObject( objectId );
-			
-			if( object instanceof ObjectImpl )
-			{
-				ObjectImpl obj = (ObjectImpl) object;
-				obj.processObjectMoved();
 				
-				ObjectMovedEvent event = new ObjectMovedEvent(object);
-				eventManager.dispatchEvent( event, object );
-			}
+			ObjectMovedEvent event = new ObjectMovedEvent(object);
+			eventManager.dispatchEvent( event, object );
 			
 			return 1;
 		}
@@ -606,26 +500,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Player player = sampObjectPool.getPlayer( playerId );
 			PlayerObject object = sampObjectPool.getPlayerObject( player, objectId );
 			
-			if( object instanceof PlayerObjectImpl )
-			{
-				PlayerObjectImpl playerObject = (PlayerObjectImpl) object;
-				playerObject.processPlayerObjectMoved();
-			}
-
 			PlayerObjectMovedEvent event = new PlayerObjectMovedEvent(player, object);
-
-			if( player instanceof PlayerImpl && object instanceof ObjectImpl )
-			{
-				eventManager.dispatchEvent( event, object, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( object instanceof ObjectImpl )
-			{
-				eventManager.dispatchEvent( event, object );
-			}
+			eventManager.dispatchEvent( event, object, player );
 			
 			return 1;
 		}
@@ -645,19 +521,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Pickup pickup = sampObjectPool.getPickup( pickupId );
 
 			PlayerPickupEvent event = new PlayerPickupEvent(player, pickup);
-			
-			if( pickup instanceof PickupImpl && player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, pickup, player );
-			}
-			else if( pickup instanceof PickupImpl )
-			{
-				eventManager.dispatchEvent( event, pickup );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
+			eventManager.dispatchEvent( event, pickup, player );
 			
 			return 1;
 		}
@@ -677,25 +541,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 			
 			VehicleModEvent event = new VehicleModEvent(vehicle, componentId);
-			
-			if( vehicle instanceof VehicleImpl )
-			{
-				VehicleImpl veh = (VehicleImpl) vehicle;
-				veh.processVehicleMod();
-			}
-			
-			if( player instanceof PlayerImpl && vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle );
-			}
+			eventManager.dispatchEvent( event, vehicle, player );
 			
 			return 1;
 		}
@@ -713,11 +559,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				PlayerEnterExitModShopEvent event = new PlayerEnterExitModShopEvent(player, enterexit, interiorId);
-				eventManager.dispatchEvent( event, player );
-			}
+			PlayerEnterExitModShopEvent event = new PlayerEnterExitModShopEvent(player, enterexit, interiorId);
+			eventManager.dispatchEvent( event, player );
 			
 			return 1;
 		}
@@ -737,19 +580,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 			
 			VehiclePaintjobEvent event = new VehiclePaintjobEvent(vehicle, paintjobId);
-
-			if( player instanceof PlayerImpl && vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle );
-			}
+			eventManager.dispatchEvent( event, vehicle, player );
 			
 			return 1;
 		}
@@ -769,19 +600,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 			
 			VehicleResprayEvent event = new VehicleResprayEvent( vehicle, color1, color2 );
-
-			if( player instanceof PlayerImpl && vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle );
-			}
+			eventManager.dispatchEvent( event, vehicle, player );
 			
 			return 1;
 		}
@@ -800,26 +619,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( vehicle instanceof VehicleImpl )
-			{
-				VehicleImpl veh = (VehicleImpl) vehicle;
-				veh.processVehicleDamageStatusUpdate();
-			}
-			
 			VehicleUpdateDamageEvent event = new VehicleUpdateDamageEvent(vehicle, player);
-			
-			if( player instanceof PlayerImpl && vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle );
-			}
+			eventManager.dispatchEvent( event, vehicle, player );
 			
 			return 1;
 		}
@@ -833,26 +634,13 @@ public class SampEventDispatcher implements SampCallbackHandler
 	@Override
 	public int onUnoccupiedVehicleUpdate( int vehicleId, int playerId, int passengerSeat )
 	{
-		
 		try
 		{
 			Vehicle vehicle = sampObjectPool.getVehicle( vehicleId );
 			Player player = sampObjectPool.getPlayer( playerId );
 			
 			VehicleUnoccupiedUpdateEvent event = new VehicleUnoccupiedUpdateEvent( vehicle, player, passengerSeat );
-			
-			if( player instanceof PlayerImpl && vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle );
-			}
+			eventManager.dispatchEvent( event, vehicle, player );
 			
 			return 1;
 		}
@@ -872,19 +660,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Menu menu = player.getMenu();
 			
 			MenuSelectedEvent event = new MenuSelectedEvent( menu, player, row );
-
-			if( player instanceof PlayerImpl && menu instanceof MenuImpl )
-			{
-				eventManager.dispatchEvent( event, menu, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( menu instanceof MenuImpl )
-			{
-				eventManager.dispatchEvent( event, menu );
-			}
+			eventManager.dispatchEvent( event, menu, player );
 			
 			return 1;
 		}
@@ -904,19 +680,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Menu menu = player.getMenu();
 			
 			MenuExitedEvent event = new MenuExitedEvent( menu, player );
-			
-			if( player instanceof PlayerImpl && menu instanceof MenuImpl )
-			{
-				eventManager.dispatchEvent( event, menu, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( menu instanceof MenuImpl )
-			{
-				eventManager.dispatchEvent( event, menu );
-			}
+			eventManager.dispatchEvent( event, menu, player );
 				
 			return 1;
 		}
@@ -935,14 +699,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				PlayerImpl pl = (PlayerImpl) player;
-				pl.processPlayerInteriorChange();
-				
-				PlayerInteriorChangeEvent event = new PlayerInteriorChangeEvent(player, oldInteriorId);
-				eventManager.dispatchEvent( event, player );
-			}
+			PlayerInteriorChangeEvent event = new PlayerInteriorChangeEvent(player, oldInteriorId);
+			eventManager.dispatchEvent( event, player );
 			
 			return 1;
 		}
@@ -960,11 +718,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				PlayerKeyStateChangeEvent event = new PlayerKeyStateChangeEvent(player, oldKeys);
-				eventManager.dispatchEvent( event, player );
-			}
+			PlayerKeyStateChangeEvent event = new PlayerKeyStateChangeEvent(player, oldKeys);
+			eventManager.dispatchEvent( event, player );
 			
 			return 1;
 		}
@@ -999,14 +754,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 
-			if( player instanceof PlayerImpl )
-			{
-				PlayerImpl pl = (PlayerImpl) player;
-				pl.processPlayerUpdate();
-				
-				PlayerUpdateEvent event = new PlayerUpdateEvent(player);
-				eventManager.dispatchEvent( event, player );
-			}
+			PlayerUpdateEvent event = new PlayerUpdateEvent(player);
+			eventManager.dispatchEvent( event, player );
 			
 			return 1;
 		}
@@ -1026,19 +775,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Player forPlayer = sampObjectPool.getPlayer( forPlayerId );
 
 			PlayerStreamInEvent event = new PlayerStreamInEvent(player, forPlayer);
-			
-			if( player instanceof PlayerImpl && forPlayer instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player, forPlayer );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( forPlayer instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, forPlayer );
-			}
+			eventManager.dispatchEvent( event, player, forPlayer );
 			
 			return 1;
 		}
@@ -1059,19 +796,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Player forPlayer = sampObjectPool.getPlayer( forPlayerId );
 			
 			PlayerStreamOutEvent event = new PlayerStreamOutEvent(player, forPlayer);
-
-			if( player instanceof PlayerImpl && forPlayer instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player, forPlayer );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( forPlayer instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, forPlayer );
-			}
+			eventManager.dispatchEvent( event, player, forPlayer );
 			
 			return 1;
 		}
@@ -1091,19 +816,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Player player = sampObjectPool.getPlayer( forPlayerId );
 			
 			VehicleStreamInEvent event = new VehicleStreamInEvent(vehicle, player);
-			
-			if( player instanceof PlayerImpl && vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle );
-			}
+			eventManager.dispatchEvent( event, vehicle, player );
 	
 			return 1;
 		}
@@ -1123,19 +836,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Player player = sampObjectPool.getPlayer( forPlayerId );
 			
 			VehicleStreamOutEvent event = new VehicleStreamOutEvent(vehicle, player);
-
-			if( player instanceof PlayerImpl && vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( vehicle instanceof VehicleImpl )
-			{
-				eventManager.dispatchEvent( event, vehicle );
-			}
+			eventManager.dispatchEvent( event, vehicle, player );
 	
 			return 1;
 		}
@@ -1157,25 +858,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			if( dialog == null ) return 0;
 			
 			DialogResponseEvent event = new DialogResponseEvent(dialog, player, response, listitem, inputtext);
-
-			if( player instanceof PlayerImpl && dialog instanceof DialogImpl )
-			{
-				eventManager.dispatchEvent( event, dialog, player );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( dialog instanceof DialogImpl )
-			{
-				eventManager.dispatchEvent( event, dialog );
-			}
-
-			if( player instanceof PlayerImpl )
-			{
-				PlayerImpl pl = (PlayerImpl) player;
-				pl.processDialogResponse();
-			}
+			eventManager.dispatchEvent( event, dialog, player );
 
 			return event.getResult();
 		}
@@ -1194,11 +877,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Player player = sampObjectPool.getPlayer( playerId );
 			Player issuer = sampObjectPool.getPlayer( issuerId );
 
-			if( player instanceof PlayerImpl )
-			{
-				PlayerTakeDamageEvent event = new PlayerTakeDamageEvent( player, issuer, amount, weaponId );
-				eventManager.dispatchEvent( event, player );
-			}
+			PlayerTakeDamageEvent event = new PlayerTakeDamageEvent( player, issuer, amount, weaponId );
+			eventManager.dispatchEvent( event, player );
 			
 			return 1;
 		}
@@ -1218,11 +898,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Player player = sampObjectPool.getPlayer( playerId );
 			Player victim = sampObjectPool.getPlayer( damagedId );
 
-			if( player instanceof PlayerImpl )
-			{
-				PlayerGiveDamageEvent event = new PlayerGiveDamageEvent( player, victim, amount, weaponId );
-				eventManager.dispatchEvent( event, player );
-			}
+			PlayerGiveDamageEvent event = new PlayerGiveDamageEvent( player, victim, amount, weaponId );
+			eventManager.dispatchEvent( event, player );
 			
 			return 1;
 		}
@@ -1240,11 +917,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectPool.getPlayer( playerId );
 			
-			if( player instanceof PlayerImpl )
-			{
-				PlayerClickMapEvent event = new PlayerClickMapEvent( player, x, y, z );
-				eventManager.dispatchEvent( event, player );
-			}
+			PlayerClickMapEvent event = new PlayerClickMapEvent( player, x, y, z );
+			eventManager.dispatchEvent( event, player );
 			
 			return 1;
 		}
@@ -1264,19 +938,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Player clickedPlayer = sampObjectPool.getPlayer( clickedPlayerId );
 
 			PlayerClickPlayerEvent event = new PlayerClickPlayerEvent( player, clickedPlayer, source );
-
-			if( player instanceof PlayerImpl && clickedPlayer instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player, clickedPlayer );
-			}
-			else if( player instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, player );
-			}
-			else if( clickedPlayer instanceof PlayerImpl )
-			{
-				eventManager.dispatchEvent( event, clickedPlayer );
-			}
+			eventManager.dispatchEvent( event, player, clickedPlayer );
 			
 			return 1;
 		}
