@@ -16,8 +16,11 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.events.ObjectEventHandler;
+import net.gtaun.shoebill.events.object.PlayerObjectMovedEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerObject;
@@ -25,6 +28,8 @@ import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.proxy.ProxyManager;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.util.event.EventManager;
+import net.gtaun.util.event.EventManager.Priority;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -48,6 +53,8 @@ public class PlayerObjectImpl implements PlayerObject
 	
 	private Player attachedPlayer;
 	
+	private ObjectEventHandler eventHandler;
+	
 	
 	public PlayerObjectImpl( Player player, int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
 	{
@@ -65,17 +72,24 @@ public class PlayerObjectImpl implements PlayerObject
 		
 		id = SampNativeFunction.createPlayerObject( player.getId(), modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance );
 		if( id == INVALID_ID ) throw new CreationFailedException();
+		
+		eventHandler = new ObjectEventHandler()
+		{
+			@Override
+			public void onPlayerObjectMoved(PlayerObjectMovedEvent event)
+			{
+				speed = 0.0F;
+			}
+		};
+		
+		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		eventManager.addHandler(PlayerObjectMovedEvent.class, eventHandler, Priority.MONITOR);
 	}
 
 	@Override
 	public ProxyManager getProxyManager()
 	{
 		return proxyManager;
-	}
-
-	public void processPlayerObjectMoved()
-	{
-		speed = 0.0F;
 	}
 	
 	@Override

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectPoolImpl;
@@ -40,7 +41,12 @@ import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.data.WeaponData;
+import net.gtaun.shoebill.events.PlayerEventHandler;
 import net.gtaun.shoebill.events.dialog.DialogCancelEvent;
+import net.gtaun.shoebill.events.dialog.DialogResponseEvent;
+import net.gtaun.shoebill.events.player.PlayerDisconnectEvent;
+import net.gtaun.shoebill.events.player.PlayerInteriorChangeEvent;
+import net.gtaun.shoebill.events.player.PlayerUpdateEvent;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
 import net.gtaun.shoebill.object.Checkpoint;
@@ -54,6 +60,8 @@ import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.proxy.ProxyManager;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.util.event.EventManager;
+import net.gtaun.util.event.EventManager.Priority;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -64,9 +72,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author MK124, JoJLlmAn
  */
 public class PlayerImpl implements Player
-{
-	private ProxyManager proxyManager;
-	
+{	
 	public static void enableStuntBonusForAll( boolean enabled )
 	{
 		for( Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers() )
@@ -103,6 +109,8 @@ public class PlayerImpl implements Player
 		SampNativeFunction.gameTextForAll( text, time, style );
 	}
 	
+
+	private ProxyManager proxyManager;
 	
 	private int id = INVALID_ID;
 	
@@ -128,6 +136,8 @@ public class PlayerImpl implements Player
 	private Checkpoint checkpoint;
 	private RaceCheckpoint raceCheckpoint;
 	private Dialog dialog;
+
+	private PlayerEventHandler eventHandler;
 	
 	
 	public PlayerImpl( int id )
@@ -149,32 +159,44 @@ public class PlayerImpl implements Player
 
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
 		if( pool.getPlayer(id) != null ) throw new UnsupportedOperationException();
-	}
-	
-	public void processPlayerUpdate()
-	{
-		SampNativeFunction.getPlayerPos( id, location );
-		location.setAngle( SampNativeFunction.getPlayerFacingAngle(id) );
-		SampNativeFunction.getPlayerVelocity( id, velocity );
-		keyState.update();
+		
+		eventHandler = new PlayerEventHandler()
+		{
+			@Override
+			public void onPlayerUpdate(PlayerUpdateEvent event)
+			{
+				SampNativeFunction.getPlayerPos(PlayerImpl.this.id, location);
+				location.setAngle(SampNativeFunction.getPlayerFacingAngle(PlayerImpl.this.id));
+				SampNativeFunction.getPlayerVelocity(PlayerImpl.this.id, velocity);
+				keyState.update();
 
-		updateFrameCount++;
-		if( updateFrameCount<0 ) updateFrameCount = 0;
-	}
-	
-	public void processPlayerInteriorChange()
-	{
-		location.setInteriorId( SampNativeFunction.getPlayerInterior(id) );
-	}
-	
-	public void processPlayerDisconnect()
-	{
-		id = INVALID_ID;
-	}
-	
-	public void processDialogResponse()
-	{
-		dialog = null;
+				updateFrameCount++;
+				if( updateFrameCount<0 ) updateFrameCount = 0;
+			}
+			
+			@Override
+			public void onPlayerInteriorChange(PlayerInteriorChangeEvent event)
+			{
+				location.setInteriorId( SampNativeFunction.getPlayerInterior(PlayerImpl.this.id) );
+			}
+			
+			@Override
+			public void onPlayerDisconnect(PlayerDisconnectEvent event)
+			{
+				PlayerImpl.this.id = INVALID_ID;
+			}
+			
+			@Override
+			public void onPlayerDialogResponse(DialogResponseEvent event)
+			{
+				dialog = null;
+			}
+		};
+		
+		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		eventManager.addHandler(PlayerUpdateEvent.class, eventHandler, Priority.MONITOR);
+		eventManager.addHandler(PlayerDisconnectEvent.class, eventHandler, Priority.BOTTOM);
+		eventManager.addHandler(DialogResponseEvent.class, eventHandler, Priority.MONITOR);
 	}
 
 	@Override
@@ -1353,7 +1375,6 @@ public class PlayerImpl implements Player
 		return SampNativeFunction.getPlayerNetworkStats(id);
 	}
 	
-	
 	@Override
 	public Player getAimedTarget()
 	{
@@ -1430,7 +1451,6 @@ public class PlayerImpl implements Player
 		this.dialog = dialog;
 	}
 	
-
 	@Override
 	public void cancelDialog()
 	{

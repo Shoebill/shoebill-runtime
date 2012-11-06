@@ -25,8 +25,11 @@ import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Quaternion;
 import net.gtaun.shoebill.data.Velocity;
+import net.gtaun.shoebill.events.VehicleEventHandler;
 import net.gtaun.shoebill.events.vehicle.VehicleDestroyEvent;
+import net.gtaun.shoebill.events.vehicle.VehicleModEvent;
 import net.gtaun.shoebill.events.vehicle.VehicleSpawnEvent;
+import net.gtaun.shoebill.events.vehicle.VehicleUpdateDamageEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.Vehicle;
@@ -35,6 +38,8 @@ import net.gtaun.shoebill.object.VehicleDamage;
 import net.gtaun.shoebill.object.VehicleParam;
 import net.gtaun.shoebill.proxy.ProxyManager;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.util.event.EventManager;
+import net.gtaun.util.event.EventManager.Priority;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -65,6 +70,8 @@ public class VehicleImpl implements Vehicle
 	private VehicleParamImpl param;
 	private VehicleComponentImpl component;
 	private VehicleDamageImpl damage;
+	
+	private VehicleEventHandler eventHandler;
 	
 	
 	public VehicleImpl( int modelId, LocationAngle loc, int color1, int color2, int respawnDelay ) throws CreationFailedException
@@ -104,19 +111,27 @@ public class VehicleImpl implements Vehicle
 		component = new VehicleComponentImpl(this);
 		damage = new VehicleDamageImpl(this);
 		
-		VehicleSpawnEvent event = new VehicleSpawnEvent( this );
-		ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) ShoebillImpl.getInstance();
-		shoebillLowLevel.getEventManager().dispatchEvent( event, this );
-	}
-
-	public void processVehicleMod()
-	{
-		component.update();
-	}
-	
-	public void processVehicleDamageStatusUpdate()
-	{
-		SampNativeFunction.getVehicleDamageStatus( id, damage );
+		eventHandler = new VehicleEventHandler()
+		{
+			@Override
+			public void onVehicleMod(VehicleModEvent event)
+			{
+				component.update();
+			}
+			
+			@Override
+			public void onVehicleUpdateDamage(VehicleUpdateDamageEvent event)
+			{
+				SampNativeFunction.getVehicleDamageStatus(id, damage);
+			}
+		};
+		
+		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		eventManager.addHandler(VehicleModEvent.class, eventHandler, Priority.MONITOR);
+		eventManager.addHandler(VehicleUpdateDamageEvent.class, eventHandler, Priority.MONITOR);
+		
+		VehicleSpawnEvent event = new VehicleSpawnEvent(this);
+		eventManager.dispatchEvent(event, this);
 	}
 
 	@Override

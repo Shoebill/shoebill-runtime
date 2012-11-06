@@ -58,7 +58,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	
 	
 	private static ShoebillImpl instance;
-	public static Shoebill getInstance()
+	public static ShoebillImpl getInstance()
 	{
 		return instance;
 	}
