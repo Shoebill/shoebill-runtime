@@ -112,7 +112,7 @@ public class SampObjectPoolImpl implements SampObjectPool
 					// ShoebillImpl.getInstance().createTraitMixinObject(Player.class,
 					// PlayerImpl.class, new Class<?>[]{int.class}, new
 					// Object[]{playerid});
-					// setPlayer( playerid, player );
+					// setPlayer(playerid, player);
 				}
 				catch (Exception e)
 				{

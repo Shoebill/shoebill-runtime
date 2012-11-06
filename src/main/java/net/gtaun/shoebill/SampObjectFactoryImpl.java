@@ -38,7 +38,7 @@ import net.gtaun.shoebill.object.Zone;
 import net.gtaun.shoebill.object.impl.DialogImpl;
 import net.gtaun.shoebill.object.impl.LabelImpl;
 import net.gtaun.shoebill.object.impl.MenuImpl;
-import net.gtaun.shoebill.object.impl.ObjectImpl;
+import net.gtaun.shoebill.object.impl.SampObjectImpl;
 import net.gtaun.shoebill.object.impl.PickupImpl;
 import net.gtaun.shoebill.object.impl.PlayerImpl;
 import net.gtaun.shoebill.object.impl.PlayerLabelImpl;
@@ -104,7 +104,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 		serverFactory = ProxyManagerImpl.createProxyableFactory(ServerImpl.class);
 		playerFactory = ProxyManagerImpl.createProxyableFactory(PlayerImpl.class);
 		vehicleFactory = ProxyManagerImpl.createProxyableFactory(VehicleImpl.class);
-		objectFactory = ProxyManagerImpl.createProxyableFactory(ObjectImpl.class);
+		objectFactory = ProxyManagerImpl.createProxyableFactory(SampObjectImpl.class);
 		playerObjectFactory = ProxyManagerImpl.createProxyableFactory(PlayerObjectImpl.class);
 		pickupFactory = ProxyManagerImpl.createProxyableFactory(PickupImpl.class);
 		labelFactory = ProxyManagerImpl.createProxyableFactory(LabelImpl.class);

@@ -40,7 +40,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124, JoJLlmAn
  */
-public class ObjectImpl implements SampObject
+public class SampObjectImpl implements SampObject
 {
 	private ProxyManager proxyManager;
 	
@@ -62,7 +62,7 @@ public class ObjectImpl implements SampObject
 	private ObjectEventHandler eventHandler;
 	
 	
-	public ObjectImpl(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
+	public SampObjectImpl(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
 		initialize(modelId, new Location(loc), new Vector3D(rot), drawDistance);
 	}
