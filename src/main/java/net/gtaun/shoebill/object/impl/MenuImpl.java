@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectPoolImpl;
@@ -44,24 +45,24 @@ public class MenuImpl implements Menu
 	private Vector2D position;
 	private float col1Width, col2Width;
 	
-
-	public MenuImpl( String title, int columns, float x, float y, float col1Width, float col2Width ) throws CreationFailedException
+	
+	public MenuImpl(String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException
 	{
-		initialize( title, columns, x, y, col1Width, col2Width );
+		initialize(title, columns, x, y, col1Width, col2Width);
 	}
 	
-	private void initialize( String title, int columns, float x, float y, float col1Width, float col2Width ) throws CreationFailedException
+	private void initialize(String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException
 	{
-		if( StringUtils.isEmpty(title) ) title = " ";
+		if (StringUtils.isEmpty(title)) title = " ";
 		
 		this.title = title;
 		this.columns = columns;
-		this.position = new Vector2D( x, y );
+		this.position = new Vector2D(x, y);
 		this.col1Width = col1Width;
 		this.col2Width = col2Width;
 		
-		id = SampNativeFunction.createMenu( title, columns, position.getX(), position.getY(), col1Width, col1Width );
-		if( id == -1 ) throw new CreationFailedException();
+		id = SampNativeFunction.createMenu(title, columns, position.getX(), position.getY(), col1Width, col1Width);
+		if (id == -1) throw new CreationFailedException();
 	}
 	
 	@Override
@@ -69,7 +70,7 @@ public class MenuImpl implements Menu
 	{
 		return proxyManager;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -79,12 +80,12 @@ public class MenuImpl implements Menu
 	@Override
 	public void destroy()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.destroyMenu( id );
+		SampNativeFunction.destroyMenu(id);
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		pool.setMenu( id, null );
+		pool.setMenu(id, null);
 		
 		id = INVALID_ID;
 	}
@@ -138,55 +139,55 @@ public class MenuImpl implements Menu
 	}
 	
 	@Override
-	public void addItem( int column, String text )
+	public void addItem(int column, String text)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		if( text == null ) throw new NullPointerException();
-		SampNativeFunction.addMenuItem( id, column, text );
+		if (text == null) throw new NullPointerException();
+		SampNativeFunction.addMenuItem(id, column, text);
 	}
 	
 	@Override
-	public void setColumnHeader( int column, String text )
+	public void setColumnHeader(int column, String text)
 	{
-		if( isDestroyed() ) return;
-		if( text == null ) throw new NullPointerException();
+		if (isDestroyed()) return;
+		if (text == null) throw new NullPointerException();
 		
-		SampNativeFunction.setMenuColumnHeader( id, column, text );
+		SampNativeFunction.setMenuColumnHeader(id, column, text);
 		columnHeader = text;
 	}
 	
 	@Override
 	public void disable()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.disableMenu( id );
+		SampNativeFunction.disableMenu(id);
 	}
 	
 	@Override
-	public void disableRow( int row )
+	public void disableRow(int row)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.disableMenuRow( id, row );
+		SampNativeFunction.disableMenuRow(id, row);
 	}
 	
 	@Override
-	public void show( Player player )
+	public void show(Player player)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
 		
-		SampNativeFunction.showMenuForPlayer( id, player.getId() );
+		SampNativeFunction.showMenuForPlayer(id, player.getId());
 	}
 	
 	@Override
-	public void hide( Player player )
+	public void hide(Player player)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
 		
-		SampNativeFunction.hideMenuForPlayer( id, player.getId() );
+		SampNativeFunction.hideMenuForPlayer(id, player.getId());
 	}
 }

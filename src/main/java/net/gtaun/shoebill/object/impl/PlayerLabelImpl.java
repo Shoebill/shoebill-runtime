@@ -51,70 +51,72 @@ public class PlayerLabelImpl implements PlayerLabel
 	private Player attachedPlayer;
 	private Vehicle attachedVehicle;
 	
-
-	public PlayerLabelImpl( Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS ) throws CreationFailedException
+	
+	public PlayerLabelImpl(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
-		initialize( player, text, color, new Location(loc), drawDistance, testLOS, null, null );
-	}
-
-	public PlayerLabelImpl( Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer ) throws CreationFailedException
-	{
-		initialize( player, text, color, new Location(loc), drawDistance, testLOS, attachedPlayer, null );
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, null);
 	}
 	
-	public PlayerLabelImpl( Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle ) throws CreationFailedException
+	public PlayerLabelImpl(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer) throws CreationFailedException
 	{
-		initialize( player, text, color, new Location(loc), drawDistance, testLOS, null, attachedVehicle );
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, attachedPlayer, null);
 	}
 	
-	private void initialize( Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer, Vehicle attachedVehicle ) throws CreationFailedException
+	public PlayerLabelImpl(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle) throws CreationFailedException
 	{
-		if( StringUtils.isEmpty(text) ) text = " ";
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, attachedVehicle);
+	}
+	
+	private void initialize(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer, Vehicle attachedVehicle) throws CreationFailedException
+	{
+		if (StringUtils.isEmpty(text)) text = " ";
 		
 		this.player = player;
 		this.text = text;
-		this.color = new Color( color );
+		this.color = new Color(color);
 		this.drawDistance = drawDistance;
-		this.location = new Location( loc );
+		this.location = new Location(loc);
 		this.testLOS = testLOS;
 		
 		int playerId = Player.INVALID_ID, vehicleId = Vehicle.INVALID_ID;
 		
-		if( attachedPlayer != null )	playerId = attachedPlayer.getId();
-		if( attachedVehicle != null )	vehicleId = attachedVehicle.getId();
+		if (attachedPlayer != null) playerId = attachedPlayer.getId();
+		if (attachedVehicle != null) vehicleId = attachedVehicle.getId();
 		
-		if( playerId == Player.INVALID_ID ) attachedPlayer = null;
-		if( vehicleId == Vehicle.INVALID_ID ) attachedVehicle = null;
+		if (playerId == Player.INVALID_ID) attachedPlayer = null;
+		if (vehicleId == Vehicle.INVALID_ID) attachedVehicle = null;
 		
-		if( attachedPlayer != null || attachedVehicle != null )
+		if (attachedPlayer != null || attachedVehicle != null)
 		{
-			offset = new Vector3D( location.getX(), location.getY(), location.getZ() );
+			offset = new Vector3D(location.getX(), location.getY(), location.getZ());
 		}
 		
-		if( player.isOnline() == false ) throw new CreationFailedException();
+		if (player.isOnline() == false) throw new CreationFailedException();
 		
-		id = SampNativeFunction.createPlayer3DTextLabel( player.getId(), text, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, playerId, vehicleId, testLOS );
-		if( id == INVALID_ID ) throw new CreationFailedException();
+		id = SampNativeFunction.createPlayer3DTextLabel(player.getId(), text, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, playerId, vehicleId, testLOS);
+		if (id == INVALID_ID) throw new CreationFailedException();
 	}
-
+	
 	@Override
 	public ProxyManager getProxyManager()
 	{
 		return proxyManager;
 	}
-
+	
 	@Override
 	public String toString()
 	{
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
-
-	@Override public int getId()
+	
+	@Override
+	public int getId()
 	{
 		return id;
 	}
-
-	@Override public Player getPlayer()
+	
+	@Override
+	public Player getPlayer()
 	{
 		return player;
 	}
@@ -122,12 +124,12 @@ public class PlayerLabelImpl implements PlayerLabel
 	@Override
 	public void destroy()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		if( player.isOnline() )
+		if (player.isOnline())
 		{
-			SampNativeFunction.deletePlayer3DTextLabel( player.getId(), id );
-
+			SampNativeFunction.deletePlayer3DTextLabel(player.getId(), id);
+			
 		}
 		
 		id = INVALID_ID;
@@ -138,28 +140,33 @@ public class PlayerLabelImpl implements PlayerLabel
 	{
 		return id == INVALID_ID;
 	}
-
-	@Override public String getText()
+	
+	@Override
+	public String getText()
 	{
 		return text;
 	}
 	
-	@Override public Color getColor()
+	@Override
+	public Color getColor()
 	{
 		return color.clone();
 	}
 	
-	@Override public float getDrawDistance()
+	@Override
+	public float getDrawDistance()
 	{
 		return drawDistance;
 	}
 	
-	@Override public Player getAttachedPlayer()
+	@Override
+	public Player getAttachedPlayer()
 	{
 		return attachedPlayer;
 	}
 	
-	@Override public Vehicle getAttachedVehicle()
+	@Override
+	public Vehicle getAttachedVehicle()
 	{
 		return attachedVehicle;
 	}
@@ -167,75 +174,75 @@ public class PlayerLabelImpl implements PlayerLabel
 	@Override
 	public Location getLocation()
 	{
-		if( isDestroyed() ) return null;
-		if( player.isOnline() == false ) return null;
+		if (isDestroyed()) return null;
+		if (player.isOnline() == false) return null;
 		
 		Location pos = null;
 		
-		if( attachedPlayer != null )	pos = attachedPlayer.getLocation();
-		if( attachedVehicle != null )	pos = attachedVehicle.getLocation();
+		if (attachedPlayer != null) pos = attachedPlayer.getLocation();
+		if (attachedVehicle != null) pos = attachedVehicle.getLocation();
 		
-		if( pos != null )
+		if (pos != null)
 		{
-			location.set( pos.getX() + offset.getX(), pos.getY(), pos.getZ() + offset.getZ(), pos.getInteriorId(), pos.getWorldId() );
+			location.set(pos.getX() + offset.getX(), pos.getY(), pos.getZ() + offset.getZ(), pos.getInteriorId(), pos.getWorldId());
 		}
 		
 		return location.clone();
 	}
-
+	
 	@Override
-	public void attach( Player target, float x, float y, float z )
+	public void attach(Player target, float x, float y, float z)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
-		if( target.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
+		if (target.isOnline() == false) return;
 		
 		int playerId = player.getId();
 		
-		SampNativeFunction.deletePlayer3DTextLabel( playerId, id );
-		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, target.getId(), Vehicle.INVALID_ID, testLOS );
+		SampNativeFunction.deletePlayer3DTextLabel(playerId, id);
+		id = SampNativeFunction.createPlayer3DTextLabel(playerId, text, color.getValue(), x, y, z, drawDistance, target.getId(), Vehicle.INVALID_ID, testLOS);
 		
 		attachedPlayer = target;
 		attachedVehicle = null;
 	}
 	
 	@Override
-	public void attach( Player target, Vector3D offset )
+	public void attach(Player target, Vector3D offset)
 	{
-		attach( target, offset.getX(), offset.getY(), offset.getZ() );
+		attach(target, offset.getX(), offset.getY(), offset.getZ());
 	}
-
+	
 	@Override
-	public void attach( Vehicle vehicle, float x, float y, float z )
+	public void attach(Vehicle vehicle, float x, float y, float z)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
-		if( vehicle.isDestroyed() ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
+		if (vehicle.isDestroyed()) return;
 		
 		int playerId = player.getId();
 		
-		SampNativeFunction.deletePlayer3DTextLabel( playerId, id );
-		id = SampNativeFunction.createPlayer3DTextLabel( playerId, text, color.getValue(), x, y, z, drawDistance, Player.INVALID_ID, vehicle.getId(), testLOS );
-	
+		SampNativeFunction.deletePlayer3DTextLabel(playerId, id);
+		id = SampNativeFunction.createPlayer3DTextLabel(playerId, text, color.getValue(), x, y, z, drawDistance, Player.INVALID_ID, vehicle.getId(), testLOS);
+		
 		attachedPlayer = null;
 		attachedVehicle = vehicle;
 	}
 	
 	@Override
-	public void attach( Vehicle vehicle, Vector3D offset )
+	public void attach(Vehicle vehicle, Vector3D offset)
 	{
-		attach( vehicle, offset.getX(), offset.getY(), offset.getZ() );
+		attach(vehicle, offset.getX(), offset.getY(), offset.getZ());
 	}
 	
 	@Override
-	public void update( Color color, String text )
+	public void update(Color color, String text)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
 		
-		this.color.set( color );
+		this.color.set(color);
 		this.text = text;
 		
-		SampNativeFunction.updatePlayer3DTextLabelText( player.getId(), id, color.getValue(), text );
+		SampNativeFunction.updatePlayer3DTextLabelText(player.getId(), id, color.getValue(), text);
 	}
 }

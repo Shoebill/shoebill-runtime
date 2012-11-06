@@ -30,8 +30,6 @@ import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.events.plugin.PluginLoadEvent;
 import net.gtaun.shoebill.events.plugin.PluginUnloadEvent;
-import net.gtaun.shoebill.resource.Plugin;
-import net.gtaun.shoebill.resource.PluginDescription;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -40,24 +38,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 
+ * 
  * @author JoJLlmAn, MK124
- *
  */
-
 public class PluginManagerImpl implements PluginManager
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PluginManagerImpl.class);
 	
-
 	private ClassLoader classLoader;
 	private Shoebill shoebill;
 	private File pluginDir, dataDir;
-
+	
 	private Map<File, PluginDescription> descriptions;
 	private Map<Class<? extends Plugin>, Plugin> plugins;
 	
 	
-	public PluginManagerImpl( Shoebill shoebill, ClassLoader classLoader, File pluginDir, File dataDir )
+	public PluginManagerImpl(Shoebill shoebill, ClassLoader classLoader, File pluginDir, File dataDir)
 	{
 		plugins = new HashMap<Class<? extends Plugin>, Plugin>();
 		
@@ -68,32 +65,35 @@ public class PluginManagerImpl implements PluginManager
 		
 		this.descriptions = generateDescriptions(pluginDir);
 	}
-
+	
 	@Override
 	public String toString()
 	{
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
-	private PluginDescription generateDescription( File file ) throws ClassNotFoundException, IOException
+	private PluginDescription generateDescription(File file) throws ClassNotFoundException, IOException
 	{
 		PluginDescription desc = new PluginDescription(file, classLoader);
 		return desc;
 	}
 	
-	private Map<File, PluginDescription> generateDescriptions( File dir )
+	private Map<File, PluginDescription> generateDescriptions(File dir)
 	{
 		Map<File, PluginDescription> descriptions = new HashMap<>();
-		Collection<File> files = FileUtils.listFiles(dir, new String[]{ "jar" }, true );
+		Collection<File> files = FileUtils.listFiles(dir, new String[] { "jar" }, true);
 		
-		for( File file : files ) try
+		for (File file : files)
 		{
-			PluginDescription desc = generateDescription( file );
-			descriptions.put( file, desc );
-		}
-		catch( Exception e )
-		{
-			e.printStackTrace();
+			try
+			{
+				PluginDescription desc = generateDescription(file);
+				descriptions.put(file, desc);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		return descriptions;
@@ -101,48 +101,57 @@ public class PluginManagerImpl implements PluginManager
 	
 	public void loadAllPlugin()
 	{
-		for( PluginDescription desc : descriptions.values() ) loadPlugin( desc );
+		for (PluginDescription desc : descriptions.values())
+		{
+			loadPlugin(desc);
+		}
 	}
 	
 	public void unloadAllPlugin()
 	{
-		for( Plugin plugin : plugins.values() ) unloadPlugin( plugin );
+		for (Plugin plugin : plugins.values())
+		{
+			unloadPlugin(plugin);
+		}
 	}
-
+	
 	@Override
-	public Plugin loadPlugin( String filename )
+	public Plugin loadPlugin(String filename)
 	{
 		File file = new File(pluginDir, filename);
-		return loadPlugin( file );
+		return loadPlugin(file);
 	}
-
+	
 	@Override
-	public Plugin loadPlugin( File file )
+	public Plugin loadPlugin(File file)
 	{
-		if( file.canRead() == false ) return null;
+		if (file.canRead() == false) return null;
 		
-		PluginDescription desc = descriptions.get( file );
-		if( desc == null ) try
+		PluginDescription desc = descriptions.get(file);
+		if (desc == null)
 		{
-			desc = new PluginDescription(file, classLoader);
-		}
-		catch( Exception e )
-		{
-			e.printStackTrace();
+			try
+			{
+				desc = new PluginDescription(file, classLoader);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
-		if( desc == null ) return null;
+		if (desc == null) return null;
 		return loadPlugin(desc);
 	}
 	
 	@Override
-	public Plugin loadPlugin( PluginDescription desc )
+	public Plugin loadPlugin(PluginDescription desc)
 	{
 		try
 		{
-			LOGGER.info("Load plugin: " + desc.getName() );
+			LOGGER.info("Load plugin: " + desc.getName());
 			Class<? extends Plugin> clazz = desc.getClazz();
-			if( plugins.containsKey(clazz) )
+			if (plugins.containsKey(clazz))
 			{
 				LOGGER.warn("There's a plugin which has the same class as \"" + desc.getClazz().getName() + "\".");
 				LOGGER.warn("Abandon loading " + desc.getClazz().getName());
@@ -153,66 +162,66 @@ public class PluginManagerImpl implements PluginManager
 			Plugin plugin = constructor.newInstance();
 			
 			File pluginDataDir = new File(dataDir, desc.getClazz().getName());
-			if( ! pluginDataDir.exists() ) pluginDataDir.mkdirs();
+			if (!pluginDataDir.exists()) pluginDataDir.mkdirs();
 			
-			plugin.setContext( desc, shoebill, pluginDataDir );
+			plugin.setContext(desc, shoebill, pluginDataDir);
 			plugin.enable();
 			
-			plugins.put( clazz, plugin );
+			plugins.put(clazz, plugin);
 			
 			PluginLoadEvent event = new PluginLoadEvent(plugin);
 			ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) shoebill;
-			shoebillLowLevel.getEventManager().dispatchEvent( event, this );
+			shoebillLowLevel.getEventManager().dispatchEvent(event, this);
 			
 			return plugin;
 		}
-		catch( Throwable e )
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return null;
 		}
 	}
-
+	
 	@Override
-	public void unloadPlugin( Plugin plugin )
+	public void unloadPlugin(Plugin plugin)
 	{
-		for( Entry<Class<? extends Plugin>, Plugin> entry : plugins.entrySet() )
+		for (Entry<Class<? extends Plugin>, Plugin> entry : plugins.entrySet())
 		{
-			if( entry.getValue() != plugin ) continue;
-			LOGGER.info("Unload plugin: " + plugin.getDescription().getClazz().getName() );
-
+			if (entry.getValue() != plugin) continue;
+			LOGGER.info("Unload plugin: " + plugin.getDescription().getClazz().getName());
+			
 			PluginUnloadEvent event = new PluginUnloadEvent(plugin);
 			ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) shoebill;
-			shoebillLowLevel.getEventManager().dispatchEvent( event, this );
+			shoebillLowLevel.getEventManager().dispatchEvent(event, this);
 			
 			try
 			{
 				plugin.disable();
 			}
-			catch( Throwable e )
+			catch (Throwable e)
 			{
 				e.printStackTrace();
 			}
 			
-			plugins.remove( entry.getKey() );
+			plugins.remove(entry.getKey());
 			return;
 		}
 	}
-
+	
 	@Override
-	public <T extends Plugin> T getPlugin( Class<T> clz )
+	public <T extends Plugin> T getPlugin(Class<T> clz)
 	{
-		T plugin = clz.cast( plugins.get(clz) );
-		if( plugin != null ) return plugin;
+		T plugin = clz.cast(plugins.get(clz));
+		if (plugin != null) return plugin;
 		
-		for( Plugin p : plugins.values() )
+		for (Plugin p : plugins.values())
 		{
-			if( clz.isInstance(p) ) return clz.cast( p );
+			if (clz.isInstance(p)) return clz.cast(p);
 		}
 		
 		return null;
 	}
-
+	
 	@Override
 	public Collection<Plugin> getPlugins()
 	{

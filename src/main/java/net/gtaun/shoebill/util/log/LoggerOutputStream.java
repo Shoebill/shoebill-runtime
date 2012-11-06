@@ -22,36 +22,38 @@ import java.io.IOException;
 import org.slf4j.Logger;
 
 /**
+ * 
+ * 
  * @author MK124
- *
  */
-
 public class LoggerOutputStream extends ByteArrayOutputStream
 {
 	private static final String SEPARATOR = System.getProperty("line.separator");
+	
 	
 	private Logger logger;
 	private LogLevel level;
 	
 	
-	public LoggerOutputStream( Logger logger, LogLevel level )
+	public LoggerOutputStream(Logger logger, LogLevel level)
 	{
 		this.logger = logger;
 		this.level = level;
 	}
-
+	
 	@Override
 	public void flush() throws IOException
 	{
 		super.flush();
 		String message = this.toString();
 		
-		if( message.contains(SEPARATOR) )
+		if (message.contains(SEPARATOR))
 		{
 			super.reset();
 			
 			String messages[] = message.split(SEPARATOR);
-			for( String msg : messages ) level.log( logger, msg );
+			for (String msg : messages)
+				level.log(logger, msg);
 		}
 	}
 }

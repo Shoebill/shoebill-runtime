@@ -46,13 +46,13 @@ public class WorldImpl implements World
 	{
 		
 	}
-
+	
 	@Override
 	public ProxyManager getProxyManager()
 	{
 		return proxyManager;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -60,39 +60,39 @@ public class WorldImpl implements World
 	}
 	
 	@Override
-	public void setTeamCount( int count )
+	public void setTeamCount(int count)
 	{
-		SampNativeFunction.setTeamCount( count );
-	}
-
-	@Override
-	public int addPlayerClass( int modelId, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3 )
-	{
-		return SampNativeFunction.addPlayerClass( modelId, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3 );
-	}
-
-	@Override
-	public int addPlayerClass( int modelId, SpawnInfo spawnInfo )
-	{
-		LocationAngle loc = spawnInfo.getLocation();
-		WeaponData weapon1 = spawnInfo.getWeapon1();
-		WeaponData weapon2 = spawnInfo.getWeapon2();
-		WeaponData weapon3 = spawnInfo.getWeapon3();
-		
-		return SampNativeFunction.addPlayerClass( modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getType().getId(), weapon1.getAmmo(), weapon2.getType().getId(), weapon2.getAmmo(), weapon3.getType().getId(), weapon3.getAmmo() );
+		SampNativeFunction.setTeamCount(count);
 	}
 	
 	@Override
-	public int addPlayerClassEx( int teamId, int modelId, SpawnInfo spawnInfo )
+	public int addPlayerClass(int modelId, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3)
+	{
+		return SampNativeFunction.addPlayerClass(modelId, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3);
+	}
+	
+	@Override
+	public int addPlayerClass(int modelId, SpawnInfo spawnInfo)
 	{
 		LocationAngle loc = spawnInfo.getLocation();
 		WeaponData weapon1 = spawnInfo.getWeapon1();
 		WeaponData weapon2 = spawnInfo.getWeapon2();
 		WeaponData weapon3 = spawnInfo.getWeapon3();
 		
-		return SampNativeFunction.addPlayerClassEx( teamId, modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getType().getId(), weapon1.getAmmo(), weapon2.getType().getId(), weapon2.getAmmo(), weapon3.getType().getId(), weapon3.getAmmo() );
+		return SampNativeFunction.addPlayerClass(modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getType().getId(), weapon1.getAmmo(), weapon2.getType().getId(), weapon2.getAmmo(), weapon3.getType().getId(), weapon3.getAmmo());
 	}
-
+	
+	@Override
+	public int addPlayerClassEx(int teamId, int modelId, SpawnInfo spawnInfo)
+	{
+		LocationAngle loc = spawnInfo.getLocation();
+		WeaponData weapon1 = spawnInfo.getWeapon1();
+		WeaponData weapon2 = spawnInfo.getWeapon2();
+		WeaponData weapon3 = spawnInfo.getWeapon3();
+		
+		return SampNativeFunction.addPlayerClassEx(teamId, modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getType().getId(), weapon1.getAmmo(), weapon2.getType().getId(), weapon2.getAmmo(), weapon3.getType().getId(), weapon3.getAmmo());
+	}
+	
 	@Override
 	public float getChatRadius()
 	{
@@ -100,11 +100,11 @@ public class WorldImpl implements World
 	}
 	
 	@Override
-	public void setChatRadius( float radius )
+	public void setChatRadius(float radius)
 	{
-		SampNativeFunction.limitGlobalChatRadius( radius );
+		SampNativeFunction.limitGlobalChatRadius(radius);
 	}
-
+	
 	@Override
 	public float getPlayerMarkerRadius()
 	{
@@ -112,86 +112,88 @@ public class WorldImpl implements World
 	}
 	
 	@Override
-	public void setPlayerMarkerRadius( float radius )
+	public void setPlayerMarkerRadius(float radius)
 	{
-		SampNativeFunction.limitPlayerMarkerRadius( radius );
+		SampNativeFunction.limitPlayerMarkerRadius(radius);
 	}
 	
-	@Override public int getWeatherId()
+	@Override
+	public int getWeatherId()
 	{
 		return SampNativeFunction.getServerVarAsInt("weather");
 	}
-
+	
 	@Override
-	public void setWeatherId( int weatherid )
+	public void setWeatherId(int weatherid)
 	{
-		SampNativeFunction.setWeather( weatherid );
+		SampNativeFunction.setWeather(weatherid);
 	}
 	
-	@Override public float getGravity()
+	@Override
+	public float getGravity()
 	{
 		return Float.parseFloat(SampNativeFunction.getServerVarAsString("gravity"));
 	}
 	
 	@Override
-	public void setGravity( float gravity )
+	public void setGravity(float gravity)
 	{
-		SampNativeFunction.setGravity( gravity );
+		SampNativeFunction.setGravity(gravity);
 	}
 	
 	@Override
-	public void setWorldTime( int hour )
+	public void setWorldTime(int hour)
 	{
-		SampNativeFunction.setWorldTime( hour );
+		SampNativeFunction.setWorldTime(hour);
 	}
-
+	
 	@Override
 	public float getNameTagDrawDistance()
 	{
 		return nameTagDrawDistance;
 	}
-
+	
 	@Override
-	public void setNameTagDrawDistance( float distance )
+	public void setNameTagDrawDistance(float distance)
 	{
 		nameTagDrawDistance = distance;
-		SampNativeFunction.setNameTagDrawDistance( distance );
+		SampNativeFunction.setNameTagDrawDistance(distance);
 	}
 	
 	@Override
-	public void showNameTags( boolean enabled )
+	public void showNameTags(boolean enabled)
 	{
-		SampNativeFunction.showNameTags( enabled );
+		SampNativeFunction.showNameTags(enabled);
 	}
 	
 	@Override
-	public void showPlayerMarkers( PlayerMarkerMode mode )
+	public void showPlayerMarkers(PlayerMarkerMode mode)
 	{
-		SampNativeFunction.showPlayerMarkers( mode.getData() );
+		SampNativeFunction.showPlayerMarkers(mode.getData());
 	}
 	
 	@Override
-	public void enableTirePopping( boolean enabled )
+	public void enableTirePopping(boolean enabled)
 	{
-		SampNativeFunction.enableTirePopping( enabled );
+		SampNativeFunction.enableTirePopping(enabled);
 	}
 	
 	@Override
-	public void allowInteriorWeapons( boolean allow )
+	public void allowInteriorWeapons(boolean allow)
 	{
-		SampNativeFunction.allowInteriorWeapons( allow );
+		SampNativeFunction.allowInteriorWeapons(allow);
 	}
 	
 	@Override
-	public void createExplosion( Location location, int type, float radius )
+	public void createExplosion(Location location, int type, float radius)
 	{
-		SampNativeFunction.createExplosion( location.getX(), location.getY(), location.getZ(), type, radius );
+		SampNativeFunction.createExplosion(location.getX(), location.getY(), location.getZ(), type, radius);
 	}
 	
 	@Override
-	public void enableZoneNames( boolean enabled )
+	public void enableZoneNames(boolean enabled)
 	{
-		SampNativeFunction.enableZoneNames( enabled );
+		SampNativeFunction.enableZoneNames(enabled);
 	}
 	
 	@Override

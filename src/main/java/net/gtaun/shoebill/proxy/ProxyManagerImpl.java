@@ -45,7 +45,7 @@ public class ProxyManagerImpl implements ProxyManager
 		@Override
 		public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable
 		{
-			Proxyable proxyable = (Proxyable)obj;
+			Proxyable proxyable = (Proxyable) obj;
 			ProxyManagerImpl manager = (ProxyManagerImpl) proxyable.getProxyManager();
 			return manager.interceptor.intercept(obj, method, args, proxy);
 		}
@@ -72,7 +72,7 @@ public class ProxyManagerImpl implements ProxyManager
 		@Override
 		public int compare(MethodInterceptor o1, MethodInterceptor o2)
 		{
-			return o2.getPriority()-o1.getPriority();
+			return o2.getPriority() - o1.getPriority();
 		}
 	};
 	
@@ -90,7 +90,7 @@ public class ProxyManagerImpl implements ProxyManager
 			public Object intercept(Object obj, final Method method, Object[] args, final MethodProxy proxy) throws Throwable
 			{
 				Collection<MethodInterceptor> interceptors = methodMapInterceptors.get(method);
-				if(interceptors == null)
+				if (interceptors == null)
 				{
 					return proxy.invoke(obj, args);
 				}
@@ -109,8 +109,8 @@ public class ProxyManagerImpl implements ProxyManager
 					@Override
 					public Object invokeLower(Object obj, Object[] args) throws Throwable
 					{
-						if(interceptorQueue.isEmpty()) return invokeOriginal(obj, args);
-
+						if (interceptorQueue.isEmpty()) return invokeOriginal(obj, args);
+						
 						MethodInterceptor methodInterceptor = interceptorQueue.poll();
 						Interceptor interceptor = methodInterceptor.getInterceptor();
 						
@@ -130,7 +130,7 @@ public class ProxyManagerImpl implements ProxyManager
 	{
 		final Method method = methodInterceptor.getMethod();
 		Collection<MethodInterceptor> methodInterceptors = methodMapInterceptors.get(method);
-		if(methodInterceptors == null)
+		if (methodInterceptors == null)
 		{
 			methodInterceptors = new ConcurrentLinkedQueue<>();
 			methodMapInterceptors.put(method, methodInterceptors);
@@ -145,18 +145,18 @@ public class ProxyManagerImpl implements ProxyManager
 		Collection<MethodInterceptor> methodInterceptors = methodMapInterceptors.get(method);
 		
 		methodInterceptors.remove(methodInterceptor);
-		if(methodInterceptors.isEmpty())
+		if (methodInterceptors.isEmpty())
 		{
 			methodMapInterceptors.remove(method);
 		}
 	}
-
+	
 	@Override
 	public MethodInterceptor createMethodInterceptor(Method method, Interceptor interceptor, Priority priority)
 	{
 		return createMethodInterceptor(method, interceptor, priority.getValue());
 	}
-
+	
 	@Override
 	public MethodInterceptor createMethodInterceptor(Method method, Interceptor interceptor, short priority)
 	{

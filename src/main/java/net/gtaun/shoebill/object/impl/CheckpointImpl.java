@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.gtaun.shoebill.object.impl;
 
 import java.util.ArrayList;
@@ -40,22 +41,22 @@ public class CheckpointImpl implements Checkpoint
 {
 	private ProxyManager proxyManager;
 	private LocationRadius location;
-
 	
-	public CheckpointImpl( float x, float y, float z, float size )
+	
+	public CheckpointImpl(float x, float y, float z, float size)
 	{
 		proxyManager = new ProxyManagerImpl();
-		location = new LocationRadius( x, y, z, size );
+		location = new LocationRadius(x, y, z, size);
 	}
 	
-	public CheckpointImpl( Vector3D pos, float size )
+	public CheckpointImpl(Vector3D pos, float size)
 	{
-		location = new LocationRadius( pos, size );
+		location = new LocationRadius(pos, size);
 	}
 	
-	public CheckpointImpl( LocationRadius loc )
+	public CheckpointImpl(LocationRadius loc)
 	{
-		location = new LocationRadius( loc );
+		location = new LocationRadius(loc);
 	}
 	
 	@Override
@@ -69,7 +70,7 @@ public class CheckpointImpl implements Checkpoint
 	{
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
-
+	
 	@Override
 	public LocationRadius getLocation()
 	{
@@ -77,26 +78,26 @@ public class CheckpointImpl implements Checkpoint
 	}
 	
 	@Override
-	public void setLocation( float x, float y, float z )
+	public void setLocation(float x, float y, float z)
 	{
-		location.set( x, y, z );
-		update();
-	}
-
-	@Override
-	public void setLocation( Vector3D pos )
-	{
-		location.set( pos );
+		location.set(x, y, z);
 		update();
 	}
 	
 	@Override
-	public void setLocation( LocationRadius loc )
+	public void setLocation(Vector3D pos)
 	{
-		location.set( loc );
+		location.set(pos);
 		update();
 	}
-
+	
+	@Override
+	public void setLocation(LocationRadius loc)
+	{
+		location.set(loc);
+		update();
+	}
+	
 	@Override
 	public float getSize()
 	{
@@ -104,52 +105,53 @@ public class CheckpointImpl implements Checkpoint
 	}
 	
 	@Override
-	public void setSize( float size )
+	public void setSize(float size)
 	{
-		location.setRadius( size );
+		location.setRadius(size);
 		update();
 	}
 	
 	@Override
-	public void set( Player player )
+	public void set(Player player)
 	{
-		player.setCheckpoint( this );
+		player.setCheckpoint(this);
 	}
 	
 	@Override
-	public void disable( Player player )
+	public void disable(Player player)
 	{
-		if( player.getCheckpoint() != this ) return;
-		player.setCheckpoint( null );
+		if (player.getCheckpoint() != this) return;
+		player.setCheckpoint(null);
 	}
 	
 	@Override
-	public boolean isInCheckpoint( Player player )
+	public boolean isInCheckpoint(Player player)
 	{
-		if( player.getCheckpoint() != this ) return false;
-		return SampNativeFunction.isPlayerInCheckpoint( player.getId() );
+		if (player.getCheckpoint() != this) return false;
+		return SampNativeFunction.isPlayerInCheckpoint(player.getId());
 	}
 	
 	@Override
 	public void update()
 	{
 		Collection<? extends Player> players = ShoebillImpl.getInstance().getSampObjectPool().getPlayers();
-		for( Player player : players )
+		for (Player player : players)
 		{
-			if( player == null ) continue;
-			if( player.getCheckpoint() == this ) set( player );
+			if (player == null) continue;
+			if (player.getCheckpoint() == this) set(player);
 		}
 	}
 	
 	@Override
 	public Collection<Player> getUsingPlayers()
 	{
-		Collection<Player> players = new ArrayList<>();
-		for( Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers() )
+		Collection<Player> usingPlayers = new ArrayList<>();
+		Collection<Player> players = ShoebillImpl.getInstance().getSampObjectPool().getPlayers();
+		for (Player player : players)
 		{
-			if( player.getCheckpoint() == this ) players.add( player );
+			if (player.getCheckpoint() == this) usingPlayers.add(player);
 		}
 		
-		return players;
+		return usingPlayers;
 	}
 }

@@ -42,19 +42,19 @@ public class PickupImpl implements Pickup
 	private Location location;
 	
 	
-	public PickupImpl( int modelId, int type, Location loc ) throws CreationFailedException
+	public PickupImpl(int modelId, int type, Location loc) throws CreationFailedException
 	{
-		initialize( modelId, type, new Location(loc) );
+		initialize(modelId, type, new Location(loc));
 	}
 	
-	private void initialize( int modelId, int type, Location loc ) throws CreationFailedException
+	private void initialize(int modelId, int type, Location loc) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.type = type;
 		this.location = loc;
 		
-		id = SampNativeFunction.createPickup( modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId() );
-		if( id == INVALID_ID ) throw new CreationFailedException();
+		id = SampNativeFunction.createPickup(modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId());
+		if (id == INVALID_ID) throw new CreationFailedException();
 	}
 	
 	@Override
@@ -62,7 +62,7 @@ public class PickupImpl implements Pickup
 	{
 		return proxyManager;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -72,12 +72,12 @@ public class PickupImpl implements Pickup
 	@Override
 	public void destroy()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.destroyPickup( id );
-
+		SampNativeFunction.destroyPickup(id);
+		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		pool.setPickup( id, null );
+		pool.setPickup(id, null);
 		
 		id = INVALID_ID;
 	}

@@ -32,17 +32,18 @@ public class ServerImpl implements Server
 {
 	private ProxyManager proxyManager;
 	
+	
 	public ServerImpl()
 	{
 		
 	}
-
+	
 	@Override
 	public ProxyManager getProxyManager()
 	{
 		return proxyManager;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -54,11 +55,11 @@ public class ServerImpl implements Server
 	{
 		return SampNativeFunction.getServerCodepage();
 	}
-
+	
 	@Override
-	public void setServerCodepage( int codepage )
+	public void setServerCodepage(int codepage)
 	{
-		SampNativeFunction.setServerCodepage( codepage );
+		SampNativeFunction.setServerCodepage(codepage);
 	}
 	
 	@Override
@@ -66,39 +67,39 @@ public class ServerImpl implements Server
 	{
 		return SampNativeFunction.getMaxPlayers();
 	}
-
+	
 	@Override
-	public void sendRconCommand( String command )
+	public void sendRconCommand(String command)
 	{
-		if( command == null ) throw new NullPointerException();
-		SampNativeFunction.sendRconCommand( command );
+		if (command == null) throw new NullPointerException();
+		SampNativeFunction.sendRconCommand(command);
 	}
 	
 	@Override
-	public void connectNPC( String name, String script )
+	public void connectNPC(String name, String script)
 	{
-		if( name == null || script == null ) throw new NullPointerException();
-		SampNativeFunction.connectNPC( name, script );
+		if (name == null || script == null) throw new NullPointerException();
+		SampNativeFunction.connectNPC(name, script);
 	}
 	
 	@Override
-	public String getServerVarAsString( String varname )
+	public String getServerVarAsString(String varname)
 	{
-		if( varname == null ) throw new NullPointerException();
-		return SampNativeFunction.getServerVarAsString( varname );
+		if (varname == null) throw new NullPointerException();
+		return SampNativeFunction.getServerVarAsString(varname);
 	}
 	
 	@Override
-	public int getServerVarAsInt( String varname )
+	public int getServerVarAsInt(String varname)
 	{
-		if( varname == null ) throw new NullPointerException();
-		return SampNativeFunction.getServerVarAsInt( varname );
+		if (varname == null) throw new NullPointerException();
+		return SampNativeFunction.getServerVarAsInt(varname);
 	}
 	
 	@Override
-	public boolean getServerVarAsBool( String varname )
+	public boolean getServerVarAsBool(String varname)
 	{
-		if( varname == null ) throw new NullPointerException();
-		return SampNativeFunction.getServerVarAsBool( varname );
+		if (varname == null) throw new NullPointerException();
+		return SampNativeFunction.getServerVarAsBool(varname);
 	}
 }

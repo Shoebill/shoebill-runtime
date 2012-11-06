@@ -27,7 +27,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author JoJLlmAn, MK124
- *
+ * 
  */
 
 public class ShoebillConfiguration
@@ -36,17 +36,17 @@ public class ShoebillConfiguration
 	private String gamemode;
 	
 	
-	public ShoebillConfiguration( InputStream in )
+	public ShoebillConfiguration(InputStream in)
 	{
 		YamlConfiguration config = new YamlConfiguration();
-		config.read( in );
-
-		String workdirPath = config.getString( "workdir", "./shoebill/" );
-		workdir = new File( workdirPath );
+		config.read(in);
+		
+		String workdirPath = config.getString("workdir", "./shoebill/");
+		workdir = new File(workdirPath);
 		
 		gamemode = config.getString("gamemode", null);
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -57,7 +57,7 @@ public class ShoebillConfiguration
 	{
 		return workdir;
 	}
-
+	
 	public String getGamemode()
 	{
 		return gamemode;

@@ -49,7 +49,7 @@ public class ObjectImpl implements SampObject
 	private Location location;
 	private float speed = 0.0F;
 	private float drawDistance = 0.0F;
-
+	
 	@SuppressWarnings("unused")
 	private Vector3D attachedOffset;
 	@SuppressWarnings("unused")
@@ -62,19 +62,19 @@ public class ObjectImpl implements SampObject
 	private ObjectEventHandler eventHandler;
 	
 	
-	public ObjectImpl( int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
+	public ObjectImpl(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
-		initialize( modelId, new Location(loc), new Vector3D(rot), drawDistance );
+		initialize(modelId, new Location(loc), new Vector3D(rot), drawDistance);
 	}
 	
-	private void initialize( int modelId, Location loc, Vector3D rot, float drawDistance ) throws CreationFailedException
+	private void initialize(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.location = loc;
 		this.drawDistance = drawDistance;
 		
-		id = SampNativeFunction.createObject( modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance );
-		if( id == INVALID_ID ) throw new CreationFailedException();
+		id = SampNativeFunction.createObject(modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance);
+		if (id == INVALID_ID) throw new CreationFailedException();
 		
 		eventHandler = new ObjectEventHandler()
 		{
@@ -82,7 +82,7 @@ public class ObjectImpl implements SampObject
 			public void onObjectMoved(ObjectMovedEvent event)
 			{
 				speed = 0.0F;
-				SampNativeFunction.getObjectPos( id, location );
+				SampNativeFunction.getObjectPos(id, location);
 			}
 		};
 		
@@ -105,12 +105,12 @@ public class ObjectImpl implements SampObject
 	@Override
 	public void destroy()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.destroyObject( id );
-
+		SampNativeFunction.destroyObject(id);
+		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		pool.setObject( id, null );
+		pool.setObject(id, null);
 		
 		id = INVALID_ID;
 	}
@@ -120,7 +120,7 @@ public class ObjectImpl implements SampObject
 	{
 		return id == INVALID_ID;
 	}
-
+	
 	@Override
 	public int getId()
 	{
@@ -136,11 +136,11 @@ public class ObjectImpl implements SampObject
 	@Override
 	public float getSpeed()
 	{
-		if( isDestroyed() ) return 0.0F;
+		if (isDestroyed()) return 0.0F;
 		
-		if( attachedPlayer != null && attachedPlayer.isOnline() )				return attachedPlayer.getVelocity().speed3d();
-		if( attachedObject != null && attachedObject.isDestroyed() == false )	return attachedObject.getSpeed();
-		if( attachedVehicle != null && attachedVehicle.isDestroyed() == false )	return attachedVehicle.getVelocity().speed3d();
+		if (attachedPlayer != null && attachedPlayer.isOnline()) return attachedPlayer.getVelocity().speed3d();
+		if (attachedObject != null && attachedObject.isDestroyed() == false) return attachedObject.getSpeed();
+		if (attachedVehicle != null && attachedVehicle.isDestroyed() == false) return attachedVehicle.getVelocity().speed3d();
 		
 		return speed;
 	}
@@ -172,165 +172,164 @@ public class ObjectImpl implements SampObject
 	@Override
 	public Location getLocation()
 	{
-		if( isDestroyed() ) return null;
+		if (isDestroyed()) return null;
 		
-		if( attachedPlayer != null )			location.set( attachedPlayer.getLocation() );
-		else if( attachedVehicle != null )		location.set( attachedVehicle.getLocation() );
-		else									SampNativeFunction.getObjectPos( id, location );
+		if (attachedPlayer != null) location.set(attachedPlayer.getLocation());
+		else if (attachedVehicle != null) location.set(attachedVehicle.getLocation());
+		else SampNativeFunction.getObjectPos(id, location);
 		
 		return location.clone();
 	}
 	
 	@Override
-	public void setLocation( Vector3D pos )
+	public void setLocation(Vector3D pos)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
 		speed = 0.0F;
-		location.set( pos );
-		SampNativeFunction.setObjectPos( id, pos.getX(), pos.getY(), pos.getZ() );
+		location.set(pos);
+		SampNativeFunction.setObjectPos(id, pos.getX(), pos.getY(), pos.getZ());
 	}
 	
 	@Override
-	public void setLocation( Location loc )
+	public void setLocation(Location loc)
 	{
-		if( isDestroyed() ) return;
-
+		if (isDestroyed()) return;
+		
 		speed = 0.0F;
-		location.set( loc );
-		SampNativeFunction.setObjectPos( id, loc.getX(), loc.getY(), loc.getZ() );
+		location.set(loc);
+		SampNativeFunction.setObjectPos(id, loc.getX(), loc.getY(), loc.getZ());
 	}
 	
 	@Override
 	public Vector3D getRotate()
 	{
-		if( isDestroyed() ) return null;
-	
+		if (isDestroyed()) return null;
+		
 		Vector3D rotate = new Vector3D();
-		SampNativeFunction.getObjectRot( id, rotate );
+		SampNativeFunction.getObjectRot(id, rotate);
 		
 		return rotate;
 	}
 	
 	@Override
-	public void setRotate( float rx, float ry, float rz )
+	public void setRotate(float rx, float ry, float rz)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.setObjectRot( id, rx, ry, rz );
+		SampNativeFunction.setObjectRot(id, rx, ry, rz);
 	}
 	
 	@Override
-	public void setRotate( Vector3D rot )
+	public void setRotate(Vector3D rot)
 	{
-		setRotate( rot.getX(), rot.getY(), rot.getZ() );
+		setRotate(rot.getX(), rot.getY(), rot.getZ());
 	}
 	
 	@Override
 	public boolean isMoving()
 	{
-		if( isDestroyed() ) return false;
-		return SampNativeFunction.isObjectMoving( id );
+		if (isDestroyed()) return false;
+		return SampNativeFunction.isObjectMoving(id);
 	}
-
+	
 	@Override
-	public int move( float x, float y, float z, float speed )
+	public int move(float x, float y, float z, float speed)
 	{
-		if( isDestroyed() ) return 0;
+		if (isDestroyed()) return 0;
 		
-		if(attachedPlayer == null && attachedVehicle == null) this.speed = speed;
-		return SampNativeFunction.moveObject( id, x, y, z, speed, -1000.0f, -1000.0f, -1000.0f );
+		if (attachedPlayer == null && attachedVehicle == null) this.speed = speed;
+		return SampNativeFunction.moveObject(id, x, y, z, speed, -1000.0f, -1000.0f, -1000.0f);
 	}
 	
 	@Override
-	public int move( float x, float y, float z, float speed, float rotX, float rotY, float rotZ )
+	public int move(float x, float y, float z, float speed, float rotX, float rotY, float rotZ)
 	{
-		if( isDestroyed() ) return 0;
+		if (isDestroyed()) return 0;
 		
-		if(attachedPlayer == null && attachedVehicle == null) this.speed = speed;
-		return SampNativeFunction.moveObject( id, x, y, z, speed, rotX, rotY, rotZ );
+		if (attachedPlayer == null && attachedVehicle == null) this.speed = speed;
+		return SampNativeFunction.moveObject(id, x, y, z, speed, rotX, rotY, rotZ);
 	}
 	
 	@Override
-	public int move( Vector3D pos, float speed )
+	public int move(Vector3D pos, float speed)
 	{
-		return move( pos.getX(), pos.getY(), pos.getZ(), speed );
+		return move(pos.getX(), pos.getY(), pos.getZ(), speed);
 	}
 	
 	@Override
-	public int move( Vector3D pos, float speed, Vector3D rot )
+	public int move(Vector3D pos, float speed, Vector3D rot)
 	{
-		return move( pos.getX(), pos.getY(), pos.getZ(), speed, rot.getX(), rot.getY(), rot.getZ() );
+		return move(pos.getX(), pos.getY(), pos.getZ(), speed, rot.getX(), rot.getY(), rot.getZ());
 	}
 	
 	@Override
 	public void stop()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
 		speed = 0.0F;
-		SampNativeFunction.stopObject( id );
+		SampNativeFunction.stopObject(id);
 	}
-
+	
 	@Override
-	public void attach( Player player, float x, float y, float z, float rx, float ry, float rz )
+	public void attach(Player player, float x, float y, float z, float rx, float ry, float rz)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
 		
-		SampNativeFunction.attachObjectToPlayer( id, player.getId(), x, y, z, rx, ry, rz );
-
+		SampNativeFunction.attachObjectToPlayer(id, player.getId(), x, y, z, rx, ry, rz);
+		
 		speed = 0.0F;
-		attachedOffset = new Vector3D( x, y, z );
-		attachedRotate = new Vector3D( rx, ry, rz );
+		attachedOffset = new Vector3D(x, y, z);
+		attachedRotate = new Vector3D(rx, ry, rz);
 		
 		attachedPlayer = player;
 		attachedObject = null;
 		attachedVehicle = null;
 	}
-
+	
 	@Override
-	public void attach( Player player, Vector3D pos, Vector3D rot )
+	public void attach(Player player, Vector3D pos, Vector3D rot)
 	{
-		attach( player, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
+		attach(player, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ());
 	}
-
+	
 	@Override
-	public void attach( SampObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation )
+	public void attach(SampObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation)
 	{
-		if( isDestroyed() ) return;
-		if( object.isDestroyed() ) return;
+		if (isDestroyed()) return;
+		if (object.isDestroyed()) return;
 		
-		if( object instanceof PlayerObjectImpl ) throw new UnsupportedOperationException();
-		SampNativeFunction.attachObjectToObject( id, object.getId(), x, y, z, rz, ry, rz, syncRotation?1:0 );
-
+		if (object instanceof PlayerObjectImpl) throw new UnsupportedOperationException();
+		SampNativeFunction.attachObjectToObject(id, object.getId(), x, y, z, rz, ry, rz, syncRotation ? 1 : 0);
+		
 		speed = 0.0F;
-		attachedOffset = new Vector3D( x, y, z );
-		attachedRotate = new Vector3D( rx, ry, rz );
+		attachedOffset = new Vector3D(x, y, z);
+		attachedRotate = new Vector3D(rx, ry, rz);
 		
 		attachedPlayer = null;
 		attachedObject = object;
 		attachedVehicle = null;
 	}
 	
-
 	@Override
-	public void attach( SampObject object, Vector3D pos, Vector3D rot, boolean syncRotation )
+	public void attach(SampObject object, Vector3D pos, Vector3D rot, boolean syncRotation)
 	{
-		attach( object, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ(), syncRotation );
+		attach(object, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ(), syncRotation);
 	}
 	
 	@Override
-	public void attach( Vehicle vehicle, float x, float y, float z, float rx, float ry, float rz )
+	public void attach(Vehicle vehicle, float x, float y, float z, float rx, float ry, float rz)
 	{
-		if( isDestroyed() ) return;
-		if( vehicle.isDestroyed() ) return;
+		if (isDestroyed()) return;
+		if (vehicle.isDestroyed()) return;
 		
-		SampNativeFunction.attachObjectToVehicle( id, vehicle.getId(), x, y, z, rx, ry, rz );
-
+		SampNativeFunction.attachObjectToVehicle(id, vehicle.getId(), x, y, z, rx, ry, rz);
+		
 		speed = 0.0F;
-		attachedOffset = new Vector3D( x, y, z );
-		attachedRotate = new Vector3D( rx, ry, rz );
+		attachedOffset = new Vector3D(x, y, z);
+		attachedRotate = new Vector3D(rx, ry, rz);
 		
 		attachedPlayer = null;
 		attachedObject = null;
@@ -338,8 +337,8 @@ public class ObjectImpl implements SampObject
 	}
 	
 	@Override
-	public void attach( Vehicle vehicle, Vector3D pos, Vector3D rot )
+	public void attach(Vehicle vehicle, Vector3D pos, Vector3D rot)
 	{
-		attach( vehicle, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ() );
+		attach(vehicle, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ());
 	}
 }

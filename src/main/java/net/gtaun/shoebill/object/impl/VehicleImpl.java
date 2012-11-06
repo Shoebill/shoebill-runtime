@@ -22,8 +22,8 @@ import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
-import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Quaternion;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.events.VehicleEventHandler;
 import net.gtaun.shoebill.events.vehicle.VehicleDestroyEvent;
@@ -56,7 +56,7 @@ public class VehicleImpl implements Vehicle
 		SampNativeFunction.manualVehicleEngineAndLights();
 	}
 	
-
+	
 	private ProxyManager proxyManager;
 	
 	private boolean isStatic = false;
@@ -66,7 +66,7 @@ public class VehicleImpl implements Vehicle
 	private int interiorId;
 	private int color1, color2;
 	private int respawnDelay;
-
+	
 	private VehicleParamImpl param;
 	private VehicleComponentImpl component;
 	private VehicleDamageImpl damage;
@@ -74,12 +74,12 @@ public class VehicleImpl implements Vehicle
 	private VehicleEventHandler eventHandler;
 	
 	
-	public VehicleImpl( int modelId, LocationAngle loc, int color1, int color2, int respawnDelay ) throws CreationFailedException
+	public VehicleImpl(int modelId, LocationAngle loc, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
-		initialize( modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), loc.getAngle(), color1, color2, respawnDelay );
+		initialize(modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), loc.getAngle(), color1, color2, respawnDelay);
 	}
 	
-	private void initialize( int modelId, float x, float y, float z, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay ) throws CreationFailedException
+	private void initialize(int modelId, float x, float y, float z, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.interiorId = interiorId;
@@ -87,26 +87,26 @@ public class VehicleImpl implements Vehicle
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
 		
-		switch( modelId )
+		switch (modelId)
 		{
-			case 537:
-			case 538:
-			case 569:
-			case 570:
-			case 590:
-				id = SampNativeFunction.addStaticVehicle( modelId, x, y, z, angle, color1, color2 );
-				isStatic = true;
-				break;
-							
-			default:
-				id = SampNativeFunction.createVehicle( modelId, x, y, z, angle, color1, color2, respawnDelay );
+		case 537:
+		case 538:
+		case 569:
+		case 570:
+		case 590:
+			id = SampNativeFunction.addStaticVehicle(modelId, x, y, z, angle, color1, color2);
+			isStatic = true;
+			break;
+		
+		default:
+			id = SampNativeFunction.createVehicle(modelId, x, y, z, angle, color1, color2, respawnDelay);
 		}
 		
-		if( id == INVALID_ID ) throw new CreationFailedException();
+		if (id == INVALID_ID) throw new CreationFailedException();
 		
-		SampNativeFunction.linkVehicleToInterior( id, interiorId );
-		SampNativeFunction.setVehicleVirtualWorld( id, worldId );
-
+		SampNativeFunction.linkVehicleToInterior(id, interiorId);
+		SampNativeFunction.setVehicleVirtualWorld(id, worldId);
+		
 		param = new VehicleParamImpl(this);
 		component = new VehicleComponentImpl(this);
 		damage = new VehicleDamageImpl(this);
@@ -133,7 +133,7 @@ public class VehicleImpl implements Vehicle
 		VehicleSpawnEvent event = new VehicleSpawnEvent(this);
 		eventManager.dispatchEvent(event, this);
 	}
-
+	
 	@Override
 	public ProxyManager getProxyManager()
 	{
@@ -149,17 +149,17 @@ public class VehicleImpl implements Vehicle
 	@Override
 	public void destroy()
 	{
-		if( isDestroyed() ) return;
-		if( isStatic ) return;
+		if (isDestroyed()) return;
+		if (isStatic) return;
 		
-		VehicleDestroyEvent event = new VehicleDestroyEvent( this );
-		ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) ShoebillImpl.getInstance();
-		shoebillLowLevel.getEventManager().dispatchEvent( event, this );
+		VehicleDestroyEvent event = new VehicleDestroyEvent(this);
+		ShoebillLowLevel shoebillLowLevel = ShoebillImpl.getInstance();
+		shoebillLowLevel.getEventManager().dispatchEvent(event, this);
 		
-		SampNativeFunction.destroyVehicle( id );
-
+		SampNativeFunction.destroyVehicle(id);
+		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		pool.setVehicle( id, null );
+		pool.setVehicle(id, null);
 		
 		id = INVALID_ID;
 	}
@@ -227,76 +227,76 @@ public class VehicleImpl implements Vehicle
 	@Override
 	public LocationAngle getLocation()
 	{
-		if( isDestroyed() ) return null;
+		if (isDestroyed()) return null;
 		
 		LocationAngle location = new LocationAngle();
-
-		SampNativeFunction.getVehiclePos( id, location );
-		location.setAngle( SampNativeFunction.getVehicleZAngle(id) );
-		location.setInteriorId( interiorId );
-		location.setWorldId( SampNativeFunction.getVehicleVirtualWorld(id) );
+		
+		SampNativeFunction.getVehiclePos(id, location);
+		location.setAngle(SampNativeFunction.getVehicleZAngle(id));
+		location.setInteriorId(interiorId);
+		location.setWorldId(SampNativeFunction.getVehicleVirtualWorld(id));
 		
 		return location;
 	}
-
+	
 	@Override
-	public void setLocation( float x, float y, float z )
+	public void setLocation(float x, float y, float z)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.setVehiclePos( id, x, y, z );
-	}
-
-	@Override
-	public void setLocation( Vector3D pos )
-	{
-		setLocation( pos.getX(), pos.getY(), pos.getZ() );
+		SampNativeFunction.setVehiclePos(id, x, y, z);
 	}
 	
 	@Override
-	public void setLocation( Location loc )
+	public void setLocation(Vector3D pos)
 	{
-		if( isDestroyed() ) return;
-		
-		SampNativeFunction.setVehiclePos( id, loc.getX(), loc.getY(), loc.getZ() );
-		SampNativeFunction.linkVehicleToInterior( id, loc.getInteriorId() );
-		SampNativeFunction.setVehicleVirtualWorld( id, loc.getWorldId() );
+		setLocation(pos.getX(), pos.getY(), pos.getZ());
 	}
 	
 	@Override
-	public void setLocation( LocationAngle loc )
+	public void setLocation(Location loc)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.setVehiclePos( id, loc.getX(), loc.getY(), loc.getZ() );
-		SampNativeFunction.setVehicleZAngle( id, loc.getAngle() );
-		SampNativeFunction.linkVehicleToInterior( id, loc.getInteriorId() );
-		SampNativeFunction.setVehicleVirtualWorld( id, loc.getWorldId() );
+		SampNativeFunction.setVehiclePos(id, loc.getX(), loc.getY(), loc.getZ());
+		SampNativeFunction.linkVehicleToInterior(id, loc.getInteriorId());
+		SampNativeFunction.setVehicleVirtualWorld(id, loc.getWorldId());
+	}
+	
+	@Override
+	public void setLocation(LocationAngle loc)
+	{
+		if (isDestroyed()) return;
+		
+		SampNativeFunction.setVehiclePos(id, loc.getX(), loc.getY(), loc.getZ());
+		SampNativeFunction.setVehicleZAngle(id, loc.getAngle());
+		SampNativeFunction.linkVehicleToInterior(id, loc.getInteriorId());
+		SampNativeFunction.setVehicleVirtualWorld(id, loc.getWorldId());
 	}
 	
 	@Override
 	public float getAngle()
 	{
-		if( isDestroyed() ) return 0.0F;
+		if (isDestroyed()) return 0.0F;
 		
 		return SampNativeFunction.getVehicleZAngle(id);
 	}
 	
 	@Override
-	public void setAngle( float angle )
+	public void setAngle(float angle)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.setVehicleZAngle( id, angle );
+		SampNativeFunction.setVehicleZAngle(id, angle);
 	}
-
+	
 	@Override
 	public Quaternion getRotationQuat()
 	{
-		if( isDestroyed() ) return null;
+		if (isDestroyed()) return null;
 		
 		Quaternion quaternions = new Quaternion();
-		SampNativeFunction.getVehicleRotationQuat( id, quaternions );
+		SampNativeFunction.getVehicleRotationQuat(id, quaternions);
 		
 		return quaternions;
 	}
@@ -308,181 +308,181 @@ public class VehicleImpl implements Vehicle
 	}
 	
 	@Override
-	public void setInteriorId( int interiorId )
+	public void setInteriorId(int interiorId)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
 		this.interiorId = interiorId;
-		SampNativeFunction.linkVehicleToInterior( id, interiorId );
+		SampNativeFunction.linkVehicleToInterior(id, interiorId);
 	}
 	
 	@Override
 	public int getWorldId()
 	{
-		if( isDestroyed() ) return 0;
+		if (isDestroyed()) return 0;
 		
 		return SampNativeFunction.getVehicleVirtualWorld(id);
 	}
 	
 	@Override
-	public void setWorldId( int worldId )
+	public void setWorldId(int worldId)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.setVehicleVirtualWorld( id, worldId );
+		SampNativeFunction.setVehicleVirtualWorld(id, worldId);
 	}
 	
 	@Override
 	public float getHealth()
 	{
-		if( isDestroyed() ) return 0.0F;
+		if (isDestroyed()) return 0.0F;
 		
 		return SampNativeFunction.getVehicleHealth(id);
 	}
 	
 	@Override
-	public void setHealth( float health )
+	public void setHealth(float health)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.setVehicleHealth( id, health );
+		SampNativeFunction.setVehicleHealth(id, health);
 	}
-
+	
 	@Override
 	public Velocity getVelocity()
 	{
-		if( isDestroyed() ) return null;
+		if (isDestroyed()) return null;
 		
 		Velocity velocity = new Velocity();
-		SampNativeFunction.getVehicleVelocity( id, velocity );
+		SampNativeFunction.getVehicleVelocity(id, velocity);
 		
 		return velocity;
 	}
 	
 	@Override
-	public void setVelocity( Velocity velocity )
+	public void setVelocity(Velocity velocity)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.setVehicleVelocity( id, velocity.getX(), velocity.getY(), velocity.getZ() );
-	}
-
-	@Override
-	public void putPlayer( Player player, int seat )
-	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
-		
-		SampNativeFunction.putPlayerInVehicle( player.getId(), id, seat );
+		SampNativeFunction.setVehicleVelocity(id, velocity.getX(), velocity.getY(), velocity.getZ());
 	}
 	
 	@Override
-	public boolean isPlayerIn( Player player )
+	public void putPlayer(Player player, int seat)
 	{
-		if( isDestroyed() ) return false;
-		if( player.isOnline() == false ) return false;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
+		
+		SampNativeFunction.putPlayerInVehicle(player.getId(), id, seat);
+	}
+	
+	@Override
+	public boolean isPlayerIn(Player player)
+	{
+		if (isDestroyed()) return false;
+		if (player.isOnline() == false) return false;
 		
 		return SampNativeFunction.isPlayerInVehicle(player.getId(), id);
 	}
 	
 	@Override
-	public boolean isStreamedIn( Player forPlayer )
+	public boolean isStreamedIn(Player forPlayer)
 	{
-		if( isDestroyed() ) return false;
-		if( forPlayer.isOnline() == false ) return false;
+		if (isDestroyed()) return false;
+		if (forPlayer.isOnline() == false) return false;
 		
 		return SampNativeFunction.isVehicleStreamedIn(id, forPlayer.getId());
 	}
 	
 	@Override
-	public void setParamsForPlayer( Player player, boolean objective, boolean doorslocked )
+	public void setParamsForPlayer(Player player, boolean objective, boolean doorslocked)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
 		
-		SampNativeFunction.setVehicleParamsForPlayer( id, player.getId(), objective, doorslocked );
+		SampNativeFunction.setVehicleParamsForPlayer(id, player.getId(), objective, doorslocked);
 	}
 	
 	@Override
 	public void respawn()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.setVehicleToRespawn( id );
+		SampNativeFunction.setVehicleToRespawn(id);
 	}
 	
 	@Override
-	public void setColor( int color1, int color2 )
+	public void setColor(int color1, int color2)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.changeVehicleColor( id, color1, color2 );
+		SampNativeFunction.changeVehicleColor(id, color1, color2);
 	}
 	
 	@Override
-	public void setPaintjob( int paintjobId )
+	public void setPaintjob(int paintjobId)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.changeVehiclePaintjob( id, paintjobId );
+		SampNativeFunction.changeVehiclePaintjob(id, paintjobId);
 	}
-
+	
 	@Override
 	public Vehicle getTrailer()
 	{
-		if( isDestroyed() ) return null;
+		if (isDestroyed()) return null;
 		
 		int trailerId = SampNativeFunction.getVehicleTrailer(id);
 		return ShoebillImpl.getInstance().getSampObjectPool().getVehicle(trailerId);
 	}
 	
 	@Override
-	public void attachTrailer( Vehicle trailer )
+	public void attachTrailer(Vehicle trailer)
 	{
-		if( isDestroyed() ) return;
-		if( trailer.isDestroyed() ) return;
+		if (isDestroyed()) return;
+		if (trailer.isDestroyed()) return;
 		
-		SampNativeFunction.attachTrailerToVehicle( trailer.getId(), id );
+		SampNativeFunction.attachTrailerToVehicle(trailer.getId(), id);
 	}
 	
 	@Override
 	public void detachTrailer()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.detachTrailerFromVehicle( id );
+		SampNativeFunction.detachTrailerFromVehicle(id);
 	}
 	
 	@Override
 	public boolean isTrailerAttached()
 	{
-		if( isDestroyed() ) return false;
+		if (isDestroyed()) return false;
 		
 		return SampNativeFunction.isTrailerAttachedToVehicle(id);
 	}
 	
 	@Override
-	public void setNumberPlate( String numberplate )
+	public void setNumberPlate(String numberplate)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		if( numberplate == null ) throw new NullPointerException();
-		SampNativeFunction.setVehicleNumberPlate( id, numberplate );
+		if (numberplate == null) throw new NullPointerException();
+		SampNativeFunction.setVehicleNumberPlate(id, numberplate);
 	}
 	
 	@Override
 	public void repair()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.repairVehicle( id );
+		SampNativeFunction.repairVehicle(id);
 	}
 	
 	@Override
-	public void setAngularVelocity( Velocity velocity )
+	public void setAngularVelocity(Velocity velocity)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.setVehicleAngularVelocity( id, velocity.getX(), velocity.getY(), velocity.getZ() );
+		SampNativeFunction.setVehicleAngularVelocity(id, velocity.getX(), velocity.getY(), velocity.getZ());
 	}
 }

@@ -24,21 +24,21 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
+ * 
+ * 
  * @author JoJLlmAn
- *
  */
-
 public class VehicleDamageImpl implements VehicleDamage
 {
 	private Vehicle vehicle;
 	private int panels, doors, lights, tires;
 	
 	
-	VehicleDamageImpl( Vehicle vehicle )
+	VehicleDamageImpl(Vehicle vehicle)
 	{
 		this.vehicle = vehicle;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -58,13 +58,13 @@ public class VehicleDamageImpl implements VehicleDamage
 	}
 	
 	@Override
-	public void setPanels( int panels )
+	public void setPanels(int panels)
 	{
-		if( vehicle.isDestroyed() ) return;
+		if (vehicle.isDestroyed()) return;
 		
-		set( panels, doors, lights, tires );
+		set(panels, doors, lights, tires);
 	}
-
+	
 	@Override
 	public int getDoors()
 	{
@@ -72,13 +72,13 @@ public class VehicleDamageImpl implements VehicleDamage
 	}
 	
 	@Override
-	public void setDoors( int doors )
+	public void setDoors(int doors)
 	{
-		if( vehicle.isDestroyed() ) return;
+		if (vehicle.isDestroyed()) return;
 		
-		set( panels, doors, lights, tires );
+		set(panels, doors, lights, tires);
 	}
-
+	
 	@Override
 	public int getLights()
 	{
@@ -86,13 +86,13 @@ public class VehicleDamageImpl implements VehicleDamage
 	}
 	
 	@Override
-	public void setLights( int lights )
+	public void setLights(int lights)
 	{
-		if( vehicle.isDestroyed() ) return;
+		if (vehicle.isDestroyed()) return;
 		
-		set( panels, doors, lights, tires );
+		set(panels, doors, lights, tires);
 	}
-
+	
 	@Override
 	public int getTires()
 	{
@@ -100,17 +100,17 @@ public class VehicleDamageImpl implements VehicleDamage
 	}
 	
 	@Override
-	public void setTires( int tires )
+	public void setTires(int tires)
 	{
-		if( vehicle.isDestroyed() ) return;
+		if (vehicle.isDestroyed()) return;
 		
-		set( panels, doors, lights, tires );
+		set(panels, doors, lights, tires);
 	}
 	
 	@Override
-	public void set( int panels, int doors, int lights, int tires )
+	public void set(int panels, int doors, int lights, int tires)
 	{
-		if( vehicle.isDestroyed() ) return;
+		if (vehicle.isDestroyed()) return;
 		
 		SampNativeFunction.updateVehicleDamageStatus(vehicle.getId(), panels, doors, lights, tires);
 		SampNativeFunction.getVehicleDamageStatus(vehicle.getId(), this);

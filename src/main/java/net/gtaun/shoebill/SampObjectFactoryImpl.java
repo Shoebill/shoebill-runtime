@@ -59,23 +59,23 @@ import net.sf.cglib.proxy.Enhancer;
  */
 public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 {
-	private static final Class<?>[] PLAYER_CONSTRUCTOR_ARGUMENT_TYPES = {int.class};
-	private static final Class<?>[] VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES = {int.class, LocationAngle.class, int.class, int.class, int.class};
-	private static final Class<?>[] OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = {int.class, Location.class, Vector3D.class, float.class};
-	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = {Player.class, int.class, Location.class, Vector3D.class, float.class};
-	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES = {Player.class, int.class, Location.class, Vector3D.class, float.class, Player.class};
-	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES = {Player.class, int.class, Location.class, Vector3D.class, float.class, Vehicle.class};
-	private static final Class<?>[] PICKUP_CONSTRUCTOR_ARGUMENT_TYPES = {int.class, int.class, Location.class};
-	private static final Class<?>[] LABEL_CONSTRUCTOR_ARGUMENT_TYPES = {String.class, Color.class, Location.class, float.class, boolean.class};
-	private static final Class<?>[] PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES = {Player.class, String.class, Color.class, Location.class, float.class, boolean.class};
-	private static final Class<?>[] TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES = {float.class, float.class, String.class};
-	private static final Class<?>[] ZONE_CONSTRUCTOR_ARGUMENT_TYPES = {float.class, float.class, float.class, float.class};
-	private static final Class<?>[] MENU_CONSTRUCTOR_ARGUMENT_TYPES = {String.class, int.class, float.class, float.class, float.class, float.class};
-	private static final Class<?>[] TIMER_CONSTRUCTOR_ARGUMENT_TYPES = {int.class, int.class};
+	private static final Class<?>[] PLAYER_CONSTRUCTOR_ARGUMENT_TYPES = { int.class };
+	private static final Class<?>[] VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, LocationAngle.class, int.class, int.class, int.class };
+	private static final Class<?>[] OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, Location.class, Vector3D.class, float.class };
+	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = { Player.class, int.class, Location.class, Vector3D.class, float.class };
+	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES = { Player.class, int.class, Location.class, Vector3D.class, float.class, Player.class };
+	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES = { Player.class, int.class, Location.class, Vector3D.class, float.class, Vehicle.class };
+	private static final Class<?>[] PICKUP_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, int.class, Location.class };
+	private static final Class<?>[] LABEL_CONSTRUCTOR_ARGUMENT_TYPES = { String.class, Color.class, Location.class, float.class, boolean.class };
+	private static final Class<?>[] PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES = { Player.class, String.class, Color.class, Location.class, float.class, boolean.class };
+	private static final Class<?>[] TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES = { float.class, float.class, String.class };
+	private static final Class<?>[] ZONE_CONSTRUCTOR_ARGUMENT_TYPES = { float.class, float.class, float.class, float.class };
+	private static final Class<?>[] MENU_CONSTRUCTOR_ARGUMENT_TYPES = { String.class, int.class, float.class, float.class, float.class, float.class };
+	private static final Class<?>[] TIMER_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, int.class };
 	
 	
 	private final SampObjectPoolImpl pool;
-
+	
 	private Enhancer worldFactory;
 	private Enhancer serverFactory;
 	private Enhancer playerFactory;
@@ -100,29 +100,29 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	
 	private void initialize()
 	{
-		worldFactory =			ProxyManagerImpl.createProxyableFactory(WorldImpl.class);
-		serverFactory =			ProxyManagerImpl.createProxyableFactory(ServerImpl.class);
-		playerFactory =			ProxyManagerImpl.createProxyableFactory(PlayerImpl.class);
-		vehicleFactory =		ProxyManagerImpl.createProxyableFactory(VehicleImpl.class);
-		objectFactory =			ProxyManagerImpl.createProxyableFactory(ObjectImpl.class);
-		playerObjectFactory =	ProxyManagerImpl.createProxyableFactory(PlayerObjectImpl.class);
-		pickupFactory =			ProxyManagerImpl.createProxyableFactory(PickupImpl.class);
-		labelFactory =			ProxyManagerImpl.createProxyableFactory(LabelImpl.class);
-		playerLabelFactory =	ProxyManagerImpl.createProxyableFactory(PlayerLabelImpl.class);
-		textdrawFactory =		ProxyManagerImpl.createProxyableFactory(TextdrawImpl.class);
-		zoneFactory =			ProxyManagerImpl.createProxyableFactory(ZoneImpl.class);
-		menuFactory =			ProxyManagerImpl.createProxyableFactory(MenuImpl.class);
-		dialogFactory =			ProxyManagerImpl.createProxyableFactory(DialogImpl.class);
-		timerFactory =			ProxyManagerImpl.createProxyableFactory(TimerImpl.class);
+		worldFactory = ProxyManagerImpl.createProxyableFactory(WorldImpl.class);
+		serverFactory = ProxyManagerImpl.createProxyableFactory(ServerImpl.class);
+		playerFactory = ProxyManagerImpl.createProxyableFactory(PlayerImpl.class);
+		vehicleFactory = ProxyManagerImpl.createProxyableFactory(VehicleImpl.class);
+		objectFactory = ProxyManagerImpl.createProxyableFactory(ObjectImpl.class);
+		playerObjectFactory = ProxyManagerImpl.createProxyableFactory(PlayerObjectImpl.class);
+		pickupFactory = ProxyManagerImpl.createProxyableFactory(PickupImpl.class);
+		labelFactory = ProxyManagerImpl.createProxyableFactory(LabelImpl.class);
+		playerLabelFactory = ProxyManagerImpl.createProxyableFactory(PlayerLabelImpl.class);
+		textdrawFactory = ProxyManagerImpl.createProxyableFactory(TextdrawImpl.class);
+		zoneFactory = ProxyManagerImpl.createProxyableFactory(ZoneImpl.class);
+		menuFactory = ProxyManagerImpl.createProxyableFactory(MenuImpl.class);
+		dialogFactory = ProxyManagerImpl.createProxyableFactory(DialogImpl.class);
+		timerFactory = ProxyManagerImpl.createProxyableFactory(TimerImpl.class);
 	}
-
+	
 	public World createWorld()
 	{
 		World world = (World) worldFactory.create();
 		pool.setWorld(world);
 		return world;
 	}
-
+	
 	public Server createServer()
 	{
 		Server server = (Server) serverFactory.create();
@@ -132,111 +132,111 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	
 	public Player createPlayer(int playerId)
 	{
-		final Object[] args = {playerId};
+		final Object[] args = { playerId };
 		Player player = (Player) playerFactory.create(PLAYER_CONSTRUCTOR_ARGUMENT_TYPES, args);
 		pool.setPlayer(playerId, player);
 		return player;
 	}
-
+	
 	@Override
 	public Vehicle createVehicle(int modelId, LocationAngle loc, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
-		final Object[] args = {modelId, loc, color1, color2, respawnDelay};
+		final Object[] args = { modelId, loc, color1, color2, respawnDelay };
 		Vehicle vehicle = (Vehicle) vehicleFactory.create(VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES, args);
 		pool.setVehicle(vehicle.getId(), vehicle);
 		return vehicle;
 	}
-
+	
 	@Override
 	public SampObject createObject(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
-		final Object[] args = {modelId, loc, rot, drawDistance};
+		final Object[] args = { modelId, loc, rot, drawDistance };
 		SampObject object = (SampObject) objectFactory.create(OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, args);
 		pool.setObject(object.getId(), object);
 		return object;
 	}
-
+	
 	@Override
 	public PlayerObject createPlayerObject(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
-		final Object[] args = {player, modelId, loc, rot, drawDistance};
+		final Object[] args = { player, modelId, loc, rot, drawDistance };
 		PlayerObject object = (PlayerObject) playerObjectFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, args);
 		pool.setPlayerObject(player, object.getId(), object);
 		return object;
 	}
-
+	
 	@Override
 	public Pickup createPickup(int modelId, int type, Location loc) throws CreationFailedException
 	{
-		final Object[] args = {modelId, type, loc};
+		final Object[] args = { modelId, type, loc };
 		Pickup pickup = (Pickup) pickupFactory.create(PICKUP_CONSTRUCTOR_ARGUMENT_TYPES, args);
 		pool.setPickup(pickup.getId(), pickup);
 		return pickup;
 	}
-
+	
 	@Override
 	public Label createLabel(String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
-		final Object[] args = {text, color, loc, drawDistance, testLOS};
+		final Object[] args = { text, color, loc, drawDistance, testLOS };
 		Label label = (Label) labelFactory.create(LABEL_CONSTRUCTOR_ARGUMENT_TYPES, args);
 		pool.setLabel(label.getId(), label);
 		return label;
 	}
-
+	
 	@Override
 	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS)
 	{
-		final Object[] args = {player, text, color, loc, drawDistance, testLOS};
+		final Object[] args = { player, text, color, loc, drawDistance, testLOS };
 		PlayerLabel label = (PlayerLabel) playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES, args);
 		pool.setLabel(label.getId(), label);
 		return label;
 	}
-
+	
 	@Override
 	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer)
 	{
-		final Object[] args = {player, text, color, loc, drawDistance, testLOS, attachedPlayer};
+		final Object[] args = { player, text, color, loc, drawDistance, testLOS, attachedPlayer };
 		PlayerLabel label = (PlayerLabel) playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES, args);
 		pool.setLabel(label.getId(), label);
 		return label;
 	}
-
+	
 	@Override
 	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle)
 	{
-		final Object[] args = {player, text, color, loc, drawDistance, testLOS, attachedVehicle};
+		final Object[] args = { player, text, color, loc, drawDistance, testLOS, attachedVehicle };
 		PlayerLabel label = (PlayerLabel) playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES, args);
 		pool.setLabel(label.getId(), label);
 		return label;
 	}
-
+	
 	@Override
 	public Textdraw createTextdraw(float x, float y, String text)
 	{
-		final Object[] args = {x, y, text};
+		final Object[] args = { x, y, text };
 		Textdraw textdraw = (Textdraw) textdrawFactory.create(TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, args);
 		pool.setTextdraw(textdraw.getId(), textdraw);
 		return textdraw;
 	}
-
+	
 	@Override
 	public Zone createZone(float minX, float minY, float maxX, float maxY)
 	{
-		final Object[] args = {minX, minY, maxX, maxY};
+		final Object[] args = { minX, minY, maxX, maxY };
 		Zone zone = (Zone) zoneFactory.create(ZONE_CONSTRUCTOR_ARGUMENT_TYPES, args);
 		pool.setZone(zone.getId(), zone);
 		return zone;
 	}
-
+	
 	@Override
 	public Menu createMenu(String title, int columns, float x, float y, float col1Width, float col2Width)
 	{
-		final Object[] args = {title, columns, x, y, col1Width, col2Width};
+		final Object[] args = { title, columns, x, y, col1Width, col2Width };
 		Menu menu = (Menu) menuFactory.create(MENU_CONSTRUCTOR_ARGUMENT_TYPES, args);
 		pool.setMenu(menu.getId(), menu);
 		return menu;
 	}
-
+	
 	@Override
 	public Dialog createDialog()
 	{
@@ -244,11 +244,11 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 		pool.putDialog(dialog.getId(), dialog);
 		return dialog;
 	}
-
+	
 	@Override
 	public Timer createTimer(int interval, int count)
 	{
-		final Object[] args = {interval, count};
+		final Object[] args = { interval, count };
 		Timer timer = (Timer) timerFactory.create(TIMER_CONSTRUCTOR_ARGUMENT_TYPES, args);
 		pool.putTimer(timer);
 		return timer;

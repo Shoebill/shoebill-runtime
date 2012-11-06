@@ -25,22 +25,23 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
+ * 
+ * 
  * @author JoJLlmAn
- *
  */
-
 public class PlayerWeaponSkillImpl implements PlayerWeaponSkill
 {
 	private Player player;
-	private int[] skills = new int[ WeaponSkill.values().length ];
+	private int[] skills = new int[WeaponSkill.values().length];
 	
 	
-	PlayerWeaponSkillImpl( Player player )
+	PlayerWeaponSkillImpl(Player player)
 	{
 		this.player = player;
-		for( int i=0; i<WeaponSkill.values().length; i++ )	skills[i] = 999;
+		for (int i = 0; i < WeaponSkill.values().length; i++)
+			skills[i] = 999;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -54,23 +55,23 @@ public class PlayerWeaponSkillImpl implements PlayerWeaponSkill
 	}
 	
 	@Override
-	public void set( WeaponSkill type, int level )
+	public void set(WeaponSkill type, int level)
 	{
-		if( player.isOnline() == false ) return;
+		if (player.isOnline() == false) return;
 		
-		if(level > 999)		level = 999;
-		else if(level < 0)	level = 0;
+		if (level > 999) level = 999;
+		else if (level < 0) level = 0;
 		
 		int typeData = type.getData();
-		SampNativeFunction.setPlayerSkillLevel( player.getId(), typeData, level );
+		SampNativeFunction.setPlayerSkillLevel(player.getId(), typeData, level);
 		skills[typeData] = level;
 	}
 	
 	@Override
-	public int get( WeaponSkill type )
+	public int get(WeaponSkill type)
 	{
-		if( player.isOnline() == false ) return 0;
+		if (player.isOnline() == false) return 0;
 		
-		return skills[ type.getData() ];
+		return skills[type.getData()];
 	}
 }

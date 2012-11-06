@@ -19,10 +19,10 @@ package net.gtaun.shoebill.util.log;
 import org.slf4j.Logger;
 
 /**
+ * 
+ * 
  * @author MK124
- *
  */
-
 public enum LogLevel
 {
 	TRACE,
@@ -32,29 +32,29 @@ public enum LogLevel
 	ERROR;
 	
 	
-	public void log( Logger logger, String message )
+	public void log(Logger logger, String message)
 	{
-		switch( this )
+		switch (this)
 		{
-			case TRACE:
-				logger.trace( message );
-				break;
-				
-			case DEBUG:
-				logger.debug( message );
-				break;
-				
-			case INFO:
-				logger.info( message );
-				break;
-				
-			case WARN:
-				logger.warn( message );
-				break;
-				
-			case ERROR:
-				logger.error( message );
-				break;
+		case TRACE:
+			logger.trace(message);
+			break;
+		
+		case DEBUG:
+			logger.debug(message);
+			break;
+		
+		case INFO:
+			logger.info(message);
+			break;
+		
+		case WARN:
+			logger.warn(message);
+			break;
+		
+		case ERROR:
+			logger.error(message);
+			break;
 		}
 	}
 }

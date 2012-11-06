@@ -27,11 +27,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
+ * 
+ * 
  * @author JoJLlmAn, MK124
- *
  */
-
-
 public class PlayerAttachImpl implements PlayerAttach
 {
 	public class PlayerAttachSlot implements Slot
@@ -43,46 +42,54 @@ public class PlayerAttachImpl implements PlayerAttach
 		private Vector3D offset, rotate, scale;
 		
 		
-		PlayerAttachSlot( int slot )
+		PlayerAttachSlot(int slot)
 		{
 			this.slot = slot;
 		}
-
+		
 		@Override
 		public String toString()
 		{
 			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 		}
 		
-		@Override public PlayerAttachBone getBone()
+		@Override
+		public PlayerAttachBone getBone()
 		{
 			return bone;
 		}
 		
-		@Override public int getModelId()
+		@Override
+		public int getModelId()
 		{
 			return modelId;
 		}
-		@Override public Vector3D getOffset()
+		
+		@Override
+		public Vector3D getOffset()
 		{
 			return offset.clone();
 		}
-		@Override public Vector3D getRotate()
+		
+		@Override
+		public Vector3D getRotate()
 		{
 			return rotate.clone();
 		}
-		@Override public Vector3D getScale()
+		
+		@Override
+		public Vector3D getScale()
 		{
 			return scale.clone();
 		}
-
+		
 		@Override
-		public boolean set( PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rot, Vector3D scale )
+		public boolean set(PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rot, Vector3D scale)
 		{
-			if( player.isOnline() == false ) return false;
+			if (player.isOnline() == false) return false;
 			
-			if( bone == PlayerAttachBone.NOT_USABLE ) return false;
-			if( ! SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getData(), offset.getX(), offset.getY(), offset.getZ(), rot.getX(), rot.getY(), rot.getZ(), scale.getX(), scale.getY(), scale.getZ()) )
+			if (bone == PlayerAttachBone.NOT_USABLE) return false;
+			if (!SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getData(), offset.getX(), offset.getY(), offset.getZ(), rot.getX(), rot.getY(), rot.getZ(), scale.getX(), scale.getY(), scale.getZ()))
 			{
 				return false;
 			}
@@ -96,14 +103,14 @@ public class PlayerAttachImpl implements PlayerAttach
 			
 			return true;
 		}
-
+		
 		@Override
 		public boolean remove()
 		{
-			if( player.isOnline() == false ) return false;
+			if (player.isOnline() == false) return false;
 			
-			if( bone == PlayerAttachBone.NOT_USABLE ) return false;
-			if( ! SampNativeFunction.removePlayerAttachedObject(player.getId(), slot) ) return false;
+			if (bone == PlayerAttachBone.NOT_USABLE) return false;
+			if (!SampNativeFunction.removePlayerAttachedObject(player.getId(), slot)) return false;
 			
 			bone = PlayerAttachBone.NOT_USABLE;
 			modelId = 0;
@@ -114,31 +121,31 @@ public class PlayerAttachImpl implements PlayerAttach
 			
 			return true;
 		}
-
+		
 		@Override
-		public boolean isUsed( int slot )
+		public boolean isUsed(int slot)
 		{
-			if( player.isOnline() == false ) return false;
+			if (player.isOnline() == false) return false;
 			
 			return bone != PlayerAttachBone.NOT_USABLE;
 		}
 	}
-
+	
 	
 	private Player player;
 	private PlayerAttachSlot[] slots = new PlayerAttachSlot[MAX_ATTACHED_OBJECTS];
-
 	
-	PlayerAttachImpl( Player player )
+	
+	PlayerAttachImpl(Player player)
 	{
 		this.player = player;
 		
-		for( int i=0; i<MAX_ATTACHED_OBJECTS; i++ )
+		for (int i = 0; i < MAX_ATTACHED_OBJECTS; i++)
 		{
 			slots[i] = new PlayerAttachSlot(i);
 		}
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -152,11 +159,11 @@ public class PlayerAttachImpl implements PlayerAttach
 	}
 	
 	@Override
-	public Slot getSlot( int slot )
+	public Slot getSlot(int slot)
 	{
-		return slots[ slot ];
+		return slots[slot];
 	}
-
+	
 	@Override
 	public Slot[] getSlots()
 	{

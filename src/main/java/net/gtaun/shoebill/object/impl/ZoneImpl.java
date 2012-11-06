@@ -44,33 +44,33 @@ public class ZoneImpl implements Zone
 	
 	private boolean[] isPlayerShowed = new boolean[SampObjectPoolImpl.MAX_PLAYERS];
 	private boolean[] isPlayerFlashing = new boolean[SampObjectPoolImpl.MAX_PLAYERS];
-
-
-	public ZoneImpl( float minX, float minY, float maxX, float maxY ) throws CreationFailedException
+	
+	
+	public ZoneImpl(float minX, float minY, float maxX, float maxY) throws CreationFailedException
 	{
-		initialize( minX, minY, maxX, maxY );
+		initialize(minX, minY, maxX, maxY);
 	}
 	
-	private void initialize( float minX, float minY, float maxX, float maxY ) throws CreationFailedException
+	private void initialize(float minX, float minY, float maxX, float maxY) throws CreationFailedException
 	{
-		area = new Area( minX, minY, maxX, maxY );
+		area = new Area(minX, minY, maxX, maxY);
 		
-		id = SampNativeFunction.gangZoneCreate( minX, minY, maxX, maxY );
-		if( id == INVALID_ID ) throw new CreationFailedException();
+		id = SampNativeFunction.gangZoneCreate(minX, minY, maxX, maxY);
+		if (id == INVALID_ID) throw new CreationFailedException();
 		
-		for( int i=0; i<isPlayerShowed.length; i++ )
+		for (int i = 0; i < isPlayerShowed.length; i++)
 		{
 			isPlayerShowed[i] = false;
 			isPlayerFlashing[i] = false;
 		}
 	}
-
+	
 	@Override
 	public ProxyManager getProxyManager()
 	{
 		return proxyManager;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -80,12 +80,12 @@ public class ZoneImpl implements Zone
 	@Override
 	public void destroy()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.gangZoneDestroy( id );
-
+		SampNativeFunction.gangZoneDestroy(id);
+		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		pool.setZone( id, null );
+		pool.setZone(id, null);
 		
 		id = INVALID_ID;
 	}
@@ -107,99 +107,101 @@ public class ZoneImpl implements Zone
 	{
 		return area.clone();
 	}
-
+	
 	@Override
-	public void show( Player player, Color color )
+	public void show(Player player, Color color)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
 		
 		int playerId = player.getId();
 		
-		SampNativeFunction.gangZoneShowForPlayer( playerId, id, color.getValue() );
+		SampNativeFunction.gangZoneShowForPlayer(playerId, id, color.getValue());
 		isPlayerShowed[playerId] = true;
 		isPlayerFlashing[playerId] = false;
 	}
-
+	
 	@Override
-	public void hide( Player player )
+	public void hide(Player player)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
 		
 		int playerId = player.getId();
-		SampNativeFunction.gangZoneHideForPlayer( playerId, id );
+		SampNativeFunction.gangZoneHideForPlayer(playerId, id);
 		
 		isPlayerShowed[playerId] = false;
 		isPlayerFlashing[playerId] = false;
 	}
-
+	
 	@Override
-	public void flash( Player player, Color color )
+	public void flash(Player player, Color color)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
 		
 		int playerId = player.getId();
 		
-		if( isPlayerShowed[playerId] )
+		if (isPlayerShowed[playerId])
 		{
-			SampNativeFunction.gangZoneFlashForPlayer( playerId, id, color.getValue() );
+			SampNativeFunction.gangZoneFlashForPlayer(playerId, id, color.getValue());
 			isPlayerFlashing[playerId] = true;
 		}
 	}
-
+	
 	@Override
-	public void stopFlash( Player player )
+	public void stopFlash(Player player)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
 		
 		int playerId = player.getId();
 		
-		SampNativeFunction.gangZoneStopFlashForPlayer( playerId, id );
+		SampNativeFunction.gangZoneStopFlashForPlayer(playerId, id);
 		isPlayerFlashing[playerId] = false;
 	}
 	
-
 	@Override
-	public void showForAll( Color color )
+	public void showForAll(Color color)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.gangZoneShowForAll( id, color.getValue() );
-		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = true;
+		SampNativeFunction.gangZoneShowForAll(id, color.getValue());
+		for (int i = 0; i < isPlayerShowed.length; i++)
+			isPlayerShowed[i] = true;
 	}
-
+	
 	@Override
 	public void hideForAll()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.gangZoneHideForAll( id );
+		SampNativeFunction.gangZoneHideForAll(id);
 		
-		for( int i=0; i<isPlayerShowed.length; i++ )
+		for (int i = 0; i < isPlayerShowed.length; i++)
 		{
 			isPlayerShowed[i] = false;
 			isPlayerFlashing[i] = false;
 		}
 	}
-
+	
 	@Override
-	public void flashForAll( Color color )
+	public void flashForAll(Color color)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.gangZoneFlashForAll( id, color.getValue() );
-		for( int i=0; i<isPlayerShowed.length; i++ ) if( isPlayerShowed[i] ) isPlayerFlashing[i] = true;
+		SampNativeFunction.gangZoneFlashForAll(id, color.getValue());
+		for (int i = 0; i < isPlayerShowed.length; i++)
+			if (isPlayerShowed[i]) isPlayerFlashing[i] = true;
 	}
 	
 	@Override
 	public void stopFlashForAll()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.gangZoneStopFlashForAll( id );
-		for( int i=0; i<isPlayerFlashing.length; i++ ) isPlayerFlashing[i] = false;
+		SampNativeFunction.gangZoneStopFlashForAll(id);
+		for (int i = 0; i < isPlayerFlashing.length; i++)
+			isPlayerFlashing[i] = false;
 	}
 }

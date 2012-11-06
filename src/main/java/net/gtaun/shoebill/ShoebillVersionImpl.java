@@ -25,7 +25,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author MK124
- *
+ * 
  */
 
 public class ShoebillVersionImpl implements ShoebillVersion
@@ -37,19 +37,19 @@ public class ShoebillVersionImpl implements ShoebillVersion
 	private String buildDate;
 	
 	
-	public ShoebillVersionImpl( InputStream in )
+	public ShoebillVersionImpl(InputStream in)
 	{
 		YamlConfiguration config = new YamlConfiguration();
-		config.read( in );
-
-		version = config.getString( "version", "Unknown" );
-		support = config.getString( "support", "Unknown" );
-		buildNumber = config.getInt( "buildNumber", 0 );
-		buildDate = config.getString( "buildDate", "Unknown" );
+		config.read(in);
 		
-		if( version.charAt(version.length()-1) == '.' ) version = version.substring(0, version.length()-1);
+		version = config.getString("version", "Unknown");
+		support = config.getString("support", "Unknown");
+		buildNumber = config.getInt("buildNumber", 0);
+		buildDate = config.getString("buildDate", "Unknown");
+		
+		if (version.charAt(version.length() - 1) == '.') version = version.substring(0, version.length() - 1);
 	}
-
+	
 	@Override
 	public String toString()
 	{

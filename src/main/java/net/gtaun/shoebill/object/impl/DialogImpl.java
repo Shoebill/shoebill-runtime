@@ -32,8 +32,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class DialogImpl implements Dialog
 {
 	private static int count = 0;
-
-
+	
+	
 	private ProxyManager proxyManager;
 	
 	private int id;
@@ -69,15 +69,15 @@ public class DialogImpl implements Dialog
 	}
 	
 	@Override
-	public void show( Player player, DialogStyle style, String caption, String text, String button1, String button2 )
+	public void show(Player player, DialogStyle style, String caption, String text, String button1, String button2)
 	{
-		player.showDialog( this, style, caption, text, button1, button2 );
+		player.showDialog(this, style, caption, text, button1, button2);
 	}
 	
 	@Override
-	public void cancel( Player player )
+	public void cancel(Player player)
 	{
-		if( player.getDialog() != this ) return;
+		if (player.getDialog() != this) return;
 		player.cancelDialog();
 	}
 }

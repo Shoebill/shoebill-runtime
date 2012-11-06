@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.gtaun.shoebill.object.impl;
 
 import java.util.ArrayList;
@@ -46,39 +47,39 @@ public class RaceCheckpointImpl implements RaceCheckpoint
 	private RaceCheckpointImpl next;
 	
 	
-	public RaceCheckpointImpl( float x, float y, float z, float size, RaceCheckpointType type, RaceCheckpointImpl next )
+	public RaceCheckpointImpl(float x, float y, float z, float size, RaceCheckpointType type, RaceCheckpointImpl next)
 	{
-		initialize( new LocationRadius(x, y, z, size), type, next );
-	}
-
-	public RaceCheckpointImpl( Vector3D pos, float size, RaceCheckpointType type, RaceCheckpointImpl next )
-	{
-		initialize( new LocationRadius(pos, size), type, next );
+		initialize(new LocationRadius(x, y, z, size), type, next);
 	}
 	
-	public RaceCheckpointImpl( Location loc, float size, RaceCheckpointType type, RaceCheckpointImpl next )
+	public RaceCheckpointImpl(Vector3D pos, float size, RaceCheckpointType type, RaceCheckpointImpl next)
 	{
-		initialize( new LocationRadius(loc, size), type, next );
+		initialize(new LocationRadius(pos, size), type, next);
 	}
 	
-	public RaceCheckpointImpl( LocationRadius loc, RaceCheckpointType type, RaceCheckpointImpl next )
+	public RaceCheckpointImpl(Location loc, float size, RaceCheckpointType type, RaceCheckpointImpl next)
 	{
-		initialize( new LocationRadius(loc), type, next );
+		initialize(new LocationRadius(loc, size), type, next);
 	}
 	
-	private void initialize( LocationRadius loc, RaceCheckpointType type, RaceCheckpointImpl next )
+	public RaceCheckpointImpl(LocationRadius loc, RaceCheckpointType type, RaceCheckpointImpl next)
+	{
+		initialize(new LocationRadius(loc), type, next);
+	}
+	
+	private void initialize(LocationRadius loc, RaceCheckpointType type, RaceCheckpointImpl next)
 	{
 		this.location = loc;
 		this.type = type;
 		this.next = next;
 	}
-
+	
 	@Override
 	public ProxyManager getProxyManager()
 	{
 		return proxyManager;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -90,25 +91,25 @@ public class RaceCheckpointImpl implements RaceCheckpoint
 	{
 		return location.clone();
 	}
-
+	
 	@Override
-	public void setLocation( float x, float y, float z )
+	public void setLocation(float x, float y, float z)
 	{
-		location.set( x, y, z );
+		location.set(x, y, z);
 		update();
 	}
 	
 	@Override
-	public void setLocation( Vector3D pos )
+	public void setLocation(Vector3D pos)
 	{
-		location.set( pos );
+		location.set(pos);
 		update();
 	}
 	
 	@Override
-	public void setLocation( LocationRadius loc )
+	public void setLocation(LocationRadius loc)
 	{
-		location.set( loc );
+		location.set(loc);
 		update();
 	}
 	
@@ -119,9 +120,9 @@ public class RaceCheckpointImpl implements RaceCheckpoint
 	}
 	
 	@Override
-	public void setSize( float size )
+	public void setSize(float size)
 	{
-		location.setRadius( size );
+		location.setRadius(size);
 		update();
 	}
 	
@@ -138,33 +139,33 @@ public class RaceCheckpointImpl implements RaceCheckpoint
 	}
 	
 	@Override
-	public void set( Player player )
+	public void set(Player player)
 	{
-		player.setRaceCheckpoint( this );
+		player.setRaceCheckpoint(this);
 	}
 	
 	@Override
-	public void disable( Player player )
+	public void disable(Player player)
 	{
-		if( player.getRaceCheckpoint() != this ) return;
+		if (player.getRaceCheckpoint() != this) return;
 		player.disableRaceCheckpoint();
 	}
 	
 	@Override
-	public boolean isInCheckpoint( Player player )
+	public boolean isInCheckpoint(Player player)
 	{
-		if( player.getRaceCheckpoint() != this ) return false;
+		if (player.getRaceCheckpoint() != this) return false;
 		
-		return SampNativeFunction.isPlayerInRaceCheckpoint( player.getId() );
+		return SampNativeFunction.isPlayerInRaceCheckpoint(player.getId());
 	}
 	
 	@Override
 	public void update()
 	{
-		for( Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers() )
+		for (Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers())
 		{
-			if( player == null ) continue;
-			if( player.getRaceCheckpoint() == this ) set( player );
+			if (player == null) continue;
+			if (player.getRaceCheckpoint() == this) set(player);
 		}
 	}
 	
@@ -172,9 +173,9 @@ public class RaceCheckpointImpl implements RaceCheckpoint
 	public Collection<Player> getUsingPlayers()
 	{
 		Collection<Player> players = new ArrayList<>();
-		for( Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers() )
+		for (Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers())
 		{
-			if( player.getRaceCheckpoint() == this ) players.add( player );
+			if (player.getRaceCheckpoint() == this) players.add(player);
 		}
 		
 		return players;

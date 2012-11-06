@@ -52,22 +52,22 @@ public class LabelImpl implements Label
 	private Vehicle attachedVehicle;
 	
 	
-	public LabelImpl( String text, Color color, Location loc, float drawDistance, boolean testLOS ) throws CreationFailedException
+	public LabelImpl(String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
-		initialize( text, color, new Location(loc), drawDistance, testLOS );
+		initialize(text, color, new Location(loc), drawDistance, testLOS);
 	}
 	
-	private void initialize( String text, Color color, Location loc, float drawDistance, boolean testLOS ) throws CreationFailedException
+	private void initialize(String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
-		if( StringUtils.isEmpty(text) ) text = " ";
+		if (StringUtils.isEmpty(text)) text = " ";
 		
 		this.text = text;
-		this.color = new Color( color );
+		this.color = new Color(color);
 		this.location = loc;
 		this.drawDistance = drawDistance;
 		
-		id = SampNativeFunction.create3DTextLabel( text, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, location.getWorldId(), testLOS );
-		if( id == INVALID_ID ) throw new CreationFailedException();
+		id = SampNativeFunction.create3DTextLabel(text, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, location.getWorldId(), testLOS);
+		if (id == INVALID_ID) throw new CreationFailedException();
 	}
 	
 	@Override
@@ -85,13 +85,13 @@ public class LabelImpl implements Label
 	@Override
 	public void destroy()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.delete3DTextLabel( id );
+		SampNativeFunction.delete3DTextLabel(id);
 		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		pool.setLabel( id, null );
-
+		pool.setLabel(id, null);
+		
 		id = INVALID_ID;
 	}
 	
@@ -100,7 +100,7 @@ public class LabelImpl implements Label
 	{
 		return id == INVALID_ID;
 	}
-
+	
 	@Override
 	public int getId()
 	{
@@ -140,68 +140,68 @@ public class LabelImpl implements Label
 	@Override
 	public Location getLocation()
 	{
-		if( isDestroyed() ) return null;
+		if (isDestroyed()) return null;
 		
 		Location loc = null;
 		
-		if( attachedPlayer != null )	loc = attachedPlayer.getLocation();
-		if( attachedVehicle != null )	loc = attachedVehicle.getLocation();
+		if (attachedPlayer != null) loc = attachedPlayer.getLocation();
+		if (attachedVehicle != null) loc = attachedVehicle.getLocation();
 		
-		if( loc != null )
+		if (loc != null)
 		{
-			location.set( loc.getX() + offset.getX(), loc.getY() + offset.getY(), loc.getZ() + offset.getZ(), loc.getInteriorId(), loc.getWorldId() );
+			location.set(loc.getX() + offset.getX(), loc.getY() + offset.getY(), loc.getZ() + offset.getZ(), loc.getInteriorId(), loc.getWorldId());
 		}
 		
 		return location.clone();
 	}
-
+	
 	@Override
-	public void attach( Player player, float x, float y, float z )
+	public void attach(Player player, float x, float y, float z)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
 		
-		offset = new Vector3D( x, y, z );
+		offset = new Vector3D(x, y, z);
 		
-		SampNativeFunction.attach3DTextLabelToPlayer( id, player.getId(), x, y, z );
+		SampNativeFunction.attach3DTextLabelToPlayer(id, player.getId(), x, y, z);
 		attachedPlayer = player;
 		attachedVehicle = null;
 	}
 	
 	@Override
-	public void attach( Player player, Vector3D offset )
+	public void attach(Player player, Vector3D offset)
 	{
-		attach( player, offset.getX(), offset.getY(), offset.getZ() );
+		attach(player, offset.getX(), offset.getY(), offset.getZ());
 	}
-
+	
 	@Override
-	public void attach( Vehicle vehicle, float x, float y, float z )
+	public void attach(Vehicle vehicle, float x, float y, float z)
 	{
-		if( isDestroyed() ) return;
-		if( vehicle.isDestroyed() ) return;
-
-		offset = new Vector3D( x, y, z );
+		if (isDestroyed()) return;
+		if (vehicle.isDestroyed()) return;
 		
-		SampNativeFunction.attach3DTextLabelToVehicle( id, vehicle.getId(), x, y, z );
+		offset = new Vector3D(x, y, z);
+		
+		SampNativeFunction.attach3DTextLabelToVehicle(id, vehicle.getId(), x, y, z);
 		attachedPlayer = null;
 		attachedVehicle = vehicle;
 	}
-
+	
 	@Override
-	public void attach( Vehicle vehicle, Vector3D offset )
+	public void attach(Vehicle vehicle, Vector3D offset)
 	{
-		attach( vehicle, offset.getX(), offset.getY(), offset.getZ() );
+		attach(vehicle, offset.getX(), offset.getY(), offset.getZ());
 	}
-
+	
 	@Override
-	public void update( Color color, String text )
+	public void update(Color color, String text)
 	{
-		if( isDestroyed() ) return;
-		if( text == null ) throw new NullPointerException();
+		if (isDestroyed()) return;
+		if (text == null) throw new NullPointerException();
 		
-		this.color.set( color );
+		this.color.set(color);
 		this.text = text;
 		
-		SampNativeFunction.update3DTextLabelText( id, color.getValue(), text );
+		SampNativeFunction.update3DTextLabelText(id, color.getValue(), text);
 	}
 }

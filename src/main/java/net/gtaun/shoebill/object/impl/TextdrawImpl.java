@@ -45,49 +45,50 @@ public class TextdrawImpl implements Textdraw
 	private String text;
 	
 	private boolean[] isPlayerShowed = new boolean[SampObjectPoolImpl.MAX_PLAYERS];
-
-
-	public TextdrawImpl( float x, float y, String text ) throws CreationFailedException
+	
+	
+	public TextdrawImpl(float x, float y, String text) throws CreationFailedException
 	{
-		initialize( x, y, text );
+		initialize(x, y, text);
 	}
 	
-	private void initialize( float x, float y, String text ) throws CreationFailedException
+	private void initialize(float x, float y, String text) throws CreationFailedException
 	{
-		position = new Vector2D( x, y );
-		if( StringUtils.isEmpty(text) ) text = " ";
+		position = new Vector2D(x, y);
+		if (StringUtils.isEmpty(text)) text = " ";
 		
-		id = SampNativeFunction.textDrawCreate( x, y, text );
-		if( id == INVALID_ID ) throw new CreationFailedException();
+		id = SampNativeFunction.textDrawCreate(x, y, text);
+		if (id == INVALID_ID) throw new CreationFailedException();
 		
-		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = false;
+		for (int i = 0; i < isPlayerShowed.length; i++)
+			isPlayerShowed[i] = false;
 	}
-
+	
 	@Override
 	public ProxyManager getProxyManager()
 	{
 		return proxyManager;
 	}
-
+	
 	@Override
 	public String toString()
 	{
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
-
+	
 	@Override
 	public void destroy()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawDestroy( id );
-
+		SampNativeFunction.textDrawDestroy(id);
+		
 		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		pool.setTextdraw( id, null );
+		pool.setTextdraw(id, null);
 		
 		id = INVALID_ID;
 	}
-
+	
 	@Override
 	public boolean isDestroyed()
 	{
@@ -111,161 +112,163 @@ public class TextdrawImpl implements Textdraw
 	{
 		return text;
 	}
-
+	
 	@Override
-	public void setLetterSize( float x, float y )
+	public void setLetterSize(float x, float y)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawLetterSize( id, x, y );
+		SampNativeFunction.textDrawLetterSize(id, x, y);
 	}
-
+	
 	@Override
-	public void setLetterSize( Vector2D vec )
+	public void setLetterSize(Vector2D vec)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawLetterSize( id, vec.getX(), vec.getY() );
+		SampNativeFunction.textDrawLetterSize(id, vec.getX(), vec.getY());
 	}
-
+	
 	@Override
-	public void setTextSize( float x, float y )
+	public void setTextSize(float x, float y)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawTextSize( id, x, y );
+		SampNativeFunction.textDrawTextSize(id, x, y);
 	}
-
+	
 	@Override
-	public void setTextSize( Vector2D vec )
+	public void setTextSize(Vector2D vec)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawTextSize( id, vec.getX(), vec.getY() );
+		SampNativeFunction.textDrawTextSize(id, vec.getX(), vec.getY());
 	}
-
+	
 	@Override
-	public void setAlignment( int alignment )
+	public void setAlignment(int alignment)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawAlignment( id, alignment );
+		SampNativeFunction.textDrawAlignment(id, alignment);
 	}
-
+	
 	@Override
-	public void setColor( Color color )
+	public void setColor(Color color)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawColor( id, color.getValue() );
+		SampNativeFunction.textDrawColor(id, color.getValue());
 	}
-
+	
 	@Override
-	public void setUseBox( boolean use )
+	public void setUseBox(boolean use)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawUseBox( id, use );
+		SampNativeFunction.textDrawUseBox(id, use);
 	}
-
+	
 	@Override
-	public void setBoxColor( Color color )
+	public void setBoxColor(Color color)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawBoxColor( id, color.getValue() );
+		SampNativeFunction.textDrawBoxColor(id, color.getValue());
 	}
-
+	
 	@Override
-	public void setShadow( int size )
+	public void setShadow(int size)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawSetShadow( id, size );
+		SampNativeFunction.textDrawSetShadow(id, size);
 	}
-
+	
 	@Override
-	public void setOutline( int size )
+	public void setOutline(int size)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawSetOutline( id, size );
+		SampNativeFunction.textDrawSetOutline(id, size);
 	}
-
+	
 	@Override
-	public void setBackgroundColor( Color color )
+	public void setBackgroundColor(Color color)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawBackgroundColor( id, color.getValue() );
+		SampNativeFunction.textDrawBackgroundColor(id, color.getValue());
 	}
-
+	
 	@Override
-	public void setFont( int font )
+	public void setFont(int font)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawFont( id, font );
+		SampNativeFunction.textDrawFont(id, font);
 	}
-
+	
 	@Override
-	public void setProportional( int set )
+	public void setProportional(int set)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawSetProportional( id, set );
+		SampNativeFunction.textDrawSetProportional(id, set);
 	}
-
+	
 	@Override
-	public void setText( String text )
+	public void setText(String text)
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		if( text == null ) throw new NullPointerException();
+		if (text == null) throw new NullPointerException();
 		
 		this.text = text;
-		SampNativeFunction.textDrawSetString( id, text );
+		SampNativeFunction.textDrawSetString(id, text);
 	}
-
+	
 	@Override
-	public void show( Player player )
+	public void show(Player player)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
 		
 		int playerId = player.getId();
 		
-		SampNativeFunction.textDrawShowForPlayer( playerId, id );
+		SampNativeFunction.textDrawShowForPlayer(playerId, id);
 		isPlayerShowed[playerId] = true;
 	}
-
+	
 	@Override
-	public void hide( Player player )
+	public void hide(Player player)
 	{
-		if( isDestroyed() ) return;
-		if( player.isOnline() == false ) return;
+		if (isDestroyed()) return;
+		if (player.isOnline() == false) return;
 		
 		int playerId = player.getId();
 		
-		SampNativeFunction.textDrawHideForPlayer( playerId, id );
+		SampNativeFunction.textDrawHideForPlayer(playerId, id);
 		isPlayerShowed[playerId] = false;
 	}
-
+	
 	@Override
 	public void showForAll()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawShowForAll( id );
-		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = true;
+		SampNativeFunction.textDrawShowForAll(id);
+		for (int i = 0; i < isPlayerShowed.length; i++)
+			isPlayerShowed[i] = true;
 	}
-
+	
 	@Override
 	public void hideForAll()
 	{
-		if( isDestroyed() ) return;
+		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawHideForAll( id );
-		for( int i=0; i<isPlayerShowed.length; i++ ) isPlayerShowed[i] = false;
+		SampNativeFunction.textDrawHideForAll(id);
+		for (int i = 0; i < isPlayerShowed.length; i++)
+			isPlayerShowed[i] = false;
 	}
 }

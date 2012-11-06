@@ -30,14 +30,14 @@ import org.apache.log4j.Layout;
 import org.apache.log4j.spi.LoggingEvent;
 
 /**
- * @author MK124
  * 
+ * 
+ * @author MK124
  */
-
 public final class ShoebillAppender extends FileAppender
 {
-	private static final DateFormat DATEFORMAT_FILE = new SimpleDateFormat( "yyyy-MM-dd'.log'" );
-	private static final DateFormat DATEFORMAT_DIR = new SimpleDateFormat( "yyyy-MM" );
+	private static final DateFormat DATEFORMAT_FILE = new SimpleDateFormat("yyyy-MM-dd'.log'");
+	private static final DateFormat DATEFORMAT_DIR = new SimpleDateFormat("yyyy-MM");
 	
 	
 	private File path;
@@ -48,70 +48,69 @@ public final class ShoebillAppender extends FileAppender
 	{
 		
 	}
-
-	public ShoebillAppender( Layout layout, String filename ) throws IOException
+	
+	public ShoebillAppender(Layout layout, String filename) throws IOException
 	{
-		super( layout, filename, true );
+		super(layout, filename, true);
 		activateOptions();
 	}
-
+	
 	@Override
 	public String toString()
 	{
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
-	public void setPath( String path )
+	public void setPath(String path)
 	{
 		this.path = new File(path);
 	}
 	
-	
 	@Override
 	public void activateOptions()
 	{
-		if( ! path.exists() ) path.mkdirs();
+		if (!path.exists()) path.mkdirs();
 		
 		rollOverDate = System.currentTimeMillis();
 		try
 		{
 			rollOver();
 		}
-		catch( IOException e )
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 		
 		super.activateOptions();
 	}
-
+	
 	@Override
-	protected void subAppend( LoggingEvent event )
+	protected void subAppend(LoggingEvent event)
 	{
-		if( System.currentTimeMillis() >= rollOverDate ) try
+		if (System.currentTimeMillis() >= rollOverDate) try
 		{
 			rollOver();
 		}
-		catch( IOException e )
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 		
-		super.subAppend( event );
+		super.subAppend(event);
 	}
 	
 	void generateRollOverDate()
 	{
 		Calendar calendar = Calendar.getInstance();
 		
-		calendar.set( Calendar.HOUR_OF_DAY, 0 );
-		calendar.set( Calendar.MINUTE, 0 );
-		calendar.set( Calendar.SECOND, 0 );
-		calendar.set( Calendar.MILLISECOND, 0 );
-		calendar.add( Calendar.DATE, 1 );
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		calendar.add(Calendar.DATE, 1);
 		rollOverDate = calendar.getTimeInMillis();
 	}
-
+	
 	void rollOver() throws IOException
 	{
 		closeFile();
@@ -119,10 +118,10 @@ public final class ShoebillAppender extends FileAppender
 		Date date = new Date(rollOverDate);
 		
 		File destDir = new File(path, DATEFORMAT_DIR.format(date));
-		if( ! destDir.exists() ) destDir.mkdirs();
+		if (!destDir.exists()) destDir.mkdirs();
 		
 		File destFile = new File(destDir, DATEFORMAT_FILE.format(date));
-		setFile( destFile.getPath(), true, bufferedIO, bufferSize );
+		setFile(destFile.getPath(), true, bufferedIO, bufferSize);
 		
 		generateRollOverDate();
 	}

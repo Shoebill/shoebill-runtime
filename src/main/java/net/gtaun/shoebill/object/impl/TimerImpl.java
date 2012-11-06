@@ -39,30 +39,30 @@ public class TimerImpl implements Timer
 	private boolean running;
 	private int counting, realInterval;
 	
-
-	public TimerImpl( int interval, int count )
+	
+	public TimerImpl(int interval, int count)
 	{
-		initialize( interval, count );
+		initialize(interval, count);
 	}
 	
-	private void initialize( int interval, int count )
+	private void initialize(int interval, int count)
 	{
 		this.interval = interval;
 		this.count = count;
 	}
-
+	
 	@Override
 	public ProxyManager getProxyManager()
 	{
 		return proxyManager;
 	}
-
+	
 	@Override
 	public String toString()
 	{
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
-
+	
 	@Override
 	public int getInterval()
 	{
@@ -70,11 +70,11 @@ public class TimerImpl implements Timer
 	}
 	
 	@Override
-	public void setInterval( int interval )
+	public void setInterval(int interval)
 	{
 		this.interval = interval;
 	}
-
+	
 	@Override
 	public int getCount()
 	{
@@ -82,11 +82,11 @@ public class TimerImpl implements Timer
 	}
 	
 	@Override
-	public void setCount( int count )
+	public void setCount(int count)
 	{
 		this.count = count;
 	}
-
+	
 	@Override
 	public boolean isRunning()
 	{
@@ -106,21 +106,21 @@ public class TimerImpl implements Timer
 	{
 		running = false;
 	}
-
+	
 	@Override
-	public void tick( int realint )
+	public void tick(int realint)
 	{
-		if( running == false ) return;
+		if (running == false) return;
 		
 		realInterval += realint;
-		if( realInterval < interval ) return;
+		if (realInterval < interval) return;
 		
-		if( count > 0 ) counting--;
+		if (count > 0) counting--;
 		TimerTickEvent event = new TimerTickEvent(this, realInterval);
-		ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) ShoebillImpl.getInstance();
-		shoebillLowLevel.getEventManager().dispatchEvent( event, this );
+		ShoebillLowLevel shoebillLowLevel = ShoebillImpl.getInstance();
+		shoebillLowLevel.getEventManager().dispatchEvent(event, this);
 		
 		realInterval = 0;
-		if( count > 0 && counting == 0 ) stop();
+		if (count > 0 && counting == 0) stop();
 	}
 }
