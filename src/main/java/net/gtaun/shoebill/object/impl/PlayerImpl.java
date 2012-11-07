@@ -59,6 +59,7 @@ import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.proxy.ProxyManager;
+import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManager.Priority;
@@ -142,6 +143,8 @@ public class PlayerImpl implements Player
 	
 	public PlayerImpl(int id)
 	{
+		proxyManager = new ProxyManagerImpl();
+		
 		this.id = id;
 		
 		playerAttach = new PlayerAttachImpl(this);

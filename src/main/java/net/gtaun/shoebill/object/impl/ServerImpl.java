@@ -18,6 +18,7 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.proxy.ProxyManager;
+import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -35,7 +36,7 @@ public class ServerImpl implements Server
 	
 	public ServerImpl()
 	{
-		
+		proxyManager = new ProxyManagerImpl();
 	}
 	
 	@Override

@@ -45,6 +45,8 @@ public class ProxyManagerImpl implements ProxyManager
 		@Override
 		public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable
 		{
+			if(method.getName().equals("getProxyManager")) return proxy.invokeSuper(obj, args);
+			
 			Proxyable proxyable = (Proxyable) obj;
 			ProxyManagerImpl manager = (ProxyManagerImpl) proxyable.getProxyManager();
 			return manager.interceptor.intercept(obj, method, args, proxy);
@@ -92,7 +94,7 @@ public class ProxyManagerImpl implements ProxyManager
 				Collection<MethodInterceptor> interceptors = methodMapInterceptors.get(method);
 				if (interceptors == null)
 				{
-					return proxy.invoke(obj, args);
+					return proxy.invokeSuper(obj, args);
 				}
 				
 				final Queue<MethodInterceptor> interceptorQueue = new PriorityQueue<>(interceptors.size(), METHOD_INTERCEOTOR_COMPARTOR);
@@ -103,7 +105,7 @@ public class ProxyManagerImpl implements ProxyManager
 					@Override
 					public Object invokeOriginal(Object obj, Object[] args) throws Throwable
 					{
-						return proxy.invoke(obj, args);
+						return proxy.invokeSuper(obj, args);
 					}
 					
 					@Override

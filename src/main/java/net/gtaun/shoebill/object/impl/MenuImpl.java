@@ -24,6 +24,7 @@ import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.proxy.ProxyManager;
+import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -53,6 +54,8 @@ public class MenuImpl implements Menu
 	
 	private void initialize(String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException
 	{
+		proxyManager = new ProxyManagerImpl();
+		
 		if (StringUtils.isEmpty(title)) title = " ";
 		
 		this.title = title;

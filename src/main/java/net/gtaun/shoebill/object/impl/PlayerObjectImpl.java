@@ -27,6 +27,7 @@ import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.proxy.ProxyManager;
+import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManager.Priority;
@@ -64,6 +65,7 @@ public class PlayerObjectImpl implements PlayerObject
 	private void initialize(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
 		if (player.isOnline() == false) throw new CreationFailedException();
+		proxyManager = new ProxyManagerImpl();
 		
 		this.player = player;
 		this.modelId = modelId;

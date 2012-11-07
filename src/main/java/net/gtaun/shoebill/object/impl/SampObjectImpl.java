@@ -28,6 +28,7 @@ import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.proxy.ProxyManager;
+import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManager.Priority;
@@ -69,6 +70,8 @@ public class SampObjectImpl implements SampObject
 	
 	private void initialize(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
+		proxyManager = new ProxyManagerImpl();
+		
 		this.modelId = modelId;
 		this.location = loc;
 		this.drawDistance = drawDistance;

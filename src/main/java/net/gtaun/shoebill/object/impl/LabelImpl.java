@@ -26,6 +26,7 @@ import net.gtaun.shoebill.object.Label;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.proxy.ProxyManager;
+import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -59,6 +60,8 @@ public class LabelImpl implements Label
 	
 	private void initialize(String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
+		proxyManager = new ProxyManagerImpl();
+		
 		if (StringUtils.isEmpty(text)) text = " ";
 		
 		this.text = text;

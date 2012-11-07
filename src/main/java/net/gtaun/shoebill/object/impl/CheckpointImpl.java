@@ -40,6 +40,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class CheckpointImpl implements Checkpoint
 {
 	private ProxyManager proxyManager;
+	
 	private LocationRadius location;
 	
 	

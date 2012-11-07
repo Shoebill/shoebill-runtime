@@ -23,6 +23,7 @@ import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.shoebill.proxy.ProxyManager;
+import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -49,6 +50,8 @@ public class PickupImpl implements Pickup
 	
 	private void initialize(int modelId, int type, Location loc) throws CreationFailedException
 	{
+		proxyManager = new ProxyManagerImpl();
+		
 		this.modelId = modelId;
 		this.type = type;
 		this.location = loc;
