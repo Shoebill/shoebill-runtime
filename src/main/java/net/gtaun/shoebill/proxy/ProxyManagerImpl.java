@@ -17,6 +17,7 @@
 package net.gtaun.shoebill.proxy;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -29,7 +30,6 @@ import net.gtaun.shoebill.object.Proxyable;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Helper;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Interceptor;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Priority;
-import net.gtaun.shoebill.proxy.MethodSignature.MethodSignatureCache;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodProxy;
@@ -41,7 +41,6 @@ import net.sf.cglib.proxy.MethodProxy;
  */
 public class ProxyManagerImpl implements ProxyManager
 {
-	private static final MethodSignatureCache METHOD_SIGNATURE_CACHE = new MethodSignatureCache();
 	private static final String METHOD_NAME_GET_PROXY_MANAGER;
 	
 	static
@@ -99,7 +98,7 @@ public class ProxyManagerImpl implements ProxyManager
 	
 	
 	private final net.sf.cglib.proxy.MethodInterceptor interceptor;
-	private final Map<MethodSignature, Collection<MethodInterceptor>> methodMapInterceptors;
+	private final Map<String, Collection<MethodInterceptor>> methodMapInterceptors;
 	private final ManageHelper manageHelper;
 	
 	
@@ -110,9 +109,9 @@ public class ProxyManagerImpl implements ProxyManager
 			@Override
 			public Object intercept(Object obj, final Method method, Object[] args, final MethodProxy proxy) throws Throwable
 			{
-				final MethodSignature signature = METHOD_SIGNATURE_CACHE.get(method);
+				final String methodName = method.getName();
 				
-				Collection<MethodInterceptor> interceptors = methodMapInterceptors.get(signature);
+				Collection<MethodInterceptor> interceptors = methodMapInterceptors.get(methodName);
 				if (interceptors == null)
 				{
 					return proxy.invokeSuper(obj, args);
@@ -132,11 +131,19 @@ public class ProxyManagerImpl implements ProxyManager
 					@Override
 					public Object invokeLower(Object obj, Object[] args) throws Throwable
 					{
-						if (interceptorQueue.isEmpty()) return invokeOriginal(obj, args);
+						Interceptor interceptor = null;
+						while(interceptorQueue.isEmpty() == false && interceptor == null)
+						{
+							MethodInterceptor methodInterceptor = interceptorQueue.poll();
+							Method m = methodInterceptor.getMethod();
+							
+							if(method.getReturnType() != m.getReturnType()) continue;
+							if(Arrays.equals(method.getParameterTypes(), m.getParameterTypes()) == false) continue;
+							
+							interceptor = methodInterceptor.getInterceptor();
+						}
 						
-						MethodInterceptor methodInterceptor = interceptorQueue.poll();
-						Interceptor interceptor = methodInterceptor.getInterceptor();
-						
+						if(interceptor == null) return invokeOriginal(obj, args);
 						return interceptor.intercept(this, method, obj, args);
 					}
 				};
@@ -152,13 +159,13 @@ public class ProxyManagerImpl implements ProxyManager
 	public void addMethodInterceptor(MethodInterceptor methodInterceptor)
 	{
 		final Method method = methodInterceptor.getMethod();
-		final MethodSignature signature = METHOD_SIGNATURE_CACHE.get(method);
+		final String methodName = method.getName();
 		
-		Collection<MethodInterceptor> methodInterceptors = methodMapInterceptors.get(signature);
+		Collection<MethodInterceptor> methodInterceptors = methodMapInterceptors.get(methodName);
 		if (methodInterceptors == null)
 		{
 			methodInterceptors = new ConcurrentLinkedQueue<>();
-			methodMapInterceptors.put(signature, methodInterceptors);
+			methodMapInterceptors.put(methodName, methodInterceptors);
 		}
 		
 		methodInterceptors.add(methodInterceptor);
@@ -167,14 +174,14 @@ public class ProxyManagerImpl implements ProxyManager
 	public void removeMethodInterceptor(MethodInterceptor methodInterceptor)
 	{
 		final Method method = methodInterceptor.getMethod();
-		final MethodSignature signature = METHOD_SIGNATURE_CACHE.get(method);
+		final String methodName = method.getName();
 		
-		Collection<MethodInterceptor> methodInterceptors = methodMapInterceptors.get(signature);
+		Collection<MethodInterceptor> methodInterceptors = methodMapInterceptors.get(methodName);
 		
 		methodInterceptors.remove(methodInterceptor);
 		if (methodInterceptors.isEmpty())
 		{
-			methodMapInterceptors.remove(signature);
+			methodMapInterceptors.remove(methodName);
 		}
 	}
 	
