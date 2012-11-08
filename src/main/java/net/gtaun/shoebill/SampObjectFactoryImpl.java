@@ -38,11 +38,11 @@ import net.gtaun.shoebill.object.Zone;
 import net.gtaun.shoebill.object.impl.DialogImpl;
 import net.gtaun.shoebill.object.impl.LabelImpl;
 import net.gtaun.shoebill.object.impl.MenuImpl;
-import net.gtaun.shoebill.object.impl.SampObjectImpl;
 import net.gtaun.shoebill.object.impl.PickupImpl;
 import net.gtaun.shoebill.object.impl.PlayerImpl;
 import net.gtaun.shoebill.object.impl.PlayerLabelImpl;
 import net.gtaun.shoebill.object.impl.PlayerObjectImpl;
+import net.gtaun.shoebill.object.impl.SampObjectImpl;
 import net.gtaun.shoebill.object.impl.ServerImpl;
 import net.gtaun.shoebill.object.impl.TextdrawImpl;
 import net.gtaun.shoebill.object.impl.TimerImpl;
@@ -50,7 +50,7 @@ import net.gtaun.shoebill.object.impl.VehicleImpl;
 import net.gtaun.shoebill.object.impl.WorldImpl;
 import net.gtaun.shoebill.object.impl.ZoneImpl;
 import net.gtaun.shoebill.proxy.ProxyManagerImpl;
-import net.sf.cglib.proxy.Enhancer;
+import net.gtaun.shoebill.proxy.ProxyableFactory;
 
 /**
  * 
@@ -76,20 +76,20 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	
 	private final SampObjectPoolImpl pool;
 	
-	private Enhancer worldFactory;
-	private Enhancer serverFactory;
-	private Enhancer playerFactory;
-	private Enhancer vehicleFactory;
-	private Enhancer objectFactory;
-	private Enhancer playerObjectFactory;
-	private Enhancer pickupFactory;
-	private Enhancer labelFactory;
-	private Enhancer playerLabelFactory;
-	private Enhancer textdrawFactory;
-	private Enhancer zoneFactory;
-	private Enhancer menuFactory;
-	private Enhancer dialogFactory;
-	private Enhancer timerFactory;
+	private ProxyableFactory<WorldImpl> worldFactory;
+	private ProxyableFactory<ServerImpl> serverFactory;
+	private ProxyableFactory<PlayerImpl> playerFactory;
+	private ProxyableFactory<VehicleImpl> vehicleFactory;
+	private ProxyableFactory<SampObjectImpl> objectFactory;
+	private ProxyableFactory<PlayerObjectImpl> playerObjectFactory;
+	private ProxyableFactory<PickupImpl> pickupFactory;
+	private ProxyableFactory<LabelImpl> labelFactory;
+	private ProxyableFactory<PlayerLabelImpl> playerLabelFactory;
+	private ProxyableFactory<TextdrawImpl> textdrawFactory;
+	private ProxyableFactory<ZoneImpl> zoneFactory;
+	private ProxyableFactory<MenuImpl> menuFactory;
+	private ProxyableFactory<DialogImpl> dialogFactory;
+	private ProxyableFactory<TimerImpl> timerFactory;
 	
 	
 	public SampObjectFactoryImpl(SampObjectPoolImpl pool)

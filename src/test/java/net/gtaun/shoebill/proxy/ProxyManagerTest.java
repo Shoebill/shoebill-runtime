@@ -22,7 +22,6 @@ public class ProxyManagerTest
 	
 	static class B implements A
 	{
-		private ProxyManager proxyManager = new ProxyManagerImpl();
 		private int counter = 0;
 		
 		@Override
@@ -34,7 +33,7 @@ public class ProxyManagerTest
 		@Override
 		public ProxyManager getProxyManager()
 		{
-			return proxyManager;
+			return null;
 		}
 	}
 
@@ -61,7 +60,7 @@ public class ProxyManagerTest
 	{
 		final TapableCounter counter = new TapableCounter();
 		
-		A a = (A) ProxyManagerImpl.createProxyableFactory(B.class).create();
+		A a = ProxyManagerImpl.createProxyableFactory(B.class).create();
 		
 		Method method = A.class.getMethod("method", int.class);
 		a.getProxyManager().createMethodInterceptor(method, 

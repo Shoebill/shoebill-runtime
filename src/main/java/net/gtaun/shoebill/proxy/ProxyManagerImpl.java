@@ -41,42 +41,41 @@ import net.sf.cglib.proxy.MethodProxy;
  */
 public class ProxyManagerImpl implements ProxyManager
 {
-	private static final String METHOD_NAME_GET_PROXY_MANAGER;
+	private static final String METHOD_NAME_GET_PROXY_MANAGER = "getProxyManager";
 	
-	static
+	public static <T extends Proxyable> ProxyableFactory<T> createProxyableFactory(final Class<T> clz)
 	{
-		Method method = null;
-		try
+		return new ProxyableFactory<T>()
 		{
-			method = Proxyable.class.getMethod("getProxyManager");
-		}
-		catch (NoSuchMethodException | SecurityException e)
-		{
-			e.printStackTrace();
-		}
-		
-		METHOD_NAME_GET_PROXY_MANAGER = method.getName();
-	}
-	
-	private static final Callback PROXYABLE_METHOD_INTERCEPTOR = new net.sf.cglib.proxy.MethodInterceptor()
-	{
-		@Override
-		public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable
-		{
-			if(method.getName().equals(METHOD_NAME_GET_PROXY_MANAGER)) return proxy.invokeSuper(obj, args);
+			private final Enhancer enhancer;
 			
-			Proxyable proxyable = (Proxyable) obj;
-			ProxyManagerImpl manager = (ProxyManagerImpl) proxyable.getProxyManager();
-			return manager.interceptor.intercept(obj, method, args, proxy);
-		}
-	};
-	
-	public static Enhancer createProxyableFactory(Class<? extends Proxyable> clz)
-	{
-		Enhancer factory = new Enhancer();
-		factory.setSuperclass(clz);
-		factory.setCallback(PROXYABLE_METHOD_INTERCEPTOR);
-		return factory;
+			{
+				enhancer = new Enhancer();
+				enhancer.setSuperclass(clz);
+			}
+			
+			@Override
+			public T create()
+			{
+				final ProxyManagerImpl proxyManager = new ProxyManagerImpl();
+				synchronized (enhancer)
+				{
+					enhancer.setCallback(proxyManager.callback);
+					return clz.cast(enhancer.create());
+				}
+			}
+
+			@Override
+			public T create(Class<?>[] paramTypes, Object... params)
+			{
+				final ProxyManagerImpl proxyManager = new ProxyManagerImpl();
+				synchronized (enhancer)
+				{
+					enhancer.setCallback(proxyManager.callback);
+					return clz.cast(enhancer.create(paramTypes, params));
+				}
+			}
+		};
 	}
 	
 	public class ManageHelper
@@ -97,19 +96,20 @@ public class ProxyManagerImpl implements ProxyManager
 	};
 	
 	
-	private final net.sf.cglib.proxy.MethodInterceptor interceptor;
+	private final Callback callback;
 	private final Map<String, Collection<MethodInterceptor>> methodMapInterceptors;
 	private final ManageHelper manageHelper;
 	
 	
-	public ProxyManagerImpl()
+	private ProxyManagerImpl()
 	{
-		interceptor = new net.sf.cglib.proxy.MethodInterceptor()
+		callback = new net.sf.cglib.proxy.MethodInterceptor()
 		{
 			@Override
 			public Object intercept(Object obj, final Method method, Object[] args, final MethodProxy proxy) throws Throwable
 			{
 				final String methodName = method.getName();
+				if(methodName.equals(METHOD_NAME_GET_PROXY_MANAGER)) return ProxyManagerImpl.this;
 				
 				Collection<MethodInterceptor> interceptors = methodMapInterceptors.get(methodName);
 				if (interceptors == null)
