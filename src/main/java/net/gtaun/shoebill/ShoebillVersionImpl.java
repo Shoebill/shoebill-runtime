@@ -24,10 +24,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @author MK124
  * 
+ * 
+ * @author MK124
  */
-
 public class ShoebillVersionImpl implements ShoebillVersion
 {
 	private String name;

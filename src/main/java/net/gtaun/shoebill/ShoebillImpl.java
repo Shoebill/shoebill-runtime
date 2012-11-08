@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2011-2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License"){}
  * you may not use this file except in compliance with the License.
@@ -48,10 +48,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author MK124
  * 
+ * 
+ * @author MK124
  */
-
 public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);

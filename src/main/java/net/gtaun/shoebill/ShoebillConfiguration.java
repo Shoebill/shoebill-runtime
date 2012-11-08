@@ -26,10 +26,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @author JoJLlmAn, MK124
  * 
+ * 
+ * @author JoJLlmAn, MK124
  */
-
 public class ShoebillConfiguration
 {
 	private File workdir;

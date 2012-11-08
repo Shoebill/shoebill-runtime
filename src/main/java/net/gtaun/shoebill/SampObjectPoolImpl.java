@@ -47,10 +47,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @author MK124
  * 
+ * 
+ * @author MK124
  */
-
 public class SampObjectPoolImpl implements SampObjectPool
 {
 	public static final int MAX_PLAYERS =			800;
