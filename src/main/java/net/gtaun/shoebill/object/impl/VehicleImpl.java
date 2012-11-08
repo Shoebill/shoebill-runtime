@@ -52,12 +52,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class VehicleImpl implements Vehicle
 {
-	public static void manualEngineAndLights()
-	{
-		SampNativeFunction.manualVehicleEngineAndLights();
-	}
-	
-	
 	private ProxyManager proxyManager;
 	
 	private boolean isStatic = false;

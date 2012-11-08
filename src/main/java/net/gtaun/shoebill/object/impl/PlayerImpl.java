@@ -74,43 +74,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class PlayerImpl implements Player
 {
-	public static void enableStuntBonusForAll(boolean enabled)
-	{
-		for (Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers())
-		{
-			player.enableStuntBonus(enabled);
-		}
-	}
-	
-	public static void sendMessageToAll(Color color, String message)
-	{
-		for (Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers())
-		{
-			player.sendMessage(color, message);
-		}
-	}
-	
-	public static void sendMessageToAll(Color color, String format, Object... args)
-	{
-		for (Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers())
-		{
-			String message = String.format(format, args);
-			player.sendMessage(color, message);
-		}
-	}
-	
-	public static void gameTextToAll(int time, int style, String text)
-	{
-		SampNativeFunction.gameTextForAll(text, time, style);
-	}
-	
-	public static void gameTextToAll(int time, int style, String format, Object... args)
-	{
-		String text = String.format(format, args);
-		SampNativeFunction.gameTextForAll(text, time, style);
-	}
-	
-	
 	private ProxyManager proxyManager;
 	
 	private int id = INVALID_ID;

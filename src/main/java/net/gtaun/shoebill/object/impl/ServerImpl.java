@@ -16,6 +16,9 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.proxy.ProxyManager;
 import net.gtaun.shoebill.proxy.ProxyManagerImpl;
@@ -108,5 +111,37 @@ public class ServerImpl implements Server
 	{
 		if (varname == null) throw new NullPointerException();
 		return SampNativeFunction.getServerVarAsBool(varname);
+	}
+
+	@Override
+	public void sendMessageToAll(Color color, String message)
+	{
+		for (Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers())
+		{
+			player.sendMessage(color, message);
+		}
+	}
+
+	@Override
+	public void sendMessageToAll(Color color, String format, Object... args)
+	{
+		for (Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers())
+		{
+			String message = String.format(format, args);
+			player.sendMessage(color, message);
+		}
+	}
+
+	@Override
+	public void gameTextToAll(int time, int style, String text)
+	{
+		SampNativeFunction.gameTextForAll(text, time, style);
+	}
+
+	@Override
+	public void gameTextToAll(int time, int style, String format, Object... args)
+	{
+		String text = String.format(format, args);
+		SampNativeFunction.gameTextForAll(text, time, style);
 	}
 }

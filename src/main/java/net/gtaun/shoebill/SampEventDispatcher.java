@@ -68,7 +68,6 @@ import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
-import net.gtaun.shoebill.object.impl.PlayerImpl;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.EventManagerImpl;
 
@@ -250,7 +249,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			if (event.getResponse() != 0)
 			{
-				PlayerImpl.sendMessageToAll(Color.WHITE, "{FE8B13}" + player.getName() + ": {FFFFFF}" + text);
+				sampObjectPool.getServer().sendMessageToAll(Color.WHITE, "{FE8B13}" + player.getName() + ": {FFFFFF}" + text);
 			}
 			
 			return 0;

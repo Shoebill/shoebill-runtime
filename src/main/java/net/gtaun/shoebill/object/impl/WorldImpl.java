@@ -16,11 +16,13 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.constant.PlayerMarkerMode;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.WeaponData;
+import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.proxy.ProxyManager;
 import net.gtaun.shoebill.proxy.ProxyManagerImpl;
@@ -213,5 +215,20 @@ public class WorldImpl implements World
 	public void disableNameTagLOS()
 	{
 		SampNativeFunction.disableNameTagLOS();
+	}
+
+	@Override
+	public void enableStuntBonusForAll(boolean enabled)
+	{
+		for (Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers())
+		{
+			player.enableStuntBonus(enabled);
+		}
+	}
+
+	@Override
+	public void manualEngineAndLights()
+	{
+		SampNativeFunction.manualVehicleEngineAndLights();
 	}
 }
