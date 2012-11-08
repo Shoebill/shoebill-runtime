@@ -70,6 +70,12 @@ public class ServerImpl implements Server
 	}
 	
 	@Override
+	public void setGamemodeText(String text)
+	{
+		SampNativeFunction.setGameModeText(text);
+	}
+	
+	@Override
 	public void sendRconCommand(String command)
 	{
 		if (command == null) throw new NullPointerException();
