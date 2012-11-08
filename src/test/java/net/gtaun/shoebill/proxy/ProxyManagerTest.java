@@ -20,7 +20,7 @@ public class ProxyManagerTest
 		int method(int unknown);
 	}
 	
-	static class B implements A
+	static abstract class B implements A
 	{
 		private int counter = 0;
 		
@@ -28,12 +28,6 @@ public class ProxyManagerTest
 		public int method(int unknown)
 		{
 			return ++counter;
-		}
-		
-		@Override
-		public ProxyManager getProxyManager()
-		{
-			return null;
 		}
 	}
 

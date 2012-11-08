@@ -27,8 +27,6 @@ import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManager.Priority;
@@ -41,10 +39,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124, JoJLlmAn
  */
-public class SampObjectImpl implements SampObject
+public abstract class SampObjectImpl implements SampObject
 {
-	private ProxyManager proxyManager;
-	
 	private int id = INVALID_ID;
 	private int modelId;
 	private Location location;
@@ -70,8 +66,6 @@ public class SampObjectImpl implements SampObject
 	
 	private void initialize(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
-		proxyManager = new ProxyManagerImpl();
-		
 		this.modelId = modelId;
 		this.location = loc;
 		this.drawDistance = drawDistance;
@@ -91,12 +85,6 @@ public class SampObjectImpl implements SampObject
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
 		eventManager.addHandler(ObjectMovedEvent.class, eventHandler, Priority.MONITOR);
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override

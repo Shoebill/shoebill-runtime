@@ -58,8 +58,6 @@ import net.gtaun.shoebill.object.PlayerWeaponSkill;
 import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManager.Priority;
@@ -72,10 +70,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124, JoJLlmAn
  */
-public class PlayerImpl implements Player
+public abstract class PlayerImpl implements Player
 {
-	private ProxyManager proxyManager;
-	
 	private int id = INVALID_ID;
 	
 	private final PlayerKeyStateImpl keyState;
@@ -106,8 +102,6 @@ public class PlayerImpl implements Player
 	
 	public PlayerImpl(int id)
 	{
-		proxyManager = new ProxyManagerImpl();
-		
 		this.id = id;
 		
 		playerAttach = new PlayerAttachImpl(this);
@@ -163,12 +157,6 @@ public class PlayerImpl implements Player
 		eventManager.addHandler(PlayerUpdateEvent.class, eventHandler, Priority.MONITOR);
 		eventManager.addHandler(PlayerDisconnectEvent.class, eventHandler, Priority.BOTTOM);
 		eventManager.addHandler(DialogResponseEvent.class, eventHandler, Priority.MONITOR);
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override

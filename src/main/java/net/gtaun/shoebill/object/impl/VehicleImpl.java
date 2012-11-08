@@ -36,8 +36,6 @@ import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.VehicleComponent;
 import net.gtaun.shoebill.object.VehicleDamage;
 import net.gtaun.shoebill.object.VehicleParam;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManager.Priority;
@@ -50,10 +48,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124, JoJLlmAn
  */
-public class VehicleImpl implements Vehicle
+public abstract class VehicleImpl implements Vehicle
 {
-	private ProxyManager proxyManager;
-	
 	private boolean isStatic = false;
 	
 	private int id = INVALID_ID;
@@ -76,8 +72,6 @@ public class VehicleImpl implements Vehicle
 	
 	private void initialize(int modelId, float x, float y, float z, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
-		proxyManager = new ProxyManagerImpl();
-		
 		this.modelId = modelId;
 		this.interiorId = interiorId;
 		this.color1 = color1;
@@ -129,12 +123,6 @@ public class VehicleImpl implements Vehicle
 		
 		VehicleSpawnEvent event = new VehicleSpawnEvent(this);
 		eventManager.dispatchEvent(event, this);
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override

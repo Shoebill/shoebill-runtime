@@ -24,8 +24,6 @@ import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.WeaponData;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.World;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -36,10 +34,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124
  */
-public class WorldImpl implements World
+public abstract class WorldImpl implements World
 {
-	private ProxyManager proxyManager;
-	
 	private float nameTagDrawDistance = 70;
 	private float chatRadius = -1;
 	private float playerMarkerRadius = -1;
@@ -47,13 +43,7 @@ public class WorldImpl implements World
 	
 	public WorldImpl()
 	{
-		proxyManager = new ProxyManagerImpl();
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
+
 	}
 	
 	@Override

@@ -22,8 +22,6 @@ import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Pickup;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -34,10 +32,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124, JoJLlmAn
  */
-public class PickupImpl implements Pickup
+public abstract class PickupImpl implements Pickup
 {
-	private ProxyManager proxyManager;
-	
 	private int id = INVALID_ID;
 	private int modelId, type;
 	private Location location;
@@ -50,20 +46,12 @@ public class PickupImpl implements Pickup
 	
 	private void initialize(int modelId, int type, Location loc) throws CreationFailedException
 	{
-		proxyManager = new ProxyManagerImpl();
-		
 		this.modelId = modelId;
 		this.type = type;
 		this.location = loc;
 		
 		id = SampNativeFunction.createPickup(modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId());
 		if (id == INVALID_ID) throw new CreationFailedException();
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override

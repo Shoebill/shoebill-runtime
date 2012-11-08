@@ -23,8 +23,6 @@ import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerLabel;
 import net.gtaun.shoebill.object.Vehicle;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -36,10 +34,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124
  */
-public class PlayerLabelImpl implements PlayerLabel
+public abstract class PlayerLabelImpl implements PlayerLabel
 {
-	private ProxyManager proxyManager;
-	
 	private int id = INVALID_ID;
 	private Player player;
 	private String text;
@@ -70,8 +66,6 @@ public class PlayerLabelImpl implements PlayerLabel
 	
 	private void initialize(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer, Vehicle attachedVehicle) throws CreationFailedException
 	{
-		proxyManager = new ProxyManagerImpl();
-		
 		if (StringUtils.isEmpty(text)) text = " ";
 		
 		this.player = player;
@@ -98,12 +92,6 @@ public class PlayerLabelImpl implements PlayerLabel
 		
 		id = SampNativeFunction.createPlayer3DTextLabel(player.getId(), text, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, playerId, vehicleId, testLOS);
 		if (id == INVALID_ID) throw new CreationFailedException();
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override

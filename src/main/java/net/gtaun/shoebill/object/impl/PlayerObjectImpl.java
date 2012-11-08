@@ -26,8 +26,6 @@ import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManager.Priority;
@@ -40,10 +38,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124
  */
-public class PlayerObjectImpl implements PlayerObject
+public abstract class PlayerObjectImpl implements PlayerObject
 {
-	private ProxyManager proxyManager;
-	
 	private int id = INVALID_ID;
 	private Player player;
 	
@@ -65,7 +61,6 @@ public class PlayerObjectImpl implements PlayerObject
 	private void initialize(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
 		if (player.isOnline() == false) throw new CreationFailedException();
-		proxyManager = new ProxyManagerImpl();
 		
 		this.player = player;
 		this.modelId = modelId;
@@ -86,12 +81,6 @@ public class PlayerObjectImpl implements PlayerObject
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
 		eventManager.addHandler(PlayerObjectMovedEvent.class, eventHandler, Priority.MONITOR);
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override

@@ -20,8 +20,6 @@ import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.events.timer.TimerTickEvent;
 import net.gtaun.shoebill.object.Timer;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -31,10 +29,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124
  */
-public class TimerImpl implements Timer
+public abstract class TimerImpl implements Timer
 {
-	private ProxyManager proxyManager;
-	
 	private int interval, count;
 	
 	private boolean running;
@@ -48,16 +44,8 @@ public class TimerImpl implements Timer
 	
 	private void initialize(int interval, int count)
 	{
-		proxyManager = new ProxyManagerImpl();
-		
 		this.interval = interval;
 		this.count = count;
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override

@@ -23,8 +23,6 @@ import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -36,10 +34,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124, JoJLlmAn
  */
-public class MenuImpl implements Menu
+public abstract class MenuImpl implements Menu
 {
-	private ProxyManager proxyManager;
-	
 	private int id = INVALID_ID;
 	private String title, columnHeader = "";
 	private int columns;
@@ -54,8 +50,6 @@ public class MenuImpl implements Menu
 	
 	private void initialize(String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException
 	{
-		proxyManager = new ProxyManagerImpl();
-		
 		if (StringUtils.isEmpty(title)) title = " ";
 		
 		this.title = title;
@@ -66,12 +60,6 @@ public class MenuImpl implements Menu
 		
 		id = SampNativeFunction.createMenu(title, columns, position.getX(), position.getY(), col1Width, col1Width);
 		if (id == -1) throw new CreationFailedException();
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override

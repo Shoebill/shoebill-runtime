@@ -20,8 +20,6 @@ import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.Server;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -32,20 +30,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124
  */
-public class ServerImpl implements Server
+public abstract class ServerImpl implements Server
 {
-	private ProxyManager proxyManager;
-	
-	
 	public ServerImpl()
 	{
-		proxyManager = new ProxyManagerImpl();
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
+
 	}
 	
 	@Override

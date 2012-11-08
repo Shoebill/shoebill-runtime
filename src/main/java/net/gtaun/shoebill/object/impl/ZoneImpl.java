@@ -24,8 +24,6 @@ import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.Zone;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -36,10 +34,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124, JoJLlmAn
  */
-public class ZoneImpl implements Zone
+public abstract class ZoneImpl implements Zone
 {
-	private ProxyManager proxyManager;
-	
 	private int id = INVALID_ID;
 	private Area area;
 	
@@ -54,8 +50,6 @@ public class ZoneImpl implements Zone
 	
 	private void initialize(float minX, float minY, float maxX, float maxY) throws CreationFailedException
 	{
-		proxyManager = new ProxyManagerImpl();
-		
 		area = new Area(minX, minY, maxX, maxY);
 		
 		id = SampNativeFunction.gangZoneCreate(minX, minY, maxX, maxY);
@@ -66,12 +60,6 @@ public class ZoneImpl implements Zone
 			isPlayerShowed[i] = false;
 			isPlayerFlashing[i] = false;
 		}
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override

@@ -19,8 +19,6 @@ package net.gtaun.shoebill.object.impl;
 import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.object.Dialog;
 import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -30,12 +28,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124
  */
-public class DialogImpl implements Dialog
+public abstract class DialogImpl implements Dialog
 {
 	private static int count = 0;
 	
-	
-	private ProxyManager proxyManager;
 	
 	private int id;
 	
@@ -47,16 +43,8 @@ public class DialogImpl implements Dialog
 	
 	private void initialize()
 	{
-		proxyManager = new ProxyManagerImpl();
-		
 		id = count;
 		count++;
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override

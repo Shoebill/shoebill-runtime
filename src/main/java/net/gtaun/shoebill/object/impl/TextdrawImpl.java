@@ -24,8 +24,6 @@ import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.Textdraw;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -37,10 +35,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124, JoJLlmAn
  */
-public class TextdrawImpl implements Textdraw
+public abstract class TextdrawImpl implements Textdraw
 {
-	private ProxyManager proxyManager;
-	
 	private int id = INVALID_ID;
 	private Vector2D position;
 	private String text;
@@ -55,8 +51,6 @@ public class TextdrawImpl implements Textdraw
 	
 	private void initialize(float x, float y, String text) throws CreationFailedException
 	{
-		proxyManager = new ProxyManagerImpl();
-		
 		position = new Vector2D(x, y);
 		if (StringUtils.isEmpty(text)) text = " ";
 		
@@ -65,12 +59,6 @@ public class TextdrawImpl implements Textdraw
 		
 		for (int i = 0; i < isPlayerShowed.length; i++)
 			isPlayerShowed[i] = false;
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override

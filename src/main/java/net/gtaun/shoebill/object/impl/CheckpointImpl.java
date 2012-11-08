@@ -25,8 +25,6 @@ import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.object.Checkpoint;
 import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.proxy.ProxyManager;
-import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -37,16 +35,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author JoJLlmAn, MK124
  */
-public class CheckpointImpl implements Checkpoint
+public abstract class CheckpointImpl implements Checkpoint
 {
-	private ProxyManager proxyManager;
-	
 	private LocationRadius location;
 	
 	
 	public CheckpointImpl(float x, float y, float z, float size)
 	{
-		proxyManager = new ProxyManagerImpl();
 		location = new LocationRadius(x, y, z, size);
 	}
 	
@@ -58,12 +53,6 @@ public class CheckpointImpl implements Checkpoint
 	public CheckpointImpl(LocationRadius loc)
 	{
 		location = new LocationRadius(loc);
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override

@@ -27,7 +27,6 @@ import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.RaceCheckpoint;
-import net.gtaun.shoebill.proxy.ProxyManager;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -38,10 +37,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author JoJLlmAn, MK124
  */
-public class RaceCheckpointImpl implements RaceCheckpoint
+public abstract class RaceCheckpointImpl implements RaceCheckpoint
 {
-	private ProxyManager proxyManager;
-	
 	private LocationRadius location;
 	private RaceCheckpointType type;
 	private RaceCheckpointImpl next;
@@ -72,12 +69,6 @@ public class RaceCheckpointImpl implements RaceCheckpoint
 		this.location = loc;
 		this.type = type;
 		this.next = next;
-	}
-	
-	@Override
-	public ProxyManager getProxyManager()
-	{
-		return proxyManager;
 	}
 	
 	@Override
