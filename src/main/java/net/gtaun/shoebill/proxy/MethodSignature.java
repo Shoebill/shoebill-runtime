@@ -45,7 +45,11 @@ public class MethodSignature
 		{
 			MethodSignature signature;
 			signature = cache.get(method);
-			if(signature == null) signature = new MethodSignature(method);
+			if(signature == null)
+			{
+				signature = new MethodSignature(method);
+				cache.put(method, signature);
+			}
 			return signature;
 		}
 	}
@@ -80,7 +84,7 @@ public class MethodSignature
 		MethodSignature sign = (MethodSignature) obj;
 		
 		if(sign.hashCode != hashCode) return false;
-		if(sign.name.equals(name)) return false;
+		if(sign.name.equals(name) == false) return false;
 		if(sign.returnType != returnType) return false;
 		if(Arrays.equals(sign.parameterTypes, parameterTypes) == false) return false;
 		
