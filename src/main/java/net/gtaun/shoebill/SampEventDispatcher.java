@@ -251,7 +251,6 @@ public class SampEventDispatcher implements SampCallbackHandler
 			if (event.getResponse() != 0)
 			{
 				PlayerImpl.sendMessageToAll(Color.WHITE, "{FE8B13}" + player.getName() + ": {FFFFFF}" + text);
-				return 1;
 			}
 			
 			return 0;
@@ -464,7 +463,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			PlayerRequestSpawnEvent event = new PlayerRequestSpawnEvent(player);
 			eventManager.dispatchEvent(event, player);
 			
-			return event.getResult();
+			return event.getResponse();
 		}
 		catch (Exception e)
 		{
