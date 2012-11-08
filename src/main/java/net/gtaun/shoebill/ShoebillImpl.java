@@ -294,7 +294,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	}
 	
 	@Override
-	public SampObjectFactory getSampObjectFactory()
+	public SampObjectFactoryImpl getSampObjectFactory()
 	{
 		return sampObjectFactory;
 	}
