@@ -29,6 +29,7 @@ import net.gtaun.shoebill.object.Proxyable;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Helper;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Interceptor;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Priority;
+import net.gtaun.shoebill.proxy.MethodSignature.MethodSignatureCache;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodProxy;
@@ -40,12 +41,30 @@ import net.sf.cglib.proxy.MethodProxy;
  */
 public class ProxyManagerImpl implements ProxyManager
 {
+	private static final MethodSignatureCache METHOD_SIGNATURE_CACHE = new MethodSignatureCache();
+	private static final String METHOD_NAME_GET_PROXY_MANAGER;
+	
+	static
+	{
+		Method method = null;
+		try
+		{
+			method = Proxyable.class.getMethod("getProxyManager");
+		}
+		catch (NoSuchMethodException | SecurityException e)
+		{
+			e.printStackTrace();
+		}
+		
+		METHOD_NAME_GET_PROXY_MANAGER = method.getName();
+	}
+	
 	private static final Callback PROXYABLE_METHOD_INTERCEPTOR = new net.sf.cglib.proxy.MethodInterceptor()
 	{
 		@Override
 		public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable
 		{
-			if(method.getName().equals("getProxyManager")) return proxy.invokeSuper(obj, args);
+			if(method.getName().equals(METHOD_NAME_GET_PROXY_MANAGER)) return proxy.invokeSuper(obj, args);
 			
 			Proxyable proxyable = (Proxyable) obj;
 			ProxyManagerImpl manager = (ProxyManagerImpl) proxyable.getProxyManager();
@@ -80,7 +99,7 @@ public class ProxyManagerImpl implements ProxyManager
 	
 	
 	private final net.sf.cglib.proxy.MethodInterceptor interceptor;
-	private final Map<Method, Collection<MethodInterceptor>> methodMapInterceptors;
+	private final Map<MethodSignature, Collection<MethodInterceptor>> methodMapInterceptors;
 	private final ManageHelper manageHelper;
 	
 	
@@ -91,7 +110,9 @@ public class ProxyManagerImpl implements ProxyManager
 			@Override
 			public Object intercept(Object obj, final Method method, Object[] args, final MethodProxy proxy) throws Throwable
 			{
-				Collection<MethodInterceptor> interceptors = methodMapInterceptors.get(method);
+				final MethodSignature signature = METHOD_SIGNATURE_CACHE.get(method);
+				
+				Collection<MethodInterceptor> interceptors = methodMapInterceptors.get(signature);
 				if (interceptors == null)
 				{
 					return proxy.invokeSuper(obj, args);
@@ -131,11 +152,13 @@ public class ProxyManagerImpl implements ProxyManager
 	public void addMethodInterceptor(MethodInterceptor methodInterceptor)
 	{
 		final Method method = methodInterceptor.getMethod();
-		Collection<MethodInterceptor> methodInterceptors = methodMapInterceptors.get(method);
+		final MethodSignature signature = METHOD_SIGNATURE_CACHE.get(method);
+		
+		Collection<MethodInterceptor> methodInterceptors = methodMapInterceptors.get(signature);
 		if (methodInterceptors == null)
 		{
 			methodInterceptors = new ConcurrentLinkedQueue<>();
-			methodMapInterceptors.put(method, methodInterceptors);
+			methodMapInterceptors.put(signature, methodInterceptors);
 		}
 		
 		methodInterceptors.add(methodInterceptor);
@@ -144,12 +167,14 @@ public class ProxyManagerImpl implements ProxyManager
 	public void removeMethodInterceptor(MethodInterceptor methodInterceptor)
 	{
 		final Method method = methodInterceptor.getMethod();
-		Collection<MethodInterceptor> methodInterceptors = methodMapInterceptors.get(method);
+		final MethodSignature signature = METHOD_SIGNATURE_CACHE.get(method);
+		
+		Collection<MethodInterceptor> methodInterceptors = methodMapInterceptors.get(signature);
 		
 		methodInterceptors.remove(methodInterceptor);
 		if (methodInterceptors.isEmpty())
 		{
-			methodMapInterceptors.remove(method);
+			methodMapInterceptors.remove(signature);
 		}
 	}
 	
