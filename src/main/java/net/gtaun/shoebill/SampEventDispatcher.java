@@ -248,7 +248,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			PlayerTextEvent event = new PlayerTextEvent(player, text);
 			eventManager.dispatchEvent(event, player);
 			
-			if (event.getResult() != 0)
+			if (event.getResponse() != 0)
 			{
 				PlayerImpl.sendMessageToAll(Color.WHITE, "{FE8B13}" + player.getName() + ": {FFFFFF}" + text);
 				return 1;
@@ -273,7 +273,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			PlayerCommandEvent event = new PlayerCommandEvent(player, cmdtext);
 			eventManager.dispatchEvent(event, player);
 			
-			return event.getResult();
+			return event.getResponse();
 		}
 		catch (Exception e)
 		{
@@ -292,7 +292,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			PlayerRequestClassEvent event = new PlayerRequestClassEvent(player, classId);
 			eventManager.dispatchEvent(event, player);
 			
-			return event.getResult();
+			return event.getResponse();
 		}
 		catch (Exception e)
 		{
@@ -445,7 +445,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			RconCommandEvent event = new RconCommandEvent(cmd);
 			eventManager.dispatchEvent(event, ShoebillImpl.getInstance().getSampObjectPool().getServer());
 			
-			return event.getResult();
+			return event.getResponse();
 		}
 		catch (Exception e)
 		{
@@ -860,7 +860,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			DialogResponseEvent event = new DialogResponseEvent(dialog, player, response, listitem, inputtext);
 			eventManager.dispatchEvent(event, dialog, player);
 			
-			return event.getResult();
+			return event.getResponse();
 		}
 		catch (Exception e)
 		{
