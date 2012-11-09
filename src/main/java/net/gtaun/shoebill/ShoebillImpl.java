@@ -35,6 +35,7 @@ import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackManager;
 import net.gtaun.shoebill.samp.SampCallbackManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.shoebill.service.ServiceManagerImpl;
 import net.gtaun.shoebill.util.log.LogLevel;
 import net.gtaun.shoebill.util.log.LoggerOutputStream;
 import net.gtaun.util.event.EventManager;
@@ -73,9 +74,10 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	
 	private SampObjectPoolImpl sampObjectPool;
 	private SampObjectFactoryImpl sampObjectFactory;
-	
+
 	private GamemodeManagerImpl gamemodeManager;
 	private PluginManagerImpl pluginManager;
+	private ServiceManagerImpl serviceManager;
 	
 	private SampEventLogger sampEventLogger;
 	private SampEventDispatcher sampEventDispatcher;
@@ -209,8 +211,10 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		eventManager = new EventManagerImpl();
 		
 		ClassLoader classLoader = generateResourceClassLoader(pluginDir, gamemodeDir);
+		
 		gamemodeManager = new GamemodeManagerImpl(this, classLoader, gamemodeDir, dataDir);
 		pluginManager = new PluginManagerImpl(this, classLoader, pluginDir, dataDir);
+		serviceManager = new ServiceManagerImpl();
 		
 		sampObjectPool = new SampObjectPoolImpl(eventManager);
 		sampObjectFactory = new SampObjectFactoryImpl(sampObjectPool);
@@ -232,8 +236,11 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		sampEventDispatcher = null;
 		sampObjectPool = null;
 		sampObjectFactory = null;
+		
 		gamemodeManager = null;
 		pluginManager = null;
+		serviceManager = null;
+		
 		eventManager = null;
 		
 		System.gc();
@@ -309,6 +316,12 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	public PluginManager getPluginManager()
 	{
 		return pluginManager;
+	}
+	
+	@Override
+	public ServiceManagerImpl getServiceManager()
+	{
+		return serviceManager;
 	}
 	
 	@Override
