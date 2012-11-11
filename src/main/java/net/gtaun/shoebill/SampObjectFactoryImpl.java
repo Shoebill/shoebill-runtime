@@ -74,7 +74,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	private static final Class<?>[] TIMER_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, int.class };
 	
 	
-	private final SampObjectPoolImpl pool;
+	private final SampObjectStoreImpl store;
 	
 	private ProxyableFactory<WorldImpl> worldFactory;
 	private ProxyableFactory<ServerImpl> serverFactory;
@@ -92,9 +92,9 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	private ProxyableFactory<TimerImpl> timerFactory;
 	
 	
-	public SampObjectFactoryImpl(SampObjectPoolImpl pool)
+	public SampObjectFactoryImpl(SampObjectStoreImpl store)
 	{
-		this.pool = pool;
+		this.store = store;
 		initialize();
 	}
 	
@@ -119,14 +119,14 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	public World createWorld()
 	{
 		World world = (World) worldFactory.create();
-		pool.setWorld(world);
+		store.setWorld(world);
 		return world;
 	}
 	
 	public Server createServer()
 	{
 		Server server = (Server) serverFactory.create();
-		pool.setServer(server);
+		store.setServer(server);
 		return server;
 	}
 	
@@ -134,7 +134,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { playerId };
 		Player player = (Player) playerFactory.create(PLAYER_CONSTRUCTOR_ARGUMENT_TYPES, args);
-		pool.setPlayer(playerId, player);
+		store.setPlayer(playerId, player);
 		return player;
 	}
 	
@@ -143,7 +143,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { modelId, loc, color1, color2, respawnDelay };
 		Vehicle vehicle = (Vehicle) vehicleFactory.create(VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES, args);
-		pool.setVehicle(vehicle.getId(), vehicle);
+		store.setVehicle(vehicle.getId(), vehicle);
 		return vehicle;
 	}
 	
@@ -152,7 +152,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { modelId, loc, rot, drawDistance };
 		SampObject object = (SampObject) objectFactory.create(OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, args);
-		pool.setObject(object.getId(), object);
+		store.setObject(object.getId(), object);
 		return object;
 	}
 	
@@ -161,7 +161,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { player, modelId, loc, rot, drawDistance };
 		PlayerObject object = (PlayerObject) playerObjectFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, args);
-		pool.setPlayerObject(player, object.getId(), object);
+		store.setPlayerObject(player, object.getId(), object);
 		return object;
 	}
 	
@@ -170,7 +170,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { modelId, type, loc };
 		Pickup pickup = (Pickup) pickupFactory.create(PICKUP_CONSTRUCTOR_ARGUMENT_TYPES, args);
-		pool.setPickup(pickup.getId(), pickup);
+		store.setPickup(pickup.getId(), pickup);
 		return pickup;
 	}
 	
@@ -179,7 +179,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { text, color, loc, drawDistance, testLOS };
 		Label label = (Label) labelFactory.create(LABEL_CONSTRUCTOR_ARGUMENT_TYPES, args);
-		pool.setLabel(label.getId(), label);
+		store.setLabel(label.getId(), label);
 		return label;
 	}
 	
@@ -188,7 +188,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { player, text, color, loc, drawDistance, testLOS };
 		PlayerLabel label = (PlayerLabel) playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES, args);
-		pool.setLabel(label.getId(), label);
+		store.setLabel(label.getId(), label);
 		return label;
 	}
 	
@@ -197,7 +197,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { player, text, color, loc, drawDistance, testLOS, attachedPlayer };
 		PlayerLabel label = (PlayerLabel) playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES, args);
-		pool.setLabel(label.getId(), label);
+		store.setLabel(label.getId(), label);
 		return label;
 	}
 	
@@ -206,7 +206,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { player, text, color, loc, drawDistance, testLOS, attachedVehicle };
 		PlayerLabel label = (PlayerLabel) playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES, args);
-		pool.setLabel(label.getId(), label);
+		store.setLabel(label.getId(), label);
 		return label;
 	}
 	
@@ -215,7 +215,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { x, y, text };
 		Textdraw textdraw = (Textdraw) textdrawFactory.create(TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, args);
-		pool.setTextdraw(textdraw.getId(), textdraw);
+		store.setTextdraw(textdraw.getId(), textdraw);
 		return textdraw;
 	}
 	
@@ -224,7 +224,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { minX, minY, maxX, maxY };
 		Zone zone = (Zone) zoneFactory.create(ZONE_CONSTRUCTOR_ARGUMENT_TYPES, args);
-		pool.setZone(zone.getId(), zone);
+		store.setZone(zone.getId(), zone);
 		return zone;
 	}
 	
@@ -233,7 +233,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { title, columns, x, y, col1Width, col2Width };
 		Menu menu = (Menu) menuFactory.create(MENU_CONSTRUCTOR_ARGUMENT_TYPES, args);
-		pool.setMenu(menu.getId(), menu);
+		store.setMenu(menu.getId(), menu);
 		return menu;
 	}
 	
@@ -241,7 +241,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	public Dialog createDialog()
 	{
 		Dialog dialog = (Dialog) dialogFactory.create();
-		pool.putDialog(dialog.getId(), dialog);
+		store.putDialog(dialog.getId(), dialog);
 		return dialog;
 	}
 	
@@ -250,7 +250,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	{
 		final Object[] args = { interval, count };
 		Timer timer = (Timer) timerFactory.create(TIMER_CONSTRUCTOR_ARGUMENT_TYPES, args);
-		pool.putTimer(timer);
+		store.putTimer(timer);
 		return timer;
 	}
 }

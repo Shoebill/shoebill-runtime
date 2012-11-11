@@ -17,7 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.data.Location;
@@ -143,8 +143,8 @@ public abstract class VehicleImpl implements Vehicle
 		
 		SampNativeFunction.destroyVehicle(id);
 		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		pool.setVehicle(id, null);
+		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
+		store.setVehicle(id, null);
 		
 		id = INVALID_ID;
 	}
@@ -418,7 +418,7 @@ public abstract class VehicleImpl implements Vehicle
 		if (isDestroyed()) return null;
 		
 		int trailerId = SampNativeFunction.getVehicleTrailer(id);
-		return ShoebillImpl.getInstance().getSampObjectPool().getVehicle(trailerId);
+		return ShoebillImpl.getInstance().getSampObjectStore().getVehicle(trailerId);
 	}
 	
 	@Override

@@ -51,7 +51,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124
  */
-public class SampObjectPoolImpl implements SampObjectPool
+public class SampObjectStoreImpl implements SampObjectStore
 {
 	public static final int MAX_PLAYERS =			800;
 	public static final int MAX_VEHICLES =			2000;
@@ -95,7 +95,7 @@ public class SampObjectPoolImpl implements SampObjectPool
 	private Map<Integer, Reference<Dialog>> dialogs = new ConcurrentHashMap<>();
 	
 	
-	SampObjectPoolImpl(final EventManagerImpl eventManager)
+	SampObjectStoreImpl(final EventManagerImpl eventManager)
 	{
 		callbackHandler = new AbstractSampCallbackHandler()
 		{

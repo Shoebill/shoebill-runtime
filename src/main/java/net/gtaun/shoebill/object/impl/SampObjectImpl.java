@@ -17,7 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
@@ -100,8 +100,8 @@ public abstract class SampObjectImpl implements SampObject
 		
 		SampNativeFunction.destroyObject(id);
 		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		pool.setObject(id, null);
+		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
+		store.setObject(id, null);
 		
 		id = INVALID_ID;
 	}

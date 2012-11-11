@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
@@ -80,8 +80,8 @@ public abstract class LabelImpl implements Label
 		
 		SampNativeFunction.delete3DTextLabel(id);
 		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		pool.setLabel(id, null);
+		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
+		store.setLabel(id, null);
 		
 		id = INVALID_ID;
 	}

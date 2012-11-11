@@ -210,7 +210,7 @@ public abstract class WorldImpl implements World
 	@Override
 	public void enableStuntBonusForAll(boolean enabled)
 	{
-		for (Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers())
+		for (Player player : ShoebillImpl.getInstance().getSampObjectStore().getPlayers())
 		{
 			player.enableStuntBonus(enabled);
 		}

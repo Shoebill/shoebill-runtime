@@ -81,15 +81,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class SampEventDispatcher implements SampCallbackHandler
 {
-	private SampObjectPoolImpl sampObjectPool;
+	private SampObjectStoreImpl sampObjectStore;
 	private EventManagerImpl eventManager;
 	
 	private long lastProcessTimeMillis;
 	
 	
-	public SampEventDispatcher(SampObjectPoolImpl pool, EventManagerImpl manager)
+	public SampEventDispatcher(SampObjectStoreImpl store, EventManagerImpl manager)
 	{
-		sampObjectPool = pool;
+		sampObjectStore = store;
 		eventManager = manager;
 		
 		lastProcessTimeMillis = System.currentTimeMillis();
@@ -118,7 +118,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerConnectEvent event = new PlayerConnectEvent(player);
 			eventManager.dispatchEvent(event, player);
@@ -137,12 +137,12 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerDisconnectEvent event = new PlayerDisconnectEvent(player, reason);
 			eventManager.dispatchEvent(event, player);
 			
-			sampObjectPool.removePlayer(player);
+			sampObjectStore.removePlayer(player);
 			return 1;
 		}
 		catch (Exception e)
@@ -157,7 +157,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerSpawnEvent event = new PlayerSpawnEvent(player);
 			eventManager.dispatchEvent(event, player);
@@ -176,12 +176,12 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			Player killer = null;
 			
 			if (killerId != Player.INVALID_ID)
 			{
-				killer = sampObjectPool.getPlayer(killerId);
+				killer = sampObjectStore.getPlayer(killerId);
 				PlayerKillEvent event = new PlayerKillEvent(killer, player, reason);
 				eventManager.dispatchEvent(event, killer);
 			}
@@ -203,7 +203,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Vehicle vehicle = sampObjectPool.getVehicle(vehicleId);
+			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
 			
 			VehicleSpawnEvent event = new VehicleSpawnEvent(vehicle);
 			eventManager.dispatchEvent(event, vehicle);
@@ -222,8 +222,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Vehicle vehicle = sampObjectPool.getVehicle(vehicleId);
-			Player killer = sampObjectPool.getPlayer(killerId);
+			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
+			Player killer = sampObjectStore.getPlayer(killerId);
 			
 			VehicleDeathEvent event = new VehicleDeathEvent(vehicle, killer);
 			eventManager.dispatchEvent(event, vehicle, killer);
@@ -242,14 +242,14 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerTextEvent event = new PlayerTextEvent(player, text);
 			eventManager.dispatchEvent(event, player);
 			
 			if (event.getResponse() != 0)
 			{
-				sampObjectPool.getServer().sendMessageToAll(Color.WHITE, "{FE8B13}" + player.getName() + ": {FFFFFF}" + text);
+				sampObjectStore.getServer().sendMessageToAll(Color.WHITE, "{FE8B13}" + player.getName() + ": {FFFFFF}" + text);
 			}
 			
 			return 0;
@@ -266,7 +266,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerCommandEvent event = new PlayerCommandEvent(player, cmdtext);
 			eventManager.dispatchEvent(event, player);
@@ -285,7 +285,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerRequestClassEvent event = new PlayerRequestClassEvent(player, classId);
 			eventManager.dispatchEvent(event, player);
@@ -305,8 +305,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			Vehicle vehicle = sampObjectPool.getVehicle(vehicleId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
 			
 			VehicleEnterEvent event = new VehicleEnterEvent(vehicle, player, isPassenger != 0);
 			eventManager.dispatchEvent(event, vehicle, player);
@@ -325,8 +325,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			Vehicle vehicle = sampObjectPool.getVehicle(vehicleId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
 			
 			VehicleExitEvent event = new VehicleExitEvent(vehicle, player);
 			eventManager.dispatchEvent(event, vehicle, player);
@@ -345,7 +345,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerStateChangeEvent event = new PlayerStateChangeEvent(player, oldState);
 			eventManager.dispatchEvent(event, player);
@@ -364,7 +364,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			CheckpointEnterEvent event = new CheckpointEnterEvent(player);
 			eventManager.dispatchEvent(event, player.getCheckpoint(), player);
@@ -383,7 +383,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			CheckpointLeaveEvent event = new CheckpointLeaveEvent(player);
 			eventManager.dispatchEvent(event, player.getCheckpoint(), player);
@@ -402,7 +402,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			RaceCheckpointEnterEvent event = new RaceCheckpointEnterEvent(player);
 			eventManager.dispatchEvent(event, player.getRaceCheckpoint(), player);
@@ -421,7 +421,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			RaceCheckpointLeaveEvent event = new RaceCheckpointLeaveEvent(player);
 			eventManager.dispatchEvent(event, player.getRaceCheckpoint(), player);
@@ -441,7 +441,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			RconCommandEvent event = new RconCommandEvent(cmd);
-			eventManager.dispatchEvent(event, ShoebillImpl.getInstance().getSampObjectPool().getServer());
+			eventManager.dispatchEvent(event, ShoebillImpl.getInstance().getSampObjectStore().getServer());
 			
 			return event.getResponse();
 		}
@@ -457,7 +457,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerRequestSpawnEvent event = new PlayerRequestSpawnEvent(player);
 			eventManager.dispatchEvent(event, player);
@@ -476,7 +476,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			SampObject object = sampObjectPool.getObject(objectId);
+			SampObject object = sampObjectStore.getObject(objectId);
 			
 			ObjectMovedEvent event = new ObjectMovedEvent(object);
 			eventManager.dispatchEvent(event, object);
@@ -495,8 +495,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			PlayerObject object = sampObjectPool.getPlayerObject(player, objectId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			PlayerObject object = sampObjectStore.getPlayerObject(player, objectId);
 			
 			PlayerObjectMovedEvent event = new PlayerObjectMovedEvent(player, object);
 			eventManager.dispatchEvent(event, object, player);
@@ -515,8 +515,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			Pickup pickup = sampObjectPool.getPickup(pickupId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			Pickup pickup = sampObjectStore.getPickup(pickupId);
 			
 			PlayerPickupEvent event = new PlayerPickupEvent(player, pickup);
 			eventManager.dispatchEvent(event, pickup, player);
@@ -535,8 +535,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			Vehicle vehicle = sampObjectPool.getVehicle(vehicleId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
 			
 			VehicleModEvent event = new VehicleModEvent(vehicle, componentId);
 			eventManager.dispatchEvent(event, vehicle, player);
@@ -555,7 +555,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerEnterExitModShopEvent event = new PlayerEnterExitModShopEvent(player, enterexit, interiorId);
 			eventManager.dispatchEvent(event, player);
@@ -574,8 +574,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			Vehicle vehicle = sampObjectPool.getVehicle(vehicleId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
 			
 			VehiclePaintjobEvent event = new VehiclePaintjobEvent(vehicle, paintjobId);
 			eventManager.dispatchEvent(event, vehicle, player);
@@ -594,8 +594,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			Vehicle vehicle = sampObjectPool.getVehicle(vehicleId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
 			
 			VehicleResprayEvent event = new VehicleResprayEvent(vehicle, color1, color2);
 			eventManager.dispatchEvent(event, vehicle, player);
@@ -614,8 +614,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Vehicle vehicle = sampObjectPool.getVehicle(vehicleId);
-			Player player = sampObjectPool.getPlayer(playerId);
+			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			VehicleUpdateDamageEvent event = new VehicleUpdateDamageEvent(vehicle, player);
 			eventManager.dispatchEvent(event, vehicle, player);
@@ -634,8 +634,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Vehicle vehicle = sampObjectPool.getVehicle(vehicleId);
-			Player player = sampObjectPool.getPlayer(playerId);
+			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			VehicleUnoccupiedUpdateEvent event = new VehicleUnoccupiedUpdateEvent(vehicle, player, passengerSeat);
 			eventManager.dispatchEvent(event, vehicle, player);
@@ -654,7 +654,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			Menu menu = player.getMenu();
 			
 			MenuSelectedEvent event = new MenuSelectedEvent(menu, player, row);
@@ -674,7 +674,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			Menu menu = player.getMenu();
 			
 			MenuExitedEvent event = new MenuExitedEvent(menu, player);
@@ -695,7 +695,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerInteriorChangeEvent event = new PlayerInteriorChangeEvent(player, oldInteriorId);
 			eventManager.dispatchEvent(event, player);
@@ -714,7 +714,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerKeyStateChangeEvent event = new PlayerKeyStateChangeEvent(player, oldKeys);
 			eventManager.dispatchEvent(event, player);
@@ -750,7 +750,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerUpdateEvent event = new PlayerUpdateEvent(player);
 			eventManager.dispatchEvent(event, player);
@@ -769,8 +769,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			Player forPlayer = sampObjectPool.getPlayer(forPlayerId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			Player forPlayer = sampObjectStore.getPlayer(forPlayerId);
 			
 			PlayerStreamInEvent event = new PlayerStreamInEvent(player, forPlayer);
 			eventManager.dispatchEvent(event, player, forPlayer);
@@ -790,8 +790,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			Player forPlayer = sampObjectPool.getPlayer(forPlayerId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			Player forPlayer = sampObjectStore.getPlayer(forPlayerId);
 			
 			PlayerStreamOutEvent event = new PlayerStreamOutEvent(player, forPlayer);
 			eventManager.dispatchEvent(event, player, forPlayer);
@@ -810,8 +810,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Vehicle vehicle = sampObjectPool.getVehicle(vehicleId);
-			Player player = sampObjectPool.getPlayer(forPlayerId);
+			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
+			Player player = sampObjectStore.getPlayer(forPlayerId);
 			
 			VehicleStreamInEvent event = new VehicleStreamInEvent(vehicle, player);
 			eventManager.dispatchEvent(event, vehicle, player);
@@ -830,8 +830,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Vehicle vehicle = sampObjectPool.getVehicle(vehicleId);
-			Player player = sampObjectPool.getPlayer(forPlayerId);
+			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
+			Player player = sampObjectStore.getPlayer(forPlayerId);
 			
 			VehicleStreamOutEvent event = new VehicleStreamOutEvent(vehicle, player);
 			eventManager.dispatchEvent(event, vehicle, player);
@@ -850,8 +850,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			Dialog dialog = sampObjectPool.getDialog(dialogId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			Dialog dialog = sampObjectStore.getDialog(dialogId);
 			
 			if (dialog == null) return 0;
 			
@@ -872,8 +872,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			Player issuer = sampObjectPool.getPlayer(issuerId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			Player issuer = sampObjectStore.getPlayer(issuerId);
 			
 			PlayerTakeDamageEvent event = new PlayerTakeDamageEvent(player, issuer, amount, weaponId);
 			eventManager.dispatchEvent(event, player);
@@ -892,8 +892,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			Player victim = sampObjectPool.getPlayer(damagedId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			Player victim = sampObjectStore.getPlayer(damagedId);
 			
 			PlayerGiveDamageEvent event = new PlayerGiveDamageEvent(player, victim, amount, weaponId);
 			eventManager.dispatchEvent(event, player);
@@ -912,7 +912,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
+			Player player = sampObjectStore.getPlayer(playerId);
 			
 			PlayerClickMapEvent event = new PlayerClickMapEvent(player, x, y, z);
 			eventManager.dispatchEvent(event, player);
@@ -931,8 +931,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 	{
 		try
 		{
-			Player player = sampObjectPool.getPlayer(playerId);
-			Player clickedPlayer = sampObjectPool.getPlayer(clickedPlayerId);
+			Player player = sampObjectStore.getPlayer(playerId);
+			Player clickedPlayer = sampObjectStore.getPlayer(clickedPlayerId);
 			
 			PlayerClickPlayerEvent event = new PlayerClickPlayerEvent(player, clickedPlayer, source);
 			eventManager.dispatchEvent(event, player, clickedPlayer);
@@ -955,7 +955,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			int interval = (int) (nowTick - lastProcessTimeMillis);
 			lastProcessTimeMillis = nowTick;
 			
-			for (Timer timer : sampObjectPool.getTimers())
+			for (Timer timer : sampObjectStore.getTimers())
 			{
 				timer.tick(interval);
 			}

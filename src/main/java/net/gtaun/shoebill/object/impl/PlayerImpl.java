@@ -17,7 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.constant.DialogStyle;
@@ -117,8 +117,8 @@ public abstract class PlayerImpl implements Player
 		SampNativeFunction.getPlayerVelocity(id, velocity);
 		SampNativeFunction.getPlayerKeys(id, keyState);
 		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		if (pool.getPlayer(id) != null) throw new UnsupportedOperationException();
+		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
+		if (store.getPlayer(id) != null) throw new UnsupportedOperationException();
 		
 		eventHandler = new PlayerEventHandler()
 		{
@@ -413,7 +413,7 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return null;
 		
 		int vehicleId = SampNativeFunction.getPlayerVehicleID(id);
-		return ShoebillImpl.getInstance().getSampObjectPool().getVehicle(vehicleId);
+		return ShoebillImpl.getInstance().getSampObjectStore().getVehicle(vehicleId);
 	}
 	
 	@Override
@@ -764,7 +764,7 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return;
 		
 		if (message == null) throw new NullPointerException();
-		for (Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers())
+		for (Player player : ShoebillImpl.getInstance().getSampObjectStore().getPlayers())
 		{
 			sendChat(player, message);
 		}
@@ -914,7 +914,7 @@ public abstract class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return null;
 		
-		return ShoebillImpl.getInstance().getSampObjectPool().getMenu(SampNativeFunction.getPlayerMenu(id));
+		return ShoebillImpl.getInstance().getSampObjectStore().getMenu(SampNativeFunction.getPlayerMenu(id));
 	}
 	
 	@Override
@@ -1196,7 +1196,7 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return null;
 		
 		int vehicleId = SampNativeFunction.getPlayerSurfingVehicleID(id);
-		return ShoebillImpl.getInstance().getSampObjectPool().getVehicle(vehicleId);
+		return ShoebillImpl.getInstance().getSampObjectStore().getVehicle(vehicleId);
 	}
 	
 	@Override
@@ -1319,7 +1319,7 @@ public abstract class PlayerImpl implements Player
 		int objectid = SampNativeFunction.getPlayerSurfingObjectID(id);
 		if (objectid == SampObject.INVALID_ID) return null;
 		
-		return ShoebillImpl.getInstance().getSampObjectPool().getObject(objectid);
+		return ShoebillImpl.getInstance().getSampObjectStore().getObject(objectid);
 	}
 	
 	@Override
@@ -1335,7 +1335,7 @@ public abstract class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return null;
 		
-		return ShoebillImpl.getInstance().getSampObjectPool().getPlayer(SampNativeFunction.getPlayerTargetPlayer(id));
+		return ShoebillImpl.getInstance().getSampObjectStore().getPlayer(SampNativeFunction.getPlayerTargetPlayer(id));
 	}
 	
 	@Override

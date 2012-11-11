@@ -124,7 +124,7 @@ public abstract class CheckpointImpl implements Checkpoint
 	@Override
 	public void update()
 	{
-		Collection<? extends Player> players = ShoebillImpl.getInstance().getSampObjectPool().getPlayers();
+		Collection<? extends Player> players = ShoebillImpl.getInstance().getSampObjectStore().getPlayers();
 		for (Player player : players)
 		{
 			if (player == null) continue;
@@ -136,7 +136,7 @@ public abstract class CheckpointImpl implements Checkpoint
 	public Collection<Player> getUsingPlayers()
 	{
 		Collection<Player> usingPlayers = new ArrayList<>();
-		Collection<Player> players = ShoebillImpl.getInstance().getSampObjectPool().getPlayers();
+		Collection<Player> players = ShoebillImpl.getInstance().getSampObjectStore().getPlayers();
 		for (Player player : players)
 		{
 			if (player.getCheckpoint() == this) usingPlayers.add(player);

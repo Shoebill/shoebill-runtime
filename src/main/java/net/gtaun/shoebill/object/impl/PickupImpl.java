@@ -17,7 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.exception.CreationFailedException;
@@ -67,8 +67,8 @@ public abstract class PickupImpl implements Pickup
 		
 		SampNativeFunction.destroyPickup(id);
 		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		pool.setPickup(id, null);
+		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
+		store.setPickup(id, null);
 		
 		id = INVALID_ID;
 	}

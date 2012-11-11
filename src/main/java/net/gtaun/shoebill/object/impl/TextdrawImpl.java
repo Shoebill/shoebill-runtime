@@ -17,7 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectPoolImpl;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
@@ -41,7 +41,7 @@ public abstract class TextdrawImpl implements Textdraw
 	private Vector2D position;
 	private String text;
 	
-	private boolean[] isPlayerShowed = new boolean[SampObjectPoolImpl.MAX_PLAYERS];
+	private boolean[] isPlayerShowed = new boolean[SampObjectStoreImpl.MAX_PLAYERS];
 	
 	
 	public TextdrawImpl(float x, float y, String text) throws CreationFailedException
@@ -74,8 +74,8 @@ public abstract class TextdrawImpl implements Textdraw
 		
 		SampNativeFunction.textDrawDestroy(id);
 		
-		SampObjectPoolImpl pool = (SampObjectPoolImpl) ShoebillImpl.getInstance().getSampObjectPool();
-		pool.setTextdraw(id, null);
+		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
+		store.setTextdraw(id, null);
 		
 		id = INVALID_ID;
 	}

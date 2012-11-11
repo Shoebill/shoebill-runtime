@@ -105,7 +105,7 @@ public abstract class ServerImpl implements Server
 	@Override
 	public void sendMessageToAll(Color color, String message)
 	{
-		for (Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers())
+		for (Player player : ShoebillImpl.getInstance().getSampObjectStore().getPlayers())
 		{
 			player.sendMessage(color, message);
 		}
@@ -114,7 +114,7 @@ public abstract class ServerImpl implements Server
 	@Override
 	public void sendMessageToAll(Color color, String format, Object... args)
 	{
-		for (Player player : ShoebillImpl.getInstance().getSampObjectPool().getPlayers())
+		for (Player player : ShoebillImpl.getInstance().getSampObjectStore().getPlayers())
 		{
 			String message = String.format(format, args);
 			player.sendMessage(color, message);
