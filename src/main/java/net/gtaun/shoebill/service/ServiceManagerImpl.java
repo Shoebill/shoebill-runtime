@@ -42,9 +42,15 @@ public class ServiceManagerImpl implements ServiceManager
 	}
 
 	@Override
-	public void unregisterService(Class<? extends Service> type)
+	public <T extends Service> void unregisterService(Class<T> type)
 	{
 		services.remove(type);
+	}
+	
+	public <T extends Service> void unregisterService(Class<T> type, T service)
+	{
+		Service s = services.get(type);
+		if(s == service) services.remove(type);
 	}
 	
 	@Override
