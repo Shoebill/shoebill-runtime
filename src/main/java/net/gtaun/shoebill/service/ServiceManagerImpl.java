@@ -34,12 +34,14 @@ public class ServiceManagerImpl implements ServiceManager
 	{
 		services = new HashMap<>();
 	}
-	
+
+	@Override
 	public <T extends Service> void registerService(Class<T> type, T service)
 	{
 		services.put(type, service);
 	}
-	
+
+	@Override
 	public void unregisterService(Class<? extends Service> type)
 	{
 		services.remove(type);

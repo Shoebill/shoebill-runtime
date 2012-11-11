@@ -319,7 +319,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	}
 	
 	@Override
-	public ServiceManagerImpl getServiceManager()
+	public ServiceManagerImpl getServiceStore()
 	{
 		return serviceManager;
 	}
