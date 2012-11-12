@@ -214,7 +214,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		
 		gamemodeManager = new GamemodeManagerImpl(this, classLoader, gamemodeDir, dataDir);
 		pluginManager = new PluginManagerImpl(this, classLoader, pluginDir, dataDir);
-		serviceManager = new ServiceManagerImpl();
+		serviceManager = new ServiceManagerImpl(eventManager);
 		
 		sampObjectStore = new SampObjectStoreImpl(eventManager);
 		sampObjectFactory = new SampObjectFactoryImpl(sampObjectStore);
