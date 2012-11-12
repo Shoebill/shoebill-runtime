@@ -16,11 +16,14 @@
 
 package net.gtaun.shoebill.proxy;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -78,11 +81,49 @@ public class ProxyManagerImpl implements ProxyManager
 		};
 	}
 	
-	public class ManageHelper
+	public class MethodInterceptorImpl implements MethodInterceptor
 	{
-		public void cancel(MethodInterceptor methodInterceptor)
+		private final Method method;
+		private final Interceptor interceptor;
+		private final short priority;
+		
+		
+		public MethodInterceptorImpl(Method method, Interceptor interceptor, short priority)
 		{
-			removeMethodInterceptor(methodInterceptor);
+			this.method = method;
+			this.interceptor = interceptor;
+			this.priority = priority;
+		}
+		
+		@Override
+		protected void finalize() throws Throwable
+		{
+			super.finalize();
+			removeMethodInterceptor(this);
+		}
+		
+		@Override
+		public Method getMethod()
+		{
+			return method;
+		}
+		
+		@Override
+		public Interceptor getInterceptor()
+		{
+			return interceptor;
+		}
+		
+		@Override
+		public short getPriority()
+		{
+			return priority;
+		}
+		
+		@Override
+		public void cancel()
+		{
+			removeMethodInterceptor(this);
 		}
 	}
 	
@@ -97,8 +138,7 @@ public class ProxyManagerImpl implements ProxyManager
 	
 	
 	private final Callback callback;
-	private final Map<String, Collection<MethodInterceptor>> methodMapInterceptors;
-	private final ManageHelper manageHelper;
+	private final Map<String, Collection<Reference<MethodInterceptor>>> methodMapInterceptors;
 	
 	
 	private ProxyManagerImpl()
@@ -111,14 +151,20 @@ public class ProxyManagerImpl implements ProxyManager
 				final String methodName = method.getName();
 				if(methodName.equals(METHOD_NAME_GET_PROXY_MANAGER)) return ProxyManagerImpl.this;
 				
-				Collection<MethodInterceptor> interceptors = methodMapInterceptors.get(methodName);
+				Collection<Reference<MethodInterceptor>> interceptors = methodMapInterceptors.get(methodName);
 				if (interceptors == null)
 				{
 					return proxy.invokeSuper(obj, args);
 				}
 				
 				final Queue<MethodInterceptor> interceptorQueue = new PriorityQueue<>(interceptors.size(), METHOD_INTERCEOTOR_COMPARTOR);
-				interceptorQueue.addAll(interceptors);
+				Iterator<Reference<MethodInterceptor>> iterator = interceptors.iterator();
+				while(iterator.hasNext())
+				{
+					MethodInterceptor interceptor = iterator.next().get();
+					if(interceptor == null) iterator.remove();
+					else interceptorQueue.add(interceptor);
+				}
 				
 				final Helper helper = new Helper()
 				{
@@ -153,32 +199,40 @@ public class ProxyManagerImpl implements ProxyManager
 		};
 		
 		methodMapInterceptors = new HashMap<>();
-		manageHelper = new ManageHelper();
 	}
 	
-	public void addMethodInterceptor(MethodInterceptor methodInterceptor)
+	private void addMethodInterceptor(MethodInterceptor methodInterceptor)
 	{
 		final Method method = methodInterceptor.getMethod();
 		final String methodName = method.getName();
 		
-		Collection<MethodInterceptor> methodInterceptors = methodMapInterceptors.get(methodName);
+		Collection<Reference<MethodInterceptor>> methodInterceptors = methodMapInterceptors.get(methodName);
 		if (methodInterceptors == null)
 		{
 			methodInterceptors = new ConcurrentLinkedQueue<>();
 			methodMapInterceptors.put(methodName, methodInterceptors);
 		}
 		
-		methodInterceptors.add(methodInterceptor);
+		methodInterceptors.add(new WeakReference<MethodInterceptor>(methodInterceptor));
 	}
-	
-	public void removeMethodInterceptor(MethodInterceptor methodInterceptor)
+
+	private void removeMethodInterceptor(MethodInterceptor methodInterceptor)
 	{
 		final Method method = methodInterceptor.getMethod();
 		final String methodName = method.getName();
 		
-		Collection<MethodInterceptor> methodInterceptors = methodMapInterceptors.get(methodName);
+		Collection<Reference<MethodInterceptor>> methodInterceptors = methodMapInterceptors.get(methodName);
+		Iterator<Reference<MethodInterceptor>> iterator = methodInterceptors.iterator();
 		
-		methodInterceptors.remove(methodInterceptor);
+		while(iterator.hasNext())
+		{
+			MethodInterceptor value = iterator.next().get();
+			if(value == methodInterceptor || value == null)
+			{
+				iterator.remove();
+			}
+		}
+		
 		if (methodInterceptors.isEmpty())
 		{
 			methodMapInterceptors.remove(methodName);
@@ -194,7 +248,7 @@ public class ProxyManagerImpl implements ProxyManager
 	@Override
 	public MethodInterceptor createMethodInterceptor(Method method, Interceptor interceptor, short priority)
 	{
-		MethodInterceptor methodInterceptor = new MethodInterceptorImpl(manageHelper, method, interceptor, priority);
+		MethodInterceptor methodInterceptor = new MethodInterceptorImpl(method, interceptor, priority);
 		addMethodInterceptor(methodInterceptor);
 		return methodInterceptor;
 	}

@@ -57,7 +57,7 @@ public class ProxyManagerTest
 		A a = ProxyManagerImpl.createProxyableFactory(B.class).create();
 		
 		Method method = A.class.getMethod("method", int.class);
-		a.getProxyManager().createMethodInterceptor(method, 
+		MethodInterceptor interceptor = a.getProxyManager().createMethodInterceptor(method, 
 			new Interceptor()
 			{
 				@Override
@@ -70,6 +70,11 @@ public class ProxyManagerTest
 		
 		int ret = a.method(0);
 
+		assertEquals(1, ret);
+		assertEquals(1, counter.getTaps());
+		
+		interceptor.cancel();
+		
 		assertEquals(1, ret);
 		assertEquals(1, counter.getTaps());
 	}
