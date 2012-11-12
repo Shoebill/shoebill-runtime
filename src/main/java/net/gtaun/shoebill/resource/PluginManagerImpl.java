@@ -18,6 +18,7 @@
 package net.gtaun.shoebill.resource;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
@@ -31,7 +32,6 @@ import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.events.plugin.PluginLoadEvent;
 import net.gtaun.shoebill.events.plugin.PluginUnloadEvent;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -45,6 +45,15 @@ import org.slf4j.LoggerFactory;
 public class PluginManagerImpl implements PluginManager
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PluginManagerImpl.class);
+	private static final FilenameFilter JAR_FILENAME_FILTER = new FilenameFilter()
+	{
+		@Override
+		public boolean accept(File dir, String name)
+		{
+			return name.endsWith(".jar");
+		}
+	};
+	
 	
 	private ClassLoader classLoader;
 	private Shoebill shoebill;
@@ -81,7 +90,7 @@ public class PluginManagerImpl implements PluginManager
 	private Map<File, PluginDescription> generateDescriptions(File dir)
 	{
 		Map<File, PluginDescription> descriptions = new HashMap<>();
-		Collection<File> files = FileUtils.listFiles(dir, new String[] { "jar" }, true);
+		File[] files = dir.listFiles(JAR_FILENAME_FILTER);
 		
 		for (File file : files)
 		{

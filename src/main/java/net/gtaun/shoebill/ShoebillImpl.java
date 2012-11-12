@@ -18,13 +18,13 @@ package net.gtaun.shoebill;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collection;
 import java.util.Properties;
 
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
@@ -41,7 +41,6 @@ import net.gtaun.shoebill.util.log.LoggerOutputStream;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManagerImpl;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.log4j.PropertyConfigurator;
@@ -56,6 +55,15 @@ import org.slf4j.LoggerFactory;
 public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);
+	private static final FilenameFilter JAR_FILENAME_FILTER = new FilenameFilter()
+	{
+		@Override
+		public boolean accept(File dir, String name)
+		{
+			return name.endsWith(".jar");
+		}
+	};
+	
 	
 	private static ShoebillImpl instance;
 	
@@ -248,23 +256,26 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	
 	private ClassLoader generateResourceClassLoader(File pluginDir, File gamemodeDir)
 	{
-		String[] exts = { "jar" };
-		Collection<File> files = FileUtils.listFiles(pluginDir, exts, true);
-		files.addAll(FileUtils.listFiles(gamemodeDir, exts, true));
+		File[] pluginFiles = pluginDir.listFiles(JAR_FILENAME_FILTER);
+		File[] gamemodeFiles = gamemodeDir.listFiles(JAR_FILENAME_FILTER);
 		
-		URL[] urls = new URL[files.size()];
-		int i = 0;
-		
-		for (File file : files)
+		URL[] urls = new URL[pluginFiles.length + gamemodeFiles.length];
+		int idx = 0;
+
+		File[][] fileArrays = {pluginFiles, gamemodeFiles};
+		for (File[] files : fileArrays)
 		{
-			try
+			for (File file : files)
 			{
-				urls[i] = file.toURI().toURL();
-				i++;
-			}
-			catch (MalformedURLException e)
-			{
-				e.printStackTrace();
+				try
+				{
+					urls[idx] = file.toURI().toURL();
+					idx++;
+				}
+				catch (MalformedURLException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 		

@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import net.gtaun.shoebill.events.service.ServiceRegisterEvent;
-import net.gtaun.shoebill.events.service.ServiceRegisterEvent;
 import net.gtaun.shoebill.events.service.ServiceUnregisterEvent;
 import net.gtaun.shoebill.resource.Resource;
 import net.gtaun.util.event.EventManager;

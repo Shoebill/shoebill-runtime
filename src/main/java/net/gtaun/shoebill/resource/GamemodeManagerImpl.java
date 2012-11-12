@@ -17,6 +17,7 @@
 package net.gtaun.shoebill.resource;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +27,6 @@ import java.util.Map;
 import net.gtaun.shoebill.GamemodeManager;
 import net.gtaun.shoebill.Shoebill;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -40,6 +40,14 @@ import org.slf4j.LoggerFactory;
 public class GamemodeManagerImpl implements GamemodeManager
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GamemodeManagerImpl.class);
+	private static final FilenameFilter JAR_FILENAME_FILTER = new FilenameFilter()
+	{
+		@Override
+		public boolean accept(File dir, String name)
+		{
+			return name.endsWith(".jar");
+		}
+	};
 	
 	
 	private Shoebill shoebill;
@@ -75,7 +83,7 @@ public class GamemodeManagerImpl implements GamemodeManager
 	private Map<File, GamemodeDescription> generateDescriptions(File dir)
 	{
 		Map<File, GamemodeDescription> descriptions = new HashMap<>();
-		Collection<File> files = FileUtils.listFiles(dir, new String[] { "jar" }, true);
+		File[] files = dir.listFiles(JAR_FILENAME_FILTER);
 		
 		for (File file : files)
 		{
