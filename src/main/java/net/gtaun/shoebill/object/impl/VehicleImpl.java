@@ -38,7 +38,7 @@ import net.gtaun.shoebill.object.VehicleDamage;
 import net.gtaun.shoebill.object.VehicleParam;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.EventManager.Priority;
+import net.gtaun.util.event.EventManager.HandlerPriority;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -118,8 +118,8 @@ public abstract class VehicleImpl implements Vehicle
 		};
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
-		eventManager.addHandler(VehicleModEvent.class, eventHandler, Priority.MONITOR);
-		eventManager.addHandler(VehicleUpdateDamageEvent.class, eventHandler, Priority.MONITOR);
+		eventManager.addHandler(VehicleModEvent.class, eventHandler, HandlerPriority.MONITOR);
+		eventManager.addHandler(VehicleUpdateDamageEvent.class, eventHandler, HandlerPriority.MONITOR);
 		
 		VehicleSpawnEvent event = new VehicleSpawnEvent(this);
 		eventManager.dispatchEvent(event, this);

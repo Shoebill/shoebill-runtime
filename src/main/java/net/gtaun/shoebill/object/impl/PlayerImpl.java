@@ -60,7 +60,7 @@ import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.EventManager.Priority;
+import net.gtaun.util.event.EventManager.HandlerPriority;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -154,9 +154,9 @@ public abstract class PlayerImpl implements Player
 		};
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
-		eventManager.addHandler(PlayerUpdateEvent.class, eventHandler, Priority.MONITOR);
-		eventManager.addHandler(PlayerDisconnectEvent.class, eventHandler, Priority.BOTTOM);
-		eventManager.addHandler(DialogResponseEvent.class, eventHandler, Priority.MONITOR);
+		eventManager.addHandler(PlayerUpdateEvent.class, eventHandler, HandlerPriority.MONITOR);
+		eventManager.addHandler(PlayerDisconnectEvent.class, eventHandler, HandlerPriority.BOTTOM);
+		eventManager.addHandler(DialogResponseEvent.class, eventHandler, HandlerPriority.MONITOR);
 	}
 	
 	@Override
