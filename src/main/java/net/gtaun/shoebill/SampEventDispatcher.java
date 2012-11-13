@@ -142,7 +142,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			PlayerDisconnectEvent event = new PlayerDisconnectEvent(player, reason);
 			eventManager.dispatchEvent(event, player);
 			
-			sampObjectStore.removePlayer(player);
+			sampObjectStore.setPlayer(playerId, null);
 			return 1;
 		}
 		catch (Exception e)

@@ -20,6 +20,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -74,6 +75,15 @@ public class SampObjectStoreImpl implements SampObjectStore
 		return list;
 	}
 	
+	private static <T> void clearUnusedReferences(Collection<Reference<T>> collection)
+	{
+		Iterator<Reference<T>> iterator = collection.iterator();
+		while(iterator.hasNext())
+		{
+			if(iterator.next().get() == null) iterator.remove();
+		}
+	}
+	
 	
 	private SampCallbackHandler callbackHandler;
 	
@@ -104,7 +114,6 @@ public class SampObjectStoreImpl implements SampObjectStore
 			{
 				try
 				{
-					playerObjectsArrays[playerid] = new PlayerObject[MAX_OBJECTS];
 					playerObjectsArrays[playerid] = new PlayerObject[MAX_OBJECTS];
 					playerLabelsArrays[playerid] = new PlayerLabel[MAX_PLAYER_LABELS];
 					
@@ -418,7 +427,30 @@ public class SampObjectStoreImpl implements SampObjectStore
 	
 	public void setPlayer(int id, Player player)
 	{
+		if(player == null && players[id] != null)
+		{
+			removePlayer(id);
+			return;
+		}
+			
 		players[id] = player;
+	}
+	
+	private void removePlayer(int id)
+	{
+		for (PlayerLabel playerLabel : playerLabelsArrays[id])
+		{
+			playerLabel.destroy();
+		}
+		
+		for (PlayerObject playerObject : playerObjectsArrays[id])
+		{
+			playerObject.destroy();
+		}
+
+		playerLabelsArrays[id] = null;
+		playerObjectsArrays[id] = null;
+		players[id] = null;
 	}
 	
 	public void setVehicle(int id, Vehicle vehicle)
@@ -470,36 +502,13 @@ public class SampObjectStoreImpl implements SampObjectStore
 	
 	public void putTimer(Timer timer)
 	{
-		for (Reference<Timer> ref : timers)
-		{
-			if (ref.get() == null) timers.remove(ref);
-		}
-		
+		clearUnusedReferences(timers);
 		timers.add(new WeakReference<Timer>(timer));
 	}
 	
 	public void putDialog(int id, Dialog dialog)
 	{
-		for (Entry<Integer, Reference<Dialog>> entry : dialogs.entrySet())
-		{
-			if (entry.getValue().get() == null) dialogs.remove(entry.getKey());
-		}
-		
+		clearUnusedReferences(dialogs.values());
 		dialogs.put(id, new WeakReference<Dialog>(dialog));
-	}
-	
-	public void removePlayer(Player player)
-	{
-		for (PlayerLabel playerLabel : getPlayerLabels(player))
-		{
-			playerLabel.destroy();
-		}
-		
-		for (PlayerObject playerObject : getPlayerObjects(player))
-		{
-			playerObject.destroy();
-		}
-		
-		setPlayer(player.getId(), null);
 	}
 }
