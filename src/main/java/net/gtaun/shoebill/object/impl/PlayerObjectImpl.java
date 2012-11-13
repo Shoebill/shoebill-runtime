@@ -28,6 +28,7 @@ import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
+import net.gtaun.util.event.EventManager.HandlerEntry;
 import net.gtaun.util.event.EventManager.HandlerPriority;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -51,6 +52,8 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	private Player attachedPlayer;
 	
 	private ObjectEventHandler eventHandler;
+	
+	private HandlerEntry movedEventHandlerEntry;
 	
 	
 	public PlayerObjectImpl(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
@@ -80,7 +83,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 		};
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
-		eventManager.addHandler(PlayerObjectMovedEvent.class, eventHandler, HandlerPriority.MONITOR);
+		movedEventHandlerEntry = eventManager.addHandler(PlayerObjectMovedEvent.class, eventHandler, HandlerPriority.MONITOR);
 	}
 	
 	@Override
@@ -93,6 +96,8 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public void destroy()
 	{
 		if (isDestroyed()) return;
+		
+		movedEventHandlerEntry.cancel();
 		
 		if (player.isOnline())
 		{

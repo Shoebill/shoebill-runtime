@@ -60,6 +60,7 @@ import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
+import net.gtaun.util.event.EventManager.HandlerEntry;
 import net.gtaun.util.event.EventManager.HandlerPriority;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -98,6 +99,10 @@ public abstract class PlayerImpl implements Player
 	private Dialog dialog;
 	
 	private PlayerEventHandler eventHandler;
+
+	private HandlerEntry updateEventHandlerEntry;
+	private HandlerEntry disconnectEventHandlerEntry;
+	private HandlerEntry dialogResponseEventHandlerEntry;
 	
 	
 	public PlayerImpl(int id)
@@ -154,9 +159,18 @@ public abstract class PlayerImpl implements Player
 		};
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
-		eventManager.addHandler(PlayerUpdateEvent.class, eventHandler, HandlerPriority.MONITOR);
-		eventManager.addHandler(PlayerDisconnectEvent.class, eventHandler, HandlerPriority.BOTTOM);
-		eventManager.addHandler(DialogResponseEvent.class, eventHandler, HandlerPriority.MONITOR);
+		updateEventHandlerEntry = eventManager.addHandler(PlayerUpdateEvent.class, eventHandler, HandlerPriority.MONITOR);
+		disconnectEventHandlerEntry = eventManager.addHandler(PlayerDisconnectEvent.class, eventHandler, HandlerPriority.BOTTOM);
+		dialogResponseEventHandlerEntry = eventManager.addHandler(DialogResponseEvent.class, eventHandler, HandlerPriority.MONITOR);
+	}
+	
+	@Override
+	protected void finalize() throws Throwable
+	{
+		super.finalize();
+		updateEventHandlerEntry.cancel();
+		disconnectEventHandlerEntry.cancel();
+		dialogResponseEventHandlerEntry.cancel();
 	}
 	
 	@Override

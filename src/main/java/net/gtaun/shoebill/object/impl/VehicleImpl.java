@@ -38,6 +38,7 @@ import net.gtaun.shoebill.object.VehicleDamage;
 import net.gtaun.shoebill.object.VehicleParam;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
+import net.gtaun.util.event.EventManager.HandlerEntry;
 import net.gtaun.util.event.EventManager.HandlerPriority;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -63,6 +64,9 @@ public abstract class VehicleImpl implements Vehicle
 	private VehicleDamageImpl damage;
 	
 	private VehicleEventHandler eventHandler;
+
+	private HandlerEntry modEventHandlerEntry;
+	private HandlerEntry updateDamageEventHandlerEntry;
 	
 	
 	public VehicleImpl(int modelId, LocationAngle loc, int color1, int color2, int respawnDelay) throws CreationFailedException
@@ -118,8 +122,8 @@ public abstract class VehicleImpl implements Vehicle
 		};
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
-		eventManager.addHandler(VehicleModEvent.class, eventHandler, HandlerPriority.MONITOR);
-		eventManager.addHandler(VehicleUpdateDamageEvent.class, eventHandler, HandlerPriority.MONITOR);
+		modEventHandlerEntry = eventManager.addHandler(VehicleModEvent.class, eventHandler, HandlerPriority.MONITOR);
+		updateDamageEventHandlerEntry = eventManager.addHandler(VehicleUpdateDamageEvent.class, eventHandler, HandlerPriority.MONITOR);
 		
 		VehicleSpawnEvent event = new VehicleSpawnEvent(this);
 		eventManager.dispatchEvent(event, this);
@@ -136,6 +140,9 @@ public abstract class VehicleImpl implements Vehicle
 	{
 		if (isDestroyed()) return;
 		if (isStatic) return;
+		
+		modEventHandlerEntry.cancel();
+		updateDamageEventHandlerEntry.cancel();
 		
 		VehicleDestroyEvent event = new VehicleDestroyEvent(this);
 		ShoebillLowLevel shoebillLowLevel = ShoebillImpl.getInstance();
