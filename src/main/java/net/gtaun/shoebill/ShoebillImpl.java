@@ -225,7 +225,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		serviceManager = new ServiceManagerImpl(eventManager);
 		
 		sampObjectStore = new SampObjectStoreImpl(eventManager);
-		sampObjectFactory = new SampObjectFactoryImpl(sampObjectStore);
+		sampObjectFactory = new SampObjectFactoryImpl(eventManager, sampObjectStore);
 		sampObjectFactory.createWorld();
 		sampObjectFactory.createServer();
 		

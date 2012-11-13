@@ -17,12 +17,13 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
+import net.gtaun.shoebill.events.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.util.event.EventManager;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -67,8 +68,9 @@ public abstract class PickupImpl implements Pickup
 		
 		SampNativeFunction.destroyPickup(id);
 		
-		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
-		store.setPickup(id, null);
+		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		DestroyEvent destroyEvent = new DestroyEvent(this);
+		eventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}

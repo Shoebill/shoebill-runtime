@@ -20,6 +20,7 @@ import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.events.ObjectEventHandler;
+import net.gtaun.shoebill.events.destroyable.DestroyEvent;
 import net.gtaun.shoebill.events.object.PlayerObjectMovedEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
@@ -102,8 +103,11 @@ public abstract class PlayerObjectImpl implements PlayerObject
 		if (player.isOnline())
 		{
 			SampNativeFunction.destroyPlayerObject(player.getId(), id);
-			
 		}
+		
+		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		DestroyEvent destroyEvent = new DestroyEvent(this);
+		eventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}

@@ -20,7 +20,10 @@ import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.events.DestroyEventHandler;
+import net.gtaun.shoebill.events.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
+import net.gtaun.shoebill.object.Destroyable;
 import net.gtaun.shoebill.object.Dialog;
 import net.gtaun.shoebill.object.Label;
 import net.gtaun.shoebill.object.Menu;
@@ -51,6 +54,10 @@ import net.gtaun.shoebill.object.impl.WorldImpl;
 import net.gtaun.shoebill.object.impl.ZoneImpl;
 import net.gtaun.shoebill.proxy.ProxyManagerImpl;
 import net.gtaun.shoebill.proxy.ProxyableFactory;
+import net.gtaun.util.event.EventHandler;
+import net.gtaun.util.event.EventManager;
+import net.gtaun.util.event.EventManager.HandlerEntry;
+import net.gtaun.util.event.EventManager.HandlerPriority;
 
 /**
  * 
@@ -74,6 +81,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	private static final Class<?>[] TIMER_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, int.class };
 	
 	
+	private final EventManager eventManager;
 	private final SampObjectStoreImpl store;
 	
 	private ProxyableFactory<WorldImpl> worldFactory;
@@ -91,11 +99,21 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	private ProxyableFactory<DialogImpl> dialogFactory;
 	private ProxyableFactory<TimerImpl> timerFactory;
 	
+	private HandlerEntry destroyEventHandlerEntry;
 	
-	public SampObjectFactoryImpl(SampObjectStoreImpl store)
+	
+	public SampObjectFactoryImpl(EventManager eventManager, SampObjectStoreImpl store)
 	{
+		this.eventManager = eventManager;
 		this.store = store;
 		initialize();
+	}
+	
+	@Override
+	protected void finalize() throws Throwable
+	{
+		super.finalize();
+		destroyEventHandlerEntry.cancel();
 	}
 	
 	private void initialize()
@@ -114,6 +132,62 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 		menuFactory = ProxyManagerImpl.createProxyableFactory(MenuImpl.class);
 		dialogFactory = ProxyManagerImpl.createProxyableFactory(DialogImpl.class);
 		timerFactory = ProxyManagerImpl.createProxyableFactory(TimerImpl.class);
+		
+		EventHandler eventHandler = new DestroyEventHandler()
+		{
+			@Override
+			public void onDestroy(DestroyEvent event)
+			{
+				Destroyable obj = event.getDestroyable();
+				
+				if(obj instanceof VehicleImpl)
+				{
+					Vehicle vehicle = (Vehicle) obj;
+					store.setVehicle(vehicle.getId(), null);
+				}
+				else if(obj instanceof PlayerObject)
+				{
+					PlayerObject object = (PlayerObject) obj;
+					store.setPlayerObject(object.getPlayer(), object.getId(), null);
+				}
+				else if(obj instanceof SampObject)
+				{
+					SampObject object = (SampObject) obj;
+					store.setObject(object.getId(), null);
+				}
+				else if (obj instanceof Pickup)
+				{
+					Pickup pickup = (Pickup) obj;
+					store.setPickup(pickup.getId(), null);
+				}
+				else if (obj instanceof PlayerLabel)
+				{
+					PlayerLabel label = (PlayerLabel) obj;
+					store.setPlayerLabel(label.getPlayer(), label.getId(), null);
+				}
+				else if (obj instanceof Label)
+				{
+					Label label = (Label) obj;
+					store.setLabel(label.getId(), null);
+				}
+				else if (obj instanceof Textdraw)
+				{
+					Textdraw textdraw = (Textdraw) obj;
+					store.setTextdraw(textdraw.getId(), null);
+				}
+				else if (obj instanceof Zone)
+				{
+					Zone zone = (Zone) obj;
+					store.setZone(zone.getId(), null);
+				}
+				else if (obj instanceof Menu)
+				{
+					Menu menu = (Menu) obj;
+					store.setMenu(menu.getId(), null);
+				}
+			}
+		};
+		destroyEventHandlerEntry = eventManager.addHandler(DestroyEvent.class, eventHandler, HandlerPriority.BOTTOM);
 	}
 	
 	public World createWorld()

@@ -17,13 +17,14 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Vector2D;
+import net.gtaun.shoebill.events.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.util.event.EventManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -75,8 +76,9 @@ public abstract class MenuImpl implements Menu
 		
 		SampNativeFunction.destroyMenu(id);
 		
-		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
-		store.setMenu(id, null);
+		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		DestroyEvent destroyEvent = new DestroyEvent(this);
+		eventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}

@@ -16,14 +16,17 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.events.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerLabel;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.util.event.EventManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -120,8 +123,11 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 		if (player.isOnline())
 		{
 			SampNativeFunction.deletePlayer3DTextLabel(player.getId(), id);
-			
 		}
+		
+		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		DestroyEvent destroyEvent = new DestroyEvent(this);
+		eventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}

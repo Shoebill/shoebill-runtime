@@ -17,7 +17,6 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.data.Location;
@@ -26,6 +25,7 @@ import net.gtaun.shoebill.data.Quaternion;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.events.VehicleEventHandler;
+import net.gtaun.shoebill.events.destroyable.DestroyEvent;
 import net.gtaun.shoebill.events.vehicle.VehicleDestroyEvent;
 import net.gtaun.shoebill.events.vehicle.VehicleModEvent;
 import net.gtaun.shoebill.events.vehicle.VehicleSpawnEvent;
@@ -144,14 +144,16 @@ public abstract class VehicleImpl implements Vehicle
 		modEventHandlerEntry.cancel();
 		updateDamageEventHandlerEntry.cancel();
 		
-		VehicleDestroyEvent event = new VehicleDestroyEvent(this);
 		ShoebillLowLevel shoebillLowLevel = ShoebillImpl.getInstance();
-		shoebillLowLevel.getEventManager().dispatchEvent(event, this);
+		EventManager eventManager = shoebillLowLevel.getEventManager();
+		
+		VehicleDestroyEvent event = new VehicleDestroyEvent(this);
+		eventManager.dispatchEvent(event, this);
 		
 		SampNativeFunction.destroyVehicle(id);
 		
-		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
-		store.setVehicle(id, null);
+		DestroyEvent destroyEvent = new DestroyEvent(this);
+		eventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}
