@@ -29,12 +29,10 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import net.gtaun.shoebill.object.Proxyable;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Helper;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Interceptor;
 import net.gtaun.shoebill.proxy.MethodInterceptor.InterceptorPriority;
 import net.sf.cglib.proxy.Callback;
-import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodProxy;
 
 /**
@@ -45,41 +43,6 @@ import net.sf.cglib.proxy.MethodProxy;
 public class ProxyManagerImpl implements ProxyManager
 {
 	private static final String METHOD_NAME_GET_PROXY_MANAGER = "getProxyManager";
-	
-	public static <T extends Proxyable> ProxyableFactory<T> createProxyableFactory(final Class<T> clz)
-	{
-		return new ProxyableFactory<T>()
-		{
-			private final Enhancer enhancer;
-			
-			{
-				enhancer = new Enhancer();
-				enhancer.setSuperclass(clz);
-			}
-			
-			@Override
-			public T create()
-			{
-				final ProxyManagerImpl proxyManager = new ProxyManagerImpl();
-				synchronized (enhancer)
-				{
-					enhancer.setCallback(proxyManager.callback);
-					return clz.cast(enhancer.create());
-				}
-			}
-
-			@Override
-			public T create(Class<?>[] paramTypes, Object... params)
-			{
-				final ProxyManagerImpl proxyManager = new ProxyManagerImpl();
-				synchronized (enhancer)
-				{
-					enhancer.setCallback(proxyManager.callback);
-					return clz.cast(enhancer.create(paramTypes, params));
-				}
-			}
-		};
-	}
 	
 	public class MethodInterceptorImpl implements MethodInterceptor
 	{
@@ -141,7 +104,7 @@ public class ProxyManagerImpl implements ProxyManager
 	private final Map<String, Collection<Reference<MethodInterceptor>>> methodMapInterceptors;
 	
 	
-	private ProxyManagerImpl()
+	ProxyManagerImpl()
 	{
 		callback = new net.sf.cglib.proxy.MethodInterceptor()
 		{
@@ -237,6 +200,11 @@ public class ProxyManagerImpl implements ProxyManager
 		{
 			methodMapInterceptors.remove(methodName);
 		}
+	}
+	
+	Callback getCallback()
+	{
+		return callback;
 	}
 	
 	@Override
