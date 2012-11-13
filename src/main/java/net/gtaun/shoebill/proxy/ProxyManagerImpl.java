@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import net.gtaun.shoebill.object.Proxyable;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Helper;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Interceptor;
-import net.gtaun.shoebill.proxy.MethodInterceptor.Priority;
+import net.gtaun.shoebill.proxy.MethodInterceptor.InterceptorPriority;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodProxy;
@@ -240,7 +240,7 @@ public class ProxyManagerImpl implements ProxyManager
 	}
 	
 	@Override
-	public MethodInterceptor createMethodInterceptor(Method method, Interceptor interceptor, Priority priority)
+	public MethodInterceptor createMethodInterceptor(Method method, Interceptor interceptor, InterceptorPriority priority)
 	{
 		return createMethodInterceptor(method, interceptor, priority.getValue());
 	}

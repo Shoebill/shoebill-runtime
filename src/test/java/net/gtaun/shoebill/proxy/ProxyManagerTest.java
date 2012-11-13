@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 import net.gtaun.shoebill.object.Proxyable;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Helper;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Interceptor;
-import net.gtaun.shoebill.proxy.MethodInterceptor.Priority;
+import net.gtaun.shoebill.proxy.MethodInterceptor.InterceptorPriority;
 
 import org.junit.After;
 import org.junit.Before;
@@ -66,7 +66,7 @@ public class ProxyManagerTest
 					counter.tap();
 					return helper.invokeLower(obj, args);
 				}
-			}, Priority.NORMAL);
+			}, InterceptorPriority.NORMAL);
 		
 		int ret = a.method(0);
 
