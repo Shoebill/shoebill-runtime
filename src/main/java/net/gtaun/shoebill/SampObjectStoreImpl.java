@@ -439,12 +439,12 @@ public class SampObjectStoreImpl implements SampObjectStore
 	{
 		for (PlayerLabel playerLabel : playerLabelsArrays[id])
 		{
-			playerLabel.destroy();
+			if(playerLabel != null) playerLabel.destroy();
 		}
 		
 		for (PlayerObject playerObject : playerObjectsArrays[id])
 		{
-			playerObject.destroy();
+			if(playerObject != null) playerObject.destroy();
 		}
 
 		playerLabelsArrays[id] = null;
