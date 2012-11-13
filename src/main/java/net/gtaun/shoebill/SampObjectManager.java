@@ -64,7 +64,7 @@ import net.gtaun.util.event.EventManager.HandlerPriority;
  * 
  * @author MK124
  */
-public class SampObjectFactoryImpl extends AbstractSampObjectFactory
+public class SampObjectManager extends AbstractSampObjectFactory
 {
 	private static final Class<?>[] PLAYER_CONSTRUCTOR_ARGUMENT_TYPES = { int.class };
 	private static final Class<?>[] VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, LocationAngle.class, int.class, int.class, int.class };
@@ -102,7 +102,7 @@ public class SampObjectFactoryImpl extends AbstractSampObjectFactory
 	private HandlerEntry destroyEventHandlerEntry;
 	
 	
-	public SampObjectFactoryImpl(EventManager eventManager, SampObjectStoreImpl store)
+	public SampObjectManager(EventManager eventManager, SampObjectStoreImpl store)
 	{
 		this.eventManager = eventManager;
 		this.store = store;

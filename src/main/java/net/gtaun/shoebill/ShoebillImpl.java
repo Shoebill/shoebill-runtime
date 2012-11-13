@@ -81,7 +81,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	private SampCallbackManagerImpl sampCallbackManager;
 	
 	private SampObjectStoreImpl sampObjectStore;
-	private SampObjectFactoryImpl sampObjectFactory;
+	private SampObjectManager sampObjectManager;
 
 	private GamemodeManagerImpl gamemodeManager;
 	private PluginManagerImpl pluginManager;
@@ -225,9 +225,9 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		serviceManager = new ServiceManagerImpl(eventManager);
 		
 		sampObjectStore = new SampObjectStoreImpl(eventManager);
-		sampObjectFactory = new SampObjectFactoryImpl(eventManager, sampObjectStore);
-		sampObjectFactory.createWorld();
-		sampObjectFactory.createServer();
+		sampObjectManager = new SampObjectManager(eventManager, sampObjectStore);
+		sampObjectManager.createWorld();
+		sampObjectManager.createServer();
 		
 		sampEventLogger = new SampEventLogger(sampObjectStore);
 		sampEventDispatcher = new SampEventDispatcher(sampObjectStore, eventManager);
@@ -243,7 +243,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		sampEventLogger = null;
 		sampEventDispatcher = null;
 		sampObjectStore = null;
-		sampObjectFactory = null;
+		sampObjectManager = null;
 		
 		gamemodeManager = null;
 		pluginManager = null;
@@ -312,9 +312,9 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	}
 	
 	@Override
-	public SampObjectFactoryImpl getSampObjectFactory()
+	public SampObjectManager getSampObjectFactory()
 	{
-		return sampObjectFactory;
+		return sampObjectManager;
 	}
 	
 	@Override
