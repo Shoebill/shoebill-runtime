@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.lang.reflect.Method;
 
-import net.gtaun.shoebill.object.Proxyable;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Helper;
 import net.gtaun.shoebill.proxy.MethodInterceptor.Interceptor;
 import net.gtaun.shoebill.proxy.MethodInterceptor.InterceptorPriority;
@@ -54,7 +53,7 @@ public class ProxyManagerTest
 	{
 		final TapableCounter counter = new TapableCounter();
 		
-		A a = ProxyManagerImpl.createProxyableFactory(B.class).create();
+		A a = new ProxyableFactoryImpl<>(B.class).create();
 		
 		Method method = A.class.getMethod("method", int.class);
 		MethodInterceptor interceptor = a.getProxyManager().createMethodInterceptor(method, 

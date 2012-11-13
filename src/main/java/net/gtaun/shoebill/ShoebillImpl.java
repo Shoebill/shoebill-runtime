@@ -28,6 +28,7 @@ import java.net.URLClassLoader;
 import java.util.Properties;
 
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
+import net.gtaun.shoebill.proxy.ProxyableFactoryImpl;
 import net.gtaun.shoebill.resource.GamemodeManagerImpl;
 import net.gtaun.shoebill.resource.PluginManagerImpl;
 import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
@@ -94,8 +95,10 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	private File gamemodeFile;
 	
 	
-	ShoebillImpl() throws IOException
+	ShoebillImpl() throws IOException, ClassNotFoundException
 	{
+		Class.forName(ProxyableFactoryImpl.class.getName());
+		
 		instance = this;
 		initializeLoggerConfig();
 		
