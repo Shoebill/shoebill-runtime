@@ -8,11 +8,11 @@
 	</properties>
 
 	<groupId>net.gtaun</groupId>
-	<artifactId>shoebill</artifactId>
+	<artifactId>shoebill-runtime</artifactId>
 	<version>0.2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Shoebill</name>
+	<name>Shoebill Runtime</name>
 	<description>Project Shoebill - An Java library for SA-MP</description>
 	<url>https://github.com/Shoebill</url>
 
@@ -24,9 +24,9 @@
 	</licenses>
 
 	<scm>
-		<url>https://github.com/Shoebill/Shoebill</url>
-		<connection>https://github.com/Shoebill/shoebill.git</connection>
-		<developerConnection>scm:git:git@github.com:Shoebill/shoebill.git</developerConnection>
+		<url>https://github.com/Shoebill/shoebill-runtime</url>
+		<connection>https://github.com/Shoebill/shoebill-runtime.git</connection>
+		<developerConnection>scm:git:git@github.com:Shoebill/shoebill-runtime.git</developerConnection>
 	</scm>
 
 	<developers>
@@ -58,7 +58,7 @@
 
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/Shoebill/shoebill/issues</url>
+		<url>https://github.com/Shoebill/shoebill-runtime/issues</url>
 	</issueManagement>
 
 	<dependencies>
