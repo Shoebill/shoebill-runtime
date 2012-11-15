@@ -22,6 +22,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -66,12 +68,12 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	};
 	
 	
-	private static ShoebillImpl instance;
+	private static Reference<ShoebillImpl> instance;
 	
 	
 	public static ShoebillImpl getInstance()
 	{
-		return instance;
+		return instance.get();
 	}
 	
 	
@@ -95,11 +97,11 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	private File gamemodeFile;
 	
 	
-	ShoebillImpl() throws IOException, ClassNotFoundException
+	public ShoebillImpl() throws IOException, ClassNotFoundException
 	{
 		Class.forName(ProxyableFactoryImpl.class.getName());
 		
-		instance = this;
+		instance = new WeakReference<>(this);
 		initializeLoggerConfig();
 		
 		version = new ShoebillVersionImpl(this.getClass().getClassLoader().getResourceAsStream("version.yml"));
