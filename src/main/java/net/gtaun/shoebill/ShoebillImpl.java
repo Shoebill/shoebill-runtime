@@ -113,12 +113,14 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		
 		LOGGER.info(startupMessage);
 		LOGGER.info("Build date: " + version.getBuildDate());
+		LOGGER.info("JVM: " + System.getProperty("java.vm.name") + " " + System.getProperty("java.vm.version"));
+		LOGGER.info("Java: " + System.getProperty("java.specification.name") + " " + System.getProperty("java.specification.version"));
 		LOGGER.info("System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")");
 		
 		InputStream configFileIn = new FileInputStream("./shoebill/config.yml");
 		configuration = new ShoebillConfiguration(configFileIn);
 		
-		File workdir = configuration.getWorkdir();
+		File workdir = new File("./shoebill/");
 		pluginDir = new File(workdir, "plugins");
 		gamemodeDir = new File(workdir, "gamemodes");
 		dataDir = new File(workdir, "data");

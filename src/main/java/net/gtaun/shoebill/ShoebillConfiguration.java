@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2011 JoJLlmAn
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2011-2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 
 package net.gtaun.shoebill;
 
-import java.io.File;
 import java.io.InputStream;
 
 import net.gtaun.shoebill.util.config.YamlConfiguration;
@@ -32,7 +31,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class ShoebillConfiguration
 {
-	private File workdir;
 	private String gamemode;
 	
 	
@@ -41,9 +39,6 @@ public class ShoebillConfiguration
 		YamlConfiguration config = new YamlConfiguration();
 		config.read(in);
 		
-		String workdirPath = config.getString("workdir", "./shoebill/");
-		workdir = new File(workdirPath);
-		
 		gamemode = config.getString("gamemode", null);
 	}
 	
@@ -51,11 +46,6 @@ public class ShoebillConfiguration
 	public String toString()
 	{
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
-	}
-	
-	public File getWorkdir()
-	{
-		return workdir;
 	}
 	
 	public String getGamemode()
