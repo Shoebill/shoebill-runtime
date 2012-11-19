@@ -78,7 +78,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	
 	
 	private ShoebillVersionImpl version;
-	private ShoebillConfiguration configuration;
+	private ShoebillConfig configuration;
 	private EventManagerImpl eventManager;
 	
 	private SampCallbackManagerImpl sampCallbackManager;
@@ -118,7 +118,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		LOGGER.info("System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")");
 		
 		InputStream configFileIn = new FileInputStream("./shoebill/config.yml");
-		configuration = new ShoebillConfiguration(configFileIn);
+		configuration = new ShoebillConfig(configFileIn);
 		
 		File workdir = new File("./shoebill/");
 		pluginDir = new File(workdir, "plugins");
