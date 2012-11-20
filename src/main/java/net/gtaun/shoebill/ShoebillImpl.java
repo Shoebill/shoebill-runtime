@@ -121,7 +121,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		LOGGER.info("Java: " + System.getProperty("java.specification.name") + " " + System.getProperty("java.specification.version"));
 		LOGGER.info("System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")");
 		
-		resourceConfig = new ResourceConfig(new FileInputStream(new File(configuration.getShoebillDir(), "resource.yml")));
+		resourceConfig = new ResourceConfig(new FileInputStream(new File(configuration.getShoebillDir(), "resources.yml")));
 		artifactLocator = new ShoebillArtifactLocator(configuration, resourceConfig);
 		
 		pluginDir = configuration.getPluginsDir();
