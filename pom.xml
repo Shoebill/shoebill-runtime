@@ -116,6 +116,7 @@
 				<directory>${basedir}/src/main/resources</directory>
 				<filtering>false</filtering>
 				<includes>
+					<include>shoebillImpl.txt</include>
 					<include>log4j.properties</include>
 				</includes>
 			</resource>
