@@ -58,6 +58,14 @@ import org.slf4j.LoggerFactory;
 public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);
+	
+	private static final String LIBRARY_NAME = "Shoebill Runtime";
+	private static final String VERSION_FILENAME = "version.yml";
+	
+	private static final String SHOEBILL_CONFIG_PATH = "./shoebill/shoebill.yml";
+	private static final String LOG4J_CONFIG_FILENAME = "log4j.properties";
+	private static final String RESOURCES_CONFIG_FILENAME = "resources.yml";
+	
 	private static final FilenameFilter JAR_FILENAME_FILTER = new FilenameFilter()
 	{
 		@Override
@@ -105,12 +113,12 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		Class.forName(ProxyableFactoryImpl.class.getName());
 		instance = new WeakReference<>(this);
 		
-		configuration = new ShoebillConfig(new FileInputStream("./shoebill/shoebill.yml"));
-		initializeLoggerConfig(new File(configuration.getShoebillDir(), "log4j.properties"));
+		configuration = new ShoebillConfig(new FileInputStream(SHOEBILL_CONFIG_PATH));
+		initializeLoggerConfig(new File(configuration.getShoebillDir(), LOG4J_CONFIG_FILENAME));
 		
-		version = new ShoebillVersionImpl(this.getClass().getClassLoader().getResourceAsStream("version.yml"));
+		version = new ShoebillVersionImpl(this.getClass().getClassLoader().getResourceAsStream(VERSION_FILENAME));
 		
-		String startupMessage = "Shoebill " + version.getVersion();
+		String startupMessage = LIBRARY_NAME + " " + version.getVersion();
 		
 		if (version.getBuildNumber() != 0) startupMessage += " Build " + version.getBuildNumber();
 		startupMessage += " (for " + version.getSupport() + ")";
@@ -121,7 +129,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		LOGGER.info("Java: " + System.getProperty("java.specification.name") + " " + System.getProperty("java.specification.version"));
 		LOGGER.info("System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")");
 		
-		resourceConfig = new ResourceConfig(new FileInputStream(new File(configuration.getShoebillDir(), "resources.yml")));
+		resourceConfig = new ResourceConfig(new FileInputStream(new File(configuration.getShoebillDir(), RESOURCES_CONFIG_FILENAME)));
 		artifactLocator = new ShoebillArtifactLocator(configuration, resourceConfig);
 		
 		pluginDir = configuration.getPluginsDir();
@@ -131,7 +139,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		gamemodeFile = artifactLocator.getGamemodeFile();
 		if (gamemodeFile == null)
 		{
-			LOGGER.error("There's no gamemode assigned in resource.yml or file not found.");
+			LOGGER.error("There's no gamemode assigned in " + RESOURCES_CONFIG_FILENAME + " or file not found.");
 			throw new NoGamemodeAssignedException();
 		}
 	}
@@ -150,7 +158,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		}
 		else
 		{
-			InputStream in = this.getClass().getClassLoader().getResourceAsStream("log4j.properties");
+			InputStream in = this.getClass().getClassLoader().getResourceAsStream(LOG4J_CONFIG_FILENAME);
 			Properties properties = new Properties();
 			properties.load(in);
 			PropertyConfigurator.configure(properties);
