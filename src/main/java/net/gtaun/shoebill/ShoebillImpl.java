@@ -79,6 +79,9 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	
 	private ShoebillVersionImpl version;
 	private ShoebillConfig configuration;
+	private ResourceConfig resourceConfig;
+	private ShoebillArtifactLocator artifactLocator;
+	
 	private EventManagerImpl eventManager;
 	
 	private SampCallbackManagerImpl sampCallbackManager;
@@ -100,9 +103,10 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	public ShoebillImpl() throws IOException, ClassNotFoundException
 	{
 		Class.forName(ProxyableFactoryImpl.class.getName());
-		
 		instance = new WeakReference<>(this);
-		initializeLoggerConfig();
+		
+		configuration = new ShoebillConfig(new FileInputStream("./shoebill/shoebill.yml"));
+		initializeLoggerConfig(new File(configuration.getShoebillDir(), "log4j.properties"));
 		
 		version = new ShoebillVersionImpl(this.getClass().getClassLoader().getResourceAsStream("version.yml"));
 		
@@ -117,22 +121,19 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		LOGGER.info("Java: " + System.getProperty("java.specification.name") + " " + System.getProperty("java.specification.version"));
 		LOGGER.info("System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")");
 		
-		InputStream configFileIn = new FileInputStream("./shoebill/config.yml");
-		configuration = new ShoebillConfig(configFileIn);
+		resourceConfig = new ResourceConfig(new FileInputStream(new File(configuration.getShoebillDir(), "resource.yml")));
+		artifactLocator = new ShoebillArtifactLocator(configuration, resourceConfig);
 		
-		File workdir = new File("./shoebill/");
-		pluginDir = new File(workdir, "plugins");
-		gamemodeDir = new File(workdir, "gamemodes");
-		dataDir = new File(workdir, "data");
+		pluginDir = configuration.getPluginsDir();
+		gamemodeDir = configuration.getGamemodesDir();
+		dataDir = configuration.getDataDir();
 		
-		String gamemodeFilename = configuration.getGamemode();
-		if (gamemodeFilename == null)
+		gamemodeFile = artifactLocator.getGamemodeFile();
+		if (gamemodeFile == null)
 		{
-			ShoebillImpl.LOGGER.error("There's no gamemode assigned in config.yml.");
+			LOGGER.error("There's no gamemode assigned in resource.yml or file not found.");
 			throw new NoGamemodeAssignedException();
 		}
-		
-		gamemodeFile = new File(gamemodeDir, gamemodeFilename);
 	}
 	
 	@Override
@@ -141,12 +142,11 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
-	private void initializeLoggerConfig() throws IOException
+	private void initializeLoggerConfig(File configFile) throws IOException
 	{
-		File logConfigFile = new File("./shoebill/log4j.properties");
-		if (logConfigFile.exists())
+		if (configFile.exists())
 		{
-			PropertyConfigurator.configure(logConfigFile.toURI().toURL());
+			PropertyConfigurator.configure(configFile.toURI().toURL());
 		}
 		else
 		{
@@ -159,7 +159,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		System.setOut(new PrintStream(new LoggerOutputStream(LoggerFactory.getLogger("System.out"), LogLevel.INFO), true));
 		System.setErr(new PrintStream(new LoggerOutputStream(LoggerFactory.getLogger("System.err"), LogLevel.ERROR), true));
 		
-		if (!logConfigFile.exists()) LOGGER.info("Not find " + logConfigFile.getPath() + " file, use the default configuration.");
+		if (!configFile.exists()) LOGGER.info("Not find " + configFile.getPath() + " file, use the default configuration.");
 		
 	}
 	
