@@ -18,21 +18,17 @@ package net.gtaun.shoebill;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Properties;
 
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
 import net.gtaun.shoebill.proxy.ProxyableFactoryImpl;
-import net.gtaun.shoebill.resource.GamemodeManagerImpl;
-import net.gtaun.shoebill.resource.PluginManagerImpl;
+import net.gtaun.shoebill.resource.ResourceManagerImpl;
+import net.gtaun.shoebill.resource.ResourceManager;
 import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackManager;
@@ -66,15 +62,6 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	private static final String LOG4J_CONFIG_FILENAME = "log4j.properties";
 	private static final String RESOURCES_CONFIG_FILENAME = "resources.yml";
 	
-	private static final FilenameFilter JAR_FILENAME_FILTER = new FilenameFilter()
-	{
-		@Override
-		public boolean accept(File dir, String name)
-		{
-			return name.endsWith(".jar");
-		}
-	};
-	
 	
 	private static Reference<ShoebillImpl> instance;
 	
@@ -86,7 +73,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	
 	
 	private ShoebillVersionImpl version;
-	private ShoebillConfig configuration;
+	private ShoebillConfig config;
 	private ResourceConfig resourceConfig;
 	private ShoebillArtifactLocator artifactLocator;
 	
@@ -97,15 +84,11 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	private SampObjectStoreImpl sampObjectStore;
 	private SampObjectManager sampObjectManager;
 
-	private GamemodeManagerImpl gamemodeManager;
-	private PluginManagerImpl pluginManager;
+	private ResourceManagerImpl pluginManager;
 	private ServiceManagerImpl serviceManager;
 	
 	private SampEventLogger sampEventLogger;
 	private SampEventDispatcher sampEventDispatcher;
-	
-	private File pluginDir, gamemodeDir, dataDir;
-	private File gamemodeFile;
 	
 	
 	public ShoebillImpl() throws IOException, ClassNotFoundException
@@ -113,8 +96,8 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		Class.forName(ProxyableFactoryImpl.class.getName());
 		instance = new WeakReference<>(this);
 		
-		configuration = new ShoebillConfig(new FileInputStream(SHOEBILL_CONFIG_PATH));
-		initializeLoggerConfig(new File(configuration.getShoebillDir(), LOG4J_CONFIG_FILENAME));
+		config = new ShoebillConfig(new FileInputStream(SHOEBILL_CONFIG_PATH));
+		initializeLoggerConfig(new File(config.getShoebillDir(), LOG4J_CONFIG_FILENAME));
 		
 		version = new ShoebillVersionImpl(this.getClass().getClassLoader().getResourceAsStream(VERSION_FILENAME));
 		
@@ -129,15 +112,10 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		LOGGER.info("Java: " + System.getProperty("java.specification.name") + " " + System.getProperty("java.specification.version"));
 		LOGGER.info("System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")");
 		
-		resourceConfig = new ResourceConfig(new FileInputStream(new File(configuration.getShoebillDir(), RESOURCES_CONFIG_FILENAME)));
-		artifactLocator = new ShoebillArtifactLocator(configuration, resourceConfig);
+		resourceConfig = new ResourceConfig(new FileInputStream(new File(config.getShoebillDir(), RESOURCES_CONFIG_FILENAME)));
+		artifactLocator = new ShoebillArtifactLocator(config, resourceConfig);
 		
-		pluginDir = configuration.getPluginsDir();
-		gamemodeDir = configuration.getGamemodesDir();
-		dataDir = configuration.getDataDir();
-		
-		gamemodeFile = artifactLocator.getGamemodeFile();
-		if (gamemodeFile == null)
+		if (artifactLocator.getGamemodeFile() == null)
 		{
 			LOGGER.error("There's no gamemode assigned in " + RESOURCES_CONFIG_FILENAME + " or file not found.");
 			throw new NoGamemodeAssignedException();
@@ -208,20 +186,6 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 				String op = splits[0].toLowerCase();
 				switch (op)
 				{
-				case "changegamemode":
-					{
-						String gamemode = splits[1];
-						File file = new File(gamemodeDir, gamemode);
-						if (file.exists() == false || file.isFile() == false)
-						{
-							LOGGER.info("'" + gamemode + "' can not be found.");
-							return 0;
-						}
-						
-						changeGamemode(file);
-						return 1;
-					}
-				
 				default:
 					return 0;
 				}
@@ -233,10 +197,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	{
 		eventManager = new EventManagerImpl();
 		
-		ClassLoader classLoader = generateResourceClassLoader(pluginDir, gamemodeDir);
-		
-		gamemodeManager = new GamemodeManagerImpl(this, classLoader, gamemodeDir, dataDir);
-		pluginManager = new PluginManagerImpl(this, classLoader, pluginDir, dataDir);
+		pluginManager = new ResourceManagerImpl(this, config.getDataDir());
 		serviceManager = new ServiceManagerImpl(eventManager);
 		
 		sampObjectStore = new SampObjectStoreImpl(eventManager);
@@ -260,7 +221,6 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		sampObjectStore = null;
 		sampObjectManager = null;
 		
-		gamemodeManager = null;
 		pluginManager = null;
 		serviceManager = null;
 		
@@ -269,43 +229,15 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		System.gc();
 	}
 	
-	private ClassLoader generateResourceClassLoader(File pluginDir, File gamemodeDir)
-	{
-		File[] pluginFiles = pluginDir.listFiles(JAR_FILENAME_FILTER);
-		File[] gamemodeFiles = gamemodeDir.listFiles(JAR_FILENAME_FILTER);
-		
-		URL[] urls = new URL[pluginFiles.length + gamemodeFiles.length];
-		int idx = 0;
-
-		File[][] fileArrays = {pluginFiles, gamemodeFiles};
-		for (File[] files : fileArrays)
-		{
-			for (File file : files)
-			{
-				try
-				{
-					urls[idx] = file.toURI().toURL();
-					idx++;
-				}
-				catch (MalformedURLException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		return URLClassLoader.newInstance(urls, getClass().getClassLoader());
-	}
-	
 	private void loadPluginsAndGamemode()
 	{
 		pluginManager.loadAllPlugin();
-		gamemodeManager.constructGamemode(gamemodeFile);
+		//gamemodeManager.constructGamemode(gamemodeFile);
 	}
 	
 	private void unloadPluginsAndGamemode()
 	{
-		gamemodeManager.deconstructGamemode();
+		//gamemodeManager.deconstructGamemode();
 		pluginManager.unloadAllPlugin();
 	}
 	
@@ -318,6 +250,21 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		}
 		
 		return sampCallbackManager.getMasterCallbackHandler();
+	}
+	
+	public ShoebillConfig getConfig()
+	{
+		return config;
+	}
+	
+	public ResourceConfig getResourceConfig()
+	{
+		return resourceConfig;
+	}
+	
+	public ShoebillArtifactLocator getArtifactLocator()
+	{
+		return artifactLocator;
 	}
 	
 	@Override
@@ -333,13 +280,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	}
 	
 	@Override
-	public GamemodeManager getGamemodeManager()
-	{
-		return gamemodeManager;
-	}
-	
-	@Override
-	public PluginManager getPluginManager()
+	public ResourceManager getResourceManager()
 	{
 		return pluginManager;
 	}
@@ -357,19 +298,6 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	}
 	
 	@Override
-	public void changeGamemode(File file)
-	{
-		gamemodeFile = file;
-		reload();
-	}
-	
-	@Override
-	public void reload()
-	{
-		SampNativeFunction.sendRconCommand("changemode Shoebill");
-	}
-	
-	@Override
 	public EventManager getEventManager()
 	{
 		return eventManager;
@@ -379,5 +307,11 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	public SampCallbackManager getCallbackManager()
 	{
 		return sampCallbackManager;
+	}
+	
+	@Override
+	public void reload()
+	{
+		SampNativeFunction.sendRconCommand("changemode Shoebill");
 	}
 }

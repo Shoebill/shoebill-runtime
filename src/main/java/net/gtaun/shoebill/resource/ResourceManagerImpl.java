@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2011 JoJLlmAn
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2011-2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,15 @@
 package net.gtaun.shoebill.resource;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.gtaun.shoebill.PluginManager;
-import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.events.plugin.PluginLoadEvent;
 import net.gtaun.shoebill.events.plugin.PluginUnloadEvent;
@@ -42,37 +41,29 @@ import org.slf4j.LoggerFactory;
  * 
  * @author JoJLlmAn, MK124
  */
-public class PluginManagerImpl implements PluginManager
+public class ResourceManagerImpl implements ResourceManager
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(PluginManagerImpl.class);
-	private static final FilenameFilter JAR_FILENAME_FILTER = new FilenameFilter()
-	{
-		@Override
-		public boolean accept(File dir, String name)
-		{
-			return name.endsWith(".jar");
-		}
-	};
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceManagerImpl.class);
 	
 	
-	private ClassLoader classLoader;
-	private Shoebill shoebill;
-	private File pluginDir, dataDir;
+	private ShoebillImpl shoebill;
+	private File dataDir;
 	
 	private Map<File, PluginDescription> descriptions;
+	
+	private Gamemode gamemode;
+	
 	private Map<Class<? extends Plugin>, Plugin> plugins;
 	
 	
-	public PluginManagerImpl(Shoebill shoebill, ClassLoader classLoader, File pluginDir, File dataDir)
+	public ResourceManagerImpl(ShoebillImpl shoebill, File dataDir)
 	{
 		plugins = new HashMap<Class<? extends Plugin>, Plugin>();
 		
 		this.shoebill = shoebill;
-		this.classLoader = classLoader;
-		this.pluginDir = pluginDir;
 		this.dataDir = dataDir;
 		
-		this.descriptions = generateDescriptions(pluginDir);
+		this.descriptions = generateDescriptions();
 	}
 	
 	@Override
@@ -83,14 +74,14 @@ public class PluginManagerImpl implements PluginManager
 	
 	private PluginDescription generateDescription(File file) throws ClassNotFoundException, IOException
 	{
-		PluginDescription desc = new PluginDescription(file, classLoader);
+		PluginDescription desc = new PluginDescription(file, getClass().getClassLoader());
 		return desc;
 	}
 	
-	private Map<File, PluginDescription> generateDescriptions(File dir)
+	private Map<File, PluginDescription> generateDescriptions()
 	{
 		Map<File, PluginDescription> descriptions = new HashMap<>();
-		File[] files = dir.listFiles(JAR_FILENAME_FILTER);
+		List<File> files = shoebill.getArtifactLocator().getPluginFiles();
 		
 		for (File file : files)
 		{
@@ -125,9 +116,9 @@ public class PluginManagerImpl implements PluginManager
 	}
 	
 	@Override
-	public Plugin loadPlugin(String filename)
+	public Plugin loadPlugin(String coord)
 	{
-		File file = new File(pluginDir, filename);
+		File file = shoebill.getArtifactLocator().getPluginFile(coord);
 		return loadPlugin(file);
 	}
 	
@@ -141,7 +132,7 @@ public class PluginManagerImpl implements PluginManager
 		{
 			try
 			{
-				desc = new PluginDescription(file, classLoader);
+				desc = new PluginDescription(file, getClass().getClassLoader());
 			}
 			catch (Exception e)
 			{
@@ -235,5 +226,17 @@ public class PluginManagerImpl implements PluginManager
 	public Collection<Plugin> getPlugins()
 	{
 		return plugins.values();
+	}
+
+	@Override
+	public Gamemode getGamemode()
+	{
+		return gamemode;
+	}
+	
+	@Override
+	public <T extends Gamemode> T getGamemode(Class<T> cls)
+	{
+		return cls.cast(gamemode);
 	}
 }
