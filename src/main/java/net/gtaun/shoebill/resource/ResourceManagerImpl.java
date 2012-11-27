@@ -18,18 +18,19 @@
 package net.gtaun.shoebill.resource;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.Shoebill;
+import net.gtaun.shoebill.ShoebillArtifactLocator;
 import net.gtaun.shoebill.ShoebillLowLevel;
-import net.gtaun.shoebill.events.plugin.PluginLoadEvent;
-import net.gtaun.shoebill.events.plugin.PluginUnloadEvent;
+import net.gtaun.shoebill.events.resource.PluginLoadEvent;
+import net.gtaun.shoebill.events.resource.PluginUnloadEvent;
+import net.gtaun.shoebill.resource.ResourceDescription.ResourceType;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -46,24 +47,21 @@ public class ResourceManagerImpl implements ResourceManager
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceManagerImpl.class);
 	
 	
-	private ShoebillImpl shoebill;
+	private Shoebill shoebill;
+	private ShoebillArtifactLocator artifactLocator;
 	private File dataDir;
 	
-	private Map<File, PluginDescription> descriptions;
-	
+	private Map<Class<? extends Plugin>, Plugin> plugins;
 	private Gamemode gamemode;
 	
-	private Map<Class<? extends Plugin>, Plugin> plugins;
 	
-	
-	public ResourceManagerImpl(ShoebillImpl shoebill, File dataDir)
+	public ResourceManagerImpl(Shoebill shoebill, ShoebillArtifactLocator locator, File dataDir)
 	{
-		plugins = new HashMap<Class<? extends Plugin>, Plugin>();
-		
 		this.shoebill = shoebill;
+		this.artifactLocator = locator;
 		this.dataDir = dataDir;
 		
-		this.descriptions = generateDescriptions();
+		plugins = new HashMap<Class<? extends Plugin>, Plugin>();
 	}
 	
 	@Override
@@ -72,43 +70,20 @@ public class ResourceManagerImpl implements ResourceManager
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
-	private PluginDescription generateDescription(File file) throws ClassNotFoundException, IOException
+	public void loadAllResource()
 	{
-		PluginDescription desc = new PluginDescription(file, getClass().getClassLoader());
-		return desc;
-	}
-	
-	private Map<File, PluginDescription> generateDescriptions()
-	{
-		Map<File, PluginDescription> descriptions = new HashMap<>();
-		List<File> files = shoebill.getArtifactLocator().getPluginFiles();
-		
-		for (File file : files)
+		for (File file : artifactLocator.getPluginFiles())
 		{
-			try
-			{
-				PluginDescription desc = generateDescription(file);
-				descriptions.put(file, desc);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
+			loadPlugin(file);
 		}
 		
-		return descriptions;
+		loadGamemode();
 	}
 	
-	public void loadAllPlugin()
+	public void unloadAllResource()
 	{
-		for (PluginDescription desc : descriptions.values())
-		{
-			loadPlugin(desc);
-		}
-	}
-	
-	public void unloadAllPlugin()
-	{
+		unloadGamemode();
+		
 		for (Plugin plugin : plugins.values())
 		{
 			unloadPlugin(plugin);
@@ -118,7 +93,7 @@ public class ResourceManagerImpl implements ResourceManager
 	@Override
 	public Plugin loadPlugin(String coord)
 	{
-		File file = shoebill.getArtifactLocator().getPluginFile(coord);
+		File file = artifactLocator.getPluginFile(coord);
 		return loadPlugin(file);
 	}
 	
@@ -127,30 +102,27 @@ public class ResourceManagerImpl implements ResourceManager
 	{
 		if (file.canRead() == false) return null;
 		
-		PluginDescription desc = descriptions.get(file);
-		if (desc == null)
+		ResourceDescription desc = null;
+		try
 		{
-			try
-			{
-				desc = new PluginDescription(file, getClass().getClassLoader());
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
+			desc = new ResourceDescription(ResourceType.PLUGIN, file, getClass().getClassLoader());
 		}
-		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+				
 		if (desc == null) return null;
 		return loadPlugin(desc);
 	}
 	
-	@Override
-	public Plugin loadPlugin(PluginDescription desc)
+	private Plugin loadPlugin(ResourceDescription desc)
 	{
 		try
 		{
 			LOGGER.info("Load plugin: " + desc.getName());
-			Class<? extends Plugin> clazz = desc.getClazz();
+			Class<? extends Plugin> clazz = desc.getClazz().asSubclass(Plugin.class);
+			
 			if (plugins.containsKey(clazz))
 			{
 				LOGGER.warn("There's a plugin which has the same class as \"" + desc.getClazz().getName() + "\".");
@@ -158,13 +130,7 @@ public class ResourceManagerImpl implements ResourceManager
 				return null;
 			}
 			
-			Constructor<? extends Plugin> constructor = clazz.getConstructor();
-			Plugin plugin = constructor.newInstance();
-			
-			File pluginDataDir = new File(dataDir, desc.getClazz().getName());
-			if (!pluginDataDir.exists()) pluginDataDir.mkdirs();
-			
-			plugin.setContext(desc, shoebill, pluginDataDir);
+			Plugin plugin = constructResource(desc, clazz);
 			plugin.enable();
 			
 			plugins.put(clazz, plugin);
@@ -182,7 +148,18 @@ public class ResourceManagerImpl implements ResourceManager
 		}
 	}
 	
-	@Override
+	private <T extends Resource> T constructResource(ResourceDescription desc, Class<T> clazz) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	{
+		Constructor<T> constructor = clazz.getConstructor();
+		T resource = constructor.newInstance();
+		
+		File resDataDir = new File(dataDir, desc.getClazz().getName());
+		if (!resDataDir.exists()) resDataDir.mkdirs();
+		
+		resource.setContext(desc, shoebill, resDataDir);
+		return resource;
+	}
+	
 	public void unloadPlugin(Plugin plugin)
 	{
 		for (Entry<Class<? extends Plugin>, Plugin> entry : plugins.entrySet())
@@ -226,6 +203,37 @@ public class ResourceManagerImpl implements ResourceManager
 	public Collection<Plugin> getPlugins()
 	{
 		return plugins.values();
+	}
+	
+	private void loadGamemode()
+	{
+		ResourceDescription desc = null;
+		try
+		{
+			desc = new ResourceDescription(ResourceType.GAMEMODE, artifactLocator.getGamemodeFile(), getClass().getClassLoader());
+	
+			LOGGER.info("Load gamemode: " + desc.getName());
+			Class<? extends Gamemode> clazz = desc.getClazz().asSubclass(Gamemode.class);
+			
+			gamemode = constructResource(desc, clazz);
+			gamemode.enable();
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	private void unloadGamemode()
+	{
+		try
+		{
+			gamemode.disable();
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Override

@@ -197,7 +197,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	{
 		eventManager = new EventManagerImpl();
 		
-		pluginManager = new ResourceManagerImpl(this, config.getDataDir());
+		pluginManager = new ResourceManagerImpl(this, artifactLocator, config.getDataDir());
 		serviceManager = new ServiceManagerImpl(eventManager);
 		
 		sampObjectStore = new SampObjectStoreImpl(eventManager);
@@ -231,14 +231,12 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	
 	private void loadPluginsAndGamemode()
 	{
-		pluginManager.loadAllPlugin();
-		//gamemodeManager.constructGamemode(gamemodeFile);
+		pluginManager.loadAllResource();
 	}
 	
 	private void unloadPluginsAndGamemode()
 	{
-		//gamemodeManager.deconstructGamemode();
-		pluginManager.unloadAllPlugin();
+		pluginManager.unloadAllResource();
 	}
 	
 	public SampCallbackHandler getCallbackHandler()
