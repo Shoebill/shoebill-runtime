@@ -160,6 +160,7 @@ public class ResourceManagerImpl implements ResourceManager
 		return resource;
 	}
 	
+	@Override
 	public void unloadPlugin(Plugin plugin)
 	{
 		for (Entry<Class<? extends Plugin>, Plugin> entry : plugins.entrySet())
