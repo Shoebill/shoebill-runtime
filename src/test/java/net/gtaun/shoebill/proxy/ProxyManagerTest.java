@@ -77,4 +77,35 @@ public class ProxyManagerTest
 		assertEquals(1, ret);
 		assertEquals(1, counter.getTaps());
 	}
+	
+	@Test
+	public void testGlobalMethodInterceptor() throws NoSuchMethodException, SecurityException
+	{
+		final TapableCounter counter = new TapableCounter();
+		
+		GlobalProxyManagerImpl globalProxyManager = new GlobalProxyManagerImpl();
+		A a = new ProxyableFactoryImpl<>(B.class, globalProxyManager).create();
+		
+		Method method = A.class.getMethod("method", int.class);
+		MethodInterceptor interceptor = globalProxyManager.createMethodInterceptor(method, 
+			new Interceptor()
+			{
+				@Override
+				public Object intercept(Helper helper, Method method, Object obj, Object[] args) throws Throwable
+				{
+					counter.tap();
+					return helper.invokeLower(obj, args);
+				}
+			}, InterceptorPriority.NORMAL);
+		
+		int ret = a.method(0);
+
+		assertEquals(1, ret);
+		assertEquals(1, counter.getTaps());
+		
+		interceptor.cancel();
+		
+		assertEquals(1, ret);
+		assertEquals(1, counter.getTaps());
+	}
 }

@@ -33,19 +33,26 @@ public class ProxyableFactoryImpl<T extends Proxyable> implements ProxyableFacto
 	
 	private final Class<T> clazz;
 	private final Enhancer enhancer;
+	private GlobalProxyManagerImpl globalProxyManager;
 	
-	
+
 	public ProxyableFactoryImpl(Class<T> clz)
+	{
+		this(clz, null);
+	}
+	
+	public ProxyableFactoryImpl(Class<T> clz, GlobalProxyManagerImpl globalProxyManager)
 	{
 		this.clazz = clz;
 		enhancer = new Enhancer();
 		enhancer.setSuperclass(clz);
+		this.globalProxyManager = globalProxyManager;
 	}
 	
 	@Override
 	public T create()
 	{
-		final ProxyManagerImpl proxyManager = new ProxyManagerImpl();
+		final ProxyManagerImpl proxyManager = new ProxyManagerImpl(globalProxyManager);
 		synchronized (enhancer)
 		{
 			enhancer.setCallback(proxyManager.getCallback());
@@ -56,7 +63,7 @@ public class ProxyableFactoryImpl<T extends Proxyable> implements ProxyableFacto
 	@Override
 	public T create(Class<?>[] paramTypes, Object... params)
 	{
-		final ProxyManagerImpl proxyManager = new ProxyManagerImpl();
+		final ProxyManagerImpl proxyManager = new ProxyManagerImpl(globalProxyManager);
 		synchronized (enhancer)
 		{
 			enhancer.setCallback(proxyManager.getCallback());
