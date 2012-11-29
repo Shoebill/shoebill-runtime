@@ -63,7 +63,12 @@ public final class SampNativeFunction
 	public static native int moveObject(int objectid, float x, float y, float z, float speed, float rotX, float rotY, float rotZ);
 	public static native void stopObject(int objectid);
 	public static native boolean isObjectMoving(int objectid);
+	public static native boolean editObject(int playerid, int objectid);
+	public static native boolean editPlayerObject(int playerid, int objectid);
+	public static native void selectObject(int playerid);
+	public static native void cancelEdit(int playerid);
 	public static native int createPlayerObject(int playerid, int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance);
+	public static native void attachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float RotZ);
 	public static native void setPlayerObjectPos(int playerid, int objectid, float x, float y, float z);
 	public static native void getPlayerObjectPos(int playerid, int objectid, Vector3D rot);
 	public static native void setPlayerObjectRot(int playerid, int objectid, float rotX, float rotY, float rotZ);
@@ -74,6 +79,12 @@ public final class SampNativeFunction
 	public static native void stopPlayerObject(int playerid, int objectid);
 	public static native boolean isPlayerObjectMoving(int playerid, int objectid);
 	public static native void attachPlayerObjectToPlayer(int playerid, int objectid, int attachplayerid, float offsetX, float offsetY, float offsetZ, float rX, float rY, float rZ);
+	
+	public static native void setObjectMaterial(int objectid, int materialindex, int modelid, String txdname, String texturename, int materialcolor);
+	public static native void setPlayerObjectMaterial(int playerid, int objectid, int materialindex, int modelid, String txdname, String texturename, int materialcolor);
+
+	public static native void setObjectMaterialText(int objectid, String text, int materialindex, int materialsize, String fontface, int fontsize, int bold, int fontcolor, int backcolor, int textalignment);
+	public static native void setPlayerObjectMaterialText(int playerid, int objectid, String text, int materialindex, int materialsize, String fontface, int fontsize, int bold, int fontcolor, int backcolor, int textalignment);
 	
 	// ----------------------------------------------------------
 	// a_players.inc
@@ -148,6 +159,26 @@ public final class SampNativeFunction
 	public static native boolean setPlayerAttachedObject(int playerid, int index, int modelid, int bone, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ);
 	public static native boolean removePlayerAttachedObject(int playerid, int index);
 	public static native boolean isPlayerAttachedObjectSlotUsed(int playerid, int index);
+	public static native boolean editAttachedObject(int playerid, int index);
+	
+	// Per-player TextDraws
+	public static native int createPlayerTextDraw(int playerid, float x, float y, String text);
+	public static native void playerTextDrawDestroy(int playerid, int textId);
+	public static native void playerTextDrawLetterSize(int playerid, int textId, float x, float y);
+	public static native void playerTextDrawTextSize(int playerid, int textId, float x, float y);
+	public static native void playerTextDrawAlignment(int playerid, int textId, int alignment);
+	public static native void playerTextDrawColor(int playerid, int textId, int color);
+	public static native void playerTextDrawUseBox(int playerid, int textId, int use);
+	public static native void playerTextDrawBoxColor(int playerid, int textId, int color);
+	public static native void playerTextDrawSetShadow(int playerid, int textId, int size);
+	public static native void playerTextDrawSetOutline(int playerid, int textId, int size);
+	public static native void playerTextDrawBackgroundColor(int playerid, int textId, int color);
+	public static native void playerTextDrawFont(int playerid, int textId, int font);
+	public static native void playerTextDrawSetProportional(int playerid, int textId, int set);
+	public static native void playerTextDrawSetSelectable(int playerid, int textId, int set);
+	public static native void playerTextDrawShow(int playerid, int textId);
+	public static native void playerTextDrawHide(int playerid, int textId);
+	public static native void playerTextDrawSetString(int playerid, int textId, String string);
 	
 	// Per-player variable system (PVars)
 	public static native void setPVarInt(int playerid, String varname, int int_value);
@@ -198,7 +229,11 @@ public final class SampNativeFunction
 	public static native void getPlayerCameraPos(int playerid, Vector3D location);
 	public static native void getPlayerCameraFrontVector(int playerid, Vector3D location);
 	public static native int getPlayerCameraMode(int playerid);
-	
+	public static native void attachCameraToObject(int playerid, int objectid);
+	public static native void attachCameraToPlayerObject(int playerid, int playerobjectid);
+	public static native void interpolateCameraPos(int playerid, float FromX, float FromY, float FromZ, float ToX, float ToY, float ToZ, int time, int cut);
+	public static native void interpolateCameraLookAt(int playerid, float FromX, float FromY, float FromZ, float ToX, float ToY, float ToZ, int time, int cut);
+
 	// Player conditionals
 	public static native boolean isPlayerConnected(int playerid);
 	public static native boolean isPlayerInVehicle(int playerid, int vehicleid);
@@ -222,6 +257,9 @@ public final class SampNativeFunction
 	// Recording for NPC playback
 	public static native void startRecordingPlayerData(int playerid, int recordtype, String recordname);
 	public static native void stopRecordingPlayerData(int playerid);
+	
+	public static native void selectTextDraw(int playerid, int hovercolor); // enables the mouse so the player can select a textdraw
+	public static native void cancelSelectTextDraw(int playerid);	// cancel textdraw selection with the mouse
 	
 	// ----------------------------------------------------------
 	// a_samp.inc
@@ -282,7 +320,8 @@ public final class SampNativeFunction
 	public static native boolean getServerVarAsBool(String varname);
 	public static native String getPlayerNetworkStats(int playerid);
 	public static native String getNetworkStats();
-	
+	public static native String getPlayerVersion(int playerid); // Returns the SA-MP client revision as reported by the player
+
 	// Menu
 	public static native int createMenu(String title, int columns, float x, float y, float col1width, float col2width);
 	public static native void destroyMenu(int menuid);
@@ -309,6 +348,7 @@ public final class SampNativeFunction
 	public static native void textDrawBackgroundColor(int textid, int color);
 	public static native void textDrawFont(int textid, int font);
 	public static native void textDrawSetProportional(int textid, int set);
+	public static native void textDrawSetSelectable(int textid, int set);
 	public static native void textDrawShowForPlayer(int playerid, int textid);
 	public static native void textDrawHideForPlayer(int playerid, int textid);
 	public static native void textDrawShowForAll(int textid);
@@ -380,6 +420,8 @@ public final class SampNativeFunction
 	public static native void setVehicleAngularVelocity(int vehicleid, float x, float y, float z);
 	public static native void getVehicleDamageStatus(int vehicleid, VehicleDamageImpl damage);
 	public static native void updateVehicleDamageStatus(int vehicleid, int panels, int doors, int lights, int tires);
+	
+	public static native void getVehicleModelInfo(int vehiclemodel, int infotype, Vector3D vector);
 	
 	// Virtual Worlds
 	public static native void setVehicleVirtualWorld(int vehicleid, int worldid);
