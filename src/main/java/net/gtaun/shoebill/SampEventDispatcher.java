@@ -927,6 +927,20 @@ public class SampEventDispatcher implements SampCallbackHandler
 	}
 	
 	@Override
+	public int onPlayerClickTextDraw(int playerid, int clickedid)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int onPlayerClickPlayerTextDraw(int playerid, int playertextid)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
 	public int onPlayerClickPlayer(int playerId, int clickedPlayerId, int source)
 	{
 		try
@@ -944,6 +958,27 @@ public class SampEventDispatcher implements SampCallbackHandler
 			e.printStackTrace();
 			return 0;
 		}
+	}
+	
+	@Override
+	public int onPlayerEditObject(int playerid, int playerobject, int objectid, int response, float fX, float fY, float fZ, float fRotX, float fRotY, float fRotZ)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int onPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int onPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ)
+	{
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	@Override

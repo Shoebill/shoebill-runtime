@@ -287,7 +287,37 @@ public abstract class AbstractSampCallbackHandler implements SampCallbackHandler
 	}
 	
 	@Override
+	public int onPlayerClickTextDraw(int playerid, int clickedid)
+	{
+		return 0;
+	}
+	
+	@Override
+	public int onPlayerClickPlayerTextDraw(int playerid, int playertextid)
+	{
+		return 0;
+	}
+	
+	@Override
 	public int onPlayerClickPlayer(int playerid, int clickedplayerid, int source)
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerEditObject(int playerid, int playerobject, int objectid, int response, float fX, float fY, float fZ, float fRotX, float fRotY, float fRotZ)
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ)
+	{
+		return 1;
+	}
+	
+	@Override
+	public int onPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ)
 	{
 		return 1;
 	}
