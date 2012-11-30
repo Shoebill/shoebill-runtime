@@ -19,7 +19,7 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Vector2D;
-import net.gtaun.shoebill.events.destroyable.DestroyEvent;
+import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Player;

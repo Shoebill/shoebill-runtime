@@ -162,7 +162,7 @@ public abstract class WorldImpl implements World
 	@Override
 	public void showPlayerMarkers(PlayerMarkerMode mode)
 	{
-		SampNativeFunction.showPlayerMarkers(mode.getData());
+		SampNativeFunction.showPlayerMarkers(mode.getValue());
 	}
 	
 	@Override

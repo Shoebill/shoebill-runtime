@@ -62,7 +62,7 @@ public class PlayerWeaponSkillImpl implements PlayerWeaponSkill
 		if (level > 999) level = 999;
 		else if (level < 0) level = 0;
 		
-		int typeData = type.getData();
+		int typeData = type.getValue();
 		SampNativeFunction.setPlayerSkillLevel(player.getId(), typeData, level);
 		skills[typeData] = level;
 	}
@@ -72,6 +72,6 @@ public class PlayerWeaponSkillImpl implements PlayerWeaponSkill
 	{
 		if (player.isOnline() == false) return 0;
 		
-		return skills[type.getData()];
+		return skills[type.getValue()];
 	}
 }

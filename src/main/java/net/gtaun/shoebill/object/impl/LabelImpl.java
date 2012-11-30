@@ -20,7 +20,7 @@ import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
-import net.gtaun.shoebill.events.destroyable.DestroyEvent;
+import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Label;
 import net.gtaun.shoebill.object.Player;

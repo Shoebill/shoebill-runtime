@@ -41,12 +41,12 @@ import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.data.WeaponData;
-import net.gtaun.shoebill.events.PlayerEventHandler;
-import net.gtaun.shoebill.events.dialog.DialogCancelEvent;
-import net.gtaun.shoebill.events.dialog.DialogResponseEvent;
-import net.gtaun.shoebill.events.player.PlayerDisconnectEvent;
-import net.gtaun.shoebill.events.player.PlayerInteriorChangeEvent;
-import net.gtaun.shoebill.events.player.PlayerUpdateEvent;
+import net.gtaun.shoebill.event.PlayerEventHandler;
+import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
+import net.gtaun.shoebill.event.dialog.DialogResponseEvent;
+import net.gtaun.shoebill.event.player.PlayerDisconnectEvent;
+import net.gtaun.shoebill.event.player.PlayerInteriorChangeEvent;
+import net.gtaun.shoebill.event.player.PlayerUpdateEvent;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
 import net.gtaun.shoebill.object.Checkpoint;
@@ -582,7 +582,7 @@ public abstract class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return;
 		
-		SampNativeFunction.setPlayerFightingStyle(id, style.getData());
+		SampNativeFunction.setPlayerFightingStyle(id, style.getValue());
 	}
 	
 	@Override
@@ -1070,7 +1070,7 @@ public abstract class PlayerImpl implements Player
 		
 		if (checkpoint.getNext() != null)
 		{
-			SampNativeFunction.setPlayerRaceCheckpoint(id, checkpoint.getType().getData(), loc.getX(), loc.getY(), loc.getZ(), nextLoc.getX(), nextLoc.getY(), nextLoc.getZ(), checkpoint.getSize());
+			SampNativeFunction.setPlayerRaceCheckpoint(id, checkpoint.getType().getValue(), loc.getX(), loc.getY(), loc.getZ(), nextLoc.getX(), nextLoc.getY(), nextLoc.getZ(), checkpoint.getSize());
 		}
 		else
 		{
@@ -1079,7 +1079,7 @@ public abstract class PlayerImpl implements Player
 			if (type == RaceCheckpointType.NORMAL) type = RaceCheckpointType.NORMAL_FINISH;
 			else if (type == RaceCheckpointType.AIR) type = RaceCheckpointType.AIR_FINISH;
 			
-			SampNativeFunction.setPlayerRaceCheckpoint(id, type.getData(), loc.getX(), loc.getY(), loc.getZ(), loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize());
+			SampNativeFunction.setPlayerRaceCheckpoint(id, type.getValue(), loc.getX(), loc.getY(), loc.getZ(), loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize());
 		}
 		
 		raceCheckpoint = checkpoint;
@@ -1201,7 +1201,7 @@ public abstract class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return;
 		
-		SampNativeFunction.setPlayerShopName(id, shop.getData());
+		SampNativeFunction.setPlayerShopName(id, shop.getValue());
 	}
 	
 	@Override
@@ -1235,7 +1235,7 @@ public abstract class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return;
 		
-		SampNativeFunction.setPlayerSpecialAction(id, action.getData());
+		SampNativeFunction.setPlayerSpecialAction(id, action.getValue());
 	}
 	
 	@Override
@@ -1243,7 +1243,7 @@ public abstract class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return;
 		
-		SampNativeFunction.setPlayerMapIcon(id, iconId, x, y, z, markerType, color.getValue(), style.getData());
+		SampNativeFunction.setPlayerMapIcon(id, iconId, x, y, z, markerType, color.getValue(), style.getValue());
 	}
 	
 	@Override
@@ -1290,7 +1290,7 @@ public abstract class PlayerImpl implements Player
 		
 		if (!isSpectating) return;
 		
-		SampNativeFunction.playerSpectatePlayer(id, player.getId(), mode.getData());
+		SampNativeFunction.playerSpectatePlayer(id, player.getId(), mode.getValue());
 		spectatingPlayer = player;
 		spectatingVehicle = null;
 	}
@@ -1302,7 +1302,7 @@ public abstract class PlayerImpl implements Player
 		
 		if (!isSpectating) return;
 		
-		SampNativeFunction.playerSpectateVehicle(id, vehicle.getId(), mode.getData());
+		SampNativeFunction.playerSpectateVehicle(id, vehicle.getId(), mode.getValue());
 		spectatingPlayer = null;
 		spectatingVehicle = vehicle;
 	}
@@ -1312,7 +1312,7 @@ public abstract class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return;
 		
-		SampNativeFunction.startRecordingPlayerData(id, type.getData(), recordName);
+		SampNativeFunction.startRecordingPlayerData(id, type.getValue(), recordName);
 		isRecording = true;
 	}
 	
@@ -1416,7 +1416,7 @@ public abstract class PlayerImpl implements Player
 		if (caption == null || text == null || button1 == null || button2 == null) throw new NullPointerException();
 		cancelDialog();
 		
-		SampNativeFunction.showPlayerDialog(id, dialog.getId(), style.getData(), caption, text, button1, button2);
+		SampNativeFunction.showPlayerDialog(id, dialog.getId(), style.getValue(), caption, text, button1, button2);
 		this.dialog = dialog;
 	}
 	

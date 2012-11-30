@@ -81,7 +81,7 @@ public class VehicleComponentImpl implements VehicleComponent
 	{
 		if (vehicle.isDestroyed()) return;
 		
-		int componentId = components[slot.getData()];
+		int componentId = components[slot.getValue()];
 		SampNativeFunction.removeVehicleComponent(vehicle.getId(), componentId);
 	}
 	
@@ -89,7 +89,7 @@ public class VehicleComponentImpl implements VehicleComponent
 	public int get(VehicleComponentSlot slot)
 	{
 		if (vehicle.isDestroyed()) return 0;
-		return SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot.getData());
+		return SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot.getValue());
 	}
 	
 	@Override

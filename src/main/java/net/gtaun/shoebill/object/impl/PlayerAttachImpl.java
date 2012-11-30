@@ -89,7 +89,7 @@ public class PlayerAttachImpl implements PlayerAttach
 			if (player.isOnline() == false) return false;
 			
 			if (bone == PlayerAttachBone.NOT_USABLE) return false;
-			if (!SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getData(), offset.getX(), offset.getY(), offset.getZ(), rot.getX(), rot.getY(), rot.getZ(), scale.getX(), scale.getY(), scale.getZ(), materialcolor1, materialcolor2))
+			if (!SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getValue(), offset.getX(), offset.getY(), offset.getZ(), rot.getX(), rot.getY(), rot.getZ(), scale.getX(), scale.getY(), scale.getZ(), materialcolor1, materialcolor2))
 			{
 				return false;
 			}
