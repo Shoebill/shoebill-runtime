@@ -949,11 +949,11 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setCameraLookAt(float x, float y, float z)
+	public void setCameraLookAt(float x, float y, float z, int cut)
 	{
 		if (isOnline() == false) return;
 		
-		SampNativeFunction.setPlayerCameraLookAt(id, x, y, z);
+		SampNativeFunction.setPlayerCameraLookAt(id, x, y, z, cut);
 	}
 	
 	@Override
@@ -962,7 +962,7 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return;
 		
 		if (lookAt == null) throw new NullPointerException();
-		SampNativeFunction.setPlayerCameraLookAt(id, lookAt.getX(), lookAt.getY(), lookAt.getZ());
+		SampNativeFunction.setPlayerCameraLookAt(id, lookAt.getX(), lookAt.getY(), lookAt.getZ(), 0);
 	}
 	
 	@Override

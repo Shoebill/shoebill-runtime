@@ -84,12 +84,12 @@ public class PlayerAttachImpl implements PlayerAttach
 		}
 		
 		@Override
-		public boolean set(PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rot, Vector3D scale)
+		public boolean set(PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rot, Vector3D scale, int materialcolor1, int materialcolor2)
 		{
 			if (player.isOnline() == false) return false;
 			
 			if (bone == PlayerAttachBone.NOT_USABLE) return false;
-			if (!SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getData(), offset.getX(), offset.getY(), offset.getZ(), rot.getX(), rot.getY(), rot.getZ(), scale.getX(), scale.getY(), scale.getZ()))
+			if (!SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getData(), offset.getX(), offset.getY(), offset.getZ(), rot.getX(), rot.getY(), rot.getZ(), scale.getX(), scale.getY(), scale.getZ(), materialcolor1, materialcolor2))
 			{
 				return false;
 			}

@@ -68,7 +68,7 @@ public final class SampNativeFunction
 	public static native void selectObject(int playerid);
 	public static native void cancelEdit(int playerid);
 	public static native int createPlayerObject(int playerid, int modelid, float x, float y, float z, float rX, float rY, float rZ, float drawDistance);
-	public static native void attachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float RotZ);
+	public static native void attachPlayerObjectToVehicle(int playerid, int objectid, int vehicleid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ);
 	public static native void setPlayerObjectPos(int playerid, int objectid, float x, float y, float z);
 	public static native void getPlayerObjectPos(int playerid, int objectid, Vector3D rot);
 	public static native void setPlayerObjectRot(int playerid, int objectid, float rotX, float rotY, float rotZ);
@@ -156,7 +156,7 @@ public final class SampNativeFunction
 	public static native void removeBuildingForPlayer(int playerid, int modelid, float x, float y, float z, float radius);
 	
 	// Attached to bone objects
-	public static native boolean setPlayerAttachedObject(int playerid, int index, int modelid, int bone, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ);
+	public static native boolean setPlayerAttachedObject(int playerid, int index, int modelid, int bone, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ, int materialcolor1, int materialcolor2);
 	public static native boolean removePlayerAttachedObject(int playerid, int index);
 	public static native boolean isPlayerAttachedObjectSlotUsed(int playerid, int index);
 	public static native boolean editAttachedObject(int playerid, int index);
@@ -224,7 +224,7 @@ public final class SampNativeFunction
 	
 	// Player camera
 	public static native void setPlayerCameraPos(int playerid, float x, float y, float z);
-	public static native void setPlayerCameraLookAt(int playerid, float x, float y, float z);
+	public static native void setPlayerCameraLookAt(int playerid, float x, float y, float z, int cut);
 	public static native void setCameraBehindPlayer(int playerid);
 	public static native void getPlayerCameraPos(int playerid, Vector3D location);
 	public static native void getPlayerCameraFrontVector(int playerid, Vector3D location);
