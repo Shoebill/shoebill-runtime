@@ -41,30 +41,30 @@ public abstract class RaceCheckpointImpl implements RaceCheckpoint
 {
 	private LocationRadius location;
 	private RaceCheckpointType type;
-	private RaceCheckpointImpl next;
+	private RaceCheckpoint next;
 	
 	
-	public RaceCheckpointImpl(float x, float y, float z, float size, RaceCheckpointType type, RaceCheckpointImpl next)
+	public RaceCheckpointImpl(float x, float y, float z, float size, RaceCheckpointType type, RaceCheckpoint next)
 	{
 		initialize(new LocationRadius(x, y, z, size), type, next);
 	}
 	
-	public RaceCheckpointImpl(Vector3D pos, float size, RaceCheckpointType type, RaceCheckpointImpl next)
+	public RaceCheckpointImpl(Vector3D pos, float size, RaceCheckpointType type, RaceCheckpoint next)
 	{
 		initialize(new LocationRadius(pos, size), type, next);
 	}
 	
-	public RaceCheckpointImpl(Location loc, float size, RaceCheckpointType type, RaceCheckpointImpl next)
+	public RaceCheckpointImpl(Location loc, float size, RaceCheckpointType type, RaceCheckpoint next)
 	{
 		initialize(new LocationRadius(loc, size), type, next);
 	}
 	
-	public RaceCheckpointImpl(LocationRadius loc, RaceCheckpointType type, RaceCheckpointImpl next)
+	public RaceCheckpointImpl(LocationRadius loc, RaceCheckpointType type, RaceCheckpoint next)
 	{
 		initialize(new LocationRadius(loc), type, next);
 	}
 	
-	private void initialize(LocationRadius loc, RaceCheckpointType type, RaceCheckpointImpl next)
+	private void initialize(LocationRadius loc, RaceCheckpointType type, RaceCheckpoint next)
 	{
 		this.location = loc;
 		this.type = type;
@@ -124,7 +124,7 @@ public abstract class RaceCheckpointImpl implements RaceCheckpoint
 	}
 	
 	@Override
-	public RaceCheckpointImpl getNext()
+	public RaceCheckpoint getNext()
 	{
 		return next;
 	}
