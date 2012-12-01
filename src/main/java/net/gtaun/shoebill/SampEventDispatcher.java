@@ -16,6 +16,8 @@
 
 package net.gtaun.shoebill;
 
+import net.gtaun.shoebill.constant.ObjectEditResponse;
+import net.gtaun.shoebill.constant.PlayerAttachBone;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.event.checkpoint.CheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointLeaveEvent;
@@ -28,10 +30,15 @@ import net.gtaun.shoebill.event.object.ObjectMovedEvent;
 import net.gtaun.shoebill.event.object.PlayerObjectMovedEvent;
 import net.gtaun.shoebill.event.player.PlayerClickMapEvent;
 import net.gtaun.shoebill.event.player.PlayerClickPlayerEvent;
+import net.gtaun.shoebill.event.player.PlayerClickPlayerTextDrawEvent;
+import net.gtaun.shoebill.event.player.PlayerClickTextDrawEvent;
 import net.gtaun.shoebill.event.player.PlayerCommandEvent;
 import net.gtaun.shoebill.event.player.PlayerConnectEvent;
 import net.gtaun.shoebill.event.player.PlayerDeathEvent;
 import net.gtaun.shoebill.event.player.PlayerDisconnectEvent;
+import net.gtaun.shoebill.event.player.PlayerEditAttachedObjectEvent;
+import net.gtaun.shoebill.event.player.PlayerEditObjectEvent;
+import net.gtaun.shoebill.event.player.PlayerEditPlayerObjectEvent;
 import net.gtaun.shoebill.event.player.PlayerEnterExitModShopEvent;
 import net.gtaun.shoebill.event.player.PlayerGiveDamageEvent;
 import net.gtaun.shoebill.event.player.PlayerInteriorChangeEvent;
@@ -40,6 +47,8 @@ import net.gtaun.shoebill.event.player.PlayerKillEvent;
 import net.gtaun.shoebill.event.player.PlayerPickupEvent;
 import net.gtaun.shoebill.event.player.PlayerRequestClassEvent;
 import net.gtaun.shoebill.event.player.PlayerRequestSpawnEvent;
+import net.gtaun.shoebill.event.player.PlayerSelectObjectEvent;
+import net.gtaun.shoebill.event.player.PlayerSelectPlayerObjectEvent;
 import net.gtaun.shoebill.event.player.PlayerSpawnEvent;
 import net.gtaun.shoebill.event.player.PlayerStateChangeEvent;
 import net.gtaun.shoebill.event.player.PlayerStreamInEvent;
@@ -65,9 +74,12 @@ import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerObject;
+import net.gtaun.shoebill.object.PlayerTextdraw;
 import net.gtaun.shoebill.object.SampObject;
+import net.gtaun.shoebill.object.Textdraw;
 import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
+import net.gtaun.shoebill.object.PlayerAttach.Slot;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.EventManagerImpl;
 
@@ -929,15 +941,41 @@ public class SampEventDispatcher implements SampCallbackHandler
 	@Override
 	public int onPlayerClickTextDraw(int playerid, int clickedid)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		try
+		{
+			Player player = sampObjectStore.getPlayer(playerid);
+			Textdraw textdraw = sampObjectStore.getTextdraw(clickedid);
+			
+			PlayerClickTextDrawEvent event = new PlayerClickTextDrawEvent(player, textdraw);
+			eventManager.dispatchEvent(event, player, textdraw);
+			
+			return event.getResponse();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	
 	@Override
 	public int onPlayerClickPlayerTextDraw(int playerid, int playertextid)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		try
+		{
+			Player player = sampObjectStore.getPlayer(playerid);
+			PlayerTextdraw textdraw = sampObjectStore.getPlayerTextdraw(player, playertextid);
+			
+			PlayerClickPlayerTextDrawEvent event = new PlayerClickPlayerTextDrawEvent(player, textdraw);
+			eventManager.dispatchEvent(event, player, textdraw);
+			
+			return event.getResponse();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	
 	@Override
@@ -963,22 +1001,84 @@ public class SampEventDispatcher implements SampCallbackHandler
 	@Override
 	public int onPlayerEditObject(int playerid, int playerobject, int objectid, int response, float fX, float fY, float fZ, float fRotX, float fRotY, float fRotZ)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		try
+		{
+			Player player = sampObjectStore.getPlayer(playerid);
+			ObjectEditResponse editResponse = ObjectEditResponse.get(response);
+			
+			if (playerobject == 0)
+			{
+				SampObject object = sampObjectStore.getObject(objectid);
+				
+				PlayerEditObjectEvent event = new PlayerEditObjectEvent(player, object, editResponse);
+				eventManager.dispatchEvent(event, player, object);
+			}
+			else
+			{
+				PlayerObject object = sampObjectStore.getPlayerObject(player, objectid);
+				
+				PlayerEditPlayerObjectEvent event = new PlayerEditPlayerObjectEvent(player, object, editResponse);
+				eventManager.dispatchEvent(event, player, object);
+			}
+			
+			return 1;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	
 	@Override
 	public int onPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		try
+		{
+			Player player = sampObjectStore.getPlayer(playerid);
+			Slot slot = player.getPlayerAttach().getSlotByBone(PlayerAttachBone.get(boneid));
+			
+			PlayerEditAttachedObjectEvent event = new PlayerEditAttachedObjectEvent(player, slot);
+			eventManager.dispatchEvent(event, player);
+
+			return 1;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	
 	@Override
 	public int onPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		try
+		{
+			Player player = sampObjectStore.getPlayer(playerid);
+			
+			if (type == 0)
+			{
+				SampObject object = sampObjectStore.getObject(objectid);
+				
+				PlayerSelectObjectEvent event = new PlayerSelectObjectEvent(player, object);
+				eventManager.dispatchEvent(event, player, object);
+			}
+			else
+			{
+				PlayerObject object = sampObjectStore.getPlayerObject(player, objectid);
+				
+				PlayerSelectPlayerObjectEvent event = new PlayerSelectPlayerObjectEvent(player, object);
+				eventManager.dispatchEvent(event, player, object);
+			}
+			
+			return 1;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	
 	@Override

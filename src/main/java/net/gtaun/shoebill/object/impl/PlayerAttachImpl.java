@@ -165,6 +165,18 @@ public class PlayerAttachImpl implements PlayerAttach
 	}
 	
 	@Override
+	public Slot getSlotByBone(PlayerAttachBone bone)
+	{
+		for (Slot slot : slots)
+		{
+			if (slot == null) continue;
+			if (slot.getBone() == bone) return slot;
+		}
+			
+		return null;
+	}
+	
+	@Override
 	public Slot[] getSlots()
 	{
 		return slots.clone();
