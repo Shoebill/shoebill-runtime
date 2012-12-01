@@ -32,6 +32,7 @@ import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerLabel;
 import net.gtaun.shoebill.object.PlayerObject;
+import net.gtaun.shoebill.object.PlayerTextdraw;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.object.Textdraw;
@@ -65,12 +66,14 @@ public class SampObjectStoreImpl implements SampObjectStore
 	public static final int MAX_PICKUPS =				4096;
 	
 	
-	private static <T> Collection<T> getInstances(Object[] items, Class<T> cls)
+	private static <T> Collection<T> getNotNullInstances(T[] items)
 	{
 		Collection<T> list = new ArrayList<>();
-		if (items != null) for (Object item : items)
+		if (items == null) return list;
+		
+		for (T item : items)
 		{
-			if (cls.isInstance(item)) list.add(cls.cast(item));
+			if (item != null) list.add(item);
 		}
 		return list;
 	}
@@ -93,11 +96,12 @@ public class SampObjectStoreImpl implements SampObjectStore
 	private Player[] players = new Player[MAX_PLAYERS];
 	private Vehicle[] vehicles = new Vehicle[MAX_VEHICLES];
 	private SampObject[] objects = new SampObject[MAX_OBJECTS];
-	private PlayerObject[][] playerObjectsArrays = new PlayerObject[MAX_PLAYERS][];
+	private PlayerObject[][] playerObjectsArray = new PlayerObject[MAX_PLAYERS][];
 	private Pickup[] pickups = new Pickup[MAX_PICKUPS];
 	private Label[] labels = new Label[MAX_GLOBAL_LABELS];
-	private PlayerLabel[][] playerLabelsArrays = new PlayerLabel[MAX_PLAYERS][];
+	private PlayerLabel[][] playerLabelsArray = new PlayerLabel[MAX_PLAYERS][];
 	private Textdraw[] textdraws = new Textdraw[MAX_TEXT_DRAWS];
+	private PlayerTextdraw[][] playerTextdrawsArray = new PlayerTextdraw[MAX_PLAYERS][];
 	private Zone[] zones = new Zone[MAX_ZONES];
 	private Menu[] menus = new Menu[MAX_MENUS];
 	
@@ -114,8 +118,9 @@ public class SampObjectStoreImpl implements SampObjectStore
 			{
 				try
 				{
-					playerObjectsArrays[playerid] = new PlayerObject[MAX_OBJECTS];
-					playerLabelsArrays[playerid] = new PlayerLabel[MAX_PLAYER_LABELS];
+					playerObjectsArray[playerid] = new PlayerObject[MAX_OBJECTS];
+					playerLabelsArray[playerid] = new PlayerLabel[MAX_PLAYER_LABELS];
+					playerTextdrawsArray[playerid] = new PlayerTextdraw[MAX_PLAYER_TEXT_DRAWS];
 					
 					Player player = ShoebillImpl.getInstance().getSampObjectFactory().createPlayer(playerid);
 					setPlayer(playerid, player);
@@ -190,7 +195,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 		
 		if (id < 0 || id >= MAX_OBJECTS) return null;
 		
-		PlayerObject[] playerObjects = playerObjectsArrays[playerId];
+		PlayerObject[] playerObjects = playerObjectsArray[playerId];
 		if (playerObjects == null) return null;
 		
 		return playerObjects[id];
@@ -220,7 +225,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 		
 		if (id < 0 || id >= MAX_PLAYER_LABELS) return null;
 		
-		PlayerLabel[] playerLabels = playerLabelsArrays[playerId];
+		PlayerLabel[] playerLabels = playerLabelsArray[playerId];
 		if (playerLabels == null) return null;
 		
 		return playerLabels[id];
@@ -230,6 +235,22 @@ public class SampObjectStoreImpl implements SampObjectStore
 	public Textdraw getTextdraw(int id)
 	{
 		if (id < 0 || id >= MAX_TEXT_DRAWS) return null;
+		return textdraws[id];
+	}
+	
+	@Override
+	public PlayerTextdraw getPlayerTextdraw(Player player, int id)
+	{
+		if (player == null) return null;
+		
+		int playerId = player.getId();
+		if (playerId < 0 || playerId >= MAX_PLAYERS) return null;
+		
+		if (id < 0 || id >= MAX_OBJECTS) return null;
+		
+		PlayerTextdraw[] textdraws = playerTextdrawsArray[playerId];
+		if (textdraws == null) return null;
+		
 		return textdraws[id];
 	}
 	
@@ -256,160 +277,108 @@ public class SampObjectStoreImpl implements SampObjectStore
 	@Override
 	public Collection<Player> getPlayers()
 	{
-		return getInstances(players, Player.class);
+		return getNotNullInstances(players);
 	}
 	
 	@Override
 	public Collection<Vehicle> getVehicles()
 	{
-		return getInstances(players, Vehicle.class);
+		return getNotNullInstances(vehicles);
 	}
 	
 	@Override
 	public Collection<SampObject> getObjects()
 	{
-		return getInstances(objects, SampObject.class);
+		return getNotNullInstances(objects);
 	}
 	
 	@Override
 	public Collection<PlayerObject> getPlayerObjects(Player player)
 	{
-		return getPlayerObjects(player, PlayerObject.class);
+		if (player == null) return null;
+		
+		int playerId = player.getId();
+		if (playerId < 0 || playerId >= MAX_PLAYERS) return new ArrayList<>(0);
+		
+		PlayerObject[] playerObjects = playerObjectsArray[playerId];
+		return getNotNullInstances(playerObjects);
 	}
 	
 	@Override
 	public Collection<Pickup> getPickups()
 	{
-		return getInstances(pickups, Pickup.class);
+		return getNotNullInstances(pickups);
 	}
 	
 	@Override
 	public Collection<Label> getLabels()
 	{
-		return getInstances(labels, Label.class);
+		return getNotNullInstances(labels);
 	}
 	
 	@Override
 	public Collection<PlayerLabel> getPlayerLabels(Player player)
 	{
-		return getPlayerLabels(player, PlayerLabel.class);
+		if (player == null) return null;
+		
+		int playerId = player.getId();
+		if (playerId < 0 || playerId >= MAX_PLAYERS) return new ArrayList<>(0);
+		
+		PlayerLabel[] playerLabels = playerLabelsArray[playerId];
+		return getNotNullInstances(playerLabels);
 	}
 	
 	@Override
 	public Collection<Textdraw> getTextdraws()
 	{
-		return getInstances(textdraws, Textdraw.class);
+		return getNotNullInstances(textdraws);
+	}
+	
+	@Override
+	public Collection<PlayerTextdraw> getPlayerTextdraws(Player player)
+	{
+		if (player == null) return null;
+		
+		int playerId = player.getId();
+		if (playerId < 0 || playerId >= MAX_PLAYERS) return new ArrayList<>(0);
+		
+		PlayerTextdraw[] textdraws = playerTextdrawsArray[playerId];
+		return getNotNullInstances(textdraws);
 	}
 	
 	@Override
 	public Collection<Zone> getZones()
 	{
-		return getInstances(zones, Zone.class);
+		return getNotNullInstances(zones);
 	}
 	
 	@Override
 	public Collection<Menu> getMenus()
 	{
-		return getInstances(menus, Menu.class);
+		return getNotNullInstances(menus);
 	}
 	
 	@Override
 	public Collection<Dialog> getDialogs()
 	{
-		return getDialogs(Dialog.class);
-	}
-	
-	@Override
-	public Collection<Timer> getTimers()
-	{
-		return getTimers(Timer.class);
-	}
-	
-	public <T extends Player> Collection<T> getPlayers(Class<T> cls)
-	{
-		return getInstances(players, cls);
-	}
-	
-	public <T extends Vehicle> Collection<T> getVehicles(Class<T> cls)
-	{
-		return getInstances(vehicles, cls);
-	}
-	
-	public <T extends Object> Collection<T> getObjects(Class<T> cls)
-	{
-		return getInstances(objects, cls);
-	}
-	
-	public <T extends PlayerObject> Collection<T> getPlayerObjects(Player player, Class<T> cls)
-	{
-		if (player == null) return null;
-		
-		int playerId = player.getId();
-		if (playerId < 0 || playerId >= MAX_PLAYERS) return new ArrayList<T>(0);
-		
-		PlayerObject[] playerObjects = playerObjectsArrays[playerId];
-		return getInstances(playerObjects, cls);
-	}
-	
-	public <T extends Pickup> Collection<T> getPickups(Class<T> cls)
-	{
-		return getInstances(pickups, cls);
-	}
-	
-	public <T extends Label> Collection<T> getLabels(Class<T> cls)
-	{
-		return getInstances(labels, cls);
-	}
-	
-	public <T extends PlayerLabel> Collection<T> getPlayerLabels(Player player, Class<T> cls)
-	{
-		if (player == null) return null;
-		
-		int playerId = player.getId();
-		if (playerId < 0 || playerId >= MAX_PLAYERS) return new ArrayList<T>(0);
-		
-		PlayerLabel[] playerLabels = playerLabelsArrays[playerId];
-		return getInstances(playerLabels, cls);
-	}
-	
-	public <T extends Textdraw> Collection<T> getTextdraws(Class<T> cls)
-	{
-		return getInstances(textdraws, cls);
-	}
-	
-	public <T extends Zone> Collection<T> getZones(Class<T> cls)
-	{
-		return getInstances(zones, cls);
-	}
-	
-	public <T extends Menu> Collection<T> getMenus(Class<T> cls)
-	{
-		return getInstances(menus, cls);
-	}
-	
-	public <T extends Dialog> Collection<T> getDialogs(Class<T> cls)
-	{
-		Collection<T> items = new ArrayList<T>();
+		Collection<Dialog> items = new ArrayList<Dialog>();
 		for (Reference<Dialog> reference : dialogs.values())
 		{
 			Dialog dialog = reference.get();
-			if (!cls.isInstance(dialog)) continue;
-			
-			items.add(cls.cast(dialog));
+			if (dialog != null) items.add(dialog);
 		}
 		
 		return items;
 	}
 	
-	public <T extends Timer> Collection<T> getTimers(Class<T> cls)
+	@Override
+	public Collection<Timer> getTimers()
 	{
-		Collection<T> items = new ArrayList<T>();
+		Collection<Timer> items = new ArrayList<>();
 		for (Reference<Timer> reference : timers)
 		{
 			Timer timer = reference.get();
-			if (!cls.isInstance(timer)) continue;
-			
-			items.add(cls.cast(timer));
+			if (timer != null) items.add(timer);
 		}
 		
 		return items;
@@ -438,18 +407,18 @@ public class SampObjectStoreImpl implements SampObjectStore
 	
 	private void removePlayer(int id)
 	{
-		for (PlayerLabel playerLabel : playerLabelsArrays[id])
+		for (PlayerLabel playerLabel : playerLabelsArray[id])
 		{
 			if(playerLabel != null) playerLabel.destroy();
 		}
 		
-		for (PlayerObject playerObject : playerObjectsArrays[id])
+		for (PlayerObject playerObject : playerObjectsArray[id])
 		{
 			if(playerObject != null) playerObject.destroy();
 		}
 
-		playerLabelsArrays[id] = null;
-		playerObjectsArrays[id] = null;
+		playerLabelsArray[id] = null;
+		playerObjectsArray[id] = null;
 		players[id] = null;
 	}
 	
@@ -465,7 +434,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	
 	public void setPlayerObject(Player player, int id, PlayerObject object)
 	{
-		PlayerObject[] playerObjects = playerObjectsArrays[player.getId()];
+		PlayerObject[] playerObjects = playerObjectsArray[player.getId()];
 		playerObjects[id] = object;
 	}
 	
@@ -481,12 +450,18 @@ public class SampObjectStoreImpl implements SampObjectStore
 	
 	public void setPlayerLabel(Player player, int id, PlayerLabel label)
 	{
-		PlayerLabel[] playerLabels = playerLabelsArrays[player.getId()];
+		PlayerLabel[] playerLabels = playerLabelsArray[player.getId()];
 		playerLabels[id] = label;
 	}
 	
 	public void setTextdraw(int id, Textdraw textdraw)
 	{
+		textdraws[id] = textdraw;
+	}
+
+	public void setPlayerTextdraw(Player player, int id, PlayerTextdraw textdraw)
+	{
+		PlayerTextdraw[] textdraws = playerTextdrawsArray[player.getId()];
 		textdraws[id] = textdraw;
 	}
 	

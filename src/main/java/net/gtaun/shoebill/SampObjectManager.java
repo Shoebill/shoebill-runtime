@@ -31,6 +31,7 @@ import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerLabel;
 import net.gtaun.shoebill.object.PlayerObject;
+import net.gtaun.shoebill.object.PlayerTextdraw;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.object.Textdraw;
@@ -75,6 +76,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private static final Class<?>[] LABEL_CONSTRUCTOR_ARGUMENT_TYPES = { String.class, Color.class, Location.class, float.class, boolean.class };
 	private static final Class<?>[] PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES = { Player.class, String.class, Color.class, Location.class, float.class, boolean.class };
 	private static final Class<?>[] TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES = { float.class, float.class, String.class };
+	private static final Class<?>[] PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES = { Player.class, float.class, float.class, String.class };
 	private static final Class<?>[] ZONE_CONSTRUCTOR_ARGUMENT_TYPES = { float.class, float.class, float.class, float.class };
 	private static final Class<?>[] MENU_CONSTRUCTOR_ARGUMENT_TYPES = { String.class, int.class, float.class, float.class, float.class, float.class };
 	private static final Class<?>[] TIMER_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, int.class };
@@ -93,6 +95,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private ProxyableFactory<LabelImpl> labelFactory;
 	private ProxyableFactory<PlayerLabelImpl> playerLabelFactory;
 	private ProxyableFactory<TextdrawImpl> textdrawFactory;
+	private ProxyableFactory<PlayerTextdraw> playerTextdrawFactory;
 	private ProxyableFactory<ZoneImpl> zoneFactory;
 	private ProxyableFactory<MenuImpl> menuFactory;
 	private ProxyableFactory<DialogImpl> dialogFactory;
@@ -127,6 +130,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		labelFactory = ProxyableFactory.Impl.createProxyableFactory(LabelImpl.class);
 		playerLabelFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerLabelImpl.class);
 		textdrawFactory = ProxyableFactory.Impl.createProxyableFactory(TextdrawImpl.class);
+		playerTextdrawFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerTextdraw.class);
 		zoneFactory = ProxyableFactory.Impl.createProxyableFactory(ZoneImpl.class);
 		menuFactory = ProxyableFactory.Impl.createProxyableFactory(MenuImpl.class);
 		dialogFactory = ProxyableFactory.Impl.createProxyableFactory(DialogImpl.class);
@@ -173,6 +177,11 @@ public class SampObjectManager extends AbstractSampObjectFactory
 				{
 					Textdraw textdraw = (Textdraw) obj;
 					store.setTextdraw(textdraw.getId(), null);
+				}
+				else if (obj instanceof PlayerTextdraw)
+				{
+					PlayerTextdraw textdraw = (PlayerTextdraw) obj;
+					store.setPlayerTextdraw(textdraw.getPlayer(), textdraw.getId(), null);
 				}
 				else if (obj instanceof Zone)
 				{
@@ -289,6 +298,15 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		final Object[] args = { x, y, text };
 		Textdraw textdraw = (Textdraw) textdrawFactory.create(TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, args);
 		store.setTextdraw(textdraw.getId(), textdraw);
+		return textdraw;
+	}
+	
+	@Override
+	public PlayerTextdraw createPlayerTextdraw(Player player, float x, float y, String text)
+	{
+		final Object[] args = { player, x, y, text };
+		PlayerTextdraw textdraw = (PlayerTextdraw) playerTextdrawFactory.create(PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		store.setPlayerTextdraw(player, textdraw.getId(), textdraw);
 		return textdraw;
 	}
 	

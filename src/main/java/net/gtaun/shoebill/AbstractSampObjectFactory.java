@@ -29,6 +29,7 @@ import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerLabel;
 import net.gtaun.shoebill.object.PlayerObject;
+import net.gtaun.shoebill.object.PlayerTextdraw;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Textdraw;
 import net.gtaun.shoebill.object.Timer;
@@ -189,6 +190,24 @@ public abstract class AbstractSampObjectFactory implements SampObjectFactory
 	public Textdraw createTextdraw(Vector2D pos, String text)
 	{
 		return createTextdraw(pos.getX(), pos.getY(), text);
+	}
+	
+	@Override
+	public PlayerTextdraw createPlayerTextdraw(Player player, float x, float y)
+	{
+		return createPlayerTextdraw(player, x, y, " ");
+	}
+	
+	@Override
+	public PlayerTextdraw createPlayerTextdraw(Player player, Vector2D pos)
+	{
+		return createPlayerTextdraw(player, pos.getX(), pos.getY(), " ");
+	}
+	
+	@Override
+	public PlayerTextdraw createPlayerTextdraw(Player player, Vector2D pos, String text)
+	{
+		return createPlayerTextdraw(player, pos.getX(), pos.getY(), text);
 	}
 	
 	@Override

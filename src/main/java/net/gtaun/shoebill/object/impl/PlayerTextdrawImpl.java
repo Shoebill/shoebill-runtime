@@ -1,6 +1,5 @@
 /**
- * Copyright (C) 2011-2012 MK124
- * Copyright (C) 2011 JoJLlmAn
+ * Copyright (C) 2012 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +16,13 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.Textdraw;
+import net.gtaun.shoebill.object.PlayerTextdraw;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
 
@@ -35,19 +33,21 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * 
  * 
- * @author MK124, JoJLlmAn
+ * @author MK124
  */
-public abstract class TextdrawImpl implements Textdraw
+public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 {
+	private Player player;
 	private int id = INVALID_ID;
 	private Vector2D position;
 	private String text;
 	
-	private boolean[] isPlayerShowed = new boolean[SampObjectStoreImpl.MAX_PLAYERS];
+	private boolean isShowed = false;
 	
 	
-	public TextdrawImpl(float x, float y, String text) throws CreationFailedException
+	public PlayerTextdrawImpl(Player player, float x, float y, String text) throws CreationFailedException
 	{
+		this.player = player;
 		initialize(x, y, text);
 	}
 	
@@ -56,11 +56,8 @@ public abstract class TextdrawImpl implements Textdraw
 		position = new Vector2D(x, y);
 		if (StringUtils.isEmpty(text)) text = " ";
 		
-		id = SampNativeFunction.textDrawCreate(x, y, text);
+		id = SampNativeFunction.createPlayerTextDraw(player.getId(), x, y, text);
 		if (id == INVALID_ID) throw new CreationFailedException();
-		
-		for (int i = 0; i < isPlayerShowed.length; i++)
-			isPlayerShowed[i] = false;
 	}
 	
 	@Override
@@ -74,7 +71,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawDestroy(id);
+		SampNativeFunction.playerTextDrawDestroy(player.getId(), id);
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
@@ -86,7 +83,14 @@ public abstract class TextdrawImpl implements Textdraw
 	@Override
 	public boolean isDestroyed()
 	{
+		if( player.isOnline() == false ) id = INVALID_ID;
 		return id == INVALID_ID;
+	}
+	
+	@Override
+	public Player getPlayer()
+	{
+		return player;
 	}
 	
 	@Override
@@ -112,7 +116,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawLetterSize(id, x, y);
+		SampNativeFunction.playerTextDrawLetterSize(player.getId(), id, x, y);
 	}
 	
 	@Override
@@ -120,7 +124,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawLetterSize(id, vec.getX(), vec.getY());
+		SampNativeFunction.playerTextDrawLetterSize(player.getId(), id, vec.getX(), vec.getY());
 	}
 	
 	@Override
@@ -128,7 +132,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawTextSize(id, x, y);
+		SampNativeFunction.playerTextDrawTextSize(player.getId(), id, x, y);
 	}
 	
 	@Override
@@ -136,7 +140,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawTextSize(id, vec.getX(), vec.getY());
+		SampNativeFunction.playerTextDrawTextSize(player.getId(), id, vec.getX(), vec.getY());
 	}
 	
 	@Override
@@ -144,7 +148,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawAlignment(id, alignment);
+		SampNativeFunction.playerTextDrawAlignment(player.getId(), id, alignment);
 	}
 	
 	@Override
@@ -152,7 +156,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawColor(id, color.getValue());
+		SampNativeFunction.playerTextDrawColor(player.getId(), id, color.getValue());
 	}
 	
 	@Override
@@ -160,7 +164,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawUseBox(id, use);
+		SampNativeFunction.playerTextDrawUseBox(player.getId(), id, use ? 1 : 0);
 	}
 	
 	@Override
@@ -168,7 +172,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawBoxColor(id, color.getValue());
+		SampNativeFunction.playerTextDrawBoxColor(player.getId(), id, color.getValue());
 	}
 	
 	@Override
@@ -176,7 +180,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawSetShadow(id, size);
+		SampNativeFunction.playerTextDrawSetShadow(player.getId(), id, size);
 	}
 	
 	@Override
@@ -184,7 +188,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawSetOutline(id, size);
+		SampNativeFunction.playerTextDrawSetOutline(player.getId(), id, size);
 	}
 	
 	@Override
@@ -192,7 +196,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawBackgroundColor(id, color.getValue());
+		SampNativeFunction.playerTextDrawBackgroundColor(player.getId(), id, color.getValue());
 	}
 	
 	@Override
@@ -200,7 +204,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawFont(id, font);
+		SampNativeFunction.playerTextDrawFont(player.getId(), id, font);
 	}
 	
 	@Override
@@ -208,7 +212,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawSetProportional(id, set ? 1 : 0);
+		SampNativeFunction.playerTextDrawSetProportional(player.getId(), id, set ? 1 : 0);
 	}
 	
 	@Override
@@ -216,7 +220,7 @@ public abstract class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawSetSelectable(id, set ? 1 : 0);
+		SampNativeFunction.playerTextDrawSetSelectable(player.getId(), id, set ? 1 : 0);
 	}
 	
 	@Override
@@ -227,58 +231,34 @@ public abstract class TextdrawImpl implements Textdraw
 		if (text == null) throw new NullPointerException();
 		
 		this.text = text;
-		SampNativeFunction.textDrawSetString(id, text);
+		SampNativeFunction.playerTextDrawSetString(player.getId(), id, text);
 	}
 	
 	@Override
-	public void show(Player player)
+	public void show()
 	{
 		if (isDestroyed()) return;
-		if (player.isOnline() == false) return;
 		
 		int playerId = player.getId();
 		
-		SampNativeFunction.textDrawShowForPlayer(playerId, id);
-		isPlayerShowed[playerId] = true;
+		SampNativeFunction.playerTextDrawShow(playerId, id);
+		isShowed = true;
 	}
 	
 	@Override
-	public void hide(Player player)
+	public void hide()
 	{
 		if (isDestroyed()) return;
-		if (player.isOnline() == false) return;
 		
 		int playerId = player.getId();
 		
-		SampNativeFunction.textDrawHideForPlayer(playerId, id);
-		isPlayerShowed[playerId] = false;
+		SampNativeFunction.playerTextDrawHide(playerId, id);
+		isShowed = false;
 	}
 	
 	@Override
-	public void showForAll()
+	public boolean isShowed()
 	{
-		if (isDestroyed()) return;
-		
-		SampNativeFunction.textDrawShowForAll(id);
-		for (int i = 0; i < isPlayerShowed.length; i++)
-			isPlayerShowed[i] = true;
-	}
-	
-	@Override
-	public void hideForAll()
-	{
-		if (isDestroyed()) return;
-		
-		SampNativeFunction.textDrawHideForAll(id);
-		for (int i = 0; i < isPlayerShowed.length; i++)
-			isPlayerShowed[i] = false;
-	}
-	
-	@Override
-	public boolean isPlayerShowed(Player player)
-	{
-		if (isDestroyed()) return false;
-		
-		return isPlayerShowed[player.getId()];
+		return isShowed;
 	}
 }
