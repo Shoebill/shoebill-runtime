@@ -55,7 +55,7 @@ public class PlayerWeaponSkillImpl implements PlayerWeaponSkill
 	}
 	
 	@Override
-	public void set(WeaponSkill type, int level)
+	public void setLevel(WeaponSkill type, int level)
 	{
 		if (player.isOnline() == false) return;
 		
@@ -68,7 +68,7 @@ public class PlayerWeaponSkillImpl implements PlayerWeaponSkill
 	}
 	
 	@Override
-	public int get(WeaponSkill type)
+	public int getLevel(WeaponSkill type)
 	{
 		if (player.isOnline() == false) return 0;
 		

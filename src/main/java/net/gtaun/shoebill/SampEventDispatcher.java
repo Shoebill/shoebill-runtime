@@ -79,7 +79,7 @@ import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Textdraw;
 import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
-import net.gtaun.shoebill.object.PlayerAttach.Slot;
+import net.gtaun.shoebill.object.PlayerAttach.PlayerAttachSlot;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.EventManagerImpl;
 
@@ -1036,7 +1036,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			Player player = sampObjectStore.getPlayer(playerid);
-			Slot slot = player.getPlayerAttach().getSlotByBone(PlayerAttachBone.get(boneid));
+			PlayerAttachSlot slot = player.getAttach().getSlotByBone(PlayerAttachBone.get(boneid));
 			
 			PlayerEditAttachedObjectEvent event = new PlayerEditAttachedObjectEvent(player, slot);
 			eventManager.dispatchEvent(event, player);

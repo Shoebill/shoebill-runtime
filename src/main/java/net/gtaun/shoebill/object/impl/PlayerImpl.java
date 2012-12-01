@@ -192,7 +192,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public PlayerAttach getPlayerAttach()
+	public PlayerAttach getAttach()
 	{
 		return playerAttach;
 	}

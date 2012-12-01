@@ -33,7 +33,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class PlayerAttachImpl implements PlayerAttach
 {
-	public class PlayerAttachSlot implements Slot
+	public class PlayerAttachSlotImpl implements PlayerAttachSlot
 	{
 		private int slot;
 		
@@ -42,7 +42,7 @@ public class PlayerAttachImpl implements PlayerAttach
 		private Vector3D offset, rotate, scale;
 		
 		
-		PlayerAttachSlot(int slot)
+		PlayerAttachSlotImpl(int slot)
 		{
 			this.slot = slot;
 		}
@@ -51,6 +51,12 @@ public class PlayerAttachImpl implements PlayerAttach
 		public String toString()
 		{
 			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		}
+		
+		@Override
+		public Player getPlayer()
+		{
+			return player;
 		}
 		
 		@Override
@@ -142,7 +148,7 @@ public class PlayerAttachImpl implements PlayerAttach
 		
 		for (int i = 0; i < MAX_ATTACHED_OBJECTS; i++)
 		{
-			slots[i] = new PlayerAttachSlot(i);
+			slots[i] = new PlayerAttachSlotImpl(i);
 		}
 	}
 	
@@ -159,15 +165,15 @@ public class PlayerAttachImpl implements PlayerAttach
 	}
 	
 	@Override
-	public Slot getSlot(int slot)
+	public PlayerAttachSlot getSlot(int slot)
 	{
 		return slots[slot];
 	}
 	
 	@Override
-	public Slot getSlotByBone(PlayerAttachBone bone)
+	public PlayerAttachSlot getSlotByBone(PlayerAttachBone bone)
 	{
-		for (Slot slot : slots)
+		for (PlayerAttachSlot slot : slots)
 		{
 			if (slot == null) continue;
 			if (slot.getBone() == bone) return slot;
@@ -177,7 +183,7 @@ public class PlayerAttachImpl implements PlayerAttach
 	}
 	
 	@Override
-	public Slot[] getSlots()
+	public PlayerAttachSlot[] getSlots()
 	{
 		return slots.clone();
 	}
