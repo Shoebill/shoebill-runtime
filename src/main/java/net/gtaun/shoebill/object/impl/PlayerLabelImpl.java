@@ -135,6 +135,7 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 	@Override
 	public boolean isDestroyed()
 	{
+		if (player.isOnline() == false) id = INVALID_ID;
 		return id == INVALID_ID;
 	}
 	
@@ -172,7 +173,6 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 	public Location getLocation()
 	{
 		if (isDestroyed()) return null;
-		if (player.isOnline() == false) return null;
 		
 		Location pos = null;
 		
@@ -191,7 +191,6 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 	public void attach(Player target, float x, float y, float z)
 	{
 		if (isDestroyed()) return;
-		if (player.isOnline() == false) return;
 		if (target.isOnline() == false) return;
 		
 		int playerId = player.getId();
@@ -213,7 +212,6 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 	public void attach(Vehicle vehicle, float x, float y, float z)
 	{
 		if (isDestroyed()) return;
-		if (player.isOnline() == false) return;
 		if (vehicle.isDestroyed()) return;
 		
 		int playerId = player.getId();
@@ -235,7 +233,6 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 	public void update(Color color, String text)
 	{
 		if (isDestroyed()) return;
-		if (player.isOnline() == false) return;
 		
 		this.color.set(color);
 		this.text = text;

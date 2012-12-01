@@ -115,6 +115,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	@Override
 	public boolean isDestroyed()
 	{
+		if (player.isOnline() == false) id = INVALID_ID;
 		return id == INVALID_ID;
 	}
 	
@@ -140,7 +141,6 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public float getSpeed()
 	{
 		if (isDestroyed()) return 0.0F;
-		if (player.isOnline() == false) return 0.0F;
 		
 		if (attachedPlayer != null && attachedPlayer.isOnline()) return attachedPlayer.getVelocity().speed3d();
 		
@@ -175,7 +175,6 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public Location getLocation()
 	{
 		if (isDestroyed()) return null;
-		if (player.isOnline() == false) return null;
 		
 		SampNativeFunction.getPlayerObjectPos(player.getId(), id, location);
 		return location.clone();
@@ -185,7 +184,6 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public void setLocation(Vector3D pos)
 	{
 		if (isDestroyed()) return;
-		if (player.isOnline() == false) return;
 		
 		location.set(pos);
 		SampNativeFunction.setPlayerObjectPos(player.getId(), id, pos.getX(), pos.getY(), pos.getZ());
@@ -195,7 +193,6 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public void setLocation(Location loc)
 	{
 		if (isDestroyed()) return;
-		if (player.isOnline() == false) return;
 		
 		location.set(loc);
 		SampNativeFunction.setPlayerObjectPos(player.getId(), id, loc.getX(), loc.getY(), loc.getZ());
@@ -205,7 +202,6 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public Vector3D getRotate()
 	{
 		if (isDestroyed()) return null;
-		if (player.isOnline() == false) return null;
 		
 		Vector3D rotate = new Vector3D();
 		SampNativeFunction.getPlayerObjectRot(player.getId(), id, rotate);
@@ -216,7 +212,6 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public void setRotate(float rx, float ry, float rz)
 	{
 		if (isDestroyed()) return;
-		if (player.isOnline() == false) return;
 		
 		SampNativeFunction.setPlayerObjectRot(player.getId(), id, rx, ry, rz);
 	}
@@ -231,7 +226,6 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public boolean isMoving()
 	{
 		if (isDestroyed()) return false;
-		if (player.isOnline() == false) return false;
 		
 		return SampNativeFunction.isPlayerObjectMoving(player.getId(), id);
 	}
@@ -240,7 +234,6 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public int move(float x, float y, float z, float speed)
 	{
 		if (isDestroyed()) return 0;
-		if (player.isOnline() == false) return 0;
 		
 		if (attachedPlayer == null) this.speed = speed;
 		return SampNativeFunction.movePlayerObject(player.getId(), id, x, y, z, speed, -1000.0f, -1000.0f, -1000.0f);
@@ -250,7 +243,6 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public int move(float x, float y, float z, float speed, float rotX, float rotY, float rotZ)
 	{
 		if (isDestroyed()) return 0;
-		if (player.isOnline() == false) return 0;
 		
 		if (attachedPlayer == null) this.speed = speed;
 		return SampNativeFunction.movePlayerObject(player.getId(), id, x, y, z, speed, rotX, rotY, rotZ);
@@ -272,7 +264,6 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public void stop()
 	{
 		if (isDestroyed()) return;
-		if (player.isOnline() == false) return;
 		
 		speed = 0.0F;
 		SampNativeFunction.stopPlayerObject(player.getId(), id);
@@ -282,7 +273,6 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public void attach(Player target, float x, float y, float z, float rx, float ry, float rz)
 	{
 		if (isDestroyed()) return;
-		if (player.isOnline() == false) return;
 		if (target.isOnline() == false) return;
 		
 		SampNativeFunction.attachPlayerObjectToPlayer(player.getId(), id, target.getId(), x, y, z, rx, ry, rz);
