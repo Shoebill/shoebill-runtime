@@ -42,12 +42,11 @@ public class ShoebillVersionImpl implements ShoebillVersion
 		YamlConfiguration config = new YamlConfiguration();
 		config.read(in);
 		
+		name = config.getString("name", "Unknown");
 		version = config.getString("version", "Unknown");
 		support = config.getString("support", "Unknown");
 		buildNumber = config.getInt("buildNumber", 0);
 		buildDate = config.getString("buildDate", "Unknown");
-		
-		if (version.charAt(version.length() - 1) == '.') version = version.substring(0, version.length() - 1);
 	}
 	
 	@Override

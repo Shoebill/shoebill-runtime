@@ -58,7 +58,6 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);
 	
-	private static final String LIBRARY_NAME = "Shoebill Runtime";
 	private static final String VERSION_FILENAME = "version.yml";
 	
 	private static final String SHOEBILL_CONFIG_PATH = "./shoebill/shoebill.yml";
@@ -106,7 +105,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		
 		version = new ShoebillVersionImpl(this.getClass().getClassLoader().getResourceAsStream(VERSION_FILENAME));
 		
-		String startupMessage = LIBRARY_NAME + " " + version.getVersion();
+		String startupMessage = version.getName() + " " + version.getVersion();
 		
 		if (version.getBuildNumber() != 0) startupMessage += " Build " + version.getBuildNumber();
 		startupMessage += " (for " + version.getSupport() + ")";
