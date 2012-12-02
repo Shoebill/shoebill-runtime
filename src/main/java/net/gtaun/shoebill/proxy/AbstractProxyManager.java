@@ -21,9 +21,9 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.gtaun.shoebill.proxy.MethodInterceptor.Interceptor;
@@ -96,7 +96,7 @@ public abstract class AbstractProxyManager implements ProxyManager
 	
 	protected AbstractProxyManager()
 	{
-		methodMapInterceptors = new HashMap<>();
+		methodMapInterceptors = new ConcurrentHashMap<>(256, 0.5f);
 	}
 	
 	private void addMethodInterceptor(MethodInterceptor methodInterceptor)

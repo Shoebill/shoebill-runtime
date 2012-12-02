@@ -33,7 +33,7 @@ public class ProxyableFactoryImpl<T extends Proxyable> implements ProxyableFacto
 	
 	private final Class<T> clazz;
 	private final Enhancer enhancer;
-	private GlobalProxyManagerImpl globalProxyManager;
+	private GlobalProxyManager globalProxyManager;
 	
 
 	public ProxyableFactoryImpl(Class<T> clz)
@@ -41,7 +41,7 @@ public class ProxyableFactoryImpl<T extends Proxyable> implements ProxyableFacto
 		this(clz, null);
 	}
 	
-	public ProxyableFactoryImpl(Class<T> clz, GlobalProxyManagerImpl globalProxyManager)
+	public ProxyableFactoryImpl(Class<T> clz, GlobalProxyManager globalProxyManager)
 	{
 		this.clazz = clz;
 		enhancer = new Enhancer();

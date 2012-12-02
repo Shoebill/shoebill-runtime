@@ -42,7 +42,7 @@ public class ProxyManagerImpl extends AbstractProxyManager implements ProxyManag
 	private final Callback callback;
 
 	
-	ProxyManagerImpl(final GlobalProxyManagerImpl globalProxyManager)
+	ProxyManagerImpl(final GlobalProxyManager globalProxyManager)
 	{
 		callback = new net.sf.cglib.proxy.MethodInterceptor()
 		{
@@ -54,8 +54,8 @@ public class ProxyManagerImpl extends AbstractProxyManager implements ProxyManag
 				
 				Collection<Reference<MethodInterceptor>> interceptors = methodMapInterceptors.get(methodName);
 				
-				Collection<Reference<MethodInterceptor>> globalInterceptors = null;
-				if (globalProxyManager != null) globalInterceptors = globalProxyManager.methodMapInterceptors.get(methodName);
+				Collection<MethodInterceptor> globalInterceptors = null;
+				if (globalProxyManager != null) globalInterceptors = globalProxyManager.getMethodInterceptors(method);
 				
 				if (interceptors == null && globalInterceptors == null)
 				{
@@ -74,19 +74,26 @@ public class ProxyManagerImpl extends AbstractProxyManager implements ProxyManag
 					while(iterator.hasNext())
 					{
 						MethodInterceptor interceptor = iterator.next().get();
-						if(interceptor == null) iterator.remove();
-						else interceptorQueue.add(interceptor);
+						if(interceptor == null)
+						{
+							iterator.remove();
+							continue;
+						}
+
+						Method m = interceptor.getMethod();
+						if(method.getReturnType() != m.getReturnType()) continue;
+						if(Arrays.equals(method.getParameterTypes(), m.getParameterTypes()) == false) continue;
+						interceptorQueue.add(interceptor);
 					}
 				}
 				
 				if (globalInterceptors != null)
 				{
-					Iterator<Reference<MethodInterceptor>> iterator = globalInterceptors.iterator();
+					Iterator<MethodInterceptor> iterator = globalInterceptors.iterator();
 					while(iterator.hasNext())
 					{
-						MethodInterceptor interceptor = iterator.next().get();
-						if(interceptor == null) iterator.remove();
-						else if (interceptor.getMethod().getDeclaringClass().isInstance(obj)) interceptorQueue.add(interceptor);
+						MethodInterceptor interceptor = iterator.next();
+						if (interceptor.getMethod().getDeclaringClass().isInstance(obj)) interceptorQueue.add(interceptor);
 					}
 				}
 				
@@ -105,11 +112,6 @@ public class ProxyManagerImpl extends AbstractProxyManager implements ProxyManag
 						while(interceptorQueue.isEmpty() == false && interceptor == null)
 						{
 							MethodInterceptor methodInterceptor = interceptorQueue.poll();
-							Method m = methodInterceptor.getMethod();
-							
-							if(method.getReturnType() != m.getReturnType()) continue;
-							if(Arrays.equals(method.getParameterTypes(), m.getParameterTypes()) == false) continue;
-							
 							interceptor = methodInterceptor.getInterceptor();
 						}
 						

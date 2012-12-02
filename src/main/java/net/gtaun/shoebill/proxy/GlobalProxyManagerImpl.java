@@ -16,6 +16,13 @@
 
 package net.gtaun.shoebill.proxy;
 
+import java.lang.ref.Reference;
+import java.lang.reflect.Method;
+import java.util.AbstractCollection;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * 
  * 
@@ -26,5 +33,66 @@ public class GlobalProxyManagerImpl extends AbstractProxyManager implements Glob
 	public GlobalProxyManagerImpl()
 	{
 		
+	}
+	
+	@Override
+	public Collection<MethodInterceptor> getMethodInterceptors(final Method method)
+	{
+		return new AbstractCollection<MethodInterceptor>()
+		{
+			final Collection<Reference<MethodInterceptor>> methodInterceptors = methodMapInterceptors.get(method.getName());
+			
+			@Override
+			public Iterator<MethodInterceptor> iterator()
+			{
+				return new Iterator<MethodInterceptor>()
+				{
+					Iterator<Reference<MethodInterceptor>> iterator = methodInterceptors.iterator();
+					MethodInterceptor next = null;
+					
+					@Override
+					public void remove()
+					{
+						throw new UnsupportedOperationException();
+					}
+					
+					@Override
+					public MethodInterceptor next()
+					{
+						if (next == null && hasNext() == false) throw new NoSuchElementException();
+						
+						MethodInterceptor ret = next;
+						next = null;
+						return ret;
+					}
+					
+					@Override
+					public boolean hasNext()
+					{
+						if (next != null) return true;
+						
+						while (true)
+						{
+							if (iterator.hasNext() == false) return false;
+							next = iterator.next().get();
+							
+							if (next == null)
+							{
+								iterator.remove();
+								continue;
+							}
+
+							return true;
+						}
+					}
+				};
+			}
+
+			@Override
+			public int size()
+			{
+				return methodInterceptors.size();
+			}
+		};
 	}
 }
