@@ -40,16 +40,6 @@ public abstract class CheckpointImpl implements Checkpoint
 	private LocationRadius location;
 	
 	
-	public CheckpointImpl(float x, float y, float z, float size)
-	{
-		location = new LocationRadius(x, y, z, size);
-	}
-	
-	public CheckpointImpl(Vector3D pos, float size)
-	{
-		location = new LocationRadius(pos, size);
-	}
-	
 	public CheckpointImpl(LocationRadius loc)
 	{
 		location = new LocationRadius(loc);

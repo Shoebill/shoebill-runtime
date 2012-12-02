@@ -22,7 +22,6 @@ import java.util.Collection;
 
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.constant.RaceCheckpointType;
-import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.object.Player;
@@ -44,29 +43,9 @@ public abstract class RaceCheckpointImpl implements RaceCheckpoint
 	private RaceCheckpoint next;
 	
 	
-	public RaceCheckpointImpl(float x, float y, float z, float size, RaceCheckpointType type, RaceCheckpoint next)
-	{
-		initialize(new LocationRadius(x, y, z, size), type, next);
-	}
-	
-	public RaceCheckpointImpl(Vector3D pos, float size, RaceCheckpointType type, RaceCheckpoint next)
-	{
-		initialize(new LocationRadius(pos, size), type, next);
-	}
-	
-	public RaceCheckpointImpl(Location loc, float size, RaceCheckpointType type, RaceCheckpoint next)
-	{
-		initialize(new LocationRadius(loc, size), type, next);
-	}
-	
 	public RaceCheckpointImpl(LocationRadius loc, RaceCheckpointType type, RaceCheckpoint next)
 	{
-		initialize(new LocationRadius(loc), type, next);
-	}
-	
-	private void initialize(LocationRadius loc, RaceCheckpointType type, RaceCheckpoint next)
-	{
-		this.location = loc;
+		this.location = new LocationRadius(loc);
 		this.type = type;
 		this.next = next;
 	}
