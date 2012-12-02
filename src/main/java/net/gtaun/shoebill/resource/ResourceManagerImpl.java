@@ -59,6 +59,7 @@ public class ResourceManagerImpl implements ResourceManager
 	public ResourceManagerImpl(Shoebill shoebill, EventManager eventManager, ShoebillArtifactLocator locator, File dataDir)
 	{
 		this.shoebill = shoebill;
+		this.eventManager = eventManager;
 		this.artifactLocator = locator;
 		this.dataDir = dataDir;
 		
@@ -181,6 +182,8 @@ public class ResourceManagerImpl implements ResourceManager
 			}
 			
 			plugins.remove(entry.getKey());
+			
+			System.gc();
 			return;
 		}
 	}
