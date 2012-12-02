@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.gtaun.shoebill.util.log;
+package net.gtaun.shoebill.log4j;
 
 import java.io.File;
 import java.io.IOException;
