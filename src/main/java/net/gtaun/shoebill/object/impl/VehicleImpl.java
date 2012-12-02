@@ -18,7 +18,6 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillImpl;
-import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
 import net.gtaun.shoebill.data.Quaternion;
@@ -144,8 +143,7 @@ public abstract class VehicleImpl implements Vehicle
 		modEventHandlerEntry.cancel();
 		updateDamageEventHandlerEntry.cancel();
 		
-		ShoebillLowLevel shoebillLowLevel = ShoebillImpl.getInstance();
-		EventManager eventManager = shoebillLowLevel.getEventManager();
+		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
 		
 		VehicleDestroyEvent event = new VehicleDestroyEvent(this);
 		eventManager.dispatchEvent(event, this);

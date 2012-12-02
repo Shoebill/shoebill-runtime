@@ -26,6 +26,8 @@ import java.lang.ref.WeakReference;
 import java.util.Properties;
 
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
+import net.gtaun.shoebill.proxy.GlobalProxyManager;
+import net.gtaun.shoebill.proxy.GlobalProxyManagerImpl;
 import net.gtaun.shoebill.proxy.ProxyableFactoryImpl;
 import net.gtaun.shoebill.resource.ResourceManagerImpl;
 import net.gtaun.shoebill.resource.ResourceManager;
@@ -51,6 +53,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author MK124
  */
+@SuppressWarnings("deprecation")
 public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);
@@ -89,6 +92,8 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	
 	private SampEventLogger sampEventLogger;
 	private SampEventDispatcher sampEventDispatcher;
+	
+	private GlobalProxyManager globalProxyManager;
 	
 	
 	public ShoebillImpl() throws IOException, ClassNotFoundException
@@ -196,12 +201,13 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	private void initialize()
 	{
 		eventManager = new EventManagerImpl();
+		globalProxyManager = new GlobalProxyManagerImpl();
 		
-		pluginManager = new ResourceManagerImpl(this, artifactLocator, config.getDataDir());
+		pluginManager = new ResourceManagerImpl(this, eventManager, artifactLocator, config.getDataDir());
 		serviceManager = new ServiceManagerImpl(eventManager);
 		
 		sampObjectStore = new SampObjectStoreImpl(eventManager);
-		sampObjectManager = new SampObjectManager(eventManager, sampObjectStore);
+		sampObjectManager = new SampObjectManager(eventManager, globalProxyManager, sampObjectStore);
 		sampObjectManager.createWorld();
 		sampObjectManager.createServer();
 		
@@ -224,6 +230,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		pluginManager = null;
 		serviceManager = null;
 		
+		globalProxyManager = null;
 		eventManager = null;
 		
 		System.gc();
@@ -266,6 +273,18 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	}
 	
 	@Override
+	public EventManager getEventManager()
+	{
+		return eventManager;
+	}
+	
+	@Override
+	public SampCallbackManager getCallbackManager()
+	{
+		return sampCallbackManager;
+	}
+	
+	@Override
 	public SampObjectStore getSampObjectStore()
 	{
 		return sampObjectStore;
@@ -290,21 +309,15 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	}
 	
 	@Override
+	public GlobalProxyManager getGlobalProxyManager()
+	{
+		return globalProxyManager;
+	}
+	
+	@Override
 	public ShoebillVersion getVersion()
 	{
 		return version;
-	}
-	
-	@Override
-	public EventManager getEventManager()
-	{
-		return eventManager;
-	}
-	
-	@Override
-	public SampCallbackManager getCallbackManager()
-	{
-		return sampCallbackManager;
 	}
 	
 	@Override

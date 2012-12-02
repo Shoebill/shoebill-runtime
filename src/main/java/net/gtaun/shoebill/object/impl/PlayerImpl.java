@@ -19,7 +19,6 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
-import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.constant.FightStyle;
 import net.gtaun.shoebill.constant.MapIconStyle;
@@ -1429,7 +1428,6 @@ public abstract class PlayerImpl implements Player
 		SampNativeFunction.showPlayerDialog(id, -1, 0, "", "", "", "");
 		
 		DialogCancelEvent event = new DialogCancelEvent(dialog, this);
-		ShoebillLowLevel shoebillLowLevel = ShoebillImpl.getInstance();
-		shoebillLowLevel.getEventManager().dispatchEvent(event, dialog, this);
+		ShoebillImpl.getInstance().getEventManager().dispatchEvent(event, dialog, this);
 	}
 }

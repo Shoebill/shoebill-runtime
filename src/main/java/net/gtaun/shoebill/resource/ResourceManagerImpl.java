@@ -27,10 +27,10 @@ import java.util.Map.Entry;
 
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.ShoebillArtifactLocator;
-import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.event.resource.PluginLoadEvent;
 import net.gtaun.shoebill.event.resource.PluginUnloadEvent;
 import net.gtaun.shoebill.resource.ResourceDescription.ResourceType;
+import net.gtaun.util.event.EventManager;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -48,6 +48,7 @@ public class ResourceManagerImpl implements ResourceManager
 	
 	
 	private Shoebill shoebill;
+	private EventManager eventManager;
 	private ShoebillArtifactLocator artifactLocator;
 	private File dataDir;
 	
@@ -55,7 +56,7 @@ public class ResourceManagerImpl implements ResourceManager
 	private Gamemode gamemode;
 	
 	
-	public ResourceManagerImpl(Shoebill shoebill, ShoebillArtifactLocator locator, File dataDir)
+	public ResourceManagerImpl(Shoebill shoebill, EventManager eventManager, ShoebillArtifactLocator locator, File dataDir)
 	{
 		this.shoebill = shoebill;
 		this.artifactLocator = locator;
@@ -136,8 +137,7 @@ public class ResourceManagerImpl implements ResourceManager
 			plugins.put(clazz, plugin);
 			
 			PluginLoadEvent event = new PluginLoadEvent(plugin);
-			ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) shoebill;
-			shoebillLowLevel.getEventManager().dispatchEvent(event, this);
+			eventManager.dispatchEvent(event, this);
 			
 			return plugin;
 		}
@@ -169,8 +169,7 @@ public class ResourceManagerImpl implements ResourceManager
 			LOGGER.info("Unload plugin: " + plugin.getDescription().getClazz().getName());
 			
 			PluginUnloadEvent event = new PluginUnloadEvent(plugin);
-			ShoebillLowLevel shoebillLowLevel = (ShoebillLowLevel) shoebill;
-			shoebillLowLevel.getEventManager().dispatchEvent(event, this);
+			eventManager.dispatchEvent(event, this);
 			
 			try
 			{

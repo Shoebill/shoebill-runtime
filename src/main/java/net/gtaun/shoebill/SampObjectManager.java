@@ -53,6 +53,7 @@ import net.gtaun.shoebill.object.impl.TimerImpl;
 import net.gtaun.shoebill.object.impl.VehicleImpl;
 import net.gtaun.shoebill.object.impl.WorldImpl;
 import net.gtaun.shoebill.object.impl.ZoneImpl;
+import net.gtaun.shoebill.proxy.GlobalProxyManager;
 import net.gtaun.shoebill.proxy.ProxyableFactory;
 import net.gtaun.util.event.EventHandler;
 import net.gtaun.util.event.EventManager;
@@ -83,6 +84,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	
 	
 	private final EventManager eventManager;
+	private final GlobalProxyManager globalProxyManager;
 	private final SampObjectStoreImpl store;
 	
 	private ProxyableFactory<WorldImpl> worldFactory;
@@ -104,9 +106,10 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private HandlerEntry destroyEventHandlerEntry;
 	
 	
-	public SampObjectManager(EventManager eventManager, SampObjectStoreImpl store)
+	public SampObjectManager(EventManager eventManager, GlobalProxyManager globalProxyManager, SampObjectStoreImpl store)
 	{
 		this.eventManager = eventManager;
+		this.globalProxyManager = globalProxyManager;
 		this.store = store;
 		initialize();
 	}
@@ -120,21 +123,21 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	
 	private void initialize()
 	{
-		worldFactory = ProxyableFactory.Impl.createProxyableFactory(WorldImpl.class);
-		serverFactory = ProxyableFactory.Impl.createProxyableFactory(ServerImpl.class);
-		playerFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerImpl.class);
-		vehicleFactory = ProxyableFactory.Impl.createProxyableFactory(VehicleImpl.class);
-		objectFactory = ProxyableFactory.Impl.createProxyableFactory(SampObjectImpl.class);
-		playerObjectFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerObjectImpl.class);
-		pickupFactory = ProxyableFactory.Impl.createProxyableFactory(PickupImpl.class);
-		labelFactory = ProxyableFactory.Impl.createProxyableFactory(LabelImpl.class);
-		playerLabelFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerLabelImpl.class);
-		textdrawFactory = ProxyableFactory.Impl.createProxyableFactory(TextdrawImpl.class);
-		playerTextdrawFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerTextdraw.class);
-		zoneFactory = ProxyableFactory.Impl.createProxyableFactory(ZoneImpl.class);
-		menuFactory = ProxyableFactory.Impl.createProxyableFactory(MenuImpl.class);
-		dialogFactory = ProxyableFactory.Impl.createProxyableFactory(DialogImpl.class);
-		timerFactory = ProxyableFactory.Impl.createProxyableFactory(TimerImpl.class);
+		worldFactory = ProxyableFactory.Impl.createProxyableFactory(WorldImpl.class, globalProxyManager);
+		serverFactory = ProxyableFactory.Impl.createProxyableFactory(ServerImpl.class, globalProxyManager);
+		playerFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerImpl.class, globalProxyManager);
+		vehicleFactory = ProxyableFactory.Impl.createProxyableFactory(VehicleImpl.class, globalProxyManager);
+		objectFactory = ProxyableFactory.Impl.createProxyableFactory(SampObjectImpl.class, globalProxyManager);
+		playerObjectFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerObjectImpl.class, globalProxyManager);
+		pickupFactory = ProxyableFactory.Impl.createProxyableFactory(PickupImpl.class, globalProxyManager);
+		labelFactory = ProxyableFactory.Impl.createProxyableFactory(LabelImpl.class, globalProxyManager);
+		playerLabelFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerLabelImpl.class, globalProxyManager);
+		textdrawFactory = ProxyableFactory.Impl.createProxyableFactory(TextdrawImpl.class, globalProxyManager);
+		playerTextdrawFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerTextdraw.class, globalProxyManager);
+		zoneFactory = ProxyableFactory.Impl.createProxyableFactory(ZoneImpl.class, globalProxyManager);
+		menuFactory = ProxyableFactory.Impl.createProxyableFactory(MenuImpl.class, globalProxyManager);
+		dialogFactory = ProxyableFactory.Impl.createProxyableFactory(DialogImpl.class, globalProxyManager);
+		timerFactory = ProxyableFactory.Impl.createProxyableFactory(TimerImpl.class, globalProxyManager);
 		
 		EventHandler eventHandler = new DestroyEventHandler()
 		{

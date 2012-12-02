@@ -17,7 +17,6 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillImpl;
-import net.gtaun.shoebill.ShoebillLowLevel;
 import net.gtaun.shoebill.event.timer.TimerTickEvent;
 import net.gtaun.shoebill.object.Timer;
 
@@ -108,8 +107,7 @@ public abstract class TimerImpl implements Timer
 		
 		if (count > 0) counting--;
 		TimerTickEvent event = new TimerTickEvent(this, realInterval);
-		ShoebillLowLevel shoebillLowLevel = ShoebillImpl.getInstance();
-		shoebillLowLevel.getEventManager().dispatchEvent(event, this);
+		ShoebillImpl.getInstance().getEventManager().dispatchEvent(event, this);
 		
 		realInterval = 0;
 		if (count > 0 && counting == 0) stop();
