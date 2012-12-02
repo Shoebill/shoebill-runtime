@@ -16,13 +16,16 @@
 
 package net.gtaun.shoebill;
 
+import net.gtaun.shoebill.constant.RaceCheckpointType;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
+import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.event.DestroyEventHandler;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
+import net.gtaun.shoebill.object.Checkpoint;
 import net.gtaun.shoebill.object.Destroyable;
 import net.gtaun.shoebill.object.Dialog;
 import net.gtaun.shoebill.object.Label;
@@ -32,6 +35,7 @@ import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerLabel;
 import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.PlayerTextdraw;
+import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.object.Textdraw;
@@ -39,6 +43,7 @@ import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.object.Zone;
+import net.gtaun.shoebill.object.impl.CheckpointImpl;
 import net.gtaun.shoebill.object.impl.DialogImpl;
 import net.gtaun.shoebill.object.impl.LabelImpl;
 import net.gtaun.shoebill.object.impl.MenuImpl;
@@ -46,6 +51,7 @@ import net.gtaun.shoebill.object.impl.PickupImpl;
 import net.gtaun.shoebill.object.impl.PlayerImpl;
 import net.gtaun.shoebill.object.impl.PlayerLabelImpl;
 import net.gtaun.shoebill.object.impl.PlayerObjectImpl;
+import net.gtaun.shoebill.object.impl.RaceCheckpointImpl;
 import net.gtaun.shoebill.object.impl.SampObjectImpl;
 import net.gtaun.shoebill.object.impl.ServerImpl;
 import net.gtaun.shoebill.object.impl.TextdrawImpl;
@@ -81,6 +87,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private static final Class<?>[] ZONE_CONSTRUCTOR_ARGUMENT_TYPES = { float.class, float.class, float.class, float.class };
 	private static final Class<?>[] MENU_CONSTRUCTOR_ARGUMENT_TYPES = { String.class, int.class, float.class, float.class, float.class, float.class };
 	private static final Class<?>[] TIMER_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, int.class };
+	private static final Class<?>[] CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { LocationRadius.class };
+	private static final Class<?>[] RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { LocationRadius.class, RaceCheckpointType.class, RaceCheckpoint.class };
 	
 	
 	private final EventManager eventManager;
@@ -102,6 +110,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private ProxyableFactory<MenuImpl> menuFactory;
 	private ProxyableFactory<DialogImpl> dialogFactory;
 	private ProxyableFactory<TimerImpl> timerFactory;
+	private ProxyableFactory<CheckpointImpl> checkpointFactory;
+	private ProxyableFactory<RaceCheckpointImpl> raceCheckpointFactory;
 	
 	private HandlerEntry destroyEventHandlerEntry;
 	
@@ -138,6 +148,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		menuFactory = ProxyableFactory.Impl.createProxyableFactory(MenuImpl.class, globalProxyManager);
 		dialogFactory = ProxyableFactory.Impl.createProxyableFactory(DialogImpl.class, globalProxyManager);
 		timerFactory = ProxyableFactory.Impl.createProxyableFactory(TimerImpl.class, globalProxyManager);
+		checkpointFactory = ProxyableFactory.Impl.createProxyableFactory(CheckpointImpl.class, globalProxyManager);
+		raceCheckpointFactory = ProxyableFactory.Impl.createProxyableFactory(RaceCheckpointImpl.class, globalProxyManager);
 		
 		EventHandler eventHandler = new DestroyEventHandler()
 		{
@@ -203,22 +215,21 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	
 	public World createWorld()
 	{
-		World world = (World) worldFactory.create();
+		World world = worldFactory.create();
 		store.setWorld(world);
 		return world;
 	}
 	
 	public Server createServer()
 	{
-		Server server = (Server) serverFactory.create();
+		Server server = serverFactory.create();
 		store.setServer(server);
 		return server;
 	}
 	
 	public Player createPlayer(int playerId)
 	{
-		final Object[] args = { playerId };
-		Player player = (Player) playerFactory.create(PLAYER_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		Player player = playerFactory.create(PLAYER_CONSTRUCTOR_ARGUMENT_TYPES, playerId);
 		store.setPlayer(playerId, player);
 		return player;
 	}
@@ -226,8 +237,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public Vehicle createVehicle(int modelId, LocationAngle loc, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
-		final Object[] args = { modelId, loc, color1, color2, respawnDelay };
-		Vehicle vehicle = (Vehicle) vehicleFactory.create(VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		Vehicle vehicle = vehicleFactory.create(VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES, modelId, loc, color1, color2, respawnDelay);
 		store.setVehicle(vehicle.getId(), vehicle);
 		return vehicle;
 	}
@@ -235,8 +245,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public SampObject createObject(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
-		final Object[] args = { modelId, loc, rot, drawDistance };
-		SampObject object = (SampObject) objectFactory.create(OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		SampObject object = objectFactory.create(OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, modelId, loc, rot, drawDistance);
 		store.setObject(object.getId(), object);
 		return object;
 	}
@@ -244,8 +253,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public PlayerObject createPlayerObject(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
-		final Object[] args = { player, modelId, loc, rot, drawDistance };
-		PlayerObject object = (PlayerObject) playerObjectFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		PlayerObject object = playerObjectFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, player, modelId, loc, rot, drawDistance);
 		store.setPlayerObject(player, object.getId(), object);
 		return object;
 	}
@@ -253,8 +261,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public Pickup createPickup(int modelId, int type, Location loc) throws CreationFailedException
 	{
-		final Object[] args = { modelId, type, loc };
-		Pickup pickup = (Pickup) pickupFactory.create(PICKUP_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		Pickup pickup = pickupFactory.create(PICKUP_CONSTRUCTOR_ARGUMENT_TYPES, modelId, type, loc);
 		store.setPickup(pickup.getId(), pickup);
 		return pickup;
 	}
@@ -262,8 +269,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public Label createLabel(String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
-		final Object[] args = { text, color, loc, drawDistance, testLOS };
-		Label label = (Label) labelFactory.create(LABEL_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		Label label = labelFactory.create(LABEL_CONSTRUCTOR_ARGUMENT_TYPES, text, color, loc, drawDistance, testLOS);
 		store.setLabel(label.getId(), label);
 		return label;
 	}
@@ -271,8 +277,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS)
 	{
-		final Object[] args = { player, text, color, loc, drawDistance, testLOS };
-		PlayerLabel label = (PlayerLabel) playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES, player, text, color, loc, drawDistance, testLOS);
 		store.setLabel(label.getId(), label);
 		return label;
 	}
@@ -280,8 +285,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer)
 	{
-		final Object[] args = { player, text, color, loc, drawDistance, testLOS, attachedPlayer };
-		PlayerLabel label = (PlayerLabel) playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES, args);
+		PlayerLabel label = playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
 		store.setLabel(label.getId(), label);
 		return label;
 	}
@@ -289,8 +293,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle)
 	{
-		final Object[] args = { player, text, color, loc, drawDistance, testLOS, attachedVehicle };
-		PlayerLabel label = (PlayerLabel) playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES, args);
+		PlayerLabel label = playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
 		store.setLabel(label.getId(), label);
 		return label;
 	}
@@ -298,8 +301,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public Textdraw createTextdraw(float x, float y, String text)
 	{
-		final Object[] args = { x, y, text };
-		Textdraw textdraw = (Textdraw) textdrawFactory.create(TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		Textdraw textdraw = textdrawFactory.create(TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, x, y, text);
 		store.setTextdraw(textdraw.getId(), textdraw);
 		return textdraw;
 	}
@@ -307,8 +309,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public PlayerTextdraw createPlayerTextdraw(Player player, float x, float y, String text)
 	{
-		final Object[] args = { player, x, y, text };
-		PlayerTextdraw textdraw = (PlayerTextdraw) playerTextdrawFactory.create(PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		PlayerTextdraw textdraw = playerTextdrawFactory.create(PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, player, x, y, text);
 		store.setPlayerTextdraw(player, textdraw.getId(), textdraw);
 		return textdraw;
 	}
@@ -316,8 +317,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public Zone createZone(float minX, float minY, float maxX, float maxY)
 	{
-		final Object[] args = { minX, minY, maxX, maxY };
-		Zone zone = (Zone) zoneFactory.create(ZONE_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		Zone zone = zoneFactory.create(ZONE_CONSTRUCTOR_ARGUMENT_TYPES, minX, minY, maxX, maxY);
 		store.setZone(zone.getId(), zone);
 		return zone;
 	}
@@ -325,8 +325,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public Menu createMenu(String title, int columns, float x, float y, float col1Width, float col2Width)
 	{
-		final Object[] args = { title, columns, x, y, col1Width, col2Width };
-		Menu menu = (Menu) menuFactory.create(MENU_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		Menu menu = menuFactory.create(MENU_CONSTRUCTOR_ARGUMENT_TYPES, title, columns, x, y, col1Width, col2Width);
 		store.setMenu(menu.getId(), menu);
 		return menu;
 	}
@@ -334,7 +333,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public Dialog createDialog()
 	{
-		Dialog dialog = (Dialog) dialogFactory.create();
+		Dialog dialog = dialogFactory.create();
 		store.putDialog(dialog.getId(), dialog);
 		return dialog;
 	}
@@ -342,9 +341,20 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	@Override
 	public Timer createTimer(int interval, int count)
 	{
-		final Object[] args = { interval, count };
-		Timer timer = (Timer) timerFactory.create(TIMER_CONSTRUCTOR_ARGUMENT_TYPES, args);
+		Timer timer = timerFactory.create(TIMER_CONSTRUCTOR_ARGUMENT_TYPES, interval, count);
 		store.putTimer(timer);
 		return timer;
+	}
+	
+	@Override
+	public Checkpoint createCheckpoint(LocationRadius loc)
+	{
+		return checkpointFactory.create(CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, loc);
+	}
+	
+	@Override
+	public RaceCheckpoint createRaceCheckpoint(LocationRadius loc, RaceCheckpointType type, RaceCheckpoint next)
+	{
+		return raceCheckpointFactory.create(RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, loc, type, next);
 	}
 }

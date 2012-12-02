@@ -16,13 +16,16 @@
 
 package net.gtaun.shoebill;
 
+import net.gtaun.shoebill.constant.RaceCheckpointType;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.LocationAngle;
+import net.gtaun.shoebill.data.LocationRadius;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
+import net.gtaun.shoebill.object.Checkpoint;
 import net.gtaun.shoebill.object.Label;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Pickup;
@@ -30,6 +33,7 @@ import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerLabel;
 import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.PlayerTextdraw;
+import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Textdraw;
 import net.gtaun.shoebill.object.Timer;
@@ -226,5 +230,41 @@ public abstract class AbstractSampObjectFactory implements SampObjectFactory
 	public Timer createTimer(int interval)
 	{
 		return createTimer(interval, Timer.COUNT_INFINITE);
+	}
+	
+	@Override
+	public Checkpoint createCheckpoint(float x, float y, float z, float size)
+	{
+		return createCheckpoint(new LocationRadius(x, y, z, size));
+	}
+
+	@Override
+	public Checkpoint createCheckpoint(Vector3D pos, float size)
+	{
+		return createCheckpoint(new LocationRadius(pos, size));
+	}
+	
+	@Override
+	public Checkpoint createCheckpoint(Location pos, float size)
+	{
+		return createCheckpoint(new LocationRadius(pos, size));
+	}
+	
+	@Override
+	public RaceCheckpoint createRaceCheckpoint(float x, float y, float z, float size, RaceCheckpointType type, RaceCheckpoint next)
+	{
+		return createRaceCheckpoint(new LocationRadius(x, y, z, size), type, next);
+	}
+	
+	@Override
+	public RaceCheckpoint createRaceCheckpoint(Vector3D pos, float size, RaceCheckpointType type, RaceCheckpoint next)
+	{
+		return createRaceCheckpoint(new LocationRadius(pos, size), type, next);
+	}
+	
+	@Override
+	public RaceCheckpoint createRaceCheckpoint(Location loc, float size, RaceCheckpointType type, RaceCheckpoint next)
+	{
+		return createRaceCheckpoint(new LocationRadius(loc, size), type, next);
 	}
 }
