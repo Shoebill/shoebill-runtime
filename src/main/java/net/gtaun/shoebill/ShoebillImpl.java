@@ -59,7 +59,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);
 	
 	private static final String LIBRARY_NAME = "Shoebill Runtime";
-	private static final String VERSION_FILENAME = "/version.yml";
+	private static final String VERSION_FILENAME = "version.yml";
 	
 	private static final String SHOEBILL_CONFIG_PATH = "./shoebill/shoebill.yml";
 	private static final String LOG4J_CONFIG_FILENAME = "log4j.properties";
