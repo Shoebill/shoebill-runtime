@@ -38,10 +38,11 @@ public class GlobalProxyManagerImpl extends AbstractProxyManager implements Glob
 	@Override
 	public Collection<MethodInterceptor> getMethodInterceptors(final Method method)
 	{
+		final Collection<Reference<MethodInterceptor>> methodInterceptors = methodMapInterceptors.get(method.getName());
+		if (methodInterceptors == null) return null;
+		
 		return new AbstractCollection<MethodInterceptor>()
 		{
-			final Collection<Reference<MethodInterceptor>> methodInterceptors = methodMapInterceptors.get(method.getName());
-			
 			@Override
 			public Iterator<MethodInterceptor> iterator()
 			{
