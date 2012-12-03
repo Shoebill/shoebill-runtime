@@ -33,8 +33,8 @@ import net.gtaun.shoebill.constant.WeaponType;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.LocationAngle;
-import net.gtaun.shoebill.data.LocationRadius;
+import net.gtaun.shoebill.data.AngledLocation;
+import net.gtaun.shoebill.data.Radius;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
@@ -88,7 +88,7 @@ public abstract class PlayerImpl implements Player
 	private int updateFrameCount = -1;
 	private int weatherId;
 	
-	private LocationAngle location = new LocationAngle();
+	private AngledLocation location = new AngledLocation();
 	private Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
 	private Velocity velocity = new Velocity();
 	private PlayerWeaponSkill skill;
@@ -227,7 +227,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public LocationAngle getLocation()
+	public AngledLocation getLocation()
 	{
 		return location.clone();
 	}
@@ -495,7 +495,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setSpawnInfo(LocationAngle loc, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3)
+	public void setSpawnInfo(AngledLocation loc, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3)
 	{
 		setSpawnInfo(loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), loc.getAngle(), skin, team, weapon1.getType(), weapon1.getAmmo(), weapon2.getType(), weapon2.getAmmo(), weapon3.getType(), weapon3.getAmmo());
 	}
@@ -639,7 +639,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setLocation(LocationAngle loc)
+	public void setLocation(AngledLocation loc)
 	{
 		if (isOnline() == false) return;
 		
@@ -686,7 +686,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setLocationFindZ(LocationAngle loc)
+	public void setLocationFindZ(AngledLocation loc)
 	{
 		if (isOnline() == false) return;
 		
@@ -1374,7 +1374,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void playAudioStream(String url, LocationRadius loc)
+	public void playAudioStream(String url, Radius loc)
 	{
 		playAudioStream(url, loc.getX(), loc.getY(), loc.getZ(), loc.getRadius());
 	}
@@ -1402,7 +1402,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void removeBuilding(int modelId, LocationRadius loc)
+	public void removeBuilding(int modelId, Radius loc)
 	{
 		removeBuilding(modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getRadius());
 	}

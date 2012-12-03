@@ -19,7 +19,7 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.LocationAngle;
+import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Quaternion;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
@@ -68,7 +68,7 @@ public abstract class VehicleImpl implements Vehicle
 	private HandlerEntry updateDamageEventHandlerEntry;
 	
 	
-	public VehicleImpl(int modelId, LocationAngle loc, int color1, int color2, int respawnDelay) throws CreationFailedException
+	public VehicleImpl(int modelId, AngledLocation loc, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
 		initialize(modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), loc.getAngle(), color1, color2, respawnDelay);
 	}
@@ -217,11 +217,11 @@ public abstract class VehicleImpl implements Vehicle
 	}
 	
 	@Override
-	public LocationAngle getLocation()
+	public AngledLocation getLocation()
 	{
 		if (isDestroyed()) return null;
 		
-		LocationAngle location = new LocationAngle();
+		AngledLocation location = new AngledLocation();
 		
 		SampNativeFunction.getVehiclePos(id, location);
 		location.setAngle(SampNativeFunction.getVehicleZAngle(id));
@@ -256,7 +256,7 @@ public abstract class VehicleImpl implements Vehicle
 	}
 	
 	@Override
-	public void setLocation(LocationAngle loc)
+	public void setLocation(AngledLocation loc)
 	{
 		if (isDestroyed()) return;
 		

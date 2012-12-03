@@ -20,8 +20,8 @@ import net.gtaun.shoebill.constant.RaceCheckpointType;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.LocationAngle;
-import net.gtaun.shoebill.data.LocationRadius;
+import net.gtaun.shoebill.data.AngledLocation;
+import net.gtaun.shoebill.data.Radius;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
@@ -55,31 +55,31 @@ public abstract class AbstractSampObjectFactory implements SampObjectFactory
 	@Override
 	public Vehicle createVehicle(int modelId, float x, float y, float z, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
-		return createVehicle(modelId, new LocationAngle(x, y, z, interiorId, worldId, angle), color1, color2, respawnDelay);
+		return createVehicle(modelId, new AngledLocation(x, y, z, interiorId, worldId, angle), color1, color2, respawnDelay);
 	}
 	
 	@Override
 	public Vehicle createVehicle(int modelId, float x, float y, float z, float angle, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
-		return createVehicle(modelId, new LocationAngle(x, y, z, 0, 0, angle), color1, color2, respawnDelay);
+		return createVehicle(modelId, new AngledLocation(x, y, z, 0, 0, angle), color1, color2, respawnDelay);
 	}
 	
 	@Override
 	public Vehicle createVehicle(int modelId, Vector3D pos, float angle, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
-		return createVehicle(modelId, new LocationAngle(pos, 0, 0, angle), color1, color2, respawnDelay);
+		return createVehicle(modelId, new AngledLocation(pos, 0, 0, angle), color1, color2, respawnDelay);
 	}
 	
 	@Override
 	public Vehicle createVehicle(int modelId, Vector3D pos, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
-		return createVehicle(modelId, new LocationAngle(pos, interiorId, worldId, angle), color1, color2, respawnDelay);
+		return createVehicle(modelId, new AngledLocation(pos, interiorId, worldId, angle), color1, color2, respawnDelay);
 	}
 	
 	@Override
 	public Vehicle createVehicle(int modelId, Location loc, float angle, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
-		return createVehicle(modelId, new LocationAngle(loc, angle), color1, color2, respawnDelay);
+		return createVehicle(modelId, new AngledLocation(loc, angle), color1, color2, respawnDelay);
 	}
 	
 	@Override
@@ -235,36 +235,36 @@ public abstract class AbstractSampObjectFactory implements SampObjectFactory
 	@Override
 	public Checkpoint createCheckpoint(float x, float y, float z, float size)
 	{
-		return createCheckpoint(new LocationRadius(x, y, z, size));
+		return createCheckpoint(new Radius(x, y, z, size));
 	}
 
 	@Override
 	public Checkpoint createCheckpoint(Vector3D pos, float size)
 	{
-		return createCheckpoint(new LocationRadius(pos, size));
+		return createCheckpoint(new Radius(pos, size));
 	}
 	
 	@Override
 	public Checkpoint createCheckpoint(Location pos, float size)
 	{
-		return createCheckpoint(new LocationRadius(pos, size));
+		return createCheckpoint(new Radius(pos, size));
 	}
 	
 	@Override
 	public RaceCheckpoint createRaceCheckpoint(float x, float y, float z, float size, RaceCheckpointType type, RaceCheckpoint next)
 	{
-		return createRaceCheckpoint(new LocationRadius(x, y, z, size), type, next);
+		return createRaceCheckpoint(new Radius(x, y, z, size), type, next);
 	}
 	
 	@Override
 	public RaceCheckpoint createRaceCheckpoint(Vector3D pos, float size, RaceCheckpointType type, RaceCheckpoint next)
 	{
-		return createRaceCheckpoint(new LocationRadius(pos, size), type, next);
+		return createRaceCheckpoint(new Radius(pos, size), type, next);
 	}
 	
 	@Override
 	public RaceCheckpoint createRaceCheckpoint(Location loc, float size, RaceCheckpointType type, RaceCheckpoint next)
 	{
-		return createRaceCheckpoint(new LocationRadius(loc, size), type, next);
+		return createRaceCheckpoint(new Radius(loc, size), type, next);
 	}
 }

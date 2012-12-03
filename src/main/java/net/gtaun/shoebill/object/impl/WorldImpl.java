@@ -19,7 +19,7 @@ package net.gtaun.shoebill.object.impl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.constant.PlayerMarkerMode;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.LocationAngle;
+import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.WeaponData;
 import net.gtaun.shoebill.object.Player;
@@ -67,7 +67,7 @@ public abstract class WorldImpl implements World
 	@Override
 	public int addPlayerClass(int modelId, SpawnInfo spawnInfo)
 	{
-		LocationAngle loc = spawnInfo.getLocation();
+		AngledLocation loc = spawnInfo.getLocation();
 		WeaponData weapon1 = spawnInfo.getWeapon1();
 		WeaponData weapon2 = spawnInfo.getWeapon2();
 		WeaponData weapon3 = spawnInfo.getWeapon3();
@@ -78,7 +78,7 @@ public abstract class WorldImpl implements World
 	@Override
 	public int addPlayerClassEx(int teamId, int modelId, SpawnInfo spawnInfo)
 	{
-		LocationAngle loc = spawnInfo.getLocation();
+		AngledLocation loc = spawnInfo.getLocation();
 		WeaponData weapon1 = spawnInfo.getWeapon1();
 		WeaponData weapon2 = spawnInfo.getWeapon2();
 		WeaponData weapon3 = spawnInfo.getWeapon3();

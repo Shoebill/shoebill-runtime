@@ -19,8 +19,8 @@ package net.gtaun.shoebill;
 import net.gtaun.shoebill.constant.RaceCheckpointType;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.LocationAngle;
-import net.gtaun.shoebill.data.LocationRadius;
+import net.gtaun.shoebill.data.AngledLocation;
+import net.gtaun.shoebill.data.Radius;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.event.DestroyEventHandler;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
@@ -74,7 +74,7 @@ import net.gtaun.util.event.EventManager.HandlerPriority;
 public class SampObjectManager extends AbstractSampObjectFactory
 {
 	private static final Class<?>[] PLAYER_CONSTRUCTOR_ARGUMENT_TYPES = { int.class };
-	private static final Class<?>[] VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, LocationAngle.class, int.class, int.class, int.class };
+	private static final Class<?>[] VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, AngledLocation.class, int.class, int.class, int.class };
 	private static final Class<?>[] OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, Location.class, Vector3D.class, float.class };
 	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = { Player.class, int.class, Location.class, Vector3D.class, float.class };
 	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES = { Player.class, int.class, Location.class, Vector3D.class, float.class, Player.class };
@@ -87,8 +87,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private static final Class<?>[] ZONE_CONSTRUCTOR_ARGUMENT_TYPES = { float.class, float.class, float.class, float.class };
 	private static final Class<?>[] MENU_CONSTRUCTOR_ARGUMENT_TYPES = { String.class, int.class, float.class, float.class, float.class, float.class };
 	private static final Class<?>[] TIMER_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, int.class };
-	private static final Class<?>[] CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { LocationRadius.class };
-	private static final Class<?>[] RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { LocationRadius.class, RaceCheckpointType.class, RaceCheckpoint.class };
+	private static final Class<?>[] CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { Radius.class };
+	private static final Class<?>[] RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { Radius.class, RaceCheckpointType.class, RaceCheckpoint.class };
 	
 	
 	private final EventManager eventManager;
@@ -235,7 +235,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	}
 	
 	@Override
-	public Vehicle createVehicle(int modelId, LocationAngle loc, int color1, int color2, int respawnDelay) throws CreationFailedException
+	public Vehicle createVehicle(int modelId, AngledLocation loc, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
 		Vehicle vehicle = vehicleFactory.create(VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES, modelId, loc, color1, color2, respawnDelay);
 		store.setVehicle(vehicle.getId(), vehicle);
@@ -347,13 +347,13 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	}
 	
 	@Override
-	public Checkpoint createCheckpoint(LocationRadius loc)
+	public Checkpoint createCheckpoint(Radius loc)
 	{
 		return checkpointFactory.create(CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, loc);
 	}
 	
 	@Override
-	public RaceCheckpoint createRaceCheckpoint(LocationRadius loc, RaceCheckpointType type, RaceCheckpoint next)
+	public RaceCheckpoint createRaceCheckpoint(Radius loc, RaceCheckpointType type, RaceCheckpoint next)
 	{
 		return raceCheckpointFactory.create(RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, loc, type, next);
 	}
