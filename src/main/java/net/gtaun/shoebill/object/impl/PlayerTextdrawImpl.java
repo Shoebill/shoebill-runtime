@@ -48,11 +48,7 @@ public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 	public PlayerTextdrawImpl(Player player, float x, float y, String text) throws CreationFailedException
 	{
 		this.player = player;
-		initialize(x, y, text);
-	}
-	
-	private void initialize(float x, float y, String text) throws CreationFailedException
-	{
+		
 		position = new Vector2D(x, y);
 		if (StringUtils.isEmpty(text)) text = " ";
 		

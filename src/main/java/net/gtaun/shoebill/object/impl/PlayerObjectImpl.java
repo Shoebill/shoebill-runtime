@@ -59,16 +59,11 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	
 	public PlayerObjectImpl(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
-		initialize(player, modelId, new Location(loc), new Vector3D(rot), drawDistance);
-	}
-	
-	private void initialize(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
-	{
 		if (player.isOnline() == false) throw new CreationFailedException();
 		
 		this.player = player;
 		this.modelId = modelId;
-		this.location = loc;
+		this.location = new Location(loc);
 		this.drawDistance = drawDistance;
 		
 		id = SampNativeFunction.createPlayerObject(player.getId(), modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance);

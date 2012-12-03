@@ -42,14 +42,9 @@ public abstract class PickupImpl implements Pickup
 	
 	public PickupImpl(int modelId, int type, Location loc) throws CreationFailedException
 	{
-		initialize(modelId, type, new Location(loc));
-	}
-	
-	private void initialize(int modelId, int type, Location loc) throws CreationFailedException
-	{
 		this.modelId = modelId;
 		this.type = type;
-		this.location = loc;
+		this.location = new Location(loc);
 		
 		id = SampNativeFunction.createPickup(modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId());
 		if (id == INVALID_ID) throw new CreationFailedException();

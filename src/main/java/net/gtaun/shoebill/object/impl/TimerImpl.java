@@ -38,11 +38,6 @@ public abstract class TimerImpl implements Timer
 	
 	public TimerImpl(int interval, int count)
 	{
-		initialize(interval, count);
-	}
-	
-	private void initialize(int interval, int count)
-	{
 		this.interval = interval;
 		this.count = count;
 	}

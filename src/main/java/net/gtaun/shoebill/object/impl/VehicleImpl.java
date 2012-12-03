@@ -121,7 +121,7 @@ public abstract class VehicleImpl implements Vehicle
 		};
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
-		modEventHandlerEntry = eventManager.addHandler(VehicleModEvent.class, eventHandler, HandlerPriority.MONITOR);
+		modEventHandlerEntry = eventManager.addHandler(VehicleModEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		updateDamageEventHandlerEntry = eventManager.addHandler(VehicleUpdateDamageEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		
 		VehicleSpawnEvent event = new VehicleSpawnEvent(this);

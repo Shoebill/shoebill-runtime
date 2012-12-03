@@ -38,11 +38,6 @@ public abstract class DialogImpl implements Dialog
 	
 	public DialogImpl()
 	{
-		initialize();
-	}
-	
-	private void initialize()
-	{
 		id = count;
 		count++;
 	}

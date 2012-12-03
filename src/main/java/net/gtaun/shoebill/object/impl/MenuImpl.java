@@ -46,11 +46,6 @@ public abstract class MenuImpl implements Menu
 	
 	public MenuImpl(String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException
 	{
-		initialize(title, columns, x, y, col1Width, col2Width);
-	}
-	
-	private void initialize(String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException
-	{
 		if (StringUtils.isEmpty(title)) title = " ";
 		
 		this.title = title;

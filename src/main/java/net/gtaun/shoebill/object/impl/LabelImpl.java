@@ -52,16 +52,11 @@ public abstract class LabelImpl implements Label
 	
 	public LabelImpl(String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
-		initialize(text, color, new Location(loc), drawDistance, testLOS);
-	}
-	
-	private void initialize(String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
-	{
 		if (StringUtils.isEmpty(text)) text = " ";
 		
 		this.text = text;
 		this.color = new Color(color);
-		this.location = loc;
+		this.location = new Location(loc);
 		this.drawDistance = drawDistance;
 		
 		id = SampNativeFunction.create3DTextLabel(text, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, location.getWorldId(), testLOS);
