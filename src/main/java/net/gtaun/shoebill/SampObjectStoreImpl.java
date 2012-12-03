@@ -172,6 +172,20 @@ public class SampObjectStoreImpl implements SampObjectStore
 	}
 	
 	@Override
+	public Player getPlayer(String name)
+	{
+		if (name == null) return null;
+		
+		for (Player player : players)
+		{
+			if (player == null) continue;
+			if (player.getName().equals(name)) return player;
+		}
+		
+		return null;
+	}
+	
+	@Override
 	public Vehicle getVehicle(int id)
 	{
 		if (id < 0 || id >= MAX_VEHICLES) return null;
