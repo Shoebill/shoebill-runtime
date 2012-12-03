@@ -161,6 +161,8 @@ public abstract class PlayerImpl implements Player
 		updateEventHandlerEntry = eventManager.addHandler(PlayerUpdateEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		disconnectEventHandlerEntry = eventManager.addHandler(PlayerDisconnectEvent.class, this, eventHandler, HandlerPriority.BOTTOM);
 		dialogResponseEventHandlerEntry = eventManager.addHandler(DialogResponseEvent.class, this, eventHandler, HandlerPriority.MONITOR);
+		
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

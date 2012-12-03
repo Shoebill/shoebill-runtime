@@ -49,7 +49,7 @@ public class ProxyManagerTest
 	}
 	
 	@Test
-	public void testSingleMethodInterceptor() throws NoSuchMethodException, SecurityException
+	public void testSingleMethodInterceptor() throws Throwable
 	{
 		final TapableCounter counter = new TapableCounter();
 		
@@ -79,7 +79,7 @@ public class ProxyManagerTest
 	}
 	
 	@Test
-	public void testGlobalMethodInterceptor() throws NoSuchMethodException, SecurityException
+	public void testGlobalMethodInterceptor() throws Throwable
 	{
 		final TapableCounter counter = new TapableCounter();
 		

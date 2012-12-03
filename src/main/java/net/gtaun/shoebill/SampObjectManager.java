@@ -215,146 +215,374 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	
 	public World createWorld()
 	{
-		World world = worldFactory.create();
-		store.setWorld(world);
-		return world;
+		try
+		{
+			World world = worldFactory.create();
+			store.setWorld(world);
+			return world;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public Server createServer()
 	{
-		Server server = serverFactory.create();
-		store.setServer(server);
-		return server;
+		try
+		{
+			Server server = serverFactory.create();
+			store.setServer(server);
+			return server;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
-	public Player createPlayer(int playerId)
+	public Player createPlayer(int playerId) throws UnsupportedOperationException
 	{
-		Player player = playerFactory.create(PLAYER_CONSTRUCTOR_ARGUMENT_TYPES, playerId);
-		store.setPlayer(playerId, player);
-		return player;
+		try
+		{
+			Player player = playerFactory.create(PLAYER_CONSTRUCTOR_ARGUMENT_TYPES, playerId);
+			store.setPlayer(playerId, player);
+			return player;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
 	public Vehicle createVehicle(int modelId, AngledLocation loc, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
-		Vehicle vehicle = vehicleFactory.create(VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES, modelId, loc, color1, color2, respawnDelay);
-		store.setVehicle(vehicle.getId(), vehicle);
-		return vehicle;
+		try
+		{
+			Vehicle vehicle = vehicleFactory.create(VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES, modelId, loc, color1, color2, respawnDelay);
+			store.setVehicle(vehicle.getId(), vehicle);
+			return vehicle;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
 	public SampObject createObject(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
-		SampObject object = objectFactory.create(OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, modelId, loc, rot, drawDistance);
-		store.setObject(object.getId(), object);
-		return object;
+		try
+		{
+			SampObject object = objectFactory.create(OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, modelId, loc, rot, drawDistance);
+			store.setObject(object.getId(), object);
+			return object;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
 	public PlayerObject createPlayerObject(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
-		PlayerObject object = playerObjectFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, player, modelId, loc, rot, drawDistance);
-		store.setPlayerObject(player, object.getId(), object);
-		return object;
+		try
+		{
+			PlayerObject object = playerObjectFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, player, modelId, loc, rot, drawDistance);
+			store.setPlayerObject(player, object.getId(), object);
+			return object;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
 	public Pickup createPickup(int modelId, int type, Location loc) throws CreationFailedException
 	{
-		Pickup pickup = pickupFactory.create(PICKUP_CONSTRUCTOR_ARGUMENT_TYPES, modelId, type, loc);
-		store.setPickup(pickup.getId(), pickup);
-		return pickup;
+		try
+		{
+			Pickup pickup = pickupFactory.create(PICKUP_CONSTRUCTOR_ARGUMENT_TYPES, modelId, type, loc);
+			store.setPickup(pickup.getId(), pickup);
+			return pickup;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
 	public Label createLabel(String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
-		Label label = labelFactory.create(LABEL_CONSTRUCTOR_ARGUMENT_TYPES, text, color, loc, drawDistance, testLOS);
-		store.setLabel(label.getId(), label);
-		return label;
+		try
+		{
+			Label label = labelFactory.create(LABEL_CONSTRUCTOR_ARGUMENT_TYPES, text, color, loc, drawDistance, testLOS);
+			store.setLabel(label.getId(), label);
+			return label;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
-	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS)
+	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
-		PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES, player, text, color, loc, drawDistance, testLOS);
-		store.setLabel(label.getId(), label);
-		return label;
+		try
+		{
+			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES, player, text, color, loc, drawDistance, testLOS);
+			store.setLabel(label.getId(), label);
+			return label;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
-	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer)
+	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer) throws CreationFailedException
 	{
-		PlayerLabel label = playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
-		store.setLabel(label.getId(), label);
-		return label;
+		try
+		{
+			PlayerLabel label = playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
+			store.setLabel(label.getId(), label);
+			return label;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
-	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle)
+	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle) throws CreationFailedException
 	{
-		PlayerLabel label = playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
-		store.setLabel(label.getId(), label);
-		return label;
+		try
+		{
+			PlayerLabel label = playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
+			store.setLabel(label.getId(), label);
+			return label;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
-	public Textdraw createTextdraw(float x, float y, String text)
+	public Textdraw createTextdraw(float x, float y, String text) throws CreationFailedException
 	{
-		Textdraw textdraw = textdrawFactory.create(TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, x, y, text);
-		store.setTextdraw(textdraw.getId(), textdraw);
-		return textdraw;
+		try
+		{
+			Textdraw textdraw = textdrawFactory.create(TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, x, y, text);
+			store.setTextdraw(textdraw.getId(), textdraw);
+			return textdraw;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
-	public PlayerTextdraw createPlayerTextdraw(Player player, float x, float y, String text)
+	public PlayerTextdraw createPlayerTextdraw(Player player, float x, float y, String text) throws CreationFailedException
 	{
-		PlayerTextdraw textdraw = playerTextdrawFactory.create(PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, player, x, y, text);
-		store.setPlayerTextdraw(player, textdraw.getId(), textdraw);
-		return textdraw;
+		try
+		{
+			PlayerTextdraw textdraw = playerTextdrawFactory.create(PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, player, x, y, text);
+			store.setPlayerTextdraw(player, textdraw.getId(), textdraw);
+			return textdraw;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
-	public Zone createZone(float minX, float minY, float maxX, float maxY)
+	public Zone createZone(float minX, float minY, float maxX, float maxY) throws CreationFailedException
 	{
-		Zone zone = zoneFactory.create(ZONE_CONSTRUCTOR_ARGUMENT_TYPES, minX, minY, maxX, maxY);
-		store.setZone(zone.getId(), zone);
-		return zone;
+		try
+		{
+			Zone zone = zoneFactory.create(ZONE_CONSTRUCTOR_ARGUMENT_TYPES, minX, minY, maxX, maxY);
+			store.setZone(zone.getId(), zone);
+			return zone;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
-	public Menu createMenu(String title, int columns, float x, float y, float col1Width, float col2Width)
+	public Menu createMenu(String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException
 	{
-		Menu menu = menuFactory.create(MENU_CONSTRUCTOR_ARGUMENT_TYPES, title, columns, x, y, col1Width, col2Width);
-		store.setMenu(menu.getId(), menu);
-		return menu;
+		try
+		{
+			Menu menu = menuFactory.create(MENU_CONSTRUCTOR_ARGUMENT_TYPES, title, columns, x, y, col1Width, col2Width);
+			store.setMenu(menu.getId(), menu);
+			return menu;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
 	public Dialog createDialog()
 	{
-		Dialog dialog = dialogFactory.create();
-		store.putDialog(dialog.getId(), dialog);
-		return dialog;
+		try
+		{
+			Dialog dialog = dialogFactory.create();
+			store.putDialog(dialog.getId(), dialog);
+			return dialog;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
 	public Timer createTimer(int interval, int count)
 	{
-		Timer timer = timerFactory.create(TIMER_CONSTRUCTOR_ARGUMENT_TYPES, interval, count);
-		store.putTimer(timer);
-		return timer;
+		try
+		{
+			Timer timer = timerFactory.create(TIMER_CONSTRUCTOR_ARGUMENT_TYPES, interval, count);
+			store.putTimer(timer);
+			return timer;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
 	public Checkpoint createCheckpoint(Radius loc)
 	{
-		return checkpointFactory.create(CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, loc);
+		try
+		{
+			return checkpointFactory.create(CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, loc);
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
 	public RaceCheckpoint createRaceCheckpoint(Radius loc, RaceCheckpointType type, RaceCheckpoint next)
 	{
-		return raceCheckpointFactory.create(RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, loc, type, next);
+		try
+		{
+			return raceCheckpointFactory.create(RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, loc, type, next);
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

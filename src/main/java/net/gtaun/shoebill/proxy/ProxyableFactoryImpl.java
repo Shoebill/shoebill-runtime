@@ -16,6 +16,7 @@
 
 package net.gtaun.shoebill.proxy;
 
+import net.sf.cglib.core.CodeGenerationException;
 import net.sf.cglib.proxy.Enhancer;
 
 /**
@@ -50,24 +51,38 @@ public class ProxyableFactoryImpl<T extends Proxyable> implements ProxyableFacto
 	}
 	
 	@Override
-	public T create()
+	public T create() throws Throwable
 	{
 		final ProxyManagerImpl proxyManager = new ProxyManagerImpl(globalProxyManager);
 		synchronized (enhancer)
 		{
-			enhancer.setCallback(proxyManager.getCallback());
-			return clazz.cast(enhancer.create());
+			try
+			{
+				enhancer.setCallback(proxyManager.getCallback());
+				return clazz.cast(enhancer.create());	
+			}
+			catch (CodeGenerationException e)
+			{
+				throw e.getCause();
+			}
 		}
 	}
 
 	@Override
-	public T create(Class<?>[] paramTypes, Object... params)
+	public T create(Class<?>[] paramTypes, Object... params) throws Throwable
 	{
 		final ProxyManagerImpl proxyManager = new ProxyManagerImpl(globalProxyManager);
 		synchronized (enhancer)
 		{
-			enhancer.setCallback(proxyManager.getCallback());
-			return clazz.cast(enhancer.create(paramTypes, params));
+			try
+			{
+				enhancer.setCallback(proxyManager.getCallback());
+				return clazz.cast(enhancer.create(paramTypes, params));
+			}
+			catch (CodeGenerationException e)
+			{
+				throw e.getCause();
+			}
 		}
 	}
 }
