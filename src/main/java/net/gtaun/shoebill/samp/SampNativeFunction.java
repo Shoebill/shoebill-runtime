@@ -16,6 +16,8 @@
 
 package net.gtaun.shoebill.samp;
 
+import java.io.File;
+
 import net.gtaun.shoebill.data.Quaternion;
 import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
@@ -32,9 +34,32 @@ import net.gtaun.shoebill.object.impl.VehicleParamImpl;
  */
 public final class SampNativeFunction
 {
+	private static final String LIBRARY_PATH = "plugins/";
+	private static final String LIBRARY_NAME = "Shoebill";
+	
 	static
 	{
-		System.loadLibrary("Shoebill");
+		File libraryDll = new File(LIBRARY_PATH + LIBRARY_NAME + ".dll");
+		File librarySo  = new File(LIBRARY_PATH + LIBRARY_NAME + ".so");
+		
+		try
+		{
+			if (libraryDll.exists()) System.load(libraryDll.getAbsolutePath());
+			else throw new UnsatisfiedLinkError();
+		}
+		catch (UnsatisfiedLinkError e)
+		{
+			try
+			{
+				if (librarySo.exists()) System.load(librarySo.getAbsolutePath());
+				else throw e;
+			}
+			catch (Exception e2)
+			{
+				System.out.println("Error: Unable to load Shoebill JNI library.");
+				throw e;
+			}
+		}
 	}
 	
 	
