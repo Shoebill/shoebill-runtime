@@ -40,7 +40,7 @@ public final class SampNativeFunction
 	static
 	{
 		File libraryDll = new File(LIBRARY_PATH + LIBRARY_NAME + ".dll");
-		File librarySo  = new File(LIBRARY_PATH + LIBRARY_NAME + ".so");
+		File librarySo  = new File(LIBRARY_PATH + LIBRARY_NAME);
 		
 		try
 		{
@@ -57,7 +57,6 @@ public final class SampNativeFunction
 			catch (Exception e2)
 			{
 				System.out.println("Error: Unable to load Shoebill JNI library.");
-				throw e;
 			}
 		}
 	}
