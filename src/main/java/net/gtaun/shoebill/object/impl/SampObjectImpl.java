@@ -87,7 +87,7 @@ public abstract class SampObjectImpl implements SampObject
 		};
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
-		movedEventHandlerEntry = eventManager.addHandler(ObjectMovedEvent.class, eventHandler, HandlerPriority.MONITOR);
+		movedEventHandlerEntry = eventManager.addHandler(ObjectMovedEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 	}
 	
 	@Override

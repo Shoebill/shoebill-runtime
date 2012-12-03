@@ -84,7 +84,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 		};
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
-		movedEventHandlerEntry = eventManager.addHandler(PlayerObjectMovedEvent.class, eventHandler, HandlerPriority.MONITOR);
+		movedEventHandlerEntry = eventManager.addHandler(PlayerObjectMovedEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 	}
 	
 	@Override
