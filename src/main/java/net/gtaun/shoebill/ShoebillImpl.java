@@ -186,9 +186,8 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 			public int onRconCommand(String cmd)
 			{
 				String[] splits = cmd.split(" ");
-				if (splits.length != 2) return 0;
-				
 				String op = splits[0].toLowerCase();
+				
 				switch (op)
 				{
 				case "reload":
