@@ -26,6 +26,7 @@ import java.lang.ref.WeakReference;
 import java.util.Properties;
 
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
+import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.proxy.GlobalProxyManager;
 import net.gtaun.shoebill.proxy.GlobalProxyManagerImpl;
 import net.gtaun.shoebill.proxy.ProxyableFactoryImpl;
@@ -208,7 +209,9 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		sampObjectStore = new SampObjectStoreImpl(eventManager);
 		sampObjectManager = new SampObjectManager(eventManager, globalProxyManager, sampObjectStore);
 		sampObjectManager.createWorld();
-		sampObjectManager.createServer();
+		
+		Server server = sampObjectManager.createServer();
+		server.setServerCodepage(config.getServerCodepage());
 		
 		sampEventLogger = new SampEventLogger(sampObjectStore);
 		sampEventDispatcher = new SampEventDispatcher(sampObjectStore, eventManager);
