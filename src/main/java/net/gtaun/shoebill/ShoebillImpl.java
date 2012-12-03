@@ -191,6 +191,10 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 				String op = splits[0].toLowerCase();
 				switch (op)
 				{
+				case "reload":
+					reload();
+					return 1;
+					
 				default:
 					return 0;
 				}
