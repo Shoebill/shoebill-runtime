@@ -16,6 +16,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
@@ -195,8 +196,13 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 		
 		int playerId = player.getId();
 		
+		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
+
+		store.setPlayerLabel(player, id, null);
 		SampNativeFunction.deletePlayer3DTextLabel(playerId, id);
+		
 		id = SampNativeFunction.createPlayer3DTextLabel(playerId, text, color.getValue(), x, y, z, drawDistance, target.getId(), Vehicle.INVALID_ID, testLOS);
+		store.setPlayerLabel(player, id, this);
 		
 		attachedPlayer = target;
 		attachedVehicle = null;
@@ -216,8 +222,13 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 		
 		int playerId = player.getId();
 		
+		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
+		
+		store.setPlayerLabel(player, id, null);
 		SampNativeFunction.deletePlayer3DTextLabel(playerId, id);
+		
 		id = SampNativeFunction.createPlayer3DTextLabel(playerId, text, color.getValue(), x, y, z, drawDistance, Player.INVALID_ID, vehicle.getId(), testLOS);
+		store.setPlayerLabel(player, id, this);
 		
 		attachedPlayer = null;
 		attachedVehicle = vehicle;
