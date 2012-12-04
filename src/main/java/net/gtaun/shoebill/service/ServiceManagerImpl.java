@@ -112,17 +112,10 @@ public class ServiceManagerImpl implements ServiceManager
 	@Override
 	public <T extends Service> void unregisterService(Resource resource, Class<T> type)
 	{
-		unregisterService(resource, type, null);
-	}
-	
-	@Override
-	public <T extends Service> void unregisterService(Resource resource, Class<T> type, T service)
-	{
 		ServiceEntry entry = services.get(type);
 		
 		if(entry == null) return;
 		if(entry.getProvider() != resource ) return;
-		if(service != null && entry.getService() != service) return;
 		
 		unregisterServiceEntry(entry);
 	}
