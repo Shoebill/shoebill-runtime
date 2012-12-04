@@ -17,6 +17,9 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.constant.ObjectMaterialSize;
+import net.gtaun.shoebill.constant.ObjectMaterialTextAlign;
+import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.event.ObjectEventHandler;
@@ -50,7 +53,9 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	private float speed = 0.0F;
 	private float drawDistance = 0;
 	
+
 	private Player attachedPlayer;
+	private Vehicle attachedVehicle;
 	
 	private ObjectEventHandler eventHandler;
 	
@@ -136,8 +141,9 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	public float getSpeed()
 	{
 		if (isDestroyed()) return 0.0F;
-		
+
 		if (attachedPlayer != null && attachedPlayer.isOnline()) return attachedPlayer.getVelocity().speed3d();
+		if (attachedVehicle != null && attachedVehicle.isDestroyed() == false) return attachedVehicle.getVelocity().speed3d();
 		
 		return speed;
 	}
@@ -163,7 +169,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	@Override
 	public Vehicle getAttachedVehicle()
 	{
-		return null;
+		return attachedVehicle;
 	}
 	
 	@Override
@@ -230,7 +236,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	{
 		if (isDestroyed()) return 0;
 		
-		if (attachedPlayer == null) this.speed = speed;
+		if (attachedPlayer == null && attachedVehicle == null) this.speed = speed;
 		return SampNativeFunction.movePlayerObject(player.getId(), id, x, y, z, speed, -1000.0f, -1000.0f, -1000.0f);
 	}
 	
@@ -239,7 +245,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	{
 		if (isDestroyed()) return 0;
 		
-		if (attachedPlayer == null) this.speed = speed;
+		if (attachedPlayer == null && attachedVehicle == null) this.speed = speed;
 		return SampNativeFunction.movePlayerObject(player.getId(), id, x, y, z, speed, rotX, rotY, rotZ);
 	}
 	
@@ -273,6 +279,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 		SampNativeFunction.attachPlayerObjectToPlayer(player.getId(), id, target.getId(), x, y, z, rx, ry, rz);
 		
 		attachedPlayer = player;
+		attachedVehicle = null;
 		speed = 0.0F;
 	}
 	
@@ -297,12 +304,35 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	@Override
 	public void attach(Vehicle vehicle, float x, float y, float z, float rx, float ry, float rz)
 	{
-		throw new UnsupportedOperationException();
+		if (isDestroyed()) return;
+		if (vehicle.isDestroyed()) return;
+		
+		SampNativeFunction.attachPlayerObjectToVehicle(player.getId(), id, vehicle.getId(), x, y, z, rx, ry, rz);
+		
+		attachedPlayer = null;
+		attachedVehicle = vehicle;
+		speed = 0.0F;
 	}
 	
 	@Override
 	public void attach(Vehicle vehicle, Vector3D pos, Vector3D rot)
 	{
-		throw new UnsupportedOperationException();
+		attach(vehicle, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ());
+	}
+	
+	@Override
+	public void setMaterial(int materialIndex, int modelId, String txdName, String textureName, Color materialColor)
+	{
+		if (isDestroyed()) return;
+		
+		SampNativeFunction.setPlayerObjectMaterial(player.getId(), id, materialIndex, modelId, txdName, textureName, materialColor.getValue());
+	}
+	
+	@Override
+	public void setMaterialText(String text, int materialIndex, ObjectMaterialSize materialSize, String fontFace, int fontSize, boolean isBold, Color fontColor, Color backColor, ObjectMaterialTextAlign textAlignment)
+	{
+		if (isDestroyed()) return;
+		
+		SampNativeFunction.setPlayerObjectMaterialText(player.getId(), id, text, materialIndex, materialSize.getValue(), fontFace, fontSize, isBold ? 1 : 0, fontColor.getValue(), backColor.getValue(), textAlignment.getValue());
 	}
 }

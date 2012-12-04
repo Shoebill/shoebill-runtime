@@ -17,7 +17,9 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.constant.VehicleModelInfoType;
 import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.samp.SampNativeFunction;
@@ -132,5 +134,13 @@ public abstract class ServerImpl implements Server
 	{
 		String text = String.format(format, args);
 		SampNativeFunction.gameTextForAll(text, time, style);
+	}
+	
+	@Override
+	public Vector3D getVehicleModelInfo(int modelId, VehicleModelInfoType infotype)
+	{
+		Vector3D vector = new Vector3D();
+		SampNativeFunction.getVehicleModelInfo(modelId, infotype.getValue(), vector);
+		return vector;
 	}
 }

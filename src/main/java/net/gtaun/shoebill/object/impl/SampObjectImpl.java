@@ -18,6 +18,9 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.constant.ObjectMaterialSize;
+import net.gtaun.shoebill.constant.ObjectMaterialTextAlign;
+import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.event.ObjectEventHandler;
@@ -332,5 +335,21 @@ public abstract class SampObjectImpl implements SampObject
 	public void attach(Vehicle vehicle, Vector3D pos, Vector3D rot)
 	{
 		attach(vehicle, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ());
+	}
+	
+	@Override
+	public void setMaterial(int materialIndex, int modelId, String txdName, String textureName, Color materialColor)
+	{
+		if (isDestroyed()) return;
+		
+		SampNativeFunction.setObjectMaterial(id, materialIndex, modelId, txdName, textureName, materialColor.getValue());
+	}
+	
+	@Override
+	public void setMaterialText(String text, int materialIndex, ObjectMaterialSize materialSize, String fontFace, int fontSize, boolean isBold, Color fontColor, Color backColor, ObjectMaterialTextAlign textAlignment)
+	{
+		if (isDestroyed()) return;
+		
+		SampNativeFunction.setObjectMaterialText(id, text, materialIndex, materialSize.getValue(), fontFace, fontSize, isBold ? 1 : 0, fontColor.getValue(), backColor.getValue(), textAlignment.getValue());
 	}
 }

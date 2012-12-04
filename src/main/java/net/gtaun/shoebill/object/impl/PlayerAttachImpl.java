@@ -58,6 +58,12 @@ public class PlayerAttachImpl implements PlayerAttach
 		{
 			return player;
 		}
+
+		@Override
+		public int getSlot()
+		{
+			return slot;
+		}
 		
 		@Override
 		public PlayerAttachBone getBone()
@@ -129,11 +135,19 @@ public class PlayerAttachImpl implements PlayerAttach
 		}
 		
 		@Override
-		public boolean isUsed(int slot)
+		public boolean isUsed()
 		{
 			if (player.isOnline() == false) return false;
 			
 			return bone != PlayerAttachBone.NOT_USABLE;
+		}
+		
+		@Override
+		public boolean edit()
+		{
+			if (player.isOnline() == false) return false;
+			
+			return SampNativeFunction.editAttachedObject(player.getId(), slot);
 		}
 	}
 	

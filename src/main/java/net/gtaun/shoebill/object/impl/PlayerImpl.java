@@ -19,6 +19,7 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.constant.CameraCutStyle;
 import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.constant.FightStyle;
 import net.gtaun.shoebill.constant.MapIconStyle;
@@ -53,6 +54,7 @@ import net.gtaun.shoebill.object.Dialog;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerAttach;
+import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.PlayerWeaponSkill;
 import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.SampObject;
@@ -1429,5 +1431,98 @@ public abstract class PlayerImpl implements Player
 		
 		DialogCancelEvent event = new DialogCancelEvent(dialog, this);
 		ShoebillImpl.getInstance().getEventManager().dispatchEvent(event, dialog, this);
+	}
+	
+	@Override
+	public boolean editObject(SampObject object)
+	{
+		if (isOnline() == false) return false;
+		if (object.isDestroyed()) return false;
+		
+		return SampNativeFunction.editObject(id, object.getId());
+	}
+	
+	@Override
+	public boolean editPlayerObject(PlayerObject object)
+	{
+		if (isOnline() == false) return false;
+		if (object.isDestroyed()) return false;
+		
+		return SampNativeFunction.editPlayerObject(id, object.getId());
+	}
+	
+	@Override
+	public void selectObject()
+	{
+		if (isOnline() == false) return;
+		
+		SampNativeFunction.selectObject(id);
+	}
+	
+	@Override
+	public void cancelEdit()
+	{
+		if (isOnline() == false) return;
+		
+		SampNativeFunction.cancelEdit(id);
+	}
+	
+	@Override
+	public void attachCameraTo(SampObject object)
+	{
+		if (isOnline() == false) return;
+		if (object.isDestroyed()) return;
+		
+		SampNativeFunction.attachCameraToObject(id, object.getId());
+	}
+	
+	@Override
+	public void attachCameraTo(PlayerObject object)
+	{
+		if (isOnline() == false) return;
+		if (object.isDestroyed()) return;
+		if (object.getPlayer() != this) return;
+		
+		SampNativeFunction.attachCameraToPlayerObject(id, object.getId());
+	}
+	
+	@Override
+	public void interpolateCameraPosition(float fromX, float fromY, float fromZ, float toX, float toY, float toZ, int time, CameraCutStyle cut)
+	{
+		if (isOnline() == false) return;
+		
+		SampNativeFunction.interpolateCameraPos(id, fromX, fromY, fromZ, toX, toY, toZ, time, cut.getValue());
+	}
+	
+	@Override
+	public void interpolateCameraLookAt(float fromX, float fromY, float fromZ, float toX, float toY, float toZ, int time, CameraCutStyle cut)
+	{
+		if (isOnline() == false) return;
+		
+		SampNativeFunction.interpolateCameraLookAt(id, fromX, fromY, fromZ, toX, toY, toZ, time, cut.getValue());
+	}
+	
+	@Override
+	public void selectTextDraw(Color hoverColor)
+	{
+		if (isOnline() == false) return;
+		
+		SampNativeFunction.selectTextDraw(id, hoverColor.getValue());
+	}
+	
+	@Override
+	public void cancelSelectTextDraw()
+	{
+		if (isOnline() == false) return;
+		
+		SampNativeFunction.cancelSelectTextDraw(id);
+	}
+	
+	@Override
+	public String getVersion(int playerid)
+	{
+		if (isOnline() == false) return "Offline";
+		
+		return SampNativeFunction.getPlayerVersion(id);
 	}
 }
