@@ -27,9 +27,8 @@ import java.util.Map.Entry;
 
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.ShoebillArtifactLocator;
-import net.gtaun.shoebill.event.resource.PluginLoadEvent;
-import net.gtaun.shoebill.event.resource.PluginUnloadEvent;
-import net.gtaun.shoebill.resource.ResourceDescription.ResourceType;
+import net.gtaun.shoebill.event.resource.ResourceLoadEvent;
+import net.gtaun.shoebill.event.resource.ResourceUnloadEvent;
 import net.gtaun.util.event.EventManager;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -131,15 +130,14 @@ public class ResourceManagerImpl implements ResourceManager
 				LOGGER.warn("Abandon loading " + desc.getClazz().getName());
 				return null;
 			}
-			
+
 			Plugin plugin = constructResource(desc, clazz);
-			plugin.enable();
-			
 			plugins.put(clazz, plugin);
 			
-			PluginLoadEvent event = new PluginLoadEvent(plugin);
+			ResourceLoadEvent event = new ResourceLoadEvent(plugin);
 			eventManager.dispatchEvent(event, this);
 			
+			plugin.enable();
 			return plugin;
 		}
 		catch (Throwable e)
@@ -169,9 +167,6 @@ public class ResourceManagerImpl implements ResourceManager
 			if (entry.getValue() != plugin) continue;
 			LOGGER.info("Unload plugin: " + plugin.getDescription().getClazz().getName());
 			
-			PluginUnloadEvent event = new PluginUnloadEvent(plugin);
-			eventManager.dispatchEvent(event, this);
-			
 			try
 			{
 				plugin.disable();
@@ -180,6 +175,9 @@ public class ResourceManagerImpl implements ResourceManager
 			{
 				e.printStackTrace();
 			}
+			
+			ResourceUnloadEvent event = new ResourceUnloadEvent(plugin);
+			eventManager.dispatchEvent(event, this);
 			
 			plugins.remove(entry.getKey());
 			
@@ -219,6 +217,10 @@ public class ResourceManagerImpl implements ResourceManager
 			Class<? extends Gamemode> clazz = desc.getClazz().asSubclass(Gamemode.class);
 			
 			gamemode = constructResource(desc, clazz);
+			
+			ResourceLoadEvent event = new ResourceLoadEvent(gamemode);
+			eventManager.dispatchEvent(event, this);
+			
 			gamemode.enable();
 		}
 		catch (Throwable e)
@@ -231,7 +233,11 @@ public class ResourceManagerImpl implements ResourceManager
 	{
 		try
 		{
+			ResourceUnloadEvent event = new ResourceUnloadEvent(gamemode);
+			eventManager.dispatchEvent(event, this);
+			
 			gamemode.disable();
+			gamemode = null;
 		}
 		catch (Throwable e)
 		{

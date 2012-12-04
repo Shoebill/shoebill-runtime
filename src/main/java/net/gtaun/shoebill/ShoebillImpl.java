@@ -53,7 +53,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author MK124
  */
-@SuppressWarnings("deprecation")
 public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);

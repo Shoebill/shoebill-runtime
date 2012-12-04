@@ -47,13 +47,7 @@ public class ServiceManagerImpl implements ServiceManager
 		}
 		
 		@Override
-		public ServiceStore getServiceStore()
-		{
-			return ServiceManagerImpl.this;
-		}
-		
-		@Override
-		public Resource getResource()
+		public Resource getProvider()
 		{
 			return resource;
 		}
@@ -127,7 +121,7 @@ public class ServiceManagerImpl implements ServiceManager
 		ServiceEntry entry = services.get(type);
 		
 		if(entry == null) return;
-		if(entry.getResource() != resource ) return;
+		if(entry.getProvider() != resource ) return;
 		if(service != null && entry.getService() != service) return;
 		
 		unregisterServiceEntry(entry);
@@ -140,7 +134,7 @@ public class ServiceManagerImpl implements ServiceManager
 		while(iterator.hasNext())
 		{
 			ServiceEntry entry = iterator.next();
-			if(entry.getResource() == resource) iterator.remove(); 
+			if(entry.getProvider() == resource) iterator.remove(); 
 		}
 	}
 	
