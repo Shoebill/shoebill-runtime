@@ -64,6 +64,12 @@ public abstract class ServerImpl implements Server
 	}
 	
 	@Override
+	public String getGamemodeText()
+	{
+		return SampNativeFunction.getServerVarAsString("gamemodetext");
+	}
+
+	@Override
 	public void setGamemodeText(String text)
 	{
 		SampNativeFunction.setGameModeText(text);
@@ -142,5 +148,41 @@ public abstract class ServerImpl implements Server
 		Vector3D vector = new Vector3D();
 		SampNativeFunction.getVehicleModelInfo(modelId, infotype.getValue(), vector);
 		return vector;
+	}
+	
+	@Override
+	public String getHostname()
+	{
+		return SampNativeFunction.getServerVarAsString("hostname");
+	}
+	
+	@Override
+	public void setHostname(String name)
+	{
+		SampNativeFunction.sendRconCommand("hostname " + name);
+	}
+	
+	@Override
+	public String getMapname()
+	{
+		return SampNativeFunction.getServerVarAsString("mapname");
+	}
+	
+	@Override
+	public void setMapname(String name)
+	{
+		SampNativeFunction.sendRconCommand("mapname " + name);
+	}
+	
+	@Override
+	public String getPassword()
+	{
+		return SampNativeFunction.getServerVarAsString("password");
+	}
+	
+	@Override
+	public void setPassword(String password)
+	{
+		SampNativeFunction.sendRconCommand("password " + password);
 	}
 }
