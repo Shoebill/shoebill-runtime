@@ -30,11 +30,10 @@ import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.proxy.GlobalProxyManager;
 import net.gtaun.shoebill.proxy.GlobalProxyManagerImpl;
 import net.gtaun.shoebill.proxy.ProxyableFactoryImpl;
-import net.gtaun.shoebill.resource.ResourceManagerImpl;
 import net.gtaun.shoebill.resource.ResourceManager;
+import net.gtaun.shoebill.resource.ResourceManagerImpl;
 import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
-import net.gtaun.shoebill.samp.SampCallbackManager;
 import net.gtaun.shoebill.samp.SampCallbackManagerImpl;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.service.ServiceManagerImpl;
@@ -281,12 +280,6 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 	public EventManager getEventManager()
 	{
 		return eventManager;
-	}
-	
-	@Override
-	public SampCallbackManager getCallbackManager()
-	{
-		return sampCallbackManager;
 	}
 	
 	@Override
