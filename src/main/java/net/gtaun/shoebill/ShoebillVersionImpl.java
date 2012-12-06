@@ -40,13 +40,19 @@ public class ShoebillVersionImpl implements ShoebillVersion
 	public ShoebillVersionImpl(InputStream in)
 	{
 		YamlConfiguration config = new YamlConfiguration();
+		config.setDefault("name", "Unknown");
+		config.setDefault("version", "Unknown");
+		config.setDefault("support", "Unknown");
+		config.setDefault("buildNumber", 0);
+		config.setDefault("buildDate", "Unknown");
+		
 		config.read(in);
 		
-		name = config.getString("name", "Unknown");
-		version = config.getString("version", "Unknown");
-		support = config.getString("support", "Unknown");
-		buildNumber = config.getInt("buildNumber", 0);
-		buildDate = config.getString("buildDate", "Unknown");
+		name = config.getString("name");
+		version = config.getString("version");
+		support = config.getString("support");
+		buildNumber = config.getInt("buildNumber");
+		buildDate = config.getString("buildDate");
 	}
 	
 	@Override
