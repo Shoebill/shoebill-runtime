@@ -510,7 +510,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Player player = sampObjectStore.getPlayer(playerId);
 			PlayerObject object = sampObjectStore.getPlayerObject(player, objectId);
 			
-			PlayerObjectMovedEvent event = new PlayerObjectMovedEvent(player, object);
+			PlayerObjectMovedEvent event = new PlayerObjectMovedEvent(object);
 			eventManager.dispatchEvent(event, object, player);
 			
 			return 1;
