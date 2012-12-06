@@ -211,7 +211,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public int getWeatherId()
+	public int getWeather()
 	{
 		return weatherId;
 	}
@@ -303,7 +303,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public int getTeamId()
+	public int getTeam()
 	{
 		if (isOnline() == false) return NO_TEAM;
 		
@@ -311,7 +311,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public int getSkinId()
+	public int getSkin()
 	{
 		if (isOnline() == false) return 0;
 		
@@ -539,11 +539,11 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setWeaponAmmo(int weaponSlot, int ammo)
+	public void setWeaponAmmo(WeaponType weapon, int ammo)
 	{
 		if (isOnline() == false) return;
 		
-		SampNativeFunction.setPlayerAmmo(id, weaponSlot, ammo);
+		SampNativeFunction.setPlayerAmmo(id, weapon.getId(), ammo);
 	}
 	
 	@Override
@@ -570,7 +570,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setWeatherId(int weather)
+	public void setWeather(int weather)
 	{
 		if (isOnline() == false) return;
 		
@@ -711,7 +711,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setInteriorId(int interiorId)
+	public void setInterior(int interiorId)
 	{
 		if (isOnline() == false) return;
 		
@@ -720,7 +720,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setWorldId(int worldId)
+	public void setWorld(int worldId)
 	{
 		if (isOnline() == false) return;
 		
@@ -925,7 +925,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public Menu getMenu()
+	public Menu getCurrentMenu()
 	{
 		if (isOnline() == false) return null;
 		
@@ -950,20 +950,29 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setCameraLookAt(float x, float y, float z, int cut)
+	public void setCameraLookAt(float x, float y, float z, CameraCutStyle cut)
 	{
 		if (isOnline() == false) return;
 		
-		SampNativeFunction.setPlayerCameraLookAt(id, x, y, z, cut);
+		SampNativeFunction.setPlayerCameraLookAt(id, x, y, z, cut.getValue());
+	}
+	
+	@Override
+	public void setCameraLookAt(Vector3D lookAt, CameraCutStyle cut)
+	{
+		setCameraLookAt(lookAt.getX(), lookAt.getY(), lookAt.getZ(), cut);
+	}
+	
+	@Override
+	public void setCameraLookAt(float x, float y, float z)
+	{
+		setCameraLookAt(x, y, z, CameraCutStyle.CUT);
 	}
 	
 	@Override
 	public void setCameraLookAt(Vector3D lookAt)
 	{
-		if (isOnline() == false) return;
-		
-		if (lookAt == null) throw new NullPointerException();
-		SampNativeFunction.setPlayerCameraLookAt(id, lookAt.getX(), lookAt.getY(), lookAt.getZ(), 0);
+		setCameraLookAt(lookAt.getX(), lookAt.getY(), lookAt.getZ(), CameraCutStyle.CUT);
 	}
 	
 	@Override
@@ -1040,7 +1049,7 @@ public abstract class PlayerImpl implements Player
 		}
 		
 		Vector3D loc = checkpoint.getLocation();
-		SampNativeFunction.setPlayerCheckpoint(id, loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize());
+		SampNativeFunction.setPlayerCheckpoint(id, loc.getX(), loc.getY(), loc.getZ(), checkpoint.getRadius());
 		this.checkpoint = checkpoint;
 	}
 	
@@ -1071,7 +1080,7 @@ public abstract class PlayerImpl implements Player
 		
 		if (checkpoint.getNext() != null)
 		{
-			SampNativeFunction.setPlayerRaceCheckpoint(id, checkpoint.getType().getValue(), loc.getX(), loc.getY(), loc.getZ(), nextLoc.getX(), nextLoc.getY(), nextLoc.getZ(), checkpoint.getSize());
+			SampNativeFunction.setPlayerRaceCheckpoint(id, checkpoint.getType().getValue(), loc.getX(), loc.getY(), loc.getZ(), nextLoc.getX(), nextLoc.getY(), nextLoc.getZ(), checkpoint.getRadius());
 		}
 		else
 		{
@@ -1080,7 +1089,7 @@ public abstract class PlayerImpl implements Player
 			if (type == RaceCheckpointType.NORMAL) type = RaceCheckpointType.NORMAL_FINISH;
 			else if (type == RaceCheckpointType.AIR) type = RaceCheckpointType.AIR_FINISH;
 			
-			SampNativeFunction.setPlayerRaceCheckpoint(id, type.getValue(), loc.getX(), loc.getY(), loc.getZ(), loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize());
+			SampNativeFunction.setPlayerRaceCheckpoint(id, type.getValue(), loc.getX(), loc.getY(), loc.getZ(), loc.getX(), loc.getY(), loc.getZ(), checkpoint.getRadius());
 		}
 		
 		raceCheckpoint = checkpoint;
@@ -1495,11 +1504,23 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
+	public void interpolateCameraPosition(Vector3D from, Vector3D to, int time, CameraCutStyle cut)
+	{
+		interpolateCameraPosition(from.getX(), from.getY(), from.getZ(), to.getX(), to.getY(), to.getZ(), time, cut);
+	}
+	
+	@Override
 	public void interpolateCameraLookAt(float fromX, float fromY, float fromZ, float toX, float toY, float toZ, int time, CameraCutStyle cut)
 	{
 		if (isOnline() == false) return;
 		
 		SampNativeFunction.interpolateCameraLookAt(id, fromX, fromY, fromZ, toX, toY, toZ, time, cut.getValue());
+	}
+	
+	@Override
+	public void interpolateCameraLookAt(Vector3D from, Vector3D to, int time, CameraCutStyle cut)
+	{
+		interpolateCameraLookAt(from.getX(), from.getY(), from.getZ(), to.getX(), to.getY(), to.getZ(), time, cut);
 	}
 	
 	@Override

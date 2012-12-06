@@ -109,13 +109,13 @@ public abstract class MenuImpl implements Menu
 	}
 	
 	@Override
-	public float getCol1Width()
+	public float getColumn1Width()
 	{
 		return col1Width;
 	}
 	
 	@Override
-	public float getCol2Width()
+	public float getColumn2Width()
 	{
 		return col2Width;
 	}

@@ -200,7 +200,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	}
 	
 	@Override
-	public Vector3D getRotate()
+	public Vector3D getRotation()
 	{
 		if (isDestroyed()) return null;
 		
@@ -210,7 +210,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	}
 	
 	@Override
-	public void setRotate(float rx, float ry, float rz)
+	public void setRotation(float rx, float ry, float rz)
 	{
 		if (isDestroyed()) return;
 		
@@ -218,9 +218,9 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	}
 	
 	@Override
-	public void setRotate(Vector3D rot)
+	public void setRotation(Vector3D rot)
 	{
-		setRotate(rot.getX(), rot.getY(), rot.getZ());
+		setRotation(rot.getX(), rot.getY(), rot.getZ());
 	}
 	
 	@Override

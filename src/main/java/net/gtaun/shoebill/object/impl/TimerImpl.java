@@ -33,7 +33,7 @@ public abstract class TimerImpl implements Timer
 	private int interval, count;
 	
 	private boolean running;
-	private int counting, realInterval;
+	private int counting, factualInterval;
 	
 	
 	public TimerImpl(int interval, int count)
@@ -55,9 +55,9 @@ public abstract class TimerImpl implements Timer
 	}
 	
 	@Override
-	public void setInterval(int interval)
+	public void setInterval(int ms)
 	{
-		this.interval = interval;
+		this.interval = ms;
 	}
 	
 	@Override
@@ -82,7 +82,7 @@ public abstract class TimerImpl implements Timer
 	public void start()
 	{
 		counting = count;
-		realInterval = 0;
+		factualInterval = 0;
 		running = true;
 	}
 	
@@ -93,18 +93,18 @@ public abstract class TimerImpl implements Timer
 	}
 	
 	@Override
-	public void tick(int realint)
+	public void tick(int factualInt)
 	{
 		if (running == false) return;
 		
-		realInterval += realint;
-		if (realInterval < interval) return;
+		factualInterval += factualInt;
+		if (factualInterval < interval) return;
 		
 		if (count > 0) counting--;
-		TimerTickEvent event = new TimerTickEvent(this, realInterval);
+		TimerTickEvent event = new TimerTickEvent(this, factualInterval);
 		ShoebillImpl.getInstance().getEventManager().dispatchEvent(event, this);
 		
-		realInterval = 0;
+		factualInterval = 0;
 		if (count > 0 && counting == 0) stop();
 	}
 }

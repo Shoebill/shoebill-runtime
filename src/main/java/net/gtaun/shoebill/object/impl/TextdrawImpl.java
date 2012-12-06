@@ -19,6 +19,8 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.constant.TextDrawAlign;
+import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
@@ -135,11 +137,11 @@ public abstract class TextdrawImpl implements Textdraw
 	}
 	
 	@Override
-	public void setAlignment(int alignment)
+	public void setAlignment(TextDrawAlign alignment)
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawAlignment(id, alignment);
+		SampNativeFunction.textDrawAlignment(id, alignment.getValue());
 	}
 	
 	@Override
@@ -167,7 +169,7 @@ public abstract class TextdrawImpl implements Textdraw
 	}
 	
 	@Override
-	public void setShadow(int size)
+	public void setShadowSize(int size)
 	{
 		if (isDestroyed()) return;
 		
@@ -175,7 +177,7 @@ public abstract class TextdrawImpl implements Textdraw
 	}
 	
 	@Override
-	public void setOutline(int size)
+	public void setOutlineSize(int size)
 	{
 		if (isDestroyed()) return;
 		
@@ -191,11 +193,11 @@ public abstract class TextdrawImpl implements Textdraw
 	}
 	
 	@Override
-	public void setFont(int font)
+	public void setFont(TextDrawFont font)
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawFont(id, font);
+		SampNativeFunction.textDrawFont(id, font.getValue());
 	}
 	
 	@Override
@@ -270,7 +272,7 @@ public abstract class TextdrawImpl implements Textdraw
 	}
 	
 	@Override
-	public boolean isPlayerShowed(Player player)
+	public boolean isShowed(Player player)
 	{
 		if (isDestroyed()) return false;
 		

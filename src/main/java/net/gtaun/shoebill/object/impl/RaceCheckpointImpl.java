@@ -84,13 +84,13 @@ public abstract class RaceCheckpointImpl implements RaceCheckpoint
 	}
 	
 	@Override
-	public float getSize()
+	public float getRadius()
 	{
 		return location.getRadius();
 	}
 	
 	@Override
-	public void setSize(float size)
+	public void setRadius(float size)
 	{
 		location.setRadius(size);
 		update();
@@ -122,7 +122,7 @@ public abstract class RaceCheckpointImpl implements RaceCheckpoint
 	}
 	
 	@Override
-	public boolean isInCheckpoint(Player player)
+	public boolean isInArea(Player player)
 	{
 		if (player.getRaceCheckpoint() != this) return false;
 		

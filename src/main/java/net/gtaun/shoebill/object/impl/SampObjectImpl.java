@@ -197,7 +197,7 @@ public abstract class SampObjectImpl implements SampObject
 	}
 	
 	@Override
-	public Vector3D getRotate()
+	public Vector3D getRotation()
 	{
 		if (isDestroyed()) return null;
 		
@@ -208,7 +208,7 @@ public abstract class SampObjectImpl implements SampObject
 	}
 	
 	@Override
-	public void setRotate(float rx, float ry, float rz)
+	public void setRotation(float rx, float ry, float rz)
 	{
 		if (isDestroyed()) return;
 		
@@ -216,9 +216,9 @@ public abstract class SampObjectImpl implements SampObject
 	}
 	
 	@Override
-	public void setRotate(Vector3D rot)
+	public void setRotation(Vector3D rot)
 	{
-		setRotate(rot.getX(), rot.getY(), rot.getZ());
+		setRotation(rot.getX(), rot.getY(), rot.getZ());
 	}
 	
 	@Override
@@ -342,7 +342,13 @@ public abstract class SampObjectImpl implements SampObject
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.setObjectMaterial(id, materialIndex, modelId, txdName, textureName, materialColor.getValue());
+		SampNativeFunction.setObjectMaterial(id, materialIndex, modelId, txdName, textureName, materialColor.getArgbValue());
+	}
+	
+	@Override
+	public void setMaterial(int materialIndex, int modelId, String txdName, String textureName)
+	{
+		setMaterial(materialIndex, modelId, txdName, textureName, Color.TRANSPARENT);
 	}
 	
 	@Override
@@ -350,6 +356,12 @@ public abstract class SampObjectImpl implements SampObject
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.setObjectMaterialText(id, text, materialIndex, materialSize.getValue(), fontFace, fontSize, isBold ? 1 : 0, fontColor.getValue(), backColor.getValue(), textAlignment.getValue());
+		SampNativeFunction.setObjectMaterialText(id, text, materialIndex, materialSize.getValue(), fontFace, fontSize, isBold ? 1 : 0, fontColor.getArgbValue(), backColor.getArgbValue(), textAlignment.getValue());
+	}
+	
+	@Override
+	public void setMaterialText(String text)
+	{
+		setMaterialText(text, 0, ObjectMaterialSize.SIZE_256x128, "Arial", 24, true, Color.WHITE, Color.TRANSPARENT, ObjectMaterialTextAlign.LEFT);
 	}
 }

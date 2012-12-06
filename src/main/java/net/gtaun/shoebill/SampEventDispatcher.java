@@ -667,7 +667,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			Player player = sampObjectStore.getPlayer(playerId);
-			Menu menu = player.getMenu();
+			Menu menu = player.getCurrentMenu();
 			
 			MenuSelectedEvent event = new MenuSelectedEvent(menu, player, row);
 			eventManager.dispatchEvent(event, menu, player);
@@ -687,7 +687,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			Player player = sampObjectStore.getPlayer(playerId);
-			Menu menu = player.getMenu();
+			Menu menu = player.getCurrentMenu();
 			
 			MenuExitedEvent event = new MenuExitedEvent(menu, player);
 			eventManager.dispatchEvent(event, menu, player);

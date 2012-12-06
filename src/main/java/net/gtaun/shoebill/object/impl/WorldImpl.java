@@ -111,13 +111,13 @@ public abstract class WorldImpl implements World
 	}
 	
 	@Override
-	public int getWeatherId()
+	public int getWeather()
 	{
 		return SampNativeFunction.getServerVarAsInt("weather");
 	}
 	
 	@Override
-	public void setWeatherId(int weatherid)
+	public void setWeather(int weatherid)
 	{
 		SampNativeFunction.setWeather(weatherid);
 	}

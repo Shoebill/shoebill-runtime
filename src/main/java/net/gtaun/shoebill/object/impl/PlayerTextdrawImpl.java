@@ -17,6 +17,8 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.constant.TextDrawAlign;
+import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
@@ -140,11 +142,11 @@ public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 	}
 	
 	@Override
-	public void setAlignment(int alignment)
+	public void setAlignment(TextDrawAlign alignment)
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.playerTextDrawAlignment(player.getId(), id, alignment);
+		SampNativeFunction.playerTextDrawAlignment(player.getId(), id, alignment.getValue());
 	}
 	
 	@Override
@@ -172,7 +174,7 @@ public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 	}
 	
 	@Override
-	public void setShadow(int size)
+	public void setShadowSize(int size)
 	{
 		if (isDestroyed()) return;
 		
@@ -180,7 +182,7 @@ public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 	}
 	
 	@Override
-	public void setOutline(int size)
+	public void setOutlineSize(int size)
 	{
 		if (isDestroyed()) return;
 		
@@ -196,11 +198,11 @@ public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 	}
 	
 	@Override
-	public void setFont(int font)
+	public void setFont(TextDrawFont font)
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.playerTextDrawFont(player.getId(), id, font);
+		SampNativeFunction.playerTextDrawFont(player.getId(), id, font.getValue());
 	}
 	
 	@Override

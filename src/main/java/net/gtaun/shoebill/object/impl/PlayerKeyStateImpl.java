@@ -32,7 +32,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class PlayerKeyStateImpl implements PlayerKeyState
 {
 	private Player player;
-	private int keys, updown, leftright;
+	private int keys, updownValue, leftrightValue;
 	
 	
 	public PlayerKeyStateImpl(Player player)
@@ -60,15 +60,15 @@ public class PlayerKeyStateImpl implements PlayerKeyState
 	}
 	
 	@Override
-	public int getUpdown()
+	public int getUpdownValue()
 	{
-		return updown;
+		return updownValue;
 	}
 	
 	@Override
-	public int getLeftright()
+	public int getLeftrightValue()
 	{
-		return leftright;
+		return leftrightValue;
 	}
 	
 	@Override
@@ -82,8 +82,8 @@ public class PlayerKeyStateImpl implements PlayerKeyState
 	{
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE);
 		builder.append("keys", keys);
-		builder.append("upDown", updown);
-		builder.append("leftRight", leftright);
+		builder.append("upDown", updownValue);
+		builder.append("leftRight", leftrightValue);
 		builder.append("action", isKeyPressed(PlayerKey.ACTION) ? 1 : 0);
 		builder.append("crouch", isKeyPressed(PlayerKey.CROUCH) ? 1 : 0);
 		builder.append("fire", isKeyPressed(PlayerKey.FIRE) ? 1 : 0);

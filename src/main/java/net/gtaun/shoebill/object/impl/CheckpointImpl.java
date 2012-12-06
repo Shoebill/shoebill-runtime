@@ -79,15 +79,15 @@ public abstract class CheckpointImpl implements Checkpoint
 	}
 	
 	@Override
-	public float getSize()
+	public float getRadius()
 	{
 		return location.getRadius();
 	}
 	
 	@Override
-	public void setSize(float size)
+	public void setRadius(float radius)
 	{
-		location.setRadius(size);
+		location.setRadius(radius);
 		update();
 	}
 	
@@ -105,7 +105,7 @@ public abstract class CheckpointImpl implements Checkpoint
 	}
 	
 	@Override
-	public boolean isInCheckpoint(Player player)
+	public boolean isInArea(Player player)
 	{
 		if (player.getCheckpoint() != this) return false;
 		return SampNativeFunction.isPlayerInCheckpoint(player.getId());
