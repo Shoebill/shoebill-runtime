@@ -105,10 +105,16 @@ public abstract class CheckpointImpl implements Checkpoint
 	}
 	
 	@Override
-	public boolean isInArea(Player player)
+	public boolean isInRange(Player player)
 	{
 		if (player.getCheckpoint() != this) return false;
 		return SampNativeFunction.isPlayerInCheckpoint(player.getId());
+	}
+	
+	@Override
+	public boolean isInRange(Vector3D pos)
+	{
+		return location.isInRange(pos);
 	}
 	
 	@Override

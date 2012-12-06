@@ -21,6 +21,7 @@ import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
@@ -197,5 +198,11 @@ public abstract class ZoneImpl implements Zone
 		SampNativeFunction.gangZoneStopFlashForAll(id);
 		for (int i = 0; i < isPlayerFlashing.length; i++)
 			isPlayerFlashing[i] = false;
+	}
+	
+	@Override
+	public boolean isInRange(Vector3D pos)
+	{
+		return area.isInRange(pos);
 	}
 }

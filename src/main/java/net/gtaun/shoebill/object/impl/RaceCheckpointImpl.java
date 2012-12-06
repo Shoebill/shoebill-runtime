@@ -122,11 +122,17 @@ public abstract class RaceCheckpointImpl implements RaceCheckpoint
 	}
 	
 	@Override
-	public boolean isInArea(Player player)
+	public boolean isInRange(Player player)
 	{
 		if (player.getRaceCheckpoint() != this) return false;
 		
 		return SampNativeFunction.isPlayerInRaceCheckpoint(player.getId());
+	}
+	
+	@Override
+	public boolean isInRange(Vector3D pos)
+	{
+		return location.isInRange(pos);
 	}
 	
 	@Override
