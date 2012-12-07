@@ -102,6 +102,7 @@ public abstract class PlayerImpl implements Player
 	private PlayerEventHandler eventHandler;
 
 	private HandlerEntry updateEventHandlerEntry;
+	private HandlerEntry playerInteriorChangeHandlerEntry;
 	private HandlerEntry disconnectEventHandlerEntry;
 	private HandlerEntry dialogResponseEventHandlerEntry;
 	
@@ -161,6 +162,7 @@ public abstract class PlayerImpl implements Player
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
 		updateEventHandlerEntry = eventManager.addHandler(PlayerUpdateEvent.class, this, eventHandler, HandlerPriority.MONITOR);
+		playerInteriorChangeHandlerEntry = eventManager.addHandler(PlayerInteriorChangeEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		disconnectEventHandlerEntry = eventManager.addHandler(PlayerDisconnectEvent.class, this, eventHandler, HandlerPriority.BOTTOM);
 		dialogResponseEventHandlerEntry = eventManager.addHandler(DialogResponseEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 	}
@@ -170,6 +172,7 @@ public abstract class PlayerImpl implements Player
 	{
 		super.finalize();
 		updateEventHandlerEntry.cancel();
+		playerInteriorChangeHandlerEntry.cancel();
 		disconnectEventHandlerEntry.cancel();
 		dialogResponseEventHandlerEntry.cancel();
 	}
