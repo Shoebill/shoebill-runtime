@@ -229,6 +229,8 @@ public class ResourceManagerImpl implements ResourceManager
 	
 	private void unloadGamemode()
 	{
+		if (gamemode == null) return;
+		
 		try
 		{
 			ResourceUnloadEvent event = new ResourceUnloadEvent(gamemode);
