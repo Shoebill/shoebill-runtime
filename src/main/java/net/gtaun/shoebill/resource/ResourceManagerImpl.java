@@ -23,7 +23,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.ShoebillArtifactLocator;
@@ -162,28 +161,27 @@ public class ResourceManagerImpl implements ResourceManager
 	@Override
 	public void unloadPlugin(Plugin plugin)
 	{
-		for (Entry<Class<? extends Plugin>, Plugin> entry : plugins.entrySet())
+		Class<? extends Plugin> clazz = plugin.getClass();
+		if (plugins.containsKey(clazz)) return;
+		
+		LOGGER.info("Unload plugin: " + clazz.getName());
+		
+		try
 		{
-			if (entry.getValue() != plugin) continue;
-			LOGGER.info("Unload plugin: " + plugin.getDescription().getClazz().getName());
-			
-			try
-			{
-				plugin.disable();
-			}
-			catch (Throwable e)
-			{
-				e.printStackTrace();
-			}
-			
-			ResourceUnloadEvent event = new ResourceUnloadEvent(plugin);
-			eventManager.dispatchEvent(event, this);
-			
-			plugins.remove(entry.getKey());
-			
-			System.gc();
-			return;
+			plugin.disable();
 		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+		}
+		
+		ResourceUnloadEvent event = new ResourceUnloadEvent(plugin);
+		eventManager.dispatchEvent(event, this);
+		
+		plugins.remove(clazz);
+		
+		System.gc();
+		return;
 	}
 	
 	@Override
@@ -237,12 +235,13 @@ public class ResourceManagerImpl implements ResourceManager
 			eventManager.dispatchEvent(event, this);
 			
 			gamemode.disable();
-			gamemode = null;
 		}
 		catch (Throwable e)
 		{
 			e.printStackTrace();
 		}
+		
+		gamemode = null;
 	}
 
 	@Override
