@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.gtaun.shoebill.Shoebill;
 import net.gtaun.shoebill.ShoebillArtifactLocator;
@@ -61,7 +62,7 @@ public class ResourceManagerImpl implements ResourceManager
 		this.artifactLocator = locator;
 		this.dataDir = dataDir;
 		
-		plugins = new HashMap<Class<? extends Plugin>, Plugin>();
+		plugins = new ConcurrentHashMap<Class<? extends Plugin>, Plugin>();
 	}
 	
 	@Override
