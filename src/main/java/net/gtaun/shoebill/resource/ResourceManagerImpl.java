@@ -162,7 +162,7 @@ public class ResourceManagerImpl implements ResourceManager
 	public void unloadPlugin(Plugin plugin)
 	{
 		Class<? extends Plugin> clazz = plugin.getClass();
-		if (plugins.containsKey(clazz)) return;
+		if (plugins.containsKey(clazz) == false) return;
 		
 		LOGGER.info("Unload plugin: " + clazz.getName());
 		
