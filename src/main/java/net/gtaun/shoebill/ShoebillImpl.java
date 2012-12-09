@@ -192,6 +192,15 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 					reload();
 					return 1;
 					
+				case "gc":
+					System.gc();
+					return 1;
+					
+				case "memstatus":
+					Runtime runtime = Runtime.getRuntime();
+					LOGGER.info("FreeMem: " + runtime.freeMemory() + " bytes / TotalMem: " + runtime.totalMemory() + " bytes.");
+					return 1;
+					
 				default:
 					return 0;
 				}
