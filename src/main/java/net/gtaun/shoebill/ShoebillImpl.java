@@ -152,6 +152,14 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		
 	}
 	
+	@Override
+	protected void finalize() throws Throwable
+	{
+		super.finalize();
+		
+		if (sampCallbackManager != null) uninitialize();
+	}
+	
 	private void registerRootCallbackHandler()
 	{
 		sampCallbackManager.registerCallbackHandler(new AbstractSampCallbackHandler()
