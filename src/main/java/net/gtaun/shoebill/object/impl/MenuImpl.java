@@ -71,7 +71,7 @@ public abstract class MenuImpl implements Menu
 		
 		SampNativeFunction.destroyMenu(id);
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		eventManager.dispatchEvent(destroyEvent, this);
 		

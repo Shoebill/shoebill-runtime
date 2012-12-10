@@ -81,7 +81,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 			}
 		};
 		
-		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getEventManager());
+		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getRootEventManager());
 		managedEventManager.registerHandler(PlayerObjectMovedEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 	}
 	
@@ -103,7 +103,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 			SampNativeFunction.destroyPlayerObject(player.getId(), id);
 		}
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		eventManager.dispatchEvent(destroyEvent, this);
 		

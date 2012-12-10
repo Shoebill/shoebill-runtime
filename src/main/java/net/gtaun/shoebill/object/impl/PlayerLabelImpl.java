@@ -126,7 +126,7 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 			SampNativeFunction.deletePlayer3DTextLabel(player.getId(), id);
 		}
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		eventManager.dispatchEvent(destroyEvent, this);
 		

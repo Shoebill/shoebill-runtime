@@ -76,7 +76,7 @@ public abstract class LabelImpl implements Label
 		
 		SampNativeFunction.delete3DTextLabel(id);
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		eventManager.dispatchEvent(destroyEvent, this);
 		

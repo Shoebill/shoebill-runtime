@@ -82,7 +82,7 @@ public abstract class SampObjectImpl implements SampObject
 			}
 		};
 		
-		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getEventManager());
+		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getRootEventManager());
 		managedEventManager.registerHandler(ObjectMovedEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 	}
 	
@@ -101,7 +101,7 @@ public abstract class SampObjectImpl implements SampObject
 		
 		SampNativeFunction.destroyObject(id);
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		eventManager.dispatchEvent(destroyEvent, this);
 		

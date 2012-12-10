@@ -53,7 +53,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author MK124
  */
-public class ShoebillImpl implements Shoebill, ShoebillLowLevel
+public class ShoebillImpl implements Shoebill
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);
 	
@@ -292,8 +292,7 @@ public class ShoebillImpl implements Shoebill, ShoebillLowLevel
 		return artifactLocator;
 	}
 	
-	@Override
-	public EventManager getEventManager()
+	public EventManager getRootEventManager()
 	{
 		return eventManager;
 	}

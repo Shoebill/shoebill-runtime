@@ -155,7 +155,7 @@ public abstract class PlayerImpl implements Player
 			}
 		};
 		
-		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getEventManager());
+		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getRootEventManager());
 		managedEventManager.registerHandler(PlayerUpdateEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		managedEventManager.registerHandler(PlayerInteriorChangeEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		managedEventManager.registerHandler(PlayerDisconnectEvent.class, this, eventHandler, HandlerPriority.BOTTOM);
@@ -1432,7 +1432,7 @@ public abstract class PlayerImpl implements Player
 		SampNativeFunction.showPlayerDialog(id, -1, 0, "", "", "", "");
 		
 		DialogCancelEvent event = new DialogCancelEvent(dialog, this);
-		ShoebillImpl.getInstance().getEventManager().dispatchEvent(event, dialog, this);
+		ShoebillImpl.getInstance().getRootEventManager().dispatchEvent(event, dialog, this);
 	}
 	
 	@Override

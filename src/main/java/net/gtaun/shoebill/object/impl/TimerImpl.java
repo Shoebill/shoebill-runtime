@@ -102,7 +102,7 @@ public abstract class TimerImpl implements Timer
 		
 		if (count > 0) counting--;
 		TimerTickEvent event = new TimerTickEvent(this, factualInterval);
-		ShoebillImpl.getInstance().getEventManager().dispatchEvent(event, this);
+		ShoebillImpl.getInstance().getRootEventManager().dispatchEvent(event, this);
 		
 		factualInterval = 0;
 		if (count > 0 && counting == 0) stop();

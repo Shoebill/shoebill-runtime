@@ -117,7 +117,7 @@ public abstract class VehicleImpl implements Vehicle
 			}
 		};
 		
-		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getEventManager());
+		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getRootEventManager());
 		managedEventManager.registerHandler(VehicleModEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		managedEventManager.registerHandler(VehicleUpdateDamageEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		
@@ -139,7 +139,7 @@ public abstract class VehicleImpl implements Vehicle
 		
 		managedEventManager.cancelAll();
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
+		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		
 		VehicleDestroyEvent event = new VehicleDestroyEvent(this);
 		eventManager.dispatchEvent(event, this);
