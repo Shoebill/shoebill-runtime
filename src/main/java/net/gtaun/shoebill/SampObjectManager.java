@@ -90,7 +90,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private static final Class<?>[] RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { Radius.class, RaceCheckpointType.class, RaceCheckpoint.class };
 	
 	
-	private final EventManager eventManager;
+	private final EventManager rootEventManager;
 	private final GlobalProxyManager globalProxyManager;
 	private final SampObjectStoreImpl store;
 	
@@ -115,7 +115,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	
 	public SampObjectManager(EventManager eventManager, GlobalProxyManager globalProxyManager, SampObjectStoreImpl store)
 	{
-		this.eventManager = eventManager;
+		this.rootEventManager = eventManager;
 		this.globalProxyManager = globalProxyManager;
 		this.store = store;
 		initialize();
@@ -206,7 +206,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 				}
 			}
 		};
-		eventManager.registerHandler(DestroyEvent.class, eventHandler, HandlerPriority.BOTTOM);
+		rootEventManager.registerHandler(DestroyEvent.class, eventHandler, HandlerPriority.BOTTOM);
 	}
 	
 	public World createWorld()

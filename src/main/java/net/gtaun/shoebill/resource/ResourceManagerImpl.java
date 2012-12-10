@@ -47,7 +47,7 @@ public class ResourceManagerImpl implements ResourceManager
 	
 	
 	private Shoebill shoebill;
-	private EventManager eventManager;
+	private EventManager rootEventManager;
 	private ShoebillArtifactLocator artifactLocator;
 	private File dataDir;
 	
@@ -58,7 +58,7 @@ public class ResourceManagerImpl implements ResourceManager
 	public ResourceManagerImpl(Shoebill shoebill, EventManager eventManager, ShoebillArtifactLocator locator, File dataDir)
 	{
 		this.shoebill = shoebill;
-		this.eventManager = eventManager;
+		this.rootEventManager = eventManager;
 		this.artifactLocator = locator;
 		this.dataDir = dataDir;
 		
@@ -135,7 +135,7 @@ public class ResourceManagerImpl implements ResourceManager
 			plugins.put(clazz, plugin);
 			
 			ResourceLoadEvent event = new ResourceLoadEvent(plugin);
-			eventManager.dispatchEvent(event, this);
+			rootEventManager.dispatchEvent(event, this);
 			
 			plugin.enable();
 			return plugin;
@@ -155,7 +155,7 @@ public class ResourceManagerImpl implements ResourceManager
 		File resDataDir = new File(dataDir, desc.getClazz().getName());
 		if (!resDataDir.exists()) resDataDir.mkdirs();
 		
-		ManagedEventManager managedEventManager = new ManagedEventManager(eventManager);
+		ManagedEventManager managedEventManager = new ManagedEventManager(rootEventManager);
 		
 		resource.setContext(desc, shoebill, managedEventManager, resDataDir);
 		return resource;
@@ -179,7 +179,7 @@ public class ResourceManagerImpl implements ResourceManager
 		}
 		
 		ResourceUnloadEvent event = new ResourceUnloadEvent(plugin);
-		eventManager.dispatchEvent(event, this);
+		rootEventManager.dispatchEvent(event, this);
 		
 		plugins.remove(clazz);
 		
@@ -220,7 +220,7 @@ public class ResourceManagerImpl implements ResourceManager
 			gamemode = constructResource(desc, clazz);
 			
 			ResourceLoadEvent event = new ResourceLoadEvent(gamemode);
-			eventManager.dispatchEvent(event, this);
+			rootEventManager.dispatchEvent(event, this);
 			
 			gamemode.enable();
 		}
@@ -237,7 +237,7 @@ public class ResourceManagerImpl implements ResourceManager
 		try
 		{
 			ResourceUnloadEvent event = new ResourceUnloadEvent(gamemode);
-			eventManager.dispatchEvent(event, this);
+			rootEventManager.dispatchEvent(event, this);
 			
 			gamemode.disable();
 		}

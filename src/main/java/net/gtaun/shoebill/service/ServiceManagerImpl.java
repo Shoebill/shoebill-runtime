@@ -66,13 +66,13 @@ public class ServiceManagerImpl implements ServiceManager
 	}
 	
 	
-	private EventManager eventManager;
+	private EventManager rootEventManager;
 	private Map<Class<? extends Service>, ServiceEntry> services;
 	
 	
 	public ServiceManagerImpl(EventManager eventManager)
 	{
-		this.eventManager = eventManager;
+		this.rootEventManager = eventManager;
 		services = new HashMap<>();
 	}
 	
@@ -86,11 +86,11 @@ public class ServiceManagerImpl implements ServiceManager
 		if(prevEntry != null)
 		{
 			ServiceUnregisterEvent unregisterEvent = new ServiceUnregisterEvent(prevEntry);
-			eventManager.dispatchEvent(unregisterEvent, this);
+			rootEventManager.dispatchEvent(unregisterEvent, this);
 		}
 		
 		ServiceRegisterEvent event = new ServiceRegisterEvent(entry, prevEntry);
-		eventManager.dispatchEvent(event, this);	
+		rootEventManager.dispatchEvent(event, this);	
 	}
 	
 	private void unregisterServiceEntry(ServiceEntry entry)
@@ -99,7 +99,7 @@ public class ServiceManagerImpl implements ServiceManager
 		services.remove(type);
 		
 		ServiceUnregisterEvent event = new ServiceUnregisterEvent(entry);
-		eventManager.dispatchEvent(event, this);
+		rootEventManager.dispatchEvent(event, this);
 	}
 
 	@Override
