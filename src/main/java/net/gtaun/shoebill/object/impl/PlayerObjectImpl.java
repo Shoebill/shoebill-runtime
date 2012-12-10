@@ -32,8 +32,8 @@ import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.EventManager.HandlerEntry;
 import net.gtaun.util.event.EventManager.HandlerPriority;
+import net.gtaun.util.event.ManagedEventManager;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -57,9 +57,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	private Player attachedPlayer;
 	private Vehicle attachedVehicle;
 	
-	private ObjectEventHandler eventHandler;
-	
-	private HandlerEntry movedEventHandlerEntry;
+	private ManagedEventManager managedEventManager;
 	
 	
 	public PlayerObjectImpl(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
@@ -74,7 +72,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 		id = SampNativeFunction.createPlayerObject(player.getId(), modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance);
 		if (id == INVALID_ID) throw new CreationFailedException();
 		
-		eventHandler = new ObjectEventHandler()
+		ObjectEventHandler eventHandler = new ObjectEventHandler()
 		{
 			@Override
 			public void onPlayerObjectMoved(PlayerObjectMovedEvent event)
@@ -83,8 +81,8 @@ public abstract class PlayerObjectImpl implements PlayerObject
 			}
 		};
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
-		movedEventHandlerEntry = eventManager.addHandler(PlayerObjectMovedEvent.class, this, eventHandler, HandlerPriority.MONITOR);
+		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getEventManager());
+		managedEventManager.registerHandler(PlayerObjectMovedEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 	}
 	
 	@Override
@@ -98,7 +96,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	{
 		if (isDestroyed()) return;
 		
-		movedEventHandlerEntry.cancel();
+		managedEventManager.cancelAll();
 		
 		if (player.isOnline())
 		{

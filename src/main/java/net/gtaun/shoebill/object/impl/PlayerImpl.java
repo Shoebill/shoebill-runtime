@@ -31,10 +31,10 @@ import net.gtaun.shoebill.constant.SpecialAction;
 import net.gtaun.shoebill.constant.SpectateMode;
 import net.gtaun.shoebill.constant.WeaponState;
 import net.gtaun.shoebill.constant.WeaponType;
+import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Radius;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.Time;
@@ -60,9 +60,8 @@ import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
-import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.EventManager.HandlerEntry;
 import net.gtaun.util.event.EventManager.HandlerPriority;
+import net.gtaun.util.event.ManagedEventManager;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -99,12 +98,7 @@ public abstract class PlayerImpl implements Player
 	private RaceCheckpoint raceCheckpoint;
 	private Dialog dialog;
 	
-	private PlayerEventHandler eventHandler;
-
-	private HandlerEntry updateEventHandlerEntry;
-	private HandlerEntry playerInteriorChangeHandlerEntry;
-	private HandlerEntry disconnectEventHandlerEntry;
-	private HandlerEntry dialogResponseEventHandlerEntry;
+	private ManagedEventManager managedEventManager;
 	
 	
 	public PlayerImpl(int id)
@@ -127,7 +121,7 @@ public abstract class PlayerImpl implements Player
 		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
 		if (store.getPlayer(id) != null) throw new UnsupportedOperationException();
 		
-		eventHandler = new PlayerEventHandler()
+		PlayerEventHandler eventHandler = new PlayerEventHandler()
 		{
 			@Override
 			public void onPlayerUpdate(PlayerUpdateEvent event)
@@ -151,6 +145,7 @@ public abstract class PlayerImpl implements Player
 			public void onPlayerDisconnect(PlayerDisconnectEvent event)
 			{
 				PlayerImpl.this.id = INVALID_ID;
+				destroy();
 			}
 			
 			@Override
@@ -160,21 +155,16 @@ public abstract class PlayerImpl implements Player
 			}
 		};
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
-		updateEventHandlerEntry = eventManager.addHandler(PlayerUpdateEvent.class, this, eventHandler, HandlerPriority.MONITOR);
-		playerInteriorChangeHandlerEntry = eventManager.addHandler(PlayerInteriorChangeEvent.class, this, eventHandler, HandlerPriority.MONITOR);
-		disconnectEventHandlerEntry = eventManager.addHandler(PlayerDisconnectEvent.class, this, eventHandler, HandlerPriority.BOTTOM);
-		dialogResponseEventHandlerEntry = eventManager.addHandler(DialogResponseEvent.class, this, eventHandler, HandlerPriority.MONITOR);
+		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getEventManager());
+		managedEventManager.registerHandler(PlayerUpdateEvent.class, this, eventHandler, HandlerPriority.MONITOR);
+		managedEventManager.registerHandler(PlayerInteriorChangeEvent.class, this, eventHandler, HandlerPriority.MONITOR);
+		managedEventManager.registerHandler(PlayerDisconnectEvent.class, this, eventHandler, HandlerPriority.BOTTOM);
+		managedEventManager.registerHandler(DialogResponseEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 	}
 	
-	@Override
-	protected void finalize() throws Throwable
+	private void destroy()
 	{
-		super.finalize();
-		updateEventHandlerEntry.cancel();
-		playerInteriorChangeHandlerEntry.cancel();
-		disconnectEventHandlerEntry.cancel();
-		dialogResponseEventHandlerEntry.cancel();
+		managedEventManager.cancelAll();
 	}
 	
 	@Override

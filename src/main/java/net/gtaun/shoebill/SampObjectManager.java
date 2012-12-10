@@ -17,9 +17,9 @@
 package net.gtaun.shoebill;
 
 import net.gtaun.shoebill.constant.RaceCheckpointType;
+import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Radius;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.event.DestroyEventHandler;
@@ -63,7 +63,6 @@ import net.gtaun.shoebill.proxy.GlobalProxyManager;
 import net.gtaun.shoebill.proxy.ProxyableFactory;
 import net.gtaun.util.event.EventHandler;
 import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.EventManager.HandlerEntry;
 import net.gtaun.util.event.EventManager.HandlerPriority;
 
 /**
@@ -113,8 +112,6 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private ProxyableFactory<CheckpointImpl> checkpointFactory;
 	private ProxyableFactory<RaceCheckpointImpl> raceCheckpointFactory;
 	
-	private HandlerEntry destroyEventHandlerEntry;
-	
 	
 	public SampObjectManager(EventManager eventManager, GlobalProxyManager globalProxyManager, SampObjectStoreImpl store)
 	{
@@ -128,7 +125,6 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	protected void finalize() throws Throwable
 	{
 		super.finalize();
-		destroyEventHandlerEntry.cancel();
 	}
 	
 	private void initialize()
@@ -210,7 +206,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 				}
 			}
 		};
-		destroyEventHandlerEntry = eventManager.addHandler(DestroyEvent.class, eventHandler, HandlerPriority.BOTTOM);
+		eventManager.registerHandler(DestroyEvent.class, eventHandler, HandlerPriority.BOTTOM);
 	}
 	
 	public World createWorld()

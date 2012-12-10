@@ -18,8 +18,8 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillImpl;
-import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.AngledLocation;
+import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Quaternion;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
@@ -37,8 +37,8 @@ import net.gtaun.shoebill.object.VehicleDamage;
 import net.gtaun.shoebill.object.VehicleParam;
 import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.EventManager.HandlerEntry;
 import net.gtaun.util.event.EventManager.HandlerPriority;
+import net.gtaun.util.event.ManagedEventManager;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -62,10 +62,7 @@ public abstract class VehicleImpl implements Vehicle
 	private VehicleComponentImpl component;
 	private VehicleDamageImpl damage;
 	
-	private VehicleEventHandler eventHandler;
-
-	private HandlerEntry modEventHandlerEntry;
-	private HandlerEntry updateDamageEventHandlerEntry;
+	private ManagedEventManager managedEventManager;
 	
 	
 	public VehicleImpl(int modelId, AngledLocation loc, int color1, int color2, int respawnDelay) throws CreationFailedException
@@ -105,7 +102,7 @@ public abstract class VehicleImpl implements Vehicle
 		component = new VehicleComponentImpl(this);
 		damage = new VehicleDamageImpl(this);
 		
-		eventHandler = new VehicleEventHandler()
+		VehicleEventHandler eventHandler = new VehicleEventHandler()
 		{
 			@Override
 			public void onVehicleMod(VehicleModEvent event)
@@ -120,12 +117,12 @@ public abstract class VehicleImpl implements Vehicle
 			}
 		};
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
-		modEventHandlerEntry = eventManager.addHandler(VehicleModEvent.class, this, eventHandler, HandlerPriority.MONITOR);
-		updateDamageEventHandlerEntry = eventManager.addHandler(VehicleUpdateDamageEvent.class, this, eventHandler, HandlerPriority.MONITOR);
+		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getEventManager());
+		managedEventManager.registerHandler(VehicleModEvent.class, this, eventHandler, HandlerPriority.MONITOR);
+		managedEventManager.registerHandler(VehicleUpdateDamageEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		
 		VehicleSpawnEvent event = new VehicleSpawnEvent(this);
-		eventManager.dispatchEvent(event, this);
+		managedEventManager.dispatchEvent(event, this);
 	}
 	
 	@Override
@@ -140,8 +137,7 @@ public abstract class VehicleImpl implements Vehicle
 		if (isDestroyed()) return;
 		if (isStatic) return;
 		
-		modEventHandlerEntry.cancel();
-		updateDamageEventHandlerEntry.cancel();
+		managedEventManager.cancelAll();
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getEventManager();
 		
