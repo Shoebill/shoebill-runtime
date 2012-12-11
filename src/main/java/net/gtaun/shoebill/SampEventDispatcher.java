@@ -67,19 +67,19 @@ import net.gtaun.shoebill.event.vehicle.VehicleResprayEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleStreamInEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleStreamOutEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleUnoccupiedUpdateEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleUpdateDamageEvent;
+import net.gtaun.shoebill.event.vehicle.VehicleUpdateEvent;
 import net.gtaun.shoebill.object.Dialog;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.PlayerAttach.PlayerAttachSlot;
 import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.PlayerTextdraw;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Textdraw;
 import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
-import net.gtaun.shoebill.object.PlayerAttach.PlayerAttachSlot;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.EventManagerImpl;
 
@@ -649,7 +649,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
 			Player player = sampObjectStore.getPlayer(playerId);
 			
-			VehicleUnoccupiedUpdateEvent event = new VehicleUnoccupiedUpdateEvent(vehicle, player, passengerSeat);
+			VehicleUpdateEvent event = new VehicleUpdateEvent(vehicle, player, passengerSeat);
 			rootEventManager.dispatchEvent(event, vehicle, player);
 			
 			return 1;
@@ -767,7 +767,18 @@ public class SampEventDispatcher implements SampCallbackHandler
 			PlayerUpdateEvent event = new PlayerUpdateEvent(player);
 			rootEventManager.dispatchEvent(event, player);
 			
-			return 1;
+			int ret = event.getResponse();
+			if (ret == 0) return ret;
+			
+			int seat = player.getVehicleSeat();
+			if (seat == 0)
+			{
+				Vehicle vehicle = player.getVehicle();
+				VehicleUpdateEvent vehicleUpdateEvent = new VehicleUpdateEvent(vehicle, player, seat);
+				rootEventManager.dispatchEvent(vehicleUpdateEvent, vehicle, player);
+			}
+			
+			return ret;
 		}
 		catch (Exception e)
 		{

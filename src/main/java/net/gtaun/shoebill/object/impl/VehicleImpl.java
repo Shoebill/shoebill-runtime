@@ -25,7 +25,6 @@ import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.VehicleEventHandler;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleModEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleUpdateDamageEvent;
@@ -140,9 +139,6 @@ public abstract class VehicleImpl implements Vehicle
 		managedEventManager.cancelAll();
 		
 		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
-		
-		VehicleDestroyEvent event = new VehicleDestroyEvent(this);
-		eventManager.dispatchEvent(event, this);
 		
 		SampNativeFunction.destroyVehicle(id);
 		
