@@ -16,6 +16,9 @@
 
 package net.gtaun.shoebill;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import net.gtaun.shoebill.constant.RaceCheckpointType;
 import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Color;
@@ -85,9 +88,12 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private static final Class<?>[] PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES = { Player.class, float.class, float.class, String.class };
 	private static final Class<?>[] ZONE_CONSTRUCTOR_ARGUMENT_TYPES = { float.class, float.class, float.class, float.class };
 	private static final Class<?>[] MENU_CONSTRUCTOR_ARGUMENT_TYPES = { String.class, int.class, float.class, float.class, float.class, float.class };
+	private static final Class<?>[] DIALOG_CONSTRUCTOR_ARGUMENT_TYPES = { int.class };
 	private static final Class<?>[] TIMER_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, int.class };
 	private static final Class<?>[] CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { Radius.class };
 	private static final Class<?>[] RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { Radius.class, RaceCheckpointType.class, RaceCheckpoint.class };
+	
+	private static final int MAX_DIALOG_ID = 32767;
 	
 	
 	private final EventManager rootEventManager;
@@ -111,6 +117,9 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private ProxyableFactory<TimerImpl> timerFactory;
 	private ProxyableFactory<CheckpointImpl> checkpointFactory;
 	private ProxyableFactory<RaceCheckpointImpl> raceCheckpointFactory;
+	
+	private int allocatedDialogId = 0;
+	private Queue<Integer> recycledDialogIds;
 	
 	
 	public SampObjectManager(EventManager eventManager, GlobalProxyManager globalProxyManager, SampObjectStoreImpl store)
@@ -146,6 +155,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		timerFactory = ProxyableFactory.Impl.createProxyableFactory(TimerImpl.class, globalProxyManager);
 		checkpointFactory = ProxyableFactory.Impl.createProxyableFactory(CheckpointImpl.class, globalProxyManager);
 		raceCheckpointFactory = ProxyableFactory.Impl.createProxyableFactory(RaceCheckpointImpl.class, globalProxyManager);
+		
+		recycledDialogIds = new LinkedList<>();
 		
 		EventHandler eventHandler = new DestroyEventHandler()
 		{
@@ -203,6 +214,12 @@ public class SampObjectManager extends AbstractSampObjectFactory
 				{
 					Menu menu = (Menu) obj;
 					store.setMenu(menu.getId(), null);
+				}
+				else if (obj instanceof Dialog)
+				{
+					Dialog dialog = (Dialog) obj;
+					int dialogId = dialog.getId();
+					recycleDialogId(dialogId);
 				}
 			}
 		};
@@ -506,12 +523,31 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 	}
 	
+	private int allocateDialogId()
+	{
+		Integer dialogId = recycledDialogIds.poll();
+		if (dialogId == null)
+		{
+			if (allocatedDialogId > MAX_DIALOG_ID) throw new CreationFailedException();
+			dialogId = allocatedDialogId;
+			allocatedDialogId++;
+		}
+		
+		return dialogId;
+	}
+	
+	private void recycleDialogId(int dialogId)
+	{
+		recycledDialogIds.offer(dialogId);
+	}
+	
 	@Override
-	public Dialog createDialog()
+	public Dialog createDialog() throws CreationFailedException
 	{
 		try
 		{
-			Dialog dialog = dialogFactory.create();
+			Integer dialogId = allocateDialogId();
+			Dialog dialog = dialogFactory.create(DIALOG_CONSTRUCTOR_ARGUMENT_TYPES, dialogId);
 			store.putDialog(dialog.getId(), dialog);
 			return dialog;
 		}

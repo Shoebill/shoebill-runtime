@@ -16,9 +16,12 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.constant.DialogStyle;
+import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.object.Dialog;
 import net.gtaun.shoebill.object.Player;
+import net.gtaun.util.event.EventManager;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -30,16 +33,33 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class DialogImpl implements Dialog
 {
-	private static int count = 0;
+	private static final int INVALID_ID = -1;
 	
 	
 	private int id;
 	
 	
-	public DialogImpl()
+	public DialogImpl(int id)
 	{
-		id = count;
-		count++;
+		this.id = id;
+	}
+	
+	@Override
+	protected void finalize() throws Throwable
+	{
+		destroy();
+	}
+	
+	@Override
+	public void destroy()
+	{
+		if (id == INVALID_ID) return;
+		
+		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
+		DestroyEvent destroyEvent = new DestroyEvent(this);
+		eventManager.dispatchEvent(destroyEvent, this);
+		
+		id = INVALID_ID;
 	}
 	
 	@Override
