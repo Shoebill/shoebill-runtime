@@ -218,8 +218,14 @@ public class SampObjectManager extends AbstractSampObjectFactory
 				else if (obj instanceof Dialog)
 				{
 					Dialog dialog = (Dialog) obj;
+					store.removeDialog(dialog);
 					int dialogId = dialog.getId();
 					recycleDialogId(dialogId);
+				}
+				else if (obj instanceof Timer)
+				{
+					Timer timer = (Timer) obj;
+					store.removeTimer(timer);
 				}
 			}
 		};

@@ -17,8 +17,10 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.event.timer.TimerTickEvent;
 import net.gtaun.shoebill.object.Timer;
+import net.gtaun.util.event.EventManager;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -40,6 +42,14 @@ public abstract class TimerImpl implements Timer
 	{
 		this.interval = interval;
 		this.count = count;
+	}
+	
+	@Override
+	public void destroy()
+	{
+		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
+		DestroyEvent destroyEvent = new DestroyEvent(this);
+		eventManager.dispatchEvent(destroyEvent, this);
 	}
 	
 	@Override

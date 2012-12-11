@@ -495,9 +495,24 @@ public class SampObjectStoreImpl implements SampObjectStore
 		timers.add(new WeakReference<Timer>(timer));
 	}
 	
+	public void removeTimer(Timer timer)
+	{
+		for (Iterator<Reference<Timer>> iterator = timers.iterator(); iterator.hasNext();)
+		{
+			Reference<Timer> ref = iterator.next();
+			Timer t = ref.get();
+			if (t == null || t == timer) iterator.remove();
+		}
+	}
+	
 	public void putDialog(int id, Dialog dialog)
 	{
 		clearUnusedReferences(dialogs.values());
 		dialogs.put(id, new WeakReference<Dialog>(dialog));
+	}
+	
+	public void removeDialog(Dialog dialog)
+	{
+		dialogs.remove(dialog.getId());
 	}
 }
