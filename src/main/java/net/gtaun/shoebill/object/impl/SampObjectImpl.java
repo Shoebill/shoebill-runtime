@@ -340,7 +340,7 @@ public abstract class SampObjectImpl implements SampObject
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.setObjectMaterial(id, materialIndex, modelId, txdName, textureName, materialColor.getArgbValue());
+		SampNativeFunction.setObjectMaterial(id, materialIndex, modelId, txdName, textureName, materialColor.toArgbValue());
 	}
 	
 	@Override
@@ -354,7 +354,7 @@ public abstract class SampObjectImpl implements SampObject
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.setObjectMaterialText(id, text, materialIndex, materialSize.getValue(), fontFace, fontSize, isBold ? 1 : 0, fontColor.getArgbValue(), backColor.getArgbValue(), textAlignment.getValue());
+		SampNativeFunction.setObjectMaterialText(id, text, materialIndex, materialSize.getValue(), fontFace, fontSize, isBold ? 1 : 0, fontColor.toArgbValue(), backColor.toArgbValue(), textAlignment.getValue());
 	}
 	
 	@Override

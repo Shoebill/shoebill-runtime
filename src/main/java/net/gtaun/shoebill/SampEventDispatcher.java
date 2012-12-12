@@ -261,7 +261,8 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			if (event.getResponse() != 0)
 			{
-				sampObjectStore.getServer().sendMessageToAll(Color.WHITE, "{FE8B13}" + player.getName() + ": {FFFFFF}" + text);
+				String hexColor = "{" + player.getColor().toRgbHexString() + "}";
+				sampObjectStore.getServer().sendMessageToAll(Color.WHITE, hexColor + player.getName() + ": {FFFFFF}" + text);
 			}
 			
 			return 0;
