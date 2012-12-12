@@ -186,21 +186,29 @@
 							<pluginExecutions>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>
-											com.keyboardsamurais.maven
-										</groupId>
-										<artifactId>
-											maven-timestamp-plugin
-										</artifactId>
-										<versionRange>
-											[1.0,)
-										</versionRange>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-enforcer-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>enforce</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.keyboardsamurais.maven</groupId>
+										<artifactId>maven-timestamp-plugin</artifactId>
+										<versionRange>[1.0,)</versionRange>
 										<goals>
 											<goal>create</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
