@@ -109,6 +109,8 @@ public abstract class PlayerImpl implements Player
 		keyState = new PlayerKeyStateImpl(this);
 		skill = new PlayerWeaponSkillImpl(this);
 		
+		setColor(Color.WHITE);
+		
 		SampNativeFunction.getPlayerPos(id, location);
 		SampNativeFunction.getPlayerFacingAngle(id);
 		
