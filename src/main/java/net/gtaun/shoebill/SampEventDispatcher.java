@@ -261,7 +261,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			if (event.getResponse() != 0)
 			{
-				String hexColor = "{" + player.getColor().toRgbHexString() + "}";
+				String hexColor = player.getColor().toEmbeddingString();
 				sampObjectStore.getServer().sendMessageToAll(Color.WHITE, hexColor + player.getName() + ": {FFFFFF}" + text);
 			}
 			
