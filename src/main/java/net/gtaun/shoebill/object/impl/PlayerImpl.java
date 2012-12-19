@@ -1056,12 +1056,11 @@ public abstract class PlayerImpl implements Player
 		}
 		
 		RaceCheckpoint next = checkpoint.getNext();
-		
 		Vector3D loc = checkpoint.getLocation();
-		Vector3D nextLoc = next.getLocation();
 		
 		if (checkpoint.getNext() != null)
 		{
+			Vector3D nextLoc = next.getLocation();
 			SampNativeFunction.setPlayerRaceCheckpoint(id, checkpoint.getType().getValue(), loc.getX(), loc.getY(), loc.getZ(), nextLoc.getX(), nextLoc.getY(), nextLoc.getZ(), checkpoint.getRadius());
 		}
 		else
