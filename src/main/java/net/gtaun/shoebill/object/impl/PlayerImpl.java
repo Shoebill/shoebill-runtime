@@ -45,7 +45,6 @@ import net.gtaun.shoebill.event.PlayerEventHandler;
 import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
 import net.gtaun.shoebill.event.dialog.DialogResponseEvent;
 import net.gtaun.shoebill.event.player.PlayerDisconnectEvent;
-import net.gtaun.shoebill.event.player.PlayerInteriorChangeEvent;
 import net.gtaun.shoebill.event.player.PlayerUpdateEvent;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
@@ -89,7 +88,6 @@ public abstract class PlayerImpl implements Player
 	private int updateFrameCount = -1;
 	private int weatherId;
 	
-	private AngledLocation location = new AngledLocation();
 	private Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
 	private Velocity velocity = new Velocity();
 	private PlayerWeaponSkill skill;
@@ -111,12 +109,6 @@ public abstract class PlayerImpl implements Player
 		
 		setColor(Color.WHITE);
 		
-		SampNativeFunction.getPlayerPos(id, location);
-		SampNativeFunction.getPlayerFacingAngle(id);
-		
-		location.setInteriorId(SampNativeFunction.getPlayerInterior(id));
-		location.setWorldId(SampNativeFunction.getPlayerVirtualWorld(id));
-		
 		SampNativeFunction.getPlayerVelocity(id, velocity);
 		SampNativeFunction.getPlayerKeys(id, keyState);
 		
@@ -128,19 +120,11 @@ public abstract class PlayerImpl implements Player
 			@Override
 			public void onPlayerUpdate(PlayerUpdateEvent event)
 			{
-				SampNativeFunction.getPlayerPos(PlayerImpl.this.id, location);
-				location.setAngle(SampNativeFunction.getPlayerFacingAngle(PlayerImpl.this.id));
 				SampNativeFunction.getPlayerVelocity(PlayerImpl.this.id, velocity);
 				keyState.update();
 				
 				updateFrameCount++;
 				if (updateFrameCount < 0) updateFrameCount = 0;
-			}
-			
-			@Override
-			public void onPlayerInteriorChange(PlayerInteriorChangeEvent event)
-			{
-				location.setInteriorId(SampNativeFunction.getPlayerInterior(PlayerImpl.this.id));
 			}
 			
 			@Override
@@ -159,7 +143,6 @@ public abstract class PlayerImpl implements Player
 		
 		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getRootEventManager());
 		managedEventManager.registerHandler(PlayerUpdateEvent.class, this, eventHandler, HandlerPriority.MONITOR);
-		managedEventManager.registerHandler(PlayerInteriorChangeEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		managedEventManager.registerHandler(PlayerDisconnectEvent.class, this, eventHandler, HandlerPriority.BOTTOM);
 		managedEventManager.registerHandler(DialogResponseEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 	}
@@ -226,7 +209,12 @@ public abstract class PlayerImpl implements Player
 	@Override
 	public AngledLocation getLocation()
 	{
-		return location.clone();
+		AngledLocation location = new AngledLocation();
+		SampNativeFunction.getPlayerPos(id, location);
+		location.setAngle(SampNativeFunction.getPlayerFacingAngle(id));
+		location.setInteriorId(SampNativeFunction.getPlayerInterior(id));
+		location.setWorldId(SampNativeFunction.getPlayerVirtualWorld(id));
+		return location;
 	}
 	
 	@Override
@@ -607,19 +595,21 @@ public abstract class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return;
 		
-		SampNativeFunction.setPlayerPos(id, x, y, z);
-		
-		location.set(x, y, z);
+		if (isInAnyVehicle() && getVehicleSeat() == 0)
+		{
+			Vehicle vehicle = getVehicle();
+			vehicle.setLocation(x, y, z);
+		}
+		else
+		{
+			SampNativeFunction.setPlayerPos(id, x, y, z);
+		}
 	}
 	
 	@Override
 	public void setLocation(Vector3D pos)
 	{
-		if (isOnline() == false) return;
-		
 		SampNativeFunction.setPlayerPos(id, pos.getX(), pos.getY(), pos.getZ());
-		
-		location.set(pos);
 	}
 	
 	@Override
@@ -627,12 +617,17 @@ public abstract class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return;
 		
-		SampNativeFunction.setPlayerPos(id, loc.getX(), loc.getY(), loc.getZ());
-		
-		if (loc.getInteriorId() != location.getInteriorId()) SampNativeFunction.setPlayerInterior(id, loc.getInteriorId());
-		if (loc.getWorldId() != location.getWorldId()) SampNativeFunction.setPlayerVirtualWorld(id, loc.getWorldId());
-		
-		location.set(loc);
+		if (isInAnyVehicle() && getVehicleSeat() == 0)
+		{
+			Vehicle vehicle = getVehicle();
+			vehicle.setLocation(loc);
+		}
+		else
+		{
+			SampNativeFunction.setPlayerPos(id, loc.getX(), loc.getY(), loc.getZ());
+			SampNativeFunction.setPlayerInterior(id, loc.getInteriorId());
+			SampNativeFunction.setPlayerVirtualWorld(id, loc.getWorldId());
+		}
 	}
 	
 	@Override
@@ -640,13 +635,18 @@ public abstract class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return;
 		
-		SampNativeFunction.setPlayerPos(id, loc.getX(), loc.getY(), loc.getZ());
-		SampNativeFunction.setPlayerFacingAngle(id, loc.getAngle());
-		
-		if (loc.getInteriorId() != location.getInteriorId()) SampNativeFunction.setPlayerInterior(id, loc.getInteriorId());
-		if (loc.getWorldId() != location.getWorldId()) SampNativeFunction.setPlayerVirtualWorld(id, loc.getWorldId());
-		
-		location.set(loc);
+		if (isInAnyVehicle() && getVehicleSeat() == 0)
+		{
+			Vehicle vehicle = getVehicle();
+			vehicle.setLocation(loc);
+		}
+		else
+		{
+			SampNativeFunction.setPlayerPos(id, loc.getX(), loc.getY(), loc.getZ());
+			SampNativeFunction.setPlayerInterior(id, loc.getInteriorId());
+			SampNativeFunction.setPlayerVirtualWorld(id, loc.getWorldId());
+			SampNativeFunction.setPlayerFacingAngle(id, loc.getAngle());
+		}
 	}
 	
 	@Override
@@ -655,18 +655,12 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return;
 		
 		SampNativeFunction.setPlayerPosFindZ(id, x, y, z);
-		
-		location.set(x, y, z);
 	}
 	
 	@Override
 	public void setLocationFindZ(Vector3D pos)
 	{
-		if (isOnline() == false) return;
-		
 		SampNativeFunction.setPlayerPosFindZ(id, pos.getX(), pos.getY(), pos.getZ());
-		
-		location.set(pos);
 	}
 	
 	@Override
@@ -676,10 +670,8 @@ public abstract class PlayerImpl implements Player
 		
 		SampNativeFunction.setPlayerPosFindZ(id, loc.getX(), loc.getY(), loc.getZ());
 		
-		if (loc.getInteriorId() != location.getInteriorId()) SampNativeFunction.setPlayerInterior(id, loc.getInteriorId());
-		if (loc.getWorldId() != location.getWorldId()) SampNativeFunction.setPlayerVirtualWorld(id, loc.getWorldId());
-		
-		location.set(loc);
+		SampNativeFunction.setPlayerInterior(id, loc.getInteriorId());
+		SampNativeFunction.setPlayerVirtualWorld(id, loc.getWorldId());
 	}
 	
 	@Override
@@ -690,10 +682,8 @@ public abstract class PlayerImpl implements Player
 		SampNativeFunction.setPlayerPosFindZ(id, loc.getX(), loc.getY(), loc.getZ());
 		SampNativeFunction.setPlayerFacingAngle(id, loc.getAngle());
 		
-		if (loc.getInteriorId() != location.getInteriorId()) SampNativeFunction.setPlayerInterior(id, loc.getInteriorId());
-		if (loc.getWorldId() != location.getWorldId()) SampNativeFunction.setPlayerVirtualWorld(id, loc.getWorldId());
-		
-		location.set(loc);
+		SampNativeFunction.setPlayerInterior(id, loc.getInteriorId());
+		SampNativeFunction.setPlayerVirtualWorld(id, loc.getWorldId());
 	}
 	
 	@Override
@@ -702,7 +692,6 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return;
 		
 		SampNativeFunction.setPlayerFacingAngle(id, angle);
-		location.setAngle(angle);
 	}
 	
 	@Override
@@ -711,7 +700,6 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return;
 		
 		SampNativeFunction.setPlayerInterior(id, interiorId);
-		location.setInteriorId(interiorId);
 	}
 	
 	@Override
@@ -720,7 +708,6 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return;
 		
 		SampNativeFunction.setPlayerVirtualWorld(id, worldId);
-		location.setWorldId(worldId);
 	}
 	
 	@Override
