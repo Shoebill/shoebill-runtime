@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.Properties;
 
@@ -64,12 +63,9 @@ public class ShoebillImpl implements Shoebill
 	private static final String RESOURCES_CONFIG_FILENAME = "resources.yml";
 	
 	
-	private static Reference<ShoebillImpl> instance;
-	
-	
 	public static ShoebillImpl getInstance()
 	{
-		return instance.get();
+		return (ShoebillImpl) Shoebill.Instance.get();
 	}
 	
 	
@@ -97,7 +93,7 @@ public class ShoebillImpl implements Shoebill
 	public ShoebillImpl() throws IOException, ClassNotFoundException
 	{
 		Class.forName(ProxyableFactoryImpl.class.getName());
-		instance = new WeakReference<>(this);
+		Shoebill.Instance.shoebillReference = new WeakReference<>(this);
 		
 		config = new ShoebillConfig(new FileInputStream(SHOEBILL_CONFIG_PATH));
 		initializeLoggerConfig(new File(config.getShoebillDir(), LOG4J_CONFIG_FILENAME));
