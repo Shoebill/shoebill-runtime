@@ -43,6 +43,7 @@ import net.gtaun.shoebill.data.WeaponData;
 import net.gtaun.shoebill.event.PlayerEventHandler;
 import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
 import net.gtaun.shoebill.event.dialog.DialogResponseEvent;
+import net.gtaun.shoebill.event.dialog.DialogCancelEvent.DialogCancelType;
 import net.gtaun.shoebill.event.player.PlayerDisconnectEvent;
 import net.gtaun.shoebill.event.player.PlayerUpdateEvent;
 import net.gtaun.shoebill.exception.AlreadyExistException;
@@ -1405,7 +1406,12 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return;
 		
 		if (caption == null || text == null || button1 == null || button2 == null) throw new NullPointerException();
-		cancelDialog();
+		
+		if (dialog != null)
+		{
+			DialogCancelEvent event = new DialogCancelEvent(dialog, this, DialogCancelType.OVERRIDE);
+			managedEventManager.dispatchEvent(event, dialog, this);
+		}
 		
 		SampNativeFunction.showPlayerDialog(id, dialog.getId(), style.getValue(), caption, text, button1, button2);
 		this.dialog = dialog;
@@ -1419,7 +1425,10 @@ public abstract class PlayerImpl implements Player
 		if (dialog == null) return;
 		SampNativeFunction.showPlayerDialog(id, -1, 0, "", "", "", "");
 		
-		DialogCancelEvent event = new DialogCancelEvent(dialog, this);
+		Dialog canceledDialog = dialog;
+		dialog = null;
+		
+		DialogCancelEvent event = new DialogCancelEvent(canceledDialog, this, DialogCancelType.CANCEL);
 		managedEventManager.dispatchEvent(event, dialog, this);
 	}
 	
