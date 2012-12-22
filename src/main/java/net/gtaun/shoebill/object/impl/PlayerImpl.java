@@ -17,8 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampObjectStoreImpl;
-import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.constant.CameraCutStyle;
 import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.constant.FightStyle;
@@ -59,6 +58,7 @@ import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampNativeFunction;
+import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManager.HandlerPriority;
 import net.gtaun.util.event.ManagedEventManager;
 
@@ -72,6 +72,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class PlayerImpl implements Player
 {
+	private final SampObjectStore store;
+	
 	private int id = INVALID_ID;
 	
 	private final PlayerKeyStateImpl keyState;
@@ -99,8 +101,9 @@ public abstract class PlayerImpl implements Player
 	private ManagedEventManager managedEventManager;
 	
 	
-	public PlayerImpl(int id)
+	public PlayerImpl(EventManager eventManager, SampObjectStore store, int id)
 	{
+		this.store = store;
 		this.id = id;
 		
 		playerAttach = new PlayerAttachImpl(this);
@@ -111,9 +114,6 @@ public abstract class PlayerImpl implements Player
 		
 		SampNativeFunction.getPlayerVelocity(id, velocity);
 		SampNativeFunction.getPlayerKeys(id, keyState);
-		
-		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
-		if (store.getPlayer(id) != null) throw new UnsupportedOperationException();
 		
 		PlayerEventHandler eventHandler = new PlayerEventHandler()
 		{
@@ -141,7 +141,7 @@ public abstract class PlayerImpl implements Player
 			}
 		};
 		
-		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getRootEventManager());
+		managedEventManager = new ManagedEventManager(eventManager);
 		managedEventManager.registerHandler(PlayerUpdateEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		managedEventManager.registerHandler(PlayerDisconnectEvent.class, this, eventHandler, HandlerPriority.BOTTOM);
 		managedEventManager.registerHandler(DialogResponseEvent.class, this, eventHandler, HandlerPriority.MONITOR);
@@ -411,7 +411,7 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return null;
 		
 		int vehicleId = SampNativeFunction.getPlayerVehicleID(id);
-		return ShoebillImpl.getInstance().getSampObjectStore().getVehicle(vehicleId);
+		return store.getVehicle(vehicleId);
 	}
 	
 	@Override
@@ -761,7 +761,7 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return;
 		
 		if (message == null) throw new NullPointerException();
-		for (Player player : ShoebillImpl.getInstance().getSampObjectStore().getPlayers())
+		for (Player player : store.getPlayers())
 		{
 			sendChat(player, message);
 		}
@@ -911,7 +911,7 @@ public abstract class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return null;
 		
-		return ShoebillImpl.getInstance().getSampObjectStore().getMenu(SampNativeFunction.getPlayerMenu(id));
+		return store.getMenu(SampNativeFunction.getPlayerMenu(id));
 	}
 	
 	@Override
@@ -1201,7 +1201,7 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return null;
 		
 		int vehicleId = SampNativeFunction.getPlayerSurfingVehicleID(id);
-		return ShoebillImpl.getInstance().getSampObjectStore().getVehicle(vehicleId);
+		return store.getVehicle(vehicleId);
 	}
 	
 	@Override
@@ -1324,7 +1324,7 @@ public abstract class PlayerImpl implements Player
 		int objectid = SampNativeFunction.getPlayerSurfingObjectID(id);
 		if (objectid == SampObject.INVALID_ID) return null;
 		
-		return ShoebillImpl.getInstance().getSampObjectStore().getObject(objectid);
+		return store.getObject(objectid);
 	}
 	
 	@Override
@@ -1340,7 +1340,7 @@ public abstract class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return null;
 		
-		return ShoebillImpl.getInstance().getSampObjectStore().getPlayer(SampNativeFunction.getPlayerTargetPlayer(id));
+		return store.getPlayer(SampNativeFunction.getPlayerTargetPlayer(id));
 	}
 	
 	@Override
@@ -1420,7 +1420,7 @@ public abstract class PlayerImpl implements Player
 		SampNativeFunction.showPlayerDialog(id, -1, 0, "", "", "", "");
 		
 		DialogCancelEvent event = new DialogCancelEvent(dialog, this);
-		ShoebillImpl.getInstance().getRootEventManager().dispatchEvent(event, dialog, this);
+		managedEventManager.dispatchEvent(event, dialog, this);
 	}
 	
 	@Override

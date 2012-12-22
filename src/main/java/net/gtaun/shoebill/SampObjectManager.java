@@ -75,23 +75,25 @@ import net.gtaun.util.event.EventManager.HandlerPriority;
  */
 public class SampObjectManager extends AbstractSampObjectFactory
 {
-	private static final Class<?>[] PLAYER_CONSTRUCTOR_ARGUMENT_TYPES = { int.class };
-	private static final Class<?>[] VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, AngledLocation.class, int.class, int.class, int.class };
-	private static final Class<?>[] OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, Location.class, Vector3D.class, float.class };
-	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = { Player.class, int.class, Location.class, Vector3D.class, float.class };
-	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES = { Player.class, int.class, Location.class, Vector3D.class, float.class, Player.class };
-	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES = { Player.class, int.class, Location.class, Vector3D.class, float.class, Vehicle.class };
-	private static final Class<?>[] PICKUP_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, int.class, Location.class };
-	private static final Class<?>[] LABEL_CONSTRUCTOR_ARGUMENT_TYPES = { String.class, Color.class, Location.class, float.class, boolean.class };
-	private static final Class<?>[] PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES = { Player.class, String.class, Color.class, Location.class, float.class, boolean.class };
-	private static final Class<?>[] TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES = { float.class, float.class, String.class };
-	private static final Class<?>[] PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES = { Player.class, float.class, float.class, String.class };
-	private static final Class<?>[] ZONE_CONSTRUCTOR_ARGUMENT_TYPES = { float.class, float.class, float.class, float.class };
-	private static final Class<?>[] MENU_CONSTRUCTOR_ARGUMENT_TYPES = { String.class, int.class, float.class, float.class, float.class, float.class };
-	private static final Class<?>[] DIALOG_CONSTRUCTOR_ARGUMENT_TYPES = { int.class };
-	private static final Class<?>[] TIMER_CONSTRUCTOR_ARGUMENT_TYPES = { int.class, int.class };
-	private static final Class<?>[] CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { Radius.class };
-	private static final Class<?>[] RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { Radius.class, RaceCheckpointType.class, RaceCheckpoint.class };
+	private static final Class<?>[] WORLD_CONSTRUCTOR_ARGUMENT_TYPES = { SampObjectStore.class };
+	private static final Class<?>[] SERVER_CONSTRUCTOR_ARGUMENT_TYPES = { SampObjectStore.class };
+	private static final Class<?>[] PLAYER_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, SampObjectStore.class, int.class };
+	private static final Class<?>[] VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, SampObjectStore.class, int.class, AngledLocation.class, int.class, int.class, int.class };
+	private static final Class<?>[] OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, int.class, Location.class, Vector3D.class, float.class };
+	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, Player.class, int.class, Location.class, Vector3D.class, float.class };
+	private static final Class<?>[] PICKUP_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, int.class, int.class, Location.class };
+	private static final Class<?>[] LABEL_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, String.class, Color.class, Location.class, float.class, boolean.class };
+	private static final Class<?>[] PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, SampObjectStoreImpl.class, Player.class, String.class, Color.class, Location.class, float.class, boolean.class };
+	private static final Class<?>[] PLAYER_LABEL_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES = { EventManager.class, SampObjectStoreImpl.class, Player.class, int.class, Location.class, Vector3D.class, float.class, Player.class };
+	private static final Class<?>[] PLAYER_LABEL_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES = { EventManager.class, SampObjectStoreImpl.class, Player.class, int.class, Location.class, Vector3D.class, float.class, Vehicle.class };
+	private static final Class<?>[] TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, float.class, float.class, String.class };
+	private static final Class<?>[] PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, Player.class, float.class, float.class, String.class };
+	private static final Class<?>[] ZONE_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, float.class, float.class, float.class, float.class };
+	private static final Class<?>[] MENU_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, String.class, int.class, float.class, float.class, float.class, float.class };
+	private static final Class<?>[] DIALOG_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, int.class };
+	private static final Class<?>[] TIMER_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, int.class, int.class };
+	private static final Class<?>[] CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { SampObjectStore.class, Radius.class };
+	private static final Class<?>[] RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { SampObjectStore.class, Radius.class, RaceCheckpointType.class, RaceCheckpoint.class };
 	
 	private static final int MAX_DIALOG_ID = 32767;
 	
@@ -236,7 +238,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			World world = worldFactory.create();
+			World world = worldFactory.create(WORLD_CONSTRUCTOR_ARGUMENT_TYPES, store);
 			store.setWorld(world);
 			return world;
 		}
@@ -255,7 +257,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Server server = serverFactory.create();
+			Server server = serverFactory.create(SERVER_CONSTRUCTOR_ARGUMENT_TYPES, store);
 			store.setServer(server);
 			return server;
 		}
@@ -274,7 +276,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Player player = playerFactory.create(PLAYER_CONSTRUCTOR_ARGUMENT_TYPES, playerId);
+			Player player = playerFactory.create(PLAYER_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, store, playerId);
 			store.setPlayer(playerId, player);
 			return player;
 		}
@@ -294,7 +296,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Vehicle vehicle = vehicleFactory.create(VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES, modelId, loc, color1, color2, respawnDelay);
+			Vehicle vehicle = vehicleFactory.create(VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, store, modelId, loc, color1, color2, respawnDelay);
 			store.setVehicle(vehicle.getId(), vehicle);
 			return vehicle;
 		}
@@ -314,7 +316,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			SampObject object = objectFactory.create(OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, modelId, loc, rot, drawDistance);
+			SampObject object = objectFactory.create(OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, modelId, loc, rot, drawDistance);
 			store.setObject(object.getId(), object);
 			return object;
 		}
@@ -334,7 +336,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			PlayerObject object = playerObjectFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, player, modelId, loc, rot, drawDistance);
+			PlayerObject object = playerObjectFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, player, modelId, loc, rot, drawDistance);
 			store.setPlayerObject(player, object.getId(), object);
 			return object;
 		}
@@ -354,7 +356,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Pickup pickup = pickupFactory.create(PICKUP_CONSTRUCTOR_ARGUMENT_TYPES, modelId, type, loc);
+			Pickup pickup = pickupFactory.create(PICKUP_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, modelId, type, loc);
 			store.setPickup(pickup.getId(), pickup);
 			return pickup;
 		}
@@ -374,7 +376,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Label label = labelFactory.create(LABEL_CONSTRUCTOR_ARGUMENT_TYPES, text, color, loc, drawDistance, testLOS);
+			Label label = labelFactory.create(LABEL_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, text, color, loc, drawDistance, testLOS);
 			store.setLabel(label.getId(), label);
 			return label;
 		}
@@ -394,7 +396,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES, player, text, color, loc, drawDistance, testLOS);
+			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, store, player, text, color, loc, drawDistance, testLOS);
 			store.setLabel(label.getId(), label);
 			return label;
 		}
@@ -414,7 +416,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			PlayerLabel label = playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
+			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES, rootEventManager, store, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
 			store.setLabel(label.getId(), label);
 			return label;
 		}
@@ -434,7 +436,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			PlayerLabel label = playerLabelFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
+			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES, rootEventManager, store, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
 			store.setLabel(label.getId(), label);
 			return label;
 		}
@@ -454,7 +456,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Textdraw textdraw = textdrawFactory.create(TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, x, y, text);
+			Textdraw textdraw = textdrawFactory.create(TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, x, y, text);
 			store.setTextdraw(textdraw.getId(), textdraw);
 			return textdraw;
 		}
@@ -474,7 +476,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			PlayerTextdraw textdraw = playerTextdrawFactory.create(PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, player, x, y, text);
+			PlayerTextdraw textdraw = playerTextdrawFactory.create(PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, player, x, y, text);
 			store.setPlayerTextdraw(player, textdraw.getId(), textdraw);
 			return textdraw;
 		}
@@ -494,7 +496,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Zone zone = zoneFactory.create(ZONE_CONSTRUCTOR_ARGUMENT_TYPES, minX, minY, maxX, maxY);
+			Zone zone = zoneFactory.create(ZONE_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, minX, minY, maxX, maxY);
 			store.setZone(zone.getId(), zone);
 			return zone;
 		}
@@ -514,7 +516,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Menu menu = menuFactory.create(MENU_CONSTRUCTOR_ARGUMENT_TYPES, title, columns, x, y, col1Width, col2Width);
+			Menu menu = menuFactory.create(MENU_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, title, columns, x, y, col1Width, col2Width);
 			store.setMenu(menu.getId(), menu);
 			return menu;
 		}
@@ -553,7 +555,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		try
 		{
 			Integer dialogId = allocateDialogId();
-			Dialog dialog = dialogFactory.create(DIALOG_CONSTRUCTOR_ARGUMENT_TYPES, dialogId);
+			Dialog dialog = dialogFactory.create(DIALOG_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, dialogId);
 			store.putDialog(dialog.getId(), dialog);
 			return dialog;
 		}
@@ -573,7 +575,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Timer timer = timerFactory.create(TIMER_CONSTRUCTOR_ARGUMENT_TYPES, interval, count);
+			Timer timer = timerFactory.create(TIMER_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, interval, count);
 			store.putTimer(timer);
 			return timer;
 		}
@@ -593,7 +595,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			return checkpointFactory.create(CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, loc);
+			return checkpointFactory.create(CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, store, loc);
 		}
 		catch (RuntimeException e)
 		{
@@ -611,7 +613,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			return raceCheckpointFactory.create(RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, loc, type, next);
+			return raceCheckpointFactory.create(RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, store, loc, type, next);
 		}
 		catch (RuntimeException e)
 		{

@@ -16,7 +16,6 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.constant.ObjectMaterialSize;
 import net.gtaun.shoebill.constant.ObjectMaterialTextAlign;
 import net.gtaun.shoebill.data.Color;
@@ -60,7 +59,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	private ManagedEventManager managedEventManager;
 	
 	
-	public PlayerObjectImpl(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
+	public PlayerObjectImpl(EventManager eventManager, Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
 		if (player.isOnline() == false) throw new CreationFailedException();
 		
@@ -81,7 +80,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 			}
 		};
 		
-		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getRootEventManager());
+		managedEventManager = new ManagedEventManager(eventManager);
 		managedEventManager.registerHandler(PlayerObjectMovedEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 	}
 	
@@ -103,9 +102,8 @@ public abstract class PlayerObjectImpl implements PlayerObject
 			SampNativeFunction.destroyPlayerObject(player.getId(), id);
 		}
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
-		eventManager.dispatchEvent(destroyEvent, this);
+		managedEventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}

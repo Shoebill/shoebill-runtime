@@ -17,7 +17,6 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
@@ -37,6 +36,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class MenuImpl implements Menu
 {
+	private final EventManager rootEventManager;
+	
 	private int id = INVALID_ID;
 	private String title, columnHeader = "";
 	private int columns;
@@ -44,9 +45,11 @@ public abstract class MenuImpl implements Menu
 	private float col1Width, col2Width;
 	
 	
-	public MenuImpl(String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException
+	public MenuImpl(EventManager eventManager, String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException
 	{
 		if (StringUtils.isEmpty(title)) title = " ";
+		
+		this.rootEventManager = eventManager;
 		
 		this.title = title;
 		this.columns = columns;
@@ -71,9 +74,8 @@ public abstract class MenuImpl implements Menu
 		
 		SampNativeFunction.destroyMenu(id);
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
-		eventManager.dispatchEvent(destroyEvent, this);
+		rootEventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}

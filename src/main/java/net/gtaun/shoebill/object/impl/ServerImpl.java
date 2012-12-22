@@ -16,7 +16,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.constant.VehicleModelInfoType;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector3D;
@@ -34,9 +34,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class ServerImpl implements Server
 {
-	public ServerImpl()
+	private final SampObjectStore store;
+	
+	
+	public ServerImpl(SampObjectStore store)
 	{
-
+		this.store = store;
 	}
 	
 	@Override
@@ -113,7 +116,7 @@ public abstract class ServerImpl implements Server
 	@Override
 	public void sendMessageToAll(Color color, String message)
 	{
-		for (Player player : ShoebillImpl.getInstance().getSampObjectStore().getPlayers())
+		for (Player player : store.getPlayers())
 		{
 			player.sendMessage(color, message);
 		}
@@ -122,7 +125,7 @@ public abstract class ServerImpl implements Server
 	@Override
 	public void sendMessageToAll(Color color, String format, Object... args)
 	{
-		for (Player player : ShoebillImpl.getInstance().getSampObjectStore().getPlayers())
+		for (Player player : store.getPlayers())
 		{
 			String message = String.format(format, args);
 			player.sendMessage(color, message);

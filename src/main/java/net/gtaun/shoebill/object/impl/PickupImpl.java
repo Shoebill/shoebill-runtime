@@ -17,7 +17,6 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
@@ -35,13 +34,17 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class PickupImpl implements Pickup
 {
+	private final EventManager rootEventManager;
+	
 	private int id = INVALID_ID;
 	private int modelId, type;
 	private Location location;
 	
 	
-	public PickupImpl(int modelId, int type, Location loc) throws CreationFailedException
+	public PickupImpl(EventManager eventManager, int modelId, int type, Location loc) throws CreationFailedException
 	{
+		this.rootEventManager = eventManager;
+		
 		this.modelId = modelId;
 		this.type = type;
 		this.location = new Location(loc);
@@ -63,9 +66,8 @@ public abstract class PickupImpl implements Pickup
 		
 		SampNativeFunction.destroyPickup(id);
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
-		eventManager.dispatchEvent(destroyEvent, this);
+		rootEventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}

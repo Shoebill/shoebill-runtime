@@ -20,7 +20,7 @@ package net.gtaun.shoebill.object.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.constant.RaceCheckpointType;
 import net.gtaun.shoebill.data.Radius;
 import net.gtaun.shoebill.data.Vector3D;
@@ -38,13 +38,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class RaceCheckpointImpl implements RaceCheckpoint
 {
+	private final SampObjectStore store;
+	
 	private Radius location;
 	private RaceCheckpointType type;
 	private RaceCheckpoint next;
 	
 	
-	public RaceCheckpointImpl(Radius loc, RaceCheckpointType type, RaceCheckpoint next)
+	public RaceCheckpointImpl(SampObjectStore store, Radius loc, RaceCheckpointType type, RaceCheckpoint next)
 	{
+		this.store = store;
 		this.location = new Radius(loc);
 		this.type = type;
 		this.next = next;
@@ -138,7 +141,7 @@ public abstract class RaceCheckpointImpl implements RaceCheckpoint
 	@Override
 	public void update()
 	{
-		for (Player player : ShoebillImpl.getInstance().getSampObjectStore().getPlayers())
+		for (Player player : store.getPlayers())
 		{
 			if (player == null) continue;
 			if (player.getRaceCheckpoint() == this) set(player);
@@ -149,7 +152,7 @@ public abstract class RaceCheckpointImpl implements RaceCheckpoint
 	public Collection<Player> getUsingPlayers()
 	{
 		Collection<Player> players = new ArrayList<>();
-		for (Player player : ShoebillImpl.getInstance().getSampObjectStore().getPlayers())
+		for (Player player : store.getPlayers())
 		{
 			if (player.getRaceCheckpoint() == this) players.add(player);
 		}

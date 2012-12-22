@@ -18,7 +18,6 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectStoreImpl;
-import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector3D;
@@ -39,6 +38,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class ZoneImpl implements Zone
 {
+	private final EventManager rootEventManager;
+	
 	private int id = INVALID_ID;
 	private Area area;
 	
@@ -46,8 +47,9 @@ public abstract class ZoneImpl implements Zone
 	private boolean[] isPlayerFlashing = new boolean[SampObjectStoreImpl.MAX_PLAYERS];
 	
 	
-	public ZoneImpl(float minX, float minY, float maxX, float maxY) throws CreationFailedException
+	public ZoneImpl(EventManager eventManager, float minX, float minY, float maxX, float maxY) throws CreationFailedException
 	{
+		this.rootEventManager = eventManager;
 		initialize(minX, minY, maxX, maxY);
 	}
 	
@@ -78,9 +80,8 @@ public abstract class ZoneImpl implements Zone
 		
 		SampNativeFunction.gangZoneDestroy(id);
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
-		eventManager.dispatchEvent(destroyEvent, this);
+		rootEventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}

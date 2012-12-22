@@ -16,10 +16,10 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.constant.PlayerMarkerMode;
-import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.AngledLocation;
+import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.data.WeaponData;
 import net.gtaun.shoebill.object.Player;
@@ -36,14 +36,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class WorldImpl implements World
 {
+	private final SampObjectStore store;
+	
 	private float nameTagDrawDistance = 70;
 	private float chatRadius = -1;
 	private float playerMarkerRadius = -1;
 	
 	
-	public WorldImpl()
+	public WorldImpl(SampObjectStore store)
 	{
-
+		this.store = store;
 	}
 	
 	@Override
@@ -210,7 +212,7 @@ public abstract class WorldImpl implements World
 	@Override
 	public void enableStuntBonusForAll(boolean enabled)
 	{
-		for (Player player : ShoebillImpl.getInstance().getSampObjectStore().getPlayers())
+		for (Player player : store.getPlayers())
 		{
 			player.enableStuntBonus(enabled);
 		}

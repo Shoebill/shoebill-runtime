@@ -16,7 +16,6 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.object.Dialog;
@@ -36,11 +35,13 @@ public abstract class DialogImpl implements Dialog
 	private static final int INVALID_ID = -1;
 	
 	
+	private final EventManager rootEventManager;
 	private int id;
 	
 	
-	public DialogImpl(int id)
+	public DialogImpl(EventManager eventManager, int id)
 	{
+		this.rootEventManager = eventManager;
 		this.id = id;
 	}
 	
@@ -55,9 +56,8 @@ public abstract class DialogImpl implements Dialog
 	{
 		if (id == INVALID_ID) return;
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
-		eventManager.dispatchEvent(destroyEvent, this);
+		rootEventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}

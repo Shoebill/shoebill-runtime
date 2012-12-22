@@ -16,7 +16,6 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
@@ -39,6 +38,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class LabelImpl implements Label
 {
+	private final EventManager rootEventManager;
+	
 	private int id = INVALID_ID;
 	private String text;
 	private Color color;
@@ -50,9 +51,11 @@ public abstract class LabelImpl implements Label
 	private Vehicle attachedVehicle;
 	
 	
-	public LabelImpl(String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
+	public LabelImpl(EventManager eventManager, String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
 		if (StringUtils.isEmpty(text)) text = " ";
+		
+		this.rootEventManager = eventManager;
 		
 		this.text = text;
 		this.color = new Color(color);
@@ -76,9 +79,8 @@ public abstract class LabelImpl implements Label
 		
 		SampNativeFunction.delete3DTextLabel(id);
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
-		eventManager.dispatchEvent(destroyEvent, this);
+		rootEventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}

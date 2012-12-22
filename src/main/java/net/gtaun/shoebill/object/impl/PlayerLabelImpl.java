@@ -17,7 +17,6 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectStoreImpl;
-import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
@@ -40,6 +39,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class PlayerLabelImpl implements PlayerLabel
 {
+	private final EventManager rootEventManager;
+	private final SampObjectStoreImpl store;
+	
 	private int id = INVALID_ID;
 	private Player player;
 	private String text;
@@ -53,18 +55,24 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 	private Vehicle attachedVehicle;
 	
 	
-	public PlayerLabelImpl(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
+	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
+		this.rootEventManager = eventManager;
+		this.store = store;
 		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, null);
 	}
 	
-	public PlayerLabelImpl(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer) throws CreationFailedException
+	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer) throws CreationFailedException
 	{
+		this.rootEventManager = eventManager;
+		this.store = store;
 		initialize(player, text, color, new Location(loc), drawDistance, testLOS, attachedPlayer, null);
 	}
 	
-	public PlayerLabelImpl(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle) throws CreationFailedException
+	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle) throws CreationFailedException
 	{
+		this.rootEventManager = eventManager;
+		this.store = store;
 		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, attachedVehicle);
 	}
 	
@@ -126,9 +134,8 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 			SampNativeFunction.deletePlayer3DTextLabel(player.getId(), id);
 		}
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
-		eventManager.dispatchEvent(destroyEvent, this);
+		rootEventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}
@@ -196,8 +203,6 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 		
 		int playerId = player.getId();
 		
-		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
-
 		store.setPlayerLabel(player, id, null);
 		SampNativeFunction.deletePlayer3DTextLabel(playerId, id);
 		
@@ -221,8 +226,6 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 		if (vehicle.isDestroyed()) return;
 		
 		int playerId = player.getId();
-		
-		SampObjectStoreImpl store = (SampObjectStoreImpl) ShoebillImpl.getInstance().getSampObjectStore();
 		
 		store.setPlayerLabel(player, id, null);
 		SampNativeFunction.deletePlayer3DTextLabel(playerId, id);

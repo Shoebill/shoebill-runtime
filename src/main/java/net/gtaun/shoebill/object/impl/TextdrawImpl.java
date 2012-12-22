@@ -18,7 +18,6 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampObjectStoreImpl;
-import net.gtaun.shoebill.ShoebillImpl;
 import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
@@ -41,6 +40,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class TextdrawImpl implements Textdraw
 {
+	private final EventManager rootEventManager;
+	
 	private int id = INVALID_ID;
 	private Vector2D position;
 	private String text;
@@ -48,8 +49,10 @@ public abstract class TextdrawImpl implements Textdraw
 	private boolean[] isPlayerShowed = new boolean[SampObjectStoreImpl.MAX_PLAYERS];
 	
 	
-	public TextdrawImpl(float x, float y, String text) throws CreationFailedException
+	public TextdrawImpl(EventManager eventManager, float x, float y, String text) throws CreationFailedException
 	{
+		this.rootEventManager = eventManager;
+		
 		position = new Vector2D(x, y);
 		if (StringUtils.isEmpty(text)) text = " ";
 		
@@ -73,9 +76,8 @@ public abstract class TextdrawImpl implements Textdraw
 		
 		SampNativeFunction.textDrawDestroy(id);
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
 		DestroyEvent destroyEvent = new DestroyEvent(this);
-		eventManager.dispatchEvent(destroyEvent, this);
+		rootEventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}

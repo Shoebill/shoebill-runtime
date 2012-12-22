@@ -17,7 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Quaternion;
@@ -49,6 +49,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class VehicleImpl implements Vehicle
 {
+	private final SampObjectStore store;
+	
 	private boolean isStatic = false;
 	
 	private int id = INVALID_ID;
@@ -64,8 +66,10 @@ public abstract class VehicleImpl implements Vehicle
 	private ManagedEventManager managedEventManager;
 	
 	
-	public VehicleImpl(int modelId, AngledLocation loc, int color1, int color2, int respawnDelay) throws CreationFailedException
+	public VehicleImpl(EventManager eventManager, SampObjectStore store, int modelId, AngledLocation loc, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
+		this.store = store;
+		managedEventManager = new ManagedEventManager(eventManager);
 		initialize(modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), loc.getAngle(), color1, color2, respawnDelay);
 	}
 	
@@ -116,7 +120,6 @@ public abstract class VehicleImpl implements Vehicle
 			}
 		};
 		
-		managedEventManager = new ManagedEventManager(ShoebillImpl.getInstance().getRootEventManager());
 		managedEventManager.registerHandler(VehicleModEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		managedEventManager.registerHandler(VehicleUpdateDamageEvent.class, this, eventHandler, HandlerPriority.MONITOR);
 		
@@ -138,12 +141,10 @@ public abstract class VehicleImpl implements Vehicle
 		
 		managedEventManager.cancelAll();
 		
-		EventManager eventManager = ShoebillImpl.getInstance().getRootEventManager();
-		
 		SampNativeFunction.destroyVehicle(id);
 		
 		DestroyEvent destroyEvent = new DestroyEvent(this);
-		eventManager.dispatchEvent(destroyEvent, this);
+		managedEventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
 	}
@@ -417,7 +418,7 @@ public abstract class VehicleImpl implements Vehicle
 		if (isDestroyed()) return null;
 		
 		int trailerId = SampNativeFunction.getVehicleTrailer(id);
-		return ShoebillImpl.getInstance().getSampObjectStore().getVehicle(trailerId);
+		return store.getVehicle(trailerId);
 	}
 	
 	@Override

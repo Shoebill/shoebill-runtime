@@ -42,7 +42,6 @@ import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.object.Zone;
 import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
-import net.gtaun.util.event.EventManagerImpl;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -109,9 +108,20 @@ public class SampObjectStoreImpl implements SampObjectStore
 	private Map<Integer, Reference<Dialog>> dialogs = new ConcurrentHashMap<>();
 	
 	
-	SampObjectStoreImpl(final EventManagerImpl eventManager)
+	SampObjectStoreImpl()
 	{
-		callbackHandler = new AbstractSampCallbackHandler()
+		
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
+	
+	public void setFactory(final SampObjectManager factory)
+	{
+		if (callbackHandler == null) callbackHandler = new AbstractSampCallbackHandler()
 		{
 			@Override
 			public int onPlayerConnect(int playerid)
@@ -122,7 +132,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 					playerLabelsArray[playerid] = new PlayerLabel[MAX_PLAYER_LABELS];
 					playerTextdrawsArray[playerid] = new PlayerTextdraw[MAX_PLAYER_TEXT_DRAWS];
 					
-					Player player = ShoebillImpl.getInstance().getSampObjectFactory().createPlayer(playerid);
+					Player player = factory.createPlayer(playerid);
 					setPlayer(playerid, player);
 				}
 				catch (Exception e)
@@ -139,12 +149,6 @@ public class SampObjectStoreImpl implements SampObjectStore
 				return 1;
 			}
 		};
-	}
-	
-	@Override
-	public String toString()
-	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	SampCallbackHandler getCallbackHandler()

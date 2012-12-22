@@ -20,7 +20,7 @@ package net.gtaun.shoebill.object.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.gtaun.shoebill.ShoebillImpl;
+import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.data.Radius;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.object.Checkpoint;
@@ -37,11 +37,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class CheckpointImpl implements Checkpoint
 {
+	private final SampObjectStore store;
 	private Radius location;
 	
 	
-	public CheckpointImpl(Radius loc)
+	public CheckpointImpl(SampObjectStore store, Radius loc)
 	{
+		this.store = store;
 		location = new Radius(loc);
 	}
 	
@@ -120,7 +122,7 @@ public abstract class CheckpointImpl implements Checkpoint
 	@Override
 	public void update()
 	{
-		Collection<? extends Player> players = ShoebillImpl.getInstance().getSampObjectStore().getPlayers();
+		Collection<? extends Player> players = store.getPlayers();
 		for (Player player : players)
 		{
 			if (player == null) continue;
@@ -132,7 +134,7 @@ public abstract class CheckpointImpl implements Checkpoint
 	public Collection<Player> getUsingPlayers()
 	{
 		Collection<Player> usingPlayers = new ArrayList<>();
-		Collection<Player> players = ShoebillImpl.getInstance().getSampObjectStore().getPlayers();
+		Collection<Player> players = store.getPlayers();
 		for (Player player : players)
 		{
 			if (player.getCheckpoint() == this) usingPlayers.add(player);

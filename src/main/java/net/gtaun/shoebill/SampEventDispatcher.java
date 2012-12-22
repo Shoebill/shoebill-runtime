@@ -454,7 +454,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			RconCommandEvent event = new RconCommandEvent(cmd);
-			rootEventManager.dispatchEvent(event, ShoebillImpl.getInstance().getSampObjectStore().getServer());
+			rootEventManager.dispatchEvent(event, sampObjectStore.getServer());
 			
 			return event.getResponse();
 		}

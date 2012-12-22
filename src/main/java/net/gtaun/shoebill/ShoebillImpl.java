@@ -63,7 +63,7 @@ public class ShoebillImpl implements Shoebill
 	private static final String RESOURCES_CONFIG_FILENAME = "resources.yml";
 	
 	
-	public static ShoebillImpl getInstance()
+	public static ShoebillImpl getInstancea()
 	{
 		return (ShoebillImpl) Shoebill.Instance.get();
 	}
@@ -220,8 +220,10 @@ public class ShoebillImpl implements Shoebill
 		pluginManager = new ResourceManagerImpl(this, eventManager, artifactLocator, config.getDataDir());
 		serviceManager = new ServiceManagerImpl(eventManager);
 		
-		sampObjectStore = new SampObjectStoreImpl(eventManager);
+		sampObjectStore = new SampObjectStoreImpl();
 		sampObjectManager = new SampObjectManager(eventManager, globalProxyManager, sampObjectStore);
+		sampObjectStore.setFactory(sampObjectManager);
+		
 		sampObjectManager.createWorld();
 		
 		Server server = sampObjectManager.createServer();
