@@ -1407,10 +1407,10 @@ public abstract class PlayerImpl implements Player
 		
 		if (caption == null || text == null || button1 == null || button2 == null) throw new NullPointerException();
 		
-		if (dialog != null)
+		if (this.dialog != null)
 		{
-			DialogCancelEvent event = new DialogCancelEvent(dialog, this, DialogCancelType.OVERRIDE);
-			managedEventManager.dispatchEvent(event, dialog, this);
+			DialogCancelEvent event = new DialogCancelEvent(this.dialog, this, DialogCancelType.OVERRIDE);
+			managedEventManager.dispatchEvent(event, this.dialog, this);
 		}
 		
 		SampNativeFunction.showPlayerDialog(id, dialog.getId(), style.getValue(), caption, text, button1, button2);
