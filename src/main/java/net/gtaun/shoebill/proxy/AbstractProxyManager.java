@@ -41,12 +41,14 @@ public abstract class AbstractProxyManager implements ProxyManager
 		private final Method method;
 		private final Interceptor interceptor;
 		private final short priority;
+		private boolean isEnabled;
 		
 		public MethodInterceptorImpl(Method method, Interceptor interceptor, short priority)
 		{
 			this.method = method;
 			this.interceptor = interceptor;
 			this.priority = priority;
+			this.isEnabled = true;
 		}
 		
 		@Override
@@ -72,6 +74,18 @@ public abstract class AbstractProxyManager implements ProxyManager
 		public short getPriority()
 		{
 			return priority;
+		}
+
+		@Override
+		public void setEnabled(boolean enabled)
+		{
+			isEnabled = enabled;
+		}
+		
+		@Override
+		public boolean isEnabled()
+		{
+			return isEnabled;
 		}
 		
 		@Override

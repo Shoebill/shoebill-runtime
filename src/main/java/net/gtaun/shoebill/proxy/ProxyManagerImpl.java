@@ -112,10 +112,12 @@ public class ProxyManagerImpl extends AbstractProxyManager implements ProxyManag
 						while(interceptorQueue.isEmpty() == false && interceptor == null)
 						{
 							MethodInterceptor methodInterceptor = interceptorQueue.poll();
+							if (methodInterceptor.isEnabled() == false) continue;
+							
 							interceptor = methodInterceptor.getInterceptor();
 						}
 						
-						if(interceptor == null) return invokeOriginal(obj, args);
+						if (interceptor == null) return invokeOriginal(obj, args);
 						return interceptor.intercept(this, method, obj, args);
 					}
 				};
