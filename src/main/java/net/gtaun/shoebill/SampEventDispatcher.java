@@ -23,7 +23,9 @@ import net.gtaun.shoebill.event.checkpoint.CheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointLeaveEvent;
 import net.gtaun.shoebill.event.checkpoint.RaceCheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.RaceCheckpointLeaveEvent;
+import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
 import net.gtaun.shoebill.event.dialog.DialogResponseEvent;
+import net.gtaun.shoebill.event.dialog.DialogCancelEvent.DialogCancelType;
 import net.gtaun.shoebill.event.menu.MenuExitedEvent;
 import net.gtaun.shoebill.event.menu.MenuSelectedEvent;
 import net.gtaun.shoebill.event.object.ObjectMovedEvent;
@@ -150,6 +152,13 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			Player player = sampObjectStore.getPlayer(playerId);
+			
+			Dialog dialog = player.getDialog();
+			if (dialog != null)
+			{
+				DialogCancelEvent dialogCancelEvent = new DialogCancelEvent(dialog, player, DialogCancelType.CANCEL);
+				rootEventManager.dispatchEvent(dialogCancelEvent, dialog, player);
+			}
 			
 			PlayerDisconnectEvent event = new PlayerDisconnectEvent(player, reason);
 			rootEventManager.dispatchEvent(event, player);
