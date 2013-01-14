@@ -144,6 +144,12 @@ public class ServiceManagerImpl implements ServiceManager
 	}
 	
 	@Override
+	public <T extends Service> boolean isServiceAvailable(Class<T> type)
+	{
+		return services.containsKey(type);
+	}
+	
+	@Override
 	public Collection<ServiceEntry> getServiceEntries()
 	{
 		return services.values();
