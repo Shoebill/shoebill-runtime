@@ -299,6 +299,32 @@ public class SampObjectStoreImpl implements SampObjectStore
 	}
 	
 	@Override
+	public Collection<Player> getHumanPlayers()
+	{
+		Collection<Player> list = new ArrayList<>();
+		if (players == null) return list;
+		
+		for (Player item : players)
+		{
+			if (item != null && item.isNpc() == false) list.add(item);
+		}
+		return list;
+	}
+	
+	@Override
+	public Collection<Player> getNpcPlayers()
+	{
+		Collection<Player> list = new ArrayList<>();
+		if (players == null) return list;
+		
+		for (Player item : players)
+		{
+			if (item != null && item.isNpc()) list.add(item);
+		}
+		return list;
+	}
+	
+	@Override
 	public Collection<Vehicle> getVehicles()
 	{
 		return getNotNullInstances(vehicles);

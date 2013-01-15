@@ -1021,6 +1021,14 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
+	public boolean isNpc()
+	{
+		if (isOnline() == false) return false;
+		
+		return SampNativeFunction.isPlayerNPC(id);
+	}
+	
+	@Override
 	public void setCheckpoint(Checkpoint checkpoint)
 	{
 		if (isOnline() == false) return;
