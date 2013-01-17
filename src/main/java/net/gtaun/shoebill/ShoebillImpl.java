@@ -87,6 +87,9 @@ public class ShoebillImpl implements Shoebill
 	private SampEventDispatcher sampEventDispatcher;
 	
 	private GlobalProxyManager globalProxyManager;
+
+	private PrintStream originOutPrintStream;
+	private PrintStream originErrPrintStream;
 	
 	
 	public ShoebillImpl() throws IOException, ClassNotFoundException
@@ -140,6 +143,8 @@ public class ShoebillImpl implements Shoebill
 			PropertyConfigurator.configure(properties);
 		}
 		
+		originOutPrintStream = System.out;
+		originErrPrintStream = System.err;
 		System.setOut(new PrintStream(new LoggerOutputStream(LoggerFactory.getLogger("System.out"), LogLevel.INFO), true));
 		System.setErr(new PrintStream(new LoggerOutputStream(LoggerFactory.getLogger("System.err"), LogLevel.ERROR), true));
 		
@@ -171,6 +176,7 @@ public class ShoebillImpl implements Shoebill
 			public int onGameModeExit()
 			{
 				unloadPluginsAndGamemode();
+				uninitialize();
 				return 1;
 			}
 			
@@ -225,6 +231,12 @@ public class ShoebillImpl implements Shoebill
 		sampCallbackManager.registerCallbackHandler(sampObjectStore.getCallbackHandler());
 		sampCallbackManager.registerCallbackHandler(sampEventDispatcher);
 		sampCallbackManager.registerCallbackHandler(sampEventLogger);
+	}
+	
+	private void uninitialize()
+	{
+		System.setOut(originOutPrintStream);
+		System.setErr(originErrPrintStream);
 	}
 	
 	private void loadPluginsAndGamemode()
