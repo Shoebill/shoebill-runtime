@@ -147,14 +147,6 @@ public class ShoebillImpl implements Shoebill
 		
 	}
 	
-	@Override
-	protected void finalize() throws Throwable
-	{
-		super.finalize();
-		
-		if (sampCallbackManager != null) uninitialize();
-	}
-	
 	private void registerRootCallbackHandler()
 	{
 		sampCallbackManager.registerCallbackHandler(new AbstractSampCallbackHandler()
@@ -179,7 +171,6 @@ public class ShoebillImpl implements Shoebill
 			public int onGameModeExit()
 			{
 				unloadPluginsAndGamemode();
-				uninitialize();
 				return 1;
 			}
 			
@@ -234,23 +225,6 @@ public class ShoebillImpl implements Shoebill
 		sampCallbackManager.registerCallbackHandler(sampObjectStore.getCallbackHandler());
 		sampCallbackManager.registerCallbackHandler(sampEventDispatcher);
 		sampCallbackManager.registerCallbackHandler(sampEventLogger);
-	}
-	
-	private void uninitialize()
-	{
-		sampCallbackManager = null;
-		sampEventLogger = null;
-		sampEventDispatcher = null;
-		sampObjectStore = null;
-		sampObjectManager = null;
-		
-		pluginManager = null;
-		serviceManager = null;
-		
-		globalProxyManager = null;
-		eventManager = null;
-		
-		System.gc();
 	}
 	
 	private void loadPluginsAndGamemode()
