@@ -34,7 +34,6 @@ import net.gtaun.shoebill.resource.ResourceManagerImpl;
 import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackManagerImpl;
-import net.gtaun.shoebill.samp.SampNativeFunction;
 import net.gtaun.shoebill.service.ServiceManagerImpl;
 import net.gtaun.shoebill.util.log.LogLevel;
 import net.gtaun.shoebill.util.log.LoggerOutputStream;
