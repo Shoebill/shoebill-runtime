@@ -236,6 +236,13 @@ public abstract class PlayerImpl implements Player
 		return skill;
 	}
 	
+	public WeaponData getWeaponData(int slot)
+	{
+		WeaponData data = new WeaponData();
+		SampNativeFunction.getPlayerWeaponData(id, slot, data);
+		return data;
+	}
+	
 	@Override
 	public Checkpoint getCheckpoint()
 	{
