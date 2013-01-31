@@ -174,6 +174,12 @@ public abstract class WorldImpl implements World
 	}
 	
 	@Override
+	public void enableVehicleFriendlyFire()
+	{
+		SampNativeFunction.enableVehicleFriendlyFire();
+	}
+	
+	@Override
 	public void allowInteriorWeapons(boolean allow)
 	{
 		SampNativeFunction.allowInteriorWeapons(allow);

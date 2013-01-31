@@ -230,6 +230,36 @@ public abstract class TextdrawImpl implements Textdraw
 	}
 	
 	@Override
+	public void setPreviewModel(int modelindex)
+	{
+		if (isDestroyed()) return;
+		
+		SampNativeFunction.textDrawSetPreviewModel(id, modelindex);
+	}
+	
+	@Override
+	public void setPreviewModelRotation(float rotX, float rotY, float rotZ)
+	{
+		setPreviewModelRotation(rotX, rotY, rotZ, 1.0f);
+	}
+	
+	@Override
+	public void setPreviewModelRotation(float rotX, float rotY, float rotZ, float zoom)
+	{
+		if (isDestroyed()) return;
+		
+		SampNativeFunction.textDrawSetPreviewRot(id, rotX, rotY, rotZ, zoom);
+	}
+	
+	@Override
+	public void setPreviewVehicleColor(int color1, int color2)
+	{
+		if (isDestroyed()) return;
+		
+		SampNativeFunction.textDrawSetPreviewVehCol(id, color1, color2);
+	}
+	
+	@Override
 	public void show(Player player)
 	{
 		if (isDestroyed()) return;

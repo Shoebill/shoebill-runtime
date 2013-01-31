@@ -234,6 +234,36 @@ public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 	}
 	
 	@Override
+	public void setPreviewModel(int modelindex)
+	{
+		if (isDestroyed()) return;
+		
+		SampNativeFunction.playerTextDrawSetPreviewModel(player.getId(), id, modelindex);
+	}
+	
+	@Override
+	public void setPreviewModelRotation(float rotX, float rotY, float rotZ)
+	{
+		setPreviewModelRotation(rotX, rotY, rotZ, 1.0f);
+	}
+	
+	@Override
+	public void setPreviewModelRotation(float rotX, float rotY, float rotZ, float zoom)
+	{
+		if (isDestroyed()) return;
+		
+		SampNativeFunction.playerTextDrawSetPreviewRot(player.getId(), id, rotX, rotY, rotZ, zoom);
+	}
+	
+	@Override
+	public void setPreviewVehicleColor(int color1, int color2)
+	{
+		if (isDestroyed()) return;
+		
+		SampNativeFunction.playerTextDrawSetPreviewVehCol(player.getId(), id, color1, color2);
+	}
+	
+	@Override
 	public void show()
 	{
 		if (isDestroyed()) return;
