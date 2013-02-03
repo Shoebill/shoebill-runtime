@@ -30,7 +30,7 @@ import net.gtaun.shoebill.constant.ShopName;
 import net.gtaun.shoebill.constant.SpecialAction;
 import net.gtaun.shoebill.constant.SpectateMode;
 import net.gtaun.shoebill.constant.WeaponState;
-import net.gtaun.shoebill.constant.WeaponType;
+import net.gtaun.shoebill.constant.WeaponModel;
 import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
@@ -366,11 +366,11 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public WeaponType getArmedWeapon()
+	public WeaponModel getArmedWeapon()
 	{
-		if (isOnline() == false) return WeaponType.NONE;
+		if (isOnline() == false) return WeaponModel.NONE;
 		
-		return WeaponType.get(SampNativeFunction.getPlayerWeapon(id));
+		return WeaponModel.get(SampNativeFunction.getPlayerWeapon(id));
 	}
 	
 	@Override
@@ -468,7 +468,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setSpawnInfo(float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, WeaponType weapon1, int ammo1, WeaponType weapon2, int ammo2, WeaponType weapon3, int ammo3)
+	public void setSpawnInfo(float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, WeaponModel weapon1, int ammo1, WeaponModel weapon2, int ammo2, WeaponModel weapon3, int ammo3)
 	{
 		if (isOnline() == false) return;
 		
@@ -478,19 +478,19 @@ public abstract class PlayerImpl implements Player
 	@Override
 	public void setSpawnInfo(Vector3D pos, int interiorId, int worldId, float angle, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3)
 	{
-		setSpawnInfo(pos.getX(), pos.getY(), pos.getZ(), interiorId, worldId, angle, skin, team, weapon1.getType(), weapon1.getAmmo(), weapon2.getType(), weapon2.getAmmo(), weapon3.getType(), weapon3.getAmmo());
+		setSpawnInfo(pos.getX(), pos.getY(), pos.getZ(), interiorId, worldId, angle, skin, team, weapon1.getModel(), weapon1.getAmmo(), weapon2.getModel(), weapon2.getAmmo(), weapon3.getModel(), weapon3.getAmmo());
 	}
 	
 	@Override
 	public void setSpawnInfo(Location loc, float angle, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3)
 	{
-		setSpawnInfo(loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), angle, skin, team, weapon1.getType(), weapon1.getAmmo(), weapon2.getType(), weapon2.getAmmo(), weapon3.getType(), weapon3.getAmmo());
+		setSpawnInfo(loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), angle, skin, team, weapon1.getModel(), weapon1.getAmmo(), weapon2.getModel(), weapon2.getAmmo(), weapon3.getModel(), weapon3.getAmmo());
 	}
 	
 	@Override
 	public void setSpawnInfo(AngledLocation loc, int skin, int team, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3)
 	{
-		setSpawnInfo(loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), loc.getAngle(), skin, team, weapon1.getType(), weapon1.getAmmo(), weapon2.getType(), weapon2.getAmmo(), weapon3.getType(), weapon3.getAmmo());
+		setSpawnInfo(loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), loc.getAngle(), skin, team, weapon1.getModel(), weapon1.getAmmo(), weapon2.getModel(), weapon2.getAmmo(), weapon3.getModel(), weapon3.getAmmo());
 	}
 	
 	@Override
@@ -530,7 +530,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setWeaponAmmo(WeaponType weapon, int ammo)
+	public void setWeaponAmmo(WeaponModel weapon, int ammo)
 	{
 		if (isOnline() == false) return;
 		
@@ -776,17 +776,17 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void sendDeathMessage(Player killer, int reason)
+	public void sendDeathMessage(Player killer, WeaponModel reason)
 	{
 		if (isOnline() == false) return;
 		
 		if (killer == null)
 		{
-			SampNativeFunction.sendDeathMessage(INVALID_ID, id, reason);
+			SampNativeFunction.sendDeathMessage(INVALID_ID, id, reason.getId());
 		}
 		else
 		{
-			SampNativeFunction.sendDeathMessage(killer.getId(), id, reason);
+			SampNativeFunction.sendDeathMessage(killer.getId(), id, reason.getId());
 		}
 	}
 	
@@ -1126,7 +1126,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void giveWeapon(WeaponType type, int ammo)
+	public void giveWeapon(WeaponModel type, int ammo)
 	{
 		if (isOnline() == false) return;
 		
@@ -1136,7 +1136,7 @@ public abstract class PlayerImpl implements Player
 	@Override
 	public void giveWeapon(WeaponData data)
 	{
-		giveWeapon(data.getType(), data.getAmmo());
+		giveWeapon(data.getModel(), data.getAmmo());
 	}
 	
 	@Override

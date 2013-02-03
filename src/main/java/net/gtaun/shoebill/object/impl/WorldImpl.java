@@ -74,7 +74,7 @@ public abstract class WorldImpl implements World
 		WeaponData weapon2 = spawnInfo.getWeapon2();
 		WeaponData weapon3 = spawnInfo.getWeapon3();
 		
-		return SampNativeFunction.addPlayerClass(modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getType().getId(), weapon1.getAmmo(), weapon2.getType().getId(), weapon2.getAmmo(), weapon3.getType().getId(), weapon3.getAmmo());
+		return SampNativeFunction.addPlayerClass(modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
 	}
 	
 	@Override
@@ -85,7 +85,7 @@ public abstract class WorldImpl implements World
 		WeaponData weapon2 = spawnInfo.getWeapon2();
 		WeaponData weapon3 = spawnInfo.getWeapon3();
 		
-		return SampNativeFunction.addPlayerClassEx(teamId, modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getType().getId(), weapon1.getAmmo(), weapon2.getType().getId(), weapon2.getAmmo(), weapon3.getType().getId(), weapon3.getAmmo());
+		return SampNativeFunction.addPlayerClassEx(teamId, modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
 	}
 	
 	@Override
