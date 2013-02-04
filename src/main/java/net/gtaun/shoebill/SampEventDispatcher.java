@@ -18,6 +18,7 @@ package net.gtaun.shoebill;
 
 import net.gtaun.shoebill.constant.ObjectEditResponse;
 import net.gtaun.shoebill.constant.PlayerAttachBone;
+import net.gtaun.shoebill.constant.WeaponModel;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.event.checkpoint.CheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointLeaveEvent;
@@ -207,7 +208,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 				rootEventManager.dispatchEvent(event, killer);
 			}
 			
-			PlayerDeathEvent event = new PlayerDeathEvent(player, killer, reason);
+			PlayerDeathEvent event = new PlayerDeathEvent(player, killer, WeaponModel.get(reason));
 			rootEventManager.dispatchEvent(event, player);
 			
 			return 1;
