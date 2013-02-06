@@ -67,25 +67,20 @@ public abstract class WorldImpl implements World
 	}
 	
 	@Override
-	public int addPlayerClass(int modelId, SpawnInfo spawnInfo)
+	public int addPlayerClass(int teamId, int modelId, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3)
 	{
-		AngledLocation loc = spawnInfo.getLocation();
-		WeaponData weapon1 = spawnInfo.getWeapon1();
-		WeaponData weapon2 = spawnInfo.getWeapon2();
-		WeaponData weapon3 = spawnInfo.getWeapon3();
-		
-		return SampNativeFunction.addPlayerClass(modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
+		return SampNativeFunction.addPlayerClassEx(teamId, modelId, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3);
 	}
 	
 	@Override
-	public int addPlayerClassEx(int teamId, int modelId, SpawnInfo spawnInfo)
+	public int addPlayerClass(SpawnInfo spawnInfo)
 	{
 		AngledLocation loc = spawnInfo.getLocation();
 		WeaponData weapon1 = spawnInfo.getWeapon1();
 		WeaponData weapon2 = spawnInfo.getWeapon2();
 		WeaponData weapon3 = spawnInfo.getWeapon3();
 		
-		return SampNativeFunction.addPlayerClassEx(teamId, modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
+		return SampNativeFunction.addPlayerClassEx(spawnInfo.getTeamId(), spawnInfo.getSkinId(), loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
 	}
 	
 	@Override
