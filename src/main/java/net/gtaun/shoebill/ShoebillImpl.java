@@ -22,7 +22,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.lang.ref.WeakReference;
+import java.util.Iterator;
 import java.util.Properties;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
 import net.gtaun.shoebill.object.Server;
@@ -91,6 +94,8 @@ public class ShoebillImpl implements Shoebill
 	private PrintStream originOutPrintStream;
 	private PrintStream originErrPrintStream;
 	
+	private Queue<Runnable> asyncExecQueue;
+	
 	
 	public ShoebillImpl() throws IOException, ClassNotFoundException
 	{
@@ -112,6 +117,8 @@ public class ShoebillImpl implements Shoebill
 		LOGGER.info("System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")");
 		LOGGER.info("JVM: " + System.getProperty("java.vm.name") + " " + System.getProperty("java.vm.version"));
 		LOGGER.info("Java: " + System.getProperty("java.specification.name") + " " + System.getProperty("java.specification.version"));
+		
+		asyncExecQueue = new ConcurrentLinkedQueue();
 		
 		resourceConfig = new ResourceConfig(new FileInputStream(new File(config.getShoebillDir(), RESOURCES_CONFIG_FILENAME)));
 		artifactLocator = new ShoebillArtifactLocator(config, resourceConfig);
@@ -203,6 +210,17 @@ public class ShoebillImpl implements Shoebill
 					
 				default:
 					return 0;
+				}
+			}
+			
+			@Override
+			public void onProcessTick()
+			{
+				for (Iterator<Runnable> it = asyncExecQueue.iterator(); it.hasNext();)
+				{
+					Runnable runnable = it.next();
+					runnable.run();
+					it.remove();
 				}
 			}
 		});
@@ -320,5 +338,11 @@ public class ShoebillImpl implements Shoebill
 	public void reload()
 	{
 		SampNativeFunction.sendRconCommand("changemode Shoebill");
+	}
+	
+	@Override
+	public void asyncExec(Runnable runnable)
+	{
+		asyncExecQueue.offer(runnable);
 	}
 }
