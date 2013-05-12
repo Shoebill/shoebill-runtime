@@ -50,6 +50,26 @@ public class SampEventLogger implements SampCallbackHandler
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
+
+	
+	@Override
+	public void onProcessTick()
+	{
+		
+	}
+
+	@Override
+	public void onAmxLoad(int handle)
+	{
+		
+	}
+	
+	@Override
+	public void onAmxUnload(int handle)
+	{
+		
+	}
+	
 	@Override
 	public int onGameModeInit()
 	{
@@ -376,12 +396,6 @@ public class SampEventLogger implements SampCallbackHandler
 		return 0;
 	}
 	
-	@Override
-	public void onProcessTick()
-	{
-		
-	}
-
 	@Override
 	public int onPlayerEditObject(int playerid, int playerobject, int objectid, int response, float fX, float fY, float fZ, float fRotX, float fRotY, float fRotZ)
 	{

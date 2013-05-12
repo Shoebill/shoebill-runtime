@@ -71,6 +71,52 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 	private SampCallbackHandler callbackHandler = new SampCallbackHandler()
 	{
 		@Override
+		public void onProcessTick()
+		{
+			for (SampCallbackHandler handler : callbackHandlers)
+			{
+				try
+				{
+					handler.onProcessTick();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		public void onAmxLoad(int handle)
+		{
+			for (SampCallbackHandler handler : callbackHandlers)
+			{
+				try
+				{
+					handler.onAmxLoad(handle);
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		public void onAmxUnload(int handle)
+		{
+			for (SampCallbackHandler handler : callbackHandlers)
+			{
+				try
+				{
+					handler.onAmxUnload(handle);
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		@Override
 		public int onGameModeInit()
 		{
 			for (SampCallbackHandler handler : callbackHandlers)
@@ -960,22 +1006,6 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 			}
 			
 			return 1;
-		}
-		
-		@Override
-		public void onProcessTick()
-		{
-			for (SampCallbackHandler handler : callbackHandlers)
-			{
-				try
-				{
-					handler.onProcessTick();
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
 		}
 	};
 }

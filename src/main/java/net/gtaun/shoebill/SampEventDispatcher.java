@@ -117,6 +117,38 @@ public class SampEventDispatcher implements SampCallbackHandler
 	}
 	
 	@Override
+	public void onProcessTick()
+	{
+		try
+		{
+			long nowTick = System.currentTimeMillis();
+			int interval = (int) (nowTick - lastProcessTimeMillis);
+			lastProcessTimeMillis = nowTick;
+			
+			for (Timer timer : sampObjectStore.getTimers())
+			{
+				timer.tick(interval);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void onAmxLoad(int handle)
+	{
+		
+	}
+	
+	@Override
+	public void onAmxUnload(int handle)
+	{
+		
+	}
+	
+	@Override
 	public int onGameModeInit()
 	{
 		return 1;
@@ -1100,26 +1132,6 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			e.printStackTrace();
 			return 0;
-		}
-	}
-	
-	@Override
-	public void onProcessTick()
-	{
-		try
-		{
-			long nowTick = System.currentTimeMillis();
-			int interval = (int) (nowTick - lastProcessTimeMillis);
-			lastProcessTimeMillis = nowTick;
-			
-			for (Timer timer : sampObjectStore.getTimers())
-			{
-				timer.tick(interval);
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
 		}
 	}
 }

@@ -29,6 +29,24 @@ public abstract class AbstractSampCallbackHandler implements SampCallbackHandler
 	}
 	
 	@Override
+	public void onProcessTick()
+	{
+		
+	}
+	
+	@Override
+	public void onAmxLoad(int handle)
+	{
+		
+	}
+	
+	@Override
+	public void onAmxUnload(int handle)
+	{
+		
+	}
+	
+	@Override
 	public int onGameModeInit()
 	{
 		return 1;
@@ -320,11 +338,5 @@ public abstract class AbstractSampCallbackHandler implements SampCallbackHandler
 	public int onPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ)
 	{
 		return 1;
-	}
-	
-	@Override
-	public void onProcessTick()
-	{
-		
 	}
 }

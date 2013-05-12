@@ -23,6 +23,10 @@ package net.gtaun.shoebill.samp;
  */
 public interface SampCallbackHandler
 {
+	void onAmxLoad(int handle);
+	void onAmxUnload(int handle);
+	void onProcessTick();
+	
 	int onGameModeInit();
 	int onGameModeExit();
 	int onPlayerConnect(int playerId);
@@ -72,6 +76,4 @@ public interface SampCallbackHandler
 	int onPlayerEditObject(int playerid, int playerobject, int objectid, int response, float fX, float fY, float fZ, float fRotX, float fRotY, float fRotZ);
 	int onPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ);
 	int onPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ);
-	
-	void onProcessTick();
 }

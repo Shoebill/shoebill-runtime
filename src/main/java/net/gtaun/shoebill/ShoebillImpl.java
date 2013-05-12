@@ -27,6 +27,7 @@ import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import net.gtaun.shoebill.amx.AmxInstanceManagerImpl;
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.proxy.GlobalProxyManager;
@@ -79,6 +80,7 @@ public class ShoebillImpl implements Shoebill
 	private EventManagerImpl eventManager;
 	
 	private SampCallbackManagerImpl sampCallbackManager;
+	private AmxInstanceManagerImpl amxInstanceManager;
 	
 	private SampObjectStoreImpl sampObjectStore;
 	private SampObjectManager sampObjectManager;
@@ -97,7 +99,7 @@ public class ShoebillImpl implements Shoebill
 	private Queue<Runnable> asyncExecQueue;
 	
 	
-	public ShoebillImpl() throws IOException, ClassNotFoundException
+	public ShoebillImpl(int[] amxHandles) throws IOException, ClassNotFoundException
 	{
 		Class.forName(ProxyableFactoryImpl.class.getName());
 		Shoebill.Instance.shoebillReference = new WeakReference<>(this);
@@ -118,7 +120,10 @@ public class ShoebillImpl implements Shoebill
 		LOGGER.info("JVM: " + System.getProperty("java.vm.name") + " " + System.getProperty("java.vm.version"));
 		LOGGER.info("Java: " + System.getProperty("java.specification.name") + " " + System.getProperty("java.specification.version"));
 		
-		asyncExecQueue = new ConcurrentLinkedQueue();
+		asyncExecQueue = new ConcurrentLinkedQueue<Runnable>();
+
+		eventManager = new EventManagerImpl();
+		amxInstanceManager = new AmxInstanceManagerImpl(eventManager, amxHandles);
 		
 		resourceConfig = new ResourceConfig(new FileInputStream(new File(config.getShoebillDir(), RESOURCES_CONFIG_FILENAME)));
 		artifactLocator = new ShoebillArtifactLocator(config, resourceConfig);
@@ -223,12 +228,23 @@ public class ShoebillImpl implements Shoebill
 					it.remove();
 				}
 			}
+			
+			@Override
+			public void onAmxLoad(int handle)
+			{
+				amxInstanceManager.onAmxLoad(handle);
+			}
+			
+			@Override
+			public void onAmxUnload(int handle)
+			{
+				amxInstanceManager.onAmxUnload(handle);
+			}
 		});
 	}
 	
 	private void initialize()
 	{
-		eventManager = new EventManagerImpl();
 		globalProxyManager = new GlobalProxyManagerImpl();
 		
 		pluginManager = new ResourceManagerImpl(this, eventManager, artifactLocator, config.getDataDir());
@@ -308,6 +324,12 @@ public class ShoebillImpl implements Shoebill
 	public SampObjectManager getSampObjectFactory()
 	{
 		return sampObjectManager;
+	}
+	
+	@Override
+	public AmxInstanceManagerImpl getAmxInstanceManager()
+	{
+		return amxInstanceManager;
 	}
 	
 	@Override
