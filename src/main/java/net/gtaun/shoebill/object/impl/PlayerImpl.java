@@ -122,7 +122,6 @@ public abstract class PlayerImpl implements Player
 			public void onPlayerUpdate(PlayerUpdateEvent event)
 			{
 				SampNativeFunction.getPlayerVelocity(PlayerImpl.this.id, velocity);
-				keyState.update();
 				
 				updateFrameCount++;
 				if (updateFrameCount < 0) updateFrameCount = 0;
@@ -180,6 +179,7 @@ public abstract class PlayerImpl implements Player
 	@Override
 	public PlayerKeyStateImpl getKeyState()
 	{
+		keyState.update();
 		return keyState;
 	}
 	
