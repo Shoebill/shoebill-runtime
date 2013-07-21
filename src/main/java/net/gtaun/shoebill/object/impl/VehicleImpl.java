@@ -402,6 +402,9 @@ public abstract class VehicleImpl implements Vehicle
 		if (isDestroyed()) return;
 		
 		SampNativeFunction.changeVehicleColor(id, color1, color2);
+		
+		this.color1 = color1;
+		this.color2 = color2;
 	}
 	
 	@Override
