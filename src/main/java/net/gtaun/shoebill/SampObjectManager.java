@@ -54,6 +54,7 @@ import net.gtaun.shoebill.object.impl.PickupImpl;
 import net.gtaun.shoebill.object.impl.PlayerImpl;
 import net.gtaun.shoebill.object.impl.PlayerLabelImpl;
 import net.gtaun.shoebill.object.impl.PlayerObjectImpl;
+import net.gtaun.shoebill.object.impl.PlayerTextdrawImpl;
 import net.gtaun.shoebill.object.impl.RaceCheckpointImpl;
 import net.gtaun.shoebill.object.impl.SampObjectImpl;
 import net.gtaun.shoebill.object.impl.ServerImpl;
@@ -112,7 +113,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private ProxyableFactory<LabelImpl> labelFactory;
 	private ProxyableFactory<PlayerLabelImpl> playerLabelFactory;
 	private ProxyableFactory<TextdrawImpl> textdrawFactory;
-	private ProxyableFactory<PlayerTextdraw> playerTextdrawFactory;
+	private ProxyableFactory<PlayerTextdrawImpl> playerTextdrawFactory;
 	private ProxyableFactory<ZoneImpl> zoneFactory;
 	private ProxyableFactory<MenuImpl> menuFactory;
 	private ProxyableFactory<DialogImpl> dialogFactory;
@@ -150,7 +151,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		labelFactory = ProxyableFactory.Impl.createProxyableFactory(LabelImpl.class, globalProxyManager);
 		playerLabelFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerLabelImpl.class, globalProxyManager);
 		textdrawFactory = ProxyableFactory.Impl.createProxyableFactory(TextdrawImpl.class, globalProxyManager);
-		playerTextdrawFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerTextdraw.class, globalProxyManager);
+		playerTextdrawFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerTextdrawImpl.class, globalProxyManager);
 		zoneFactory = ProxyableFactory.Impl.createProxyableFactory(ZoneImpl.class, globalProxyManager);
 		menuFactory = ProxyableFactory.Impl.createProxyableFactory(MenuImpl.class, globalProxyManager);
 		dialogFactory = ProxyableFactory.Impl.createProxyableFactory(DialogImpl.class, globalProxyManager);
