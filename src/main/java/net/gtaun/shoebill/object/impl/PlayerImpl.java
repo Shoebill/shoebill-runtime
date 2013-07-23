@@ -1438,7 +1438,7 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return;
 		
 		if (dialog == null) return;
-		SampNativeFunction.showPlayerDialog(id, -1, 0, "", "", "", "");
+		SampNativeFunction.showPlayerDialog(id, DialogImpl.INVALID_ID, 0, " ", " ", " ", " ");
 		
 		Dialog canceledDialog = dialog;
 		dialog = null;

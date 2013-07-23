@@ -32,7 +32,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public abstract class DialogImpl implements Dialog
 {
-	private static final int INVALID_ID = -1;
+	static final int INVALID_ID = -1;
 	
 	
 	private final EventManager rootEventManager;
