@@ -1444,7 +1444,7 @@ public abstract class PlayerImpl implements Player
 		dialog = null;
 		
 		DialogCancelEvent event = new DialogCancelEvent(canceledDialog, this, DialogCancelType.CANCEL);
-		managedEventManager.dispatchEvent(event, dialog, this);
+		managedEventManager.dispatchEvent(event, canceledDialog, this);
 	}
 	
 	@Override

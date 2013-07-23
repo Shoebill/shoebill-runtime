@@ -264,7 +264,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 		int playerId = player.getId();
 		if (playerId < 0 || playerId >= MAX_PLAYERS) return null;
 		
-		if (id < 0 || id >= MAX_OBJECTS) return null;
+		if (id < 0 || id >= MAX_PLAYER_TEXT_DRAWS) return null;
 		
 		PlayerTextdraw[] textdraws = playerTextdrawsArray[playerId];
 		if (textdraws == null) return null;
