@@ -56,7 +56,8 @@ public abstract class PickupImpl implements Pickup
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("id", id).append("modelId", modelId).append("type", type).toString();
 	}
 	
 	@Override

@@ -109,7 +109,8 @@ public abstract class PlayerLabelImpl implements PlayerLabel
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("player", player).append("id", id).toString();
 	}
 	
 	@Override

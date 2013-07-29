@@ -132,7 +132,8 @@ public abstract class VehicleImpl implements Vehicle
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("id", id).append("isStatic", isStatic).append("modelId", modelId).toString();
 	}
 	
 	@Override

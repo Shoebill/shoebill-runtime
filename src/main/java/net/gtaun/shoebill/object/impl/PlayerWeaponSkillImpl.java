@@ -45,7 +45,8 @@ public class PlayerWeaponSkillImpl implements PlayerWeaponSkill
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("player", player).append("skills", skills).toString();
 	}
 	
 	@Override

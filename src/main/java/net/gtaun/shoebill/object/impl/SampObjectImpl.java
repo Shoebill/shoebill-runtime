@@ -88,7 +88,8 @@ public abstract class SampObjectImpl implements SampObject
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("id", id).append("modelId", modelId).toString();
 	}
 	
 	@Override

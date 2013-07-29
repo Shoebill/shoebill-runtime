@@ -56,7 +56,8 @@ public abstract class RaceCheckpointImpl implements RaceCheckpoint
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("type", type).append("next", next).toString();
 	}
 	
 	@Override

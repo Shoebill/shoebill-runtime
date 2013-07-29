@@ -45,7 +45,7 @@ public abstract class ServerImpl implements Server
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).toString();
 	}
 	
 	@Override

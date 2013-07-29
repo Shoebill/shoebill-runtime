@@ -56,7 +56,8 @@ public abstract class TimerImpl implements Timer
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("interval", interval).append("count", count).append("running", running).toString();
 	}
 	
 	@Override

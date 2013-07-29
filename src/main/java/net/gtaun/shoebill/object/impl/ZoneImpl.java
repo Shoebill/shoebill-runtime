@@ -70,7 +70,7 @@ public abstract class ZoneImpl implements Zone
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("id", id).toString();
 	}
 	
 	@Override

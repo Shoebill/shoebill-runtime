@@ -21,8 +21,6 @@ import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,14 +41,6 @@ public class SampEventLogger implements SampCallbackHandler
 	{
 		sampObjectStore = store;
 	}
-	
-	@Override
-	public String toString()
-	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
-	}
-	
-
 	
 	@Override
 	public void onProcessTick()

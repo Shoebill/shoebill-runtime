@@ -45,7 +45,8 @@ public class VehicleComponentImpl implements VehicleComponent
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("vehicle", vehicle).append("components", components).toString();
 	}
 	
 	@Override

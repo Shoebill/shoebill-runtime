@@ -50,7 +50,9 @@ public class PlayerAttachImpl implements PlayerAttach
 		@Override
 		public String toString()
 		{
-			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+			return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("player", player).append("slot", slot).append("bone", bone)
+				.append("modelId", modelId).toString();
 		}
 		
 		@Override
@@ -169,7 +171,7 @@ public class PlayerAttachImpl implements PlayerAttach
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("player", player).toString();
 	}
 	
 	@Override

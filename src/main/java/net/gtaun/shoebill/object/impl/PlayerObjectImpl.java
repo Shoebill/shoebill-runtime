@@ -87,7 +87,8 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("player", player).append("id", id).append("modelId", modelId).toString();
 	}
 	
 	@Override

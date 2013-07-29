@@ -31,8 +31,6 @@ import net.gtaun.shoebill.event.resource.ResourceUnloadEvent;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.ManagedEventManager;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,12 +61,6 @@ public class ResourceManagerImpl implements ResourceManager
 		this.dataDir = dataDir;
 		
 		plugins = new ConcurrentHashMap<Class<? extends Plugin>, Plugin>();
-	}
-	
-	@Override
-	public String toString()
-	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	public void loadAllResource()

@@ -43,7 +43,10 @@ public class VehicleParamImpl implements VehicleParam
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("vehicle", vehicle).append("engine", engine).append("lights", lights)
+			.append("alarm", alarm).append("doors", doors).append("bonnet", bonnet)
+			.append("boot", boot).append("objective", objective).toString();
 	}
 	
 	@Override

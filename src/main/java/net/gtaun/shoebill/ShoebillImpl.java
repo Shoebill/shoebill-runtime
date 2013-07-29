@@ -138,7 +138,7 @@ public class ShoebillImpl implements Shoebill
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("version", version).toString();
 	}
 	
 	private void initializeLoggerConfig(File configFile) throws IOException

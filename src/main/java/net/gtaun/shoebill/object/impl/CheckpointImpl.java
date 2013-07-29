@@ -50,7 +50,8 @@ public abstract class CheckpointImpl implements Checkpoint
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("location", location).toString();
 	}
 	
 	@Override

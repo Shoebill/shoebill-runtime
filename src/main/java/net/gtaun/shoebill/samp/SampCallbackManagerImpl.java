@@ -19,9 +19,6 @@ package net.gtaun.shoebill.samp;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 /**
  * 
  * 
@@ -35,12 +32,6 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 	public SampCallbackManagerImpl()
 	{
 		callbackHandlers = new ConcurrentLinkedQueue<>();
-	}
-	
-	@Override
-	public String toString()
-	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	@Override
@@ -66,7 +57,6 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 	{
 		return callbackHandler;
 	}
-	
 	
 	private SampCallbackHandler callbackHandler = new SampCallbackHandler()
 	{

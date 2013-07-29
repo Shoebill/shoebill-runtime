@@ -43,9 +43,6 @@ import net.gtaun.shoebill.object.Zone;
 import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 /**
  * 
  * 
@@ -111,12 +108,6 @@ public class SampObjectStoreImpl implements SampObjectStore
 	SampObjectStoreImpl()
 	{
 		
-	}
-	
-	@Override
-	public String toString()
-	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 	
 	public void setFactory(final SampObjectManager factory)

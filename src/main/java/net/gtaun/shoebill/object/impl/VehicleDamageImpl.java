@@ -42,7 +42,9 @@ public class VehicleDamageImpl implements VehicleDamage
 	@Override
 	public String toString()
 	{
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("vehicle", vehicle).append("panels", panels).append("doors", doors)
+			.append("lights", lights).append("tires", tires).toString();
 	}
 	
 	@Override
