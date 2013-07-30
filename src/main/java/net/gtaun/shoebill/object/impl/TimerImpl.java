@@ -28,7 +28,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124
  */
-public abstract class TimerImpl implements Timer
+public class TimerImpl implements Timer
 {
 	private final EventManager rootEventManager;
 	
@@ -39,12 +39,23 @@ public abstract class TimerImpl implements Timer
 	private boolean running;
 	private int counting, factualInterval;
 	
+	private boolean destroyed;
 	
-	public TimerImpl(EventManager eventManager, int interval, int count)
+	
+	public TimerImpl(EventManager eventManager, int interval, int count, TimerCallback callback)
 	{
 		this.rootEventManager = eventManager;
 		this.interval = interval;
 		this.count = count;
+		this.callback = callback;
+		
+		destroyed = false;
+	}
+
+	@Override
+	public boolean isDestroyed()
+	{
+		return destroyed;
 	}
 	
 	@Override
@@ -52,6 +63,8 @@ public abstract class TimerImpl implements Timer
 	{
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		rootEventManager.dispatchEvent(destroyEvent, this);
+		
+		destroyed = true;
 	}
 	
 	@Override

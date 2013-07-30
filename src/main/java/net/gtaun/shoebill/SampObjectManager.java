@@ -46,6 +46,7 @@ import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.object.Zone;
+import net.gtaun.shoebill.object.Timer.TimerCallback;
 import net.gtaun.shoebill.object.impl.CheckpointImpl;
 import net.gtaun.shoebill.object.impl.DialogImpl;
 import net.gtaun.shoebill.object.impl.LabelImpl;
@@ -92,7 +93,6 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private static final Class<?>[] ZONE_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, float.class, float.class, float.class, float.class };
 	private static final Class<?>[] MENU_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, String.class, int.class, float.class, float.class, float.class, float.class };
 	private static final Class<?>[] DIALOG_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, int.class };
-	private static final Class<?>[] TIMER_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, int.class, int.class };
 	private static final Class<?>[] CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { SampObjectStore.class, Radius.class };
 	private static final Class<?>[] RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { SampObjectStore.class, Radius.class, RaceCheckpointType.class, RaceCheckpoint.class };
 	
@@ -117,7 +117,6 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private ProxyableFactory<ZoneImpl> zoneFactory;
 	private ProxyableFactory<MenuImpl> menuFactory;
 	private ProxyableFactory<DialogImpl> dialogFactory;
-	private ProxyableFactory<TimerImpl> timerFactory;
 	private ProxyableFactory<CheckpointImpl> checkpointFactory;
 	private ProxyableFactory<RaceCheckpointImpl> raceCheckpointFactory;
 	
@@ -155,7 +154,6 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		zoneFactory = ProxyableFactory.Impl.createProxyableFactory(ZoneImpl.class, globalProxyManager);
 		menuFactory = ProxyableFactory.Impl.createProxyableFactory(MenuImpl.class, globalProxyManager);
 		dialogFactory = ProxyableFactory.Impl.createProxyableFactory(DialogImpl.class, globalProxyManager);
-		timerFactory = ProxyableFactory.Impl.createProxyableFactory(TimerImpl.class, globalProxyManager);
 		checkpointFactory = ProxyableFactory.Impl.createProxyableFactory(CheckpointImpl.class, globalProxyManager);
 		raceCheckpointFactory = ProxyableFactory.Impl.createProxyableFactory(RaceCheckpointImpl.class, globalProxyManager);
 		
@@ -572,11 +570,11 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	}
 	
 	@Override
-	public Timer createTimer(int interval, int count)
+	public Timer createTimer(int interval, int count, TimerCallback callback)
 	{
 		try
 		{
-			TimerImpl timer = timerFactory.create(TIMER_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, interval, count);
+			TimerImpl timer = new TimerImpl(rootEventManager, interval, count, callback);
 			store.putTimer(timer);
 			return timer;
 		}

@@ -42,6 +42,7 @@ import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Textdraw;
 import net.gtaun.shoebill.object.Timer;
+import net.gtaun.shoebill.object.Timer.TimerCallback;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.Zone;
 
@@ -232,11 +233,23 @@ public abstract class AbstractSampObjectFactory implements SampObjectFactory
 	{
 		return createMenu(title, columns, pos.getX(), pos.getY(), col1Width, col2Width);
 	}
+
+	@Override
+	public Timer createTimer(int interval, int count)
+	{
+		return createTimer(interval, count, null);
+	}
+
+	@Override
+	public Timer createTimer(int interval, TimerCallback callback)
+	{
+		return createTimer(interval, Timer.COUNT_INFINITE, callback);
+	}
 	
 	@Override
 	public Timer createTimer(int interval)
 	{
-		return createTimer(interval, Timer.COUNT_INFINITE);
+		return createTimer(interval, Timer.COUNT_INFINITE, null);
 	}
 	
 	@Override
