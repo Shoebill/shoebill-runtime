@@ -40,6 +40,7 @@ import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.object.Zone;
+import net.gtaun.shoebill.object.impl.TimerImpl;
 import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 
@@ -101,7 +102,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	private Zone[] zones = new Zone[MAX_ZONES];
 	private Menu[] menus = new Menu[MAX_MENUS];
 	
-	private Collection<Reference<Timer>> timers = new ConcurrentLinkedQueue<>();
+	private Collection<Reference<TimerImpl>> timers = new ConcurrentLinkedQueue<>();
 	private Map<Integer, Reference<Dialog>> dialogs = new ConcurrentHashMap<>();
 	
 	
@@ -410,12 +411,15 @@ public class SampObjectStoreImpl implements SampObjectStore
 	public Collection<Timer> getTimers()
 	{
 		Collection<Timer> items = new ArrayList<>();
-		for (Reference<Timer> reference : timers)
+		Collection<Reference<TimerImpl>> unusedItems = new ArrayList<>();
+		for (Reference<TimerImpl> reference : timers)
 		{
 			Timer timer = reference.get();
 			if (timer != null) items.add(timer);
+			else unusedItems.add(reference);
 		}
 		
+		timers.removeAll(unusedItems);		
 		return items;
 	}
 	
@@ -510,17 +514,17 @@ public class SampObjectStoreImpl implements SampObjectStore
 		menus[id] = menu;
 	}
 	
-	public void putTimer(Timer timer)
+	public void putTimer(TimerImpl timer)
 	{
 		clearUnusedReferences(timers);
-		timers.add(new WeakReference<Timer>(timer));
+		timers.add(new WeakReference<TimerImpl>(timer));
 	}
 	
 	public void removeTimer(Timer timer)
 	{
-		for (Iterator<Reference<Timer>> iterator = timers.iterator(); iterator.hasNext();)
+		for (Iterator<Reference<TimerImpl>> iterator = timers.iterator(); iterator.hasNext();)
 		{
-			Reference<Timer> ref = iterator.next();
+			Reference<TimerImpl> ref = iterator.next();
 			Timer t = ref.get();
 			if (t == null || t == timer) iterator.remove();
 		}
@@ -535,5 +539,20 @@ public class SampObjectStoreImpl implements SampObjectStore
 	public void removeDialog(Dialog dialog)
 	{
 		dialogs.remove(dialog.getId());
+	}
+
+	public Collection<TimerImpl> getTimerImpls()
+	{
+		Collection<TimerImpl> items = new ArrayList<>();
+		Collection<Reference<TimerImpl>> unusedItems = new ArrayList<>();
+		for (Reference<TimerImpl> reference : timers)
+		{
+			TimerImpl timer = reference.get();
+			if (timer != null) items.add(timer);
+			else unusedItems.add(reference);
+		}
+		
+		timers.removeAll(unusedItems);		
+		return items;
 	}
 }

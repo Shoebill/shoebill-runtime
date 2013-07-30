@@ -576,7 +576,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Timer timer = timerFactory.create(TIMER_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, interval, count);
+			TimerImpl timer = timerFactory.create(TIMER_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, interval, count);
 			store.putTimer(timer);
 			return timer;
 		}

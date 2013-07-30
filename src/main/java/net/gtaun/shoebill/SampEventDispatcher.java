@@ -81,8 +81,8 @@ import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.PlayerTextdraw;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Textdraw;
-import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
+import net.gtaun.shoebill.object.impl.TimerImpl;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.EventManagerImpl;
 
@@ -116,7 +116,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			int interval = (int) (nowTick - lastProcessTimeMillis);
 			lastProcessTimeMillis = nowTick;
 			
-			for (Timer timer : sampObjectStore.getTimers())
+			for (TimerImpl timer : sampObjectStore.getTimerImpls())
 			{
 				timer.tick(interval);
 			}
