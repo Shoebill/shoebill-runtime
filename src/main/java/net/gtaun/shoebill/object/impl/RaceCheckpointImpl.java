@@ -107,9 +107,23 @@ public abstract class RaceCheckpointImpl implements RaceCheckpoint
 	}
 	
 	@Override
+	public void setType(RaceCheckpointType type)
+	{
+		this.type = type;
+		update();
+	}
+	
+	@Override
 	public RaceCheckpoint getNext()
 	{
 		return next;
+	}
+	
+	@Override
+	public void setNext(RaceCheckpoint next)
+	{
+		this.next = next;
+		update();
 	}
 	
 	@Override
