@@ -16,21 +16,13 @@
 
 package net.gtaun.shoebill;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
-
-import net.gtaun.shoebill.constant.RaceCheckpointType;
 import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Area;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.Radius;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.Checkpoint;
 import net.gtaun.shoebill.object.Label;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Pickup;
@@ -38,15 +30,12 @@ import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerLabel;
 import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.PlayerTextdraw;
-import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Textdraw;
 import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Timer.TimerCallback;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.Zone;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * 
@@ -250,99 +239,5 @@ public abstract class AbstractSampObjectFactory implements SampObjectFactory
 	public Timer createTimer(int interval)
 	{
 		return createTimer(interval, Timer.COUNT_INFINITE, null);
-	}
-	
-	@Override
-	public Checkpoint createCheckpoint(float x, float y, float z, float size)
-	{
-		return createCheckpoint(new Radius(x, y, z, size));
-	}
-
-	@Override
-	public Checkpoint createCheckpoint(Vector3D pos, float size)
-	{
-		return createCheckpoint(new Radius(pos, size));
-	}
-	
-	@Override
-	public Checkpoint createCheckpoint(Location pos, float size)
-	{
-		return createCheckpoint(new Radius(pos, size));
-	}
-	
-	@Override
-	public RaceCheckpoint createRaceCheckpoint(float x, float y, float z, float size, RaceCheckpointType type, RaceCheckpoint next)
-	{
-		return createRaceCheckpoint(new Radius(x, y, z, size), type, next);
-	}
-	
-	@Override
-	public RaceCheckpoint createRaceCheckpoint(float x, float y, float z, float size, RaceCheckpointType type)
-	{
-		return createRaceCheckpoint(new Radius(x, y, z, size), type, null);
-	}
-	
-	@Override
-	public RaceCheckpoint createRaceCheckpoint(Vector3D pos, float size, RaceCheckpointType type, RaceCheckpoint next)
-	{
-		return createRaceCheckpoint(new Radius(pos, size), type, next);
-	}
-	
-	@Override
-	public RaceCheckpoint createRaceCheckpoint(Vector3D pos, float size, RaceCheckpointType type)
-	{
-		return createRaceCheckpoint(new Radius(pos, size), type, null);
-	}
-	
-	@Override
-	public RaceCheckpoint createRaceCheckpoint(Location loc, float size, RaceCheckpointType type, RaceCheckpoint next)
-	{
-		return createRaceCheckpoint(new Radius(loc, size), type, next);
-	}
-	
-	@Override
-	public RaceCheckpoint createRaceCheckpoint(Location loc, float size, RaceCheckpointType type)
-	{
-		return createRaceCheckpoint(new Radius(loc, size), type, null);
-	}
-	
-	@Override
-	public RaceCheckpoint createRaceCheckpoint(Radius loc, RaceCheckpointType type)
-	{
-		return createRaceCheckpoint(loc, type, null);
-	}
-	
-	@Override
-	public List<RaceCheckpoint> createRaceCheckpoints(List<Radius> locations, RaceCheckpointType type)
-	{
-		List<RaceCheckpoint> checkpoints = new ArrayList<>(locations.size());
-		
-		RaceCheckpoint lastCheckpoint = null;
-		for (ListIterator<Radius> it = locations.listIterator(locations.size()); it.hasPrevious();)
-		{
-			Radius radius = it.previous();
-			lastCheckpoint = createRaceCheckpoint(radius, type, lastCheckpoint);
-			checkpoints.add(lastCheckpoint);
-		}
-		Collections.reverse(checkpoints);
-		
-		return checkpoints;
-	}
-	
-	@Override
-	public List<RaceCheckpoint> createRaceCheckpoints(List<Pair<Radius, RaceCheckpointType>> pairs)
-	{
-		List<RaceCheckpoint> checkpoints = new ArrayList<>(pairs.size());
-		
-		RaceCheckpoint lastCheckpoint = null;
-		for (ListIterator<Pair<Radius, RaceCheckpointType>> it = pairs.listIterator(pairs.size()); it.hasPrevious();)
-		{
-			Pair<Radius, RaceCheckpointType> pair = it.previous();
-			lastCheckpoint = createRaceCheckpoint(pair.getLeft(), pair.getRight(), lastCheckpoint);
-			checkpoints.add(lastCheckpoint);
-		}
-		Collections.reverse(checkpoints);
-		
-		return checkpoints;
 	}
 }

@@ -19,16 +19,13 @@ package net.gtaun.shoebill;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import net.gtaun.shoebill.constant.RaceCheckpointType;
 import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.Radius;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.event.DestroyEventHandler;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.Checkpoint;
 import net.gtaun.shoebill.object.Destroyable;
 import net.gtaun.shoebill.object.Dialog;
 import net.gtaun.shoebill.object.Label;
@@ -38,16 +35,14 @@ import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerLabel;
 import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.PlayerTextdraw;
-import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.object.Textdraw;
 import net.gtaun.shoebill.object.Timer;
+import net.gtaun.shoebill.object.Timer.TimerCallback;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.object.Zone;
-import net.gtaun.shoebill.object.Timer.TimerCallback;
-import net.gtaun.shoebill.object.impl.CheckpointImpl;
 import net.gtaun.shoebill.object.impl.DialogImpl;
 import net.gtaun.shoebill.object.impl.LabelImpl;
 import net.gtaun.shoebill.object.impl.MenuImpl;
@@ -56,7 +51,6 @@ import net.gtaun.shoebill.object.impl.PlayerImpl;
 import net.gtaun.shoebill.object.impl.PlayerLabelImpl;
 import net.gtaun.shoebill.object.impl.PlayerObjectImpl;
 import net.gtaun.shoebill.object.impl.PlayerTextdrawImpl;
-import net.gtaun.shoebill.object.impl.RaceCheckpointImpl;
 import net.gtaun.shoebill.object.impl.SampObjectImpl;
 import net.gtaun.shoebill.object.impl.ServerImpl;
 import net.gtaun.shoebill.object.impl.TextdrawImpl;
@@ -93,8 +87,6 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private static final Class<?>[] ZONE_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, float.class, float.class, float.class, float.class };
 	private static final Class<?>[] MENU_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, String.class, int.class, float.class, float.class, float.class, float.class };
 	private static final Class<?>[] DIALOG_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, int.class };
-	private static final Class<?>[] CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { SampObjectStore.class, Radius.class };
-	private static final Class<?>[] RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES = { SampObjectStore.class, Radius.class, RaceCheckpointType.class, RaceCheckpoint.class };
 	
 	private static final int MAX_DIALOG_ID = 32767;
 	
@@ -117,8 +109,6 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	private ProxyableFactory<ZoneImpl> zoneFactory;
 	private ProxyableFactory<MenuImpl> menuFactory;
 	private ProxyableFactory<DialogImpl> dialogFactory;
-	private ProxyableFactory<CheckpointImpl> checkpointFactory;
-	private ProxyableFactory<RaceCheckpointImpl> raceCheckpointFactory;
 	
 	private int allocatedDialogId = 0;
 	private Queue<Integer> recycledDialogIds;
@@ -154,8 +144,6 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		zoneFactory = ProxyableFactory.Impl.createProxyableFactory(ZoneImpl.class, globalProxyManager);
 		menuFactory = ProxyableFactory.Impl.createProxyableFactory(MenuImpl.class, globalProxyManager);
 		dialogFactory = ProxyableFactory.Impl.createProxyableFactory(DialogImpl.class, globalProxyManager);
-		checkpointFactory = ProxyableFactory.Impl.createProxyableFactory(CheckpointImpl.class, globalProxyManager);
-		raceCheckpointFactory = ProxyableFactory.Impl.createProxyableFactory(RaceCheckpointImpl.class, globalProxyManager);
 		
 		recycledDialogIds = new LinkedList<>();
 		
@@ -577,42 +565,6 @@ public class SampObjectManager extends AbstractSampObjectFactory
 			TimerImpl timer = new TimerImpl(rootEventManager, interval, count, callback);
 			store.putTimer(timer);
 			return timer;
-		}
-		catch (RuntimeException e)
-		{
-			throw e;
-		}
-		catch (Throwable e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	@Override
-	public Checkpoint createCheckpoint(Radius loc)
-	{
-		try
-		{
-			return checkpointFactory.create(CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, store, loc);
-		}
-		catch (RuntimeException e)
-		{
-			throw e;
-		}
-		catch (Throwable e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	@Override
-	public RaceCheckpoint createRaceCheckpoint(Radius loc, RaceCheckpointType type, RaceCheckpoint next)
-	{
-		try
-		{
-			return raceCheckpointFactory.create(RACE_CHECKPOINT_CONSTRUCTOR_ARGUMENT_TYPES, store, loc, type, next);
 		}
 		catch (RuntimeException e)
 		{
