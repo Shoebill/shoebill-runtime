@@ -1048,7 +1048,7 @@ public abstract class PlayerImpl implements Player
 		}
 		
 		Vector3D loc = checkpoint.getLocation();
-		SampNativeFunction.setPlayerCheckpoint(id, loc.getX(), loc.getY(), loc.getZ(), checkpoint.getRadius());
+		SampNativeFunction.setPlayerCheckpoint(id, loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize());
 		this.checkpoint = checkpoint;
 	}
 	
@@ -1078,7 +1078,7 @@ public abstract class PlayerImpl implements Player
 		if (checkpoint.getNext() != null)
 		{
 			Vector3D nextLoc = next.getLocation();
-			SampNativeFunction.setPlayerRaceCheckpoint(id, checkpoint.getType().getValue(), loc.getX(), loc.getY(), loc.getZ(), nextLoc.getX(), nextLoc.getY(), nextLoc.getZ(), checkpoint.getRadius());
+			SampNativeFunction.setPlayerRaceCheckpoint(id, checkpoint.getType().getValue(), loc.getX(), loc.getY(), loc.getZ(), nextLoc.getX(), nextLoc.getY(), nextLoc.getZ(), checkpoint.getSize());
 		}
 		else
 		{
@@ -1087,7 +1087,7 @@ public abstract class PlayerImpl implements Player
 			if (type == RaceCheckpointType.NORMAL) type = RaceCheckpointType.NORMAL_FINISH;
 			else if (type == RaceCheckpointType.AIR) type = RaceCheckpointType.AIR_FINISH;
 			
-			SampNativeFunction.setPlayerRaceCheckpoint(id, type.getValue(), loc.getX(), loc.getY(), loc.getZ(), loc.getX(), loc.getY(), loc.getZ(), checkpoint.getRadius());
+			SampNativeFunction.setPlayerRaceCheckpoint(id, type.getValue(), loc.getX(), loc.getY(), loc.getZ(), loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize());
 		}
 		
 		raceCheckpoint = checkpoint;
