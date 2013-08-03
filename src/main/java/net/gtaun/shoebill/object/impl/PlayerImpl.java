@@ -22,7 +22,6 @@ import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.constant.CameraCutStyle;
 import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.constant.FightStyle;
-import net.gtaun.shoebill.constant.MapIconStyle;
 import net.gtaun.shoebill.constant.PlayerState;
 import net.gtaun.shoebill.constant.RaceCheckpointType;
 import net.gtaun.shoebill.constant.RecordType;
@@ -55,6 +54,7 @@ import net.gtaun.shoebill.object.Dialog;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerAttach;
+import net.gtaun.shoebill.object.PlayerMapIcon;
 import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.PlayerWeaponSkill;
 import net.gtaun.shoebill.object.SampObject;
@@ -79,6 +79,7 @@ public abstract class PlayerImpl implements Player
 	
 	private final PlayerKeyStateImpl keyState;
 	private final PlayerAttach playerAttach;
+	private final PlayerMapIcon mapIcon;
 	
 	private boolean isControllable = true;
 	private boolean isStuntBonusEnabled = false;
@@ -110,6 +111,7 @@ public abstract class PlayerImpl implements Player
 		playerAttach = new PlayerAttachImpl(this);
 		keyState = new PlayerKeyStateImpl(this);
 		skill = new PlayerWeaponSkillImpl(this);
+		mapIcon = new PlayerMapIconImpl(this);
 		
 		setColor(Color.WHITE);
 		
@@ -1247,25 +1249,9 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setMapIcon(int iconId, float x, float y, float z, int markerType, Color color, MapIconStyle style)
+	public PlayerMapIcon getMapIcon()
 	{
-		if (isOnline() == false) return;
-		
-		SampNativeFunction.setPlayerMapIcon(id, iconId, x, y, z, markerType, color.getValue(), style.getValue());
-	}
-	
-	@Override
-	public void setMapIcon(int iconId, Vector3D pos, int markerType, Color color, MapIconStyle style)
-	{
-		setMapIcon(iconId, pos.getX(), pos.getY(), pos.getZ(), markerType, color, style);
-	}
-	
-	@Override
-	public void removeMapIcon(int iconId)
-	{
-		if (isOnline() == false) return;
-		
-		SampNativeFunction.removePlayerMapIcon(id, iconId);
+		return mapIcon;
 	}
 	
 	@Override
