@@ -19,7 +19,6 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStore;
-import net.gtaun.shoebill.constant.PlayerState;
 import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Quaternion;
@@ -27,7 +26,6 @@ import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.VehicleEventHandler;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
-import net.gtaun.shoebill.event.player.PlayerStateChangeEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleModEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleUpdateDamageEvent;
@@ -361,11 +359,8 @@ public abstract class VehicleImpl implements Vehicle
 		if (isDestroyed()) return;
 		if (player.isOnline() == false) return;
 		
-		PlayerState state = player.getState();
+		if (player.isInAnyVehicle()) player.removeFromVehicle();
 		SampNativeFunction.putPlayerInVehicle(player.getId(), id, seat);
-		
-		PlayerStateChangeEvent event = new PlayerStateChangeEvent(player, state.getValue());
-		managedEventManager.dispatchEvent(event, this, player);
 	}
 	
 	@Override

@@ -586,12 +586,6 @@ public abstract class PlayerImpl implements Player
 		if (isOnline() == false) return;
 		if (vehicle != null && vehicle.isDestroyed()) return;
 		
-		if (vehicle == null)
-		{
-			removeFromVehicle();
-			return;
-		}
-		
 		vehicle.putPlayer(this, seat);
 	}
 	
