@@ -83,7 +83,7 @@ public class PlayerMapIconImpl implements PlayerMapIcon
 			@Override
 			public boolean isDestroyed()
 			{
-				return id != -1;
+				return id == -1;
 			}
 			
 			@Override
