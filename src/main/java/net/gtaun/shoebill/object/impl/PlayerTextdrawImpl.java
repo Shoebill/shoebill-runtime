@@ -83,7 +83,7 @@ public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 	@Override
 	public boolean isDestroyed()
 	{
-		if(!player.isOnline()) destroy();
+		if(!player.isOnline() && id != INVALID_ID) destroy();
 		return id == INVALID_ID;
 	}
 	
