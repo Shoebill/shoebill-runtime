@@ -70,7 +70,7 @@ public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 	@Override
 	public void destroy()
 	{
-		if (isDestroyed()) return;
+		if (id == INVALID_ID) return;
 		
 		if (player.isOnline()) SampNativeFunction.playerTextDrawDestroy(player.getId(), id);
 		
