@@ -323,6 +323,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
+			if (!player.isOnline()) return null;
+			
 			PlayerObject object = playerObjectFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, player, modelId, loc, rot, drawDistance);
 			store.setPlayerObject(player, object.getId(), object);
 			return object;
@@ -383,6 +385,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
+			if (!player.isOnline()) return null;
+			
 			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, store, player, text, color, loc, drawDistance, testLOS);
 			store.setLabel(label.getId(), label);
 			return label;
@@ -403,6 +407,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
+			if (!player.isOnline()) return null;
+			
 			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES, rootEventManager, store, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
 			store.setLabel(label.getId(), label);
 			return label;
@@ -423,6 +429,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
+			if (!player.isOnline()) return null;
+			
 			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES, rootEventManager, store, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
 			store.setLabel(label.getId(), label);
 			return label;
@@ -463,6 +471,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
+			if (!player.isOnline()) return null;
+			
 			PlayerTextdraw textdraw = playerTextdrawFactory.create(PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, player, x, y, text);
 			store.setPlayerTextdraw(player, textdraw.getId(), textdraw);
 			return textdraw;
