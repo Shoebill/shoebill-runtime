@@ -72,7 +72,7 @@ public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.playerTextDrawDestroy(player.getId(), id);
+		if (player.isOnline()) SampNativeFunction.playerTextDrawDestroy(player.getId(), id);
 		
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		rootEventManager.dispatchEvent(destroyEvent, this);
@@ -83,7 +83,7 @@ public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 	@Override
 	public boolean isDestroyed()
 	{
-		if( player.isOnline() == false ) id = INVALID_ID;
+		if(!player.isOnline()) destroy();
 		return id == INVALID_ID;
 	}
 	

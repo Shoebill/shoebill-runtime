@@ -235,8 +235,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -254,8 +253,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -273,8 +271,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -293,8 +290,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -313,8 +309,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -323,7 +318,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			if (!player.isOnline()) return null;
+			if (!player.isOnline()) throw new CreationFailedException();
 			
 			PlayerObject object = playerObjectFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, player, modelId, loc, rot, drawDistance);
 			store.setPlayerObject(player, object.getId(), object);
@@ -335,8 +330,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -355,8 +349,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -375,8 +368,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -397,8 +389,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -407,7 +398,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			if (!player.isOnline()) return null;
+			if (!player.isOnline()) throw new CreationFailedException();
 			
 			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES, rootEventManager, store, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
 			store.setLabel(label.getId(), label);
@@ -419,8 +410,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -429,7 +419,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			if (!player.isOnline()) return null;
+			if (!player.isOnline()) throw new CreationFailedException();
 			
 			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES, rootEventManager, store, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
 			store.setLabel(label.getId(), label);
@@ -441,8 +431,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -471,7 +460,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			if (!player.isOnline()) return null;
+			if (!player.isOnline()) throw new CreationFailedException();
 			
 			PlayerTextdraw textdraw = playerTextdrawFactory.create(PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, player, x, y, text);
 			store.setPlayerTextdraw(player, textdraw.getId(), textdraw);
@@ -483,8 +472,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -503,8 +491,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -523,8 +510,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -562,8 +548,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 	
@@ -582,8 +567,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
 }
