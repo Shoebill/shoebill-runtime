@@ -41,7 +41,7 @@ public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 	private EventManager rootEventManager;
 	
 	private Player player;
-	private int id = INVALID_ID;
+	private int id;
 	private Vector2D position;
 	private String text;
 	
@@ -55,6 +55,8 @@ public abstract class PlayerTextdrawImpl implements PlayerTextdraw
 		
 		position = new Vector2D(x, y);
 		if (StringUtils.isEmpty(text)) text = " ";
+		
+		if (!player.isOnline()) throw new CreationFailedException();
 		
 		id = SampNativeFunction.createPlayerTextDraw(player.getId(), x, y, text);
 		if (id == INVALID_ID) throw new CreationFailedException();

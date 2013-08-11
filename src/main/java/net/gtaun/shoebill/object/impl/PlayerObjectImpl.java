@@ -94,7 +94,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	@Override
 	public void destroy()
 	{
-		if (isDestroyed()) return;
+		if (id != INVALID_ID) return;
 		
 		managedEventManager.cancelAll();
 		
@@ -112,7 +112,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	@Override
 	public boolean isDestroyed()
 	{
-		if (player.isOnline() == false) id = INVALID_ID;
+		if (!player.isOnline() && id != INVALID_ID) destroy();
 		return id == INVALID_ID;
 	}
 	

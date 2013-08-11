@@ -473,6 +473,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	
 	public void setPlayerObject(Player player, int id, PlayerObject object)
 	{
+		if (!player.isOnline()) return;
 		PlayerObject[] playerObjects = playerObjectsArray[player.getId()];
 		playerObjects[id] = object;
 	}
@@ -489,6 +490,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	
 	public void setPlayerLabel(Player player, int id, PlayerLabel label)
 	{
+		if (!player.isOnline()) return;
 		PlayerLabel[] playerLabels = playerLabelsArray[player.getId()];
 		playerLabels[id] = label;
 	}
@@ -500,6 +502,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 
 	public void setPlayerTextdraw(Player player, int id, PlayerTextdraw textdraw)
 	{
+		if (!player.isOnline()) return;
 		PlayerTextdraw[] textdraws = playerTextdrawsArray[player.getId()];
 		textdraws[id] = textdraw;
 	}
