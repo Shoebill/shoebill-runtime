@@ -34,10 +34,16 @@ public class PlayerKeyStateImpl implements PlayerKeyState
 	private Player player;
 	private int keys, updownValue, leftrightValue;
 	
-	
+
 	public PlayerKeyStateImpl(Player player)
 	{
+		this(player, 0);
+	}
+	
+	public PlayerKeyStateImpl(Player player, int keys)
+	{
 		this.player = player;
+		this.keys = keys;
 	}
 	
 	void update()
@@ -72,9 +78,19 @@ public class PlayerKeyStateImpl implements PlayerKeyState
 	}
 	
 	@Override
-	public boolean isKeyPressed(PlayerKey key)
+	public boolean isKeyPressed(PlayerKey... playerKeys)
 	{
-		return (keys & key.getValue()) != 0;
+		int value = 0;
+		for (PlayerKey key : playerKeys) value |= key.getValue();
+		return (keys & value) == value;
+	}
+	
+	@Override
+	public boolean isAccurateKeyPressed(PlayerKey... playerKeys)
+	{
+		int value = 0;
+		for (PlayerKey key : playerKeys) value |= key.getValue();
+		return keys == value;
 	}
 	
 	@Override

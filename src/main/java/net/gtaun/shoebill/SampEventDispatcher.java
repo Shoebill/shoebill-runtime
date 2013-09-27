@@ -82,6 +82,7 @@ import net.gtaun.shoebill.object.PlayerTextdraw;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Textdraw;
 import net.gtaun.shoebill.object.Vehicle;
+import net.gtaun.shoebill.object.impl.PlayerKeyStateImpl;
 import net.gtaun.shoebill.object.impl.TimerImpl;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.EventManagerImpl;
@@ -762,7 +763,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectStore.getPlayer(playerId);
 			
-			PlayerKeyStateChangeEvent event = new PlayerKeyStateChangeEvent(player, oldKeys);
+			PlayerKeyStateChangeEvent event = new PlayerKeyStateChangeEvent(player, new PlayerKeyStateImpl(player, oldKeys));
 			rootEventManager.dispatchEvent(event, player);
 			
 			return 1;
