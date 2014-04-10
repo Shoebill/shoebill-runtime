@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012 MK124
+ * Copyright (C) 2012-2014 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,22 +65,18 @@ import net.gtaun.util.event.HandlerPriority;
  * 
  * @author MK124
  */
-public class SampObjectManager extends AbstractSampObjectFactory
+public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampObjectManager
 {
 	private static final int MAX_DIALOG_ID = 32767;
 	
-	
-	private final EventManager rootEventManager;
-	private final SampObjectStoreImpl store;
 	
 	private int allocatedDialogId = 0;
 	private Queue<Integer> recycledDialogIds;
 	
 	
-	public SampObjectManager(EventManager eventManager, SampObjectStoreImpl store)
+	public SampObjectManagerImpl(EventManager eventManagerNode)
 	{
-		this.rootEventManager = eventManager;
-		this.store = store;
+		super(eventManagerNode);
 		initialize();
 	}
 	
@@ -94,71 +90,71 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		recycledDialogIds = new LinkedList<>();
 		
-		rootEventManager.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, (DestroyEvent e) ->
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, (DestroyEvent e) ->
 		{
 			Destroyable obj = e.getDestroyable();
 			
 			if(obj instanceof VehicleImpl)
 			{
 				Vehicle vehicle = (Vehicle) obj;
-				store.setVehicle(vehicle.getId(), null);
+				super.setVehicle(vehicle.getId(), null);
 			}
 			else if(obj instanceof PlayerObject)
 			{
 				PlayerObject object = (PlayerObject) obj;
-				store.setPlayerObject(object.getPlayer(), object.getId(), null);
+				super.setPlayerObject(object.getPlayer(), object.getId(), null);
 			}
 			else if(obj instanceof SampObject)
 			{
 				SampObject object = (SampObject) obj;
-				store.setObject(object.getId(), null);
+				super.setObject(object.getId(), null);
 			}
 			else if (obj instanceof Pickup)
 			{
 				Pickup pickup = (Pickup) obj;
-				store.setPickup(pickup.getId(), null);
+				super.setPickup(pickup.getId(), null);
 			}
 			else if (obj instanceof PlayerLabel)
 			{
 				PlayerLabel label = (PlayerLabel) obj;
-				store.setPlayerLabel(label.getPlayer(), label.getId(), null);
+				super.setPlayerLabel(label.getPlayer(), label.getId(), null);
 			}
 			else if (obj instanceof Label)
 			{
 				Label label = (Label) obj;
-				store.setLabel(label.getId(), null);
+				super.setLabel(label.getId(), null);
 			}
 			else if (obj instanceof Textdraw)
 			{
 				Textdraw textdraw = (Textdraw) obj;
-				store.setTextdraw(textdraw.getId(), null);
+				super.setTextdraw(textdraw.getId(), null);
 			}
 			else if (obj instanceof PlayerTextdraw)
 			{
 				PlayerTextdraw textdraw = (PlayerTextdraw) obj;
-				store.setPlayerTextdraw(textdraw.getPlayer(), textdraw.getId(), null);
+				super.setPlayerTextdraw(textdraw.getPlayer(), textdraw.getId(), null);
 			}
 			else if (obj instanceof Zone)
 			{
 				Zone zone = (Zone) obj;
-				store.setZone(zone.getId(), null);
+				super.setZone(zone.getId(), null);
 			}
 			else if (obj instanceof Menu)
 			{
 				Menu menu = (Menu) obj;
-				store.setMenu(menu.getId(), null);
+				super.setMenu(menu.getId(), null);
 			}
 			else if (obj instanceof DialogId)
 			{
 				DialogId dialog = (DialogId) obj;
-				store.removeDialog(dialog);
+				super.removeDialog(dialog);
 				int dialogId = dialog.getId();
 				recycleDialogId(dialogId);
 			}
 			else if (obj instanceof Timer)
 			{
 				Timer timer = (Timer) obj;
-				store.removeTimer(timer);
+				super.removeTimer(timer);
 			}
 		});
 	}
@@ -167,8 +163,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			World world = new WorldImpl(store);
-			store.setWorld(world);
+			World world = new WorldImpl(this);
+			super.setWorld(world);
 			return world;
 		}
 		catch (RuntimeException e)
@@ -185,8 +181,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Server server = new ServerImpl(store);
-			store.setServer(server);
+			Server server = new ServerImpl(this);
+			super.setServer(server);
 			return server;
 		}
 		catch (RuntimeException e)
@@ -203,8 +199,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Player player = new PlayerImpl(rootEventManager, store, playerId);
-			store.setPlayer(playerId, player);
+			Player player = new PlayerImpl(eventManagerNode, this, playerId);
+			super.setPlayer(playerId, player);
 			return player;
 		}
 		catch (RuntimeException e)
@@ -222,8 +218,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Vehicle vehicle = new VehicleImpl(rootEventManager, store, modelId, loc, color1, color2, respawnDelay);
-			store.setVehicle(vehicle.getId(), vehicle);
+			Vehicle vehicle = new VehicleImpl(eventManagerNode, this, modelId, loc, color1, color2, respawnDelay);
+			super.setVehicle(vehicle.getId(), vehicle);
 			return vehicle;
 		}
 		catch (RuntimeException e)
@@ -241,8 +237,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			SampObject object = new SampObjectImpl(rootEventManager, modelId, loc, rot, drawDistance);
-			store.setObject(object.getId(), object);
+			SampObject object = new SampObjectImpl(eventManagerNode, modelId, loc, rot, drawDistance);
+			super.setObject(object.getId(), object);
 			return object;
 		}
 		catch (RuntimeException e)
@@ -262,8 +258,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
 			
-			PlayerObject object = new PlayerObjectImpl(rootEventManager, player, modelId, loc, rot, drawDistance);
-			store.setPlayerObject(player, object.getId(), object);
+			PlayerObject object = new PlayerObjectImpl(eventManagerNode, player, modelId, loc, rot, drawDistance);
+			super.setPlayerObject(player, object.getId(), object);
 			return object;
 		}
 		catch (RuntimeException e)
@@ -281,8 +277,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Pickup pickup = new PickupImpl(rootEventManager, modelId, type, loc);
-			store.setPickup(pickup.getId(), pickup);
+			Pickup pickup = new PickupImpl(eventManagerNode, modelId, type, loc);
+			super.setPickup(pickup.getId(), pickup);
 			return pickup;
 		}
 		catch (RuntimeException e)
@@ -300,8 +296,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Label label = new LabelImpl(rootEventManager, text, color, loc, drawDistance, testLOS);
-			store.setLabel(label.getId(), label);
+			Label label = new LabelImpl(eventManagerNode, text, color, loc, drawDistance, testLOS);
+			super.setLabel(label.getId(), label);
 			return label;
 		}
 		catch (RuntimeException e)
@@ -321,8 +317,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		{
 			if (!player.isOnline()) return null;
 			
-			PlayerLabel label = new PlayerLabelImpl(rootEventManager, store, player, text, color, loc, drawDistance, testLOS);
-			store.setLabel(label.getId(), label);
+			PlayerLabel label = new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS);
+			super.setLabel(label.getId(), label);
 			return label;
 		}
 		catch (RuntimeException e)
@@ -342,8 +338,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
 			
-			PlayerLabel label = new PlayerLabelImpl(rootEventManager, store, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
-			store.setLabel(label.getId(), label);
+			PlayerLabel label = new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
+			super.setLabel(label.getId(), label);
 			return label;
 		}
 		catch (RuntimeException e)
@@ -363,8 +359,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
 			
-			PlayerLabel label = new PlayerLabelImpl(rootEventManager, store, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
-			store.setLabel(label.getId(), label);
+			PlayerLabel label = new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
+			super.setLabel(label.getId(), label);
 			return label;
 		}
 		catch (RuntimeException e)
@@ -382,8 +378,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Textdraw textdraw = new TextdrawImpl(rootEventManager, x, y, text);
-			store.setTextdraw(textdraw.getId(), textdraw);
+			Textdraw textdraw = new TextdrawImpl(eventManagerNode, x, y, text);
+			super.setTextdraw(textdraw.getId(), textdraw);
 			return textdraw;
 		}
 		catch (RuntimeException e)
@@ -404,8 +400,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
 			
-			PlayerTextdraw textdraw = new PlayerTextdrawImpl(rootEventManager, player, x, y, text);
-			store.setPlayerTextdraw(player, textdraw.getId(), textdraw);
+			PlayerTextdraw textdraw = new PlayerTextdrawImpl(eventManagerNode, player, x, y, text);
+			super.setPlayerTextdraw(player, textdraw.getId(), textdraw);
 			return textdraw;
 		}
 		catch (RuntimeException e)
@@ -423,8 +419,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Zone zone = new ZoneImpl(rootEventManager, minX, minY, maxX, maxY);
-			store.setZone(zone.getId(), zone);
+			Zone zone = new ZoneImpl(eventManagerNode, minX, minY, maxX, maxY);
+			super.setZone(zone.getId(), zone);
 			return zone;
 		}
 		catch (RuntimeException e)
@@ -442,8 +438,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Menu menu = new MenuImpl(rootEventManager, title, columns, x, y, col1Width, col2Width);
-			store.setMenu(menu.getId(), menu);
+			Menu menu = new MenuImpl(eventManagerNode, title, columns, x, y, col1Width, col2Width);
+			super.setMenu(menu.getId(), menu);
 			return menu;
 		}
 		catch (RuntimeException e)
@@ -480,8 +476,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		try
 		{
 			Integer dialogId = allocateDialogId();
-			DialogId dialog = new DialogImpl(rootEventManager, dialogId);
-			store.putDialog(dialog.getId(), dialog);
+			DialogId dialog = new DialogImpl(eventManagerNode, dialogId);
+			super.putDialog(dialog.getId(), dialog);
 			return dialog;
 		}
 		catch (RuntimeException e)
@@ -499,8 +495,8 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			TimerImpl timer = new TimerImpl(rootEventManager, interval, count, callback);
-			store.putTimer(timer);
+			TimerImpl timer = new TimerImpl(eventManagerNode, interval, count, callback);
+			super.putTimer(timer);
 			return timer;
 		}
 		catch (RuntimeException e)

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2012 MK124
+ * Copyright (C) 2011-2014 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License"){}
  * you may not use this file except in compliance with the License.
@@ -63,9 +63,9 @@ public class ShoebillImpl implements Shoebill
 	private static final String RESOURCES_CONFIG_FILENAME = "resources.yml";
 	
 	
-	public static ShoebillImpl getInstancea()
+	public static ShoebillImpl getInstance()
 	{
-		return (ShoebillImpl) Shoebill.Instance.get();
+		return (ShoebillImpl) Shoebill.get();
 	}
 	
 	
@@ -79,8 +79,7 @@ public class ShoebillImpl implements Shoebill
 	private SampCallbackManagerImpl sampCallbackManager;
 	private AmxInstanceManagerImpl amxInstanceManager;
 	
-	private SampObjectStoreImpl sampObjectStore;
-	private SampObjectManager sampObjectManager;
+	private SampObjectManagerImpl sampObjectManager;
 
 	private ResourceManagerImpl pluginManager;
 	private ServiceManagerImpl serviceManager;
@@ -96,7 +95,7 @@ public class ShoebillImpl implements Shoebill
 	
 	public ShoebillImpl(int[] amxHandles) throws IOException, ClassNotFoundException
 	{
-		Shoebill.Instance.shoebillReference = new WeakReference<>(this);
+		Shoebill.Instance.reference = new WeakReference<>(this);
 		
 		config = new ShoebillConfig(new FileInputStream(SHOEBILL_CONFIG_PATH));
 		initializeLoggerConfig(new File(config.getShoebillDir(), LOG4J_CONFIG_FILENAME));
@@ -242,19 +241,16 @@ public class ShoebillImpl implements Shoebill
 		pluginManager = new ResourceManagerImpl(this, eventManager, artifactLocator, config.getDataDir());
 		serviceManager = new ServiceManagerImpl(eventManager);
 		
-		sampObjectStore = new SampObjectStoreImpl(eventManager);
-		sampObjectManager = new SampObjectManager(eventManager, sampObjectStore);
-		sampObjectStore.setFactory(sampObjectManager);
-		
+		sampObjectManager = new SampObjectManagerImpl(eventManager);
 		sampObjectManager.createWorld();
 		
 		Server server = sampObjectManager.createServer();
 		server.setServerCodepage(config.getServerCodepage());
 		
-		sampEventLogger = new SampEventLogger(sampObjectStore);
-		sampEventDispatcher = new SampEventDispatcher(sampObjectStore, eventManager);
+		sampEventLogger = new SampEventLogger(sampObjectManager);
+		sampEventDispatcher = new SampEventDispatcher(sampObjectManager, eventManager);
 		
-		sampCallbackManager.registerCallbackHandler(sampObjectStore.getCallbackHandler());
+		sampCallbackManager.registerCallbackHandler(sampObjectManager.getCallbackHandler());
 		sampCallbackManager.registerCallbackHandler(sampEventDispatcher);
 		sampCallbackManager.registerCallbackHandler(sampEventLogger);
 	}
@@ -307,13 +303,7 @@ public class ShoebillImpl implements Shoebill
 	}
 	
 	@Override
-	public SampObjectStore getSampObjectStore()
-	{
-		return sampObjectStore;
-	}
-	
-	@Override
-	public SampObjectManager getSampObjectFactory()
+	public SampObjectManager getSampObjectManager()
 	{
 		return sampObjectManager;
 	}

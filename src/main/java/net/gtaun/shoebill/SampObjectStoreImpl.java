@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2012 MK124
+ * Copyright (C) 2011-2014 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,8 +98,9 @@ public class SampObjectStoreImpl implements SampObjectStore
 	}
 	
 	
+	protected final EventManager eventManagerNode;
+	
 	private SampCallbackHandler callbackHandler;
-	private EventManager eventManagerNode;
 	
 	private Server server;
 	private World world;
@@ -192,7 +193,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 		});
 	}
 	
-	public void setFactory(final SampObjectManager factory)
+	public void setFactory(final SampObjectManagerImpl factory)
 	{
 		if (callbackHandler == null) callbackHandler = new AbstractSampCallbackHandler()
 		{
@@ -252,6 +253,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	public Player getPlayer(String name)
 	{
 		if (name == null) return null;
+		name = name.trim();
 		
 		for (Player player : players)
 		{
@@ -476,7 +478,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	}
 	
 	@Override
-	public Collection<DialogId> getDialogs()
+	public Collection<DialogId> getDialogIds()
 	{
 		Collection<DialogId> items = new ArrayList<DialogId>();
 		for (Reference<DialogId> reference : dialogs.values())
@@ -488,7 +490,6 @@ public class SampObjectStoreImpl implements SampObjectStore
 		return items;
 	}
 	
-	@Override
 	public Collection<Timer> getTimers()
 	{
 		Collection<Timer> items = new ArrayList<>();
