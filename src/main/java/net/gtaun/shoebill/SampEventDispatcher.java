@@ -72,7 +72,7 @@ import net.gtaun.shoebill.event.vehicle.VehicleStreamInEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleStreamOutEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleUpdateDamageEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleUpdateEvent;
-import net.gtaun.shoebill.object.Dialog;
+import net.gtaun.shoebill.object.DialogId;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.shoebill.object.Player;
@@ -85,7 +85,7 @@ import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.impl.PlayerKeyStateImpl;
 import net.gtaun.shoebill.object.impl.TimerImpl;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
-import net.gtaun.util.event.EventManagerImpl;
+import net.gtaun.util.event.EventManagerRoot;
 
 /**
  * 
@@ -95,12 +95,12 @@ import net.gtaun.util.event.EventManagerImpl;
 public class SampEventDispatcher implements SampCallbackHandler
 {
 	private SampObjectStoreImpl sampObjectStore;
-	private EventManagerImpl rootEventManager;
+	private EventManagerRoot rootEventManager;
 	
 	private long lastProcessTimeMillis;
 	
 	
-	public SampEventDispatcher(SampObjectStoreImpl store, EventManagerImpl manager)
+	public SampEventDispatcher(SampObjectStoreImpl store, EventManagerRoot manager)
 	{
 		sampObjectStore = store;
 		rootEventManager = manager;
@@ -178,7 +178,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Player player = sampObjectStore.getPlayer(playerId);
 			
-			Dialog dialog = player.getDialog();
+			DialogId dialog = player.getDialog();
 			if (dialog != null)
 			{
 				DialogCancelEvent dialogCancelEvent = new DialogCancelEvent(dialog, player, DialogCancelType.CANCEL);
@@ -909,7 +909,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			Player player = sampObjectStore.getPlayer(playerId);
-			Dialog dialog = sampObjectStore.getDialog(dialogId);
+			DialogId dialog = sampObjectStore.getDialog(dialogId);
 			
 			if (dialog == null) return 0;
 			

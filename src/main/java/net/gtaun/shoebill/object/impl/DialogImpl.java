@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2012 MK124
+ * Copyright (C) 2011-2014 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
-import net.gtaun.shoebill.object.Dialog;
+import net.gtaun.shoebill.object.DialogId;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.util.event.EventManager;
 
@@ -30,7 +30,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124
  */
-public abstract class DialogImpl implements Dialog
+public class DialogImpl implements DialogId
 {
 	static final int INVALID_ID = -1;
 	
@@ -60,6 +60,12 @@ public abstract class DialogImpl implements Dialog
 		rootEventManager.dispatchEvent(destroyEvent, this);
 		
 		id = INVALID_ID;
+	}
+
+	@Override
+	public boolean isDestroyed()
+	{
+		return id == INVALID_ID;
 	}
 	
 	@Override

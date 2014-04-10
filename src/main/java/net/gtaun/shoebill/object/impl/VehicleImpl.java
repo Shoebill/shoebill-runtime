@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2012 MK124
+ * Copyright (C) 2011-2014 MK124
  * Copyright (C) 2011 JoJLlmAn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,12 +25,9 @@ import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Quaternion;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
-import net.gtaun.shoebill.event.VehicleEventHandler;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.event.player.PlayerStateChangeEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleModEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleUpdateDamageEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.Vehicle;
@@ -38,8 +35,7 @@ import net.gtaun.shoebill.object.VehicleComponent;
 import net.gtaun.shoebill.object.VehicleDamage;
 import net.gtaun.shoebill.object.VehicleParam;
 import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.EventManager.HandlerPriority;
-import net.gtaun.util.event.ManagedEventManager;
+import net.gtaun.util.event.EventManagerNode;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -49,7 +45,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124, JoJLlmAn
  */
-public abstract class VehicleImpl implements Vehicle
+public class VehicleImpl implements Vehicle
 {
 	private final SampObjectStore store;
 	
@@ -65,13 +61,13 @@ public abstract class VehicleImpl implements Vehicle
 	private VehicleComponentImpl component;
 	private VehicleDamageImpl damage;
 	
-	private ManagedEventManager managedEventManager;
+	private EventManagerNode eventManagerNode;
 	
 	
 	public VehicleImpl(EventManager eventManager, SampObjectStore store, int modelId, AngledLocation loc, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
 		this.store = store;
-		managedEventManager = new ManagedEventManager(eventManager);
+		eventManagerNode = eventManager.createChildNode();
 		initialize(modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), loc.getAngle(), color1, color2, respawnDelay);
 	}
 	
@@ -107,26 +103,18 @@ public abstract class VehicleImpl implements Vehicle
 		component = new VehicleComponentImpl(this);
 		damage = new VehicleDamageImpl(this);
 		
-		VehicleEventHandler eventHandler = new VehicleEventHandler()
-		{
-			@Override
-			public void onVehicleMod(VehicleModEvent event)
-			{
-				component.update();
-			}
-			
-			@Override
-			public void onVehicleUpdateDamage(VehicleUpdateDamageEvent event)
-			{
-				SampNativeFunction.getVehicleDamageStatus(id, damage);
-			}
-		};
-		
-		managedEventManager.registerHandler(VehicleModEvent.class, this, eventHandler, HandlerPriority.MONITOR);
-		managedEventManager.registerHandler(VehicleUpdateDamageEvent.class, this, eventHandler, HandlerPriority.MONITOR);
-		
 		VehicleSpawnEvent event = new VehicleSpawnEvent(this);
-		managedEventManager.dispatchEvent(event, this);
+		eventManagerNode.dispatchEvent(event, this);
+	}
+
+	public void onVehicleMod()
+	{
+		component.update();
+	}
+
+	public void onVehicleUpdateDamage()
+	{
+		SampNativeFunction.getVehicleDamageStatus(id, damage);
 	}
 	
 	@Override
@@ -142,13 +130,12 @@ public abstract class VehicleImpl implements Vehicle
 		if (isDestroyed()) return;
 		if (isStatic) return;
 		
-		managedEventManager.cancelAll();
-		
 		SampNativeFunction.destroyVehicle(id);
 		
 		DestroyEvent destroyEvent = new DestroyEvent(this);
-		managedEventManager.dispatchEvent(destroyEvent, this);
+		eventManagerNode.dispatchEvent(destroyEvent, this);
 		
+		eventManagerNode.destroy();
 		id = INVALID_ID;
 	}
 	
@@ -370,7 +357,7 @@ public abstract class VehicleImpl implements Vehicle
 		if (isInAnyVehicle && state == player.getState())
 		{
 			PlayerStateChangeEvent event = new PlayerStateChangeEvent(player, state.getValue());
-			managedEventManager.dispatchEvent(event, player);
+			eventManagerNode.dispatchEvent(event, player);
 		}
 	}
 	

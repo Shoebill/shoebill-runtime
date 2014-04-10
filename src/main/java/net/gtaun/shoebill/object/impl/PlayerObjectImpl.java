@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2012 MK124
+ * Copyright (C) 2011-2014 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,17 +22,14 @@ import net.gtaun.shoebill.constant.ObjectMaterialTextAlign;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
-import net.gtaun.shoebill.event.ObjectEventHandler;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
-import net.gtaun.shoebill.event.object.PlayerObjectMovedEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.EventManager.HandlerPriority;
-import net.gtaun.util.event.ManagedEventManager;
+import net.gtaun.util.event.EventManagerNode;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -42,7 +39,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124
  */
-public abstract class PlayerObjectImpl implements PlayerObject
+public class PlayerObjectImpl implements PlayerObject
 {
 	private int id = INVALID_ID;
 	private Player player;
@@ -56,7 +53,7 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	private Player attachedPlayer;
 	private Vehicle attachedVehicle;
 	
-	private ManagedEventManager managedEventManager;
+	private EventManagerNode eventManagerNode;
 	
 	
 	public PlayerObjectImpl(EventManager eventManager, Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
@@ -71,17 +68,12 @@ public abstract class PlayerObjectImpl implements PlayerObject
 		id = SampNativeFunction.createPlayerObject(player.getId(), modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance);
 		if (id == INVALID_ID) throw new CreationFailedException();
 		
-		ObjectEventHandler eventHandler = new ObjectEventHandler()
-		{
-			@Override
-			public void onPlayerObjectMoved(PlayerObjectMovedEvent event)
-			{
-				speed = 0.0F;
-			}
-		};
-		
-		managedEventManager = new ManagedEventManager(eventManager);
-		managedEventManager.registerHandler(PlayerObjectMovedEvent.class, this, eventHandler, HandlerPriority.MONITOR);
+		eventManagerNode = eventManager.createChildNode();
+	}
+
+	public void onPlayerObjectMoved()
+	{
+		speed = 0.0F;
 	}
 	
 	@Override
@@ -96,16 +88,15 @@ public abstract class PlayerObjectImpl implements PlayerObject
 	{
 		if (id != INVALID_ID) return;
 		
-		managedEventManager.cancelAll();
-		
 		if (player.isOnline())
 		{
 			SampNativeFunction.destroyPlayerObject(player.getId(), id);
 		}
 		
 		DestroyEvent destroyEvent = new DestroyEvent(this);
-		managedEventManager.dispatchEvent(destroyEvent, this);
+		eventManagerNode.dispatchEvent(destroyEvent, this);
 		
+		eventManagerNode.destroy();
 		id = INVALID_ID;
 	}
 	
@@ -324,6 +315,14 @@ public abstract class PlayerObjectImpl implements PlayerObject
 		
 		SampNativeFunction.setPlayerObjectMaterial(player.getId(), id, materialIndex, modelId, txdName, textureName, materialColor.getValue());
 	}
+
+	@Override
+	public void setMaterial(int materialIndex, int modelId, String txdName, String textureName)
+	{
+		if (isDestroyed()) return;
+		
+		SampNativeFunction.setPlayerObjectMaterial(player.getId(), id, materialIndex, modelId, txdName, textureName, 0);
+	}
 	
 	@Override
 	public void setMaterialText(String text, int materialIndex, ObjectMaterialSize materialSize, String fontFace, int fontSize, boolean isBold, Color fontColor, Color backColor, ObjectMaterialTextAlign textAlignment)
@@ -331,5 +330,14 @@ public abstract class PlayerObjectImpl implements PlayerObject
 		if (isDestroyed()) return;
 		
 		SampNativeFunction.setPlayerObjectMaterialText(player.getId(), id, text, materialIndex, materialSize.getValue(), fontFace, fontSize, isBold ? 1 : 0, fontColor.getValue(), backColor.getValue(), textAlignment.getValue());
+	}
+
+	@Override
+	public void setMaterialText(String text)
+	{
+		if (isDestroyed()) return;
+		
+		// FIXME!
+		//SampNativeFunction.setPlayerObjectMaterialText(id, id, text, id, id, text, id, id, id, modelId, id)
 	}
 }

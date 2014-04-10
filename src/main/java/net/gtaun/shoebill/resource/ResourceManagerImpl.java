@@ -29,7 +29,6 @@ import net.gtaun.shoebill.ShoebillArtifactLocator;
 import net.gtaun.shoebill.event.resource.ResourceLoadEvent;
 import net.gtaun.shoebill.event.resource.ResourceUnloadEvent;
 import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.ManagedEventManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,9 +146,7 @@ public class ResourceManagerImpl implements ResourceManager
 		File resDataDir = new File(dataDir, desc.getClazz().getName());
 		if (!resDataDir.exists()) resDataDir.mkdirs();
 		
-		ManagedEventManager managedEventManager = new ManagedEventManager(rootEventManager);
-		
-		resource.setContext(desc, shoebill, managedEventManager, resDataDir);
+		resource.setContext(desc, shoebill, rootEventManager, resDataDir);
 		return resource;
 	}
 	

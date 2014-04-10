@@ -30,9 +30,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import net.gtaun.shoebill.amx.AmxInstanceManagerImpl;
 import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
 import net.gtaun.shoebill.object.Server;
-import net.gtaun.shoebill.proxy.GlobalProxyManager;
-import net.gtaun.shoebill.proxy.GlobalProxyManagerImpl;
-import net.gtaun.shoebill.proxy.ProxyableFactoryImpl;
 import net.gtaun.shoebill.resource.ResourceManager;
 import net.gtaun.shoebill.resource.ResourceManagerImpl;
 import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
@@ -42,7 +39,7 @@ import net.gtaun.shoebill.service.ServiceManagerImpl;
 import net.gtaun.shoebill.util.log.LogLevel;
 import net.gtaun.shoebill.util.log.LoggerOutputStream;
 import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.EventManagerImpl;
+import net.gtaun.util.event.EventManagerRoot;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -77,7 +74,7 @@ public class ShoebillImpl implements Shoebill
 	private ResourceConfig resourceConfig;
 	private ShoebillArtifactLocator artifactLocator;
 	
-	private EventManagerImpl eventManager;
+	private EventManagerRoot eventManager;
 	
 	private SampCallbackManagerImpl sampCallbackManager;
 	private AmxInstanceManagerImpl amxInstanceManager;
@@ -90,8 +87,6 @@ public class ShoebillImpl implements Shoebill
 	
 	private SampEventLogger sampEventLogger;
 	private SampEventDispatcher sampEventDispatcher;
-	
-	private GlobalProxyManager globalProxyManager;
 
 	private PrintStream originOutPrintStream;
 	private PrintStream originErrPrintStream;
@@ -101,7 +96,6 @@ public class ShoebillImpl implements Shoebill
 	
 	public ShoebillImpl(int[] amxHandles) throws IOException, ClassNotFoundException
 	{
-		Class.forName(ProxyableFactoryImpl.class.getName());
 		Shoebill.Instance.shoebillReference = new WeakReference<>(this);
 		
 		config = new ShoebillConfig(new FileInputStream(SHOEBILL_CONFIG_PATH));
@@ -122,7 +116,7 @@ public class ShoebillImpl implements Shoebill
 		
 		asyncExecQueue = new ConcurrentLinkedQueue<Runnable>();
 
-		eventManager = new EventManagerImpl();
+		eventManager = new EventManagerRoot();
 		amxInstanceManager = new AmxInstanceManagerImpl(eventManager, amxHandles);
 		
 		resourceConfig = new ResourceConfig(new FileInputStream(new File(config.getShoebillDir(), RESOURCES_CONFIG_FILENAME)));
@@ -245,13 +239,11 @@ public class ShoebillImpl implements Shoebill
 	
 	private void initialize()
 	{
-		globalProxyManager = new GlobalProxyManagerImpl();
-		
 		pluginManager = new ResourceManagerImpl(this, eventManager, artifactLocator, config.getDataDir());
 		serviceManager = new ServiceManagerImpl(eventManager);
 		
-		sampObjectStore = new SampObjectStoreImpl();
-		sampObjectManager = new SampObjectManager(eventManager, globalProxyManager, sampObjectStore);
+		sampObjectStore = new SampObjectStoreImpl(eventManager);
+		sampObjectManager = new SampObjectManager(eventManager, sampObjectStore);
 		sampObjectStore.setFactory(sampObjectManager);
 		
 		sampObjectManager.createWorld();
@@ -342,12 +334,6 @@ public class ShoebillImpl implements Shoebill
 	public ServiceManagerImpl getServiceStore()
 	{
 		return serviceManager;
-	}
-	
-	@Override
-	public GlobalProxyManager getGlobalProxyManager()
-	{
-		return globalProxyManager;
 	}
 	
 	@Override

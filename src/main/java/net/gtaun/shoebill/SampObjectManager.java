@@ -23,11 +23,10 @@ import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
-import net.gtaun.shoebill.event.DestroyEventHandler;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Destroyable;
-import net.gtaun.shoebill.object.Dialog;
+import net.gtaun.shoebill.object.DialogId;
 import net.gtaun.shoebill.object.Label;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Pickup;
@@ -58,11 +57,8 @@ import net.gtaun.shoebill.object.impl.TimerImpl;
 import net.gtaun.shoebill.object.impl.VehicleImpl;
 import net.gtaun.shoebill.object.impl.WorldImpl;
 import net.gtaun.shoebill.object.impl.ZoneImpl;
-import net.gtaun.shoebill.proxy.GlobalProxyManager;
-import net.gtaun.shoebill.proxy.ProxyableFactory;
-import net.gtaun.util.event.EventHandler;
 import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.EventManager.HandlerPriority;
+import net.gtaun.util.event.HandlerPriority;
 
 /**
  * 
@@ -71,53 +67,19 @@ import net.gtaun.util.event.EventManager.HandlerPriority;
  */
 public class SampObjectManager extends AbstractSampObjectFactory
 {
-	private static final Class<?>[] WORLD_CONSTRUCTOR_ARGUMENT_TYPES = { SampObjectStore.class };
-	private static final Class<?>[] SERVER_CONSTRUCTOR_ARGUMENT_TYPES = { SampObjectStore.class };
-	private static final Class<?>[] PLAYER_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, SampObjectStore.class, int.class };
-	private static final Class<?>[] VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, SampObjectStore.class, int.class, AngledLocation.class, int.class, int.class, int.class };
-	private static final Class<?>[] OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, int.class, Location.class, Vector3D.class, float.class };
-	private static final Class<?>[] PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, Player.class, int.class, Location.class, Vector3D.class, float.class };
-	private static final Class<?>[] PICKUP_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, int.class, int.class, Location.class };
-	private static final Class<?>[] LABEL_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, String.class, Color.class, Location.class, float.class, boolean.class };
-	private static final Class<?>[] PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, SampObjectStoreImpl.class, Player.class, String.class, Color.class, Location.class, float.class, boolean.class };
-	private static final Class<?>[] PLAYER_LABEL_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES = { EventManager.class, SampObjectStoreImpl.class, Player.class, int.class, Location.class, Vector3D.class, float.class, Player.class };
-	private static final Class<?>[] PLAYER_LABEL_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES = { EventManager.class, SampObjectStoreImpl.class, Player.class, int.class, Location.class, Vector3D.class, float.class, Vehicle.class };
-	private static final Class<?>[] TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, float.class, float.class, String.class };
-	private static final Class<?>[] PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, Player.class, float.class, float.class, String.class };
-	private static final Class<?>[] ZONE_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, float.class, float.class, float.class, float.class };
-	private static final Class<?>[] MENU_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, String.class, int.class, float.class, float.class, float.class, float.class };
-	private static final Class<?>[] DIALOG_CONSTRUCTOR_ARGUMENT_TYPES = { EventManager.class, int.class };
-	
 	private static final int MAX_DIALOG_ID = 32767;
 	
 	
 	private final EventManager rootEventManager;
-	private final GlobalProxyManager globalProxyManager;
 	private final SampObjectStoreImpl store;
-	
-	private ProxyableFactory<WorldImpl> worldFactory;
-	private ProxyableFactory<ServerImpl> serverFactory;
-	private ProxyableFactory<PlayerImpl> playerFactory;
-	private ProxyableFactory<VehicleImpl> vehicleFactory;
-	private ProxyableFactory<SampObjectImpl> objectFactory;
-	private ProxyableFactory<PlayerObjectImpl> playerObjectFactory;
-	private ProxyableFactory<PickupImpl> pickupFactory;
-	private ProxyableFactory<LabelImpl> labelFactory;
-	private ProxyableFactory<PlayerLabelImpl> playerLabelFactory;
-	private ProxyableFactory<TextdrawImpl> textdrawFactory;
-	private ProxyableFactory<PlayerTextdrawImpl> playerTextdrawFactory;
-	private ProxyableFactory<ZoneImpl> zoneFactory;
-	private ProxyableFactory<MenuImpl> menuFactory;
-	private ProxyableFactory<DialogImpl> dialogFactory;
 	
 	private int allocatedDialogId = 0;
 	private Queue<Integer> recycledDialogIds;
 	
 	
-	public SampObjectManager(EventManager eventManager, GlobalProxyManager globalProxyManager, SampObjectStoreImpl store)
+	public SampObjectManager(EventManager eventManager, SampObjectStoreImpl store)
 	{
 		this.rootEventManager = eventManager;
-		this.globalProxyManager = globalProxyManager;
 		this.store = store;
 		initialize();
 	}
@@ -130,102 +92,82 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	
 	private void initialize()
 	{
-		worldFactory = ProxyableFactory.Impl.createProxyableFactory(WorldImpl.class, globalProxyManager);
-		serverFactory = ProxyableFactory.Impl.createProxyableFactory(ServerImpl.class, globalProxyManager);
-		playerFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerImpl.class, globalProxyManager);
-		vehicleFactory = ProxyableFactory.Impl.createProxyableFactory(VehicleImpl.class, globalProxyManager);
-		objectFactory = ProxyableFactory.Impl.createProxyableFactory(SampObjectImpl.class, globalProxyManager);
-		playerObjectFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerObjectImpl.class, globalProxyManager);
-		pickupFactory = ProxyableFactory.Impl.createProxyableFactory(PickupImpl.class, globalProxyManager);
-		labelFactory = ProxyableFactory.Impl.createProxyableFactory(LabelImpl.class, globalProxyManager);
-		playerLabelFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerLabelImpl.class, globalProxyManager);
-		textdrawFactory = ProxyableFactory.Impl.createProxyableFactory(TextdrawImpl.class, globalProxyManager);
-		playerTextdrawFactory = ProxyableFactory.Impl.createProxyableFactory(PlayerTextdrawImpl.class, globalProxyManager);
-		zoneFactory = ProxyableFactory.Impl.createProxyableFactory(ZoneImpl.class, globalProxyManager);
-		menuFactory = ProxyableFactory.Impl.createProxyableFactory(MenuImpl.class, globalProxyManager);
-		dialogFactory = ProxyableFactory.Impl.createProxyableFactory(DialogImpl.class, globalProxyManager);
-		
 		recycledDialogIds = new LinkedList<>();
 		
-		EventHandler eventHandler = new DestroyEventHandler()
+		rootEventManager.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, (DestroyEvent e) ->
 		{
-			@Override
-			public void onDestroy(DestroyEvent event)
+			Destroyable obj = e.getDestroyable();
+			
+			if(obj instanceof VehicleImpl)
 			{
-				Destroyable obj = event.getDestroyable();
-				
-				if(obj instanceof VehicleImpl)
-				{
-					Vehicle vehicle = (Vehicle) obj;
-					store.setVehicle(vehicle.getId(), null);
-				}
-				else if(obj instanceof PlayerObject)
-				{
-					PlayerObject object = (PlayerObject) obj;
-					store.setPlayerObject(object.getPlayer(), object.getId(), null);
-				}
-				else if(obj instanceof SampObject)
-				{
-					SampObject object = (SampObject) obj;
-					store.setObject(object.getId(), null);
-				}
-				else if (obj instanceof Pickup)
-				{
-					Pickup pickup = (Pickup) obj;
-					store.setPickup(pickup.getId(), null);
-				}
-				else if (obj instanceof PlayerLabel)
-				{
-					PlayerLabel label = (PlayerLabel) obj;
-					store.setPlayerLabel(label.getPlayer(), label.getId(), null);
-				}
-				else if (obj instanceof Label)
-				{
-					Label label = (Label) obj;
-					store.setLabel(label.getId(), null);
-				}
-				else if (obj instanceof Textdraw)
-				{
-					Textdraw textdraw = (Textdraw) obj;
-					store.setTextdraw(textdraw.getId(), null);
-				}
-				else if (obj instanceof PlayerTextdraw)
-				{
-					PlayerTextdraw textdraw = (PlayerTextdraw) obj;
-					store.setPlayerTextdraw(textdraw.getPlayer(), textdraw.getId(), null);
-				}
-				else if (obj instanceof Zone)
-				{
-					Zone zone = (Zone) obj;
-					store.setZone(zone.getId(), null);
-				}
-				else if (obj instanceof Menu)
-				{
-					Menu menu = (Menu) obj;
-					store.setMenu(menu.getId(), null);
-				}
-				else if (obj instanceof Dialog)
-				{
-					Dialog dialog = (Dialog) obj;
-					store.removeDialog(dialog);
-					int dialogId = dialog.getId();
-					recycleDialogId(dialogId);
-				}
-				else if (obj instanceof Timer)
-				{
-					Timer timer = (Timer) obj;
-					store.removeTimer(timer);
-				}
+				Vehicle vehicle = (Vehicle) obj;
+				store.setVehicle(vehicle.getId(), null);
 			}
-		};
-		rootEventManager.registerHandler(DestroyEvent.class, eventHandler, HandlerPriority.BOTTOM);
+			else if(obj instanceof PlayerObject)
+			{
+				PlayerObject object = (PlayerObject) obj;
+				store.setPlayerObject(object.getPlayer(), object.getId(), null);
+			}
+			else if(obj instanceof SampObject)
+			{
+				SampObject object = (SampObject) obj;
+				store.setObject(object.getId(), null);
+			}
+			else if (obj instanceof Pickup)
+			{
+				Pickup pickup = (Pickup) obj;
+				store.setPickup(pickup.getId(), null);
+			}
+			else if (obj instanceof PlayerLabel)
+			{
+				PlayerLabel label = (PlayerLabel) obj;
+				store.setPlayerLabel(label.getPlayer(), label.getId(), null);
+			}
+			else if (obj instanceof Label)
+			{
+				Label label = (Label) obj;
+				store.setLabel(label.getId(), null);
+			}
+			else if (obj instanceof Textdraw)
+			{
+				Textdraw textdraw = (Textdraw) obj;
+				store.setTextdraw(textdraw.getId(), null);
+			}
+			else if (obj instanceof PlayerTextdraw)
+			{
+				PlayerTextdraw textdraw = (PlayerTextdraw) obj;
+				store.setPlayerTextdraw(textdraw.getPlayer(), textdraw.getId(), null);
+			}
+			else if (obj instanceof Zone)
+			{
+				Zone zone = (Zone) obj;
+				store.setZone(zone.getId(), null);
+			}
+			else if (obj instanceof Menu)
+			{
+				Menu menu = (Menu) obj;
+				store.setMenu(menu.getId(), null);
+			}
+			else if (obj instanceof DialogId)
+			{
+				DialogId dialog = (DialogId) obj;
+				store.removeDialog(dialog);
+				int dialogId = dialog.getId();
+				recycleDialogId(dialogId);
+			}
+			else if (obj instanceof Timer)
+			{
+				Timer timer = (Timer) obj;
+				store.removeTimer(timer);
+			}
+		});
 	}
 	
 	public World createWorld()
 	{
 		try
 		{
-			World world = worldFactory.create(WORLD_CONSTRUCTOR_ARGUMENT_TYPES, store);
+			World world = new WorldImpl(store);
 			store.setWorld(world);
 			return world;
 		}
@@ -243,7 +185,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Server server = serverFactory.create(SERVER_CONSTRUCTOR_ARGUMENT_TYPES, store);
+			Server server = new ServerImpl(store);
 			store.setServer(server);
 			return server;
 		}
@@ -261,7 +203,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Player player = playerFactory.create(PLAYER_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, store, playerId);
+			Player player = new PlayerImpl(rootEventManager, store, playerId);
 			store.setPlayer(playerId, player);
 			return player;
 		}
@@ -280,7 +222,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Vehicle vehicle = vehicleFactory.create(VEHICLE_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, store, modelId, loc, color1, color2, respawnDelay);
+			Vehicle vehicle = new VehicleImpl(rootEventManager, store, modelId, loc, color1, color2, respawnDelay);
 			store.setVehicle(vehicle.getId(), vehicle);
 			return vehicle;
 		}
@@ -299,7 +241,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			SampObject object = objectFactory.create(OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, modelId, loc, rot, drawDistance);
+			SampObject object = new SampObjectImpl(rootEventManager, modelId, loc, rot, drawDistance);
 			store.setObject(object.getId(), object);
 			return object;
 		}
@@ -320,7 +262,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
 			
-			PlayerObject object = playerObjectFactory.create(PLAYER_OBJECT_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, player, modelId, loc, rot, drawDistance);
+			PlayerObject object = new PlayerObjectImpl(rootEventManager, player, modelId, loc, rot, drawDistance);
 			store.setPlayerObject(player, object.getId(), object);
 			return object;
 		}
@@ -339,7 +281,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Pickup pickup = pickupFactory.create(PICKUP_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, modelId, type, loc);
+			Pickup pickup = new PickupImpl(rootEventManager, modelId, type, loc);
 			store.setPickup(pickup.getId(), pickup);
 			return pickup;
 		}
@@ -358,7 +300,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Label label = labelFactory.create(LABEL_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, text, color, loc, drawDistance, testLOS);
+			Label label = new LabelImpl(rootEventManager, text, color, loc, drawDistance, testLOS);
 			store.setLabel(label.getId(), label);
 			return label;
 		}
@@ -379,7 +321,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		{
 			if (!player.isOnline()) return null;
 			
-			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, store, player, text, color, loc, drawDistance, testLOS);
+			PlayerLabel label = new PlayerLabelImpl(rootEventManager, store, player, text, color, loc, drawDistance, testLOS);
 			store.setLabel(label.getId(), label);
 			return label;
 		}
@@ -400,7 +342,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
 			
-			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ATTACHED_PLAYER_ARGUMENT_TYPES, rootEventManager, store, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
+			PlayerLabel label = new PlayerLabelImpl(rootEventManager, store, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
 			store.setLabel(label.getId(), label);
 			return label;
 		}
@@ -421,7 +363,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
 			
-			PlayerLabel label = playerLabelFactory.create(PLAYER_LABEL_CONSTRUCTOR_ATTACHED_VEHICLE_ARGUMENT_TYPES, rootEventManager, store, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
+			PlayerLabel label = new PlayerLabelImpl(rootEventManager, store, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
 			store.setLabel(label.getId(), label);
 			return label;
 		}
@@ -440,7 +382,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Textdraw textdraw = textdrawFactory.create(TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, x, y, text);
+			Textdraw textdraw = new TextdrawImpl(rootEventManager, x, y, text);
 			store.setTextdraw(textdraw.getId(), textdraw);
 			return textdraw;
 		}
@@ -462,7 +404,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
 			
-			PlayerTextdraw textdraw = playerTextdrawFactory.create(PLAYER_TEXTDRAW_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, player, x, y, text);
+			PlayerTextdraw textdraw = new PlayerTextdrawImpl(rootEventManager, player, x, y, text);
 			store.setPlayerTextdraw(player, textdraw.getId(), textdraw);
 			return textdraw;
 		}
@@ -481,7 +423,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Zone zone = zoneFactory.create(ZONE_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, minX, minY, maxX, maxY);
+			Zone zone = new ZoneImpl(rootEventManager, minX, minY, maxX, maxY);
 			store.setZone(zone.getId(), zone);
 			return zone;
 		}
@@ -500,7 +442,7 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	{
 		try
 		{
-			Menu menu = menuFactory.create(MENU_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, title, columns, x, y, col1Width, col2Width);
+			Menu menu = new MenuImpl(rootEventManager, title, columns, x, y, col1Width, col2Width);
 			store.setMenu(menu.getId(), menu);
 			return menu;
 		}
@@ -533,12 +475,12 @@ public class SampObjectManager extends AbstractSampObjectFactory
 	}
 	
 	@Override
-	public Dialog createDialog() throws CreationFailedException
+	public DialogId createDialogId() throws CreationFailedException
 	{
 		try
 		{
 			Integer dialogId = allocateDialogId();
-			Dialog dialog = dialogFactory.create(DIALOG_CONSTRUCTOR_ARGUMENT_TYPES, rootEventManager, dialogId);
+			DialogId dialog = new DialogImpl(rootEventManager, dialogId);
 			store.putDialog(dialog.getId(), dialog);
 			return dialog;
 		}

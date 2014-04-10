@@ -25,7 +25,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import net.gtaun.shoebill.object.Dialog;
+import net.gtaun.shoebill.event.dialog.DialogResponseEvent;
+import net.gtaun.shoebill.event.object.ObjectMovedEvent;
+import net.gtaun.shoebill.event.object.PlayerObjectMovedEvent;
+import net.gtaun.shoebill.event.player.PlayerDisconnectEvent;
+import net.gtaun.shoebill.event.player.PlayerUpdateEvent;
+import net.gtaun.shoebill.event.vehicle.VehicleModEvent;
+import net.gtaun.shoebill.event.vehicle.VehicleUpdateDamageEvent;
+import net.gtaun.shoebill.object.DialogId;
 import net.gtaun.shoebill.object.Label;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Pickup;
@@ -40,9 +47,15 @@ import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.object.Zone;
+import net.gtaun.shoebill.object.impl.PlayerImpl;
+import net.gtaun.shoebill.object.impl.PlayerObjectImpl;
+import net.gtaun.shoebill.object.impl.SampObjectImpl;
 import net.gtaun.shoebill.object.impl.TimerImpl;
+import net.gtaun.shoebill.object.impl.VehicleImpl;
 import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
+import net.gtaun.util.event.EventManager;
+import net.gtaun.util.event.HandlerPriority;
 
 /**
  * 
@@ -51,7 +64,7 @@ import net.gtaun.shoebill.samp.SampCallbackHandler;
  */
 public class SampObjectStoreImpl implements SampObjectStore
 {
-	public static final int MAX_PLAYERS =				500;
+	public static final int MAX_PLAYERS =				800;
 	public static final int MAX_VEHICLES =				2000;
 	public static final int MAX_OBJECTS =				1000;
 	public static final int MAX_ZONES =					1024;
@@ -86,6 +99,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	
 	
 	private SampCallbackHandler callbackHandler;
+	private EventManager eventManagerNode;
 	
 	private Server server;
 	private World world;
@@ -103,12 +117,79 @@ public class SampObjectStoreImpl implements SampObjectStore
 	private Menu[] menus = new Menu[MAX_MENUS];
 	
 	private Collection<Reference<TimerImpl>> timers = new ConcurrentLinkedQueue<>();
-	private Map<Integer, Reference<Dialog>> dialogs = new ConcurrentHashMap<>();
+	private Map<Integer, Reference<DialogId>> dialogs = new ConcurrentHashMap<>();
 	
 	
-	SampObjectStoreImpl()
+	SampObjectStoreImpl(EventManager rootEventManager)
 	{
+		eventManagerNode = rootEventManager.createChildNode();
+		setupObjectEventHandler();
+	}
+	
+	private void setupObjectEventHandler()
+	{
+		eventManagerNode.registerHandler(PlayerUpdateEvent.class, HandlerPriority.MONITOR, (PlayerUpdateEvent e) ->
+		{
+			Player primitive = e.getPlayer().getPrimitive();
+			if (primitive instanceof PlayerImpl == false) return;
+			
+			PlayerImpl player = (PlayerImpl) primitive;
+			player.onPlayerUpdate();
+		});
+
+		eventManagerNode.registerHandler(PlayerDisconnectEvent.class, HandlerPriority.BOTTOM, (PlayerDisconnectEvent e) ->
+		{
+			Player primitive = e.getPlayer().getPrimitive();
+			if (primitive instanceof PlayerImpl == false) return;
+			
+			PlayerImpl player = (PlayerImpl) primitive;
+			player.onPlayerDisconnect();
+		});
 		
+		eventManagerNode.registerHandler(DialogResponseEvent.class, HandlerPriority.MONITOR, (DialogResponseEvent e) ->
+		{
+			Player primitive = e.getPlayer().getPrimitive();
+			if (primitive instanceof PlayerImpl == false) return;
+			
+			PlayerImpl player = (PlayerImpl) primitive;
+			player.onDialogResponse();
+		});
+		
+		eventManagerNode.registerHandler(PlayerObjectMovedEvent.class, HandlerPriority.MONITOR, (PlayerObjectMovedEvent e) ->
+		{
+			PlayerObject primitive = (PlayerObject) e.getObject().getPrimitive();
+			if (primitive instanceof PlayerObjectImpl == false) return;
+			
+			PlayerObjectImpl object = (PlayerObjectImpl) primitive;
+			object.onPlayerObjectMoved();
+		});
+		
+		eventManagerNode.registerHandler(ObjectMovedEvent.class, HandlerPriority.MONITOR, (ObjectMovedEvent e) ->
+		{
+			SampObject primitive = e.getObject().getPrimitive();
+			if (primitive instanceof SampObjectImpl == false) return;
+			
+			SampObjectImpl object = (SampObjectImpl) primitive;
+			object.onObjectMoved();
+		});
+		
+		eventManagerNode.registerHandler(VehicleModEvent.class, HandlerPriority.MONITOR, (VehicleModEvent e) ->
+		{
+			Vehicle primitive = e.getVehicle().getPrimitive();
+			if (primitive instanceof VehicleImpl == false) return;
+			
+			VehicleImpl vehicle = (VehicleImpl) primitive;
+			vehicle.onVehicleMod();
+		});
+		
+		eventManagerNode.registerHandler(VehicleUpdateDamageEvent.class, HandlerPriority.MONITOR, (VehicleUpdateDamageEvent e) ->
+		{
+			Vehicle primitive = e.getVehicle().getPrimitive();
+			if (primitive instanceof VehicleImpl == false) return;
+			
+			VehicleImpl vehicle = (VehicleImpl) primitive;
+			vehicle.onVehicleUpdateDamage();
+		});
 	}
 	
 	public void setFactory(final SampObjectManager factory)
@@ -279,7 +360,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	}
 	
 	@Override
-	public Dialog getDialog(int id)
+	public DialogId getDialog(int id)
 	{
 		return dialogs.get(id).get();
 	}
@@ -395,12 +476,12 @@ public class SampObjectStoreImpl implements SampObjectStore
 	}
 	
 	@Override
-	public Collection<Dialog> getDialogs()
+	public Collection<DialogId> getDialogs()
 	{
-		Collection<Dialog> items = new ArrayList<Dialog>();
-		for (Reference<Dialog> reference : dialogs.values())
+		Collection<DialogId> items = new ArrayList<DialogId>();
+		for (Reference<DialogId> reference : dialogs.values())
 		{
-			Dialog dialog = reference.get();
+			DialogId dialog = reference.get();
 			if (dialog != null) items.add(dialog);
 		}
 		
@@ -533,13 +614,13 @@ public class SampObjectStoreImpl implements SampObjectStore
 		}
 	}
 	
-	public void putDialog(int id, Dialog dialog)
+	public void putDialog(int id, DialogId dialog)
 	{
 		clearUnusedReferences(dialogs.values());
-		dialogs.put(id, new WeakReference<Dialog>(dialog));
+		dialogs.put(id, new WeakReference<DialogId>(dialog));
 	}
 	
-	public void removeDialog(Dialog dialog)
+	public void removeDialog(DialogId dialog)
 	{
 		dialogs.remove(dialog.getId());
 	}

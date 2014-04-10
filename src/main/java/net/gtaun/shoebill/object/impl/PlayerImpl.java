@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2012 MK124
+ * Copyright (C) 2011-2014 MK124
  * Copyright (C) 2011 JoJLlmAn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,15 +42,11 @@ import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.data.WeaponData;
-import net.gtaun.shoebill.event.PlayerEventHandler;
 import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
 import net.gtaun.shoebill.event.dialog.DialogCancelEvent.DialogCancelType;
-import net.gtaun.shoebill.event.dialog.DialogResponseEvent;
-import net.gtaun.shoebill.event.player.PlayerDisconnectEvent;
-import net.gtaun.shoebill.event.player.PlayerUpdateEvent;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
-import net.gtaun.shoebill.object.Dialog;
+import net.gtaun.shoebill.object.DialogId;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerAttach;
@@ -60,8 +56,7 @@ import net.gtaun.shoebill.object.PlayerWeaponSkill;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.EventManager.HandlerPriority;
-import net.gtaun.util.event.ManagedEventManager;
+import net.gtaun.util.event.EventManagerNode;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -71,7 +66,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124, JoJLlmAn
  */
-public abstract class PlayerImpl implements Player
+public class PlayerImpl implements Player
 {
 	private final SampObjectStore store;
 	
@@ -89,7 +84,7 @@ public abstract class PlayerImpl implements Player
 	private Player spectatingPlayer;
 	private Vehicle spectatingVehicle;
 	
-	private int updateFrameCount = -1;
+	private int updateCount = -1;
 	private int weatherId;
 	
 	private Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
@@ -98,9 +93,9 @@ public abstract class PlayerImpl implements Player
 	
 	private Checkpoint checkpoint;
 	private RaceCheckpoint raceCheckpoint;
-	private Dialog dialog;
+	private DialogId dialog;
 	
-	private ManagedEventManager managedEventManager;
+	private EventManagerNode eventManagerNode;
 	
 	
 	public PlayerImpl(EventManager eventManager, SampObjectStore store, int id)
@@ -118,40 +113,25 @@ public abstract class PlayerImpl implements Player
 		SampNativeFunction.getPlayerVelocity(id, velocity);
 		SampNativeFunction.getPlayerKeys(id, keyState);
 		
-		PlayerEventHandler eventHandler = new PlayerEventHandler()
-		{
-			@Override
-			public void onPlayerUpdate(PlayerUpdateEvent event)
-			{
-				SampNativeFunction.getPlayerVelocity(PlayerImpl.this.id, velocity);
-				
-				updateFrameCount++;
-				if (updateFrameCount < 0) updateFrameCount = 0;
-			}
-			
-			@Override
-			public void onPlayerDisconnect(PlayerDisconnectEvent event)
-			{
-				PlayerImpl.this.id = INVALID_ID;
-				destroy();
-			}
-			
-			@Override
-			public void onPlayerDialogResponse(DialogResponseEvent event)
-			{
-				dialog = null;
-			}
-		};
-		
-		managedEventManager = new ManagedEventManager(eventManager);
-		managedEventManager.registerHandler(PlayerUpdateEvent.class, this, eventHandler, HandlerPriority.MONITOR);
-		managedEventManager.registerHandler(PlayerDisconnectEvent.class, this, eventHandler, HandlerPriority.BOTTOM);
-		managedEventManager.registerHandler(DialogResponseEvent.class, this, eventHandler, HandlerPriority.MONITOR);
+		eventManagerNode = eventManager.createChildNode();
 	}
 	
-	private void destroy()
+	public void onPlayerUpdate()
 	{
-		managedEventManager.cancelAll();
+		SampNativeFunction.getPlayerVelocity(PlayerImpl.this.id, velocity);
+		
+		updateCount++;
+		if (updateCount < 0) updateCount = 0;
+	}
+
+	public void onPlayerDisconnect()
+	{
+		id = INVALID_ID;
+	}
+
+	public void onDialogResponse()
+	{
+		dialog = null;
 	}
 	
 	@Override
@@ -187,9 +167,9 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public int getUpdateFrameCount()
+	public int getUpdateCount()
 	{
-		return updateFrameCount;
+		return updateCount;
 	}
 	
 	@Override
@@ -259,7 +239,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public Dialog getDialog()
+	public DialogId getDialog()
 	{
 		return dialog;
 	}
@@ -1397,7 +1377,7 @@ public abstract class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void showDialog(Dialog dialog, DialogStyle style, String caption, String text, String button1, String button2)
+	public void showDialog(DialogId dialog, DialogStyle style, String caption, String text, String button1, String button2)
 	{
 		if (isOnline() == false) return;
 		
@@ -1406,7 +1386,7 @@ public abstract class PlayerImpl implements Player
 		if (this.dialog != null)
 		{
 			DialogCancelEvent event = new DialogCancelEvent(this.dialog, this, DialogCancelType.OVERRIDE);
-			managedEventManager.dispatchEvent(event, this.dialog, this);
+			eventManagerNode.dispatchEvent(event, this.dialog, this);
 		}
 		
 		SampNativeFunction.showPlayerDialog(id, dialog.getId(), style.getValue(), caption, text, button1, button2);
@@ -1421,11 +1401,11 @@ public abstract class PlayerImpl implements Player
 		if (dialog == null) return;
 		SampNativeFunction.showPlayerDialog(id, DialogImpl.INVALID_ID, 0, " ", " ", " ", " ");
 		
-		Dialog canceledDialog = dialog;
+		DialogId canceledDialog = dialog;
 		dialog = null;
 		
 		DialogCancelEvent event = new DialogCancelEvent(canceledDialog, this, DialogCancelType.CANCEL);
-		managedEventManager.dispatchEvent(event, canceledDialog, this);
+		eventManagerNode.dispatchEvent(event, canceledDialog, this);
 	}
 	
 	@Override

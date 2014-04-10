@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2012 MK124
+ * Copyright (C) 2011-2014 MK124
  * Copyright (C) 2011 JoJLlmAn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,16 +23,13 @@ import net.gtaun.shoebill.constant.ObjectMaterialTextAlign;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
-import net.gtaun.shoebill.event.ObjectEventHandler;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
-import net.gtaun.shoebill.event.object.ObjectMovedEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.util.event.EventManager;
-import net.gtaun.util.event.EventManager.HandlerPriority;
-import net.gtaun.util.event.ManagedEventManager;
+import net.gtaun.util.event.EventManagerNode;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -42,7 +39,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124, JoJLlmAn
  */
-public abstract class SampObjectImpl implements SampObject
+public class SampObjectImpl implements SampObject
 {
 	private int id = INVALID_ID;
 	private int modelId;
@@ -59,7 +56,7 @@ public abstract class SampObjectImpl implements SampObject
 	private SampObject attachedObject;
 	private Vehicle attachedVehicle;
 	
-	private ManagedEventManager managedEventManager;
+	private EventManagerNode eventManagerNode;
 	
 	
 	public SampObjectImpl(EventManager eventManager, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
@@ -71,18 +68,13 @@ public abstract class SampObjectImpl implements SampObject
 		id = SampNativeFunction.createObject(modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance);
 		if (id == INVALID_ID) throw new CreationFailedException();
 		
-		ObjectEventHandler eventHandler = new ObjectEventHandler()
-		{
-			@Override
-			public void onObjectMoved(ObjectMovedEvent event)
-			{
-				speed = 0.0F;
-				SampNativeFunction.getObjectPos(id, location);
-			}
-		};
-		
-		managedEventManager = new ManagedEventManager(eventManager);
-		managedEventManager.registerHandler(ObjectMovedEvent.class, this, eventHandler, HandlerPriority.MONITOR);
+		eventManagerNode = eventManager.createChildNode();
+	}
+
+	public void onObjectMoved()
+	{
+		speed = 0.0F;
+		SampNativeFunction.getObjectPos(id, location);
 	}
 	
 	@Override
@@ -97,13 +89,12 @@ public abstract class SampObjectImpl implements SampObject
 	{
 		if (isDestroyed()) return;
 		
-		managedEventManager.cancelAll();
-		
 		SampNativeFunction.destroyObject(id);
 		
 		DestroyEvent destroyEvent = new DestroyEvent(this);
-		managedEventManager.dispatchEvent(destroyEvent, this);
+		eventManagerNode.dispatchEvent(destroyEvent, this);
 		
+		eventManagerNode.destroy();
 		id = INVALID_ID;
 	}
 	
