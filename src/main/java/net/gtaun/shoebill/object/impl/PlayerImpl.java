@@ -1506,7 +1506,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public String getVersion(int playerid)
+	public String getVersion()
 	{
 		if (isOnline() == false) return "Offline";
 		
