@@ -7,11 +7,6 @@
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
-	
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<build.number>0</build.number>
-	</properties>
 
 	<groupId>net.gtaun</groupId>
 	<artifactId>shoebill-runtime</artifactId>
@@ -21,6 +16,26 @@
 	<name>Shoebill Runtime</name>
 	<description>Project Shoebill - An Java library for SA-MP</description>
 	<url>https://github.com/Shoebill</url>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<build.number>0</build.number>
+	</properties>
+	
+	<repositories>
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 
 	<licenses>
 		<license>
