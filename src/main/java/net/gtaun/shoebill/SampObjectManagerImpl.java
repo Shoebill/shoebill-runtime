@@ -57,6 +57,7 @@ import net.gtaun.shoebill.object.impl.TimerImpl;
 import net.gtaun.shoebill.object.impl.VehicleImpl;
 import net.gtaun.shoebill.object.impl.WorldImpl;
 import net.gtaun.shoebill.object.impl.ZoneImpl;
+import net.gtaun.util.event.Attentions;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.HandlerPriority;
 
@@ -89,73 +90,82 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 	private void initialize()
 	{
 		recycledDialogIds = new LinkedList<>();
-		
-		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, (DestroyEvent e) ->
+
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Vehicle.class), (e) ->
 		{
-			Destroyable obj = e.getDestroyable();
-			
-			if(obj instanceof VehicleImpl)
-			{
-				Vehicle vehicle = (Vehicle) obj;
-				super.setVehicle(vehicle.getId(), null);
-			}
-			else if(obj instanceof PlayerObject)
-			{
-				PlayerObject object = (PlayerObject) obj;
-				super.setPlayerObject(object.getPlayer(), object.getId(), null);
-			}
-			else if(obj instanceof SampObject)
-			{
-				SampObject object = (SampObject) obj;
-				super.setObject(object.getId(), null);
-			}
-			else if (obj instanceof Pickup)
-			{
-				Pickup pickup = (Pickup) obj;
-				super.setPickup(pickup.getId(), null);
-			}
-			else if (obj instanceof PlayerLabel)
-			{
-				PlayerLabel label = (PlayerLabel) obj;
-				super.setPlayerLabel(label.getPlayer(), label.getId(), null);
-			}
-			else if (obj instanceof Label)
-			{
-				Label label = (Label) obj;
-				super.setLabel(label.getId(), null);
-			}
-			else if (obj instanceof Textdraw)
-			{
-				Textdraw textdraw = (Textdraw) obj;
-				super.setTextdraw(textdraw.getId(), null);
-			}
-			else if (obj instanceof PlayerTextdraw)
-			{
-				PlayerTextdraw textdraw = (PlayerTextdraw) obj;
-				super.setPlayerTextdraw(textdraw.getPlayer(), textdraw.getId(), null);
-			}
-			else if (obj instanceof Zone)
-			{
-				Zone zone = (Zone) obj;
-				super.setZone(zone.getId(), null);
-			}
-			else if (obj instanceof Menu)
-			{
-				Menu menu = (Menu) obj;
-				super.setMenu(menu.getId(), null);
-			}
-			else if (obj instanceof DialogId)
-			{
-				DialogId dialog = (DialogId) obj;
-				super.removeDialog(dialog);
-				int dialogId = dialog.getId();
-				recycleDialogId(dialogId);
-			}
-			else if (obj instanceof Timer)
-			{
-				Timer timer = (Timer) obj;
-				super.removeTimer(timer);
-			}
+			Vehicle vehicle = (Vehicle) e.getDestroyable();
+			super.setVehicle(vehicle.getId(), null);
+		});
+		
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(PlayerObject.class), (e) ->
+		{
+			PlayerObject object = (PlayerObject) e.getDestroyable();
+			super.setPlayerObject(object.getPlayer(), object.getId(), null);
+		});
+		
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(SampObject.class), (e) ->
+		{
+			SampObject object = (SampObject) e.getDestroyable();
+			if (object instanceof PlayerObject) return;
+			super.setObject(object.getId(), null);
+		});
+		
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Pickup.class), (e) ->
+		{
+			Pickup pickup = (Pickup) e.getDestroyable();
+			super.setPickup(pickup.getId(), null);
+		});
+		
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Label.class), (e) ->
+		{
+			Label label = (Label) e.getDestroyable();
+			if (label instanceof PlayerLabel) return;
+			super.setLabel(label.getId(), null);
+		});
+		
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(PlayerLabel.class), (e) ->
+		{
+			PlayerLabel label = (PlayerLabel) e.getDestroyable();
+			super.setPlayerLabel(label.getPlayer(), label.getId(), null);
+		});
+		
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Textdraw.class), (e) ->
+		{
+			Textdraw textdraw = (Textdraw) e.getDestroyable();
+			if (textdraw instanceof PlayerTextdraw) return;
+			super.setTextdraw(textdraw.getId(), null);
+		});
+		
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(PlayerTextdraw.class), (e) ->
+		{
+			PlayerTextdraw textdraw = (PlayerTextdraw) e.getDestroyable();
+			super.setPlayerTextdraw(textdraw.getPlayer(), textdraw.getId(), null);
+		});
+		
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Zone.class), (e) ->
+		{
+			Zone zone = (Zone) e.getDestroyable();
+			super.setZone(zone.getId(), null);
+		});
+		
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Menu.class), (e) ->
+		{
+			Menu menu = (Menu) e.getDestroyable();
+			super.setMenu(menu.getId(), null);
+		});
+		
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(DialogId.class), (e) ->
+		{
+			DialogId dialog = (DialogId) e.getDestroyable();
+			super.removeDialog(dialog);
+			int dialogId = dialog.getId();
+			recycleDialogId(dialogId);
+		});
+		
+		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Timer.class), (e) ->
+		{
+			Timer timer = (Timer) e.getDestroyable();
+			super.removeTimer(timer);
 		});
 	}
 	

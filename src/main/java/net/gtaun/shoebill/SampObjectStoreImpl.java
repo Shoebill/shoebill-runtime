@@ -129,7 +129,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	
 	private void setupObjectEventHandler()
 	{
-		eventManagerNode.registerHandler(PlayerUpdateEvent.class, HandlerPriority.MONITOR, (PlayerUpdateEvent e) ->
+		eventManagerNode.registerHandler(PlayerUpdateEvent.class, HandlerPriority.MONITOR, (e) ->
 		{
 			Player primitive = e.getPlayer().getPrimitive();
 			if (primitive instanceof PlayerImpl == false) return;
@@ -138,7 +138,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 			player.onPlayerUpdate();
 		});
 
-		eventManagerNode.registerHandler(PlayerDisconnectEvent.class, HandlerPriority.BOTTOM, (PlayerDisconnectEvent e) ->
+		eventManagerNode.registerHandler(PlayerDisconnectEvent.class, HandlerPriority.BOTTOM, (e) ->
 		{
 			Player primitive = e.getPlayer().getPrimitive();
 			if (primitive instanceof PlayerImpl == false) return;
@@ -147,7 +147,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 			player.onPlayerDisconnect();
 		});
 		
-		eventManagerNode.registerHandler(DialogResponseEvent.class, HandlerPriority.MONITOR, (DialogResponseEvent e) ->
+		eventManagerNode.registerHandler(DialogResponseEvent.class, HandlerPriority.MONITOR, (e) ->
 		{
 			Player primitive = e.getPlayer().getPrimitive();
 			if (primitive instanceof PlayerImpl == false) return;
@@ -156,7 +156,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 			player.onDialogResponse();
 		});
 		
-		eventManagerNode.registerHandler(PlayerObjectMovedEvent.class, HandlerPriority.MONITOR, (PlayerObjectMovedEvent e) ->
+		eventManagerNode.registerHandler(PlayerObjectMovedEvent.class, HandlerPriority.MONITOR, (e) ->
 		{
 			PlayerObject primitive = (PlayerObject) e.getObject().getPrimitive();
 			if (primitive instanceof PlayerObjectImpl == false) return;
@@ -165,7 +165,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 			object.onPlayerObjectMoved();
 		});
 		
-		eventManagerNode.registerHandler(ObjectMovedEvent.class, HandlerPriority.MONITOR, (ObjectMovedEvent e) ->
+		eventManagerNode.registerHandler(ObjectMovedEvent.class, HandlerPriority.MONITOR, (e) ->
 		{
 			SampObject primitive = e.getObject().getPrimitive();
 			if (primitive instanceof SampObjectImpl == false) return;
@@ -174,7 +174,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 			object.onObjectMoved();
 		});
 		
-		eventManagerNode.registerHandler(VehicleModEvent.class, HandlerPriority.MONITOR, (VehicleModEvent e) ->
+		eventManagerNode.registerHandler(VehicleModEvent.class, HandlerPriority.MONITOR, (e) ->
 		{
 			Vehicle primitive = e.getVehicle().getPrimitive();
 			if (primitive instanceof VehicleImpl == false) return;
@@ -183,7 +183,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 			vehicle.onVehicleMod();
 		});
 		
-		eventManagerNode.registerHandler(VehicleUpdateDamageEvent.class, HandlerPriority.MONITOR, (VehicleUpdateDamageEvent e) ->
+		eventManagerNode.registerHandler(VehicleUpdateDamageEvent.class, HandlerPriority.MONITOR, (e) ->
 		{
 			Vehicle primitive = e.getVehicle().getPrimitive();
 			if (primitive instanceof VehicleImpl == false) return;
