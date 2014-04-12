@@ -52,8 +52,6 @@ import net.gtaun.shoebill.object.impl.PlayerObjectImpl;
 import net.gtaun.shoebill.object.impl.SampObjectImpl;
 import net.gtaun.shoebill.object.impl.TimerImpl;
 import net.gtaun.shoebill.object.impl.VehicleImpl;
-import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
-import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.HandlerPriority;
 
@@ -99,8 +97,6 @@ public class SampObjectStoreImpl implements SampObjectStore
 	
 	
 	protected final EventManager eventManagerNode;
-	
-	private SampCallbackHandler callbackHandler;
 	
 	private Server server;
 	private World world;
@@ -191,43 +187,6 @@ public class SampObjectStoreImpl implements SampObjectStore
 			VehicleImpl vehicle = (VehicleImpl) primitive;
 			vehicle.onVehicleUpdateDamage();
 		});
-	}
-	
-	public void setFactory(final SampObjectManagerImpl factory)
-	{
-		if (callbackHandler == null) callbackHandler = new AbstractSampCallbackHandler()
-		{
-			@Override
-			public int onPlayerConnect(int playerid)
-			{
-				try
-				{
-					playerObjectsArray[playerid] = new PlayerObject[MAX_OBJECTS];
-					playerLabelsArray[playerid] = new PlayerLabel[MAX_PLAYER_LABELS];
-					playerTextdrawsArray[playerid] = new PlayerTextdraw[MAX_PLAYER_TEXT_DRAWS];
-					
-					Player player = factory.createPlayer(playerid);
-					setPlayer(playerid, player);
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-				
-				return 1;
-			}
-			
-			@Override
-			public int onPlayerDisconnect(int playerid, int reason)
-			{
-				return 1;
-			}
-		};
-	}
-	
-	SampCallbackHandler getCallbackHandler()
-	{
-		return callbackHandler;
 	}
 	
 	@Override
@@ -520,10 +479,14 @@ public class SampObjectStoreImpl implements SampObjectStore
 		if(player == null && players[id] != null)
 		{
 			removePlayer(id);
-			return;
+			if (player == null) return;
 		}
-			
+		
 		players[id] = player;
+		
+		playerObjectsArray[id] = new PlayerObject[MAX_OBJECTS];
+		playerLabelsArray[id] = new PlayerLabel[MAX_PLAYER_LABELS];
+		playerTextdrawsArray[id] = new PlayerTextdraw[MAX_PLAYER_TEXT_DRAWS];
 	}
 	
 	private void removePlayer(int id)
@@ -540,6 +503,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 
 		playerLabelsArray[id] = null;
 		playerObjectsArray[id] = null;
+		playerTextdrawsArray[id] = null;
 		players[id] = null;
 	}
 	

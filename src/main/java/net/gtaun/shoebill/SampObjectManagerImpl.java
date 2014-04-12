@@ -56,6 +56,8 @@ import net.gtaun.shoebill.object.impl.TimerImpl;
 import net.gtaun.shoebill.object.impl.VehicleImpl;
 import net.gtaun.shoebill.object.impl.WorldImpl;
 import net.gtaun.shoebill.object.impl.ZoneImpl;
+import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
+import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.Attentions;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.HandlerPriority;
@@ -72,12 +74,38 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 	
 	private int allocatedDialogId = 0;
 	private Queue<Integer> recycledDialogIds;
+	private SampCallbackHandler callbackHandler;
 	
 	
 	public SampObjectManagerImpl(EventManager eventManager)
 	{
 		super(eventManager);
 		initialize();
+
+		callbackHandler = new AbstractSampCallbackHandler()
+		{
+			@Override
+			public int onPlayerConnect(int playerid)
+			{
+				try
+				{
+					Player player = createPlayer(playerid);
+					setPlayer(playerid, player);
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+				
+				return 1;
+			}
+			
+			@Override
+			public int onPlayerDisconnect(int playerid, int reason)
+			{
+				return 1;
+			}
+		};
 	}
 	
 	@Override
@@ -166,9 +194,17 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			Timer timer = (Timer) e.getDestroyable();
 			super.removeTimer(timer);
 		});
+		
+		createServer();
+		createWorld();
 	}
 	
-	public World createWorld()
+	public SampCallbackHandler getCallbackHandler()
+	{
+		return callbackHandler;
+	}
+	
+	private World createWorld()
 	{
 		try
 		{
@@ -186,7 +222,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 		}
 	}
 	
-	public Server createServer()
+	private Server createServer()
 	{
 		try
 		{

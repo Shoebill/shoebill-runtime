@@ -242,10 +242,8 @@ public class ShoebillImpl implements Shoebill
 		serviceManager = new ServiceManagerImpl(eventManager);
 		
 		sampObjectManager = new SampObjectManagerImpl(eventManager);
-		sampObjectManager.createWorld();
 		
-		Server server = sampObjectManager.createServer();
-		server.setServerCodepage(config.getServerCodepage());
+		Server.get().setServerCodepage(config.getServerCodepage());
 		
 		sampEventLogger = new SampEventLogger(sampObjectManager);
 		sampEventDispatcher = new SampEventDispatcher(sampObjectManager, eventManager);
