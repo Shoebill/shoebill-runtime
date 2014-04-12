@@ -30,7 +30,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 
  * @author MK124
  */
-public class DialogImpl implements DialogId
+public class DialogIdImpl implements DialogId
 {
 	static final int INVALID_ID = -1;
 	
@@ -39,7 +39,7 @@ public class DialogImpl implements DialogId
 	private int id;
 	
 	
-	public DialogImpl(EventManager eventManager, int id)
+	public DialogIdImpl(EventManager eventManager, int id)
 	{
 		this.rootEventManager = eventManager;
 		this.id = id;

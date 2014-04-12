@@ -25,7 +25,6 @@ import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
-import net.gtaun.shoebill.object.Destroyable;
 import net.gtaun.shoebill.object.DialogId;
 import net.gtaun.shoebill.object.Label;
 import net.gtaun.shoebill.object.Menu;
@@ -42,7 +41,7 @@ import net.gtaun.shoebill.object.Timer.TimerCallback;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.object.Zone;
-import net.gtaun.shoebill.object.impl.DialogImpl;
+import net.gtaun.shoebill.object.impl.DialogIdImpl;
 import net.gtaun.shoebill.object.impl.LabelImpl;
 import net.gtaun.shoebill.object.impl.MenuImpl;
 import net.gtaun.shoebill.object.impl.PickupImpl;
@@ -75,9 +74,9 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 	private Queue<Integer> recycledDialogIds;
 	
 	
-	public SampObjectManagerImpl(EventManager eventManagerNode)
+	public SampObjectManagerImpl(EventManager eventManager)
 	{
-		super(eventManagerNode);
+		super(eventManager);
 		initialize();
 	}
 	
@@ -486,7 +485,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 		try
 		{
 			Integer dialogId = allocateDialogId();
-			DialogId dialog = new DialogImpl(eventManagerNode, dialogId);
+			DialogId dialog = new DialogIdImpl(eventManagerNode, dialogId);
 			super.putDialog(dialog.getId(), dialog);
 			return dialog;
 		}

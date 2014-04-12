@@ -1399,7 +1399,7 @@ public class PlayerImpl implements Player
 		if (isOnline() == false) return;
 		
 		if (dialog == null) return;
-		SampNativeFunction.showPlayerDialog(id, DialogImpl.INVALID_ID, 0, " ", " ", " ", " ");
+		SampNativeFunction.showPlayerDialog(id, DialogIdImpl.INVALID_ID, 0, " ", " ", " ", " ");
 		
 		DialogId canceledDialog = dialog;
 		dialog = null;
