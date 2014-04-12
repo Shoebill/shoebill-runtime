@@ -146,7 +146,7 @@ public class ResourceManagerImpl implements ResourceManager
 		File resDataDir = new File(dataDir, desc.getClazz().getName());
 		if (!resDataDir.exists()) resDataDir.mkdirs();
 		
-		resource.setContext(desc, shoebill, rootEventManager.createChildNode(), resDataDir);
+		resource.setContext(desc, shoebill, rootEventManager, resDataDir);
 		return resource;
 	}
 	
