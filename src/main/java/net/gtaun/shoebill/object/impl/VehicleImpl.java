@@ -20,6 +20,7 @@ package net.gtaun.shoebill.object.impl;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.constant.PlayerState;
+import net.gtaun.shoebill.constant.VehicleModel;
 import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Quaternion;
@@ -161,6 +162,12 @@ public class VehicleImpl implements Vehicle
 	public int getModelId()
 	{
 		return modelId;
+	}
+	
+	@Override
+	public String getModelName()
+	{
+		return VehicleModel.getName(modelId);
 	}
 	
 	@Override
