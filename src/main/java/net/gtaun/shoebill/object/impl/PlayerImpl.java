@@ -1512,4 +1512,12 @@ public class PlayerImpl implements Player
 		
 		return SampNativeFunction.getPlayerVersion(id);
 	}
+	
+	@Override
+	public void setChatbubble(String text, Color color, float drawDistance, int expireTime)
+	{
+		if (isOnline() == false) return;
+		
+		SampNativeFunction.setPlayerChatBubble(id, text, color.getValue(), drawDistance, expireTime);
+	}
 }
