@@ -1514,7 +1514,7 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
-	public void setChatbubble(String text, Color color, float drawDistance, int expireTime)
+	public void setChatBubble(String text, Color color, float drawDistance, int expireTime)
 	{
 		if (isOnline() == false) return;
 		
