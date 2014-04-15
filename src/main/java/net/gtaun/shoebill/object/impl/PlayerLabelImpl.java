@@ -128,7 +128,7 @@ public class PlayerLabelImpl implements PlayerLabel
 	@Override
 	public void destroy()
 	{
-		if (id != INVALID_ID) return;
+		if (id == INVALID_ID) return;
 		
 		if (player.isOnline())
 		{
