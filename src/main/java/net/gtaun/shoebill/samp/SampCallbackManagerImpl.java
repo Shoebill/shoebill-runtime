@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2011-2014 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -616,13 +616,13 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 		}
 		
 		@Override
-		public int onUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passenger_seat)
+		public int onUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passenger_seat, float newX, float newY, float newZ)
 		{
 			for (SampCallbackHandler handler : callbackHandlers)
 			{
 				try
 				{
-					handler.onUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat);
+					handler.onUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat, newX, newY, newZ);
 				}
 				catch (Exception e)
 				{
@@ -835,13 +835,13 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 		}
 		
 		@Override
-		public int onPlayerTakeDamage(int playerId, int issuerId, float amount, int weaponId)
+		public int onPlayerTakeDamage(int playerId, int issuerId, float amount, int weaponId, int bodypart)
 		{
 			for (SampCallbackHandler handler : callbackHandlers)
 			{
 				try
 				{
-					handler.onPlayerTakeDamage(playerId, issuerId, amount, weaponId);
+					handler.onPlayerTakeDamage(playerId, issuerId, amount, weaponId, bodypart);
 				}
 				catch (Exception e)
 				{
@@ -853,13 +853,13 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 		}
 		
 		@Override
-		public int onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId)
+		public int onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId, int bodypart)
 		{
 			for (SampCallbackHandler handler : callbackHandlers)
 			{
 				try
 				{
-					handler.onPlayerGiveDamage(playerId, damagedId, amount, weaponId);
+					handler.onPlayerGiveDamage(playerId, damagedId, amount, weaponId, bodypart);
 				}
 				catch (Exception e)
 				{

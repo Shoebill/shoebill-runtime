@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 MK124
+ * Copyright (C) 2011-2014 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -263,7 +263,7 @@ public class SampEventLogger implements SampCallbackHandler
 	}
 	
 	@Override
-	public int onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat)
+	public int onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat, float newX, float newY, float newZ)
 	{
 		return 1;
 	}
@@ -347,13 +347,13 @@ public class SampEventLogger implements SampCallbackHandler
 	}
 	
 	@Override
-	public int onPlayerTakeDamage(int playerid, int issuerId, float amount, int weaponid)
+	public int onPlayerTakeDamage(int playerid, int issuerId, float amount, int weaponid, int bodypart)
 	{
 		return 1;
 	}
 	
 	@Override
-	public int onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId)
+	public int onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId, int bodypart)
 	{
 		return 1;
 	}

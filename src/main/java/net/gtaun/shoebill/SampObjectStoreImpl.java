@@ -62,7 +62,7 @@ import net.gtaun.util.event.HandlerPriority;
  */
 public class SampObjectStoreImpl implements SampObjectStore
 {
-	public static final int MAX_PLAYERS =				800;
+	public static final int MAX_PLAYERS =				1000;
 	public static final int MAX_VEHICLES =				2000;
 	public static final int MAX_OBJECTS =				1000;
 	public static final int MAX_ZONES =					1024;

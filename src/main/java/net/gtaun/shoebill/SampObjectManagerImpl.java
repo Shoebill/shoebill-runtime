@@ -56,7 +56,6 @@ import net.gtaun.shoebill.object.impl.TimerImpl;
 import net.gtaun.shoebill.object.impl.VehicleImpl;
 import net.gtaun.shoebill.object.impl.WorldImpl;
 import net.gtaun.shoebill.object.impl.ZoneImpl;
-import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.Attentions;
 import net.gtaun.util.event.EventManager;
@@ -82,7 +81,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 		super(eventManager);
 		initialize();
 
-		callbackHandler = new AbstractSampCallbackHandler()
+		callbackHandler = new SampCallbackHandler()
 		{
 			@Override
 			public int onPlayerConnect(int playerid)

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2012 MK124
+ * Copyright (C) 2011-2014 MK124
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import net.gtaun.shoebill.constant.ObjectEditResponse;
 import net.gtaun.shoebill.constant.PlayerAttachBone;
 import net.gtaun.shoebill.constant.WeaponModel;
 import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.event.checkpoint.CheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointLeaveEvent;
 import net.gtaun.shoebill.event.checkpoint.RaceCheckpointEnterEvent;
@@ -59,6 +60,7 @@ import net.gtaun.shoebill.event.player.PlayerStreamOutEvent;
 import net.gtaun.shoebill.event.player.PlayerTakeDamageEvent;
 import net.gtaun.shoebill.event.player.PlayerTextEvent;
 import net.gtaun.shoebill.event.player.PlayerUpdateEvent;
+import net.gtaun.shoebill.event.player.PlayerWeaponShotEvent;
 import net.gtaun.shoebill.event.rcon.RconCommandEvent;
 import net.gtaun.shoebill.event.rcon.RconLoginEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleDeathEvent;
@@ -677,7 +679,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	}
 	
 	@Override
-	public int onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat)
+	public int onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat, float newX, float newY, float newZ)
 	{
 		try
 		{
@@ -926,14 +928,14 @@ public class SampEventDispatcher implements SampCallbackHandler
 	}
 	
 	@Override
-	public int onPlayerTakeDamage(int playerId, int issuerId, float amount, int weaponId)
+	public int onPlayerTakeDamage(int playerId, int issuerId, float amount, int weaponId, int bodypart)
 	{
 		try
 		{
 			Player player = sampObjectStore.getPlayer(playerId);
 			Player issuer = sampObjectStore.getPlayer(issuerId);
 			
-			PlayerTakeDamageEvent event = new PlayerTakeDamageEvent(player, issuer, amount, weaponId);
+			PlayerTakeDamageEvent event = new PlayerTakeDamageEvent(player, issuer, amount, weaponId, bodypart);
 			rootEventManager.dispatchEvent(event, player);
 			
 			return 1;
@@ -946,14 +948,14 @@ public class SampEventDispatcher implements SampCallbackHandler
 	}
 	
 	@Override
-	public int onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId)
+	public int onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId, int bodypart)
 	{
 		try
 		{
 			Player player = sampObjectStore.getPlayer(playerId);
 			Player victim = sampObjectStore.getPlayer(damagedId);
 			
-			PlayerGiveDamageEvent event = new PlayerGiveDamageEvent(player, victim, amount, weaponId);
+			PlayerGiveDamageEvent event = new PlayerGiveDamageEvent(player, victim, amount, weaponId, bodypart);
 			rootEventManager.dispatchEvent(event, player);
 			
 			return 1;
@@ -1119,6 +1121,25 @@ public class SampEventDispatcher implements SampCallbackHandler
 			}
 			
 			return 1;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	@Override
+	public int onPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ)
+	{
+		try
+		{
+			Player player = sampObjectStore.getPlayer(playerid);
+			
+			PlayerWeaponShotEvent event = new PlayerWeaponShotEvent(player, weaponid, hittype, hitid, new Vector3D(fX, fY, fZ));
+			rootEventManager.dispatchEvent(event, player);
+			
+			return event.getResponse();
 		}
 		catch (Exception e)
 		{

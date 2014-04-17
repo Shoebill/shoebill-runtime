@@ -389,6 +389,22 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
+	public float getCameraAspectRatio()
+	{
+		if (isOnline() == false) return 0.0f;
+		
+		return SampNativeFunction.getPlayerCameraAspectRatio(id);
+	}
+	
+	@Override
+	public float getCameraZoom()
+	{
+		if (isOnline() == false) return 0.0f;
+		
+		return SampNativeFunction.getPlayerCameraZoom(id);
+	}
+	
+	@Override
 	public FightStyle getFightStyle()
 	{
 		if (isOnline() == false) return FightStyle.NORMAL;
@@ -1363,6 +1379,30 @@ public class PlayerImpl implements Player
 		
 		SampNativeFunction.removeBuildingForPlayer(id, modelId, x, y, z, radius);
 	}
+
+	@Override
+	public Vector3D getLastShotOrigin()
+	{
+		if (isOnline() == false) return new Vector3D();
+		
+		Vector3D origin = new Vector3D();
+		Vector3D hitpos = new Vector3D();
+		
+		SampNativeFunction.getPlayerLastShotVectors(id, origin, hitpos);
+		return origin;
+	}
+
+	@Override
+	public Vector3D getLastShotHitPosition()
+	{
+		if (isOnline() == false) return new Vector3D();
+		
+		Vector3D origin = new Vector3D();
+		Vector3D hitpos = new Vector3D();
+		
+		SampNativeFunction.getPlayerLastShotVectors(id, origin, hitpos);
+		return hitpos;
+	}
 	
 	@Override
 	public void removeBuilding(int modelId, Vector3D pos, float radius)
@@ -1511,6 +1551,60 @@ public class PlayerImpl implements Player
 		if (isOnline() == false) return "Offline";
 		
 		return SampNativeFunction.getPlayerVersion(id);
+	}
+	
+	@Override
+	public int getConnectedTime()
+	{
+		return SampNativeFunction.netStats_GetConnectedTime(id);
+	}
+	
+	@Override
+	public int getMessagesReceived()
+	{
+		return SampNativeFunction.netStats_MessagesReceived(id);
+	}
+	
+	@Override
+	public int getBytesReceived()
+	{
+		return SampNativeFunction.netStats_BytesReceived(id);
+	}
+	
+	@Override
+	public int getMessagesSent()
+	{
+		return SampNativeFunction.netStats_MessagesSent(id);
+	}
+	
+	@Override
+	public int getBytesSent()
+	{
+		return SampNativeFunction.netStats_BytesSent(id);
+	}
+	
+	@Override
+	public int getMessagesRecvPerSecond()
+	{
+		return SampNativeFunction.netStats_MessagesRecvPerSecond(id);
+	}
+	
+	@Override
+	public float getPacketLossPercent()
+	{
+		return SampNativeFunction.netStats_PacketLossPercent(id);
+	}
+	
+	@Override
+	public int getConnectionStatus()
+	{
+		return SampNativeFunction.netStats_ConnectionStatus(id);
+	}
+	
+	@Override
+	public String getIpPort()
+	{
+		return SampNativeFunction.netStats_GetIpPort(id);
 	}
 	
 	@Override

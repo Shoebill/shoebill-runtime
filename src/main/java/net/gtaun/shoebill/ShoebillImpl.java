@@ -32,7 +32,6 @@ import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.resource.ResourceManager;
 import net.gtaun.shoebill.resource.ResourceManagerImpl;
-import net.gtaun.shoebill.samp.AbstractSampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.shoebill.samp.SampCallbackManagerImpl;
 import net.gtaun.shoebill.service.ServiceManagerImpl;
@@ -159,7 +158,7 @@ public class ShoebillImpl implements Shoebill
 	
 	private void registerRootCallbackHandler()
 	{
-		sampCallbackManager.registerCallbackHandler(new AbstractSampCallbackHandler()
+		sampCallbackManager.registerCallbackHandler(new SampCallbackHandler()
 		{
 			@Override
 			public int onGameModeInit()
