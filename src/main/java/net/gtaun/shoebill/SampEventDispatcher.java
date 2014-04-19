@@ -124,7 +124,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 				timer.tick(interval);
 			}
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 		}
@@ -143,18 +143,6 @@ public class SampEventDispatcher implements SampCallbackHandler
 	}
 	
 	@Override
-	public int onGameModeInit()
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onGameModeExit()
-	{
-		return 1;
-	}
-	
-	@Override
 	public int onPlayerConnect(int playerId)
 	{
 		try
@@ -166,7 +154,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -193,7 +181,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			sampObjectStore.setPlayer(playerId, null);
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -212,7 +200,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -239,7 +227,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -258,7 +246,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -278,7 +266,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -303,7 +291,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 0;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -322,7 +310,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return event.getResponse();
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -341,7 +329,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return event.getResponse();
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -362,7 +350,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -382,7 +370,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -401,7 +389,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -420,7 +408,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -439,7 +427,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -458,7 +446,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -477,7 +465,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -494,7 +482,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return event.getResponse();
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -513,7 +501,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return event.getResponse();
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -532,7 +520,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -552,7 +540,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -572,7 +560,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -592,7 +580,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -611,7 +599,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -631,7 +619,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -651,7 +639,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -671,7 +659,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -691,7 +679,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -711,7 +699,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -731,7 +719,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -751,7 +739,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -770,7 +758,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -787,7 +775,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -817,7 +805,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return ret;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -837,7 +825,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -858,7 +846,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -878,7 +866,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -898,7 +886,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -920,7 +908,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return event.getResponse();
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -940,7 +928,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -960,7 +948,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -979,7 +967,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -999,7 +987,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return event.getResponse();
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -1019,7 +1007,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return event.getResponse();
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -1039,7 +1027,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -1071,7 +1059,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -1091,7 +1079,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -1122,7 +1110,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return 1;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;
@@ -1141,7 +1129,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			
 			return event.getResponse();
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 			return 0;

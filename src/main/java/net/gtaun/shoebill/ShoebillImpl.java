@@ -168,7 +168,7 @@ public class ShoebillImpl implements Shoebill
 					initialize();
 					loadPluginsAndGamemode();
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}

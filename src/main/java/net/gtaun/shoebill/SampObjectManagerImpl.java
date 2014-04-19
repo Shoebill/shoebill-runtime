@@ -91,7 +91,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 					Player player = createPlayer(playerid);
 					setPlayer(playerid, player);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}

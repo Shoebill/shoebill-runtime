@@ -99,7 +99,7 @@ public class ResourceManagerImpl implements ResourceManager
 		{
 			desc = new ResourceDescription(ResourceType.PLUGIN, file, getClass().getClassLoader());
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			e.printStackTrace();
 		}

@@ -69,7 +69,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onProcessTick();
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -84,7 +84,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onAmxLoad(handle);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -99,7 +99,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onAmxUnload(handle);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -115,7 +115,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onGameModeInit();
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -133,7 +133,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onGameModeExit();
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -151,7 +151,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerConnect(playerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -169,7 +169,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerDisconnect(playerid, reason);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -187,7 +187,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerSpawn(playerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -205,7 +205,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerDeath(playerid, killerid, reason);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -223,7 +223,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onVehicleSpawn(vehicleid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -241,7 +241,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onVehicleDeath(vehicleid, killerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -260,7 +260,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					ret &= handler.onPlayerText(playerid, text);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -279,7 +279,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					ret |= handler.onPlayerCommandText(playerid, cmdtext);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -298,7 +298,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					ret &= handler.onPlayerRequestClass(playerid, classid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -316,7 +316,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerEnterVehicle(playerid, vehicleid, ispassenger);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -334,7 +334,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerExitVehicle(playerid, vehicleid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -352,7 +352,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerStateChange(playerid, newstate, oldstate);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -370,7 +370,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerEnterCheckpoint(playerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -388,7 +388,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerLeaveCheckpoint(playerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -406,7 +406,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerEnterRaceCheckpoint(playerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -424,7 +424,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerLeaveRaceCheckpoint(playerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -443,7 +443,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					ret |= handler.onRconCommand(cmd);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -462,7 +462,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					ret &= handler.onPlayerRequestSpawn(playerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -480,7 +480,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onObjectMoved(objectid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -498,7 +498,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerObjectMoved(playerid, objectid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -516,7 +516,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerPickUpPickup(playerid, pickupid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -534,7 +534,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onVehicleMod(playerid, vehicleid, componentid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -552,7 +552,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onEnterExitModShop(playerid, enterexit, interiorid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -570,7 +570,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onVehiclePaintjob(playerid, vehicleid, paintjobid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -588,7 +588,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onVehicleRespray(playerid, vehicleid, color1, color2);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -606,7 +606,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onVehicleDamageStatusUpdate(vehicleid, playerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -624,7 +624,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat, newX, newY, newZ);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -642,7 +642,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerSelectedMenuRow(playerid, row);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -660,7 +660,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerExitedMenu(playerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -678,7 +678,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -697,7 +697,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					ret &= handler.onPlayerKeyStateChange(playerid, newkeys, oldkeys);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -715,7 +715,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onRconLoginAttempt(ip, password, success);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -734,7 +734,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					ret &= handler.onPlayerUpdate(playerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -752,7 +752,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerStreamIn(playerid, forplayerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -770,7 +770,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerStreamOut(playerid, forplayerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -788,7 +788,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onVehicleStreamIn(vehicleid, forplayerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -806,7 +806,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onVehicleStreamOut(vehicleid, forplayerid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -825,7 +825,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					ret |= handler.onDialogResponse(playerid, dialogid, response, listitem, inputtext);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -843,7 +843,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerTakeDamage(playerId, issuerId, amount, weaponId, bodypart);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -861,7 +861,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerGiveDamage(playerId, damagedId, amount, weaponId, bodypart);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -879,7 +879,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerClickMap(playerId, x, y, z);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -898,7 +898,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					ret |= handler.onPlayerClickPlayerTextDraw(playerid, clickedid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -917,7 +917,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					ret |= handler.onPlayerClickPlayerTextDraw(playerid, playertextid);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -935,7 +935,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerClickPlayer(playerid, clickedplayerid, source);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -953,7 +953,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerEditObject(playerid, playerobject, objectid, response, fX, fY, fZ, fRotX, fRotY, fRotZ);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -971,7 +971,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerEditAttachedObject(playerid, response, index, modelid, boneid, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -989,7 +989,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 				{
 					handler.onPlayerSelectObject(playerid, type, objectid, modelid, fX, fY, fZ);
 				}
-				catch (Exception e)
+				catch (Throwable e)
 				{
 					e.printStackTrace();
 				}
