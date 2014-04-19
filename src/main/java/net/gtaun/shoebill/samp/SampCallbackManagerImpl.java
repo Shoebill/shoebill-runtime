@@ -997,5 +997,24 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 			
 			return 1;
 		}
+
+		@Override
+		public int onPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ)
+		{
+			int ret = 1;
+			for (SampCallbackHandler handler : callbackHandlers)
+			{
+				try
+				{
+					ret &= handler.onPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+				}
+				catch (Throwable e)
+				{
+					e.printStackTrace();
+				}
+			}
+
+			return ret;
+		}
 	};
 }
