@@ -41,36 +41,7 @@ public class SampEventLogger implements SampCallbackHandler
 	{
 		sampObjectStore = store;
 	}
-	
-	@Override
-	public void onProcessTick()
-	{
-		
-	}
 
-	@Override
-	public void onAmxLoad(int handle)
-	{
-		
-	}
-	
-	@Override
-	public void onAmxUnload(int handle)
-	{
-		
-	}
-	
-	@Override
-	public int onGameModeInit()
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onGameModeExit()
-	{
-		return 1;
-	}
 	
 	@Override
 	public int onPlayerConnect(int playerId)
@@ -110,19 +81,7 @@ public class SampEventLogger implements SampCallbackHandler
 		LOGGER.info("[kill] " + killer.getName() + " killed " + player.getName() + " (" + SampNativeFunction.getWeaponName(reason) + ")");
 		return 1;
 	}
-	
-	@Override
-	public int onVehicleSpawn(int vehicleId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onVehicleDeath(int vehicleId, int killerId)
-	{
-		return 1;
-	}
-	
+
 	@Override
 	public int onPlayerText(int playerId, String text)
 	{
@@ -138,12 +97,6 @@ public class SampEventLogger implements SampCallbackHandler
 		Player player = sampObjectStore.getPlayer(playerId);
 		LOGGER.info("[cmd] " + player.getName() + ": " + cmdtext);
 		
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerRequestClass(int playerId, int classId)
-	{
 		return 1;
 	}
 	
@@ -168,57 +121,9 @@ public class SampEventLogger implements SampCallbackHandler
 	}
 	
 	@Override
-	public int onPlayerStateChange(int playerId, int state, int oldState)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerEnterCheckpoint(int playerId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerLeaveCheckpoint(int playerId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerEnterRaceCheckpoint(int playerId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerLeaveRaceCheckpoint(int playerId)
-	{
-		return 1;
-	}
-	
-	@Override
 	public int onRconCommand(String cmd)
 	{
 		LOGGER.info("[rcon] " + " command: " + cmd);
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerRequestSpawn(int playerId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onObjectMoved(int objectId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerObjectMoved(int playerId, int objectId)
-	{
 		return 1;
 	}
 	
@@ -231,67 +136,13 @@ public class SampEventLogger implements SampCallbackHandler
 		LOGGER.info("[pickup] " + player.getName() + " pickup " + pickup.getModelId() + " (" + pickup.getType() + ")");
 		return 1;
 	}
-	
-	@Override
-	public int onVehicleMod(int playerId, int vehicleId, int componentId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onEnterExitModShop(int playerId, int enterexit, int interiorId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onVehiclePaintjob(int playerId, int vehicleId, int paintjobId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onVehicleRespray(int playerId, int vehicleId, int color1, int color2)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onVehicleDamageStatusUpdate(int vehicleId, int playerId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat, float newX, float newY, float newZ)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerSelectedMenuRow(int playerId, int row)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerExitedMenu(int playerId)
-	{
-		return 1;
-	}
-	
+
 	@Override
 	public int onPlayerInteriorChange(int playerId, int interiorId, int oldInteriorId)
 	{
 		Player player = sampObjectStore.getPlayer(playerId);
 		LOGGER.info("[interior] " + player.getName() + " interior has changed to " + interiorId);
 		
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerKeyStateChange(int playerId, int keys, int oldKeys)
-	{
 		return 1;
 	}
 	
@@ -311,96 +162,12 @@ public class SampEventLogger implements SampCallbackHandler
 	}
 	
 	@Override
-	public int onPlayerUpdate(int playerId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerStreamIn(int playerId, int forPlayerId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerStreamOut(int playerId, int forPlayerId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onVehicleStreamIn(int vehicleId, int forPlayerId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onVehicleStreamOut(int vehicleId, int forPlayerId)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onDialogResponse(int playerId, int dialogId, int response, int listitem, String inputtext)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerTakeDamage(int playerid, int issuerId, float amount, int weaponid, int bodypart)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId, int bodypart)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerClickMap(int playerId, float x, float y, float z)
-	{
-		return 1;
-	}
-	
-	@Override
 	public int onPlayerClickPlayer(int playerId, int clickedPlayerId, int source)
 	{
 		Player player = sampObjectStore.getPlayer(playerId);
 		Player clickedPlayer = sampObjectStore.getPlayer(clickedPlayerId);
 		
 		LOGGER.info("[click] " + player.getName() + " has clicked " + clickedPlayer.getName());
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerClickTextDraw(int playerid, int clickedid)
-	{
-		return 0;
-	}
-
-	@Override
-	public int onPlayerClickPlayerTextDraw(int playerid, int playertextid)
-	{
-		return 0;
-	}
-	
-	@Override
-	public int onPlayerEditObject(int playerid, int playerobject, int objectid, int response, float fX, float fY, float fZ, float fRotX, float fRotY, float fRotZ)
-	{
-		return 1;
-	}
-
-	@Override
-	public int onPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ)
-	{
-		return 1;
-	}
-
-	@Override
-	public int onPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ)
-	{
 		return 1;
 	}
 }
