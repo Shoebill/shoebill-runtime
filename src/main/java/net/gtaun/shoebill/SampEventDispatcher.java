@@ -1045,14 +1045,20 @@ public class SampEventDispatcher implements SampCallbackHandler
 			if (playerobject == 0)
 			{
 				SampObject object = sampObjectStore.getObject(objectid);
-				
+
+				SampNativeFunction.setObjectPos(objectid, fX, fY, fZ);
+				SampNativeFunction.setObjectRot(objectid, fRotX, fRotY, fRotZ);
+
 				PlayerEditObjectEvent event = new PlayerEditObjectEvent(player, object, editResponse);
 				rootEventManager.dispatchEvent(event, player, object);
 			}
 			else
 			{
 				PlayerObject object = sampObjectStore.getPlayerObject(player, objectid);
-				
+
+				SampNativeFunction.setPlayerObjectPos(playerid, objectid, fX, fY, fZ);
+				SampNativeFunction.setPlayerObjectRot(playerid, objectid, fRotX, fRotY, fRotZ);
+
 				PlayerEditPlayerObjectEvent event = new PlayerEditPlayerObjectEvent(player, object, editResponse);
 				rootEventManager.dispatchEvent(event, player, object);
 			}
