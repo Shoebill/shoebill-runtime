@@ -189,7 +189,13 @@ public class PlayerImpl implements Player
 	{
 		return spectatingVehicle;
 	}
-	
+
+	@Override
+	public float getAngle()
+	{
+		return SampNativeFunction.getPlayerFacingAngle(id);
+	}
+
 	@Override
 	public AngledLocation getLocation()
 	{
@@ -355,7 +361,13 @@ public class PlayerImpl implements Player
 		
 		return WeaponModel.get(SampNativeFunction.getPlayerWeapon(id));
 	}
-	
+
+	@Override
+	public void setArmedWeapon(WeaponModel model)
+	{
+		SampNativeFunction.setPlayerArmedWeapon(id, model.getId());
+	}
+
 	@Override
 	public int getArmedWeaponAmmo()
 	{
