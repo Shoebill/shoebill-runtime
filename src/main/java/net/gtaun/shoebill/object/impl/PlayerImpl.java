@@ -17,6 +17,8 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import java.util.Objects;
+
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.constant.CameraCutStyle;
@@ -883,6 +885,14 @@ public class PlayerImpl implements Player
 	}
 	
 	@Override
+	public void playSound(int sound)
+	{
+		if (isOnline() == false) return;
+		
+		SampNativeFunction.playerPlaySound(id, sound, 0.0f, 0.0f, 0.0f);
+	}
+	
+	@Override
 	public void markerForPlayer(Player player, Color color)
 	{
 		if (isOnline() == false) return;
@@ -1436,8 +1446,13 @@ public class PlayerImpl implements Player
 	public void showDialog(DialogId dialog, DialogStyle style, String caption, String text, String button1, String button2)
 	{
 		if (isOnline() == false) return;
-		
-		if (caption == null || text == null || button1 == null || button2 == null) throw new NullPointerException();
+
+		Objects.requireNonNull(dialog);
+		Objects.requireNonNull(style);
+		Objects.requireNonNull(caption);
+		Objects.requireNonNull(text);
+		Objects.requireNonNull(button1);
+		Objects.requireNonNull(button2);
 		
 		if (this.dialog != null)
 		{
