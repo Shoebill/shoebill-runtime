@@ -42,8 +42,8 @@ import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.data.WeaponData;
-import net.gtaun.shoebill.event.dialog.DialogCancelEvent;
-import net.gtaun.shoebill.event.dialog.DialogCancelEvent.DialogCancelType;
+import net.gtaun.shoebill.event.dialog.DialogCloseEvent;
+import net.gtaun.shoebill.event.dialog.DialogCloseEvent.DialogCloseType;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
 import net.gtaun.shoebill.object.DialogId;
@@ -183,7 +183,7 @@ public class PlayerImpl implements Player
 	{
 		return spectatingPlayer;
 	}
-	
+
 	@Override
 	public Vehicle getSpectatingVehicle()
 	{
@@ -193,6 +193,8 @@ public class PlayerImpl implements Player
 	@Override
 	public float getAngle()
 	{
+		if (isOnline() == false) return 0.0f;
+
 		return SampNativeFunction.getPlayerFacingAngle(id);
 	}
 
@@ -365,6 +367,8 @@ public class PlayerImpl implements Player
 	@Override
 	public void setArmedWeapon(WeaponModel model)
 	{
+		if (isOnline() == false) return;
+
 		SampNativeFunction.setPlayerArmedWeapon(id, model.getId());
 	}
 
@@ -1437,7 +1441,7 @@ public class PlayerImpl implements Player
 		
 		if (this.dialog != null)
 		{
-			DialogCancelEvent event = new DialogCancelEvent(this.dialog, this, DialogCancelType.OVERRIDE);
+			DialogCloseEvent event = new DialogCloseEvent(this.dialog, this, DialogCloseType.OVERRIDE);
 			eventManagerNode.dispatchEvent(event, this.dialog, this);
 		}
 		
@@ -1456,7 +1460,7 @@ public class PlayerImpl implements Player
 		DialogId canceledDialog = dialog;
 		dialog = null;
 		
-		DialogCancelEvent event = new DialogCancelEvent(canceledDialog, this, DialogCancelType.CANCEL);
+		DialogCloseEvent event = new DialogCloseEvent(canceledDialog, this, DialogCloseType.CANCEL);
 		eventManagerNode.dispatchEvent(event, canceledDialog, this);
 	}
 	
