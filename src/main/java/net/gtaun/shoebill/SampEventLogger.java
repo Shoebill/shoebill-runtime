@@ -16,9 +16,7 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 
 import org.slf4j.Logger;
@@ -92,57 +90,9 @@ public class SampEventLogger implements SampCallbackHandler
 	}
 	
 	@Override
-	public int onPlayerCommandText(int playerId, String cmdtext)
-	{
-		Player player = sampObjectStore.getPlayer(playerId);
-		LOGGER.info("[cmd] " + player.getName() + ": " + cmdtext);
-		
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerEnterVehicle(int playerId, int vehicleId, int isPassenger)
-	{
-		Player player = sampObjectStore.getPlayer(playerId);
-		Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
-		
-		LOGGER.info("[vehicle] " + player.getName() + " enter a vehicle (" + vehicle.getModelId() + ")");
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerExitVehicle(int playerId, int vehicleId)
-	{
-		Player player = sampObjectStore.getPlayer(playerId);
-		Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
-		
-		LOGGER.info("[vehicle] " + player.getName() + " leave a vehicle (" + vehicle.getModelId() + ")");
-		return 1;
-	}
-	
-	@Override
 	public int onRconCommand(String cmd)
 	{
 		LOGGER.info("[rcon] " + " command: " + cmd);
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerPickUpPickup(int playerId, int pickupId)
-	{
-		Player player = sampObjectStore.getPlayer(playerId);
-		Pickup pickup = sampObjectStore.getPickup(pickupId);
-		
-		LOGGER.info("[pickup] " + player.getName() + " pickup " + pickup.getModelId() + " (" + pickup.getType() + ")");
-		return 1;
-	}
-
-	@Override
-	public int onPlayerInteriorChange(int playerId, int interiorId, int oldInteriorId)
-	{
-		Player player = sampObjectStore.getPlayer(playerId);
-		LOGGER.info("[interior] " + player.getName() + " interior has changed to " + interiorId);
-		
 		return 1;
 	}
 	
@@ -158,16 +108,6 @@ public class SampEventLogger implements SampCallbackHandler
 			LOGGER.info("[rcon] " + ip + " has logged.");
 		}
 		
-		return 1;
-	}
-	
-	@Override
-	public int onPlayerClickPlayer(int playerId, int clickedPlayerId, int source)
-	{
-		Player player = sampObjectStore.getPlayer(playerId);
-		Player clickedPlayer = sampObjectStore.getPlayer(clickedPlayerId);
-		
-		LOGGER.info("[click] " + player.getName() + " has clicked " + clickedPlayer.getName());
 		return 1;
 	}
 }
