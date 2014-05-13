@@ -229,6 +229,7 @@ public class PlayerImpl implements Player
 		return skill;
 	}
 	
+	@Override
 	public WeaponData getWeaponData(int slot)
 	{
 		WeaponData data = new WeaponData();

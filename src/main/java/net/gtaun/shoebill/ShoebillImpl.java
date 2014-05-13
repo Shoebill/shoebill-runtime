@@ -92,7 +92,7 @@ public class ShoebillImpl implements Shoebill
 	private Queue<Runnable> asyncExecQueue;
 	
 	
-	public ShoebillImpl(int[] amxHandles) throws IOException, ClassNotFoundException
+	public ShoebillImpl(int[] amxHandles) throws IOException
 	{
 		Shoebill.Instance.reference = new WeakReference<>(this);
 		

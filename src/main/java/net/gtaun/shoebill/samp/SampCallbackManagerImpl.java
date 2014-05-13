@@ -76,6 +76,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 			}
 		}
 		
+		@Override
 		public void onAmxLoad(int handle)
 		{
 			for (SampCallbackHandler handler : callbackHandlers)
@@ -91,6 +92,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 			}
 		}
 		
+		@Override
 		public void onAmxUnload(int handle)
 		{
 			for (SampCallbackHandler handler : callbackHandlers)
