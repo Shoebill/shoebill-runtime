@@ -23,58 +23,56 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
- * 
+ *
+ *
  * @author MK124
  */
 public class SampEventLogger implements SampCallbackHandler
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);
-	
-	
+
+
 	private SampObjectStore sampObjectStore;
-	
-	
+
+
 	public SampEventLogger(SampObjectStore store)
 	{
 		sampObjectStore = store;
 	}
 
-	
 	@Override
 	public int onPlayerConnect(int playerId)
 	{
 		LOGGER.info("[join] " + SampNativeFunction.getPlayerName(playerId) + " has joined the server (" + playerId + ":" + SampNativeFunction.getPlayerIp(playerId) + ")");
 		return 1;
 	}
-	
+
 	@Override
 	public int onPlayerDisconnect(int playerId, int reason)
 	{
 		LOGGER.info("[part] " + SampNativeFunction.getPlayerName(playerId) + " has left the server (" + playerId + ":" + reason + ")");
 		return 1;
 	}
-	
+
 	@Override
 	public int onPlayerSpawn(int playerId)
 	{
-		Player player = sampObjectStore.getPlayer(playerId);
-		LOGGER.info("[spawn] " + player.getName() + " has spawned (" + playerId + ")");
-		
+		LOGGER.info("[spawn] " + SampNativeFunction.getPlayerName(playerId) + " has spawned (" + playerId + ")");
 		return 1;
 	}
-	
+
 	@Override
 	public int onPlayerDeath(int playerId, int killerId, int reason)
 	{
 		Player player = sampObjectStore.getPlayer(playerId);
-		
+		if (player == null) return 0;
+
 		if (killerId == Player.INVALID_ID)
 		{
 			LOGGER.info("[death] " + player.getName() + " died (" + playerId + ":" + reason + ")");
 			return 1;
 		}
-		
+
 		Player killer = sampObjectStore.getPlayer(killerId);
 		LOGGER.info("[kill] " + killer.getName() + " killed " + player.getName() + " (" + SampNativeFunction.getWeaponName(reason) + ")");
 		return 1;
@@ -83,19 +81,17 @@ public class SampEventLogger implements SampCallbackHandler
 	@Override
 	public int onPlayerText(int playerId, String text)
 	{
-		Player player = sampObjectStore.getPlayer(playerId);
-		LOGGER.info("[chat] " + player.getName() + ": " + text);
-		
+		LOGGER.info("[chat] " + SampNativeFunction.getPlayerName(playerId) + ": " + text);
 		return 1;
 	}
-	
+
 	@Override
 	public int onRconCommand(String cmd)
 	{
 		LOGGER.info("[rcon] " + " command: " + cmd);
 		return 1;
 	}
-	
+
 	@Override
 	public int onRconLoginAttempt(String ip, String password, int isSuccess)
 	{
@@ -107,7 +103,7 @@ public class SampEventLogger implements SampCallbackHandler
 		{
 			LOGGER.info("[rcon] " + ip + " has logged.");
 		}
-		
+
 		return 1;
 	}
 }
