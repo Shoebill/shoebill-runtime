@@ -27,8 +27,8 @@ import net.gtaun.shoebill.resource.Resource;
 import net.gtaun.util.event.EventManager;
 
 /**
- * 
- * 
+ *
+ *
  * @author MK124
  */
 public class ServiceManagerImpl implements ServiceManager
@@ -38,66 +38,66 @@ public class ServiceManagerImpl implements ServiceManager
 		private Resource resource;
 		private Class<? extends Service> type;
 		private Service service;
-		
+
 		<T extends Service> ServiceEntryImpl(Resource resource, Class<T> type, T service)
 		{
 			this.resource = resource;
 			this.type = type;
 			this.service = service;
 		}
-		
+
 		@Override
 		public Resource getProvider()
 		{
 			return resource;
 		}
-		
+
 		@Override
 		public Class<? extends Service> getType()
 		{
 			return type;
 		}
-		
+
 		@Override
 		public Service getService()
 		{
 			return service;
 		}
 	}
-	
-	
+
+
 	private EventManager rootEventManager;
 	private Map<Class<? extends Service>, ServiceEntry> services;
-	
-	
+
+
 	public ServiceManagerImpl(EventManager eventManager)
 	{
 		this.rootEventManager = eventManager;
 		services = new HashMap<>();
 	}
-	
+
 	private void registerServiceEntry(ServiceEntry entry)
 	{
 		Class<? extends Service> type = entry.getType();
-		
+
 		ServiceEntry prevEntry = services.get(type);
 		services.put(type, entry);
-		
+
 		if(prevEntry != null)
 		{
 			ServiceUnregisterEvent unregisterEvent = new ServiceUnregisterEvent(prevEntry);
 			rootEventManager.dispatchEvent(unregisterEvent, this);
 		}
-		
+
 		ServiceRegisterEvent event = new ServiceRegisterEvent(entry, prevEntry);
-		rootEventManager.dispatchEvent(event, this);	
+		rootEventManager.dispatchEvent(event, this);
 	}
-	
+
 	private void unregisterServiceEntry(ServiceEntry entry)
 	{
 		Class<? extends Service> type = entry.getType();
 		services.remove(type);
-		
+
 		ServiceUnregisterEvent event = new ServiceUnregisterEvent(entry);
 		rootEventManager.dispatchEvent(event, this);
 	}
@@ -113,42 +113,44 @@ public class ServiceManagerImpl implements ServiceManager
 	public <T extends Service> void unregisterService(Resource resource, Class<T> type)
 	{
 		ServiceEntry entry = services.get(type);
-		
+
 		if(entry == null) return;
 		if(entry.getProvider() != resource ) return;
-		
+
 		unregisterServiceEntry(entry);
 	}
-	
+
 	@Override
-	public <T extends Service> void unregisterServices(Resource resource)
+	public <T extends Service> void unregisterAllServices(Resource resource)
 	{
 		Iterator<ServiceEntry> iterator = services.values().iterator();
 		while(iterator.hasNext())
 		{
 			ServiceEntry entry = iterator.next();
-			if(entry.getProvider() == resource) iterator.remove(); 
+			if(entry.getProvider() == resource) iterator.remove();
 		}
 	}
-	
+
 	@Override
 	public <T extends Service> T getService(Class<T> type)
 	{
-		return type.cast(services.get(type).getService());
+		ServiceEntry entry = services.get(type);
+		if (entry == null) return null;
+		return type.cast(entry.getService());
 	}
-	
+
 	@Override
 	public <T extends Service> ServiceEntry getServiceEnrty(Class<T> type)
 	{
 		return services.get(type);
 	}
-	
+
 	@Override
 	public <T extends Service> boolean isServiceAvailable(Class<T> type)
 	{
 		return services.containsKey(type);
 	}
-	
+
 	@Override
 	public Collection<ServiceEntry> getServiceEntries()
 	{

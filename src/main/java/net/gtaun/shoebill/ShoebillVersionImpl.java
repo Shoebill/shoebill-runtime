@@ -74,7 +74,7 @@ public class ShoebillVersionImpl implements ShoebillVersion
 	}
 	
 	@Override
-	public String getSupport()
+	public String getSupportedVersion()
 	{
 		return support;
 	}
