@@ -19,10 +19,8 @@ package net.gtaun.shoebill;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.lang.ref.WeakReference;
-import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -41,7 +39,7 @@ import net.gtaun.util.event.EventManagerRoot;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +55,7 @@ public class ShoebillImpl implements Shoebill
 	private static final String VERSION_FILENAME = "version.yml";
 
 	private static final String SHOEBILL_CONFIG_PATH = "./shoebill/shoebill.yml";
-	private static final String LOG4J_CONFIG_FILENAME = "log4j.properties";
+	private static final String LOG4J_CONFIG_FILENAME = "log4j.xml";
 	private static final String RESOURCES_CONFIG_FILENAME = "resources.yml";
 
 
@@ -136,14 +134,11 @@ public class ShoebillImpl implements Shoebill
 	{
 		if (configFile.exists())
 		{
-			PropertyConfigurator.configure(configFile.toURI().toURL());
+			DOMConfigurator.configureAndWatch(configFile.getPath());
 		}
 		else
 		{
-			InputStream in = this.getClass().getClassLoader().getResourceAsStream(LOG4J_CONFIG_FILENAME);
-			Properties properties = new Properties();
-			properties.load(in);
-			PropertyConfigurator.configure(properties);
+			DOMConfigurator.configure(this.getClass().getClassLoader().getResource(LOG4J_CONFIG_FILENAME));
 		}
 
 		originOutPrintStream = System.out;

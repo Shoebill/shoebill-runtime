@@ -133,7 +133,7 @@
 				<filtering>false</filtering>
 				<includes>
 					<include>shoebillImpl.txt</include>
-					<include>log4j.properties</include>
+					<include>log4j.xml</include>
 				</includes>
 			</resource>
 
