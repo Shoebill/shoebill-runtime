@@ -19,6 +19,7 @@ package net.gtaun.shoebill.object.impl;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.constant.VehicleModelInfoType;
+import net.gtaun.shoebill.constant.WeaponModel;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.object.Player;
@@ -28,44 +29,44 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 
- * 
+ *
+ *
  * @author MK124
  */
 public class ServerImpl implements Server
 {
 	private final SampObjectStore store;
-	
-	
+
+
 	public ServerImpl(SampObjectStore store)
 	{
 		this.store = store;
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).toString();
 	}
-	
+
 	@Override
 	public int getServerCodepage()
 	{
 		return SampNativeFunction.getServerCodepage();
 	}
-	
+
 	@Override
 	public void setServerCodepage(int codepage)
 	{
 		SampNativeFunction.setServerCodepage(codepage);
 	}
-	
+
 	@Override
 	public int getMaxPlayers()
 	{
 		return SampNativeFunction.getMaxPlayers();
 	}
-	
+
 	@Override
 	public String getGamemodeText()
 	{
@@ -77,35 +78,35 @@ public class ServerImpl implements Server
 	{
 		SampNativeFunction.setGameModeText(text);
 	}
-	
+
 	@Override
 	public void sendRconCommand(String command)
 	{
 		if (command == null) throw new NullPointerException();
 		SampNativeFunction.sendRconCommand(command);
 	}
-	
+
 	@Override
 	public void connectNPC(String name, String script)
 	{
 		if (name == null || script == null) throw new NullPointerException();
 		SampNativeFunction.connectNPC(name, script);
 	}
-	
+
 	@Override
 	public String getServerVarAsString(String varname)
 	{
 		if (varname == null) throw new NullPointerException();
 		return SampNativeFunction.getServerVarAsString(varname);
 	}
-	
+
 	@Override
 	public int getServerVarAsInt(String varname)
 	{
 		if (varname == null) throw new NullPointerException();
 		return SampNativeFunction.getServerVarAsInt(varname);
 	}
-	
+
 	@Override
 	public boolean getServerVarAsBool(String varname)
 	{
@@ -144,7 +145,13 @@ public class ServerImpl implements Server
 		String text = String.format(format, args);
 		SampNativeFunction.gameTextForAll(text, time, style);
 	}
-	
+
+	@Override
+	public void sendDeathMessageToAll(Player killer, Player killee, WeaponModel reason)
+	{
+		SampNativeFunction.sendDeathMessage(killer != null ? killer.getId() : PlayerImpl.INVALID_ID, killee != null ? killee.getId() : PlayerImpl.INVALID_ID, reason.getId());
+	}
+
 	@Override
 	public Vector3D getVehicleModelInfo(int modelId, VehicleModelInfoType infotype)
 	{
@@ -152,37 +159,49 @@ public class ServerImpl implements Server
 		SampNativeFunction.getVehicleModelInfo(modelId, infotype.getValue(), vector);
 		return vector;
 	}
-	
+
+	@Override
+	public void blockIpAddress(String ipAddress, int timeMs)
+	{
+		SampNativeFunction.blockIpAddress(ipAddress, timeMs);
+	}
+
+	@Override
+	public void unBlockIpAddress(String ipAddress)
+	{
+		SampNativeFunction.unBlockIpAddress(ipAddress);
+	}
+
 	@Override
 	public String getHostname()
 	{
 		return SampNativeFunction.getServerVarAsString("hostname");
 	}
-	
+
 	@Override
 	public void setHostname(String name)
 	{
 		SampNativeFunction.sendRconCommand("hostname " + name);
 	}
-	
+
 	@Override
 	public String getMapname()
 	{
 		return SampNativeFunction.getServerVarAsString("mapname");
 	}
-	
+
 	@Override
 	public void setMapname(String name)
 	{
 		SampNativeFunction.sendRconCommand("mapname " + name);
 	}
-	
+
 	@Override
 	public String getPassword()
 	{
 		return SampNativeFunction.getServerVarAsString("password");
 	}
-	
+
 	@Override
 	public void setPassword(String password)
 	{

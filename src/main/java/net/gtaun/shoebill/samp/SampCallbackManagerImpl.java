@@ -440,5 +440,12 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 			for (SampCallbackHandler handler : callbackHandlers) TryUtils.tryTo(() -> ret[0] &= handler.onPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ));
 			return ret[0];
 		}
+
+		@Override
+		public int onIncomingConnection(int playerid, String ipAddress, int port)
+		{
+			for (SampCallbackHandler handler : callbackHandlers) TryUtils.tryTo(() -> handler.onIncomingConnection(playerid, ipAddress, port));
+			return 1;
+		}
 	};
 }

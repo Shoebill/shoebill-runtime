@@ -796,18 +796,11 @@ public class PlayerImpl implements Player
 	}
 
 	@Override
-	public void sendDeathMessage(Player killer, WeaponModel reason)
+	public void sendDeathMessage(Player killer, Player killee, WeaponModel reason)
 	{
 		if (isOnline() == false) return;
 
-		if (killer == null)
-		{
-			SampNativeFunction.sendDeathMessage(INVALID_ID, id, reason.getId());
-		}
-		else
-		{
-			SampNativeFunction.sendDeathMessage(killer.getId(), id, reason.getId());
-		}
+		SampNativeFunction.sendDeathMessageToPlayer(getId(), killer != null ? killer.getId() : PlayerImpl.INVALID_ID, killee != null ? killee.getId() : PlayerImpl.INVALID_ID, reason.getId());
 	}
 
 	@Override
@@ -1583,6 +1576,14 @@ public class PlayerImpl implements Player
 		if (isOnline() == false) return;
 
 		SampNativeFunction.cancelSelectTextDraw(id);
+	}
+
+	@Override
+	public void createExplosion(float x, float y, float z, int type, float radius)
+	{
+		if (isOnline() == false) return;
+
+		SampNativeFunction.createExplosionForPlayer(id, x, y, z, type, radius);
 	}
 
 	@Override
