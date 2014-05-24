@@ -796,11 +796,11 @@ public class PlayerImpl implements Player
 	}
 
 	@Override
-	public void sendDeathMessage(Player killer, Player killee, WeaponModel reason)
+	public void sendDeathMessage(Player killer, Player victim, WeaponModel reason)
 	{
 		if (isOnline() == false) return;
 
-		SampNativeFunction.sendDeathMessageToPlayer(getId(), killer != null ? killer.getId() : PlayerImpl.INVALID_ID, killee != null ? killee.getId() : PlayerImpl.INVALID_ID, reason.getId());
+		SampNativeFunction.sendDeathMessageToPlayer(getId(), killer != null ? killer.getId() : PlayerImpl.INVALID_ID, victim != null ? victim.getId() : PlayerImpl.INVALID_ID, reason.getId());
 	}
 
 	@Override

@@ -147,9 +147,9 @@ public class ServerImpl implements Server
 	}
 
 	@Override
-	public void sendDeathMessageToAll(Player killer, Player killee, WeaponModel reason)
+	public void sendDeathMessageToAll(Player killer, Player victim, WeaponModel reason)
 	{
-		SampNativeFunction.sendDeathMessage(killer != null ? killer.getId() : PlayerImpl.INVALID_ID, killee != null ? killee.getId() : PlayerImpl.INVALID_ID, reason.getId());
+		SampNativeFunction.sendDeathMessage(killer != null ? killer.getId() : PlayerImpl.INVALID_ID, victim != null ? victim.getId() : PlayerImpl.INVALID_ID, reason.getId());
 	}
 
 	@Override
