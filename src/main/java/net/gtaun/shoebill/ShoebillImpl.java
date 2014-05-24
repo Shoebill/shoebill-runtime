@@ -190,6 +190,17 @@ public class ShoebillImpl implements Shoebill
 					reload();
 					return 1;
 
+				case "onlineonce":
+					try
+					{
+						new File(config.getShoebillDir(), "ONLINE_MODE_ONCE").createNewFile();
+					}
+					catch (IOException e)
+					{
+						LOGGER.info("Failed to create flag file.");
+					}
+					return 1;
+
 				case "gc":
 					System.gc();
 					return 1;
