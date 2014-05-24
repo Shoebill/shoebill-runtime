@@ -30,6 +30,12 @@ public class CharsetUtils
 
 	public static List<String> splitStringByCharsetLength(String str, int maxBytes, Charset charset)
 	{
+		return splitStringByCharsetLength(str, maxBytes, charset, "");
+	}
+
+	public static List<String> splitStringByCharsetLength(String str, int maxBytes, Charset charset, String linePrefix)
+	{
+
 		List<String> strs = new ArrayList<>();
 		CharsetEncoder encoder = charset.newEncoder();
 
@@ -48,6 +54,7 @@ public class CharsetUtils
 			{
 				strs.add(sb.toString());
 				sb.setLength(0);
+				sb.append(linePrefix);
 			}
 
 			sb.append(c);

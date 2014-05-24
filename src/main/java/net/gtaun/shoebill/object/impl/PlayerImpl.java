@@ -752,7 +752,7 @@ public class PlayerImpl implements Player
 
 	private void sendMessageInternal(Color color, String message)
 	{
-		List<String> msgs = CharsetUtils.splitStringByCharsetLength(message, 144, CharsetUtils.getCharsetByCodepage(getCodepage()));
+		List<String> msgs = CharsetUtils.splitStringByCharsetLength(message, 144, CharsetUtils.getCharsetByCodepage(getCodepage()), "  ");
 		for (String s : msgs) SampNativeFunction.sendClientMessage(id, color.getValue(), s);
 	}
 
