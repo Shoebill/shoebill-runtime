@@ -53,6 +53,7 @@ public class CharsetUtils
 			sb.append(c);
 		}
 
+		strs.add(sb.toString());
 		return strs;
 	}
 
