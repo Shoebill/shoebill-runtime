@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
@@ -16,12 +16,12 @@
 	<name>Shoebill Runtime</name>
 	<description>Project Shoebill - An Java library for SA-MP</description>
 	<url>https://github.com/Shoebill</url>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<build.number>0</build.number>
 	</properties>
-	
+
 	<repositories>
 		<repository>
 			<id>sonatype-nexus-snapshots</id>
@@ -117,7 +117,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.6</version>
+			<version>1.7.7</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -190,7 +190,7 @@
 				</executions>
 			</plugin>
 		</plugins>
-		
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -213,7 +213,7 @@
 										<ignore />
 									</action>
 								</pluginExecution>
-							
+
 								<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>com.keyboardsamurais.maven</groupId>

@@ -28,42 +28,49 @@ import org.apache.log4j.Layout;
 import org.apache.log4j.spi.LoggingEvent;
 
 /**
- * 
- * 
+ *
+ *
  * @author MK124
  */
 public final class ShoebillAppender extends FileAppender
 {
-	private static final DateFormat DATEFORMAT_FILE = new SimpleDateFormat("yyyy-MM-dd'.log'");
+	private static final DateFormat DATEFORMAT_FILE = new SimpleDateFormat("yyyy-MM-dd");
 	private static final DateFormat DATEFORMAT_DIR = new SimpleDateFormat("yyyy-MM");
-	
-	
+
+
 	private File path;
-	private long rollOverDate;
-	
-	
+	private String fileExtension = "log";
+
+	private long rollOverTimestamp;
+
+
 	public ShoebillAppender()
 	{
-		
+
 	}
-	
+
 	public ShoebillAppender(Layout layout, String filename) throws IOException
 	{
 		super(layout, filename, true);
 		activateOptions();
 	}
-	
+
 	public void setPath(String path)
 	{
 		this.path = new File(path);
 	}
-	
+
+	public void setFileExtension(String fileExtension)
+	{
+		this.fileExtension = fileExtension;
+	}
+
 	@Override
 	public void activateOptions()
 	{
 		if (!path.exists()) path.mkdirs();
-		
-		rollOverDate = System.currentTimeMillis();
+
+		rollOverTimestamp = System.currentTimeMillis();
 		try
 		{
 			rollOver();
@@ -72,14 +79,14 @@ public final class ShoebillAppender extends FileAppender
 		{
 			e.printStackTrace();
 		}
-		
+
 		super.activateOptions();
 	}
-	
+
 	@Override
 	protected void subAppend(LoggingEvent event)
 	{
-		if (System.currentTimeMillis() >= rollOverDate) try
+		if (System.currentTimeMillis() >= rollOverTimestamp) try
 		{
 			rollOver();
 		}
@@ -87,34 +94,34 @@ public final class ShoebillAppender extends FileAppender
 		{
 			e.printStackTrace();
 		}
-		
+
 		super.subAppend(event);
 	}
-	
+
 	void generateRollOverDate()
 	{
 		Calendar calendar = Calendar.getInstance();
-		
+
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 		calendar.add(Calendar.DATE, 1);
-		rollOverDate = calendar.getTimeInMillis();
+		rollOverTimestamp = calendar.getTimeInMillis();
 	}
-	
+
 	void rollOver() throws IOException
 	{
 		closeFile();
-		
-		Date date = new Date(rollOverDate);
-		
+
+		Date date = new Date(rollOverTimestamp);
+
 		File destDir = new File(path, DATEFORMAT_DIR.format(date));
 		if (!destDir.exists()) destDir.mkdirs();
-		
-		File destFile = new File(destDir, DATEFORMAT_FILE.format(date));
+
+		File destFile = new File(destDir, DATEFORMAT_FILE.format(date) + "." + fileExtension);
 		setFile(destFile.getPath(), true, bufferedIO, bufferSize);
-		
+
 		generateRollOverDate();
 	}
 }
