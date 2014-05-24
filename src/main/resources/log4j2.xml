@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="[%d{HH:mm:ss}][%p][%c{1}] %m%n" />
+		</Console>
+	</Appenders>
+
+	<Appenders>
+		<RollingRandomAccessFile name="LogFile" fileName="shoebill/logs/$${date:yyyy-MM}/%d{MM-dd-yyyy}.log"
+			filePattern="shoebill/logs/$${date:yyyy-MM}/%d{MM-dd-yyyy}.log.gz">
+			<PatternLayout>
+				<Pattern>[%d{HH:mm:ss}][%p][%c{1}] %m%n</Pattern>
+			</PatternLayout>
+
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingRandomAccessFile>
+	</Appenders>
+
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="LogFile" />
+		</Root>
+	</Loggers>
+</Configuration>
