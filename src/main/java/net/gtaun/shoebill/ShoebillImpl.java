@@ -41,8 +41,7 @@ import net.gtaun.util.event.EventManagerRoot;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.logging.log4j.core.config.ConfigurationFactory.ConfigurationSource;
-import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,7 +136,14 @@ public class ShoebillImpl implements Shoebill
 	{
 		if (configFile.exists())
 		{
-			Configurator.initialize(null, new ConfigurationSource(new FileInputStream(configFile), configFile));
+			PropertyConfigurator.configure(configFile.toURI().toURL());
+		}
+		else
+		{
+			InputStream in = this.getClass().getClassLoader().getResourceAsStream(LOG4J_CONFIG_FILENAME);
+			Properties properties = new Properties();
+			properties.load(in);
+			PropertyConfigurator.configure(properties);
 		}
 
 		originOutPrintStream = System.out;
