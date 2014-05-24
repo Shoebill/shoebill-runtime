@@ -94,7 +94,7 @@ public class ShoebillImpl implements Shoebill
 		Shoebill.Instance.reference = new WeakReference<>(this);
 
 		config = new ShoebillConfig(new FileInputStream(SHOEBILL_CONFIG_PATH));
-		initializeLoggerConfig(new File(config.getShoebillDir(), LOG4J_CONFIG_FILENAME));
+		initLogger(new File(config.getShoebillDir(), LOG4J_CONFIG_FILENAME));
 
 		version = new ShoebillVersionImpl(this.getClass().getClassLoader().getResourceAsStream(VERSION_FILENAME));
 
@@ -130,7 +130,7 @@ public class ShoebillImpl implements Shoebill
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("version", version).toString();
 	}
 
-	private void initializeLoggerConfig(File configFile) throws IOException
+	private void initLogger(File configFile)
 	{
 		if (configFile.exists())
 		{
