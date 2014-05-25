@@ -16,7 +16,6 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 
 import org.slf4j.Logger;
@@ -32,12 +31,9 @@ public class SampEventLogger implements SampCallbackHandler
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);
 
 
-	private SampObjectStore sampObjectStore;
-
-
-	public SampEventLogger(SampObjectStore store)
+	public SampEventLogger()
 	{
-		sampObjectStore = store;
+
 	}
 
 	@Override
@@ -51,30 +47,6 @@ public class SampEventLogger implements SampCallbackHandler
 	public int onPlayerDisconnect(int playerId, int reason)
 	{
 		LOGGER.info("[part] " + SampNativeFunction.getPlayerName(playerId) + " has left the server (" + playerId + ":" + reason + ")");
-		return 1;
-	}
-
-	@Override
-	public int onPlayerSpawn(int playerId)
-	{
-		LOGGER.info("[spawn] " + SampNativeFunction.getPlayerName(playerId) + " has spawned (" + playerId + ")");
-		return 1;
-	}
-
-	@Override
-	public int onPlayerDeath(int playerId, int killerId, int reason)
-	{
-		Player player = sampObjectStore.getPlayer(playerId);
-		if (player == null) return 0;
-
-		if (killerId == Player.INVALID_ID)
-		{
-			LOGGER.info("[death] " + player.getName() + " died (" + playerId + ":" + reason + ")");
-			return 1;
-		}
-
-		Player killer = sampObjectStore.getPlayer(killerId);
-		LOGGER.info("[kill] " + killer.getName() + " killed " + player.getName() + " (" + SampNativeFunction.getWeaponName(reason) + ")");
 		return 1;
 	}
 

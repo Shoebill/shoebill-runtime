@@ -244,7 +244,7 @@ public class ShoebillImpl implements Shoebill
 
 		Server.get().setServerCodepage(config.getServerCodepage());
 
-		sampEventLogger = new SampEventLogger(sampObjectManager);
+		sampEventLogger = new SampEventLogger();
 		sampEventDispatcher = new SampEventDispatcher(sampObjectManager, eventManager);
 
 		sampCallbackManager.registerCallbackHandler(sampObjectManager.getCallbackHandler());
