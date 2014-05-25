@@ -37,6 +37,9 @@ import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.object.Textdraw;
 import net.gtaun.shoebill.object.Timer;
+import net.gtaun.shoebill.object.DialogId.OnCloseHandler;
+import net.gtaun.shoebill.object.DialogId.OnResponseHandler;
+import net.gtaun.shoebill.object.DialogId.OnShowHandler;
 import net.gtaun.shoebill.object.Timer.TimerCallback;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.World;
@@ -62,20 +65,20 @@ import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.HandlerPriority;
 
 /**
- * 
- * 
+ *
+ *
  * @author MK124
  */
 public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampObjectManager
 {
 	private static final int MAX_DIALOG_ID = 32767;
-	
-	
+
+
 	private int allocatedDialogId = 0;
 	private Queue<Integer> recycledDialogIds;
 	private SampCallbackHandler callbackHandler;
-	
-	
+
+
 	public SampObjectManagerImpl(EventManager eventManager)
 	{
 		super(eventManager);
@@ -95,10 +98,10 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 				{
 					e.printStackTrace();
 				}
-				
+
 				return 1;
 			}
-			
+
 			@Override
 			public int onPlayerDisconnect(int playerid, int reason)
 			{
@@ -106,13 +109,13 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			}
 		};
 	}
-	
+
 	@Override
 	protected void finalize() throws Throwable
 	{
 		super.finalize();
 	}
-	
+
 	private void initialize()
 	{
 		recycledDialogIds = new LinkedList<>();
@@ -122,64 +125,64 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			Vehicle vehicle = (Vehicle) e.getDestroyable();
 			super.setVehicle(vehicle.getId(), null);
 		});
-		
+
 		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(PlayerObject.class), (e) ->
 		{
 			PlayerObject object = (PlayerObject) e.getDestroyable();
 			super.setPlayerObject(object.getPlayer(), object.getId(), null);
 		});
-		
+
 		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(SampObject.class), (e) ->
 		{
 			SampObject object = (SampObject) e.getDestroyable();
 			if (object instanceof PlayerObject) return;
 			super.setObject(object.getId(), null);
 		});
-		
+
 		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Pickup.class), (e) ->
 		{
 			Pickup pickup = (Pickup) e.getDestroyable();
 			super.setPickup(pickup.getId(), null);
 		});
-		
+
 		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Label.class), (e) ->
 		{
 			Label label = (Label) e.getDestroyable();
 			if (label instanceof PlayerLabel) return;
 			super.setLabel(label.getId(), null);
 		});
-		
+
 		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(PlayerLabel.class), (e) ->
 		{
 			PlayerLabel label = (PlayerLabel) e.getDestroyable();
 			super.setPlayerLabel(label.getPlayer(), label.getId(), null);
 		});
-		
+
 		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Textdraw.class), (e) ->
 		{
 			Textdraw textdraw = (Textdraw) e.getDestroyable();
 			if (textdraw instanceof PlayerTextdraw) return;
 			super.setTextdraw(textdraw.getId(), null);
 		});
-		
+
 		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(PlayerTextdraw.class), (e) ->
 		{
 			PlayerTextdraw textdraw = (PlayerTextdraw) e.getDestroyable();
 			super.setPlayerTextdraw(textdraw.getPlayer(), textdraw.getId(), null);
 		});
-		
+
 		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Zone.class), (e) ->
 		{
 			Zone zone = (Zone) e.getDestroyable();
 			super.setZone(zone.getId(), null);
 		});
-		
+
 		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Menu.class), (e) ->
 		{
 			Menu menu = (Menu) e.getDestroyable();
 			super.setMenu(menu.getId(), null);
 		});
-		
+
 		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(DialogId.class), (e) ->
 		{
 			DialogId dialog = (DialogId) e.getDestroyable();
@@ -187,22 +190,22 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			int dialogId = dialog.getId();
 			recycleDialogId(dialogId);
 		});
-		
+
 		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Timer.class), (e) ->
 		{
 			Timer timer = (Timer) e.getDestroyable();
 			super.removeTimer(timer);
 		});
-		
+
 		createServer();
 		createWorld();
 	}
-	
+
 	public SampCallbackHandler getCallbackHandler()
 	{
 		return callbackHandler;
 	}
-	
+
 	private World createWorld()
 	{
 		try
@@ -211,16 +214,12 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			super.setWorld(world);
 			return world;
 		}
-		catch (RuntimeException e)
-		{
-			throw e;
-		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	private Server createServer()
 	{
 		try
@@ -229,16 +228,12 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			super.setServer(server);
 			return server;
 		}
-		catch (RuntimeException e)
-		{
-			throw e;
-		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	public Player createPlayer(int playerId) throws UnsupportedOperationException
 	{
 		try
@@ -247,16 +242,12 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			super.setPlayer(playerId, player);
 			return player;
 		}
-		catch (RuntimeException e)
-		{
-			throw e;
-		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public Vehicle createVehicle(int modelId, AngledLocation loc, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
@@ -266,16 +257,12 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			super.setVehicle(vehicle.getId(), vehicle);
 			return vehicle;
 		}
-		catch (RuntimeException e)
-		{
-			throw e;
-		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public SampObject createObject(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
@@ -285,37 +272,29 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			super.setObject(object.getId(), object);
 			return object;
 		}
-		catch (RuntimeException e)
-		{
-			throw e;
-		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public PlayerObject createPlayerObject(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
 	{
 		try
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
-			
+
 			PlayerObject object = new PlayerObjectImpl(eventManagerNode, player, modelId, loc, rot, drawDistance);
 			super.setPlayerObject(player, object.getId(), object);
 			return object;
-		}
-		catch (RuntimeException e)
-		{
-			throw e;
 		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public Pickup createPickup(int modelId, int type, Location loc) throws CreationFailedException
 	{
@@ -334,7 +313,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public Label createLabel(String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
@@ -344,79 +323,63 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			super.setLabel(label.getId(), label);
 			return label;
 		}
-		catch (RuntimeException e)
-		{
-			throw e;
-		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
 		try
 		{
 			if (!player.isOnline()) return null;
-			
+
 			PlayerLabel label = new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS);
 			super.setLabel(label.getId(), label);
 			return label;
-		}
-		catch (RuntimeException e)
-		{
-			throw e;
 		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer) throws CreationFailedException
 	{
 		try
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
-			
+
 			PlayerLabel label = new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
 			super.setLabel(label.getId(), label);
 			return label;
-		}
-		catch (RuntimeException e)
-		{
-			throw e;
 		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle) throws CreationFailedException
 	{
 		try
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
-			
+
 			PlayerLabel label = new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
 			super.setLabel(label.getId(), label);
 			return label;
-		}
-		catch (RuntimeException e)
-		{
-			throw e;
 		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public Textdraw createTextdraw(float x, float y, String text) throws CreationFailedException
 	{
@@ -426,38 +389,29 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			super.setTextdraw(textdraw.getId(), textdraw);
 			return textdraw;
 		}
-		catch (RuntimeException e)
-		{
-			throw e;
-		}
 		catch (Throwable e)
 		{
-			e.printStackTrace();
-			return null;
+			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public PlayerTextdraw createPlayerTextdraw(Player player, float x, float y, String text) throws CreationFailedException
 	{
 		try
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
-			
+
 			PlayerTextdraw textdraw = new PlayerTextdrawImpl(eventManagerNode, player, x, y, text);
 			super.setPlayerTextdraw(player, textdraw.getId(), textdraw);
 			return textdraw;
-		}
-		catch (RuntimeException e)
-		{
-			throw e;
 		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public Zone createZone(float minX, float minY, float maxX, float maxY) throws CreationFailedException
 	{
@@ -467,16 +421,12 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			super.setZone(zone.getId(), zone);
 			return zone;
 		}
-		catch (RuntimeException e)
-		{
-			throw e;
-		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public Menu createMenu(String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException
 	{
@@ -486,16 +436,12 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			super.setMenu(menu.getId(), menu);
 			return menu;
 		}
-		catch (RuntimeException e)
-		{
-			throw e;
-		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	private int allocateDialogId()
 	{
 		Integer dialogId = recycledDialogIds.poll();
@@ -505,35 +451,31 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			dialogId = allocatedDialogId;
 			allocatedDialogId++;
 		}
-		
+
 		return dialogId;
 	}
-	
+
 	private void recycleDialogId(int dialogId)
 	{
 		recycledDialogIds.offer(dialogId);
 	}
-	
+
 	@Override
-	public DialogId createDialogId() throws CreationFailedException
+	public DialogId createDialogId(OnResponseHandler onResponse, OnShowHandler onShow, OnCloseHandler onClose) throws CreationFailedException
 	{
 		try
 		{
 			Integer dialogId = allocateDialogId();
-			DialogId dialog = new DialogIdImpl(eventManagerNode, dialogId);
+			DialogId dialog = new DialogIdImpl(eventManagerNode, dialogId, onResponse, onShow, onClose);
 			super.putDialog(dialog.getId(), dialog);
 			return dialog;
-		}
-		catch (RuntimeException e)
-		{
-			throw e;
 		}
 		catch (Throwable e)
 		{
 			throw new CreationFailedException(e);
 		}
 	}
-	
+
 	@Override
 	public Timer createTimer(int interval, int count, TimerCallback callback)
 	{
@@ -542,10 +484,6 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 			TimerImpl timer = new TimerImpl(eventManagerNode, interval, count, callback);
 			super.putTimer(timer);
 			return timer;
-		}
-		catch (RuntimeException e)
-		{
-			throw e;
 		}
 		catch (Throwable e)
 		{

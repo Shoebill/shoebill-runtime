@@ -25,9 +25,7 @@ import net.gtaun.shoebill.event.checkpoint.CheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointLeaveEvent;
 import net.gtaun.shoebill.event.checkpoint.RaceCheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.RaceCheckpointLeaveEvent;
-import net.gtaun.shoebill.event.dialog.DialogCloseEvent;
 import net.gtaun.shoebill.event.dialog.DialogCloseEvent.DialogCloseType;
-import net.gtaun.shoebill.event.dialog.DialogResponseEvent;
 import net.gtaun.shoebill.event.menu.MenuExitedEvent;
 import net.gtaun.shoebill.event.menu.MenuSelectedEvent;
 import net.gtaun.shoebill.event.object.ObjectMovedEvent;
@@ -80,10 +78,10 @@ import net.gtaun.shoebill.object.DialogId;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.shoebill.object.Player;
-import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.PlayerAttach.PlayerAttachSlot;
 import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.PlayerTextdraw;
+import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.SampObject;
 import net.gtaun.shoebill.object.Textdraw;
 import net.gtaun.shoebill.object.Vehicle;
@@ -174,8 +172,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 			DialogId dialog = player.getDialog();
 			if (dialog != null)
 			{
-				DialogCloseEvent dialogCancelEvent = new DialogCloseEvent(dialog, player, DialogCloseType.CANCEL);
-				rootEventManager.dispatchEvent(dialogCancelEvent, dialog, player);
+				DialogEventUtils.dispatchCloseEvent(rootEventManager, dialog, player, DialogCloseType.CANCEL);
 			}
 
 			PlayerDisconnectEvent event = new PlayerDisconnectEvent(player, reason);
@@ -922,13 +919,9 @@ public class SampEventDispatcher implements SampCallbackHandler
 
 			if (dialog == null) return 0;
 
-			DialogResponseEvent event = new DialogResponseEvent(dialog, player, response, listitem, inputtext);
-			rootEventManager.dispatchEvent(event, dialog, player);
-
-			DialogCloseEvent dialogCancelEvent = new DialogCloseEvent(dialog, player, DialogCloseType.RESPOND);
-			rootEventManager.dispatchEvent(dialogCancelEvent, dialog, player);
-
-			return event.getResponse();
+			int ret = DialogEventUtils.dispatchResponeEvent(rootEventManager, dialog, player, response, listitem, inputtext);
+			DialogEventUtils.dispatchCloseEvent(rootEventManager, dialog, player, DialogCloseType.RESPOND);
+			return ret;
 		}
 		catch (Throwable e)
 		{

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 import net.gtaun.shoebill.CharsetUtils;
+import net.gtaun.shoebill.DialogEventUtils;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.constant.CameraCutStyle;
@@ -44,7 +45,6 @@ import net.gtaun.shoebill.data.Time;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.data.WeaponData;
-import net.gtaun.shoebill.event.dialog.DialogCloseEvent;
 import net.gtaun.shoebill.event.dialog.DialogCloseEvent.DialogCloseType;
 import net.gtaun.shoebill.exception.AlreadyExistException;
 import net.gtaun.shoebill.exception.IllegalLengthException;
@@ -1458,12 +1458,13 @@ public class PlayerImpl implements Player
 
 		if (this.dialog != null)
 		{
-			DialogCloseEvent event = new DialogCloseEvent(this.dialog, this, DialogCloseType.OVERRIDE);
-			eventManagerNode.dispatchEvent(event, this.dialog, this);
+			DialogEventUtils.dispatchCloseEvent(eventManagerNode, this.dialog, this, DialogCloseType.OVERRIDE);
 		}
 
 		SampNativeFunction.showPlayerDialog(id, dialog.getId(), style.getValue(), caption, text, button1, button2);
 		this.dialog = dialog;
+
+		DialogEventUtils.dispatchShowEvent(eventManagerNode, dialog, this);
 	}
 
 	@Override
@@ -1477,8 +1478,7 @@ public class PlayerImpl implements Player
 		DialogId canceledDialog = dialog;
 		dialog = null;
 
-		DialogCloseEvent event = new DialogCloseEvent(canceledDialog, this, DialogCloseType.CANCEL);
-		eventManagerNode.dispatchEvent(event, canceledDialog, this);
+		DialogEventUtils.dispatchCloseEvent(eventManagerNode, canceledDialog, this, DialogCloseType.CANCEL);
 	}
 
 	@Override
