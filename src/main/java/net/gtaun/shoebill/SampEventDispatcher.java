@@ -75,10 +75,12 @@ import net.gtaun.shoebill.event.vehicle.VehicleStreamInEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleStreamOutEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleUpdateDamageEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleUpdateEvent;
+import net.gtaun.shoebill.object.Checkpoint;
 import net.gtaun.shoebill.object.DialogId;
 import net.gtaun.shoebill.object.Menu;
 import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.shoebill.object.Player;
+import net.gtaun.shoebill.object.RaceCheckpoint;
 import net.gtaun.shoebill.object.PlayerAttach.PlayerAttachSlot;
 import net.gtaun.shoebill.object.PlayerObject;
 import net.gtaun.shoebill.object.PlayerTextdraw;
@@ -403,9 +405,13 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			Player player = sampObjectStore.getPlayer(playerId);
+			Checkpoint checkpoint = player.getCheckpoint();
+
+			if (checkpoint == null) return 0;
+			checkpoint.onEnter(player);
 
 			CheckpointEnterEvent event = new CheckpointEnterEvent(player);
-			rootEventManager.dispatchEvent(event, player.getCheckpoint(), player);
+			rootEventManager.dispatchEvent(event, checkpoint, player);
 
 			return 1;
 		}
@@ -422,9 +428,13 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			Player player = sampObjectStore.getPlayer(playerId);
+			Checkpoint checkpoint = player.getCheckpoint();
+
+			if (checkpoint == null) return 0;
+			checkpoint.onLeave(player);
 
 			CheckpointLeaveEvent event = new CheckpointLeaveEvent(player);
-			rootEventManager.dispatchEvent(event, player.getCheckpoint(), player);
+			rootEventManager.dispatchEvent(event, checkpoint, player);
 
 			return 1;
 		}
@@ -441,9 +451,13 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			Player player = sampObjectStore.getPlayer(playerId);
+			RaceCheckpoint checkpoint = player.getRaceCheckpoint();
+
+			if (checkpoint == null) return 0;
+			checkpoint.onEnter(player);
 
 			RaceCheckpointEnterEvent event = new RaceCheckpointEnterEvent(player);
-			rootEventManager.dispatchEvent(event, player.getRaceCheckpoint(), player);
+			rootEventManager.dispatchEvent(event, checkpoint, player);
 
 			return 1;
 		}
@@ -460,9 +474,13 @@ public class SampEventDispatcher implements SampCallbackHandler
 		try
 		{
 			Player player = sampObjectStore.getPlayer(playerId);
+			RaceCheckpoint checkpoint = player.getRaceCheckpoint();
+
+			if (checkpoint == null) return 0;
+			checkpoint.onLeave(player);
 
 			RaceCheckpointLeaveEvent event = new RaceCheckpointLeaveEvent(player);
-			rootEventManager.dispatchEvent(event, player.getRaceCheckpoint(), player);
+			rootEventManager.dispatchEvent(event, checkpoint, player);
 
 			return 1;
 		}
