@@ -17,6 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,6 +29,7 @@ import net.gtaun.shoebill.constant.CameraCutStyle;
 import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.constant.FightStyle;
 import net.gtaun.shoebill.constant.PlayerState;
+import net.gtaun.shoebill.constant.PlayerVarType;
 import net.gtaun.shoebill.constant.RaceCheckpointType;
 import net.gtaun.shoebill.constant.RecordType;
 import net.gtaun.shoebill.constant.ShopName;
@@ -1654,5 +1656,64 @@ public class PlayerImpl implements Player
 		if (isOnline() == false) return;
 
 		SampNativeFunction.setPlayerChatBubble(id, text, color.getValue(), drawDistance, expireTime);
+	}
+
+	@Override
+	public void setVarInt(String name, int value)
+	{
+		SampNativeFunction.setPVarInt(id, name, value);
+	}
+
+	@Override
+	public int getVarInt(String name)
+	{
+		return SampNativeFunction.getPVarInt(id, name);
+	}
+
+	@Override
+	public void setVarString(String name, String value)
+	{
+		SampNativeFunction.setPVarString(id, name, value);
+	}
+
+	@Override
+	public String getVarString(String name)
+	{
+		return SampNativeFunction.getPVarString(id, name);
+	}
+
+	@Override
+	public void setVarFloat(String name, float value)
+	{
+		SampNativeFunction.setPVarFloat(id, name, value);
+	}
+
+	@Override
+	public float getVarFloat(String name)
+	{
+		return SampNativeFunction.getPVarFloat(id, name);
+	}
+
+	@Override
+	public boolean deleteVar(String name)
+	{
+		return SampNativeFunction.deletePVar(id, name) != 0;
+	}
+
+	@Override
+	public List<String> getVarNames()
+	{
+		List<String> names = new ArrayList<>();
+		for (int i=0; i<SampNativeFunction.getPVarsUpperIndex(id)+1; i++)
+		{
+			names.add(SampNativeFunction.getPVarNameAtIndex(id, i));
+		}
+		return names;
+	}
+
+	@Override
+	public PlayerVarType getVarType(String name)
+	{
+		return PlayerVarType.get(SampNativeFunction.getPVarType(id, name));
 	}
 }
