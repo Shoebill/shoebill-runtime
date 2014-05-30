@@ -110,12 +110,6 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 		};
 	}
 
-	@Override
-	protected void finalize() throws Throwable
-	{
-		super.finalize();
-	}
-
 	private void initialize()
 	{
 		recycledDialogIds = new LinkedList<>();
