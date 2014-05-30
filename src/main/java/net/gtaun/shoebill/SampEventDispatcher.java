@@ -18,6 +18,7 @@ package net.gtaun.shoebill;
 
 import net.gtaun.shoebill.constant.ObjectEditResponse;
 import net.gtaun.shoebill.constant.PlayerAttachBone;
+import net.gtaun.shoebill.constant.PlayerState;
 import net.gtaun.shoebill.constant.WeaponModel;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector3D;
@@ -811,11 +812,10 @@ public class SampEventDispatcher implements SampCallbackHandler
 			int ret = event.getResponse();
 			if (ret == 0) return ret;
 
-			int seat = player.getVehicleSeat();
-			if (seat == 0)
+			Vehicle vehicle = player.getVehicle();
+			if (player.getState() == PlayerState.DRIVER && vehicle != null)
 			{
-				Vehicle vehicle = player.getVehicle();
-				VehicleUpdateEvent vehicleUpdateEvent = new VehicleUpdateEvent(vehicle, player, seat);
+				VehicleUpdateEvent vehicleUpdateEvent = new VehicleUpdateEvent(vehicle, player, player.getVehicleSeat());
 				rootEventManager.dispatchEvent(vehicleUpdateEvent, vehicle, player);
 			}
 
