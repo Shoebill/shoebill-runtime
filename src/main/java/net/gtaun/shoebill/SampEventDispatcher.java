@@ -21,6 +21,7 @@ import net.gtaun.shoebill.constant.PlayerAttachBone;
 import net.gtaun.shoebill.constant.PlayerState;
 import net.gtaun.shoebill.constant.WeaponModel;
 import net.gtaun.shoebill.data.Color;
+import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.event.checkpoint.CheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointLeaveEvent;
@@ -63,6 +64,7 @@ import net.gtaun.shoebill.event.player.PlayerWeaponShotEvent;
 import net.gtaun.shoebill.event.rcon.RconCommandEvent;
 import net.gtaun.shoebill.event.rcon.RconLoginEvent;
 import net.gtaun.shoebill.event.server.IncomingConnectionEvent;
+import net.gtaun.shoebill.event.vehicle.UnoccupiedVehicleUpdateEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleDeathEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleEnterEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleExitEvent;
@@ -690,8 +692,11 @@ public class SampEventDispatcher implements SampCallbackHandler
 		{
 			Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
 			Player player = sampObjectStore.getPlayer(playerId);
+			Location location = vehicle.getLocation();
 
-			VehicleUpdateEvent event = new VehicleUpdateEvent(vehicle, player, passengerSeat);
+			location.set(newX, newY, newZ);
+
+			UnoccupiedVehicleUpdateEvent event = new UnoccupiedVehicleUpdateEvent(vehicle, player, location);
 			rootEventManager.dispatchEvent(event, vehicle, player);
 
 			return 1;
