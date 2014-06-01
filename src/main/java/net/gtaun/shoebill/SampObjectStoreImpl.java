@@ -56,8 +56,8 @@ import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.HandlerPriority;
 
 /**
- * 
- * 
+ *
+ *
  * @author MK124
  */
 public class SampObjectStoreImpl implements SampObjectStore
@@ -72,20 +72,20 @@ public class SampObjectStoreImpl implements SampObjectStore
 	public static final int MAX_GLOBAL_LABELS =			1024;
 	public static final int MAX_PLAYER_LABELS =			1024;
 	public static final int MAX_PICKUPS =				4096;
-	
-	
+
+
 	private static <T> Collection<T> getNotNullInstances(T[] items)
 	{
 		Collection<T> list = new ArrayList<>();
 		if (items == null) return list;
-		
+
 		for (T item : items)
 		{
 			if (item != null) list.add(item);
 		}
 		return list;
 	}
-	
+
 	private static <T> void clearUnusedReferences(Collection<Reference<T>> collection)
 	{
 		Iterator<Reference<T>> iterator = collection.iterator();
@@ -94,13 +94,13 @@ public class SampObjectStoreImpl implements SampObjectStore
 			if(iterator.next().get() == null) iterator.remove();
 		}
 	}
-	
-	
+
+
 	protected final EventManager eventManagerNode;
-	
+
 	private Server server;
 	private World world;
-	
+
 	private Player[] players = new Player[MAX_PLAYERS];
 	private Vehicle[] vehicles = new Vehicle[MAX_VEHICLES];
 	private SampObject[] objects = new SampObject[MAX_OBJECTS];
@@ -112,24 +112,24 @@ public class SampObjectStoreImpl implements SampObjectStore
 	private PlayerTextdraw[][] playerTextdrawsArray = new PlayerTextdraw[MAX_PLAYERS][];
 	private Zone[] zones = new Zone[MAX_ZONES];
 	private Menu[] menus = new Menu[MAX_MENUS];
-	
+
 	private Collection<Reference<TimerImpl>> timers = new ConcurrentLinkedQueue<>();
 	private Map<Integer, Reference<DialogId>> dialogs = new ConcurrentHashMap<>();
-	
-	
+
+
 	SampObjectStoreImpl(EventManager rootEventManager)
 	{
 		eventManagerNode = rootEventManager.createChildNode();
 		setupObjectEventHandler();
 	}
-	
+
 	private void setupObjectEventHandler()
 	{
 		eventManagerNode.registerHandler(PlayerUpdateEvent.class, HandlerPriority.MONITOR, (e) ->
 		{
 			Player primitive = e.getPlayer().getPrimitive();
 			if (primitive instanceof PlayerImpl == false) return;
-			
+
 			PlayerImpl player = (PlayerImpl) primitive;
 			player.onPlayerUpdate();
 		});
@@ -138,304 +138,305 @@ public class SampObjectStoreImpl implements SampObjectStore
 		{
 			Player primitive = e.getPlayer().getPrimitive();
 			if (primitive instanceof PlayerImpl == false) return;
-			
+
 			PlayerImpl player = (PlayerImpl) primitive;
 			player.onPlayerDisconnect();
 		});
-		
+
 		eventManagerNode.registerHandler(DialogResponseEvent.class, HandlerPriority.MONITOR, (e) ->
 		{
 			Player primitive = e.getPlayer().getPrimitive();
 			if (primitive instanceof PlayerImpl == false) return;
-			
+
 			PlayerImpl player = (PlayerImpl) primitive;
 			player.onDialogResponse();
 		});
-		
+
 		eventManagerNode.registerHandler(PlayerObjectMovedEvent.class, HandlerPriority.MONITOR, (e) ->
 		{
 			PlayerObject primitive = (PlayerObject) e.getObject().getPrimitive();
 			if (primitive instanceof PlayerObjectImpl == false) return;
-			
+
 			PlayerObjectImpl object = (PlayerObjectImpl) primitive;
 			object.onPlayerObjectMoved();
 		});
-		
+
 		eventManagerNode.registerHandler(ObjectMovedEvent.class, HandlerPriority.MONITOR, (e) ->
 		{
 			SampObject primitive = e.getObject().getPrimitive();
 			if (primitive instanceof SampObjectImpl == false) return;
-			
+
 			SampObjectImpl object = (SampObjectImpl) primitive;
 			object.onObjectMoved();
 		});
-		
+
 		eventManagerNode.registerHandler(VehicleModEvent.class, HandlerPriority.MONITOR, (e) ->
 		{
 			Vehicle primitive = e.getVehicle().getPrimitive();
 			if (primitive instanceof VehicleImpl == false) return;
-			
+
 			VehicleImpl vehicle = (VehicleImpl) primitive;
 			vehicle.onVehicleMod();
 		});
-		
+
 		eventManagerNode.registerHandler(VehicleUpdateDamageEvent.class, HandlerPriority.MONITOR, (e) ->
 		{
 			Vehicle primitive = e.getVehicle().getPrimitive();
 			if (primitive instanceof VehicleImpl == false) return;
-			
+
 			VehicleImpl vehicle = (VehicleImpl) primitive;
 			vehicle.onVehicleUpdateDamage();
 		});
 	}
-	
+
 	@Override
 	public Server getServer()
 	{
 		return server;
 	}
-	
+
 	@Override
 	public World getWorld()
 	{
 		return world;
 	}
-	
+
 	@Override
 	public Player getPlayer(int id)
 	{
 		if (id < 0 || id >= MAX_PLAYERS) return null;
 		return players[id];
 	}
-	
+
 	@Override
 	public Player getPlayer(String name)
 	{
 		if (name == null) return null;
 		name = name.trim();
-		
+
 		for (Player player : players)
 		{
 			if (player == null) continue;
 			if (player.getName().equals(name)) return player;
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
 	public Vehicle getVehicle(int id)
 	{
 		if (id < 0 || id >= MAX_VEHICLES) return null;
 		return vehicles[id];
 	}
-	
+
 	@Override
 	public SampObject getObject(int id)
 	{
 		if (id < 0 || id >= MAX_OBJECTS) return null;
 		return objects[id];
 	}
-	
+
 	@Override
 	public PlayerObject getPlayerObject(Player player, int id)
 	{
 		if (player == null) return null;
-		
+
 		int playerId = player.getId();
 		if (playerId < 0 || playerId >= MAX_PLAYERS) return null;
-		
+
 		if (id < 0 || id >= MAX_OBJECTS) return null;
-		
+
 		PlayerObject[] playerObjects = playerObjectsArray[playerId];
 		if (playerObjects == null) return null;
-		
+
 		return playerObjects[id];
 	}
-	
+
 	@Override
 	public Pickup getPickup(int id)
 	{
 		if (id < 0 || id >= MAX_PICKUPS) return null;
 		return pickups[id];
 	}
-	
+
 	@Override
 	public Label getLabel(int id)
 	{
 		if (id < 0 || id >= MAX_GLOBAL_LABELS) return null;
 		return labels[id];
 	}
-	
+
 	@Override
 	public PlayerLabel getPlayerLabel(Player player, int id)
 	{
 		if (player == null) return null;
-		
+
 		int playerId = player.getId();
 		if (playerId < 0 || playerId >= MAX_PLAYERS) return null;
-		
+
 		if (id < 0 || id >= MAX_PLAYER_LABELS) return null;
-		
+
 		PlayerLabel[] playerLabels = playerLabelsArray[playerId];
 		if (playerLabels == null) return null;
-		
+
 		return playerLabels[id];
 	}
-	
+
 	@Override
 	public Textdraw getTextdraw(int id)
 	{
 		if (id < 0 || id >= MAX_TEXT_DRAWS) return null;
 		return textdraws[id];
 	}
-	
+
 	@Override
 	public PlayerTextdraw getPlayerTextdraw(Player player, int id)
 	{
 		if (player == null) return null;
-		
+
 		int playerId = player.getId();
 		if (playerId < 0 || playerId >= MAX_PLAYERS) return null;
-		
+
 		if (id < 0 || id >= MAX_PLAYER_TEXT_DRAWS) return null;
-		
+
 		PlayerTextdraw[] textdraws = playerTextdrawsArray[playerId];
 		if (textdraws == null) return null;
-		
+
 		return textdraws[id];
 	}
-	
+
 	@Override
 	public Zone getZone(int id)
 	{
 		if (id < 0 || id >= MAX_ZONES) return null;
 		return zones[id];
 	}
-	
+
 	@Override
 	public Menu getMenu(int id)
 	{
 		if (id < 0 || id >= MAX_MENUS) return null;
 		return menus[id];
 	}
-	
+
 	@Override
 	public DialogId getDialog(int id)
 	{
-		return dialogs.get(id).get();
+		Reference<DialogId> ref = dialogs.get(id);
+		return ref != null ? ref.get() : null;
 	}
-	
+
 	@Override
 	public Collection<Player> getPlayers()
 	{
 		return getNotNullInstances(players);
 	}
-	
+
 	@Override
 	public Collection<Player> getHumanPlayers()
 	{
 		Collection<Player> list = new ArrayList<>();
 		if (players == null) return list;
-		
+
 		for (Player item : players)
 		{
 			if (item != null && item.isNpc() == false) list.add(item);
 		}
 		return list;
 	}
-	
+
 	@Override
 	public Collection<Player> getNpcPlayers()
 	{
 		Collection<Player> list = new ArrayList<>();
 		if (players == null) return list;
-		
+
 		for (Player item : players)
 		{
 			if (item != null && item.isNpc()) list.add(item);
 		}
 		return list;
 	}
-	
+
 	@Override
 	public Collection<Vehicle> getVehicles()
 	{
 		return getNotNullInstances(vehicles);
 	}
-	
+
 	@Override
 	public Collection<SampObject> getObjects()
 	{
 		return getNotNullInstances(objects);
 	}
-	
+
 	@Override
 	public Collection<PlayerObject> getPlayerObjects(Player player)
 	{
 		if (player == null) return null;
-		
+
 		int playerId = player.getId();
 		if (playerId < 0 || playerId >= MAX_PLAYERS) return new ArrayList<>(0);
-		
+
 		PlayerObject[] playerObjects = playerObjectsArray[playerId];
 		return getNotNullInstances(playerObjects);
 	}
-	
+
 	@Override
 	public Collection<Pickup> getPickups()
 	{
 		return getNotNullInstances(pickups);
 	}
-	
+
 	@Override
 	public Collection<Label> getLabels()
 	{
 		return getNotNullInstances(labels);
 	}
-	
+
 	@Override
 	public Collection<PlayerLabel> getPlayerLabels(Player player)
 	{
 		if (player == null) return null;
-		
+
 		int playerId = player.getId();
 		if (playerId < 0 || playerId >= MAX_PLAYERS) return new ArrayList<>(0);
-		
+
 		PlayerLabel[] playerLabels = playerLabelsArray[playerId];
 		return getNotNullInstances(playerLabels);
 	}
-	
+
 	@Override
 	public Collection<Textdraw> getTextdraws()
 	{
 		return getNotNullInstances(textdraws);
 	}
-	
+
 	@Override
 	public Collection<PlayerTextdraw> getPlayerTextdraws(Player player)
 	{
 		if (player == null) return null;
-		
+
 		int playerId = player.getId();
 		if (playerId < 0 || playerId >= MAX_PLAYERS) return new ArrayList<>(0);
-		
+
 		PlayerTextdraw[] textdraws = playerTextdrawsArray[playerId];
 		return getNotNullInstances(textdraws);
 	}
-	
+
 	@Override
 	public Collection<Zone> getZones()
 	{
 		return getNotNullInstances(zones);
 	}
-	
+
 	@Override
 	public Collection<Menu> getMenus()
 	{
 		return getNotNullInstances(menus);
 	}
-	
+
 	@Override
 	public Collection<DialogId> getDialogIds()
 	{
@@ -445,10 +446,10 @@ public class SampObjectStoreImpl implements SampObjectStore
 			DialogId dialog = reference.get();
 			if (dialog != null) items.add(dialog);
 		}
-		
+
 		return items;
 	}
-	
+
 	public Collection<Timer> getTimers()
 	{
 		Collection<Timer> items = new ArrayList<>();
@@ -459,21 +460,21 @@ public class SampObjectStoreImpl implements SampObjectStore
 			if (timer != null) items.add(timer);
 			else unusedItems.add(reference);
 		}
-		
-		timers.removeAll(unusedItems);		
+
+		timers.removeAll(unusedItems);
 		return items;
 	}
-	
+
 	public void setServer(Server server)
 	{
 		this.server = server;
 	}
-	
+
 	public void setWorld(World world)
 	{
 		this.world = world;
 	}
-	
+
 	public void setPlayer(int id, Player player)
 	{
 		if(player == null && players[id] != null)
@@ -481,21 +482,21 @@ public class SampObjectStoreImpl implements SampObjectStore
 			removePlayer(id);
 			if (player == null) return;
 		}
-		
+
 		players[id] = player;
-		
+
 		playerObjectsArray[id] = new PlayerObject[MAX_OBJECTS];
 		playerLabelsArray[id] = new PlayerLabel[MAX_PLAYER_LABELS];
 		playerTextdrawsArray[id] = new PlayerTextdraw[MAX_PLAYER_TEXT_DRAWS];
 	}
-	
+
 	private void removePlayer(int id)
 	{
 		for (PlayerLabel playerLabel : playerLabelsArray[id])
 		{
 			if(playerLabel != null) playerLabel.destroy();
 		}
-		
+
 		for (PlayerObject playerObject : playerObjectsArray[id])
 		{
 			if(playerObject != null) playerObject.destroy();
@@ -506,41 +507,41 @@ public class SampObjectStoreImpl implements SampObjectStore
 		playerTextdrawsArray[id] = null;
 		players[id] = null;
 	}
-	
+
 	public void setVehicle(int id, Vehicle vehicle)
 	{
 		vehicles[id] = vehicle;
 	}
-	
+
 	public void setObject(int id, SampObject object)
 	{
 		objects[id] = object;
 	}
-	
+
 	public void setPlayerObject(Player player, int id, PlayerObject object)
 	{
 		if (!player.isOnline()) return;
 		PlayerObject[] playerObjects = playerObjectsArray[player.getId()];
 		playerObjects[id] = object;
 	}
-	
+
 	public void setPickup(int id, Pickup pickup)
 	{
 		pickups[id] = pickup;
 	}
-	
+
 	public void setLabel(int id, Label label)
 	{
 		labels[id] = label;
 	}
-	
+
 	public void setPlayerLabel(Player player, int id, PlayerLabel label)
 	{
 		if (!player.isOnline()) return;
 		PlayerLabel[] playerLabels = playerLabelsArray[player.getId()];
 		playerLabels[id] = label;
 	}
-	
+
 	public void setTextdraw(int id, Textdraw textdraw)
 	{
 		textdraws[id] = textdraw;
@@ -552,23 +553,23 @@ public class SampObjectStoreImpl implements SampObjectStore
 		PlayerTextdraw[] textdraws = playerTextdrawsArray[player.getId()];
 		textdraws[id] = textdraw;
 	}
-	
+
 	public void setZone(int id, Zone zone)
 	{
 		zones[id] = zone;
 	}
-	
+
 	public void setMenu(int id, Menu menu)
 	{
 		menus[id] = menu;
 	}
-	
+
 	public void putTimer(TimerImpl timer)
 	{
 		clearUnusedReferences(timers);
 		timers.add(new WeakReference<TimerImpl>(timer));
 	}
-	
+
 	public void removeTimer(Timer timer)
 	{
 		for (Iterator<Reference<TimerImpl>> iterator = timers.iterator(); iterator.hasNext();)
@@ -578,13 +579,13 @@ public class SampObjectStoreImpl implements SampObjectStore
 			if (t == null || t == timer) iterator.remove();
 		}
 	}
-	
+
 	public void putDialog(int id, DialogId dialog)
 	{
 		clearUnusedReferences(dialogs.values());
 		dialogs.put(id, new WeakReference<DialogId>(dialog));
 	}
-	
+
 	public void removeDialog(DialogId dialog)
 	{
 		dialogs.remove(dialog.getId());
@@ -600,8 +601,8 @@ public class SampObjectStoreImpl implements SampObjectStore
 			if (timer != null) items.add(timer);
 			else unusedItems.add(reference);
 		}
-		
-		timers.removeAll(unusedItems);		
+
+		timers.removeAll(unusedItems);
 		return items;
 	}
 }
