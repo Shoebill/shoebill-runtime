@@ -619,9 +619,9 @@ public class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return;
 
-		if (isInAnyVehicle() && getVehicleSeat() == 0)
+		Vehicle vehicle = getVehicle();
+		if (vehicle != null && getVehicleSeat() == 0)
 		{
-			Vehicle vehicle = getVehicle();
 			vehicle.setLocation(x, y, z);
 		}
 		else
@@ -641,9 +641,9 @@ public class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return;
 
-		if (isInAnyVehicle() && getVehicleSeat() == 0)
+		Vehicle vehicle = getVehicle();
+		if (vehicle != null && getVehicleSeat() == 0)
 		{
-			Vehicle vehicle = getVehicle();
 			vehicle.setLocation(loc);
 		}
 		else
@@ -659,9 +659,9 @@ public class PlayerImpl implements Player
 	{
 		if (isOnline() == false) return;
 
-		if (isInAnyVehicle() && getVehicleSeat() == 0)
+		Vehicle vehicle = getVehicle();
+		if (vehicle != null && getVehicleSeat() == 0)
 		{
-			Vehicle vehicle = getVehicle();
 			vehicle.setLocation(loc);
 		}
 		else
