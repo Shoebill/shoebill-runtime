@@ -59,7 +59,7 @@ public class ResourceManagerImpl implements ResourceManager
 		this.artifactLocator = locator;
 		this.dataDir = dataDir;
 		
-		plugins = new ConcurrentHashMap<Class<? extends Plugin>, Plugin>();
+		plugins = new ConcurrentHashMap<>();
 	}
 	
 	public void loadAllResource()

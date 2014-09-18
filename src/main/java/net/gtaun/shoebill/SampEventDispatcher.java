@@ -64,18 +64,7 @@ import net.gtaun.shoebill.event.player.PlayerWeaponShotEvent;
 import net.gtaun.shoebill.event.rcon.RconCommandEvent;
 import net.gtaun.shoebill.event.rcon.RconLoginEvent;
 import net.gtaun.shoebill.event.server.IncomingConnectionEvent;
-import net.gtaun.shoebill.event.vehicle.UnoccupiedVehicleUpdateEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleDeathEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleEnterEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleExitEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleModEvent;
-import net.gtaun.shoebill.event.vehicle.VehiclePaintjobEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleResprayEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleStreamInEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleStreamOutEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleUpdateDamageEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleUpdateEvent;
+import net.gtaun.shoebill.event.vehicle.*;
 import net.gtaun.shoebill.object.Checkpoint;
 import net.gtaun.shoebill.object.DialogId;
 import net.gtaun.shoebill.object.Menu;
@@ -686,7 +675,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 	}
 
 	@Override
-	public int onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat, float newX, float newY, float newZ)
+	public int onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat, float newX, float newY, float newZ, float vel_x, float vel_y, float vel_z)
 	{
 		try
 		{
@@ -696,7 +685,7 @@ public class SampEventDispatcher implements SampCallbackHandler
 
 			location.set(newX, newY, newZ);
 
-			UnoccupiedVehicleUpdateEvent event = new UnoccupiedVehicleUpdateEvent(vehicle, player, location);
+			UnoccupiedVehicleUpdateEvent event = new UnoccupiedVehicleUpdateEvent(vehicle, player, location, new Vector3D(vel_x, vel_y, vel_z));
 			rootEventManager.dispatchEvent(event, vehicle, player);
 
 			return 1;
@@ -1178,4 +1167,18 @@ public class SampEventDispatcher implements SampCallbackHandler
 			return 0;
 		}
 	}
+
+    @Override
+    public int onTrailerUpdate(int playerid, int vehicleid) {
+        try {
+            Player player = sampObjectStore.getPlayer(playerid);
+            Vehicle vehicle = sampObjectStore.getVehicle(vehicleid);
+            TrailerUpdateEvent event = new TrailerUpdateEvent(vehicle, player);
+            rootEventManager.dispatchEvent(event, vehicle, player);
+            return 1;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

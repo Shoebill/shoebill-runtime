@@ -282,9 +282,9 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 		}
 
 		@Override
-		public int onUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX, float newY, float newZ)
+		public int onUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX, float newY, float newZ, float vel_x, float vel_y, float vel_z)
 		{
-			for (SampCallbackHandler handler : callbackHandlers) TryUtils.tryTo(() -> handler.onUnoccupiedVehicleUpdate(vehicleid, playerid, passengerSeat, newX, newY, newZ));
+			for (SampCallbackHandler handler : callbackHandlers) TryUtils.tryTo(() -> handler.onUnoccupiedVehicleUpdate(vehicleid, playerid, passengerSeat, newX, newY, newZ, vel_x, vel_y, vel_z));
 			return 1;
 		}
 
@@ -447,5 +447,11 @@ public class SampCallbackManagerImpl implements SampCallbackManager
 			for (SampCallbackHandler handler : callbackHandlers) TryUtils.tryTo(() -> handler.onIncomingConnection(playerid, ipAddress, port));
 			return 1;
 		}
-	};
+
+        @Override
+        public int onTrailerUpdate(int playerid, int vehicleid) {
+            for(SampCallbackHandler handler : callbackHandlers) TryUtils.tryTo(() -> handler.onTrailerUpdate(playerid, vehicleid));
+            return 1;
+        }
+    };
 }

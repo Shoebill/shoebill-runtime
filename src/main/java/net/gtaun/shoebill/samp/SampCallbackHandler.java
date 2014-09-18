@@ -178,7 +178,7 @@ public interface SampCallbackHandler
 		return 1;
 	}
 
-	default int onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat, float newX, float newY, float newZ)
+	default int onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat, float newX, float newY, float newZ, float vel_x, float vel_y, float vel_z)
 	{
 		return 1;
 	}
@@ -292,4 +292,8 @@ public interface SampCallbackHandler
 	{
 		return 1;
 	}
+
+    default int onTrailerUpdate(int playerid, int vehicleid) {
+        return 1;
+    }
 }
