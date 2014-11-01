@@ -28,6 +28,8 @@ import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.event.player.PlayerStateChangeEvent;
+import net.gtaun.shoebill.event.vehicle.VehicleCreateEvent;
+import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
@@ -106,6 +108,10 @@ public class VehicleImpl implements Vehicle
 		
 		VehicleSpawnEvent event = new VehicleSpawnEvent(this);
 		eventManagerNode.dispatchEvent(event, this);
+
+        Vehicle vehicle = Vehicle.get(id);
+        VehicleCreateEvent createEvent = new VehicleCreateEvent(vehicle);
+        eventManagerNode.dispatchEvent(createEvent, vehicle);
 	}
 
 	public void onVehicleMod()
@@ -135,7 +141,11 @@ public class VehicleImpl implements Vehicle
 		
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		eventManagerNode.dispatchEvent(destroyEvent, this);
-		
+
+        Vehicle vehicle = Vehicle.get(id);
+        VehicleDestroyEvent vehicleDestroyEvent = new VehicleDestroyEvent(vehicle);
+        eventManagerNode.dispatchEvent(vehicleDestroyEvent, vehicle);
+
 		eventManagerNode.destroy();
 		id = INVALID_ID;
 	}
