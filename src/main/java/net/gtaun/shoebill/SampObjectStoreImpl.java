@@ -220,7 +220,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	@Override
 	public Vehicle getVehicle(int id)
 	{
-		if (id < 1 || id >= MAX_VEHICLES) return null;
+		if (id < 0 || id >= MAX_VEHICLES) return null;
 		return vehicles[id];
 	}
 
@@ -434,7 +434,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	@Override
 	public Collection<DialogId> getDialogIds()
 	{
-		Collection<DialogId> items = new ArrayList<DialogId>();
+		Collection<DialogId> items = new ArrayList<>();
 		for (Reference<DialogId> reference : dialogs.values())
 		{
 			DialogId dialog = reference.get();
@@ -561,7 +561,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	public void putTimer(TimerImpl timer)
 	{
 		clearUnusedReferences(timers);
-		timers.add(new WeakReference<TimerImpl>(timer));
+		timers.add(new WeakReference<>(timer));
 	}
 
 	public void removeTimer(Timer timer)
@@ -577,7 +577,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	public void putDialog(int id, DialogId dialog)
 	{
 		clearUnusedReferences(dialogs.values());
-		dialogs.put(id, new WeakReference<DialogId>(dialog));
+		dialogs.put(id, new WeakReference<>(dialog));
 	}
 
 	public void removeDialog(DialogId dialog)
@@ -590,7 +590,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 		if(pickup != null && pickup.isStatic())
 		{
 			clearUnusedReferences(staticPickups);
-			staticPickups.add(new WeakReference<PickupImpl>(pickup));
+			staticPickups.add(new WeakReference<>(pickup));
 		}
 	}
 
@@ -632,54 +632,5 @@ public class SampObjectStoreImpl implements SampObjectStore
 
 		timers.removeAll(unusedItems);
 		return items;
-	}
-
-	public void clearAll() {
-		for (Player player : players) {
-			if(player != null)
-				removePlayer(player.getId());
-		}
-
-		for(int i = 0; i < menus.length; i++) {
-			if(menus[i] != null && !menus[i].isDestroyed())
-				menus[i].destroy();
-			menus[i] = null;
-		}
-
-		for(int i = 0; i < zones.length; i++) {
-			if(zones[i] != null && !zones[i].isDestroyed())
-				zones[i].destroy();
-			zones[i] = null;
-		}
-
-		for(int i = 0; i < textdraws.length; i++) {
-			if(textdraws[i] != null && !textdraws[i].isDestroyed())
-				textdraws[i].destroy();
-			textdraws[i] = null;
-		}
-
-		for(int i = 0; i < labels.length; i++) {
-			if(labels[i] != null && !labels[i].isDestroyed())
-				labels[i].destroy();
-			labels[i] = null;
-		}
-
-		for(int i = 0; i < pickups.length; i++) {
-			if(pickups[i] != null && !pickups[i].isDestroyed())
-				pickups[i].destroy();
-			pickups[i] = null;
-		}
-
-		for(int i = 0; i < objects.length; i++) {
-			if(objects[i] != null && !objects[i].isDestroyed())
-				objects[i].destroy();
-			objects[i] = null;
-		}
-
-		for(int i = 0; i < vehicles.length; i++) {
-			if(vehicles[i] != null && !vehicles[i].isDestroyed())
-				vehicles[i].destroy();
-			vehicles[i] = null;
-		}
 	}
 }
