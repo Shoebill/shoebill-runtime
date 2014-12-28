@@ -21,10 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import net.gtaun.shoebill.CharsetUtils;
-import net.gtaun.shoebill.DialogEventUtils;
-import net.gtaun.shoebill.SampNativeFunction;
-import net.gtaun.shoebill.SampObjectStore;
+import net.gtaun.shoebill.*;
 import net.gtaun.shoebill.constant.CameraCutStyle;
 import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.constant.FightStyle;
@@ -199,7 +196,7 @@ public class PlayerImpl implements Player
 	@Override
 	public float getAngle()
 	{
-		if (isOnline() == false) return 0.0f;
+		if (!isOnline()) return 0.0f;
 
 		return SampNativeFunction.getPlayerFacingAngle(id);
 	}
@@ -259,6 +256,8 @@ public class PlayerImpl implements Player
 		return dialog;
 	}
 
+	public void setDialog(DialogId dialog) { this.dialog = dialog; }
+
 	@Override
 	public boolean isStuntBonusEnabled()
 	{
@@ -286,7 +285,7 @@ public class PlayerImpl implements Player
 	@Override
 	public int getPing()
 	{
-		if (isOnline() == false) return 0;
+		if (!isOnline()) return 0;
 
 		return SampNativeFunction.getPlayerPing(id);
 	}
@@ -294,7 +293,7 @@ public class PlayerImpl implements Player
 	@Override
 	public int getTeam()
 	{
-		if (isOnline() == false) return NO_TEAM;
+		if (!isOnline()) return NO_TEAM;
 
 		return SampNativeFunction.getPlayerTeam(id);
 	}
@@ -302,7 +301,7 @@ public class PlayerImpl implements Player
 	@Override
 	public int getSkin()
 	{
-		if (isOnline() == false) return 0;
+		if (!isOnline()) return 0;
 
 		return SampNativeFunction.getPlayerSkin(id);
 	}
@@ -310,7 +309,7 @@ public class PlayerImpl implements Player
 	@Override
 	public int getWantedLevel()
 	{
-		if (isOnline() == false) return 0;
+		if (!isOnline()) return 0;
 
 		return SampNativeFunction.getPlayerWantedLevel(id);
 	}
@@ -318,7 +317,7 @@ public class PlayerImpl implements Player
 	@Override
 	public int getCodepage()
 	{
-		if (isOnline() == false) return 0;
+		if (!isOnline()) return 0;
 
 		return SampNativeFunction.getPlayerCodepage(id);
 	}
@@ -326,7 +325,7 @@ public class PlayerImpl implements Player
 	@Override
 	public String getIp()
 	{
-		if (isOnline() == false) return "0.0.0.0";
+		if (!isOnline()) return "0.0.0.0";
 
 		return SampNativeFunction.getPlayerIp(id);
 	}
@@ -334,7 +333,7 @@ public class PlayerImpl implements Player
 	@Override
 	public String getName()
 	{
-		if (isOnline() == false) return "Unknown";
+		if (!isOnline()) return "Unknown";
 
 		return SampNativeFunction.getPlayerName(id);
 	}
@@ -342,7 +341,7 @@ public class PlayerImpl implements Player
 	@Override
 	public Color getColor()
 	{
-		if (isOnline() == false) return null;
+		if (!isOnline()) return null;
 
 		return new Color(SampNativeFunction.getPlayerColor(id));
 	}
@@ -350,7 +349,7 @@ public class PlayerImpl implements Player
 	@Override
 	public float getHealth()
 	{
-		if (isOnline() == false) return 0.0f;
+		if (!isOnline()) return 0.0f;
 
 		return SampNativeFunction.getPlayerHealth(id);
 	}
@@ -358,7 +357,7 @@ public class PlayerImpl implements Player
 	@Override
 	public float getArmour()
 	{
-		if (isOnline() == false) return 0.0f;
+		if (!isOnline()) return 0.0f;
 
 		return SampNativeFunction.getPlayerArmour(id);
 	}
@@ -366,7 +365,7 @@ public class PlayerImpl implements Player
 	@Override
 	public WeaponModel getArmedWeapon()
 	{
-		if (isOnline() == false) return WeaponModel.NONE;
+		if (!isOnline()) return WeaponModel.NONE;
 
 		return WeaponModel.get(SampNativeFunction.getPlayerWeapon(id));
 	}
@@ -374,7 +373,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setArmedWeapon(WeaponModel model)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerArmedWeapon(id, model.getId());
 	}
@@ -382,7 +381,7 @@ public class PlayerImpl implements Player
 	@Override
 	public int getArmedWeaponAmmo()
 	{
-		if (isOnline() == false) return 0;
+		if (!isOnline()) return 0;
 
 		return SampNativeFunction.getPlayerAmmo(id);
 	}
@@ -390,7 +389,7 @@ public class PlayerImpl implements Player
 	@Override
 	public int getMoney()
 	{
-		if (isOnline() == false) return 0;
+		if (!isOnline()) return 0;
 
 		return SampNativeFunction.getPlayerMoney(id);
 	}
@@ -398,7 +397,7 @@ public class PlayerImpl implements Player
 	@Override
 	public int getScore()
 	{
-		if (isOnline() == false) return 0;
+		if (!isOnline()) return 0;
 
 		return SampNativeFunction.getPlayerScore(id);
 	}
@@ -406,7 +405,7 @@ public class PlayerImpl implements Player
 	@Override
 	public int getCameraMode()
 	{
-		if (isOnline() == false) return 0;
+		if (!isOnline()) return 0;
 
 		return SampNativeFunction.getPlayerCameraMode(id);
 	}
@@ -414,7 +413,7 @@ public class PlayerImpl implements Player
 	@Override
 	public float getCameraAspectRatio()
 	{
-		if (isOnline() == false) return 0.0f;
+		if (!isOnline()) return 0.0f;
 
 		return SampNativeFunction.getPlayerCameraAspectRatio(id);
 	}
@@ -422,7 +421,7 @@ public class PlayerImpl implements Player
 	@Override
 	public float getCameraZoom()
 	{
-		if (isOnline() == false) return 0.0f;
+		if (!isOnline()) return 0.0f;
 
 		return SampNativeFunction.getPlayerCameraZoom(id);
 	}
@@ -430,7 +429,7 @@ public class PlayerImpl implements Player
 	@Override
 	public FightStyle getFightStyle()
 	{
-		if (isOnline() == false) return FightStyle.NORMAL;
+		if (!isOnline()) return FightStyle.NORMAL;
 
 		return FightStyle.get(SampNativeFunction.getPlayerFightingStyle(id));
 	}
@@ -438,7 +437,7 @@ public class PlayerImpl implements Player
 	@Override
 	public Vehicle getVehicle()
 	{
-		if (isOnline() == false) return null;
+		if (!isOnline()) return null;
 
 		int vehicleId = SampNativeFunction.getPlayerVehicleID(id);
 		return store.getVehicle(vehicleId);
@@ -447,7 +446,7 @@ public class PlayerImpl implements Player
 	@Override
 	public int getVehicleSeat()
 	{
-		if (isOnline() == false) return 0;
+		if (!isOnline()) return 0;
 
 		return SampNativeFunction.getPlayerVehicleSeat(id);
 	}
@@ -455,7 +454,7 @@ public class PlayerImpl implements Player
 	@Override
 	public SpecialAction getSpecialAction()
 	{
-		if (isOnline() == false) return SpecialAction.NONE;
+		if (!isOnline()) return SpecialAction.NONE;
 
 		return SpecialAction.get(SampNativeFunction.getPlayerSpecialAction(id));
 	}
@@ -463,7 +462,7 @@ public class PlayerImpl implements Player
 	@Override
 	public PlayerState getState()
 	{
-		if (isOnline() == false) return PlayerState.NONE;
+		if (!isOnline()) return PlayerState.NONE;
 
 		return PlayerState.values()[SampNativeFunction.getPlayerState(id)];
 	}
@@ -471,7 +470,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setCodepage(int codepage)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerCodepage(id, codepage);
 	}
@@ -479,7 +478,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setName(String name) throws IllegalArgumentException, IllegalLengthException, AlreadyExistException
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		if (name == null) throw new IllegalArgumentException();
 		if (name.length() < 3 || name.length() > 20) throw new IllegalLengthException();
@@ -492,7 +491,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setSpawnInfo(float x, float y, float z, int interiorId, int worldId, float angle, int skin, int team, WeaponModel weapon1, int ammo1, WeaponModel weapon2, int ammo2, WeaponModel weapon3, int ammo3)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setSpawnInfo(id, team, skin, x, y, z, angle, weapon1.getId(), ammo1, weapon2.getId(), ammo2, weapon3.getId(), ammo3);
 	}
@@ -518,7 +517,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setSpawnInfo(SpawnInfo info)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		WeaponData weapon1 = info.getWeapon1();
 		WeaponData weapon2 = info.getWeapon2();
@@ -530,7 +529,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setColor(Color color)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerColor(id, color.getValue());
 	}
@@ -538,7 +537,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setHealth(float health)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerHealth(id, health);
 	}
@@ -546,7 +545,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setArmour(float armour)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerArmour(id, armour);
 	}
@@ -554,7 +553,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setWeaponAmmo(WeaponModel weapon, int ammo)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerAmmo(id, weapon.getId(), ammo);
 	}
@@ -562,7 +561,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setMoney(int money)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.resetPlayerMoney(id);
 		if (money != 0) SampNativeFunction.givePlayerMoney(id, money);
@@ -571,30 +570,35 @@ public class PlayerImpl implements Player
 	@Override
 	public void giveMoney(int money)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 		SampNativeFunction.givePlayerMoney(id, money);
 	}
 
 	@Override
 	public void setScore(int score)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 		SampNativeFunction.setPlayerScore(id, score);
 	}
 
 	@Override
 	public void setWeather(int weather)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerWeather(id, weather));
+		setWeatherWithoutExec(weather);
+	}
 
-		SampNativeFunction.setPlayerWeather(id, weather);
+	public void setWeatherWithoutExec(int weather)
+	{
+		if (!isOnline()) return;
 		this.weatherId = weather;
 	}
 
 	@Override
 	public void setFightStyle(FightStyle style)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerFightingStyle(id, style.getValue());
 	}
@@ -602,8 +606,8 @@ public class PlayerImpl implements Player
 	@Override
 	public void setVehicle(Vehicle vehicle, int seat)
 	{
-		if (isOnline() == false) return;
-		if (vehicle != null && vehicle.isDestroyed()) return;
+		if (!isOnline()) return;
+		if (vehicle == null || vehicle.isDestroyed()) return;
 
 		vehicle.putPlayer(this, seat);
 	}
@@ -617,7 +621,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setLocation(float x, float y, float z)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		Vehicle vehicle = getVehicle();
 		if (vehicle != null && getVehicleSeat() == 0)
@@ -639,7 +643,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setLocation(Location loc)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		Vehicle vehicle = getVehicle();
 		if (vehicle != null && getVehicleSeat() == 0)
@@ -657,7 +661,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setLocation(AngledLocation loc)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		Vehicle vehicle = getVehicle();
 		if (vehicle != null && getVehicleSeat() == 0)
@@ -676,7 +680,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setLocationFindZ(float x, float y, float z)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerPosFindZ(id, x, y, z);
 	}
@@ -690,7 +694,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setLocationFindZ(Location loc)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerPosFindZ(id, loc.getX(), loc.getY(), loc.getZ());
 
@@ -701,7 +705,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setLocationFindZ(AngledLocation loc)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerPosFindZ(id, loc.getX(), loc.getY(), loc.getZ());
 		SampNativeFunction.setPlayerFacingAngle(id, loc.getAngle());
@@ -713,7 +717,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setAngle(float angle)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerFacingAngle(id, angle);
 	}
@@ -721,7 +725,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setInterior(int interiorId)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerInterior(id, interiorId);
 	}
@@ -729,7 +733,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setWorld(int worldId)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerVirtualWorld(id, worldId);
 	}
@@ -737,19 +741,27 @@ public class PlayerImpl implements Player
 	@Override
 	public void setWorldBound(Area bound)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerWorldBounds(id, bound.getMaxX(), bound.getMinX(), bound.getMaxY(), bound.getMinY()));
+	}
 
-		SampNativeFunction.setPlayerWorldBounds(id, bound.getMaxX(), bound.getMinX(), bound.getMaxY(), bound.getMinY());
+	public void setWorldBoundWithoutExec(Area bound) {
+		if (!isOnline()) return;
 		worldBound.set(bound);
 	}
 
 	@Override
 	public void setVelocity(Vector3D vel)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		velocity.set(vel);
 		SampNativeFunction.setPlayerVelocity(id, vel.getX(), vel.getY(), vel.getZ());
+	}
+
+	@Override
+	public void sendMessage(String s) {
+		sendMessage(Color.WHITE, s);
 	}
 
 	private void sendMessageInternal(Color color, String message)
@@ -761,7 +773,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void sendMessage(Color color, String message)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 		if (message == null) throw new NullPointerException();
 
 		sendMessageInternal(color, message);
@@ -770,7 +782,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void sendMessage(Color color, String format, Object... args)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		String message = String.format(format, args);
 		sendMessageInternal(color, message);
@@ -779,7 +791,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void sendChat(Player player, String message)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		if (message == null) throw new NullPointerException();
 		SampNativeFunction.sendPlayerMessageToPlayer(player.getId(), id, message);
@@ -788,7 +800,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void sendChatToAll(String message)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		if (message == null) throw new NullPointerException();
 		for (Player player : store.getPlayers())
@@ -800,7 +812,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void sendDeathMessage(Player killer, Player victim, WeaponModel reason)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.sendDeathMessageToPlayer(getId(), killer != null ? killer.getId() : PlayerImpl.INVALID_ID, victim != null ? victim.getId() : PlayerImpl.INVALID_ID, reason.getId());
 	}
@@ -808,7 +820,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void sendGameText(int time, int style, String text)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		if (text == null) throw new NullPointerException();
 		SampNativeFunction.gameTextForPlayer(id, text, time, style);
@@ -817,7 +829,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void sendGameText(int time, int style, String format, Object... args)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		String text = String.format(format, args);
 		SampNativeFunction.gameTextForPlayer(id, text, time, style);
@@ -826,7 +838,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void spawn()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.spawnPlayer(id);
 	}
@@ -834,7 +846,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setDrunkLevel(int level)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerDrunkLevel(id, level);
 	}
@@ -842,7 +854,7 @@ public class PlayerImpl implements Player
 	@Override
 	public int getDrunkLevel()
 	{
-		if (isOnline() == false) return 0;
+		if (!isOnline()) return 0;
 
 		return SampNativeFunction.getPlayerDrunkLevel(id);
 	}
@@ -850,7 +862,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void applyAnimation(String animlib, String animname, float delta, int loop, int lockX, int lockY, int freeze, int time, int forcesync)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		if (animlib == null || animname == null) throw new NullPointerException();
 		SampNativeFunction.applyAnimation(id, animlib, animname, delta, loop, lockX, lockY, freeze, time, forcesync);
@@ -859,7 +871,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void clearAnimations(int forcesync)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.clearAnimations(id, forcesync);
 	}
@@ -867,7 +879,7 @@ public class PlayerImpl implements Player
 	@Override
 	public int getAnimationIndex()
 	{
-		if (isOnline() == false) return 0;
+		if (!isOnline()) return 0;
 
 		return SampNativeFunction.getPlayerAnimationIndex(id);
 	}
@@ -875,7 +887,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void playSound(int sound, float x, float y, float z)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.playerPlaySound(id, sound, x, y, z);
 	}
@@ -883,7 +895,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void playSound(int sound, Vector3D loc)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.playerPlaySound(id, sound, loc.getX(), loc.getY(), loc.getZ());
 	}
@@ -891,7 +903,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void playSound(int sound)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.playerPlaySound(id, sound, 0.0f, 0.0f, 0.0f);
 	}
@@ -899,7 +911,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void markerForPlayer(Player player, Color color)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerMarkerForPlayer(id, player.getId(), color.getValue());
 	}
@@ -907,7 +919,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void showNameTagForPlayer(Player player, boolean show)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.showPlayerNameTagForPlayer(id, player.getId(), show);
 	}
@@ -915,7 +927,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void kick()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.kick(id);
 	}
@@ -923,7 +935,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void ban()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.ban(id);
 	}
@@ -931,7 +943,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void ban(String reason)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		if (reason == null) throw new NullPointerException();
 		SampNativeFunction.banEx(id, reason);
@@ -940,7 +952,7 @@ public class PlayerImpl implements Player
 	@Override
 	public Menu getCurrentMenu()
 	{
-		if (isOnline() == false) return null;
+		if (!isOnline()) return null;
 
 		return store.getMenu(SampNativeFunction.getPlayerMenu(id));
 	}
@@ -948,7 +960,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setCameraPosition(float x, float y, float z)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerCameraPos(id, x, y, z);
 	}
@@ -956,7 +968,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setCameraPosition(Vector3D pos)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		if (pos == null) throw new NullPointerException();
 		SampNativeFunction.setPlayerCameraPos(id, pos.getX(), pos.getY(), pos.getZ());
@@ -965,7 +977,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setCameraLookAt(float x, float y, float z, CameraCutStyle cut)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerCameraLookAt(id, x, y, z, cut.getValue());
 	}
@@ -991,7 +1003,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setCameraBehind()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setCameraBehindPlayer(id);
 	}
@@ -999,7 +1011,7 @@ public class PlayerImpl implements Player
 	@Override
 	public Vector3D getCameraPosition()
 	{
-		if (isOnline() == false) return null;
+		if (!isOnline()) return null;
 
 		Vector3D pos = new Vector3D();
 		SampNativeFunction.getPlayerCameraPos(id, pos);
@@ -1009,7 +1021,7 @@ public class PlayerImpl implements Player
 	@Override
 	public Vector3D getCameraFrontVector()
 	{
-		if (isOnline() == false) return null;
+		if (!isOnline()) return null;
 
 		Vector3D lookAt = new Vector3D();
 		SampNativeFunction.getPlayerCameraFrontVector(id, lookAt);
@@ -1019,7 +1031,7 @@ public class PlayerImpl implements Player
 	@Override
 	public boolean isInAnyVehicle()
 	{
-		if (isOnline() == false) return false;
+		if (!isOnline()) return false;
 
 		return SampNativeFunction.isPlayerInAnyVehicle(id);
 	}
@@ -1027,7 +1039,7 @@ public class PlayerImpl implements Player
 	@Override
 	public boolean isInVehicle(Vehicle vehicle)
 	{
-		if (isOnline() == false) return false;
+		if (!isOnline()) return false;
 		if (vehicle.isDestroyed()) return false;
 
 		return SampNativeFunction.isPlayerInVehicle(id, vehicle.getId());
@@ -1036,7 +1048,7 @@ public class PlayerImpl implements Player
 	@Override
 	public boolean isAdmin()
 	{
-		if (isOnline() == false) return false;
+		if (!isOnline()) return false;
 
 		return SampNativeFunction.isPlayerAdmin(id);
 	}
@@ -1044,8 +1056,8 @@ public class PlayerImpl implements Player
 	@Override
 	public boolean isStreamedIn(Player forPlayer)
 	{
-		if (isOnline() == false) return false;
-		if (forPlayer.isOnline() == false) return false;
+		if (!isOnline()) return false;
+		if (!forPlayer.isOnline()) return false;
 
 		return SampNativeFunction.isPlayerStreamedIn(id, forPlayer.getId());
 	}
@@ -1053,7 +1065,7 @@ public class PlayerImpl implements Player
 	@Override
 	public boolean isNpc()
 	{
-		if (isOnline() == false) return false;
+		if (!isOnline()) return false;
 
 		return SampNativeFunction.isPlayerNPC(id);
 	}
@@ -1061,7 +1073,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setCheckpoint(Checkpoint checkpoint)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		if (checkpoint == null)
 		{
@@ -1070,23 +1082,40 @@ public class PlayerImpl implements Player
 		}
 
 		Vector3D loc = checkpoint.getLocation();
-		SampNativeFunction.setPlayerCheckpoint(id, loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize());
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerCheckpoint(id, loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize()));
+		setCheckpointWithoutExec(checkpoint);
+	}
+
+	public void setCheckpointWithoutExec(Checkpoint checkpoint)
+	{
+		if (!isOnline()) return;
+		if (checkpoint == null)
+		{
+			disableCheckpoint();
+			return;
+		}
 		this.checkpoint = checkpoint;
 	}
 
 	@Override
 	public void disableCheckpoint()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
-		SampNativeFunction.disablePlayerCheckpoint(id);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.disablePlayerCheckpoint(id));
+		disableCheckpointWithoutExec();
+	}
+
+	public void disableCheckpointWithoutExec()
+	{
+		if (!isOnline()) return;
 		checkpoint = null;
 	}
 
 	@Override
 	public void setRaceCheckpoint(RaceCheckpoint checkpoint)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		if (checkpoint == null)
 		{
@@ -1097,10 +1126,10 @@ public class PlayerImpl implements Player
 		RaceCheckpoint next = checkpoint.getNext();
 		Vector3D loc = checkpoint.getLocation();
 
-		if (checkpoint.getNext() != null)
+		if (next!= null)
 		{
 			Vector3D nextLoc = next.getLocation();
-			SampNativeFunction.setPlayerRaceCheckpoint(id, checkpoint.getType().getValue(), loc.getX(), loc.getY(), loc.getZ(), nextLoc.getX(), nextLoc.getY(), nextLoc.getZ(), checkpoint.getSize());
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerRaceCheckpoint(id, checkpoint.getType().getValue(), loc.getX(), loc.getY(), loc.getZ(), nextLoc.getX(), nextLoc.getY(), nextLoc.getZ(), checkpoint.getSize()));
 		}
 		else
 		{
@@ -1109,25 +1138,43 @@ public class PlayerImpl implements Player
 			if (type == RaceCheckpointType.NORMAL) type = RaceCheckpointType.NORMAL_FINISH;
 			else if (type == RaceCheckpointType.AIR) type = RaceCheckpointType.AIR_FINISH;
 
-			SampNativeFunction.setPlayerRaceCheckpoint(id, type.getValue(), loc.getX(), loc.getY(), loc.getZ(), loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize());
+			final RaceCheckpointType finalType = type;
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerRaceCheckpoint(id, finalType.getValue(), loc.getX(), loc.getY(), loc.getZ(), loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize()));
 		}
 
+		setRaceCheckpointWithoutExec(checkpoint);
+	}
+
+	public void setRaceCheckpointWithoutExec(RaceCheckpoint checkpoint)
+	{
+		if (!isOnline()) return;
+		if (checkpoint == null)
+		{
+			disableRaceCheckpoint();
+			return;
+		}
 		raceCheckpoint = checkpoint;
 	}
 
 	@Override
 	public void disableRaceCheckpoint()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
-		SampNativeFunction.disablePlayerRaceCheckpoint(id);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.disablePlayerRaceCheckpoint(id));
+		disableRaceCheckpointWithoutExec();
+	}
+
+	public void disableRaceCheckpointWithoutExec()
+	{
+		if (!isOnline()) return;
 		raceCheckpoint = null;
 	}
 
 	@Override
 	public WeaponState getWeaponState()
 	{
-		if (isOnline() == false) return WeaponState.UNKNOWN;
+		if (!isOnline()) return WeaponState.UNKNOWN;
 
 		return WeaponState.get(SampNativeFunction.getPlayerWeaponState(id));
 	}
@@ -1135,7 +1182,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setTeam(int team)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerTeam(id, team);
 	}
@@ -1143,7 +1190,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setSkin(int skin)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerSkin(id, skin);
 	}
@@ -1151,7 +1198,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void giveWeapon(WeaponModel type, int ammo)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.givePlayerWeapon(id, type.getId(), ammo);
 	}
@@ -1165,7 +1212,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void resetWeapons()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.resetPlayerWeapons(id);
 	}
@@ -1173,7 +1220,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setTime(int hour, int minute)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerTime(id, hour, minute);
 	}
@@ -1187,7 +1234,7 @@ public class PlayerImpl implements Player
 	@Override
 	public Time getTime()
 	{
-		if (isOnline() == false) return null;
+		if (!isOnline()) return null;
 
 		Time time = new Time();
 		SampNativeFunction.getPlayerTime(id, time);
@@ -1197,7 +1244,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void toggleClock(boolean toggle)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.togglePlayerClock(id, toggle);
 	}
@@ -1205,7 +1252,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void forceClassSelection()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.forceClassSelection(id);
 	}
@@ -1213,7 +1260,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setWantedLevel(int level)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerWantedLevel(id, level);
 	}
@@ -1221,7 +1268,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void playCrimeReport(int suspectId, int crimeId)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.playCrimeReportForPlayer(id, suspectId, crimeId);
 	}
@@ -1229,7 +1276,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setShopName(ShopName shop)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerShopName(id, shop.getValue());
 	}
@@ -1237,7 +1284,7 @@ public class PlayerImpl implements Player
 	@Override
 	public Vehicle getSurfingVehicle()
 	{
-		if (isOnline() == false) return null;
+		if (!isOnline()) return null;
 
 		int vehicleId = SampNativeFunction.getPlayerSurfingVehicleID(id);
 		return store.getVehicle(vehicleId);
@@ -1246,7 +1293,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void removeFromVehicle()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.removePlayerFromVehicle(id);
 	}
@@ -1254,16 +1301,22 @@ public class PlayerImpl implements Player
 	@Override
 	public void toggleControllable(boolean toggle)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
-		SampNativeFunction.togglePlayerControllable(id, toggle);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.togglePlayerControllable(id, toggle));
+		toggleControllableWithoutExec(toggle);
+	}
+
+	public void toggleControllableWithoutExec(boolean toggle)
+	{
+		if (!isOnline()) return;
 		isControllable = toggle;
 	}
 
 	@Override
 	public void setSpecialAction(SpecialAction action)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerSpecialAction(id, action.getValue());
 	}
@@ -1277,22 +1330,30 @@ public class PlayerImpl implements Player
 	@Override
 	public void enableStuntBonus(boolean enable)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.enableStuntBonusForPlayer(id, enable ? 1 : 0));
+		enableStuntBonusWithoutExec(enable);
+	}
 
-		SampNativeFunction.enableStuntBonusForPlayer(id, enable ? 1 : 0);
+	public void enableStuntBonusWithoutExec(boolean enable)
+	{
+		if (!isOnline()) return;
 		isStuntBonusEnabled = enable;
 	}
 
 	@Override
 	public void toggleSpectating(boolean toggle)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.togglePlayerSpectating(id, toggle));
+		toggleSpectatingWithoutExec(toggle);
+	}
 
-		SampNativeFunction.togglePlayerSpectating(id, toggle);
+	public void toggleSpectatingWithoutExec(boolean toggle)
+	{
+		if (!isOnline()) return;
 		isSpectating = toggle;
-
 		if (toggle) return;
-
 		spectatingPlayer = null;
 		spectatingVehicle = null;
 	}
@@ -1300,11 +1361,18 @@ public class PlayerImpl implements Player
 	@Override
 	public void spectate(Player player, SpectateMode mode)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		if (!isSpectating) return;
 
-		SampNativeFunction.playerSpectatePlayer(id, player.getId(), mode.getValue());
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.playerSpectatePlayer(id, player.getId(), mode.getValue()));
+		spectateWithoutExec(player);
+	}
+
+	public void spectateWithoutExec(Player player)
+	{
+		if (!isOnline()) return;
+		if (!isSpectating) return;
 		spectatingPlayer = player;
 		spectatingVehicle = null;
 	}
@@ -1312,11 +1380,18 @@ public class PlayerImpl implements Player
 	@Override
 	public void spectate(Vehicle vehicle, SpectateMode mode)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		if (!isSpectating) return;
 
-		SampNativeFunction.playerSpectateVehicle(id, vehicle.getId(), mode.getValue());
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.playerSpectateVehicle(id, vehicle.getId(), mode.getValue()));
+		spectateWithoutExec(vehicle);
+	}
+
+	public void spectateWithoutExec(Vehicle vehicle)
+	{
+		if (!isOnline()) return;
+		if (!isSpectating) return;
 		spectatingPlayer = null;
 		spectatingVehicle = vehicle;
 	}
@@ -1324,25 +1399,35 @@ public class PlayerImpl implements Player
 	@Override
 	public void startRecord(RecordType type, String recordName)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.startRecordingPlayerData(id, type.getValue(), recordName));
+		startRecordingWithoutExec();
+	}
 
-		SampNativeFunction.startRecordingPlayerData(id, type.getValue(), recordName);
+	public void startRecordingWithoutExec()
+	{
+		if (!isOnline()) return;
 		isRecording = true;
 	}
 
 	@Override
 	public void stopRecord()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.stopRecordingPlayerData(id));
+		stopRecordingWithoutExec();
+	}
 
-		SampNativeFunction.stopRecordingPlayerData(id);
+	public void stopRecordingWithoutExec()
+	{
+		if (!isOnline()) return;
 		isRecording = false;
 	}
 
 	@Override
 	public SampObject getSurfingObject()
 	{
-		if (isOnline() == false) return null;
+		if (!isOnline()) return null;
 
 		int objectid = SampNativeFunction.getPlayerSurfingObjectID(id);
 		if (objectid == SampObject.INVALID_ID) return null;
@@ -1353,7 +1438,7 @@ public class PlayerImpl implements Player
 	@Override
 	public String getNetworkStats()
 	{
-		if (isOnline() == false) return "Disconnected.";
+		if (!isOnline()) return "Disconnected.";
 
 		return SampNativeFunction.getPlayerNetworkStats(id);
 	}
@@ -1361,7 +1446,7 @@ public class PlayerImpl implements Player
 	@Override
 	public Player getAimedTarget()
 	{
-		if (isOnline() == false) return null;
+		if (!isOnline()) return null;
 
 		return store.getPlayer(SampNativeFunction.getPlayerTargetPlayer(id));
 	}
@@ -1369,7 +1454,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void playAudioStream(String url)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.playAudioStreamForPlayer(id, url, 0.0f, 0.0f, 0.0f, 0.0f, 0);
 	}
@@ -1377,7 +1462,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void playAudioStream(String url, float x, float y, float z, float distance)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.playAudioStreamForPlayer(id, url, x, y, z, distance, 1);
 	}
@@ -1397,7 +1482,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void stopAudioStream()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.stopAudioStreamForPlayer(id);
 	}
@@ -1405,7 +1490,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void removeBuilding(int modelId, float x, float y, float z, float radius)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.removeBuildingForPlayer(id, modelId, x, y, z, radius);
 	}
@@ -1413,7 +1498,7 @@ public class PlayerImpl implements Player
 	@Override
 	public Vector3D getLastShotOrigin()
 	{
-		if (isOnline() == false) return new Vector3D();
+		if (!isOnline()) return new Vector3D();
 
 		Vector3D origin = new Vector3D();
 		Vector3D hitpos = new Vector3D();
@@ -1425,7 +1510,7 @@ public class PlayerImpl implements Player
 	@Override
 	public Vector3D getLastShotHitPosition()
 	{
-		if (isOnline() == false) return new Vector3D();
+		if (!isOnline()) return new Vector3D();
 
 		Vector3D origin = new Vector3D();
 		Vector3D hitpos = new Vector3D();
@@ -1449,7 +1534,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void showDialog(DialogId dialog, DialogStyle style, String caption, String text, String button1, String button2)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		Objects.requireNonNull(dialog);
 		Objects.requireNonNull(style);
@@ -1472,7 +1557,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void cancelDialog()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		if (dialog == null) return;
 		SampNativeFunction.showPlayerDialog(id, DialogIdImpl.INVALID_ID, 0, " ", " ", " ", " ");
@@ -1486,7 +1571,7 @@ public class PlayerImpl implements Player
 	@Override
 	public boolean editObject(SampObject object)
 	{
-		if (isOnline() == false) return false;
+		if (!isOnline()) return false;
 		if (object.isDestroyed()) return false;
 
 		return SampNativeFunction.editObject(id, object.getId());
@@ -1495,7 +1580,7 @@ public class PlayerImpl implements Player
 	@Override
 	public boolean editPlayerObject(PlayerObject object)
 	{
-		if (isOnline() == false) return false;
+		if (!isOnline()) return false;
 		if (object.isDestroyed()) return false;
 
 		return SampNativeFunction.editPlayerObject(id, object.getId());
@@ -1504,7 +1589,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void selectObject()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.selectObject(id);
 	}
@@ -1512,7 +1597,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void cancelEdit()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.cancelEdit(id);
 	}
@@ -1520,7 +1605,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void attachCameraTo(SampObject object)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 		if (object.isDestroyed()) return;
 
 		SampNativeFunction.attachCameraToObject(id, object.getId());
@@ -1529,7 +1614,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void attachCameraTo(PlayerObject object)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 		if (object.isDestroyed()) return;
 		if (object.getPlayer() != this) return;
 
@@ -1539,7 +1624,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void interpolateCameraPosition(float fromX, float fromY, float fromZ, float toX, float toY, float toZ, int time, CameraCutStyle cut)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.interpolateCameraPos(id, fromX, fromY, fromZ, toX, toY, toZ, time, cut.getValue());
 	}
@@ -1553,7 +1638,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void interpolateCameraLookAt(float fromX, float fromY, float fromZ, float toX, float toY, float toZ, int time, CameraCutStyle cut)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.interpolateCameraLookAt(id, fromX, fromY, fromZ, toX, toY, toZ, time, cut.getValue());
 	}
@@ -1567,7 +1652,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void selectTextDraw(Color hoverColor)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.selectTextDraw(id, hoverColor.getValue());
 	}
@@ -1575,7 +1660,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void cancelSelectTextDraw()
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.cancelSelectTextDraw(id);
 	}
@@ -1583,7 +1668,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void createExplosion(float x, float y, float z, int type, float radius)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.createExplosionForPlayer(id, x, y, z, type, radius);
 	}
@@ -1591,7 +1676,7 @@ public class PlayerImpl implements Player
 	@Override
 	public String getVersion()
 	{
-		if (isOnline() == false) return "Offline";
+		if (!isOnline()) return "Offline";
 
 		return SampNativeFunction.getPlayerVersion(id);
 	}
@@ -1653,7 +1738,7 @@ public class PlayerImpl implements Player
 	@Override
 	public void setChatBubble(String text, Color color, float drawDistance, int expireTime)
 	{
-		if (isOnline() == false) return;
+		if (!isOnline()) return;
 
 		SampNativeFunction.setPlayerChatBubble(id, text, color.getValue(), drawDistance, expireTime);
 	}

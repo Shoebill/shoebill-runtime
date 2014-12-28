@@ -16,16 +16,12 @@
 
 package net.gtaun.shoebill;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.lang.ref.WeakReference;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.gtaun.shoebill.amx.AmxInstanceManagerImpl;
-import net.gtaun.shoebill.exception.NoGamemodeAssignedException;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.resource.ResourceManager;
 import net.gtaun.shoebill.resource.ResourceManagerImpl;
@@ -58,13 +54,13 @@ public class ShoebillImpl implements Shoebill
 	private static final String LOG4J_CONFIG_FILENAME = "log4j.xml";
 	private static final String RESOURCES_CONFIG_FILENAME = "resources.yml";
 
-
 	public static ShoebillImpl getInstance()
 	{
 		return (ShoebillImpl) Shoebill.get();
 	}
 
 
+	private boolean initialized, restart = false;
 	private ShoebillVersionImpl version;
 	private ShoebillConfig config;
 	private ResourceConfig resourceConfig;
@@ -87,6 +83,7 @@ public class ShoebillImpl implements Shoebill
 	private PrintStream originErrPrintStream;
 
 	private Queue<Runnable> asyncExecQueue;
+	private String gamemodeName;
 
 
 	public ShoebillImpl(int[] amxHandles) throws IOException
@@ -119,8 +116,30 @@ public class ShoebillImpl implements Shoebill
 
 		if (artifactLocator.getGamemodeFile() == null)
 		{
-			LOGGER.error("There's no gamemode assigned in " + RESOURCES_CONFIG_FILENAME + " or file not found.");
-			throw new NoGamemodeAssignedException();
+			LOGGER.info("There's no gamemode assigned in " + RESOURCES_CONFIG_FILENAME + " or file not found.");
+			LOGGER.info("Shoebill will only use plugins!");
+			//throw new NoGamemodeAssignedException();
+		}
+
+
+		File configFile = new File("server.cfg");
+		if(configFile.exists())
+		{
+			try(BufferedReader reader = new BufferedReader(new FileReader(configFile)))
+			{
+				String line;
+				while((line = reader.readLine()) != null)
+				{
+					if(line.startsWith("gamemode"))
+					{
+						String[] splits = line.split("[ ]");
+						if(splits.length > 1) {
+							gamemodeName = splits[1];
+							return;
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -154,27 +173,34 @@ public class ShoebillImpl implements Shoebill
 	{
 		sampCallbackManager.registerCallbackHandler(new SampCallbackHandler()
 		{
-			@Override
-			public int onGameModeInit()
-			{
-				try
-				{
-					initialize();
-					loadPluginsAndGamemode();
-				}
-				catch (Throwable e)
-				{
-					e.printStackTrace();
-				}
 
+			@Override
+			public int onGameModeInit() {
+				if(!initialized) {
+					try {
+						initialize();
+						loadPluginsAndGamemode();
+						initialized = true;
+						return 1;
+					} catch (Throwable e) {
+						e.printStackTrace();
+						return 0;
+					}
+				}
 				return 1;
 			}
 
 			@Override
-			public int onGameModeExit()
-			{
-				unloadPluginsAndGamemode();
-				uninitialize();
+			public int onGameModeExit() {
+				if(initialized) {
+					unloadPluginsAndGamemode();
+					uninitialize();
+					initialized = false;
+					if(restart) {
+						SampNativeFunction.restartShoebill();
+						restart = false;
+					}
+				}
 				return 1;
 			}
 
@@ -211,7 +237,7 @@ public class ShoebillImpl implements Shoebill
 					return 1;
 
 				default:
-					return 0;
+					return 1;
 				}
 			}
 
@@ -222,15 +248,46 @@ public class ShoebillImpl implements Shoebill
 			}
 
 			@Override
-			public void onAmxLoad(int handle)
-			{
-				amxInstanceManager.onAmxLoad(handle);
+			public boolean isActive() {
+				return true;
 			}
 
 			@Override
-			public void onAmxUnload(int handle)
+			public void onAmxLoad(int handle)
 			{
+				amxInstanceManager.onAmxLoad(handle);
+				if(!initialized) {
+					try {
+						loadPluginsAndGamemode();
+						initialized = true;
+					} catch (Throwable e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+			@Override
+			public void onAmxUnload(int handle) {
 				amxInstanceManager.onAmxUnload(handle);
+			}
+
+			@Override
+			public void onShoebillUnload() {
+				if(initialized) {
+					uninitialize();
+					unloadPluginsAndGamemode();
+					initialized = false;
+				}
+			}
+
+			@Override
+			public void onShoebillLoad() {
+				try {
+					if(!initialized)
+						initialize();
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
@@ -244,12 +301,12 @@ public class ShoebillImpl implements Shoebill
 
 		Server.get().setServerCodepage(config.getServerCodepage());
 
-		sampEventLogger = new SampEventLogger();
+		//sampEventLogger = new SampEventLogger(); // annoying messages
 		sampEventDispatcher = new SampEventDispatcher(sampObjectManager, eventManager);
 
 		sampCallbackManager.registerCallbackHandler(sampObjectManager.getCallbackHandler());
 		sampCallbackManager.registerCallbackHandler(sampEventDispatcher);
-		sampCallbackManager.registerCallbackHandler(sampEventLogger);
+		//sampCallbackManager.registerCallbackHandler(sampEventLogger);
 	}
 
 	private void uninitialize()
@@ -330,9 +387,13 @@ public class ShoebillImpl implements Shoebill
 	}
 
 	@Override
-	public void reload()
-	{
-		SampNativeFunction.sendRconCommand("changemode Shoebill");
+	public void reload() {
+		restart = true;
+		SampNativeFunction.sendRconCommand("changemode " + gamemodeName);
+	}
+
+	public SampEventDispatcher getSampEventDispatcher() {
+		return sampEventDispatcher;
 	}
 
 	@Override

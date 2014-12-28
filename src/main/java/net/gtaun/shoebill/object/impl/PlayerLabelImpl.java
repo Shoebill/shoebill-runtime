@@ -16,6 +16,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.data.Color;
@@ -35,7 +36,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * 
  * 
- * @author MK124
+ * @author MK124 & 123marvin123
  */
 public class PlayerLabelImpl implements PlayerLabel
 {
@@ -53,30 +54,50 @@ public class PlayerLabelImpl implements PlayerLabel
 	private Vector3D offset;
 	private Player attachedPlayer;
 	private Vehicle attachedVehicle;
-	
-	
+
 	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
 	{
 		this.rootEventManager = eventManager;
 		this.store = store;
-		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, null);
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, null, true, -1);
 	}
 	
 	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer) throws CreationFailedException
 	{
 		this.rootEventManager = eventManager;
 		this.store = store;
-		initialize(player, text, color, new Location(loc), drawDistance, testLOS, attachedPlayer, null);
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, attachedPlayer, null, true, -1);
 	}
 	
 	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle) throws CreationFailedException
 	{
 		this.rootEventManager = eventManager;
 		this.store = store;
-		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, attachedVehicle);
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, attachedVehicle, true, -1);
+	}
+
+	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, boolean doInit, int id) throws CreationFailedException
+	{
+		this.rootEventManager = eventManager;
+		this.store = store;
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, null, doInit, id);
+	}
+
+	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer, boolean doInit, int id) throws CreationFailedException
+	{
+		this.rootEventManager = eventManager;
+		this.store = store;
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, attachedPlayer, null, doInit, id);
+	}
+
+	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle, boolean doInit, int id) throws CreationFailedException
+	{
+		this.rootEventManager = eventManager;
+		this.store = store;
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, attachedVehicle, doInit, id);
 	}
 	
-	private void initialize(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer, Vehicle attachedVehicle) throws CreationFailedException
+	private void initialize(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer, Vehicle attachedVehicle, boolean doInit, int id) throws CreationFailedException
 	{
 		if (StringUtils.isEmpty(text)) text = " ";
 		
@@ -100,10 +121,16 @@ public class PlayerLabelImpl implements PlayerLabel
 			offset = new Vector3D(location.getX(), location.getY(), location.getZ());
 		}
 		
-		if (player.isOnline() == false) throw new CreationFailedException();
-		
-		id = SampNativeFunction.createPlayer3DTextLabel(player.getId(), text, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, playerId, vehicleId, testLOS);
-		if (id == INVALID_ID) throw new CreationFailedException();
+		if (!player.isOnline()) throw new CreationFailedException();
+
+		if(doInit || id < 0) {
+			final int finalPlayerId = playerId;
+			final int finalVehicleId = vehicleId;
+			final String finalText = text;
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createPlayer3DTextLabel(player.getId(), finalText, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, finalPlayerId, finalVehicleId, testLOS));
+		} else this.id = id;
+		if (this.id == INVALID_ID) throw new CreationFailedException();
+		store.setPlayerLabel(player, this.id, this);
 	}
 	
 	@Override
@@ -129,18 +156,22 @@ public class PlayerLabelImpl implements PlayerLabel
 	public void destroy()
 	{
 		if (id == INVALID_ID) return;
-		
-		if (player.isOnline())
-		{
-			SampNativeFunction.deletePlayer3DTextLabel(player.getId(), id);
+		if (player.isOnline()) {
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.deletePlayer3DTextLabel(player.getId(), id));
 		}
-		
+		destroyWithoutExec();
+	}
+
+	public void destroyWithoutExec()
+	{
+		if (id == INVALID_ID) return;
+
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		rootEventManager.dispatchEvent(destroyEvent, this);
-		
+
 		id = INVALID_ID;
 	}
-	
+
 	@Override
 	public boolean isDestroyed()
 	{
@@ -205,10 +236,12 @@ public class PlayerLabelImpl implements PlayerLabel
 		int playerId = player.getId();
 		
 		store.setPlayerLabel(player, id, null);
-		SampNativeFunction.deletePlayer3DTextLabel(playerId, id);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.deletePlayer3DTextLabel(playerId, id));
 		
-		id = SampNativeFunction.createPlayer3DTextLabel(playerId, text, color.getValue(), x, y, z, drawDistance, target.getId(), Vehicle.INVALID_ID, testLOS);
-		store.setPlayerLabel(player, id, this);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> {
+			this.id = SampNativeFunction.createPlayer3DTextLabel(playerId, text, color.getValue(), x, y, z, drawDistance, target.getId(), Vehicle.INVALID_ID, testLOS);
+			store.setPlayerLabel(player, id, this);
+		});
 		
 		attachedPlayer = target;
 		attachedVehicle = null;
@@ -229,10 +262,12 @@ public class PlayerLabelImpl implements PlayerLabel
 		int playerId = player.getId();
 		
 		store.setPlayerLabel(player, id, null);
-		SampNativeFunction.deletePlayer3DTextLabel(playerId, id);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.deletePlayer3DTextLabel(playerId, id));
 		
-		id = SampNativeFunction.createPlayer3DTextLabel(playerId, text, color.getValue(), x, y, z, drawDistance, Player.INVALID_ID, vehicle.getId(), testLOS);
-		store.setPlayerLabel(player, id, this);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> {
+			this.id = SampNativeFunction.createPlayer3DTextLabel(playerId, text, color.getValue(), x, y, z, drawDistance, Player.INVALID_ID, vehicle.getId(), testLOS);
+			store.setPlayerLabel(player, id, this);
+		});
 		
 		attachedPlayer = null;
 		attachedVehicle = vehicle;
@@ -248,10 +283,14 @@ public class PlayerLabelImpl implements PlayerLabel
 	public void update(Color color, String text)
 	{
 		if (isDestroyed()) return;
-		
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.updatePlayer3DTextLabelText(player.getId(), id, color.getValue(), text));
+		updateWithoutExec(color, text);
+	}
+
+	public void updateWithoutExec(Color color, String text)
+	{
+		if (isDestroyed()) return;
 		this.color.set(color);
 		this.text = text;
-		
-		SampNativeFunction.updatePlayer3DTextLabelText(player.getId(), id, color.getValue(), text);
 	}
 }

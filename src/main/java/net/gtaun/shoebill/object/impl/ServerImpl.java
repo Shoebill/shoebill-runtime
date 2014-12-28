@@ -126,9 +126,9 @@ public class ServerImpl implements Server
 	@Override
 	public void sendMessageToAll(Color color, String format, Object... args)
 	{
+		String message = String.format(format, args);
 		for (Player player : store.getPlayers())
 		{
-			String message = String.format(format, args);
 			player.sendMessage(color, message);
 		}
 	}

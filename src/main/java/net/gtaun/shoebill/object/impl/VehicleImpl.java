@@ -17,8 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampNativeFunction;
-import net.gtaun.shoebill.SampObjectStore;
+import net.gtaun.shoebill.*;
 import net.gtaun.shoebill.constant.PlayerState;
 import net.gtaun.shoebill.constant.VehicleModel;
 import net.gtaun.shoebill.data.AngledLocation;
@@ -29,7 +28,6 @@ import net.gtaun.shoebill.data.Velocity;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.event.player.PlayerStateChangeEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleCreateEvent;
-import net.gtaun.shoebill.event.vehicle.VehicleDestroyEvent;
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Player;
@@ -46,11 +44,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * 
  * 
- * @author MK124, JoJLlmAn
+ * @author MK124, JoJLlmAn & 123marvin123
  */
 public class VehicleImpl implements Vehicle
 {
-	private final SampObjectStore store;
+	private final SampObjectStoreImpl store;
 	
 	private boolean isStatic = false;
 	
@@ -63,55 +61,66 @@ public class VehicleImpl implements Vehicle
 	private VehicleParamImpl param;
 	private VehicleComponentImpl component;
 	private VehicleDamageImpl damage;
-	
+
 	private EventManagerNode eventManagerNode;
-	
-	
-	public VehicleImpl(EventManager eventManager, SampObjectStore store, int modelId, AngledLocation loc, int color1, int color2, int respawnDelay) throws CreationFailedException
+
+	public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelid, float x, float y, float z, float angle, int worldid, int interiorid, int color1, int color2, int respawnDelay) {
+		this(eventManager, store, modelid, new AngledLocation(x, y, z, interiorid, worldid, angle), color1, color2, respawnDelay);
+	}
+
+	public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelid, AngledLocation loc, int color1, int color2, int respawnDelay) {
+		this(eventManager, store, modelid, loc, color1, color2, respawnDelay, true, -1);
+	}
+
+	public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, AngledLocation loc, int color1, int color2, int respawnDelay, boolean doInit, int id) throws CreationFailedException
 	{
 		this.store = store;
 		eventManagerNode = eventManager.createChildNode();
-		initialize(modelId, loc.getX(), loc.getY(), loc.getZ(), loc.getInteriorId(), loc.getWorldId(), loc.getAngle(), color1, color2, respawnDelay);
+		switch (modelId) {
+			case 537:
+			case 538:
+			case 569:
+			case 570:
+			case 590:
+				if(doInit || id < 0)
+					SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.addStaticVehicleEx(modelId, loc.x, loc.y, loc.z, loc.angle, color1, color2, respawnDelay));
+				else this.id = id;
+				isStatic = true;
+				break;
+
+				default:
+					if(doInit || id < 0)
+						SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createVehicle(modelId, loc.x, loc.y, loc.z, loc.angle, color1, color2, respawnDelay));
+					else this.id = id;
+		}
+		if (this.id == INVALID_ID) throw new CreationFailedException();
+		VehicleCreateEvent createEvent = new VehicleCreateEvent(this);
+		eventManagerNode.dispatchEvent(createEvent, this);
+		store.setVehicle(this.id, this);
+		initialize(modelId, interiorId, loc.getWorldId(), color1, color2, respawnDelay);
+	}
+
+	public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, float x, float y, float z, float angle, int interiorid, int worldid,
+					   int color1, int color2, int respawnDelay, boolean doInit, int id) throws CreationFailedException {
+		this(eventManager, store, modelId, new AngledLocation(x, y, z, interiorid, worldid, angle), color1, color2, respawnDelay, doInit, id);
 	}
 	
-	private void initialize(int modelId, float x, float y, float z, int interiorId, int worldId, float angle, int color1, int color2, int respawnDelay) throws CreationFailedException
+	private void initialize(int modelId, int interiorId, int worldId, int color1, int color2, int respawnDelay) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.interiorId = interiorId;
 		this.color1 = color1;
 		this.color2 = color2;
 		this.respawnDelay = respawnDelay;
-		
-		switch (modelId)
-		{
-		case 537:
-		case 538:
-		case 569:
-		case 570:
-		case 590:
-			id = SampNativeFunction.addStaticVehicle(modelId, x, y, z, angle, color1, color2);
-			isStatic = true;
-			break;
-		
-		default:
-			id = SampNativeFunction.createVehicle(modelId, x, y, z, angle, color1, color2, respawnDelay);
-		}
-		
-		if (id == INVALID_ID) throw new CreationFailedException();
-		
 		SampNativeFunction.linkVehicleToInterior(id, interiorId);
 		SampNativeFunction.setVehicleVirtualWorld(id, worldId);
-		
+
 		param = new VehicleParamImpl(this);
 		component = new VehicleComponentImpl(this);
 		damage = new VehicleDamageImpl(this);
-		
+
 		VehicleSpawnEvent event = new VehicleSpawnEvent(this);
 		eventManagerNode.dispatchEvent(event, this);
-
-        Vehicle vehicle = Vehicle.get(id);
-        VehicleCreateEvent createEvent = new VehicleCreateEvent(vehicle);
-        eventManagerNode.dispatchEvent(createEvent, vehicle);
 	}
 
 	public void onVehicleMod()
@@ -136,20 +145,22 @@ public class VehicleImpl implements Vehicle
 	{
 		if (isDestroyed()) return;
 		if (isStatic) return;
-		
-		SampNativeFunction.destroyVehicle(id);
-		
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.destroyVehicle(id));
+		destroyWithoutExec();
+	}
+
+	public void destroyWithoutExec()
+	{
+		if (isDestroyed()) return;
+		if (isStatic) return;
+
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		eventManagerNode.dispatchEvent(destroyEvent, this);
-
-        Vehicle vehicle = Vehicle.get(id);
-        VehicleDestroyEvent vehicleDestroyEvent = new VehicleDestroyEvent(vehicle);
-        eventManagerNode.dispatchEvent(vehicleDestroyEvent, vehicle);
 
 		eventManagerNode.destroy();
 		id = INVALID_ID;
 	}
-	
+
 	@Override
 	public boolean isDestroyed()
 	{
@@ -303,11 +314,15 @@ public class VehicleImpl implements Vehicle
 	public void setInteriorId(int interiorId)
 	{
 		if (isDestroyed()) return;
-		
-		this.interiorId = interiorId;
-		SampNativeFunction.linkVehicleToInterior(id, interiorId);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.linkVehicleToInterior(id, interiorId));
+		setInteriorIdWithoutExec(interiorId);
 	}
-	
+
+	public void setInteriorIdWithoutExec(int interiorId)
+	{
+		this.interiorId = interiorId;
+	}
+
 	@Override
 	public int getWorldId()
 	{
@@ -418,12 +433,17 @@ public class VehicleImpl implements Vehicle
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.changeVehicleColor(id, color1, color2);
-		
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.changeVehicleColor(id, color1, color2));
+
+		setColorWithoutExec(color1, color2);
+	}
+
+	public void setColorWithoutExec(int color1, int color2)
+	{
 		this.color1 = color1;
 		this.color2 = color2;
 	}
-	
+
 	@Override
 	public void setPaintjob(int paintjobId)
 	{

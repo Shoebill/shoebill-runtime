@@ -17,7 +17,9 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.constant.ObjectMaterialSize;
 import net.gtaun.shoebill.constant.ObjectMaterialTextAlign;
 import net.gtaun.shoebill.data.Color;
@@ -37,7 +39,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * 
  * 
- * @author MK124, JoJLlmAn
+ * @author MK124, JoJLlmAn & 123marvin123
  */
 public class SampObjectImpl implements SampObject
 {
@@ -58,16 +60,25 @@ public class SampObjectImpl implements SampObject
 	
 	private EventManagerNode eventManagerNode;
 	
-	
-	public SampObjectImpl(EventManager eventManager, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
+	public SampObjectImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, Location loc, Vector3D rot, float drawDistance) {
+		this(eventManager, store, modelId, loc, rot, drawDistance, true, -1);
+	}
+
+	public SampObjectImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, Location loc, Vector3D rot, float drawDistance, boolean doInit, int id) throws CreationFailedException
 	{
 		this.modelId = modelId;
 		this.location = new Location(loc);
 		this.drawDistance = drawDistance;
-		
-		id = SampNativeFunction.createObject(modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance);
-		if (id == INVALID_ID) throw new CreationFailedException();
-		
+
+		if(doInit || id < 0) {
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createObject(modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance));
+			System.out.println("Created new obj with id " + this.id);
+		} else {
+			this.id = id;
+			System.out.println("Created obj with existing id: " + this.id);
+		}
+		if (this.id == INVALID_ID) throw new CreationFailedException();
+		store.setObject(this.id, this);
 		eventManagerNode = eventManager.createChildNode();
 	}
 
@@ -88,16 +99,21 @@ public class SampObjectImpl implements SampObject
 	public void destroy()
 	{
 		if (isDestroyed()) return;
-		
-		SampNativeFunction.destroyObject(id);
-		
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.destroyObject(id));
+		destroyWithoutExec();
+	}
+
+	public void destroyWithoutExec()
+	{
+		if (isDestroyed()) return;
+
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		eventManagerNode.dispatchEvent(destroyEvent, this);
-		
+
 		eventManagerNode.destroy();
 		id = INVALID_ID;
 	}
-	
+
 	@Override
 	public boolean isDestroyed()
 	{
@@ -261,15 +277,9 @@ public class SampObjectImpl implements SampObject
 		if (isDestroyed()) return;
 		if (player.isOnline() == false) return;
 		
-		SampNativeFunction.attachObjectToPlayer(id, player.getId(), x, y, z, rx, ry, rz);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.attachObjectToPlayer(id, player.getId(), x, y, z, rx, ry, rz));
 		
-		speed = 0.0F;
-		attachedOffset = new Vector3D(x, y, z);
-		attachedRotate = new Vector3D(rx, ry, rz);
-		
-		attachedPlayer = player;
-		attachedObject = null;
-		attachedVehicle = null;
+		attachWithoutExecution(player, new Vector3D(x, y, z), new Vector3D(rx, ry, rz));
 	}
 	
 	@Override
@@ -277,7 +287,13 @@ public class SampObjectImpl implements SampObject
 	{
 		attach(player, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ());
 	}
-	
+
+	@Override
+	public void attachCamera(Player player) {
+		if (isDestroyed()) return;
+		SampNativeFunction.attachCameraToObject(id, player.getId());
+	}
+
 	@Override
 	public void attach(SampObject object, float x, float y, float z, float rx, float ry, float rz, boolean syncRotation)
 	{
@@ -285,15 +301,9 @@ public class SampObjectImpl implements SampObject
 		if (object.isDestroyed()) return;
 		
 		if (object instanceof PlayerObjectImpl) throw new UnsupportedOperationException();
-		SampNativeFunction.attachObjectToObject(id, object.getId(), x, y, z, rz, ry, rz, syncRotation ? 1 : 0);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.attachObjectToObject(id, object.getId(), x, y, z, rz, ry, rz, syncRotation ? 1 : 0));
 		
-		speed = 0.0F;
-		attachedOffset = new Vector3D(x, y, z);
-		attachedRotate = new Vector3D(rx, ry, rz);
-		
-		attachedPlayer = null;
-		attachedObject = object;
-		attachedVehicle = null;
+		attachWithoutExecution(object, new Vector3D(x, y, z), new Vector3D(rx, ry, rz));
 	}
 	
 	@Override
@@ -308,21 +318,57 @@ public class SampObjectImpl implements SampObject
 		if (isDestroyed()) return;
 		if (vehicle.isDestroyed()) return;
 		
-		SampNativeFunction.attachObjectToVehicle(id, vehicle.getId(), x, y, z, rx, ry, rz);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.attachObjectToVehicle(id, vehicle.getId(), x, y, z, rx, ry, rz));
 		
-		speed = 0.0F;
-		attachedOffset = new Vector3D(x, y, z);
-		attachedRotate = new Vector3D(rx, ry, rz);
-		
-		attachedPlayer = null;
-		attachedObject = null;
-		attachedVehicle = vehicle;
+		attachWithoutExecution(vehicle, new Vector3D(x, y, z), new Vector3D(rx, ry, rz));
 	}
 	
 	@Override
 	public void attach(Vehicle vehicle, Vector3D pos, Vector3D rot)
 	{
 		attach(vehicle, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ());
+	}
+
+	public void attachWithoutExecution(Vehicle vehicle, Vector3D pos, Vector3D rot)
+	{
+		if (isDestroyed()) return;
+		if (vehicle.isDestroyed()) return;
+
+		speed = 0.0F;
+		attachedOffset = new Vector3D(pos.x, pos.y, pos.z);
+		attachedRotate = new Vector3D(rot.x, rot.y, rot.z);
+
+		attachedPlayer = null;
+		attachedObject = null;
+		attachedVehicle = vehicle;
+	}
+
+	public void attachWithoutExecution(Player player, Vector3D pos, Vector3D rot)
+	{
+		if (isDestroyed()) return;
+		if (!player.isOnline()) return;
+
+		speed = 0.0F;
+		attachedOffset = new Vector3D(pos.x, pos.y, pos.z);
+		attachedRotate = new Vector3D(rot.x, rot.y, rot.z);
+
+		attachedPlayer = player;
+		attachedObject = null;
+		attachedVehicle = null;
+	}
+
+	public void attachWithoutExecution(SampObject object, Vector3D pos, Vector3D rot)
+	{
+		if (isDestroyed()) return;
+		if (object.isDestroyed()) return;
+
+		speed = 0.0F;
+		attachedOffset = new Vector3D(pos.x, pos.y, pos.z);
+		attachedRotate = new Vector3D(rot.x, rot.y, rot.z);
+
+		attachedPlayer = null;
+		attachedObject = object;
+		attachedVehicle = null;
 	}
 	
 	@Override

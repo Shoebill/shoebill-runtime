@@ -17,7 +17,9 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
@@ -30,7 +32,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * 
  * 
- * @author MK124, JoJLlmAn
+ * @author MK124, JoJLlmAn & 123marvin123
  */
 public class PickupImpl implements Pickup
 {
@@ -39,18 +41,28 @@ public class PickupImpl implements Pickup
 	private int id = INVALID_ID;
 	private int modelId, type;
 	private Location location;
-	
-	
-	public PickupImpl(EventManager eventManager, int modelId, int type, Location loc) throws CreationFailedException
+	private boolean isStatic;
+
+	public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc) {
+		this(eventManager, store, modelId, type, loc, true, -1, false);
+	}
+
+	public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc, boolean doInit, int id, boolean isStatic) throws CreationFailedException
 	{
 		this.rootEventManager = eventManager;
 		
 		this.modelId = modelId;
 		this.type = type;
 		this.location = new Location(loc);
-		
-		id = SampNativeFunction.createPickup(modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId());
-		if (id == INVALID_ID) throw new CreationFailedException();
+		this.isStatic = isStatic;
+
+		if(!isStatic) {
+			if (doInit || id < 0)
+				SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createPickup(modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId()));
+			else this.id = id;
+			if (this.id == INVALID_ID) throw new CreationFailedException();
+			store.setPickup(this.id, this);
+		}
 	}
 	
 	@Override
@@ -63,22 +75,31 @@ public class PickupImpl implements Pickup
 	@Override
 	public void destroy()
 	{
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.destroyPickup(id));
+		destroyWithoutExec();
+	}
+
+	public void destroyWithoutExec()
+	{
 		if (isDestroyed()) return;
-		
-		SampNativeFunction.destroyPickup(id);
-		
+
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		rootEventManager.dispatchEvent(destroyEvent, this);
-		
+
 		id = INVALID_ID;
 	}
-	
+
 	@Override
 	public boolean isDestroyed()
 	{
 		return id == INVALID_ID;
 	}
-	
+
+	@Override
+	public boolean isStatic() {
+		return isStatic;
+	}
+
 	@Override
 	public int getId()
 	{

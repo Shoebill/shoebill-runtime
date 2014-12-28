@@ -18,10 +18,7 @@ package net.gtaun.shoebill;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -47,18 +44,14 @@ import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.World;
 import net.gtaun.shoebill.object.Zone;
-import net.gtaun.shoebill.object.impl.PlayerImpl;
-import net.gtaun.shoebill.object.impl.PlayerObjectImpl;
-import net.gtaun.shoebill.object.impl.SampObjectImpl;
-import net.gtaun.shoebill.object.impl.TimerImpl;
-import net.gtaun.shoebill.object.impl.VehicleImpl;
+import net.gtaun.shoebill.object.impl.*;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.HandlerPriority;
 
 /**
  *
  *
- * @author MK124
+ * @author MK124 & 123marvin123
  */
 public class SampObjectStoreImpl implements SampObjectStore
 {
@@ -115,6 +108,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 
 	private Collection<Reference<TimerImpl>> timers = new ConcurrentLinkedQueue<>();
 	private Map<Integer, Reference<DialogId>> dialogs = new ConcurrentHashMap<>();
+	private List<Reference<PickupImpl>> staticPickups = new ArrayList<>();
 
 
 	SampObjectStoreImpl(EventManager rootEventManager)
@@ -226,7 +220,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 	@Override
 	public Vehicle getVehicle(int id)
 	{
-		if (id < 0 || id >= MAX_VEHICLES) return null;
+		if (id < 1 || id >= MAX_VEHICLES) return null;
 		return vehicles[id];
 	}
 
@@ -341,7 +335,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 
 		for (Player item : players)
 		{
-			if (item != null && item.isNpc() == false) list.add(item);
+			if (item != null && !item.isNpc()) list.add(item);
 		}
 		return list;
 	}
@@ -537,7 +531,7 @@ public class SampObjectStoreImpl implements SampObjectStore
 
 	public void setPlayerLabel(Player player, int id, PlayerLabel label)
 	{
-		if (!player.isOnline()) return;
+		if (!player.isOnline() || label == null) return;
 		PlayerLabel[] playerLabels = playerLabelsArray[player.getId()];
 		playerLabels[id] = label;
 	}
@@ -591,6 +585,40 @@ public class SampObjectStoreImpl implements SampObjectStore
 		dialogs.remove(dialog.getId());
 	}
 
+	public void addStaticPickup(PickupImpl pickup)
+	{
+		if(pickup != null && pickup.isStatic())
+		{
+			clearUnusedReferences(staticPickups);
+			staticPickups.add(new WeakReference<PickupImpl>(pickup));
+		}
+	}
+
+	public void removeStaticPickup(Pickup pickup)
+	{
+		for (Iterator<Reference<PickupImpl>> iterator = staticPickups.iterator(); iterator.hasNext();)
+		{
+			Reference<PickupImpl> ref = iterator.next();
+			Pickup p = ref.get();
+			if (p == null || p == pickup) iterator.remove();
+		}
+	}
+
+	public List<PickupImpl> getStaticPickups()
+	{
+		List<PickupImpl> items = new ArrayList<>();
+		Collection<Reference<PickupImpl>> unusedItems = new ArrayList<>();
+		for (Reference<PickupImpl> reference : staticPickups)
+		{
+			PickupImpl pickup = reference.get();
+			if (pickup != null) items.add(pickup);
+			else unusedItems.add(reference);
+		}
+
+		staticPickups.removeAll(unusedItems);
+		return items;
+	}
+
 	public Collection<TimerImpl> getTimerImpls()
 	{
 		Collection<TimerImpl> items = new ArrayList<>();
@@ -604,5 +632,54 @@ public class SampObjectStoreImpl implements SampObjectStore
 
 		timers.removeAll(unusedItems);
 		return items;
+	}
+
+	public void clearAll() {
+		for (Player player : players) {
+			if(player != null)
+				removePlayer(player.getId());
+		}
+
+		for(int i = 0; i < menus.length; i++) {
+			if(menus[i] != null && !menus[i].isDestroyed())
+				menus[i].destroy();
+			menus[i] = null;
+		}
+
+		for(int i = 0; i < zones.length; i++) {
+			if(zones[i] != null && !zones[i].isDestroyed())
+				zones[i].destroy();
+			zones[i] = null;
+		}
+
+		for(int i = 0; i < textdraws.length; i++) {
+			if(textdraws[i] != null && !textdraws[i].isDestroyed())
+				textdraws[i].destroy();
+			textdraws[i] = null;
+		}
+
+		for(int i = 0; i < labels.length; i++) {
+			if(labels[i] != null && !labels[i].isDestroyed())
+				labels[i].destroy();
+			labels[i] = null;
+		}
+
+		for(int i = 0; i < pickups.length; i++) {
+			if(pickups[i] != null && !pickups[i].isDestroyed())
+				pickups[i].destroy();
+			pickups[i] = null;
+		}
+
+		for(int i = 0; i < objects.length; i++) {
+			if(objects[i] != null && !objects[i].isDestroyed())
+				objects[i].destroy();
+			objects[i] = null;
+		}
+
+		for(int i = 0; i < vehicles.length; i++) {
+			if(vehicles[i] != null && !vehicles[i].isDestroyed())
+				vehicles[i].destroy();
+			vehicles[i] = null;
+		}
 	}
 }

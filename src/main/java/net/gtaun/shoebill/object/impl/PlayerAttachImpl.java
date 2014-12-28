@@ -17,6 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.constant.PlayerAttachBone;
 import net.gtaun.shoebill.data.Vector3D;
@@ -29,7 +30,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * 
  * 
- * @author JoJLlmAn, MK124
+ * @author JoJLlmAn, MK124 & 123marvin123
  */
 public class PlayerAttachImpl implements PlayerAttach
 {
@@ -103,11 +104,14 @@ public class PlayerAttachImpl implements PlayerAttach
 			if (player.isOnline() == false) return false;
 			
 			if (bone == PlayerAttachBone.NOT_USABLE) return false;
-			if (!SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getValue(), offset.getX(), offset.getY(), offset.getZ(), rot.getX(), rot.getY(), rot.getZ(), scale.getX(), scale.getY(), scale.getZ(), materialcolor1, materialcolor2))
-			{
-				return false;
-			}
-			
+			final boolean[] cont = {true};
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> {
+				if (!SampNativeFunction.setPlayerAttachedObject(player.getId(), slot, modelId, bone.getValue(), offset.getX(), offset.getY(), offset.getZ(), rot.getX(), rot.getY(), rot.getZ(), scale.getX(), scale.getY(), scale.getZ(), materialcolor1, materialcolor2))
+				{
+					cont[0] = false;
+				}
+			});
+			if(!cont[0]) return false;
 			this.bone = bone;
 			this.modelId = modelId;
 			
@@ -117,25 +121,46 @@ public class PlayerAttachImpl implements PlayerAttach
 			
 			return true;
 		}
-		
+
+		public boolean setWithoutExec(PlayerAttachBone bone, int modelId, Vector3D offset, Vector3D rot, Vector3D scale, int materialcolor1, int materialcolor2)
+		{
+			if (!player.isOnline()) return false;
+
+			if (bone == PlayerAttachBone.NOT_USABLE) return false;
+
+			this.bone = bone;
+			this.modelId = modelId;
+
+			this.offset = new Vector3D(offset);
+			this.rotate = new Vector3D(rot);
+			this.scale = new Vector3D(scale);
+
+			return true;
+		}
+
 		@Override
-		public boolean remove()
+		public boolean remove() {
+			final boolean[] success = {false};
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> success[0] = SampNativeFunction.removePlayerAttachedObject(player.getId(), slot) && removeWithoutExec());
+			return success[0];
+		}
+
+		public boolean removeWithoutExec()
 		{
 			if (player.isOnline() == false) return false;
-			
+
 			if (bone == PlayerAttachBone.NOT_USABLE) return false;
-			if (!SampNativeFunction.removePlayerAttachedObject(player.getId(), slot)) return false;
-			
+
 			bone = PlayerAttachBone.NOT_USABLE;
 			modelId = 0;
-			
+
 			offset = null;
 			rotate = null;
 			scale = null;
-			
+
 			return true;
 		}
-		
+
 		@Override
 		public boolean isUsed()
 		{

@@ -16,8 +16,7 @@
 
 package net.gtaun.shoebill;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Color;
@@ -67,25 +66,28 @@ import net.gtaun.util.event.HandlerPriority;
 /**
  *
  *
- * @author MK124
+ * @author MK124 & 123marvin123
  */
 public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampObjectManager
 {
 	private static final int MAX_DIALOG_ID = 32767;
 
-
-	private int allocatedDialogId = 0;
-	private Queue<Integer> recycledDialogIds;
+	private List<Integer> occupiedDialogIds;
 	private SampCallbackHandler callbackHandler;
-
+	private Random random;
 
 	public SampObjectManagerImpl(EventManager eventManager)
 	{
 		super(eventManager);
 		initialize();
-
+		random = new Random();
 		callbackHandler = new SampCallbackHandler()
 		{
+			@Override
+			public boolean isActive() {
+				return true;
+			}
+
 			@Override
 			public int onPlayerConnect(int playerid)
 			{
@@ -112,7 +114,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 
 	private void initialize()
 	{
-		recycledDialogIds = new LinkedList<>();
+		occupiedDialogIds = new ArrayList<>();
 
 		eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Vehicle.class), (e) ->
 		{
@@ -247,9 +249,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 	{
 		try
 		{
-			Vehicle vehicle = new VehicleImpl(eventManagerNode, this, modelId, loc, color1, color2, respawnDelay);
-			super.setVehicle(vehicle.getId(), vehicle);
-			return vehicle;
+			return new VehicleImpl(eventManagerNode, this, modelId, loc, color1, color2, respawnDelay);
 		}
 		catch (Throwable e)
 		{
@@ -262,9 +262,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 	{
 		try
 		{
-			SampObject object = new SampObjectImpl(eventManagerNode, modelId, loc, rot, drawDistance);
-			super.setObject(object.getId(), object);
-			return object;
+			return new SampObjectImpl(eventManagerNode, this, modelId, loc, rot, drawDistance);
 		}
 		catch (Throwable e)
 		{
@@ -279,9 +277,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
 
-			PlayerObject object = new PlayerObjectImpl(eventManagerNode, player, modelId, loc, rot, drawDistance);
-			super.setPlayerObject(player, object.getId(), object);
-			return object;
+			return new PlayerObjectImpl(eventManagerNode, this, player, modelId, loc, rot, drawDistance);
 		}
 		catch (Throwable e)
 		{
@@ -294,13 +290,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 	{
 		try
 		{
-			Pickup pickup = new PickupImpl(eventManagerNode, modelId, type, loc);
-			super.setPickup(pickup.getId(), pickup);
-			return pickup;
-		}
-		catch (RuntimeException e)
-		{
-			throw e;
+			return new PickupImpl(eventManagerNode, this, modelId, type, loc);
 		}
 		catch (Throwable e)
 		{
@@ -313,9 +303,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 	{
 		try
 		{
-			Label label = new LabelImpl(eventManagerNode, text, color, loc, drawDistance, testLOS);
-			super.setLabel(label.getId(), label);
-			return label;
+			return new LabelImpl(eventManagerNode, this, text, color, loc, drawDistance, testLOS);
 		}
 		catch (Throwable e)
 		{
@@ -329,10 +317,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 		try
 		{
 			if (!player.isOnline()) return null;
-
-			PlayerLabel label = new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS);
-			super.setLabel(label.getId(), label);
-			return label;
+			return new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS);
 		}
 		catch (Throwable e)
 		{
@@ -347,9 +332,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
 
-			PlayerLabel label = new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
-			super.setLabel(label.getId(), label);
-			return label;
+			return new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
 		}
 		catch (Throwable e)
 		{
@@ -364,9 +347,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
 
-			PlayerLabel label = new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
-			super.setLabel(label.getId(), label);
-			return label;
+			return new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
 		}
 		catch (Throwable e)
 		{
@@ -379,9 +360,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 	{
 		try
 		{
-			Textdraw textdraw = new TextdrawImpl(eventManagerNode, x, y, text);
-			super.setTextdraw(textdraw.getId(), textdraw);
-			return textdraw;
+			return new TextdrawImpl(eventManagerNode, this, x, y, text);
 		}
 		catch (Throwable e)
 		{
@@ -396,9 +375,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 		{
 			if (!player.isOnline()) throw new CreationFailedException();
 
-			PlayerTextdraw textdraw = new PlayerTextdrawImpl(eventManagerNode, player, x, y, text);
-			super.setPlayerTextdraw(player, textdraw.getId(), textdraw);
-			return textdraw;
+			return new PlayerTextdrawImpl(eventManagerNode, this, player, x, y, text);
 		}
 		catch (Throwable e)
 		{
@@ -411,9 +388,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 	{
 		try
 		{
-			Zone zone = new ZoneImpl(eventManagerNode, minX, minY, maxX, maxY);
-			super.setZone(zone.getId(), zone);
-			return zone;
+			return new ZoneImpl(this, eventManagerNode, minX, minY, maxX, maxY);
 		}
 		catch (Throwable e)
 		{
@@ -426,9 +401,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 	{
 		try
 		{
-			Menu menu = new MenuImpl(eventManagerNode, title, columns, x, y, col1Width, col2Width);
-			super.setMenu(menu.getId(), menu);
-			return menu;
+			return new MenuImpl(eventManagerNode, this, title, columns, x, y, col1Width, col2Width);
 		}
 		catch (Throwable e)
 		{
@@ -438,20 +411,33 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 
 	private int allocateDialogId()
 	{
-		Integer dialogId = recycledDialogIds.poll();
-		if (dialogId == null)
-		{
-			if (allocatedDialogId > MAX_DIALOG_ID) throw new CreationFailedException();
-			dialogId = allocatedDialogId;
-			allocatedDialogId++;
+		Integer dialogId = random.nextInt(MAX_DIALOG_ID);
+		int tries = 0;
+		while(occupiedDialogIds.contains(dialogId) && tries < 20) {
+			dialogId = random.nextInt(32767);
+			tries++;
 		}
-
+		addOccupiedDialogId(dialogId);
 		return dialogId;
+	}
+
+	public void addOccupiedDialogId(int dialogId) {
+		if(occupiedDialogIds.contains(dialogId)) return;
+		occupiedDialogIds.add(dialogId);
 	}
 
 	private void recycleDialogId(int dialogId)
 	{
-		recycledDialogIds.offer(dialogId);
+		if(occupiedDialogIds.contains(dialogId)) {
+			Iterator<Integer> iterator = occupiedDialogIds.iterator();
+			while(iterator.hasNext()) {
+				int id = iterator.next();
+				if(id == dialogId) {
+					iterator.remove();
+					break;
+				}
+			}
+		}
 	}
 
 	@Override

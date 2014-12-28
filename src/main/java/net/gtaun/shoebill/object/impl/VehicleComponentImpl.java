@@ -17,6 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.constant.VehicleComponentSlot;
 import net.gtaun.shoebill.object.Vehicle;
@@ -28,7 +29,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * 
  * 
- * @author MK124, JoJLlmAn
+ * @author MK124, JoJLlmAn & 123marvin123
  */
 public class VehicleComponentImpl implements VehicleComponent
 {
@@ -60,12 +61,17 @@ public class VehicleComponentImpl implements VehicleComponent
 	{
 		if (vehicle.isDestroyed()) return;
 		
-		SampNativeFunction.addVehicleComponent(vehicle.getId(), componentId);
-		
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.addVehicleComponent(vehicle.getId(), componentId));
+
+		addWithoutExec(componentId);
+	}
+
+	public void addWithoutExec(int componentId)
+	{
 		int slot = SampNativeFunction.getVehicleComponentType(componentId);
 		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot);
 	}
-	
+
 	@Override
 	public void remove(int componentId)
 	{
@@ -76,7 +82,7 @@ public class VehicleComponentImpl implements VehicleComponent
 		int slot = SampNativeFunction.getVehicleComponentType(componentId);
 		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot);
 	}
-	
+
 	@Override
 	public void remove(VehicleComponentSlot slot)
 	{

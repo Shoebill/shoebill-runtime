@@ -16,7 +16,9 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.constant.TextDrawAlign;
 import net.gtaun.shoebill.constant.TextDrawFont;
 import net.gtaun.shoebill.data.Color;
@@ -44,11 +46,15 @@ public class PlayerTextdrawImpl implements PlayerTextdraw
 	private int id;
 	private Vector2D position;
 	private String text;
-	
+
 	private boolean isShowed = false;
 	
-	
-	public PlayerTextdrawImpl(EventManager eventManager, Player player, float x, float y, String text) throws CreationFailedException
+	public PlayerTextdrawImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, float x, float y, String text)
+	{
+		this(eventManager, store, player, x, y, text, true, -1);
+	}
+
+	public PlayerTextdrawImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, float x, float y, String text, boolean doInit, int id) throws CreationFailedException
 	{
 		this.rootEventManager = eventManager;
 		this.player = player;
@@ -57,9 +63,13 @@ public class PlayerTextdrawImpl implements PlayerTextdraw
 		if (StringUtils.isEmpty(text)) text = " ";
 		
 		if (!player.isOnline()) throw new CreationFailedException();
-		
-		id = SampNativeFunction.createPlayerTextDraw(player.getId(), x, y, text);
+
+		if(doInit || id < 0) {
+			final String finalText = text;
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createPlayerTextDraw(player.getId(), x, y, finalText));
+		} else this.id = id;
 		if (id == INVALID_ID) throw new CreationFailedException();
+		store.setPlayerTextdraw(player, this.id, this);
 	}
 	
 	@Override
@@ -73,12 +83,15 @@ public class PlayerTextdrawImpl implements PlayerTextdraw
 	public void destroy()
 	{
 		if (id == INVALID_ID) return;
-		
-		if (player.isOnline()) SampNativeFunction.playerTextDrawDestroy(player.getId(), id);
-		
+		if (player.isOnline()) SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.playerTextDrawDestroy(player.getId(), id));
+		destroyWithoutExec();
+	}
+
+	public void destroyWithoutExec()
+	{
+		if (id == INVALID_ID) return;
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		rootEventManager.dispatchEvent(destroyEvent, this);
-		
 		id = INVALID_ID;
 	}
 	
@@ -229,13 +242,18 @@ public class PlayerTextdrawImpl implements PlayerTextdraw
 	public void setText(String text)
 	{
 		if (isDestroyed()) return;
-		
 		if (text == null) throw new NullPointerException();
-		
-		this.text = text;
-		SampNativeFunction.playerTextDrawSetString(player.getId(), id, text);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.playerTextDrawSetString(player.getId(), id, text));
+		setTextWithoutExec(text);
 	}
-	
+
+	public void setTextWithoutExec(String text)
+	{
+		if (isDestroyed()) return;
+		if (text == null) throw new NullPointerException();
+		this.text = text;
+	}
+
 	@Override
 	public void setPreviewModel(int modelindex)
 	{
@@ -270,21 +288,29 @@ public class PlayerTextdrawImpl implements PlayerTextdraw
 	public void show()
 	{
 		if (isDestroyed()) return;
-		
 		int playerId = player.getId();
-		
-		SampNativeFunction.playerTextDrawShow(playerId, id);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.playerTextDrawShow(playerId, id));
+		showWithoutExec();
+	}
+
+	public void showWithoutExec()
+	{
+		if (isDestroyed()) return;
 		isShowed = true;
 	}
-	
+
 	@Override
 	public void hide()
 	{
 		if (isDestroyed()) return;
-		
 		int playerId = player.getId();
-		
-		SampNativeFunction.playerTextDrawHide(playerId, id);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.playerTextDrawHide(playerId, id));
+		hideWithoutExec();
+	}
+
+	public void hideWithoutExec()
+	{
+		if (isDestroyed()) return;
 		isShowed = false;
 	}
 	

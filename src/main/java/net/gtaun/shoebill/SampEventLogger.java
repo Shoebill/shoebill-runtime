@@ -37,6 +37,11 @@ public class SampEventLogger implements SampCallbackHandler
 	}
 
 	@Override
+	public boolean isActive() {
+		return true;
+	}
+
+	@Override
 	public int onPlayerConnect(int playerId)
 	{
 		LOGGER.info("[join] " + SampNativeFunction.getPlayerName(playerId) + " has joined the server (" + playerId + ":" + SampNativeFunction.getPlayerIp(playerId) + ")");

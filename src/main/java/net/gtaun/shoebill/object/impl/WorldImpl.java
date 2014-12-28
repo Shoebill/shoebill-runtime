@@ -19,10 +19,8 @@ package net.gtaun.shoebill.object.impl;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.constant.PlayerMarkerMode;
-import net.gtaun.shoebill.data.AngledLocation;
-import net.gtaun.shoebill.data.Location;
-import net.gtaun.shoebill.data.SpawnInfo;
-import net.gtaun.shoebill.data.WeaponData;
+import net.gtaun.shoebill.constant.WeaponModel;
+import net.gtaun.shoebill.data.*;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.World;
 
@@ -71,7 +69,27 @@ public class WorldImpl implements World
 	{
 		return SampNativeFunction.addPlayerClassEx(teamId, modelId, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3);
 	}
-	
+
+	@Override
+	public int addPlayerClass(int modelId, Vector3D position, float angle, WeaponModel weapon1, int ammo1, WeaponModel weapon2, int ammo2, WeaponModel weapon3, int ammo3) {
+		return SampNativeFunction.addPlayerClass(modelId, position.x, position.y, position.z, angle, weapon1.getId(), ammo1, weapon2.getId(), ammo2, weapon3.getId(), ammo3);
+	}
+
+	@Override
+	public int addPlayerClass(int teamId, int modelId, Vector3D position, float angle, WeaponModel weapon1, int ammo1, WeaponModel weapon2, int ammo2, WeaponModel weapon3, int ammo3) {
+		return SampNativeFunction.addPlayerClassEx(teamId, modelId, position.x, position.y, position.z, angle, weapon1.getId(), ammo1, weapon2.getId(), ammo2, weapon3.getId(), ammo3);
+	}
+
+	@Override
+	public int addPlayerClass(int modelId, Vector3D position, float angle, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3) {
+		return SampNativeFunction.addPlayerClass(modelId, position.x, position.y, position.z, angle, weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
+	}
+
+	@Override
+	public int addPlayerClass(int teamId, int modelId, Vector3D position, float angle, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3) {
+		return SampNativeFunction.addPlayerClassEx(teamId, modelId, position.x, position.y, position.z, angle, weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
+	}
+
 	@Override
 	public int addPlayerClass(SpawnInfo spawnInfo)
 	{
@@ -213,10 +231,7 @@ public class WorldImpl implements World
 	@Override
 	public void enableStuntBonusForAll(boolean enabled)
 	{
-		for (Player player : store.getPlayers())
-		{
-			player.enableStuntBonus(enabled);
-		}
+		SampNativeFunction.enableStuntBonusForAll(enabled);
 	}
 
 	@Override

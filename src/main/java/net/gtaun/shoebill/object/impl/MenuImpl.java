@@ -17,7 +17,9 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.data.Vector2D;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
@@ -39,13 +41,18 @@ public class MenuImpl implements Menu
 	private final EventManager rootEventManager;
 	
 	private int id = INVALID_ID;
-	private String title, columnHeader = "";
+	private String title;
+	private String[] columnHeaders;
 	private int columns;
 	private Vector2D position;
 	private float col1Width, col2Width;
+
+	public MenuImpl(EventManager eventManager, SampObjectStoreImpl store, String title, int columns, float x, float y, float col1Width, float col2Width)
+	{
+		this(eventManager, store, title, columns, x, y, col1Width, col2Width, true, -1);
+	}
 	
-	
-	public MenuImpl(EventManager eventManager, String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException
+	public MenuImpl(EventManager eventManager, SampObjectStoreImpl store, String title, int columns, float x, float y, float col1Width, float col2Width, boolean doInit, int id) throws CreationFailedException
 	{
 		if (StringUtils.isEmpty(title)) title = " ";
 		
@@ -56,9 +63,13 @@ public class MenuImpl implements Menu
 		this.position = new Vector2D(x, y);
 		this.col1Width = col1Width;
 		this.col2Width = col2Width;
-		
-		id = SampNativeFunction.createMenu(title, columns, position.getX(), position.getY(), col1Width, col1Width);
-		if (id == -1) throw new CreationFailedException();
+		this.columnHeaders = new String[2];
+
+		if(doInit || id < 0) {
+			final String finalTitle = title;
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createMenu(finalTitle, columns, position.getX(), position.getY(), col1Width, col1Width));
+		} else this.id = id;
+		if (this.id == -1) throw new CreationFailedException();
 	}
 	
 	@Override
@@ -71,12 +82,17 @@ public class MenuImpl implements Menu
 	public void destroy()
 	{
 		if (isDestroyed()) return;
-		
-		SampNativeFunction.destroyMenu(id);
-		
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.destroyMenu(id));
+		destroyWithoutExec();
+	}
+
+	public void destroyWithoutExec()
+	{
+		if (isDestroyed()) return;
+
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		rootEventManager.dispatchEvent(destroyEvent, this);
-		
+
 		id = INVALID_ID;
 	}
 	
@@ -123,16 +139,15 @@ public class MenuImpl implements Menu
 	}
 	
 	@Override
-	public String getColumnHeader()
+	public String[] getColumnHeader()
 	{
-		return columnHeader;
+		return columnHeaders;
 	}
 	
 	@Override
 	public void addItem(int column, String text)
 	{
 		if (isDestroyed()) return;
-		
 		if (text == null) throw new NullPointerException();
 		SampNativeFunction.addMenuItem(id, column, text);
 	}
@@ -142,11 +157,17 @@ public class MenuImpl implements Menu
 	{
 		if (isDestroyed()) return;
 		if (text == null) throw new NullPointerException();
-		
-		SampNativeFunction.setMenuColumnHeader(id, column, text);
-		columnHeader = text;
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setMenuColumnHeader(id, column, text));
+		setColumnHeaderWithoutExec(column, text);
 	}
-	
+
+	public void setColumnHeaderWithoutExec(int column, String text)
+	{
+		if (isDestroyed()) return;
+		if (text == null) throw new NullPointerException();
+		columnHeaders[column] = text;
+	}
+
 	@Override
 	public void disable()
 	{

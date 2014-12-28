@@ -17,6 +17,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.constant.TextDrawAlign;
@@ -48,17 +49,24 @@ public class TextdrawImpl implements Textdraw
 	
 	private boolean[] isPlayerShowed = new boolean[SampObjectStoreImpl.MAX_PLAYERS];
 	
-	
-	public TextdrawImpl(EventManager eventManager, float x, float y, String text) throws CreationFailedException
+
+	public TextdrawImpl(EventManager eventManager, SampObjectStoreImpl store, float x, float y, String text) {
+		this(eventManager, store, x, y, text, true, -1);
+	}
+
+	public TextdrawImpl(EventManager eventManager, SampObjectStoreImpl store, float x, float y, String text, boolean doInit, int id) throws CreationFailedException
 	{
 		this.rootEventManager = eventManager;
 		
 		position = new Vector2D(x, y);
 		if (StringUtils.isEmpty(text)) text = " ";
-		
-		id = SampNativeFunction.textDrawCreate(x, y, text);
-		if (id == INVALID_ID) throw new CreationFailedException();
-		
+
+		if(doInit || id < 0) {
+			final String finalText = text;
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.textDrawCreate(x, y, finalText));
+		} else this.id = id;
+		if (this.id == INVALID_ID) throw new CreationFailedException();
+		store.setTextdraw(this.id, this);
 		for (int i = 0; i < isPlayerShowed.length; i++)
 			isPlayerShowed[i] = false;
 	}
@@ -74,11 +82,16 @@ public class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawDestroy(id);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.textDrawDestroy(id));
 		
+		destroyWithoutExec();
+	}
+
+	public void destroyWithoutExec()
+	{
+		if (isDestroyed()) return;
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		rootEventManager.dispatchEvent(destroyEvent, this);
-		
 		id = INVALID_ID;
 	}
 	
@@ -222,11 +235,16 @@ public class TextdrawImpl implements Textdraw
 	public void setText(String text)
 	{
 		if (isDestroyed()) return;
-		
 		if (text == null) throw new NullPointerException();
-		
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.textDrawSetString(id, text));
+		setTextWithoutExec(text);
+	}
+
+	public void setTextWithoutExec(String text)
+	{
+		if (isDestroyed()) return;
+		if (text == null) throw new NullPointerException();
 		this.text = text;
-		SampNativeFunction.textDrawSetString(id, text);
 	}
 	
 	@Override
@@ -263,11 +281,19 @@ public class TextdrawImpl implements Textdraw
 	public void show(Player player)
 	{
 		if (isDestroyed()) return;
-		if (player.isOnline() == false) return;
+		if (!player.isOnline()) return;
 		
 		int playerId = player.getId();
 		
-		SampNativeFunction.textDrawShowForPlayer(playerId, id);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.textDrawShowForPlayer(playerId, id));
+		showWithoutExec(player);
+	}
+
+	public void showWithoutExec(Player player)
+	{
+		if (isDestroyed()) return;
+		if (!player.isOnline()) return;
+		int playerId = player.getId();
 		isPlayerShowed[playerId] = true;
 	}
 	
@@ -275,11 +301,17 @@ public class TextdrawImpl implements Textdraw
 	public void hide(Player player)
 	{
 		if (isDestroyed()) return;
-		if (player.isOnline() == false) return;
-		
+		if (!player.isOnline()) return;
 		int playerId = player.getId();
-		
-		SampNativeFunction.textDrawHideForPlayer(playerId, id);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.textDrawHideForPlayer(playerId, id));
+		hideWithoutExec(player);
+	}
+
+	public void hideWithoutExec(Player player)
+	{
+		if (isDestroyed()) return;
+		if (!player.isOnline()) return;
+		int playerId = player.getId();
 		isPlayerShowed[playerId] = false;
 	}
 	
@@ -288,7 +320,13 @@ public class TextdrawImpl implements Textdraw
 	{
 		if (isDestroyed()) return;
 		
-		SampNativeFunction.textDrawShowForAll(id);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.textDrawShowForAll(id));
+		showForAllWithoutExec();
+	}
+
+	public void showForAllWithoutExec()
+	{
+		if (isDestroyed()) return;
 		for (int i = 0; i < isPlayerShowed.length; i++)
 			isPlayerShowed[i] = true;
 	}
@@ -297,8 +335,13 @@ public class TextdrawImpl implements Textdraw
 	public void hideForAll()
 	{
 		if (isDestroyed()) return;
-		
-		SampNativeFunction.textDrawHideForAll(id);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.textDrawHideForAll(id));
+		hideForAllWithoutExec();
+	}
+
+	public void hideForAllWithoutExec()
+	{
+		if (isDestroyed()) return;
 		for (int i = 0; i < isPlayerShowed.length; i++)
 			isPlayerShowed[i] = false;
 	}

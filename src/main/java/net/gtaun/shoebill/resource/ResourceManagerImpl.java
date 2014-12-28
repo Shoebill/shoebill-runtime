@@ -64,22 +64,15 @@ public class ResourceManagerImpl implements ResourceManager
 	
 	public void loadAllResource()
 	{
-		for (File file : artifactLocator.getPluginFiles())
-		{
-			loadPlugin(file);
-		}
-		
+		artifactLocator.getPluginFiles().forEach(this::loadPlugin);
 		loadGamemode();
 	}
 	
 	public void unloadAllResource()
 	{
 		unloadGamemode();
-		
-		for (Plugin plugin : plugins.values())
-		{
-			unloadPlugin(plugin);
-		}
+
+		plugins.values().forEach(this::unloadPlugin);
 	}
 	
 	@Override
@@ -154,7 +147,7 @@ public class ResourceManagerImpl implements ResourceManager
 	public void unloadPlugin(Plugin plugin)
 	{
 		Class<? extends Plugin> clazz = plugin.getClass();
-		if (plugins.containsKey(clazz) == false) return;
+		if (!plugins.containsKey(clazz)) return;
 		
 		LOGGER.info("Unload plugin: " + clazz.getName());
 		
@@ -173,7 +166,6 @@ public class ResourceManagerImpl implements ResourceManager
 		plugins.remove(clazz);
 		
 		System.gc();
-		return;
 	}
 	
 	@Override
@@ -198,6 +190,8 @@ public class ResourceManagerImpl implements ResourceManager
 	
 	private void loadGamemode()
 	{
+		if(artifactLocator.getGamemodeFile() == null)
+			return;
 		ResourceDescription desc = null;
 		try
 		{

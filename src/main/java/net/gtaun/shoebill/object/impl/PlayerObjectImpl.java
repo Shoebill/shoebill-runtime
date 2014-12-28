@@ -16,7 +16,9 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.constant.ObjectMaterialSize;
 import net.gtaun.shoebill.constant.ObjectMaterialTextAlign;
 import net.gtaun.shoebill.data.Color;
@@ -37,7 +39,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  *
  *
- * @author MK124
+ * @author MK124 & 123marvin123
  */
 public class PlayerObjectImpl implements PlayerObject
 {
@@ -56,18 +58,24 @@ public class PlayerObjectImpl implements PlayerObject
 	private EventManagerNode eventManagerNode;
 
 
-	public PlayerObjectImpl(EventManager eventManager, Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException
+	public PlayerObjectImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, int modelId, Location loc, Vector3D rot, float drawDistance) {
+		this(eventManager, store, player, modelId, loc, rot,drawDistance, true, -1);
+	}
+
+	public PlayerObjectImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, int modelId, Location loc, Vector3D rot, float drawDistance, boolean doInit, int id) throws CreationFailedException
 	{
-		if (player.isOnline() == false) throw new CreationFailedException();
+		if (!player.isOnline()) throw new CreationFailedException();
 
 		this.player = player;
 		this.modelId = modelId;
 		this.location = new Location(loc);
 		this.drawDistance = drawDistance;
 
-		id = SampNativeFunction.createPlayerObject(player.getId(), modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance);
-		if (id == INVALID_ID) throw new CreationFailedException();
-
+		if(doInit || id < 0)
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createPlayerObject(player.getId(), modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance));
+		else this.id = id;
+		if (this.id == INVALID_ID) throw new CreationFailedException();
+		store.setPlayerObject(player, this.id, this);
 		eventManagerNode = eventManager.createChildNode();
 	}
 
@@ -87,11 +95,14 @@ public class PlayerObjectImpl implements PlayerObject
 	public void destroy()
 	{
 		if (id == INVALID_ID) return;
-
 		if (player.isOnline())
-		{
-			SampNativeFunction.destroyPlayerObject(player.getId(), id);
-		}
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.destroyPlayerObject(player.getId(), id));
+		destroyWithoutExec();
+	}
+
+	public void destroyWithoutExec()
+	{
+		if (id == INVALID_ID) return;
 
 		DestroyEvent destroyEvent = new DestroyEvent(this);
 		eventManagerNode.dispatchEvent(destroyEvent, this);
@@ -275,6 +286,11 @@ public class PlayerObjectImpl implements PlayerObject
 	public void attach(Player target, Vector3D pos, Vector3D rot)
 	{
 		attach(target, pos.getX(), pos.getY(), pos.getZ(), rot.getX(), rot.getY(), rot.getZ());
+	}
+
+	@Override
+	public void attachCamera(Player player) {
+		SampNativeFunction.attachCameraToPlayerObject(player.getId(), id);
 	}
 
 	@Override

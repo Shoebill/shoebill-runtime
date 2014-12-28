@@ -16,6 +16,7 @@
 
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.constant.WeaponSkill;
 import net.gtaun.shoebill.object.Player;
@@ -58,20 +59,32 @@ public class PlayerWeaponSkillImpl implements PlayerWeaponSkill
 	@Override
 	public void setLevel(WeaponSkill type, int level)
 	{
-		if (player.isOnline() == false) return;
+		if (!player.isOnline()) return;
 		
 		if (level > 999) level = 999;
 		else if (level < 0) level = 0;
 		
 		int typeData = type.getValue();
-		SampNativeFunction.setPlayerSkillLevel(player.getId(), typeData, level);
+		final int finalLevel = level;
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerSkillLevel(player.getId(), typeData, finalLevel));
+		setLevelWithoutExec(type, level);
+	}
+
+	public void setLevelWithoutExec(WeaponSkill type, int level)
+	{
+		if (!player.isOnline()) return;
+
+		if (level > 999) level = 999;
+		else if (level < 0) level = 0;
+
+		int typeData = type.getValue();
 		skills[typeData] = level;
 	}
 	
 	@Override
 	public int getLevel(WeaponSkill type)
 	{
-		if (player.isOnline() == false) return 0;
+		if (!player.isOnline()) return 0;
 		
 		return skills[type.getValue()];
 	}
