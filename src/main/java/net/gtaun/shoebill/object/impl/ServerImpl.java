@@ -134,6 +134,16 @@ public class ServerImpl implements Server
 	}
 
 	@Override
+	public void sendMessageToAll(String message) {
+		sendMessageToAll(Color.WHITE, message);
+	}
+
+	@Override
+	public void sendMessageToAll(String format, Object... args) {
+		sendMessageToAll(Color.WHITE, format, args);
+	}
+
+	@Override
 	public void gameTextToAll(int time, int style, String text)
 	{
 		SampNativeFunction.gameTextForAll(text, time, style);

@@ -94,8 +94,6 @@ public class VehicleImpl implements Vehicle
 					else this.id = id;
 		}
 		if (this.id == INVALID_ID) throw new CreationFailedException();
-		VehicleCreateEvent createEvent = new VehicleCreateEvent(this);
-		eventManagerNode.dispatchEvent(createEvent, this);
 		store.setVehicle(this.id, this);
 		initialize(modelId, interiorId, loc.getWorldId(), color1, color2, respawnDelay);
 	}
@@ -118,6 +116,9 @@ public class VehicleImpl implements Vehicle
 		param = new VehicleParamImpl(this);
 		component = new VehicleComponentImpl(this);
 		damage = new VehicleDamageImpl(this);
+
+		VehicleCreateEvent createEvent = new VehicleCreateEvent(this);
+		eventManagerNode.dispatchEvent(createEvent, this);
 
 		VehicleSpawnEvent event = new VehicleSpawnEvent(this);
 		eventManagerNode.dispatchEvent(event, this);
