@@ -13,7 +13,8 @@ public class AmxCallableImpl implements AmxCallable {
     private AmxCallableType type;
     private int id;
 
-    public AmxCallableImpl(AmxInstance instance, int id, String name, AmxCallableType type) {
+    public AmxCallableImpl(AmxInstance instance, int id, String name, AmxCallableType type)
+    {
         this.amxInstance = instance;
         this.name = name;
         this.type = type;

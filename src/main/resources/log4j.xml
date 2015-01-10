@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-    <appender class="org.apache.log4j.ConsoleAppender" name="Console">
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[%d{HH:mm:ss}][%p][%c{1}] %m%n"/>
-        </layout>
-    </appender>
+	<appender class="org.apache.log4j.ConsoleAppender" name="Console">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{HH:mm:ss}][%p][%c{1}] %m%n" />
+		</layout>
+	</appender>
 
-    <appender name="LogFile" class="net.gtaun.shoebill.log4j.ShoebillAppender">
-        <param name="Path" value="shoebill/logs"/>
-        <param name="FileExtension" value="log"/>
+	<appender name="LogFile" class="net.gtaun.shoebill.log4j.ShoebillAppender">
+		<param name="Path" value="shoebill/logs" />
+		<param name="FileExtension" value="log" />
 
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}][%p][%c{1}] %m%n"/>
-        </layout>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}][%p][%c{1}] %m%n" />
+		</layout>
 
-        <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="levelMin" value="INFO"/>
-            <param name="levelMax" value="WARN"/>
-        </filter>
-    </appender>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="levelMin" value="INFO" />
+			<param name="levelMax" value="WARN" />
+		</filter>
+	</appender>
 
-    <appender name="ErrLogFile" class="net.gtaun.shoebill.log4j.ShoebillAppender">
-        <param name="FileExtension" value="err.log"/>
-        <param name="Path" value="shoebill/logs"/>
+	<appender name="ErrLogFile" class="net.gtaun.shoebill.log4j.ShoebillAppender">
+		<param name="FileExtension" value="err.log" />
+		<param name="Path" value="shoebill/logs" />
 
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}][%p][%c{1}] %m%n"/>
-        </layout>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}][%p][%c{1}] %m%n" />
+		</layout>
 
-        <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="levelMin" value="ERROR"/>
-            <param name="levelMax" value="FATAL"/>
-        </filter>
-    </appender>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="levelMin" value="ERROR" />
+			<param name="levelMax" value="FATAL" />
+		</filter>
+	</appender>
 
-    <root>
-        <level value="INFO"/>
-        <appender-ref ref="Console"/>
-        <appender-ref ref="LogFile"/>
-        <appender-ref ref="ErrLogFile"/>
-    </root>
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="Console" />
+		<appender-ref ref="LogFile" />
+		<appender-ref ref="ErrLogFile" />
+	</root>
 </log4j:configuration>

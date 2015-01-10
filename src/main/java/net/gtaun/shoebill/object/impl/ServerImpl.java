@@ -24,165 +24,197 @@ import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.Server;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
+ *
+ *
  * @author MK124
  */
-public class ServerImpl implements Server {
-    private final SampObjectStore store;
+public class ServerImpl implements Server
+{
+	private final SampObjectStore store;
 
 
-    public ServerImpl(SampObjectStore store) {
-        this.store = store;
-    }
+	public ServerImpl(SampObjectStore store)
+	{
+		this.store = store;
+	}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).toString();
-    }
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).toString();
+	}
 
-    @Override
-    public int getServerCodepage() {
-        return SampNativeFunction.getServerCodepage();
-    }
+	@Override
+	public int getServerCodepage()
+	{
+		return SampNativeFunction.getServerCodepage();
+	}
 
-    @Override
-    public void setServerCodepage(int codepage) {
-        SampNativeFunction.setServerCodepage(codepage);
-    }
+	@Override
+	public void setServerCodepage(int codepage)
+	{
+		SampNativeFunction.setServerCodepage(codepage);
+	}
 
-    @Override
-    public int getMaxPlayers() {
-        return SampNativeFunction.getMaxPlayers();
-    }
+	@Override
+	public int getMaxPlayers()
+	{
+		return SampNativeFunction.getMaxPlayers();
+	}
 
-    @Override
-    public String getGamemodeText() {
-        return SampNativeFunction.getServerVarAsString("gamemodetext");
-    }
+	@Override
+	public String getGamemodeText()
+	{
+		return SampNativeFunction.getServerVarAsString("gamemodetext");
+	}
 
-    @Override
-    public void setGamemodeText(String text) {
-        SampNativeFunction.setGameModeText(text);
-    }
+	@Override
+	public void setGamemodeText(String text)
+	{
+		SampNativeFunction.setGameModeText(text);
+	}
 
-    @Override
-    public void sendRconCommand(String command) {
-        if (command == null) throw new NullPointerException();
-        SampNativeFunction.sendRconCommand(command);
-    }
+	@Override
+	public void sendRconCommand(String command)
+	{
+		if (command == null) throw new NullPointerException();
+		SampNativeFunction.sendRconCommand(command);
+	}
 
-    @Override
-    public void connectNPC(String name, String script) {
-        if (name == null || script == null) throw new NullPointerException();
-        SampNativeFunction.connectNPC(name, script);
-    }
+	@Override
+	public void connectNPC(String name, String script)
+	{
+		if (name == null || script == null) throw new NullPointerException();
+		SampNativeFunction.connectNPC(name, script);
+	}
 
-    @Override
-    public String getServerVarAsString(String varname) {
-        if (varname == null) throw new NullPointerException();
-        return SampNativeFunction.getServerVarAsString(varname);
-    }
+	@Override
+	public String getServerVarAsString(String varname)
+	{
+		if (varname == null) throw new NullPointerException();
+		return SampNativeFunction.getServerVarAsString(varname);
+	}
 
-    @Override
-    public int getServerVarAsInt(String varname) {
-        if (varname == null) throw new NullPointerException();
-        return SampNativeFunction.getServerVarAsInt(varname);
-    }
+	@Override
+	public int getServerVarAsInt(String varname)
+	{
+		if (varname == null) throw new NullPointerException();
+		return SampNativeFunction.getServerVarAsInt(varname);
+	}
 
-    @Override
-    public boolean getServerVarAsBool(String varname) {
-        if (varname == null) throw new NullPointerException();
-        return SampNativeFunction.getServerVarAsBool(varname);
-    }
+	@Override
+	public boolean getServerVarAsBool(String varname)
+	{
+		if (varname == null) throw new NullPointerException();
+		return SampNativeFunction.getServerVarAsBool(varname);
+	}
 
-    @Override
-    public void sendMessageToAll(Color color, String message) {
-        for (Player player : store.getPlayers()) {
-            player.sendMessage(color, message);
-        }
-    }
+	@Override
+	public void sendMessageToAll(Color color, String message)
+	{
+		for (Player player : store.getPlayers())
+		{
+			player.sendMessage(color, message);
+		}
+	}
 
-    @Override
-    public void sendMessageToAll(Color color, String format, Object... args) {
-        String message = String.format(format, args);
-        for (Player player : store.getPlayers()) {
-            player.sendMessage(color, message);
-        }
-    }
+	@Override
+	public void sendMessageToAll(Color color, String format, Object... args)
+	{
+		String message = String.format(format, args);
+		for (Player player : store.getPlayers())
+		{
+			player.sendMessage(color, message);
+		}
+	}
 
-    @Override
-    public void sendMessageToAll(String message) {
-        sendMessageToAll(Color.WHITE, message);
-    }
+	@Override
+	public void sendMessageToAll(String message) {
+		sendMessageToAll(Color.WHITE, message);
+	}
 
-    @Override
-    public void sendMessageToAll(String format, Object... args) {
-        sendMessageToAll(Color.WHITE, format, args);
-    }
+	@Override
+	public void sendMessageToAll(String format, Object... args) {
+		sendMessageToAll(Color.WHITE, format, args);
+	}
 
-    @Override
-    public void gameTextToAll(int time, int style, String text) {
-        SampNativeFunction.gameTextForAll(text, time, style);
-    }
+	@Override
+	public void gameTextToAll(int time, int style, String text)
+	{
+		SampNativeFunction.gameTextForAll(text, time, style);
+	}
 
-    @Override
-    public void gameTextToAll(int time, int style, String format, Object... args) {
-        String text = String.format(format, args);
-        SampNativeFunction.gameTextForAll(text, time, style);
-    }
+	@Override
+	public void gameTextToAll(int time, int style, String format, Object... args)
+	{
+		String text = String.format(format, args);
+		SampNativeFunction.gameTextForAll(text, time, style);
+	}
 
-    @Override
-    public void sendDeathMessageToAll(Player killer, Player victim, WeaponModel reason) {
-        SampNativeFunction.sendDeathMessage(killer != null ? killer.getId() : PlayerImpl.INVALID_ID, victim != null ? victim.getId() : PlayerImpl.INVALID_ID, reason.getId());
-    }
+	@Override
+	public void sendDeathMessageToAll(Player killer, Player victim, WeaponModel reason)
+	{
+		SampNativeFunction.sendDeathMessage(killer != null ? killer.getId() : PlayerImpl.INVALID_ID, victim != null ? victim.getId() : PlayerImpl.INVALID_ID, reason.getId());
+	}
 
-    @Override
-    public Vector3D getVehicleModelInfo(int modelId, VehicleModelInfoType infotype) {
-        Vector3D vector = new Vector3D();
-        SampNativeFunction.getVehicleModelInfo(modelId, infotype.getValue(), vector);
-        return vector;
-    }
+	@Override
+	public Vector3D getVehicleModelInfo(int modelId, VehicleModelInfoType infotype)
+	{
+		Vector3D vector = new Vector3D();
+		SampNativeFunction.getVehicleModelInfo(modelId, infotype.getValue(), vector);
+		return vector;
+	}
 
-    @Override
-    public void blockIpAddress(String ipAddress, int timeMs) {
-        SampNativeFunction.blockIpAddress(ipAddress, timeMs);
-    }
+	@Override
+	public void blockIpAddress(String ipAddress, int timeMs)
+	{
+		SampNativeFunction.blockIpAddress(ipAddress, timeMs);
+	}
 
-    @Override
-    public void unBlockIpAddress(String ipAddress) {
-        SampNativeFunction.unBlockIpAddress(ipAddress);
-    }
+	@Override
+	public void unBlockIpAddress(String ipAddress)
+	{
+		SampNativeFunction.unBlockIpAddress(ipAddress);
+	}
 
-    @Override
-    public String getHostname() {
-        return SampNativeFunction.getServerVarAsString("hostname");
-    }
+	@Override
+	public String getHostname()
+	{
+		return SampNativeFunction.getServerVarAsString("hostname");
+	}
 
-    @Override
-    public void setHostname(String name) {
-        SampNativeFunction.sendRconCommand("hostname " + name);
-    }
+	@Override
+	public void setHostname(String name)
+	{
+		SampNativeFunction.sendRconCommand("hostname " + name);
+	}
 
-    @Override
-    public String getMapname() {
-        return SampNativeFunction.getServerVarAsString("mapname");
-    }
+	@Override
+	public String getMapname()
+	{
+		return SampNativeFunction.getServerVarAsString("mapname");
+	}
 
-    @Override
-    public void setMapname(String name) {
-        SampNativeFunction.sendRconCommand("mapname " + name);
-    }
+	@Override
+	public void setMapname(String name)
+	{
+		SampNativeFunction.sendRconCommand("mapname " + name);
+	}
 
-    @Override
-    public String getPassword() {
-        return SampNativeFunction.getServerVarAsString("password");
-    }
+	@Override
+	public String getPassword()
+	{
+		return SampNativeFunction.getServerVarAsString("password");
+	}
 
-    @Override
-    public void setPassword(String password) {
-        SampNativeFunction.sendRconCommand("password " + password);
-    }
+	@Override
+	public void setPassword(String password)
+	{
+		SampNativeFunction.sendRconCommand("password " + password);
+	}
 }

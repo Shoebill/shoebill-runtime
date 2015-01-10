@@ -16,67 +16,78 @@
 
 package net.gtaun.shoebill;
 
+import java.io.InputStream;
+
 import net.gtaun.shoebill.util.config.YamlConfiguration;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.InputStream;
-
 /**
+ * 
+ * 
  * @author MK124
  */
-public class ShoebillVersionImpl implements ShoebillVersion {
-    private String name;
-    private String version;
-    private String support;
-    private int buildNumber;
-    private String buildDate;
-
-
-    public ShoebillVersionImpl(InputStream in) {
-        YamlConfiguration config = new YamlConfiguration();
-        config.setDefault("name", "Unknown");
-        config.setDefault("version", "Unknown");
-        config.setDefault("support", "Unknown");
-        config.setDefault("buildNumber", 0);
-        config.setDefault("buildDate", "Unknown");
-
-        config.read(in);
-
-        name = config.getString("name");
-        version = config.getString("version");
-        support = config.getString("support");
-        buildNumber = config.getInt("buildNumber");
-        buildDate = config.getString("buildDate");
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getVersion() {
-        return version;
-    }
-
-    @Override
-    public String getSupportedVersion() {
-        return support;
-    }
-
-    @Override
-    public int getBuildNumber() {
-        return buildNumber;
-    }
-
-    @Override
-    public String getBuildDate() {
-        return buildDate;
-    }
+public class ShoebillVersionImpl implements ShoebillVersion
+{
+	private String name;
+	private String version;
+	private String support;
+	private int buildNumber;
+	private String buildDate;
+	
+	
+	public ShoebillVersionImpl(InputStream in)
+	{
+		YamlConfiguration config = new YamlConfiguration();
+		config.setDefault("name", "Unknown");
+		config.setDefault("version", "Unknown");
+		config.setDefault("support", "Unknown");
+		config.setDefault("buildNumber", 0);
+		config.setDefault("buildDate", "Unknown");
+		
+		config.read(in);
+		
+		name = config.getString("name");
+		version = config.getString("version");
+		support = config.getString("support");
+		buildNumber = config.getInt("buildNumber");
+		buildDate = config.getString("buildDate");
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+	}
+	
+	@Override
+	public String getName()
+	{
+		return name;
+	}
+	
+	@Override
+	public String getVersion()
+	{
+		return version;
+	}
+	
+	@Override
+	public String getSupportedVersion()
+	{
+		return support;
+	}
+	
+	@Override
+	public int getBuildNumber()
+	{
+		return buildNumber;
+	}
+	
+	@Override
+	public String getBuildDate()
+	{
+		return buildDate;
+	}
 }

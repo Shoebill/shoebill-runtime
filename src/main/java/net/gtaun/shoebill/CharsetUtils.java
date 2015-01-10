@@ -9,56 +9,63 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CharsetUtils {
-    private static final Map<Integer, Charset> WINDOWS_CHARSETS = new HashMap<>();
+public class CharsetUtils
+{
+	private static final Map<Integer, Charset> WINDOWS_CHARSETS = new HashMap<>();
+	static
+	{
+		WINDOWS_CHARSETS.put(862, Charset.forName("CP862"));
+		WINDOWS_CHARSETS.put(874, Charset.forName("CP874"));
+		WINDOWS_CHARSETS.put(932, Charset.forName("SHIFT_JIS"));
+		WINDOWS_CHARSETS.put(936, Charset.forName("GBK"));
+		WINDOWS_CHARSETS.put(949, Charset.forName("BIG5"));
+		for (int page = 1250; page <= 1258; page++) WINDOWS_CHARSETS.put(page, Charset.forName("CP" + page));
+	}
 
-    static {
-        WINDOWS_CHARSETS.put(862, Charset.forName("CP862"));
-        WINDOWS_CHARSETS.put(874, Charset.forName("CP874"));
-        WINDOWS_CHARSETS.put(932, Charset.forName("SHIFT_JIS"));
-        WINDOWS_CHARSETS.put(936, Charset.forName("GBK"));
-        WINDOWS_CHARSETS.put(949, Charset.forName("BIG5"));
-        for (int page = 1250; page <= 1258; page++) WINDOWS_CHARSETS.put(page, Charset.forName("CP" + page));
-    }
 
+	public static Charset getCharsetByCodepage(int codepage)
+	{
+		return WINDOWS_CHARSETS.get(codepage);
+	}
 
-    private CharsetUtils() {
+	public static List<String> splitStringByCharsetLength(String str, int maxBytes, Charset charset)
+	{
+		return splitStringByCharsetLength(str, maxBytes, charset, "");
+	}
 
-    }
+	public static List<String> splitStringByCharsetLength(String str, int maxBytes, Charset charset, String linePrefix)
+	{
 
-    public static Charset getCharsetByCodepage(int codepage) {
-        return WINDOWS_CHARSETS.get(codepage);
-    }
+		List<String> strs = new ArrayList<>();
+		CharsetEncoder encoder = charset.newEncoder();
 
-    public static List<String> splitStringByCharsetLength(String str, int maxBytes, Charset charset) {
-        return splitStringByCharsetLength(str, maxBytes, charset, "");
-    }
+		char[] in = new char[1];
+		byte[] outBuf = new byte[2];
 
-    public static List<String> splitStringByCharsetLength(String str, int maxBytes, Charset charset, String linePrefix) {
+		ByteBuffer out = ByteBuffer.wrap(outBuf);
+		StringBuilder sb = new StringBuilder(maxBytes);
 
-        List<String> strs = new ArrayList<>();
-        CharsetEncoder encoder = charset.newEncoder();
+		for (char c : str.toCharArray())
+		{
+			out.clear();
+			encoder.encode(CharBuffer.wrap(in), out, false);
 
-        char[] in = new char[1];
-        byte[] outBuf = new byte[2];
+			if (sb.length() + out.position() > maxBytes)
+			{
+				strs.add(sb.toString());
+				sb.setLength(0);
+				sb.append(linePrefix);
+			}
 
-        ByteBuffer out = ByteBuffer.wrap(outBuf);
-        StringBuilder sb = new StringBuilder(maxBytes);
+			sb.append(c);
+		}
 
-        for (char c : str.toCharArray()) {
-            out.clear();
-            encoder.encode(CharBuffer.wrap(in), out, false);
+		strs.add(sb.toString());
+		return strs;
+	}
 
-            if (sb.length() + out.position() > maxBytes) {
-                strs.add(sb.toString());
-                sb.setLength(0);
-                sb.append(linePrefix);
-            }
+	private CharsetUtils()
+	{
 
-            sb.append(c);
-        }
-
-        strs.add(sb.toString());
-        return strs;
-    }
+	}
 }

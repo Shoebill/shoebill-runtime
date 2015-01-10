@@ -7,4 +7,4 @@ package net.gtaun.shoebill.amx;
 public enum AmxCallableType {
     NATIVE,
     PUBLIC
-}
+};

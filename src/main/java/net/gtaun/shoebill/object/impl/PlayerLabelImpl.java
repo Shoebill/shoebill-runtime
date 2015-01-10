@@ -28,238 +28,269 @@ import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerLabel;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.util.event.EventManager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
+ * 
+ * 
  * @author MK124 & 123marvin123
  */
-public class PlayerLabelImpl implements PlayerLabel {
-    private final EventManager rootEventManager;
-    private final SampObjectStoreImpl store;
+public class PlayerLabelImpl implements PlayerLabel
+{
+	private final EventManager rootEventManager;
+	private final SampObjectStoreImpl store;
+	
+	private int id = INVALID_ID;
+	private Player player;
+	private String text;
+	private Color color;
+	private float drawDistance;
+	private Location location;
+	private boolean testLOS;
+	
+	private Vector3D offset;
+	private Player attachedPlayer;
+	private Vehicle attachedVehicle;
 
-    private int id = INVALID_ID;
-    private Player player;
-    private String text;
-    private Color color;
-    private float drawDistance;
-    private Location location;
-    private boolean testLOS;
+	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException
+	{
+		this.rootEventManager = eventManager;
+		this.store = store;
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, null, true, -1);
+	}
+	
+	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer) throws CreationFailedException
+	{
+		this.rootEventManager = eventManager;
+		this.store = store;
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, attachedPlayer, null, true, -1);
+	}
+	
+	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle) throws CreationFailedException
+	{
+		this.rootEventManager = eventManager;
+		this.store = store;
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, attachedVehicle, true, -1);
+	}
 
-    private Vector3D offset;
-    private Player attachedPlayer;
-    private Vehicle attachedVehicle;
+	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, boolean doInit, int id) throws CreationFailedException
+	{
+		this.rootEventManager = eventManager;
+		this.store = store;
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, null, doInit, id);
+	}
 
-    public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException {
-        this.rootEventManager = eventManager;
-        this.store = store;
-        initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, null, true, -1);
-    }
+	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer, boolean doInit, int id) throws CreationFailedException
+	{
+		this.rootEventManager = eventManager;
+		this.store = store;
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, attachedPlayer, null, doInit, id);
+	}
 
-    public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer) throws CreationFailedException {
-        this.rootEventManager = eventManager;
-        this.store = store;
-        initialize(player, text, color, new Location(loc), drawDistance, testLOS, attachedPlayer, null, true, -1);
-    }
+	public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle, boolean doInit, int id) throws CreationFailedException
+	{
+		this.rootEventManager = eventManager;
+		this.store = store;
+		initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, attachedVehicle, doInit, id);
+	}
+	
+	private void initialize(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer, Vehicle attachedVehicle, boolean doInit, int id) throws CreationFailedException
+	{
+		if (StringUtils.isEmpty(text)) text = " ";
+		
+		this.player = player;
+		this.text = text;
+		this.color = new Color(color);
+		this.drawDistance = drawDistance;
+		this.location = new Location(loc);
+		this.testLOS = testLOS;
+		
+		int playerId = Player.INVALID_ID, vehicleId = Vehicle.INVALID_ID;
+		
+		if (attachedPlayer != null) playerId = attachedPlayer.getId();
+		if (attachedVehicle != null) vehicleId = attachedVehicle.getId();
+		
+		if (playerId == Player.INVALID_ID) attachedPlayer = null;
+		if (vehicleId == Vehicle.INVALID_ID) attachedVehicle = null;
+		
+		if (attachedPlayer != null || attachedVehicle != null)
+		{
+			offset = new Vector3D(location.getX(), location.getY(), location.getZ());
+		}
+		
+		if (!player.isOnline()) throw new CreationFailedException();
 
-    public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle) throws CreationFailedException {
-        this.rootEventManager = eventManager;
-        this.store = store;
-        initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, attachedVehicle, true, -1);
-    }
+		if(doInit || id < 0) {
+			final int finalPlayerId = playerId;
+			final int finalVehicleId = vehicleId;
+			final String finalText = text;
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createPlayer3DTextLabel(player.getId(), finalText, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, finalPlayerId, finalVehicleId, testLOS));
+		} else this.id = id;
+		if (this.id == INVALID_ID) throw new CreationFailedException();
+		store.setPlayerLabel(player, this.id, this);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+			.append("player", player).append("id", id).toString();
+	}
+	
+	@Override
+	public int getId()
+	{
+		return id;
+	}
+	
+	@Override
+	public Player getPlayer()
+	{
+		return player;
+	}
+	
+	@Override
+	public void destroy()
+	{
+		if (id == INVALID_ID) return;
+		if (player.isOnline()) {
+			SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.deletePlayer3DTextLabel(player.getId(), id));
+		}
+		destroyWithoutExec();
+	}
 
-    public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, boolean doInit, int id) throws CreationFailedException {
-        this.rootEventManager = eventManager;
-        this.store = store;
-        initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, null, doInit, id);
-    }
+	public void destroyWithoutExec()
+	{
+		if (id == INVALID_ID) return;
 
-    public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer, boolean doInit, int id) throws CreationFailedException {
-        this.rootEventManager = eventManager;
-        this.store = store;
-        initialize(player, text, color, new Location(loc), drawDistance, testLOS, attachedPlayer, null, doInit, id);
-    }
+		DestroyEvent destroyEvent = new DestroyEvent(this);
+		rootEventManager.dispatchEvent(destroyEvent, this);
 
-    public PlayerLabelImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle, boolean doInit, int id) throws CreationFailedException {
-        this.rootEventManager = eventManager;
-        this.store = store;
-        initialize(player, text, color, new Location(loc), drawDistance, testLOS, null, attachedVehicle, doInit, id);
-    }
+		id = INVALID_ID;
+	}
 
-    private void initialize(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer, Vehicle attachedVehicle, boolean doInit, int id) throws CreationFailedException {
-        if (StringUtils.isEmpty(text)) text = " ";
+	@Override
+	public boolean isDestroyed()
+	{
+		if (!player.isOnline() && id != INVALID_ID) destroy();
+		return id == INVALID_ID;
+	}
+	
+	@Override
+	public String getText()
+	{
+		return text;
+	}
+	
+	@Override
+	public Color getColor()
+	{
+		return color.clone();
+	}
+	
+	@Override
+	public float getDrawDistance()
+	{
+		return drawDistance;
+	}
+	
+	@Override
+	public Player getAttachedPlayer()
+	{
+		return attachedPlayer;
+	}
+	
+	@Override
+	public Vehicle getAttachedVehicle()
+	{
+		return attachedVehicle;
+	}
+	
+	@Override
+	public Location getLocation()
+	{
+		if (isDestroyed()) return null;
+		
+		Location pos = null;
+		
+		if (attachedPlayer != null) pos = attachedPlayer.getLocation();
+		if (attachedVehicle != null) pos = attachedVehicle.getLocation();
+		
+		if (pos != null)
+		{
+			location.set(pos.getX() + offset.getX(), pos.getY(), pos.getZ() + offset.getZ(), pos.getInteriorId(), pos.getWorldId());
+		}
+		
+		return location.clone();
+	}
+	
+	@Override
+	public void attach(Player target, float x, float y, float z)
+	{
+		if (isDestroyed()) return;
+		if (target.isOnline() == false) return;
+		
+		int playerId = player.getId();
+		
+		store.setPlayerLabel(player, id, null);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.deletePlayer3DTextLabel(playerId, id));
+		
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> {
+			this.id = SampNativeFunction.createPlayer3DTextLabel(playerId, text, color.getValue(), x, y, z, drawDistance, target.getId(), Vehicle.INVALID_ID, testLOS);
+			store.setPlayerLabel(player, id, this);
+		});
+		
+		attachedPlayer = target;
+		attachedVehicle = null;
+	}
+	
+	@Override
+	public void attach(Player target, Vector3D offset)
+	{
+		attach(target, offset.getX(), offset.getY(), offset.getZ());
+	}
+	
+	@Override
+	public void attach(Vehicle vehicle, float x, float y, float z)
+	{
+		if (isDestroyed()) return;
+		if (vehicle.isDestroyed()) return;
+		
+		int playerId = player.getId();
+		
+		store.setPlayerLabel(player, id, null);
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.deletePlayer3DTextLabel(playerId, id));
+		
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> {
+			this.id = SampNativeFunction.createPlayer3DTextLabel(playerId, text, color.getValue(), x, y, z, drawDistance, Player.INVALID_ID, vehicle.getId(), testLOS);
+			store.setPlayerLabel(player, id, this);
+		});
+		
+		attachedPlayer = null;
+		attachedVehicle = vehicle;
+	}
+	
+	@Override
+	public void attach(Vehicle vehicle, Vector3D offset)
+	{
+		attach(vehicle, offset.getX(), offset.getY(), offset.getZ());
+	}
+	
+	@Override
+	public void update(Color color, String text)
+	{
+		if (isDestroyed()) return;
+		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.updatePlayer3DTextLabelText(player.getId(), id, color.getValue(), text));
+		updateWithoutExec(color, text);
+	}
 
-        this.player = player;
-        this.text = text;
-        this.color = new Color(color);
-        this.drawDistance = drawDistance;
-        this.location = new Location(loc);
-        this.testLOS = testLOS;
-
-        int playerId = Player.INVALID_ID, vehicleId = Vehicle.INVALID_ID;
-
-        if (attachedPlayer != null) playerId = attachedPlayer.getId();
-        if (attachedVehicle != null) vehicleId = attachedVehicle.getId();
-
-        if (playerId == Player.INVALID_ID) attachedPlayer = null;
-        if (vehicleId == Vehicle.INVALID_ID) attachedVehicle = null;
-
-        if (attachedPlayer != null || attachedVehicle != null) {
-            offset = new Vector3D(location.getX(), location.getY(), location.getZ());
-        }
-
-        if (!player.isOnline()) throw new CreationFailedException();
-
-        if (doInit || id < 0) {
-            final int finalPlayerId = playerId;
-            final int finalVehicleId = vehicleId;
-            final String finalText = text;
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createPlayer3DTextLabel(player.getId(), finalText, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, finalPlayerId, finalVehicleId, testLOS));
-        } else this.id = id;
-        if (this.id == INVALID_ID) throw new CreationFailedException();
-        store.setPlayerLabel(player, this.id, this);
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-                .append("player", player).append("id", id).toString();
-    }
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public Player getPlayer() {
-        return player;
-    }
-
-    @Override
-    public void destroy() {
-        if (id == INVALID_ID) return;
-        if (player.isOnline()) {
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.deletePlayer3DTextLabel(player.getId(), id));
-        }
-        destroyWithoutExec();
-    }
-
-    public void destroyWithoutExec() {
-        if (id == INVALID_ID) return;
-
-        DestroyEvent destroyEvent = new DestroyEvent(this);
-        rootEventManager.dispatchEvent(destroyEvent, this);
-
-        id = INVALID_ID;
-    }
-
-    @Override
-    public boolean isDestroyed() {
-        if (!player.isOnline() && id != INVALID_ID) destroy();
-        return id == INVALID_ID;
-    }
-
-    @Override
-    public String getText() {
-        return text;
-    }
-
-    @Override
-    public Color getColor() {
-        return color.clone();
-    }
-
-    @Override
-    public float getDrawDistance() {
-        return drawDistance;
-    }
-
-    @Override
-    public Player getAttachedPlayer() {
-        return attachedPlayer;
-    }
-
-    @Override
-    public Vehicle getAttachedVehicle() {
-        return attachedVehicle;
-    }
-
-    @Override
-    public Location getLocation() {
-        if (isDestroyed()) return null;
-
-        Location pos = null;
-
-        if (attachedPlayer != null) pos = attachedPlayer.getLocation();
-        if (attachedVehicle != null) pos = attachedVehicle.getLocation();
-
-        if (pos != null) {
-            location.set(pos.getX() + offset.getX(), pos.getY(), pos.getZ() + offset.getZ(), pos.getInteriorId(), pos.getWorldId());
-        }
-
-        return location.clone();
-    }
-
-    @Override
-    public void attach(Player target, float x, float y, float z) {
-        if (isDestroyed()) return;
-        if (!target.isOnline()) return;
-
-        int playerId = player.getId();
-
-        store.setPlayerLabel(player, id, null);
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.deletePlayer3DTextLabel(playerId, id));
-
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> {
-            this.id = SampNativeFunction.createPlayer3DTextLabel(playerId, text, color.getValue(), x, y, z, drawDistance, target.getId(), Vehicle.INVALID_ID, testLOS);
-            store.setPlayerLabel(player, id, this);
-        });
-
-        attachedPlayer = target;
-        attachedVehicle = null;
-    }
-
-    @Override
-    public void attach(Player target, Vector3D offset) {
-        attach(target, offset.getX(), offset.getY(), offset.getZ());
-    }
-
-    @Override
-    public void attach(Vehicle vehicle, float x, float y, float z) {
-        if (isDestroyed()) return;
-        if (vehicle.isDestroyed()) return;
-
-        int playerId = player.getId();
-
-        store.setPlayerLabel(player, id, null);
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.deletePlayer3DTextLabel(playerId, id));
-
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> {
-            this.id = SampNativeFunction.createPlayer3DTextLabel(playerId, text, color.getValue(), x, y, z, drawDistance, Player.INVALID_ID, vehicle.getId(), testLOS);
-            store.setPlayerLabel(player, id, this);
-        });
-
-        attachedPlayer = null;
-        attachedVehicle = vehicle;
-    }
-
-    @Override
-    public void attach(Vehicle vehicle, Vector3D offset) {
-        attach(vehicle, offset.getX(), offset.getY(), offset.getZ());
-    }
-
-    @Override
-    public void update(Color color, String text) {
-        if (isDestroyed()) return;
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.updatePlayer3DTextLabelText(player.getId(), id, color.getValue(), text));
-        updateWithoutExec(color, text);
-    }
-
-    public void updateWithoutExec(Color color, String text) {
-        if (isDestroyed()) return;
-        this.color.set(color);
-        this.text = text;
-    }
+	public void updateWithoutExec(Color color, String text)
+	{
+		if (isDestroyed()) return;
+		this.color.set(color);
+		this.text = text;
+	}
 }

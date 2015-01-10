@@ -16,8 +16,12 @@
 
 package net.gtaun.shoebill;
 
+import java.io.*;
+import java.lang.ref.WeakReference;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import net.gtaun.shoebill.amx.AmxInstanceManagerImpl;
-import net.gtaun.shoebill.object.Destroyable;
 import net.gtaun.shoebill.object.Server;
 import net.gtaun.shoebill.resource.ResourceManager;
 import net.gtaun.shoebill.resource.ResourceManagerImpl;
@@ -28,329 +32,373 @@ import net.gtaun.shoebill.util.log.LogLevel;
 import net.gtaun.shoebill.util.log.LoggerOutputStream;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.EventManagerRoot;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.lang.ref.WeakReference;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 /**
+ *
+ *
  * @author MK124
  */
-public class ShoebillImpl implements Shoebill {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);
+public class ShoebillImpl implements Shoebill
+{
+	private static final Logger LOGGER = LoggerFactory.getLogger(ShoebillImpl.class);
 
-    private static final String VERSION_FILENAME = "version.yml";
+	private static final String VERSION_FILENAME = "version.yml";
 
-    private static final String SHOEBILL_CONFIG_PATH = "./shoebill/shoebill.yml";
-    private static final String LOG4J_CONFIG_FILENAME = "log4j.xml";
-    private static final String RESOURCES_CONFIG_FILENAME = "resources.yml";
-    private boolean initialized, restart = false;
-    private ShoebillVersionImpl version;
-    private ShoebillConfig config;
-    private ResourceConfig resourceConfig;
-    private ShoebillArtifactLocator artifactLocator;
-    private EventManagerRoot eventManager;
-    private SampCallbackManagerImpl sampCallbackManager;
-    private AmxInstanceManagerImpl amxInstanceManager;
-    private SampObjectManagerImpl sampObjectManager;
-    private ResourceManagerImpl pluginManager;
-    private ServiceManagerImpl serviceManager;
-    //private SampEventLogger sampEventLogger;
-    private SampEventDispatcher sampEventDispatcher;
-    private PrintStream originOutPrintStream;
-    private PrintStream originErrPrintStream;
-    private Queue<Runnable> asyncExecQueue;
-    private String gamemodeName;
+	private static final String SHOEBILL_CONFIG_PATH = "./shoebill/shoebill.yml";
+	private static final String LOG4J_CONFIG_FILENAME = "log4j.xml";
+	private static final String RESOURCES_CONFIG_FILENAME = "resources.yml";
 
-    public ShoebillImpl(int[] amxHandles) throws IOException {
-        Shoebill.Instance.reference = new WeakReference<>(this);
-
-        config = new ShoebillConfig(new FileInputStream(SHOEBILL_CONFIG_PATH));
-        initLogger(new File(config.getShoebillDir(), LOG4J_CONFIG_FILENAME));
-
-        version = new ShoebillVersionImpl(this.getClass().getClassLoader().getResourceAsStream(VERSION_FILENAME));
-
-        String startupMessage = version.getName() + " " + version.getVersion();
-
-        if (version.getBuildNumber() != 0) startupMessage += " Build " + version.getBuildNumber();
-        startupMessage += " (for " + version.getSupportedVersion() + ")";
-
-        LOGGER.info(startupMessage);
-        LOGGER.info("Build date: " + version.getBuildDate());
-        LOGGER.info("System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")");
-        LOGGER.info("JVM: " + System.getProperty("java.vm.name") + " " + System.getProperty("java.vm.version"));
-        LOGGER.info("Java: " + System.getProperty("java.specification.name") + " " + System.getProperty("java.specification.version"));
-
-        asyncExecQueue = new ConcurrentLinkedQueue<>();
-
-        eventManager = new EventManagerRoot();
-        amxInstanceManager = new AmxInstanceManagerImpl(eventManager, amxHandles);
-
-        resourceConfig = new ResourceConfig(new FileInputStream(new File(config.getShoebillDir(), RESOURCES_CONFIG_FILENAME)));
-        artifactLocator = new ShoebillArtifactLocator(config, resourceConfig);
-
-        if (artifactLocator.getGamemodeFile() == null) {
-            LOGGER.info("There's no gamemode assigned in " + RESOURCES_CONFIG_FILENAME + " or file not found.");
-            LOGGER.info("Shoebill will only use plugins!");
-            //throw new NoGamemodeAssignedException();
-        }
+	public static ShoebillImpl getInstance()
+	{
+		return (ShoebillImpl) Shoebill.get();
+	}
 
 
-        File configFile = new File("server.cfg");
-        if (configFile.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(configFile))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.startsWith("gamemode")) {
-                        String[] splits = line.split("[ ]");
-                        if (splits.length > 1) {
-                            gamemodeName = splits[1];
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-    }
+	private boolean initialized, restart = false;
+	private ShoebillVersionImpl version;
+	private ShoebillConfig config;
+	private ResourceConfig resourceConfig;
+	private ShoebillArtifactLocator artifactLocator;
 
-    public static ShoebillImpl getInstance() {
-        return (ShoebillImpl) Shoebill.get();
-    }
+	private EventManagerRoot eventManager;
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("version", version).toString();
-    }
+	private SampCallbackManagerImpl sampCallbackManager;
+	private AmxInstanceManagerImpl amxInstanceManager;
 
-    private void initLogger(File configFile) {
-        if (configFile.exists()) {
-            DOMConfigurator.configureAndWatch(configFile.getPath());
-        } else {
-            DOMConfigurator.configure(this.getClass().getClassLoader().getResource(LOG4J_CONFIG_FILENAME));
-        }
+	private SampObjectManagerImpl sampObjectManager;
 
-        originOutPrintStream = System.out;
-        originErrPrintStream = System.err;
-        System.setOut(new PrintStream(new LoggerOutputStream(LoggerFactory.getLogger("System.out"), LogLevel.INFO), true));
-        System.setErr(new PrintStream(new LoggerOutputStream(LoggerFactory.getLogger("System.err"), LogLevel.ERROR), true));
+	private ResourceManagerImpl pluginManager;
+	private ServiceManagerImpl serviceManager;
 
-        if (!configFile.exists())
-            LOGGER.info("Could not find " + configFile.getPath() + " file. The default configuration will be used.");
+	private SampEventLogger sampEventLogger;
+	private SampEventDispatcher sampEventDispatcher;
 
-    }
+	private PrintStream originOutPrintStream;
+	private PrintStream originErrPrintStream;
 
-    private void registerRootCallbackHandler() {
-        sampCallbackManager.registerCallbackHandler(new SampCallbackHandler() {
+	private Queue<Runnable> asyncExecQueue;
+	private String gamemodeName;
 
-            @Override
-            public int onGameModeInit() {
-                if (!initialized) {
-                    try {
-                        initialize();
-                        loadPluginsAndGamemode();
-                        initialized = true;
-                        return 1;
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                        return 0;
-                    }
-                }
-                return 1;
-            }
 
-            @Override
-            public int onGameModeExit() {
-                if (initialized) {
-                    sampObjectManager.getDialogIds().stream().filter(dialog -> dialog != null && !dialog.isDestroyed()).forEach(Destroyable::destroy);
-                    unloadPluginsAndGamemode();
-                    uninitialize();
-                    initialized = false;
-                    if (restart) {
-                        SampNativeFunction.restartShoebill();
-                        restart = false;
-                    }
-                }
-                return 1;
-            }
+	public ShoebillImpl(int[] amxHandles) throws IOException
+	{
+		Shoebill.Instance.reference = new WeakReference<>(this);
 
-            @Override
-            public int onRconCommand(String cmd) {
-                String[] splits = cmd.split(" ");
-                String op = splits[0].toLowerCase();
+		config = new ShoebillConfig(new FileInputStream(SHOEBILL_CONFIG_PATH));
+		initLogger(new File(config.getShoebillDir(), LOG4J_CONFIG_FILENAME));
 
-                switch (op) {
-                    case "reload":
-                        reload();
-                        return 1;
+		version = new ShoebillVersionImpl(this.getClass().getClassLoader().getResourceAsStream(VERSION_FILENAME));
 
-                    case "onlineonce":
-                        try {
-                            new File(config.getShoebillDir(), "ONLINE_MODE_ONCE").createNewFile();
-                        } catch (IOException e) {
-                            LOGGER.info("Failed to create flag file.");
-                        }
-                        return 1;
+		String startupMessage = version.getName() + " " + version.getVersion();
 
-                    case "gc":
-                        System.gc();
-                        return 1;
+		if (version.getBuildNumber() != 0) startupMessage += " Build " + version.getBuildNumber();
+		startupMessage += " (for " + version.getSupportedVersion() + ")";
 
-                    case "mem":
-                        Runtime runtime = Runtime.getRuntime();
-                        LOGGER.info("FreeMem: " + runtime.freeMemory() + " bytes / TotalMem: " + runtime.totalMemory() + " bytes.");
-                        return 1;
+		LOGGER.info(startupMessage);
+		LOGGER.info("Build date: " + version.getBuildDate());
+		LOGGER.info("System environment: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ", " + System.getProperty("os.version") + ")");
+		LOGGER.info("JVM: " + System.getProperty("java.vm.name") + " " + System.getProperty("java.vm.version"));
+		LOGGER.info("Java: " + System.getProperty("java.specification.name") + " " + System.getProperty("java.specification.version"));
 
-                    default:
-                        return 1;
-                }
-            }
+		asyncExecQueue = new ConcurrentLinkedQueue<Runnable>();
 
-            @Override
-            public void onProcessTick() {
-                while (!asyncExecQueue.isEmpty()) asyncExecQueue.poll().run();
-            }
+		eventManager = new EventManagerRoot();
+		amxInstanceManager = new AmxInstanceManagerImpl(eventManager, amxHandles);
 
-            @Override
-            public boolean isActive() {
-                return true;
-            }
+		resourceConfig = new ResourceConfig(new FileInputStream(new File(config.getShoebillDir(), RESOURCES_CONFIG_FILENAME)));
+		artifactLocator = new ShoebillArtifactLocator(config, resourceConfig);
 
-            @Override
-            public void onAmxLoad(int handle) {
-                amxInstanceManager.onAmxLoad(handle);
-                if (!initialized) {
-                    try {
-                        loadPluginsAndGamemode();
-                        initialized = true;
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+		if (artifactLocator.getGamemodeFile() == null)
+		{
+			LOGGER.info("There's no gamemode assigned in " + RESOURCES_CONFIG_FILENAME + " or file not found.");
+			LOGGER.info("Shoebill will only use plugins!");
+			//throw new NoGamemodeAssignedException();
+		}
 
-            @Override
-            public void onAmxUnload(int handle) {
-                amxInstanceManager.onAmxUnload(handle);
-            }
 
-            @Override
-            public void onShoebillUnload() {
-                if (initialized) {
-                    uninitialize();
-                    unloadPluginsAndGamemode();
-                    initialized = false;
-                }
-            }
+		File configFile = new File("server.cfg");
+		if(configFile.exists())
+		{
+			try(BufferedReader reader = new BufferedReader(new FileReader(configFile)))
+			{
+				String line;
+				while((line = reader.readLine()) != null)
+				{
+					if(line.startsWith("gamemode"))
+					{
+						String[] splits = line.split("[ ]");
+						if(splits.length > 1) {
+							gamemodeName = splits[1];
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
 
-            @Override
-            public void onShoebillLoad() {
-                try {
-                    if (!initialized)
-                        initialize();
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("version", version).toString();
+	}
 
-    private void initialize() {
-        pluginManager = new ResourceManagerImpl(this, eventManager, artifactLocator, config.getDataDir());
-        serviceManager = new ServiceManagerImpl(eventManager);
+	private void initLogger(File configFile)
+	{
+		if (configFile.exists())
+		{
+			DOMConfigurator.configureAndWatch(configFile.getPath());
+		}
+		else
+		{
+			DOMConfigurator.configure(this.getClass().getClassLoader().getResource(LOG4J_CONFIG_FILENAME));
+		}
 
-        sampObjectManager = new SampObjectManagerImpl(eventManager);
+		originOutPrintStream = System.out;
+		originErrPrintStream = System.err;
+		System.setOut(new PrintStream(new LoggerOutputStream(LoggerFactory.getLogger("System.out"), LogLevel.INFO), true));
+		System.setErr(new PrintStream(new LoggerOutputStream(LoggerFactory.getLogger("System.err"), LogLevel.ERROR), true));
 
-        Server.get().setServerCodepage(config.getServerCodepage());
+		if (!configFile.exists()) LOGGER.info("Could not find " + configFile.getPath() + " file. The default configuration will be used.");
 
-        //sampEventLogger = new SampEventLogger(); // annoying messages
-        sampEventDispatcher = new SampEventDispatcher(sampObjectManager, eventManager);
+	}
 
-        sampCallbackManager.registerCallbackHandler(sampObjectManager.getCallbackHandler());
-        sampCallbackManager.registerCallbackHandler(sampEventDispatcher);
-        //sampCallbackManager.registerCallbackHandler(sampEventLogger);
-    }
+	private void registerRootCallbackHandler()
+	{
+		sampCallbackManager.registerCallbackHandler(new SampCallbackHandler()
+		{
 
-    private void uninitialize() {
-        System.setOut(originOutPrintStream);
-        System.setErr(originErrPrintStream);
-    }
+			@Override
+			public int onGameModeInit() {
+				if(!initialized) {
+					try {
+						initialize();
+						loadPluginsAndGamemode();
+						initialized = true;
+						return 1;
+					} catch (Throwable e) {
+						e.printStackTrace();
+						return 0;
+					}
+				}
+				return 1;
+			}
 
-    private void loadPluginsAndGamemode() {
-        pluginManager.loadAllResource();
-    }
+			@Override
+			public int onGameModeExit() {
+				if(initialized) {
+					unloadPluginsAndGamemode();
+					uninitialize();
+					initialized = false;
+					if(restart) {
+						SampNativeFunction.restartShoebill();
+						restart = false;
+					}
+				}
+				return 1;
+			}
 
-    private void unloadPluginsAndGamemode() {
-        pluginManager.unloadAllResource();
-    }
+			@Override
+			public int onRconCommand(String cmd)
+			{
+				String[] splits = cmd.split(" ");
+				String op = splits[0].toLowerCase();
 
-    public SampCallbackHandler getCallbackHandler() {
-        if (sampCallbackManager == null) {
-            sampCallbackManager = new SampCallbackManagerImpl();
-            registerRootCallbackHandler();
-        }
+				switch (op)
+				{
+				case "reload":
+					reload();
+					return 1;
 
-        return sampCallbackManager.getMasterCallbackHandler();
-    }
+				case "onlineonce":
+					try
+					{
+						new File(config.getShoebillDir(), "ONLINE_MODE_ONCE").createNewFile();
+					}
+					catch (IOException e)
+					{
+						LOGGER.info("Failed to create flag file.");
+					}
+					return 1;
 
-    public ShoebillConfig getConfig() {
-        return config;
-    }
+				case "gc":
+					System.gc();
+					return 1;
 
-    public ResourceConfig getResourceConfig() {
-        return resourceConfig;
-    }
+				case "mem":
+					Runtime runtime = Runtime.getRuntime();
+					LOGGER.info("FreeMem: " + runtime.freeMemory() + " bytes / TotalMem: " + runtime.totalMemory() + " bytes.");
+					return 1;
 
-    public ShoebillArtifactLocator getArtifactLocator() {
-        return artifactLocator;
-    }
+				default:
+					return 1;
+				}
+			}
 
-    public EventManager getRootEventManager() {
-        return eventManager;
-    }
+			@Override
+			public void onProcessTick()
+			{
+				while (!asyncExecQueue.isEmpty()) asyncExecQueue.poll().run();
+			}
 
-    @Override
-    public SampObjectManager getSampObjectManager() {
-        return sampObjectManager;
-    }
+			@Override
+			public boolean isActive() {
+				return true;
+			}
 
-    @Override
-    public AmxInstanceManagerImpl getAmxInstanceManager() {
-        return amxInstanceManager;
-    }
+			@Override
+			public void onAmxLoad(int handle)
+			{
+				amxInstanceManager.onAmxLoad(handle);
+				if(!initialized) {
+					try {
+						loadPluginsAndGamemode();
+						initialized = true;
+					} catch (Throwable e) {
+						e.printStackTrace();
+					}
+				}
+			}
 
-    @Override
-    public ResourceManager getResourceManager() {
-        return pluginManager;
-    }
+			@Override
+			public void onAmxUnload(int handle) {
+				amxInstanceManager.onAmxUnload(handle);
+			}
 
-    @Override
-    public ServiceManagerImpl getServiceStore() {
-        return serviceManager;
-    }
+			@Override
+			public void onShoebillUnload() {
+				if(initialized) {
+					uninitialize();
+					unloadPluginsAndGamemode();
+					initialized = false;
+				}
+			}
 
-    @Override
-    public ShoebillVersion getVersion() {
-        return version;
-    }
+			@Override
+			public void onShoebillLoad() {
+				try {
+					if(!initialized)
+						initialize();
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
-    @Override
-    public void reload() {
-        restart = true;
-        SampNativeFunction.sendRconCommand("gmx");
-    }
+	private void initialize()
+	{
+		pluginManager = new ResourceManagerImpl(this, eventManager, artifactLocator, config.getDataDir());
+		serviceManager = new ServiceManagerImpl(eventManager);
 
-    public SampEventDispatcher getSampEventDispatcher() {
-        return sampEventDispatcher;
-    }
+		sampObjectManager = new SampObjectManagerImpl(eventManager);
 
-    @Override
-    public void runOnSampThread(Runnable runnable) {
-        asyncExecQueue.offer(runnable);
-    }
+		Server.get().setServerCodepage(config.getServerCodepage());
+
+		//sampEventLogger = new SampEventLogger(); // annoying messages
+		sampEventDispatcher = new SampEventDispatcher(sampObjectManager, eventManager);
+
+		sampCallbackManager.registerCallbackHandler(sampObjectManager.getCallbackHandler());
+		sampCallbackManager.registerCallbackHandler(sampEventDispatcher);
+		//sampCallbackManager.registerCallbackHandler(sampEventLogger);
+	}
+
+	private void uninitialize()
+	{
+		System.setOut(originOutPrintStream);
+		System.setErr(originErrPrintStream);
+	}
+
+	private void loadPluginsAndGamemode()
+	{
+		pluginManager.loadAllResource();
+	}
+
+	private void unloadPluginsAndGamemode()
+	{
+		pluginManager.unloadAllResource();
+	}
+
+	public SampCallbackHandler getCallbackHandler()
+	{
+		if (sampCallbackManager == null)
+		{
+			sampCallbackManager = new SampCallbackManagerImpl();
+			registerRootCallbackHandler();
+		}
+
+		return sampCallbackManager.getMasterCallbackHandler();
+	}
+
+	public ShoebillConfig getConfig()
+	{
+		return config;
+	}
+
+	public ResourceConfig getResourceConfig()
+	{
+		return resourceConfig;
+	}
+
+	public ShoebillArtifactLocator getArtifactLocator()
+	{
+		return artifactLocator;
+	}
+
+	public EventManager getRootEventManager()
+	{
+		return eventManager;
+	}
+
+	@Override
+	public SampObjectManager getSampObjectManager()
+	{
+		return sampObjectManager;
+	}
+
+	@Override
+	public AmxInstanceManagerImpl getAmxInstanceManager()
+	{
+		return amxInstanceManager;
+	}
+
+	@Override
+	public ResourceManager getResourceManager()
+	{
+		return pluginManager;
+	}
+
+	@Override
+	public ServiceManagerImpl getServiceStore()
+	{
+		return serviceManager;
+	}
+
+	@Override
+	public ShoebillVersion getVersion()
+	{
+		return version;
+	}
+
+	@Override
+	public void reload() {
+		restart = true;
+		SampNativeFunction.sendRconCommand("changemode " + gamemodeName);
+	}
+
+	public SampEventDispatcher getSampEventDispatcher() {
+		return sampEventDispatcher;
+	}
+
+	@Override
+	public void runOnSampThread(Runnable runnable)
+	{
+		asyncExecQueue.offer(runnable);
+	}
 }

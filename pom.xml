@@ -1,75 +1,75 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
 
-    <groupId>net.gtaun</groupId>
-    <artifactId>shoebill-runtime</artifactId>
-    <version>1.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+	<groupId>net.gtaun</groupId>
+	<artifactId>shoebill-runtime</artifactId>
+	<version>1.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-    <name>Shoebill Runtime</name>
-    <description>Project Shoebill - An Java library for SA-MP</description>
-    <url>https://github.com/Shoebill</url>
+	<name>Shoebill Runtime</name>
+	<description>Project Shoebill - An Java library for SA-MP</description>
+	<url>https://github.com/Shoebill</url>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <build.number>0</build.number>
-    </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<build.number>0</build.number>
+	</properties>
 
-    <repositories>
-        <repository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 
-    <licenses>
-        <license>
-            <name>Apache License,Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-        </license>
-    </licenses>
+	<licenses>
+		<license>
+			<name>Apache License,Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
 
-    <scm>
-        <url>https://github.com/Shoebill/shoebill-runtime</url>
-        <connection>https://github.com/Shoebill/shoebill-runtime.git</connection>
-        <developerConnection>scm:git:git@github.com:Shoebill/shoebill-runtime.git</developerConnection>
-    </scm>
+	<scm>
+		<url>https://github.com/Shoebill/shoebill-runtime</url>
+		<connection>https://github.com/Shoebill/shoebill-runtime.git</connection>
+		<developerConnection>scm:git:git@github.com:Shoebill/shoebill-runtime.git</developerConnection>
+	</scm>
 
-    <developers>
-        <developer>
-            <name>MK124</name>
-            <id>MK124</id>
-            <url>https://github.com/mk124</url>
-            <email>mk124a@gmail.com</email>
-            <organization>Shoebill</organization>
-            <organizationUrl>https://github.com/Shoebill</organizationUrl>
-            <timezone>+8</timezone>
-        </developer>
+	<developers>
+		<developer>
+			<name>MK124</name>
+			<id>MK124</id>
+			<url>https://github.com/mk124</url>
+			<email>mk124a@gmail.com</email>
+			<organization>Shoebill</organization>
+			<organizationUrl>https://github.com/Shoebill</organizationUrl>
+			<timezone>+8</timezone>
+		</developer>
 
-        <developer>
-            <name>JoJLlmAn</name>
-            <id>JoJLlmAn</id>
-            <url>https://github.com/JoJLlmAn</url>
-            <email>jojllman@gmail.com</email>
-            <organization>Shoebill</organization>
-            <organizationUrl>https://github.com/Shoebill</organizationUrl>
-            <timezone>+8</timezone>
-        </developer>
+		<developer>
+			<name>JoJLlmAn</name>
+			<id>JoJLlmAn</id>
+			<url>https://github.com/JoJLlmAn</url>
+			<email>jojllman@gmail.com</email>
+			<organization>Shoebill</organization>
+			<organizationUrl>https://github.com/Shoebill</organizationUrl>
+			<timezone>+8</timezone>
+		</developer>
 
         <developer>
             <name>123marvin123</name>
@@ -80,169 +80,169 @@
             <organizationUrl>https://github.com/Shoebill</organizationUrl>
             <timezone>+1</timezone>
         </developer>
-    </developers>
+	</developers>
 
-    <ciManagement>
-        <system>jenkins</system>
-        <url>http://ci.gtaun.net</url>
-    </ciManagement>
+	<ciManagement>
+		<system>jenkins</system>
+		<url>http://ci.gtaun.net</url>
+	</ciManagement>
 
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/Shoebill/shoebill-runtime/issues</url>
-    </issueManagement>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/Shoebill/shoebill-runtime/issues</url>
+	</issueManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <scope>test</scope>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>net.gtaun</groupId>
-            <artifactId>shoebill-api</artifactId>
-            <version>1.1-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>net.gtaun</groupId>
+			<artifactId>shoebill-api</artifactId>
+			<version>1.1-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>net.gtaun</groupId>
-            <artifactId>shoebill-launcher</artifactId>
-            <version>1.1-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>net.gtaun</groupId>
+			<artifactId>shoebill-launcher</artifactId>
+			<version>1.1-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>net.gtaun</groupId>
-            <artifactId>shoebill-utilities</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>net.gtaun</groupId>
+			<artifactId>shoebill-utilities</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.7</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.7</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
 
-    <build>
-        <defaultGoal>clean install</defaultGoal>
+	<build>
+		<defaultGoal>clean install</defaultGoal>
 
-        <resources>
-            <resource>
-                <targetPath>.</targetPath>
-                <directory>${basedir}/src/main/resources</directory>
-                <filtering>false</filtering>
-                <includes>
-                    <include>shoebillImpl.txt</include>
-                    <include>log4j.xml</include>
-                </includes>
-            </resource>
+		<resources>
+			<resource>
+				<targetPath>.</targetPath>
+				<directory>${basedir}/src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>shoebillImpl.txt</include>
+					<include>log4j.xml</include>
+				</includes>
+			</resource>
 
-            <resource>
-                <targetPath>.</targetPath>
-                <directory>${basedir}/src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>version.yml</include>
-                </includes>
-            </resource>
-        </resources>
+			<resource>
+				<targetPath>.</targetPath>
+				<directory>${basedir}/src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>version.yml</include>
+				</includes>
+			</resource>
+		</resources>
 
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
-            <plugin>
-                <groupId>com.keyboardsamurais.maven</groupId>
-                <artifactId>maven-timestamp-plugin</artifactId>
-                <version>1.0</version>
-                <configuration>
-                    <propertyName>build.timestamp</propertyName>
-                    <timestampPattern>yyyy-MM-dd HH:mm:ss z (Z)</timestampPattern>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+			<plugin>
+				<groupId>com.keyboardsamurais.maven</groupId>
+				<artifactId>maven-timestamp-plugin</artifactId>
+				<version>1.0</version>
+				<configuration>
+					<propertyName>build.timestamp</propertyName>
+					<timestampPattern>yyyy-MM-dd HH:mm:ss z (Z)</timestampPattern>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.apache.maven.plugins</groupId>
-                                        <artifactId>maven-enforcer-plugin</artifactId>
-                                        <versionRange>[1.0.0,)</versionRange>
-                                        <goals>
-                                            <goal>enforce</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore/>
-                                    </action>
-                                </pluginExecution>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-enforcer-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>enforce</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
 
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>com.keyboardsamurais.maven</groupId>
-                                        <artifactId>maven-timestamp-plugin</artifactId>
-                                        <versionRange>[1.0,)</versionRange>
-                                        <goals>
-                                            <goal>create</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore/>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.keyboardsamurais.maven</groupId>
+										<artifactId>maven-timestamp-plugin</artifactId>
+										<versionRange>[1.0,)</versionRange>
+										<goals>
+											<goal>create</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 </project>
