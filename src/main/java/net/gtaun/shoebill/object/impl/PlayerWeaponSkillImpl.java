@@ -21,71 +21,61 @@ import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.constant.WeaponSkill;
 import net.gtaun.shoebill.object.Player;
 import net.gtaun.shoebill.object.PlayerWeaponSkill;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 
- * 
  * @author JoJLlmAn
  */
-public class PlayerWeaponSkillImpl implements PlayerWeaponSkill
-{
-	private Player player;
-	private int[] skills = new int[WeaponSkill.values().length];
-	
-	
-	PlayerWeaponSkillImpl(Player player)
-	{
-		this.player = player;
-		for (int i = 0; i < WeaponSkill.values().length; i++)
-			skills[i] = 999;
-	}
-	
-	@Override
-	public String toString()
-	{
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-			.append("player", player).append("skills", skills).toString();
-	}
-	
-	@Override
-	public Player getPlayer()
-	{
-		return player;
-	}
-	
-	@Override
-	public void setLevel(WeaponSkill type, int level)
-	{
-		if (!player.isOnline()) return;
-		
-		if (level > 999) level = 999;
-		else if (level < 0) level = 0;
-		
-		int typeData = type.getValue();
-		final int finalLevel = level;
-		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerSkillLevel(player.getId(), typeData, finalLevel));
-		setLevelWithoutExec(type, level);
-	}
+public class PlayerWeaponSkillImpl implements PlayerWeaponSkill {
+    private Player player;
+    private int[] skills = new int[WeaponSkill.values().length];
 
-	public void setLevelWithoutExec(WeaponSkill type, int level)
-	{
-		if (!player.isOnline()) return;
 
-		if (level > 999) level = 999;
-		else if (level < 0) level = 0;
+    PlayerWeaponSkillImpl(Player player) {
+        this.player = player;
+        for (int i = 0; i < WeaponSkill.values().length; i++)
+            skills[i] = 999;
+    }
 
-		int typeData = type.getValue();
-		skills[typeData] = level;
-	}
-	
-	@Override
-	public int getLevel(WeaponSkill type)
-	{
-		if (!player.isOnline()) return 0;
-		
-		return skills[type.getValue()];
-	}
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+                .append("player", player).append("skills", skills).toString();
+    }
+
+    @Override
+    public Player getPlayer() {
+        return player;
+    }
+
+    @Override
+    public void setLevel(WeaponSkill type, int level) {
+        if (!player.isOnline()) return;
+
+        if (level > 999) level = 999;
+        else if (level < 0) level = 0;
+
+        int typeData = type.getValue();
+        final int finalLevel = level;
+        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerSkillLevel(player.getId(), typeData, finalLevel));
+        setLevelWithoutExec(type, level);
+    }
+
+    public void setLevelWithoutExec(WeaponSkill type, int level) {
+        if (!player.isOnline()) return;
+
+        if (level > 999) level = 999;
+        else if (level < 0) level = 0;
+
+        int typeData = type.getValue();
+        skills[typeData] = level;
+    }
+
+    @Override
+    public int getLevel(WeaponSkill type) {
+        if (!player.isOnline()) return 0;
+
+        return skills[type.getValue()];
+    }
 }

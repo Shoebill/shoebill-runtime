@@ -16,144 +16,121 @@
 
 package net.gtaun.shoebill.service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import net.gtaun.shoebill.event.service.ServiceRegisterEvent;
 import net.gtaun.shoebill.event.service.ServiceUnregisterEvent;
 import net.gtaun.shoebill.resource.Resource;
 import net.gtaun.util.event.EventManager;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 /**
- *
- *
  * @author MK124
  */
-public class ServiceManagerImpl implements ServiceManager
-{
-	class ServiceEntryImpl implements ServiceEntry
-	{
-		private Resource resource;
-		private Class<? extends Service> type;
-		private Service service;
+public class ServiceManagerImpl implements ServiceManager {
+    private EventManager rootEventManager;
+    private Map<Class<? extends Service>, ServiceEntry> services;
+    public ServiceManagerImpl(EventManager eventManager) {
+        this.rootEventManager = eventManager;
+        services = new HashMap<>();
+    }
 
-		<T extends Service> ServiceEntryImpl(Resource resource, Class<T> type, T service)
-		{
-			this.resource = resource;
-			this.type = type;
-			this.service = service;
-		}
+    private void registerServiceEntry(ServiceEntry entry) {
+        Class<? extends Service> type = entry.getType();
 
-		@Override
-		public Resource getProvider()
-		{
-			return resource;
-		}
+        ServiceEntry prevEntry = services.get(type);
+        services.put(type, entry);
 
-		@Override
-		public Class<? extends Service> getType()
-		{
-			return type;
-		}
+        if (prevEntry != null) {
+            ServiceUnregisterEvent unregisterEvent = new ServiceUnregisterEvent(prevEntry);
+            rootEventManager.dispatchEvent(unregisterEvent, this);
+        }
 
-		@Override
-		public Service getService()
-		{
-			return service;
-		}
-	}
+        ServiceRegisterEvent event = new ServiceRegisterEvent(entry, prevEntry);
+        rootEventManager.dispatchEvent(event, this);
+    }
 
+    private void unregisterServiceEntry(ServiceEntry entry) {
+        Class<? extends Service> type = entry.getType();
+        services.remove(type);
 
-	private EventManager rootEventManager;
-	private Map<Class<? extends Service>, ServiceEntry> services;
+        ServiceUnregisterEvent event = new ServiceUnregisterEvent(entry);
+        rootEventManager.dispatchEvent(event, this);
+    }
 
+    @Override
+    public <T extends Service> void registerService(Resource resource, Class<T> type, T service) {
+        ServiceEntry entry = new ServiceEntryImpl(resource, type, service);
+        registerServiceEntry(entry);
+    }
 
-	public ServiceManagerImpl(EventManager eventManager)
-	{
-		this.rootEventManager = eventManager;
-		services = new HashMap<>();
-	}
+    @Override
+    public <T extends Service> void unregisterService(Resource resource, Class<T> type) {
+        ServiceEntry entry = services.get(type);
 
-	private void registerServiceEntry(ServiceEntry entry)
-	{
-		Class<? extends Service> type = entry.getType();
+        if (entry == null) return;
+        if (entry.getProvider() != resource) return;
 
-		ServiceEntry prevEntry = services.get(type);
-		services.put(type, entry);
+        unregisterServiceEntry(entry);
+    }
 
-		if(prevEntry != null)
-		{
-			ServiceUnregisterEvent unregisterEvent = new ServiceUnregisterEvent(prevEntry);
-			rootEventManager.dispatchEvent(unregisterEvent, this);
-		}
+    @Override
+    public <T extends Service> void unregisterAllServices(Resource resource) {
+        Iterator<ServiceEntry> iterator = services.values().iterator();
+        while (iterator.hasNext()) {
+            ServiceEntry entry = iterator.next();
+            if (entry.getProvider() == resource) iterator.remove();
+        }
+    }
 
-		ServiceRegisterEvent event = new ServiceRegisterEvent(entry, prevEntry);
-		rootEventManager.dispatchEvent(event, this);
-	}
+    @Override
+    public <T extends Service> T getService(Class<T> type) {
+        ServiceEntry entry = services.get(type);
+        if (entry == null) return null;
+        return type.cast(entry.getService());
+    }
 
-	private void unregisterServiceEntry(ServiceEntry entry)
-	{
-		Class<? extends Service> type = entry.getType();
-		services.remove(type);
+    @Override
+    public <T extends Service> ServiceEntry getServiceEnrty(Class<T> type) {
+        return services.get(type);
+    }
 
-		ServiceUnregisterEvent event = new ServiceUnregisterEvent(entry);
-		rootEventManager.dispatchEvent(event, this);
-	}
+    @Override
+    public <T extends Service> boolean isServiceAvailable(Class<T> type) {
+        return services.containsKey(type);
+    }
 
-	@Override
-	public <T extends Service> void registerService(Resource resource, Class<T> type, T service)
-	{
-		ServiceEntry entry = new ServiceEntryImpl(resource, type, service);
-		registerServiceEntry(entry);
-	}
+    @Override
+    public Collection<ServiceEntry> getServiceEntries() {
+        return services.values();
+    }
 
-	@Override
-	public <T extends Service> void unregisterService(Resource resource, Class<T> type)
-	{
-		ServiceEntry entry = services.get(type);
+    class ServiceEntryImpl implements ServiceEntry {
+        private Resource resource;
+        private Class<? extends Service> type;
+        private Service service;
 
-		if(entry == null) return;
-		if(entry.getProvider() != resource ) return;
+        <T extends Service> ServiceEntryImpl(Resource resource, Class<T> type, T service) {
+            this.resource = resource;
+            this.type = type;
+            this.service = service;
+        }
 
-		unregisterServiceEntry(entry);
-	}
+        @Override
+        public Resource getProvider() {
+            return resource;
+        }
 
-	@Override
-	public <T extends Service> void unregisterAllServices(Resource resource)
-	{
-		Iterator<ServiceEntry> iterator = services.values().iterator();
-		while(iterator.hasNext())
-		{
-			ServiceEntry entry = iterator.next();
-			if(entry.getProvider() == resource) iterator.remove();
-		}
-	}
+        @Override
+        public Class<? extends Service> getType() {
+            return type;
+        }
 
-	@Override
-	public <T extends Service> T getService(Class<T> type)
-	{
-		ServiceEntry entry = services.get(type);
-		if (entry == null) return null;
-		return type.cast(entry.getService());
-	}
-
-	@Override
-	public <T extends Service> ServiceEntry getServiceEnrty(Class<T> type)
-	{
-		return services.get(type);
-	}
-
-	@Override
-	public <T extends Service> boolean isServiceAvailable(Class<T> type)
-	{
-		return services.containsKey(type);
-	}
-
-	@Override
-	public Collection<ServiceEntry> getServiceEntries()
-	{
-		return services.values();
-	}
+        @Override
+        public Service getService() {
+            return service;
+        }
+    }
 }
