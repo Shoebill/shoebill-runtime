@@ -25,102 +25,89 @@ import net.gtaun.shoebill.event.destroyable.DestroyEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Pickup;
 import net.gtaun.util.event.EventManager;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 
- * 
  * @author MK124, JoJLlmAn & 123marvin123
  */
-public class PickupImpl implements Pickup
-{
-	private final EventManager rootEventManager;
-	
-	private int id = INVALID_ID;
-	private int modelId, type;
-	private Location location;
-	private boolean isStatic;
+public class PickupImpl implements Pickup {
+    private final EventManager rootEventManager;
 
-	public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc) {
-		this(eventManager, store, modelId, type, loc, true, -1, false);
-	}
+    private int id = INVALID_ID;
+    private int modelId, type;
+    private Location location;
+    private boolean isStatic;
 
-	public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc, boolean doInit, int id, boolean isStatic) throws CreationFailedException
-	{
-		this.rootEventManager = eventManager;
-		
-		this.modelId = modelId;
-		this.type = type;
-		this.location = new Location(loc);
-		this.isStatic = isStatic;
+    public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc) {
+        this(eventManager, store, modelId, type, loc, true, -1, false);
+    }
 
-		if(!isStatic) {
-			if (doInit || id < 0)
-				SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createPickup(modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId()));
-			else this.id = id;
-			if (this.id == INVALID_ID) throw new CreationFailedException();
-			store.setPickup(this.id, this);
-		}
-	}
-	
-	@Override
-	public String toString()
-	{
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-			.append("id", id).append("modelId", modelId).append("type", type).toString();
-	}
-	
-	@Override
-	public void destroy()
-	{
-		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.destroyPickup(id));
-		destroyWithoutExec();
-	}
+    public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc, boolean doInit, int id, boolean isStatic) throws CreationFailedException {
+        this.rootEventManager = eventManager;
 
-	public void destroyWithoutExec()
-	{
-		if (isDestroyed()) return;
+        this.modelId = modelId;
+        this.type = type;
+        this.location = new Location(loc);
+        this.isStatic = isStatic;
 
-		DestroyEvent destroyEvent = new DestroyEvent(this);
-		rootEventManager.dispatchEvent(destroyEvent, this);
+        if (!isStatic) {
+            if (doInit || id < 0)
+                SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createPickup(modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId()));
+            else this.id = id;
+            if (this.id == INVALID_ID) throw new CreationFailedException();
+            store.setPickup(this.id, this);
+        }
+    }
 
-		id = INVALID_ID;
-	}
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+                .append("id", id).append("modelId", modelId).append("type", type).toString();
+    }
 
-	@Override
-	public boolean isDestroyed()
-	{
-		return id == INVALID_ID;
-	}
+    @Override
+    public void destroy() {
+        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.destroyPickup(id));
+        destroyWithoutExec();
+    }
 
-	@Override
-	public boolean isStatic() {
-		return isStatic;
-	}
+    public void destroyWithoutExec() {
+        if (isDestroyed()) return;
 
-	@Override
-	public int getId()
-	{
-		return id;
-	}
-	
-	@Override
-	public int getModelId()
-	{
-		return modelId;
-	}
-	
-	@Override
-	public int getType()
-	{
-		return type;
-	}
-	
-	@Override
-	public Location getLocation()
-	{
-		return location.clone();
-	}
+        DestroyEvent destroyEvent = new DestroyEvent(this);
+        rootEventManager.dispatchEvent(destroyEvent, this);
+
+        id = INVALID_ID;
+    }
+
+    @Override
+    public boolean isDestroyed() {
+        return id == INVALID_ID;
+    }
+
+    @Override
+    public boolean isStatic() {
+        return isStatic;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public int getModelId() {
+        return modelId;
+    }
+
+    @Override
+    public int getType() {
+        return type;
+    }
+
+    @Override
+    public Location getLocation() {
+        return location.clone();
+    }
 }

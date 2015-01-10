@@ -22,97 +22,82 @@ import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.constant.VehicleComponentSlot;
 import net.gtaun.shoebill.object.Vehicle;
 import net.gtaun.shoebill.object.VehicleComponent;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 
- * 
  * @author MK124, JoJLlmAn & 123marvin123
  */
-public class VehicleComponentImpl implements VehicleComponent
-{
-	private Vehicle vehicle;
-	private int[] components = new int[VehicleComponentSlot.values().length];
-	
-	
-	VehicleComponentImpl(Vehicle vehicle)
-	{
-		this.vehicle = vehicle;
-		update();
-	}
-	
-	@Override
-	public String toString()
-	{
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-			.append("vehicle", vehicle).append("components", components).toString();
-	}
-	
-	@Override
-	public Vehicle getVehicle()
-	{
-		return vehicle;
-	}
-	
-	@Override
-	public void add(int componentId)
-	{
-		if (vehicle.isDestroyed()) return;
-		
-		SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.addVehicleComponent(vehicle.getId(), componentId));
+public class VehicleComponentImpl implements VehicleComponent {
+    private Vehicle vehicle;
+    private int[] components = new int[VehicleComponentSlot.values().length];
 
-		addWithoutExec(componentId);
-	}
 
-	public void addWithoutExec(int componentId)
-	{
-		int slot = SampNativeFunction.getVehicleComponentType(componentId);
-		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot);
-	}
+    VehicleComponentImpl(Vehicle vehicle) {
+        this.vehicle = vehicle;
+        update();
+    }
 
-	@Override
-	public void remove(int componentId)
-	{
-		if (vehicle.isDestroyed()) return;
-		
-		SampNativeFunction.removeVehicleComponent(vehicle.getId(), componentId);
-		
-		int slot = SampNativeFunction.getVehicleComponentType(componentId);
-		components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot);
-	}
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+                .append("vehicle", vehicle).append("components", components).toString();
+    }
 
-	@Override
-	public void remove(VehicleComponentSlot slot)
-	{
-		if (vehicle.isDestroyed()) return;
-		
-		int componentId = components[slot.getValue()];
-		SampNativeFunction.removeVehicleComponent(vehicle.getId(), componentId);
-	}
-	
-	@Override
-	public int get(VehicleComponentSlot slot)
-	{
-		if (vehicle.isDestroyed()) return 0;
-		return SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot.getValue());
-	}
-	
-	@Override
-	public int[] toArray()
-	{
-		int[] data = new int[components.length];
-		System.arraycopy(components, 0, data, 0, components.length);
-		
-		return data;
-	}
-	
-	final void update()
-	{
-		for (int i = 0; i < components.length; i++)
-		{
-			components[i] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), i);
-		}
-	}
+    @Override
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    @Override
+    public void add(int componentId) {
+        if (vehicle.isDestroyed()) return;
+
+        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.addVehicleComponent(vehicle.getId(), componentId));
+
+        addWithoutExec(componentId);
+    }
+
+    public void addWithoutExec(int componentId) {
+        int slot = SampNativeFunction.getVehicleComponentType(componentId);
+        components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot);
+    }
+
+    @Override
+    public void remove(int componentId) {
+        if (vehicle.isDestroyed()) return;
+
+        SampNativeFunction.removeVehicleComponent(vehicle.getId(), componentId);
+
+        int slot = SampNativeFunction.getVehicleComponentType(componentId);
+        components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot);
+    }
+
+    @Override
+    public void remove(VehicleComponentSlot slot) {
+        if (vehicle.isDestroyed()) return;
+
+        int componentId = components[slot.getValue()];
+        SampNativeFunction.removeVehicleComponent(vehicle.getId(), componentId);
+    }
+
+    @Override
+    public int get(VehicleComponentSlot slot) {
+        if (vehicle.isDestroyed()) return 0;
+        return SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot.getValue());
+    }
+
+    @Override
+    public int[] toArray() {
+        int[] data = new int[components.length];
+        System.arraycopy(components, 0, data, 0, components.length);
+
+        return data;
+    }
+
+    final void update() {
+        for (int i = 0; i < components.length; i++) {
+            components[i] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), i);
+        }
+    }
 }
