@@ -18,6 +18,7 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStore;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.constant.PlayerMarkerMode;
 import net.gtaun.shoebill.constant.WeaponModel;
 import net.gtaun.shoebill.data.*;
@@ -29,14 +30,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author MK124
  */
 public class WorldImpl implements World {
-    private final SampObjectStore store;
+    private final SampObjectStoreImpl store;
 
     private float nameTagDrawDistance = 70;
     private float chatRadius = -1;
     private float playerMarkerRadius = -1;
 
 
-    public WorldImpl(SampObjectStore store) {
+    public WorldImpl(SampObjectStoreImpl store) {
         this.store = store;
     }
 
@@ -52,32 +53,44 @@ public class WorldImpl implements World {
 
     @Override
     public int addPlayerClass(int modelId, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3) {
-        return SampNativeFunction.addPlayerClass(modelId, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3);
+        int id = SampNativeFunction.addPlayerClass(modelId, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3);
+        store.setPlayerClass(id, new SpawnInfo(x, y, z, 0, 0, angle, modelId, 0, WeaponModel.get(weapon1), ammo1, WeaponModel.get(weapon2), ammo2, WeaponModel.get(weapon3), ammo3));
+        return id;
     }
 
     @Override
     public int addPlayerClass(int teamId, int modelId, float x, float y, float z, float angle, int weapon1, int ammo1, int weapon2, int ammo2, int weapon3, int ammo3) {
-        return SampNativeFunction.addPlayerClassEx(teamId, modelId, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3);
+        int id = SampNativeFunction.addPlayerClassEx(teamId, modelId, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3);
+        store.setPlayerClass(id, new SpawnInfo(x, y, z, 0, 0, angle, modelId, teamId, WeaponModel.get(weapon1), ammo1, WeaponModel.get(weapon2), ammo2, WeaponModel.get(weapon3), ammo3));
+        return id;
     }
 
     @Override
     public int addPlayerClass(int modelId, Vector3D position, float angle, WeaponModel weapon1, int ammo1, WeaponModel weapon2, int ammo2, WeaponModel weapon3, int ammo3) {
-        return SampNativeFunction.addPlayerClass(modelId, position.x, position.y, position.z, angle, weapon1.getId(), ammo1, weapon2.getId(), ammo2, weapon3.getId(), ammo3);
+        int id = SampNativeFunction.addPlayerClass(modelId, position.x, position.y, position.z, angle, weapon1.getId(), ammo1, weapon2.getId(), ammo2, weapon3.getId(), ammo3);
+        store.setPlayerClass(id, new SpawnInfo(position, 0, 0, angle, modelId, 0, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3));
+        return id;
     }
 
     @Override
     public int addPlayerClass(int teamId, int modelId, Vector3D position, float angle, WeaponModel weapon1, int ammo1, WeaponModel weapon2, int ammo2, WeaponModel weapon3, int ammo3) {
-        return SampNativeFunction.addPlayerClassEx(teamId, modelId, position.x, position.y, position.z, angle, weapon1.getId(), ammo1, weapon2.getId(), ammo2, weapon3.getId(), ammo3);
+        int id = SampNativeFunction.addPlayerClassEx(teamId, modelId, position.x, position.y, position.z, angle, weapon1.getId(), ammo1, weapon2.getId(), ammo2, weapon3.getId(), ammo3);
+        store.setPlayerClass(id, new SpawnInfo(position, 0, 0, angle, modelId, teamId, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3));
+        return id;
     }
 
     @Override
     public int addPlayerClass(int modelId, Vector3D position, float angle, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3) {
-        return SampNativeFunction.addPlayerClass(modelId, position.x, position.y, position.z, angle, weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
+        int id = SampNativeFunction.addPlayerClass(modelId, position.x, position.y, position.z, angle, weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
+        store.setPlayerClass(id, new SpawnInfo(position, 0, 0, angle, modelId, 0, weapon1.model, weapon1.ammo, weapon2.model, weapon2.ammo, weapon3.model, weapon3.ammo));
+        return id;
     }
 
     @Override
     public int addPlayerClass(int teamId, int modelId, Vector3D position, float angle, WeaponData weapon1, WeaponData weapon2, WeaponData weapon3) {
-        return SampNativeFunction.addPlayerClassEx(teamId, modelId, position.x, position.y, position.z, angle, weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
+        int id = SampNativeFunction.addPlayerClassEx(teamId, modelId, position.x, position.y, position.z, angle, weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
+        store.setPlayerClass(id, new SpawnInfo(position, 0, 0, angle, modelId, teamId, weapon1.model, weapon1.ammo, weapon2.model, weapon2.ammo, weapon3.model, weapon3.ammo));
+        return id;
     }
 
     @Override
@@ -86,8 +99,9 @@ public class WorldImpl implements World {
         WeaponData weapon1 = spawnInfo.getWeapon1();
         WeaponData weapon2 = spawnInfo.getWeapon2();
         WeaponData weapon3 = spawnInfo.getWeapon3();
-
-        return SampNativeFunction.addPlayerClassEx(spawnInfo.getTeamId(), spawnInfo.getSkinId(), loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
+        int id = SampNativeFunction.addPlayerClassEx(spawnInfo.getTeamId(), spawnInfo.getSkinId(), loc.getX(), loc.getY(), loc.getZ(), loc.getAngle(), weapon1.getModel().getId(), weapon1.getAmmo(), weapon2.getModel().getId(), weapon2.getAmmo(), weapon3.getModel().getId(), weapon3.getAmmo());
+        store.setPlayerClass(id, spawnInfo);
+        return id;
     }
 
     @Override

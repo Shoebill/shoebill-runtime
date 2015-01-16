@@ -16,6 +16,7 @@
 
 package net.gtaun.shoebill;
 
+import net.gtaun.shoebill.data.SpawnInfo;
 import net.gtaun.shoebill.event.dialog.DialogResponseEvent;
 import net.gtaun.shoebill.event.object.ObjectMovedEvent;
 import net.gtaun.shoebill.event.object.PlayerObjectMovedEvent;
@@ -49,6 +50,7 @@ public class SampObjectStoreImpl implements SampObjectStore {
     public static final int MAX_GLOBAL_LABELS = 1024;
     public static final int MAX_PLAYER_LABELS = 1024;
     public static final int MAX_PICKUPS = 4096;
+    public static final int MAX_CLASSES = 300;
     protected final EventManager eventManagerNode;
     private Server server;
     private World world;
@@ -63,9 +65,11 @@ public class SampObjectStoreImpl implements SampObjectStore {
     private PlayerTextdraw[][] playerTextdrawsArray = new PlayerTextdraw[MAX_PLAYERS][];
     private Zone[] zones = new Zone[MAX_ZONES];
     private Menu[] menus = new Menu[MAX_MENUS];
+    private SpawnInfo[] playerClasses = new SpawnInfo[MAX_CLASSES];
     private Collection<Reference<TimerImpl>> timers = new ConcurrentLinkedQueue<>();
     private Map<Integer, Reference<DialogId>> dialogs = new ConcurrentHashMap<>();
     private List<Reference<PickupImpl>> staticPickups = new ArrayList<>();
+
     SampObjectStoreImpl(EventManager rootEventManager) {
         eventManagerNode = rootEventManager.createChildNode();
         setupObjectEventHandler();
@@ -389,6 +393,13 @@ public class SampObjectStoreImpl implements SampObjectStore {
         return items;
     }
 
+    @Override
+    public Collection<SpawnInfo> getPlayerClasses() {
+        Collection<SpawnInfo> items = new ArrayList<>();
+        Collections.addAll(items, playerClasses);
+        return items;
+    }
+
     public Collection<Timer> getTimers() {
         Collection<Timer> items = new ArrayList<>();
         Collection<Reference<TimerImpl>> unusedItems = new ArrayList<>();
@@ -475,6 +486,8 @@ public class SampObjectStoreImpl implements SampObjectStore {
     public void setMenu(int id, Menu menu) {
         menus[id] = menu;
     }
+
+    public void setPlayerClass(int id, SpawnInfo playerClass) { playerClasses[id] = playerClass; }
 
     public void putTimer(TimerImpl timer) {
         clearUnusedReferences(timers);
