@@ -316,7 +316,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
         Integer dialogId = random.nextInt(MAX_DIALOG_ID);
         int tries = 0;
         while (occupiedDialogIds.contains(dialogId) && tries < 20) {
-            dialogId = random.nextInt(32767);
+            dialogId = random.nextInt(MAX_DIALOG_ID);
             tries++;
         }
         addOccupiedDialogId(dialogId);

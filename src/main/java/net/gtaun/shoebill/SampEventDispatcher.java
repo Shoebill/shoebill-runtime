@@ -222,7 +222,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
 
             PlayerTextEvent event = new PlayerTextEvent(player, text);
             rootEventManager.dispatchEvent(event, player);
-            return 0;
+            return event.getResponse();
         } catch (Throwable e) {
             e.printStackTrace();
             return 0;

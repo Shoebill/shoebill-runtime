@@ -4,18 +4,17 @@ import net.gtaun.shoebill.event.amx.AmxLoadEvent;
 import net.gtaun.shoebill.event.amx.AmxUnloadEvent;
 import net.gtaun.util.event.EventManager;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class AmxInstanceManagerImpl implements AmxInstanceManager {
     private final Set<AmxInstance> instances;
     private final EventManager eventManager;
-
+    private final Map<AmxInstance, Set<AmxHook>> amxHooks;
 
     public AmxInstanceManagerImpl(EventManager eventManager, int[] existedHandles) {
         this.eventManager = eventManager;
         instances = new HashSet<>();
+        amxHooks = new HashMap<>();
         for (int handle : existedHandles) {
             AmxInstance instance = new AmxInstanceImpl(handle);
             instances.add(instance);
@@ -41,5 +40,12 @@ public class AmxInstanceManagerImpl implements AmxInstanceManager {
     @Override
     public Set<AmxInstance> getAmxInstances() {
         return Collections.unmodifiableSet(instances);
+    }
+
+    @Override
+    public Set<AmxHook> getAmxHooks(AmxInstance instance) {
+        if (amxHooks.containsKey(instance))
+            return Collections.unmodifiableSet(amxHooks.get(instance));
+        return null;
     }
 }

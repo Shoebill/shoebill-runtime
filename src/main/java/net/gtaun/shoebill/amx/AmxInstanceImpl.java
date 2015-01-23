@@ -30,12 +30,12 @@ public class AmxInstanceImpl implements AmxInstance {
     }
 
     @Override
-    public void registerPublic(String name, AmxCallable callable) {
-        SampNativeFunction.registerPublic(handle, name, callable);
+    public void hookCallback(String name, AmxHook hook) { // new functions for 1.1
+
     }
 
     @Override
-    public void registerNative(String name, AmxCallable callable) {
-        SampNativeFunction.registerNative(handle, name, callable);
+    public void hookNative(String name, AmxHook hook) { // new functions for 1.1
+
     }
 }

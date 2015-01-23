@@ -775,7 +775,11 @@ public class PlayerImpl implements Player {
     public void spawn() {
         if (!isOnline()) return;
 
-        SampNativeFunction.spawnPlayer(id);
+        /*SampNativeFunction.spawnPlayer(id);
+          is buggy with 1.1 shoebill?
+         */
+        toggleSpectating(true);
+        toggleSpectating(false);
     }
 
     @Override
@@ -1318,7 +1322,7 @@ public class PlayerImpl implements Player {
             DialogEventUtils.dispatchCloseEvent(eventManagerNode, this.dialog, this, DialogCloseType.OVERRIDE);
         }
 
-        SampNativeFunction.showPlayerDialog(id, dialog.getId(), style.getValue(), caption, text, button1, button2);
+        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.showPlayerDialog(id, dialog.getId(), style.getValue(), caption, text, button1, button2));
         this.dialog = dialog;
 
         DialogEventUtils.dispatchShowEvent(eventManagerNode, dialog, this);
