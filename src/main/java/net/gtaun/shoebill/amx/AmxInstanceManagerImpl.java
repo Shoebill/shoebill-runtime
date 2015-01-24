@@ -1,15 +1,17 @@
 package net.gtaun.shoebill.amx;
 
+import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.event.amx.AmxLoadEvent;
 import net.gtaun.shoebill.event.amx.AmxUnloadEvent;
 import net.gtaun.util.event.EventManager;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class AmxInstanceManagerImpl implements AmxInstanceManager {
     private final Set<AmxInstance> instances;
     private final EventManager eventManager;
-    private final Map<AmxInstance, Set<AmxHook>> amxHooks;
+    private final Map<AmxInstance, Set<Consumer<AmxCallEvent>>> amxHooks;
 
     public AmxInstanceManagerImpl(EventManager eventManager, int[] existedHandles) {
         this.eventManager = eventManager;
@@ -24,7 +26,7 @@ public class AmxInstanceManagerImpl implements AmxInstanceManager {
     public void onAmxLoad(int handle) {
         AmxInstance instance = new AmxInstanceImpl(handle);
         instances.add(instance);
-
+        amxHooks.put(instance, new HashSet<>());
         AmxLoadEvent event = new AmxLoadEvent(instance);
         eventManager.dispatchEvent(event, this);
     }
@@ -32,7 +34,7 @@ public class AmxInstanceManagerImpl implements AmxInstanceManager {
     public void onAmxUnload(int handle) {
         AmxInstance instance = new AmxInstanceImpl(handle);
         instances.remove(instance);
-
+        amxHooks.remove(instance);
         AmxUnloadEvent event = new AmxUnloadEvent(instance);
         eventManager.dispatchEvent(event, this);
     }
@@ -43,9 +45,18 @@ public class AmxInstanceManagerImpl implements AmxInstanceManager {
     }
 
     @Override
-    public Set<AmxHook> getAmxHooks(AmxInstance instance) {
+    public Set<Consumer<AmxCallEvent>> getAmxHooks(AmxInstance instance) {
         if (amxHooks.containsKey(instance))
             return Collections.unmodifiableSet(amxHooks.get(instance));
         return null;
+    }
+
+    @Override
+    public void hook(String functionName, Consumer<AmxCallEvent> consumer, boolean isCallback, Class<?>... classes) {
+        for (AmxInstance instance : instances) {
+            Set<Consumer<AmxCallEvent>> hooks = amxHooks.get(instance);
+            hooks.add(consumer);
+        }
+        SampNativeFunction.registerHookArguments(functionName, isCallback, classes);
     }
 }

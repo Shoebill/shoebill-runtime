@@ -28,14 +28,4 @@ public class AmxInstanceImpl implements AmxInstance {
             return null;
         return new AmxCallableImpl(this, funchandle, name, AmxCallableType.NATIVE);
     }
-
-    @Override
-    public void hookCallback(String name, AmxHook hook) { // new functions for 1.1
-
-    }
-
-    @Override
-    public void hookNative(String name, AmxHook hook) { // new functions for 1.1
-
-    }
 }

@@ -71,20 +71,23 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
 
         @Override
         public int onPlayerConnect(int playerid) {
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerConnect(playerid)));
-            return 1;
+            int[] ret = {1};
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerConnect(playerid)));
+            return ret[0];
         }
 
         @Override
         public int onPlayerDisconnect(int playerid, int reason) {
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerDisconnect(playerid, reason)));
-            return 1;
+            int[] ret = {1};
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerDisconnect(playerid, reason)));
+            return ret[0];
         }
 
         @Override
         public int onPlayerSpawn(int playerid) {
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerSpawn(playerid)));
-            return 1;
+            int[] ret = {1};
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerSpawn(playerid)));
+            return ret[0];
         }
 
         @Override
@@ -202,8 +205,9 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
 
         @Override
         public int onVehicleMod(int playerid, int vehicleid, int componentid) {
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onVehicleMod(playerid, vehicleid, componentid)));
-            return 1;
+            int[] ret = {1};
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onVehicleMod(playerid, vehicleid, componentid)));
+            return ret[0];
         }
 
         @Override
@@ -220,8 +224,9 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
 
         @Override
         public int onVehicleRespray(int playerid, int vehicleid, int color1, int color2) {
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onVehicleRespray(playerid, vehicleid, color1, color2)));
-            return 1;
+            int[] ret = {1};
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onVehicleRespray(playerid, vehicleid, color1, color2)));
+            return ret[0];
         }
 
         @Override
@@ -232,8 +237,9 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
 
         @Override
         public int onUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX, float newY, float newZ, float vel_x, float vel_y, float vel_z) {
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onUnoccupiedVehicleUpdate(vehicleid, playerid, passengerSeat, newX, newY, newZ, vel_x, vel_y, vel_z)));
-            return 1;
+            int[] ret = {1};
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onUnoccupiedVehicleUpdate(vehicleid, playerid, passengerSeat, newX, newY, newZ, vel_x, vel_y, vel_z)));
+            return ret[0];
         }
 
         @Override
@@ -307,8 +313,9 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
 
         @Override
         public int onPlayerTakeDamage(int playerId, int issuerId, float amount, int weaponId, int bodypart) {
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerTakeDamage(playerId, issuerId, amount, weaponId, bodypart)));
-            return 1;
+            int[] ret = {0};
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerTakeDamage(playerId, issuerId, amount, weaponId, bodypart)));
+            return ret[0];
         }
 
         @Override
@@ -376,8 +383,9 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
 
         @Override
         public int onTrailerUpdate(int playerid, int vehicleid) {
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onTrailerUpdate(playerid, vehicleid)));
-            return 1;
+            int[] ret = {0};
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onTrailerUpdate(playerid, vehicleid)));
+            return ret[0];
         }
 
         @Override

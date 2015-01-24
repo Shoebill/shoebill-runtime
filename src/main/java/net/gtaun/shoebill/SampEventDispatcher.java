@@ -119,7 +119,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerConnectEvent event = new PlayerConnectEvent(player);
             rootEventManager.dispatchEvent(event, player);
 
-            return 1;
+            return event.getResponse();
         } catch (Throwable e) {
             e.printStackTrace();
             return 0;
@@ -140,7 +140,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
             rootEventManager.dispatchEvent(event, player);
 
             sampObjectStore.setPlayer(playerId, null);
-            return 1;
+            return event.getResponse();
         } catch (Throwable e) {
             e.printStackTrace();
             return 0;
@@ -155,7 +155,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerSpawnEvent event = new PlayerSpawnEvent(player);
             rootEventManager.dispatchEvent(event, player);
 
-            return 1;
+            return event.getResponse();
         } catch (Throwable e) {
             e.printStackTrace();
             return 0;
@@ -219,7 +219,6 @@ public class SampEventDispatcher implements SampCallbackHandler {
     public int onPlayerText(int playerId, String text) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
-
             PlayerTextEvent event = new PlayerTextEvent(player, text);
             rootEventManager.dispatchEvent(event, player);
             return event.getResponse();
@@ -235,7 +234,6 @@ public class SampEventDispatcher implements SampCallbackHandler {
             Player player = sampObjectStore.getPlayer(playerId);
             PlayerCommandEvent event = new PlayerCommandEvent(player, cmdtext);
             rootEventManager.dispatchEvent(event, player);
-
             return event.getResponse();
         } catch (Throwable e) {
             e.printStackTrace();
@@ -473,7 +471,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
             VehicleModEvent event = new VehicleModEvent(vehicle, componentId);
             rootEventManager.dispatchEvent(event, vehicle, player);
 
-            return 1;
+            return event.getResponse();
         } catch (Throwable e) {
             e.printStackTrace();
             return 0;
@@ -520,7 +518,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
             VehicleResprayEvent event = new VehicleResprayEvent(vehicle, color1, color2);
             rootEventManager.dispatchEvent(event, vehicle, player);
 
-            return 1;
+            return event.getResponse();
         } catch (Throwable e) {
             e.printStackTrace();
             return 0;
@@ -553,7 +551,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
             location.set(newX, newY, newZ);
             UnoccupiedVehicleUpdateEvent event = new UnoccupiedVehicleUpdateEvent(vehicle, player, location, new Vector3D(vel_x, vel_y, vel_z));
             rootEventManager.dispatchEvent(event, vehicle, player);
-            return 1;
+            return event.getResponse();
         } catch (Throwable e) {
             e.printStackTrace();
             return 0;
@@ -616,7 +614,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerKeyStateChangeEvent event = new PlayerKeyStateChangeEvent(player, new PlayerKeyStateImpl(player, oldKeys));
             rootEventManager.dispatchEvent(event, player);
 
-            return 1;
+            return event.getResponse();
         } catch (Throwable e) {
             e.printStackTrace();
             return 0;
@@ -753,7 +751,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerTakeDamageEvent event = new PlayerTakeDamageEvent(player, issuer, amount, weaponId, bodypart);
             rootEventManager.dispatchEvent(event, player);
 
-            return 1;
+            return event.getResponse();
         } catch (Throwable e) {
             e.printStackTrace();
             return 0;
@@ -945,7 +943,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleid);
             TrailerUpdateEvent event = new TrailerUpdateEvent(vehicle, player);
             rootEventManager.dispatchEvent(event, vehicle, player);
-            return 1;
+            return event.getResponse();
         } catch (Throwable e) {
             e.printStackTrace();
             return 0;
