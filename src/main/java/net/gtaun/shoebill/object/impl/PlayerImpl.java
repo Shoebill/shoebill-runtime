@@ -774,12 +774,7 @@ public class PlayerImpl implements Player {
     @Override
     public void spawn() {
         if (!isOnline()) return;
-
-        /*SampNativeFunction.spawnPlayer(id);
-          is buggy with 1.1 shoebill?
-         */
-        toggleSpectating(true);
-        toggleSpectating(false);
+        SampNativeFunction.spawnPlayer(id);
     }
 
     @Override
