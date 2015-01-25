@@ -1,6 +1,5 @@
 package net.gtaun.shoebill.amx;
 
-import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.event.amx.AmxLoadEvent;
 import net.gtaun.shoebill.event.amx.AmxUnloadEvent;
 import net.gtaun.util.event.EventManager;
@@ -53,10 +52,11 @@ public class AmxInstanceManagerImpl implements AmxInstanceManager {
 
     @Override
     public void hook(String functionName, Consumer<AmxCallEvent> consumer, boolean isCallback, Class<?>... classes) {
-        for (AmxInstance instance : instances) {
+        /*for (AmxInstance instance : instances) {
             Set<Consumer<AmxCallEvent>> hooks = amxHooks.get(instance);
             hooks.add(consumer);
         }
-        SampNativeFunction.registerHookArguments(functionName, isCallback, classes);
+        SampNativeFunction.registerHookArguments(functionName, isCallback, classes);*/
+        //Not yet implemented
     }
 }
