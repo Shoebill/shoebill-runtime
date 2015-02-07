@@ -62,6 +62,7 @@ public class TextdrawImpl implements Textdraw {
         } else this.id = id;
         if (this.id == INVALID_ID) throw new CreationFailedException();
         store.setTextdraw(this.id, this);
+        this.text = text;
         for (int i = 0; i < isPlayerShowed.length; i++)
             isPlayerShowed[i] = false;
     }

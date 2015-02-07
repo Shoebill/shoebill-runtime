@@ -17,7 +17,6 @@
 package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampNativeFunction;
-import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.constant.PlayerMarkerMode;
 import net.gtaun.shoebill.constant.WeaponModel;
@@ -35,6 +34,7 @@ public class WorldImpl implements World {
     private float nameTagDrawDistance = 70;
     private float chatRadius = -1;
     private float playerMarkerRadius = -1;
+    private int weatherId = 10;
 
 
     public WorldImpl(SampObjectStoreImpl store) {
@@ -126,12 +126,13 @@ public class WorldImpl implements World {
 
     @Override
     public int getWeather() {
-        return SampNativeFunction.getServerVarAsInt("weather");
+        return weatherId;
     }
 
     @Override
     public void setWeather(int weatherid) {
         SampNativeFunction.setWeather(weatherid);
+        this.weatherId = weatherid;
     }
 
     @Override

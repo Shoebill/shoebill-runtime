@@ -64,6 +64,7 @@ public class PlayerTextdrawImpl implements PlayerTextdraw {
         } else this.id = id;
         if (id == INVALID_ID) throw new CreationFailedException();
         store.setPlayerTextdraw(player, this.id, this);
+        this.text = text;
     }
 
     @Override
