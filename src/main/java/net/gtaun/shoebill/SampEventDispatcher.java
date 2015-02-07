@@ -846,18 +846,26 @@ public class SampEventDispatcher implements SampCallbackHandler {
             if (playerobject == 0) {
                 SampObject object = sampObjectStore.getObject(objectid);
 
-                SampNativeFunction.setObjectPos(objectid, fX, fY, fZ);
-                SampNativeFunction.setObjectRot(objectid, fRotX, fRotY, fRotZ);
+                Location newLocation = object.getLocation().clone();
+                newLocation.x = fX;
+                newLocation.y = fY;
+                newLocation.z = fZ;
 
-                PlayerEditObjectEvent event = new PlayerEditObjectEvent(player, object, editResponse);
+                Vector3D newRotation = new Vector3D(fRotX, fRotY, fRotZ);
+
+                PlayerEditObjectEvent event = new PlayerEditObjectEvent(player, object, editResponse, newLocation, newRotation);
                 rootEventManager.dispatchEvent(event, player, object);
             } else {
                 PlayerObject object = sampObjectStore.getPlayerObject(player, objectid);
 
-                SampNativeFunction.setPlayerObjectPos(playerid, objectid, fX, fY, fZ);
-                SampNativeFunction.setPlayerObjectRot(playerid, objectid, fRotX, fRotY, fRotZ);
+                Location newLocation = object.getLocation().clone();
+                newLocation.x = fX;
+                newLocation.y = fY;
+                newLocation.z = fZ;
 
-                PlayerEditPlayerObjectEvent event = new PlayerEditPlayerObjectEvent(player, object, editResponse);
+                Vector3D newRotation = new Vector3D(fRotX, fRotY, fRotZ);
+
+                PlayerEditPlayerObjectEvent event = new PlayerEditPlayerObjectEvent(player, object, editResponse, newLocation, newRotation);
                 rootEventManager.dispatchEvent(event, player, object);
             }
 

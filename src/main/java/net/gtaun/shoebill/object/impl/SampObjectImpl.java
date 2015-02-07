@@ -65,13 +65,9 @@ public class SampObjectImpl implements SampObject {
         this.location = new Location(loc);
         this.drawDistance = drawDistance;
 
-        if (doInit || id < 0) {
+        if (doInit || id < 0)
             SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createObject(modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance));
-            System.out.println("Created new obj with id " + this.id);
-        } else {
-            this.id = id;
-            System.out.println("Created obj with existing id: " + this.id);
-        }
+        else this.id = id;
         if (this.id == INVALID_ID) throw new CreationFailedException();
         store.setObject(this.id, this);
         eventManagerNode = eventManager.createChildNode();
