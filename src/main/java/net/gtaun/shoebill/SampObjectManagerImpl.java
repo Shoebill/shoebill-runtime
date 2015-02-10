@@ -21,6 +21,7 @@ import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
+import net.gtaun.shoebill.event.player.PlayerPickupEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.*;
 import net.gtaun.shoebill.object.DialogId.OnCloseHandler;
@@ -30,6 +31,7 @@ import net.gtaun.shoebill.object.Timer.TimerCallback;
 import net.gtaun.shoebill.object.impl.*;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.Attentions;
+import net.gtaun.util.event.EventHandler;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.HandlerPriority;
 
@@ -228,6 +230,17 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
     public Pickup createPickup(int modelId, int type, Location loc) throws CreationFailedException {
         try {
             return new PickupImpl(eventManagerNode, this, modelId, type, loc);
+        } catch (Throwable e) {
+            throw new CreationFailedException(e);
+        }
+    }
+
+    @Override
+    public Pickup createPickup(int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> event) throws CreationFailedException {
+        try {
+            Pickup pickup = createPickup(modelId, type, loc);
+            eventManagerNode.registerHandler(PlayerPickupEvent.class, HandlerPriority.NORMAL, Attentions.create().object(pickup), event);
+            return pickup;
         } catch (Throwable e) {
             throw new CreationFailedException(e);
         }
