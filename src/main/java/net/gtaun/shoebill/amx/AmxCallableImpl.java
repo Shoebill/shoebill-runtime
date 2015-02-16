@@ -27,6 +27,12 @@ public class AmxCallableImpl implements AmxCallable {
 
     @Override
     public Object call(Object... args) {
+        for(int i = 0; i < args.length; i++) {
+            if(args[i] instanceof Boolean) {
+                Boolean bool = (Boolean) args[i];
+                args[i] = (bool) ? 1 : 0;
+            }
+        }
         try {
             if (type == AmxCallableType.NATIVE)
                 return SampNativeFunction.callFunction(amxInstance.getHandle(), id, args);

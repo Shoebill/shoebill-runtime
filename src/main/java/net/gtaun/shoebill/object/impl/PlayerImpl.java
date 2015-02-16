@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author MK124, JoJLlmAn
+ * @author MK124, JoJLlmAn, 123marvin123
  */
 public class PlayerImpl implements Player {
     private final SampObjectStore store;
@@ -1431,6 +1431,16 @@ public class PlayerImpl implements Player {
         if (!isOnline()) return "Offline";
 
         return SampNativeFunction.getPlayerVersion(id);
+    }
+
+    @Override
+    public LocationZone getMainZoneName() {
+        return LocationZone.getPlayerMainZone(this);
+    }
+
+    @Override
+    public LocationZone getZoneName() {
+        return LocationZone.getPlayerZone(this);
     }
 
     @Override

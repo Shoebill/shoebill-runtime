@@ -733,7 +733,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
             if (player != null && player instanceof PlayerImpl)
                 ((PlayerImpl) player).setDialog(null);
 
-            int ret = DialogEventUtils.dispatchResponeEvent(rootEventManager, dialog, player, response, listitem, inputtext);
+            int ret = DialogEventUtils.dispatchResponseEvent(rootEventManager, dialog, player, response, listitem, inputtext);
             DialogEventUtils.dispatchCloseEvent(rootEventManager, dialog, player, DialogCloseType.RESPOND);
             return ret;
         } catch (Throwable e) {

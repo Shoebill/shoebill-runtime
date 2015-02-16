@@ -17,7 +17,7 @@ public class DialogEventUtils {
 
     }
 
-    public static int dispatchResponeEvent(EventManager eventManager, DialogId dialog, Player player, int response, int listitem, String inputtext) {
+    public static int dispatchResponseEvent(EventManager eventManager, DialogId dialog, Player player, int response, int listitem, String inputtext) {
         DialogResponseEvent event = new DialogResponseEvent(dialog, player, response, listitem, inputtext);
         if (dialog instanceof DialogIdImpl) {
             DialogIdImpl impl = (DialogIdImpl) dialog;

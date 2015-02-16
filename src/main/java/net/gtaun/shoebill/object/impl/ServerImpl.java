@@ -20,6 +20,7 @@ import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStore;
 import net.gtaun.shoebill.constant.VehicleModelInfoType;
 import net.gtaun.shoebill.constant.WeaponModel;
+import net.gtaun.shoebill.data.Animation;
 import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.object.Player;
@@ -32,7 +33,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class ServerImpl implements Server {
     private final SampObjectStore store;
-
 
     public ServerImpl(SampObjectStore store) {
         this.store = store;
@@ -184,5 +184,10 @@ public class ServerImpl implements Server {
     @Override
     public void setPassword(String password) {
         SampNativeFunction.sendRconCommand("password " + password);
+    }
+
+    @Override
+    public Animation getAnimationName(int animationIndex) {
+        return null;
     }
 }
