@@ -188,6 +188,7 @@ public class ServerImpl implements Server {
 
     @Override
     public Animation getAnimationName(int animationIndex) {
-        return null;
+        String[] animationInfo = SampNativeFunction.getAnimationName(animationIndex);
+        return new Animation(animationInfo[0], animationInfo[1]);
     }
 }
