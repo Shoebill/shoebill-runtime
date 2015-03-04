@@ -16,6 +16,8 @@
 
 package net.gtaun.shoebill;
 
+import net.gtaun.shoebill.amx.AmxCallEvent;
+import net.gtaun.shoebill.amx.AmxHook;
 import net.gtaun.shoebill.constant.*;
 import net.gtaun.shoebill.data.*;
 import net.gtaun.shoebill.event.checkpoint.CheckpointEnterEvent;
@@ -41,6 +43,7 @@ import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.EventManagerRoot;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author MK124 & 123marvin123
@@ -2021,6 +2024,18 @@ public class SampEventDispatcher implements SampCallbackHandler {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    @Override
+    public int[] onHookCall(String name, Object... objects) {
+        AmxCallEvent event = new AmxCallEvent(name, objects);
+        try {
+            Set<AmxHook> hooks = Shoebill.get().getAmxInstanceManager().getAmxHooks();
+            hooks.stream().filter(hook -> hook.getName().equals(name)).forEach(hook -> hook.getOnCall().accept(event));
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return new int[]{event.getReturnValue(), event.isDisallow()};
     }
 
     public void executeWithoutEvent(Runnable func) {

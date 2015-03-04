@@ -789,6 +789,13 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onAmxChangeVehicleColor(vehicleid, color1, color2)));
             return 1;
         }
+
+        @Override
+        public int[] onHookCall(String name, Object... objects) {
+            Object[] event = {new int[]{0, 0}};
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> event[0] = handler.onHookCall(name, objects)));
+            return (int[]) event[0];
+        }
     };
 
     public SampCallbackManagerImpl() {

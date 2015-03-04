@@ -515,4 +515,8 @@ public interface SampCallbackHandler {
     default int onAmxChangeVehicleColor(int vehicleid, int color1, int color2) {
         return 1;
     }
+
+    default int[] onHookCall(String name, Object... objects) {
+        return new int[]{0, 0};
+    }
 }
