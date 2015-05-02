@@ -442,6 +442,35 @@ public class VehicleImpl implements Vehicle {
     }
 
     @Override
+    public VehicleState getDoors() {
+        VehicleState params = new VehicleState();
+        SampNativeFunction.getVehicleParamsCarDoors(id, params);
+        return params;
+    }
+
+    @Override
+    public VehicleState getWindows() {
+        VehicleState params = new VehicleState();
+        SampNativeFunction.getVehicleParamsCarWindows(id, params);
+        return params;
+    }
+
+    @Override
+    public int getSirenState() {
+        return SampNativeFunction.getVehicleParamsSirenState(id);
+    }
+
+    @Override
+    public void setDoors(VehicleState vehicleState) {
+        SampNativeFunction.setVehicleParamsCarDoors(id, vehicleState.driver, vehicleState.passenger, vehicleState.backLeft, vehicleState.backRight);
+    }
+
+    @Override
+    public void setWindows(VehicleState vehicleState) {
+        SampNativeFunction.setVehicleParamsCarWindows(id, vehicleState.driver, vehicleState.passenger, vehicleState.backLeft, vehicleState.backRight);
+    }
+
+    @Override
     public void setAngularVelocity(Velocity velocity) {
         if (isDestroyed()) return;
 

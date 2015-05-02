@@ -220,4 +220,9 @@ public class WorldImpl implements World {
     public void manualEngineAndLights() {
         SampNativeFunction.manualVehicleEngineAndLights();
     }
+
+    @Override
+    public void setObjectsDefaultCameraCol(boolean disable) {
+        SampNativeFunction.setObjectsDefaultCameraCol(disable ? 1 : 0);
+    }
 }

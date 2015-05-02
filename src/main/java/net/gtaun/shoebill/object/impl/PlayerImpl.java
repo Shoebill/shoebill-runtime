@@ -1543,4 +1543,49 @@ public class PlayerImpl implements Player {
     public PlayerVarType getVarType(String name) {
         return PlayerVarType.get(SampNativeFunction.getPVarType(id, name));
     }
+
+    @Override
+    public void disableRemoteVehicleCollisions(boolean b) {
+        SampNativeFunction.disableRemoteVehicleCollisions(id, b ? 1 : 0);
+    }
+
+    @Override
+    public void enablePlayerCameraTarget(boolean b) {
+        SampNativeFunction.enablePlayerCameraTarget(id, b ? 1 : 0);
+    }
+
+    @Override
+    public Actor getCameraTargetActor() {
+        int actorId = SampNativeFunction.getPlayerCameraTargetActor(id);
+        if (actorId != Actor.INVALID_ACTOR) return Actor.get(actorId);
+        return null;
+    }
+
+    @Override
+    public SampObject getCameraTargetObject() {
+        int objectId = SampNativeFunction.getPlayerCameraTargetObject(id);
+        if (objectId != SampObject.INVALID_ID) return SampObject.get(objectId);
+        return null;
+    }
+
+    @Override
+    public Player getCameraTargetPlayer() {
+        int playerId = SampNativeFunction.getPlayerCameraTargetPlayer(id);
+        if (playerId != Player.INVALID_ID) return Player.get(playerId);
+        return null;
+    }
+
+    @Override
+    public Vehicle getCameraTargetVehicle() {
+        int vehicleId = SampNativeFunction.getPlayerCameraTargetVehicle(id);
+        if (vehicleId != Vehicle.INVALID_ID) return Vehicle.get(vehicleId);
+        return null;
+    }
+
+    @Override
+    public Actor getTargetActor() {
+        int actorId = SampNativeFunction.getPlayerTargetActor(id);
+        if (actorId != Actor.INVALID_ACTOR) return Actor.get(actorId);
+        return null;
+    }
 }

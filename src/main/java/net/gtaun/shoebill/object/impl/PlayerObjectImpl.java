@@ -315,4 +315,14 @@ public class PlayerObjectImpl implements PlayerObject {
 
         SampNativeFunction.setPlayerObjectMaterialText(player.getId(), id, text, 0, ObjectMaterialSize.SIZE_256x128.getValue(), "Arial", 24, 1, 0xFFFFFFFF, 0, 0);
     }
+
+    @Override
+    public void setNoCameraCol() {
+        SampNativeFunction.setObjectNoCameraCol(id);
+    }
+
+    @Override
+    public void setPlayerObjectNoCameraCol() {
+        SampNativeFunction.setPlayerObjectNoCameraCol(player.getId(), id);
+    }
 }

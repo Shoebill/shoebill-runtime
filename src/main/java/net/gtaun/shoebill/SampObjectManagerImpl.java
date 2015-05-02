@@ -376,4 +376,15 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
             throw new CreationFailedException(e);
         }
     }
+
+    @Override
+    public Actor createActor(int modelid, Vector3D position, float angle) throws CreationFailedException {
+        try {
+            ActorImpl actor = new ActorImpl(modelid, position, angle);
+            super.setActor(actor.getId(), actor);
+            return actor;
+        } catch (Throwable e) {
+            throw new CreationFailedException(e);
+        }
+    }
 }

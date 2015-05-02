@@ -519,4 +519,20 @@ public interface SampCallbackHandler {
     default int[] onHookCall(String name, Object... objects) {
         return new int[]{0, 0};
     }
+
+    default int onActorStreamIn(int actor, int playerid) {
+        return 1;
+    }
+
+    default int onActorStreamOut(int actor, int playerid) {
+        return 1;
+    }
+
+    default int onPlayerGiveDamageActor(int playerid, int actor, int amount, int weapon, int bodypart) {
+        return 1;
+    }
+
+    default int onVehicleSirenStateChange(int playerid, int vehicleid, int newstate) {
+        return 1;
+    }
 }

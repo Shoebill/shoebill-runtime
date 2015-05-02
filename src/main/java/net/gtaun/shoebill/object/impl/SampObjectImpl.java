@@ -352,4 +352,9 @@ public class SampObjectImpl implements SampObject {
     public void setMaterialText(String text) {
         setMaterialText(text, 0, ObjectMaterialSize.SIZE_256x128, "Arial", 24, true, Color.WHITE, Color.TRANSPARENT, ObjectMaterialTextAlign.LEFT);
     }
+
+    @Override
+    public void setNoCameraCol() {
+        SampNativeFunction.setObjectNoCameraCol(id);
+    }
 }

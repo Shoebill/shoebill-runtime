@@ -51,6 +51,7 @@ public class SampObjectStoreImpl implements SampObjectStore {
     public static final int MAX_PLAYER_LABELS = 1024;
     public static final int MAX_PICKUPS = 4096;
     public static final int MAX_CLASSES = 300;
+    public static final int MAX_ACTORS = 1000;
     protected final EventManager eventManagerNode;
     private Server server;
     private World world;
@@ -65,6 +66,7 @@ public class SampObjectStoreImpl implements SampObjectStore {
     private PlayerTextdraw[][] playerTextdrawsArray = new PlayerTextdraw[MAX_PLAYERS][];
     private Zone[] zones = new Zone[MAX_ZONES];
     private Menu[] menus = new Menu[MAX_MENUS];
+    private Actor[] actors = new Actor[MAX_ACTORS];
     private SpawnInfo[] playerClasses = new SpawnInfo[MAX_CLASSES];
     private Collection<Reference<TimerImpl>> timers = new ConcurrentLinkedQueue<>();
     private Map<Integer, Reference<DialogId>> dialogs = new ConcurrentHashMap<>();
@@ -400,6 +402,32 @@ public class SampObjectStoreImpl implements SampObjectStore {
         return items;
     }
 
+    @Override
+    public Collection<Actor> getActors() {
+        return new ArrayList<>(Arrays.asList(actors));
+    }
+
+    @Override
+    public Actor getActor(int id) {
+        if (id < 0 || id > MAX_ACTORS) return null;
+        return actors[id];
+    }
+
+    @Override
+    public int getVehiclePoolSize() {
+        return SampNativeFunction.getVehiclePoolSize();
+    }
+
+    @Override
+    public int getPlayerPoolSize() {
+        return SampNativeFunction.getPlayerPoolSize();
+    }
+
+    @Override
+    public int getActorPoolSize() {
+        return SampNativeFunction.getActorPoolSize();
+    }
+
     public Collection<Timer> getTimers() {
         Collection<Timer> items = new ArrayList<>();
         Collection<Reference<TimerImpl>> unusedItems = new ArrayList<>();
@@ -488,6 +516,10 @@ public class SampObjectStoreImpl implements SampObjectStore {
     }
 
     public void setPlayerClass(int id, SpawnInfo playerClass) { playerClasses[id] = playerClass; }
+
+    public void setActor(int id, Actor actor) {
+        actors[id] = actor;
+    }
 
     public void putTimer(TimerImpl timer) {
         clearUnusedReferences(timers);

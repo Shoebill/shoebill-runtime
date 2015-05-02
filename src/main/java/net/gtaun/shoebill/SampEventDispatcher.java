@@ -20,6 +20,8 @@ import net.gtaun.shoebill.amx.AmxCallEvent;
 import net.gtaun.shoebill.amx.AmxHook;
 import net.gtaun.shoebill.constant.*;
 import net.gtaun.shoebill.data.*;
+import net.gtaun.shoebill.event.actor.ActorStreamInEvent;
+import net.gtaun.shoebill.event.actor.ActorStreamOutEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointLeaveEvent;
 import net.gtaun.shoebill.event.checkpoint.RaceCheckpointEnterEvent;
@@ -2036,6 +2038,63 @@ public class SampEventDispatcher implements SampCallbackHandler {
             e.printStackTrace();
         }
         return new int[]{event.getReturnValue(), event.isDisallow()};
+    }
+
+    @Override
+    public int onActorStreamIn(int actor, int playerid) {
+        try {
+            Actor actorObject = Actor.get(actor);
+            Player player = Player.get(playerid);
+            ActorStreamInEvent event = new ActorStreamInEvent(actorObject, player);
+            rootEventManager.dispatchEvent(event, actorObject, player);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return 0;
+        }
+        return 1;
+    }
+
+    @Override
+    public int onActorStreamOut(int actor, int playerid) {
+        try {
+            Actor actorObject = Actor.get(actor);
+            Player player = Player.get(playerid);
+            ActorStreamOutEvent event = new ActorStreamOutEvent(actorObject, player);
+            rootEventManager.dispatchEvent(event, actorObject, player);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return 0;
+        }
+        return 1;
+    }
+
+    @Override
+    public int onPlayerGiveDamageActor(int playerid, int actor, int amount, int weapon, int bodypart) {
+        try {
+            Player player = Player.get(playerid);
+            Actor actorObject = Actor.get(actor);
+            WeaponModel model = WeaponModel.get(weapon);
+            PlayerDamageActorEvent event = new PlayerDamageActorEvent(player, actorObject, amount, model, bodypart);
+            rootEventManager.dispatchEvent(event, player, actorObject, model);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return 0;
+        }
+        return 1;
+    }
+
+    @Override
+    public int onVehicleSirenStateChange(int playerid, int vehicleid, int newstate) {
+        try {
+            Player player = Player.get(playerid);
+            Vehicle vehicle = Vehicle.get(vehicleid);
+            VehicleSirenStateChangeEvent event = new VehicleSirenStateChangeEvent(vehicle, player, newstate > 0);
+            rootEventManager.dispatchEvent(event, vehicle, player, newstate > 0);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return 0;
+        }
+        return 1;
     }
 
     public void executeWithoutEvent(Runnable func) {

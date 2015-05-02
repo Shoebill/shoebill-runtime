@@ -796,6 +796,30 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> event[0] = handler.onHookCall(name, objects)));
             return (int[]) event[0];
         }
+
+        @Override
+        public int onActorStreamIn(int actor, int playerid) {
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onActorStreamIn(actor, playerid)));
+            return 1;
+        }
+
+        @Override
+        public int onActorStreamOut(int actor, int playerid) {
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onActorStreamOut(actor, playerid)));
+            return 1;
+        }
+
+        @Override
+        public int onPlayerGiveDamageActor(int playerid, int actor, int amount, int weapon, int bodypart) {
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerGiveDamageActor(playerid, actor, amount, weapon, bodypart)));
+            return 1;
+        }
+
+        @Override
+        public int onVehicleSirenStateChange(int playerid, int vehicleid, int newstate) {
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onVehicleSirenStateChange(playerid, vehicleid, newstate)));
+            return 1;
+        }
     };
 
     public SampCallbackManagerImpl() {
