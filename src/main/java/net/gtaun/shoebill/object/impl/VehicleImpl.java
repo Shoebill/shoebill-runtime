@@ -47,6 +47,7 @@ public class VehicleImpl implements Vehicle {
     private int interiorId;
     private int color1, color2;
     private int respawnDelay;
+    private boolean hasSiren;
 
     private VehicleParamImpl param;
     private VehicleComponentImpl component;
@@ -62,7 +63,11 @@ public class VehicleImpl implements Vehicle {
         this(eventManager, store, modelid, loc, color1, color2, respawnDelay, true, -1);
     }
 
-    public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, AngledLocation loc, int color1, int color2, int respawnDelay, boolean doInit, int id) throws CreationFailedException {
+    public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, AngledLocation loc, int color1, int color2, int respawnDelay, boolean doInit, int id) {
+        this(eventManager, store, modelId, loc, color1, color2, respawnDelay, doInit, id, false);
+    }
+
+    public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, AngledLocation loc, int color1, int color2, int respawnDelay, boolean doInit, int id, boolean addsiren) throws CreationFailedException {
         this.store = store;
         eventManagerNode = eventManager.createChildNode();
         switch (modelId) {
@@ -72,19 +77,19 @@ public class VehicleImpl implements Vehicle {
             case 570:
             case 590:
                 if (doInit || id < 0)
-                    SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.addStaticVehicleEx(modelId, loc.x, loc.y, loc.z, loc.angle, color1, color2, respawnDelay));
+                    SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.addStaticVehicleEx(modelId, loc.x, loc.y, loc.z, loc.angle, color1, color2, respawnDelay, addsiren));
                 else this.id = id;
                 isStatic = true;
                 break;
 
             default:
                 if (doInit || id < 0)
-                    SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createVehicle(modelId, loc.x, loc.y, loc.z, loc.angle, color1, color2, respawnDelay));
+                    SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createVehicle(modelId, loc.x, loc.y, loc.z, loc.angle, color1, color2, respawnDelay, addsiren));
                 else this.id = id;
         }
         if (this.id == INVALID_ID) throw new CreationFailedException();
         store.setVehicle(this.id, this);
-        initialize(modelId, interiorId, loc.getWorldId(), color1, color2, respawnDelay);
+        initialize(modelId, interiorId, loc.getWorldId(), color1, color2, respawnDelay, addsiren);
     }
 
     public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, float x, float y, float z, float angle, int interiorid, int worldid,
@@ -92,11 +97,12 @@ public class VehicleImpl implements Vehicle {
         this(eventManager, store, modelId, new AngledLocation(x, y, z, interiorid, worldid, angle), color1, color2, respawnDelay, doInit, id);
     }
 
-    private void initialize(int modelId, int interiorId, int worldId, int color1, int color2, int respawnDelay) throws CreationFailedException {
+    private void initialize(int modelId, int interiorId, int worldId, int color1, int color2, int respawnDelay, boolean addsiren) throws CreationFailedException {
         this.modelId = modelId;
         this.interiorId = interiorId;
         this.color1 = color1;
         this.color2 = color2;
+        this.hasSiren = addsiren;
         this.respawnDelay = respawnDelay;
         SampNativeFunction.linkVehicleToInterior(id, interiorId);
         SampNativeFunction.setVehicleVirtualWorld(id, worldId);
@@ -475,5 +481,10 @@ public class VehicleImpl implements Vehicle {
         if (isDestroyed()) return;
 
         SampNativeFunction.setVehicleAngularVelocity(id, velocity.getX(), velocity.getY(), velocity.getZ());
+    }
+
+    @Override
+    public boolean hasSiren() {
+        return hasSiren;
     }
 }

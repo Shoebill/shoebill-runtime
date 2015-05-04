@@ -198,9 +198,9 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
     }
 
     @Override
-    public Vehicle createVehicle(int modelId, AngledLocation loc, int color1, int color2, int respawnDelay) throws CreationFailedException {
+    public Vehicle createVehicle(int modelId, AngledLocation loc, int color1, int color2, int respawnDelay, boolean addsiren) throws CreationFailedException {
         try {
-            return new VehicleImpl(eventManagerNode, this, modelId, loc, color1, color2, respawnDelay);
+            return new VehicleImpl(eventManagerNode, this, modelId, loc, color1, color2, respawnDelay, true, -1, addsiren);
         } catch (Throwable e) {
             throw new CreationFailedException(e);
         }
