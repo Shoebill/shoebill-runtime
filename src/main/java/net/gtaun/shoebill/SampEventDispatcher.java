@@ -2097,6 +2097,33 @@ public class SampEventDispatcher implements SampCallbackHandler {
         return 1;
     }
 
+    @Override
+    public int onAmxCreateActor(int id, int modelid, float x, float y, float z, float rotation) {
+        try {
+            Actor actor = new ActorImpl(modelid, new Vector3D(x, y, z), rotation, false, id);
+            sampObjectStore.setActor(id, actor);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return 0;
+        }
+        return 1;
+    }
+
+    @Override
+    public int onAmxDestroyActor(int id) {
+        try {
+            Actor actor = sampObjectStore.getActor(id);
+            if (actor != null && actor instanceof ActorImpl) {
+                ((ActorImpl) actor).destroyWithoutExec();
+                sampObjectStore.setActor(id, null);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return 0;
+        }
+        return 1;
+    }
+
     public void executeWithoutEvent(Runnable func) {
         this.active = false;
         func.run();

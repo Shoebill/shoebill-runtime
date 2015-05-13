@@ -1,5 +1,6 @@
 package net.gtaun.shoebill.object.impl;
 
+import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Vector3D;
@@ -21,7 +22,8 @@ public class ActorImpl implements Actor {
 
     public ActorImpl(int modelid, Vector3D pos, float angle, boolean doExec, int id) {
         this.modelid = modelid;
-        if (doExec) this.id = SampNativeFunction.createActor(modelid, pos.x, pos.y, pos.z, angle);
+        if (doExec)
+            SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createActor(modelid, pos.x, pos.y, pos.z, angle));
         else this.id = id;
     }
 
@@ -88,5 +90,10 @@ public class ActorImpl implements Actor {
     @Override
     public boolean isDestroyed() {
         return id < 0;
+    }
+
+    public void destroyWithoutExec() {
+        if (isDestroyed()) return;
+        this.id = -1;
     }
 }

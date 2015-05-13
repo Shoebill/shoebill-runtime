@@ -820,6 +820,18 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onVehicleSirenStateChange(playerid, vehicleid, newstate)));
             return 1;
         }
+
+        @Override
+        public int onAmxCreateActor(int id, int modelid, float x, float y, float z, float rotation) {
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onAmxCreateActor(id, modelid, x, y, z, rotation)));
+            return 1;
+        }
+
+        @Override
+        public int onAmxDestroyActor(int id) {
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onAmxDestroyActor(id)));
+            return 1;
+        }
     };
 
     public SampCallbackManagerImpl() {

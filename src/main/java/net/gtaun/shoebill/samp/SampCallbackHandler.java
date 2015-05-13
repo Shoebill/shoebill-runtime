@@ -516,6 +516,14 @@ public interface SampCallbackHandler {
         return 1;
     }
 
+    default int onAmxCreateActor(int id, int modelid, float x, float y, float z, float rotation) {
+        return 1;
+    }
+
+    default int onAmxDestroyActor(int id) {
+        return 1;
+    }
+
     default int[] onHookCall(String name, Object... objects) {
         return new int[]{0, 0};
     }
