@@ -82,8 +82,6 @@ public class PlayerImpl implements Player {
     }
 
     public void onPlayerUpdate() {
-        SampNativeFunction.getPlayerVelocity(PlayerImpl.this.id, velocity);
-
         updateCount++;
         if (updateCount < 0) updateCount = 0;
     }
@@ -202,6 +200,7 @@ public class PlayerImpl implements Player {
 
     @Override
     public Velocity getVelocity() {
+        SampNativeFunction.getPlayerVelocity(id, velocity);
         return velocity.clone();
     }
 
