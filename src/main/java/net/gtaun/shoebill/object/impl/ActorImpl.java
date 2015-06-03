@@ -3,6 +3,7 @@ package net.gtaun.shoebill.object.impl;
 import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.data.AngledLocation;
+import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.object.Actor;
 import net.gtaun.shoebill.object.Player;
@@ -12,7 +13,6 @@ import net.gtaun.shoebill.object.Player;
  * Copyright (c) 2015 Marvin Haschker. All rights reserved.
  */
 public class ActorImpl implements Actor {
-
     private int id, modelid;
 
 
@@ -39,7 +39,6 @@ public class ActorImpl implements Actor {
 
     @Override
     public AngledLocation getLocation() {
-
         AngledLocation pos = new AngledLocation();
         SampNativeFunction.getActorPos(id, pos);
 
@@ -50,8 +49,51 @@ public class ActorImpl implements Actor {
     }
 
     @Override
+    public int getVirtualWorld() {
+        return SampNativeFunction.getActorVirtualWorld(id);
+    }
+
+    @Override
+    public float getAngle() {
+        return SampNativeFunction.getActorFacingAngle(id);
+    }
+
+    @Override
     public float getHealth() {
         return SampNativeFunction.getActorHealth(id);
+    }
+
+    @Override
+    public void setLocation(AngledLocation loc) {
+        SampNativeFunction.setActorPos(id, loc.x, loc.y, loc.z);
+        SampNativeFunction.setActorVirtualWorld(id, loc.worldId);
+        SampNativeFunction.setActorFacingAngle(id, loc.angle);
+    }
+
+    @Override
+    public void setLocation(Location loc) {
+        SampNativeFunction.setActorPos(id, loc.x, loc.y, loc.z);
+        SampNativeFunction.setActorVirtualWorld(id, loc.worldId);
+    }
+
+    @Override
+    public void setLocation(Vector3D pos) {
+        SampNativeFunction.setActorPos(id, pos.x, pos.y, pos.z);
+    }
+
+    @Override
+    public void setAngle(float angle) {
+        SampNativeFunction.setActorFacingAngle(id, angle);
+    }
+
+    @Override
+    public void setVirtualWorld(int world) {
+        SampNativeFunction.setActorVirtualWorld(id, world);
+    }
+
+    @Override
+    public void setHealth(float health) {
+        SampNativeFunction.setActorHealth(id, health);
     }
 
     @Override
