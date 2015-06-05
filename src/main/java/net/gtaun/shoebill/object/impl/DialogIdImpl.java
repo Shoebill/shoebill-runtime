@@ -18,8 +18,12 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.constant.DialogStyle;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
+import net.gtaun.shoebill.event.dialog.DialogCloseEvent;
+import net.gtaun.shoebill.event.dialog.DialogResponseEvent;
+import net.gtaun.shoebill.event.dialog.DialogShowEvent;
 import net.gtaun.shoebill.object.DialogId;
 import net.gtaun.shoebill.object.Player;
+import net.gtaun.util.event.EventHandler;
 import net.gtaun.util.event.EventManager;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -34,12 +38,12 @@ public class DialogIdImpl implements DialogId {
     private final EventManager rootEventManager;
     private int id;
 
-    private OnResponseHandler onResponseHandler;
-    private OnShowHandler onShowHandler;
-    private OnCloseHandler onCloseHandler;
+    private EventHandler<DialogResponseEvent> onResponseHandler;
+    private EventHandler<DialogShowEvent> onShowHandler;
+    private EventHandler<DialogCloseEvent> onCloseHandler;
 
 
-    public DialogIdImpl(EventManager eventManager, int id, OnResponseHandler onResponse, OnShowHandler onShow, OnCloseHandler onClose) {
+    public DialogIdImpl(EventManager eventManager, int id, EventHandler<DialogResponseEvent> onResponse, EventHandler<DialogShowEvent> onShow, EventHandler<DialogCloseEvent> onClose) {
         this.rootEventManager = eventManager;
         this.id = id;
         this.onResponseHandler = onResponse;
@@ -77,15 +81,15 @@ public class DialogIdImpl implements DialogId {
         return id;
     }
 
-    public OnResponseHandler getOnResponseHandler() {
+    public EventHandler<DialogResponseEvent> getOnResponseHandler() {
         return onResponseHandler;
     }
 
-    public OnShowHandler getOnShowHandler() {
+    public EventHandler<DialogShowEvent> getOnShowHandler() {
         return onShowHandler;
     }
 
-    public OnCloseHandler getOnCloseHandler() {
+    public EventHandler<DialogCloseEvent> getOnCloseHandler() {
         return onCloseHandler;
     }
 

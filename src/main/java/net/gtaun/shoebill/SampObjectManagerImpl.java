@@ -21,12 +21,12 @@ import net.gtaun.shoebill.data.Color;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
+import net.gtaun.shoebill.event.dialog.DialogCloseEvent;
+import net.gtaun.shoebill.event.dialog.DialogResponseEvent;
+import net.gtaun.shoebill.event.dialog.DialogShowEvent;
 import net.gtaun.shoebill.event.player.PlayerPickupEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.*;
-import net.gtaun.shoebill.object.DialogId.OnCloseHandler;
-import net.gtaun.shoebill.object.DialogId.OnResponseHandler;
-import net.gtaun.shoebill.object.DialogId.OnShowHandler;
 import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Timer.TimerCallback;
 import net.gtaun.shoebill.object.impl.*;
@@ -284,7 +284,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
     }
 
     @Override
-    public DialogIdImpl createDialogId(OnResponseHandler onResponse, OnShowHandler onShow, OnCloseHandler onClose) throws CreationFailedException {
+    public DialogIdImpl createDialogId(EventHandler<DialogResponseEvent> onResponse, EventHandler<DialogShowEvent> onShow, EventHandler<DialogCloseEvent> onClose) throws CreationFailedException {
         try {
             Integer dialogId = allocateDialogId();
             DialogIdImpl dialog = new DialogIdImpl(eventManagerNode, dialogId, onResponse, onShow, onClose);
