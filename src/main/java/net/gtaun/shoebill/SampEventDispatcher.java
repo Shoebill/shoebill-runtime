@@ -42,6 +42,7 @@ import net.gtaun.shoebill.object.*;
 import net.gtaun.shoebill.object.PlayerAttach.PlayerAttachSlot;
 import net.gtaun.shoebill.object.impl.*;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
+import net.gtaun.util.event.EventHandler;
 import net.gtaun.util.event.EventManagerRoot;
 
 import java.util.List;
@@ -457,7 +458,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
                         return 0;
                 } else return 0;
             }
+
             PlayerPickupEvent event = new PlayerPickupEvent(player, pickup);
+
+            if (pickup instanceof PickupImpl)
+            {
+                PickupImpl pickupImpl = (PickupImpl) pickup;
+                EventHandler<PlayerPickupEvent> handler = pickupImpl.getPickupCallback();
+                if (handler != null) handler.handleEvent(event);
+            }
             rootEventManager.dispatchEvent(event, pickup, player);
 
             return 1;
@@ -1150,7 +1159,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
     @Override
     public int onAmxCreatePickup(int model, int type, float posX, float posY, float posZ, int virtualworld, int id) {
         try {
-            PickupImpl pickup = new PickupImpl(rootEventManager, sampObjectStore, model, type, new Location(posX, posY, posZ, virtualworld), false, id, false);
+            PickupImpl pickup = new PickupImpl(rootEventManager, sampObjectStore, model, type, new Location(posX, posY, posZ, virtualworld), null, false, id, false);
 
             return 1;
         } catch (Throwable e) {
@@ -1162,7 +1171,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
     @Override
     public int onAmxAddStaticPickup(int model, int type, float posX, float posY, float posZ, int virtualworld) {
         try {
-            PickupImpl pickup = new PickupImpl(rootEventManager, sampObjectStore, model, type, new Location(posX, posY, posZ, virtualworld), false, -1, true);
+            PickupImpl pickup = new PickupImpl(rootEventManager, sampObjectStore, model, type, new Location(posX, posY, posZ, virtualworld), null, false, -1, true);
 
             return 1;
         } catch (Throwable e) {

@@ -22,8 +22,10 @@ import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.event.destroyable.DestroyEvent;
+import net.gtaun.shoebill.event.player.PlayerPickupEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Pickup;
+import net.gtaun.util.event.EventHandler;
 import net.gtaun.util.event.EventManager;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -38,14 +40,16 @@ public class PickupImpl implements Pickup {
     private int modelId, type;
     private Location location;
     private boolean isStatic;
+    private EventHandler<PlayerPickupEvent> onPickupCallback;
 
-    public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc) {
-        this(eventManager, store, modelId, type, loc, true, -1, false);
+    public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> handler) {
+        this(eventManager, store, modelId, type, loc, handler, true, -1, false);
     }
 
-    public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc, boolean doInit, int id, boolean isStatic) throws CreationFailedException {
+    public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> handler, boolean doInit, int id, boolean isStatic) throws CreationFailedException {
         this.rootEventManager = eventManager;
 
+        this.onPickupCallback = handler;
         this.modelId = modelId;
         this.type = type;
         this.location = new Location(loc);
@@ -79,6 +83,11 @@ public class PickupImpl implements Pickup {
         rootEventManager.dispatchEvent(destroyEvent, this);
 
         id = INVALID_ID;
+    }
+
+    public EventHandler<PlayerPickupEvent> getPickupCallback()
+    {
+        return onPickupCallback;
     }
 
     @Override

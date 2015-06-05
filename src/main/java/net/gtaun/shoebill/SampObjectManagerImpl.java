@@ -203,14 +203,13 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 
     @Override
     public PickupImpl createPickup(int modelId, int type, Location loc) throws CreationFailedException {
-        return new PickupImpl(eventManagerNode, this, modelId, type, loc);
+        return new PickupImpl(eventManagerNode, this, modelId, type, loc, null);
     }
 
     @Override
-    public PickupImpl createPickup(int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> event) throws CreationFailedException {
-		PickupImpl pickup = createPickup(modelId, type, loc);
-        eventManagerNode.registerHandler(PlayerPickupEvent.class, HandlerPriority.NORMAL, Attentions.create().object(pickup), event);
-        return pickup;
+    public PickupImpl createPickup(int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> handler) throws CreationFailedException {
+		PickupImpl pickup = createPickup(modelId, type, loc, handler);
+		return pickup;
     }
 
     @Override
