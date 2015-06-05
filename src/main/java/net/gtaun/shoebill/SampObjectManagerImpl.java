@@ -27,6 +27,7 @@ import net.gtaun.shoebill.object.*;
 import net.gtaun.shoebill.object.DialogId.OnCloseHandler;
 import net.gtaun.shoebill.object.DialogId.OnResponseHandler;
 import net.gtaun.shoebill.object.DialogId.OnShowHandler;
+import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Timer.TimerCallback;
 import net.gtaun.shoebill.object.impl.*;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
@@ -35,25 +36,26 @@ import net.gtaun.util.event.EventHandler;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.HandlerPriority;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author MK124 & 123marvin123
  */
-public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampObjectManager {
+public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampObjectManager
+{
     private static final int MAX_DIALOG_ID = 32767;
 
-    private List<Integer> occupiedDialogIds;
+	private int allocatedDialogId = MAX_DIALOG_ID / 2;
+	private Queue<Integer> recycledDialogIds = new LinkedList<>();
+	private Set<Integer> occupiedDialogIds = new TreeSet<>();
     private SampCallbackHandler callbackHandler;
-    private Random random;
 
-    public SampObjectManagerImpl(EventManager eventManager) {
+
+    public SampObjectManagerImpl(EventManager eventManager)
+	{
         super(eventManager);
-        initialize();
-        random = new Random();
+        init();
+
         callbackHandler = new SampCallbackHandler() {
             @Override
             public boolean isActive() {
@@ -63,7 +65,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
             @Override
             public int onPlayerConnect(int playerid) {
                 try {
-                    Player player = createPlayer(playerid);
+                    PlayerImpl player = createPlayer(playerid);
                     setPlayer(playerid, player);
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -79,9 +81,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
         };
     }
 
-    private void initialize() {
-        occupiedDialogIds = new ArrayList<>();
-
+    private void init() {
         eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Vehicle.class), (e) ->
         {
             Vehicle vehicle = (Vehicle) e.getDestroyable();
@@ -167,198 +167,128 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
         return callbackHandler;
     }
 
-    private World createWorld() {
-        try {
-            World world = new WorldImpl(this);
-            super.setWorld(world);
-            return world;
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    private WorldImpl createWorld() {
+        WorldImpl world = new WorldImpl(this);
+        super.setWorld(world);
+        return world;
     }
 
-    private Server createServer() {
-        try {
-            Server server = new ServerImpl(this);
-            super.setServer(server);
-            return server;
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    private ServerImpl createServer() {
+        ServerImpl server = new ServerImpl(this);
+        super.setServer(server);
+        return server;
     }
 
-    public Player createPlayer(int playerId) throws UnsupportedOperationException {
-        try {
-            Player player = new PlayerImpl(eventManagerNode, this, playerId);
-            super.setPlayer(playerId, player);
-            return player;
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public PlayerImpl createPlayer(int playerId) throws UnsupportedOperationException {
+        PlayerImpl player = new PlayerImpl(eventManagerNode, this, playerId);
+        super.setPlayer(playerId, player);
+        return player;
     }
 
     @Override
-    public Vehicle createVehicle(int modelId, AngledLocation loc, int color1, int color2, int respawnDelay, boolean addsiren) throws CreationFailedException {
-        try {
-            return new VehicleImpl(eventManagerNode, this, modelId, loc, color1, color2, respawnDelay, true, -1, addsiren);
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public VehicleImpl createVehicle(int modelId, AngledLocation loc, int color1, int color2, int respawnDelay, boolean addsiren) throws CreationFailedException {
+        return new VehicleImpl(eventManagerNode, this, modelId, loc, color1, color2, respawnDelay, true, -1, addsiren);
     }
 
     @Override
-    public SampObject createObject(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException {
-        try {
-            return new SampObjectImpl(eventManagerNode, this, modelId, loc, rot, drawDistance);
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public SampObjectImpl createObject(int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException {
+        return new SampObjectImpl(eventManagerNode, this, modelId, loc, rot, drawDistance);
     }
 
     @Override
-    public PlayerObject createPlayerObject(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException {
-        try {
-            if (!player.isOnline()) throw new CreationFailedException();
-
-            return new PlayerObjectImpl(eventManagerNode, this, player, modelId, loc, rot, drawDistance);
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public PlayerObjectImpl createPlayerObject(Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException {
+        if (!player.isOnline()) throw new CreationFailedException();
+        return new PlayerObjectImpl(eventManagerNode, this, player, modelId, loc, rot, drawDistance);
     }
 
     @Override
-    public Pickup createPickup(int modelId, int type, Location loc) throws CreationFailedException {
-        try {
-            return new PickupImpl(eventManagerNode, this, modelId, type, loc);
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public PickupImpl createPickup(int modelId, int type, Location loc) throws CreationFailedException {
+        return new PickupImpl(eventManagerNode, this, modelId, type, loc);
     }
 
     @Override
-    public Pickup createPickup(int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> event) throws CreationFailedException {
-        try {
-            Pickup pickup = createPickup(modelId, type, loc);
-            eventManagerNode.registerHandler(PlayerPickupEvent.class, HandlerPriority.NORMAL, Attentions.create().object(pickup), event);
-            return pickup;
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public PickupImpl createPickup(int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> event) throws CreationFailedException {
+		PickupImpl pickup = createPickup(modelId, type, loc);
+        eventManagerNode.registerHandler(PlayerPickupEvent.class, HandlerPriority.NORMAL, Attentions.create().object(pickup), event);
+        return pickup;
     }
 
     @Override
-    public Label createLabel(String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException {
-        try {
-            return new LabelImpl(eventManagerNode, this, text, color, loc, drawDistance, testLOS);
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public LabelImpl createLabel(String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException {
+        return new LabelImpl(eventManagerNode, this, text, color, loc, drawDistance, testLOS);
     }
 
     @Override
-    public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException {
-        try {
-            if (!player.isOnline()) return null;
-            return new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS);
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public PlayerLabelImpl createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS) throws CreationFailedException {
+        if (!player.isOnline()) return null;
+        return new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS);
     }
 
     @Override
-    public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer) throws CreationFailedException {
-        try {
-            if (!player.isOnline()) throw new CreationFailedException();
-
-            return new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public PlayerLabelImpl createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Player attachedPlayer) throws CreationFailedException {
+        if (!player.isOnline()) throw new CreationFailedException();
+        return new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS, attachedPlayer);
     }
 
     @Override
-    public PlayerLabel createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle) throws CreationFailedException {
-        try {
-            if (!player.isOnline()) throw new CreationFailedException();
-
-            return new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public PlayerLabelImpl createPlayerLabel(Player player, String text, Color color, Location loc, float drawDistance, boolean testLOS, Vehicle attachedVehicle) throws CreationFailedException {
+        if (!player.isOnline()) throw new CreationFailedException();
+        return new PlayerLabelImpl(eventManagerNode, this, player, text, color, loc, drawDistance, testLOS, attachedVehicle);
     }
 
     @Override
-    public Textdraw createTextdraw(float x, float y, String text) throws CreationFailedException {
-        try {
-            return new TextdrawImpl(eventManagerNode, this, x, y, text);
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public TextdrawImpl createTextdraw(float x, float y, String text) throws CreationFailedException {
+        return new TextdrawImpl(eventManagerNode, this, x, y, text);
     }
 
     @Override
-    public PlayerTextdraw createPlayerTextdraw(Player player, float x, float y, String text) throws CreationFailedException {
-        try {
-            if (!player.isOnline()) throw new CreationFailedException();
-
-            return new PlayerTextdrawImpl(eventManagerNode, this, player, x, y, text);
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public PlayerTextdrawImpl createPlayerTextdraw(Player player, float x, float y, String text) throws CreationFailedException {
+        if (!player.isOnline()) throw new CreationFailedException();
+        return new PlayerTextdrawImpl(eventManagerNode, this, player, x, y, text);
     }
 
     @Override
-    public Zone createZone(float minX, float minY, float maxX, float maxY) throws CreationFailedException {
-        try {
-            return new ZoneImpl(this, eventManagerNode, minX, minY, maxX, maxY);
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public ZoneImpl createZone(float minX, float minY, float maxX, float maxY) throws CreationFailedException {
+        return new ZoneImpl(this, eventManagerNode, minX, minY, maxX, maxY);
     }
 
     @Override
-    public Menu createMenu(String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException {
-        try {
-            return new MenuImpl(eventManagerNode, this, title, columns, x, y, col1Width, col2Width);
-        } catch (Throwable e) {
-            throw new CreationFailedException(e);
-        }
+    public MenuImpl createMenu(String title, int columns, float x, float y, float col1Width, float col2Width) throws CreationFailedException {
+        return new MenuImpl(eventManagerNode, this, title, columns, x, y, col1Width, col2Width);
     }
 
     private int allocateDialogId() {
-        Integer dialogId = random.nextInt(MAX_DIALOG_ID);
-        int tries = 0;
-        while (occupiedDialogIds.contains(dialogId) && tries < 20) {
-            dialogId = random.nextInt(MAX_DIALOG_ID);
-            tries++;
-        }
-        addOccupiedDialogId(dialogId);
+		Integer dialogId = recycledDialogIds.poll();
+		if (dialogId == null || occupiedDialogIds.contains(dialogId))
+		{
+			while (true)
+			{
+				if (allocatedDialogId > MAX_DIALOG_ID) throw new CreationFailedException();
+				if (!occupiedDialogIds.contains(allocatedDialogId)) break;
+
+				allocatedDialogId++;
+			}
+
+			dialogId = allocatedDialogId;
+		}
+
         return dialogId;
     }
 
-    public void addOccupiedDialogId(int dialogId) {
-        if (occupiedDialogIds.contains(dialogId)) return;
-        occupiedDialogIds.add(dialogId);
-    }
+	public void addOccupiedDialogId(int dialogId) {
+		if(occupiedDialogIds.contains(dialogId)) return;
+		occupiedDialogIds.add(dialogId);
+	}
 
     private void recycleDialogId(int dialogId) {
-        if (occupiedDialogIds.contains(dialogId)) {
-            Iterator<Integer> iterator = occupiedDialogIds.iterator();
-            while (iterator.hasNext()) {
-                int id = iterator.next();
-                if (id == dialogId) {
-                    iterator.remove();
-                    break;
-                }
-            }
-        }
+		recycledDialogIds.offer(dialogId);
     }
 
     @Override
-    public DialogId createDialogId(OnResponseHandler onResponse, OnShowHandler onShow, OnCloseHandler onClose) throws CreationFailedException {
+    public DialogIdImpl createDialogId(OnResponseHandler onResponse, OnShowHandler onShow, OnCloseHandler onClose) throws CreationFailedException {
         try {
             Integer dialogId = allocateDialogId();
-            DialogId dialog = new DialogIdImpl(eventManagerNode, dialogId, onResponse, onShow, onClose);
+            DialogIdImpl dialog = new DialogIdImpl(eventManagerNode, dialogId, onResponse, onShow, onClose);
             super.putDialog(dialog.getId(), dialog);
             return dialog;
         } catch (Throwable e) {
@@ -367,7 +297,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
     }
 
     @Override
-    public Timer createTimer(int interval, int count, TimerCallback callback) {
+    public TimerImpl createTimer(int interval, int count, TimerCallback callback) {
         try {
             TimerImpl timer = new TimerImpl(eventManagerNode, interval, count, callback);
             super.putTimer(timer);
@@ -378,7 +308,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
     }
 
     @Override
-    public Actor createActor(int modelid, Vector3D position, float angle) throws CreationFailedException {
+    public ActorImpl createActor(int modelid, Vector3D position, float angle) throws CreationFailedException {
         try {
             ActorImpl actor = new ActorImpl(modelid, position, angle);
             super.setActor(actor.getId(), actor);

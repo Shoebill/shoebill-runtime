@@ -2100,7 +2100,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
     @Override
     public int onAmxCreateActor(int id, int modelid, float x, float y, float z, float rotation) {
         try {
-            Actor actor = new ActorImpl(modelid, new Vector3D(x, y, z), rotation, false, id);
+            ActorImpl actor = new ActorImpl(modelid, new Vector3D(x, y, z), rotation, false, id);
             sampObjectStore.setActor(id, actor);
         } catch (Throwable e) {
             e.printStackTrace();
