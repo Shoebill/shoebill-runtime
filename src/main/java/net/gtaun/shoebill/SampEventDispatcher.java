@@ -464,7 +464,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
             if (pickup instanceof PickupImpl)
             {
                 PickupImpl pickupImpl = (PickupImpl) pickup;
-                EventHandler<PlayerPickupEvent> handler = pickupImpl.getPickupCallback();
+                EventHandler<PlayerPickupEvent> handler = pickupImpl.getPickupHandler();
                 if (handler != null) handler.handleEvent(event);
             }
             rootEventManager.dispatchEvent(event, pickup, player);

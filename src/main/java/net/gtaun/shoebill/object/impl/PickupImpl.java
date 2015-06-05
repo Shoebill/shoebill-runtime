@@ -40,7 +40,7 @@ public class PickupImpl implements Pickup {
     private int modelId, type;
     private Location location;
     private boolean isStatic;
-    private EventHandler<PlayerPickupEvent> onPickupCallback;
+    private EventHandler<PlayerPickupEvent> onPickupHandler;
 
     public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> handler) {
         this(eventManager, store, modelId, type, loc, handler, true, -1, false);
@@ -49,7 +49,7 @@ public class PickupImpl implements Pickup {
     public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> handler, boolean doInit, int id, boolean isStatic) throws CreationFailedException {
         this.rootEventManager = eventManager;
 
-        this.onPickupCallback = handler;
+        this.onPickupHandler = handler;
         this.modelId = modelId;
         this.type = type;
         this.location = new Location(loc);
@@ -72,6 +72,7 @@ public class PickupImpl implements Pickup {
 
     @Override
     public void destroy() {
+        if (isDestroyed()) return;
         SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.destroyPickup(id));
         destroyWithoutExec();
     }
@@ -85,9 +86,9 @@ public class PickupImpl implements Pickup {
         id = INVALID_ID;
     }
 
-    public EventHandler<PlayerPickupEvent> getPickupCallback()
+    public EventHandler<PlayerPickupEvent> getPickupHandler()
     {
-        return onPickupCallback;
+        return onPickupHandler;
     }
 
     @Override
