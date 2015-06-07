@@ -60,11 +60,11 @@ public class VehicleImpl implements Vehicle {
     }
 
     public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelid, AngledLocation loc, int color1, int color2, int respawnDelay) {
-        this(eventManager, store, modelid, loc, color1, color2, respawnDelay, true, -1);
+        this(eventManager, store, modelid, loc, color1, color2, respawnDelay, 0, true, -1);
     }
 
-    public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, AngledLocation loc, int color1, int color2, int respawnDelay, boolean doInit, int id) {
-        this(eventManager, store, modelId, loc, color1, color2, respawnDelay, doInit, id, false);
+    public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, AngledLocation loc, int color1, int color2, int respawnDelay, int addsiren, boolean doInit, int id) {
+        this(eventManager, store, modelId, loc, color1, color2, respawnDelay, doInit, id, addsiren > 0);
     }
 
     public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, AngledLocation loc, int color1, int color2, int respawnDelay, boolean doInit, int id, boolean addsiren) throws CreationFailedException {
@@ -93,8 +93,8 @@ public class VehicleImpl implements Vehicle {
     }
 
     public VehicleImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, float x, float y, float z, float angle, int interiorid, int worldid,
-                       int color1, int color2, int respawnDelay, boolean doInit, int id) throws CreationFailedException {
-        this(eventManager, store, modelId, new AngledLocation(x, y, z, interiorid, worldid, angle), color1, color2, respawnDelay, doInit, id);
+                       int color1, int color2, int respawnDelay, int addsiren, boolean doInit, int id) throws CreationFailedException {
+        this(eventManager, store, modelId, new AngledLocation(x, y, z, interiorid, worldid, angle), color1, color2, respawnDelay, addsiren, doInit, id);
     }
 
     private void initialize(int modelId, int interiorId, int worldId, int color1, int color2, int respawnDelay, boolean addsiren) throws CreationFailedException {

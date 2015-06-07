@@ -389,8 +389,8 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onAmxVehicleCreated(int vehicleid, int modelid, float x, float y, float z, float angle, int interiorid, int worldid, int color1, int color2, int respawn_delay) {
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onAmxVehicleCreated(vehicleid, modelid, x, y, z, angle, interiorid, worldid, color1, color2, respawn_delay)));
+        public int onAmxVehicleCreated(int vehicleid, int modelid, float x, float y, float z, float angle, int interiorid, int worldid, int color1, int color2, int respawn_delay, int addsiren) {
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onAmxVehicleCreated(vehicleid, modelid, x, y, z, angle, interiorid, worldid, color1, color2, respawn_delay, addsiren)));
             return 1;
         }
 
