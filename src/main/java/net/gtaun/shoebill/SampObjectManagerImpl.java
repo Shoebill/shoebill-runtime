@@ -260,16 +260,20 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
     private int allocateDialogId() {
 		Integer dialogId = recycledDialogIds.poll();
 		if (dialogId == null || occupiedDialogIds.contains(dialogId))
-		{
-			while (true)
+        {
+            while (allocatedDialogId <= MAX_DIALOG_ID && occupiedDialogIds.contains(allocatedDialogId)) allocatedDialogId++;
+			if (allocatedDialogId > MAX_DIALOG_ID)
 			{
-				if (allocatedDialogId > MAX_DIALOG_ID) throw new CreationFailedException();
-				if (!occupiedDialogIds.contains(allocatedDialogId)) break;
-
-				allocatedDialogId++;
+				System.gc();
+				if (recycledDialogIds.isEmpty()) throw new CreationFailedException();
+				dialogId = recycledDialogIds.poll();
 			}
 
-			dialogId = allocatedDialogId;
+			if (dialogId == null)
+			{
+				dialogId = allocatedDialogId;
+				allocatedDialogId++;
+			}
 		}
 
         return dialogId;
