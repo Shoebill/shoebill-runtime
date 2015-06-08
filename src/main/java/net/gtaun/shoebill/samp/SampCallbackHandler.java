@@ -248,7 +248,7 @@ public interface SampCallbackHandler {
         return 1;
     }
 
-    default int onAmxVehicleCreated(int vehicleid, int modelid, float x, float y, float z, float angle, int interiorid, int worldid, int color1, int color2, int respawn_delay) {
+    default int onAmxVehicleCreated(int vehicleid, int modelid, float x, float y, float z, float angle, int interiorid, int worldid, int color1, int color2, int respawn_delay, int addsiren) {
         return 1;
     }
 

@@ -973,11 +973,11 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onAmxVehicleCreated(int vehicleid, int modelid, float x, float y, float z, float angle, int interiorid, int worldid, int color1, int color2, int respawn_delay) {
+    public int onAmxVehicleCreated(int vehicleid, int modelid, float x, float y, float z, float angle, int interiorid, int worldid, int color1, int color2, int respawn_delay, int addsiren) {
         try {
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleid);
             if (vehicle == null) {
-                new VehicleImpl(rootEventManager, sampObjectStore, modelid, x, y, z, angle, interiorid, worldid, color1, color2, respawn_delay, false, vehicleid);
+                new VehicleImpl(rootEventManager, sampObjectStore, modelid, x, y, z, angle, interiorid, worldid, color1, color2, respawn_delay, addsiren, false, vehicleid);
             }
             return 1;
         } catch (Throwable e) {
