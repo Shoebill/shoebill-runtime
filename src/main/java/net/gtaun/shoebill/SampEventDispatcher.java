@@ -16,8 +16,7 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.amx.AmxCallEvent;
-import net.gtaun.shoebill.amx.AmxHook;
+import net.gtaun.shoebill.amx.*;
 import net.gtaun.shoebill.constant.*;
 import net.gtaun.shoebill.data.*;
 import net.gtaun.shoebill.event.actor.ActorStreamInEvent;
@@ -992,7 +991,6 @@ public class SampEventDispatcher implements SampCallbackHandler {
             Vehicle vehicle = Vehicle.get(vehicleid);
             if (vehicle instanceof VehicleImpl) {
                 ((VehicleImpl) vehicle).destroyWithoutExec();
-
                 return 1;
             }
         } catch (Throwable e) {
@@ -1005,7 +1003,6 @@ public class SampEventDispatcher implements SampCallbackHandler {
     public int onAmxSampObjectCreated(int object_id, int modelid, float x, float y, float z, float rX, float rY, float rZ, int world, int interior, float render_distance) {
         try {
             SampObject object = new SampObjectImpl(rootEventManager, sampObjectStore, modelid, new Location(x, y, z, interior, world), new Vector3D(rX, rY, rZ), render_distance, false, object_id);
-
             return 1;
         } catch (Throwable e) {
             e.printStackTrace();
@@ -1019,7 +1016,6 @@ public class SampEventDispatcher implements SampCallbackHandler {
             SampObject object = sampObjectStore.getObject(object_id);
             if (object != null && object instanceof SampObjectImpl) {
                 ((SampObjectImpl) object).destroyWithoutExec();
-
             }
             return 1;
         } catch (Throwable e) {
@@ -2131,6 +2127,22 @@ public class SampEventDispatcher implements SampCallbackHandler {
             return 0;
         }
         return 1;
+    }
+
+    @Override
+    public int onRegisteredFunctionCall(String name, Object[] parameters) {
+        try {
+            int returnValue = 0;
+            for(AmxInstance instance : AmxInstanceManagerImpl.get().getAmxInstances()) {
+                if(instance.hasRegisteredFunction(name)) {
+                    returnValue = instance.callRegisteredFunction(name, parameters);
+                }
+            }
+            return returnValue;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     public void executeWithoutEvent(Runnable func) {

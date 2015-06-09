@@ -832,6 +832,13 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onAmxDestroyActor(id)));
             return 1;
         }
+
+        @Override
+        public int onRegisteredFunctionCall(String name, Object[] parameters) {
+            int[] returnValue = new int[] { -1 };
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> returnValue[0] = handler.onRegisteredFunctionCall(name, parameters)));
+            return returnValue[0];
+        }
     };
 
     public SampCallbackManagerImpl() {

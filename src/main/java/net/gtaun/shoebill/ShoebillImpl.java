@@ -88,7 +88,7 @@ public class ShoebillImpl implements Shoebill {
         LOGGER.info("JVM: " + System.getProperty("java.vm.name") + " " + System.getProperty("java.vm.version"));
         LOGGER.info("Java: " + System.getProperty("java.specification.name") + " " + System.getProperty("java.specification.version"));
 
-        asyncExecQueue = new ConcurrentLinkedQueue<Runnable>();
+        asyncExecQueue = new ConcurrentLinkedQueue<>();
 
         eventManager = new EventManagerRoot();
         amxInstanceManager = new AmxInstanceManagerImpl(eventManager, amxHandles);
