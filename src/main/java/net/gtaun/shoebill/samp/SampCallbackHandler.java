@@ -543,4 +543,6 @@ public interface SampCallbackHandler {
     default int onVehicleSirenStateChange(int playerid, int vehicleid, int newstate) {
         return 1;
     }
+
+    default int onRegisteredFunctionCall(String name, Object[] parameters) { return 1; }
 }
