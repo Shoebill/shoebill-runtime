@@ -191,4 +191,44 @@ public class ServerImpl implements Server {
         String[] animationInfo = SampNativeFunction.getAnimationName(animationIndex);
         return new Animation(animationInfo[0], animationInfo[1]);
     }
+
+    @Override
+    public String hashPassword(String password, String salt) {
+        return SampNativeFunction.sha256Hash(password, salt);
+    }
+
+    @Override
+    public void setIntVar(String varname, int value) {
+        SampNativeFunction.setSVarInt(varname, value);
+    }
+
+    @Override
+    public void setFloatVar(String varname, float value) {
+        SampNativeFunction.setSVarFloat(varname, value);
+    }
+
+    @Override
+    public void setStringVar(String varname, String value) {
+        SampNativeFunction.setSVarString(varname, value);
+    }
+
+    @Override
+    public int getIntVar(String varname) {
+        return SampNativeFunction.getSVarInt(varname);
+    }
+
+    @Override
+    public float getFloatVar(String varname) {
+        return SampNativeFunction.getSVarFloat(varname);
+    }
+
+    @Override
+    public String getStringVar(String varname) {
+        return SampNativeFunction.getSVarString(varname);
+    }
+
+    @Override
+    public void deleteVar(String varname) {
+        SampNativeFunction.deleteSVar(varname);
+    }
 }
