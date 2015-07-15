@@ -276,12 +276,12 @@ public class VehicleImpl implements Vehicle {
     }
 
     @Override
-    public int getInteriorId() {
+    public int getInterior() {
         return interiorId;
     }
 
     @Override
-    public void setInteriorId(int interiorId) {
+    public void setInterior(int interiorId) {
         if (isDestroyed()) return;
         SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.linkVehicleToInterior(id, interiorId));
         setInteriorIdWithoutExec(interiorId);
@@ -292,14 +292,14 @@ public class VehicleImpl implements Vehicle {
     }
 
     @Override
-    public int getWorldId() {
+    public int getWorld() {
         if (isDestroyed()) return 0;
 
         return SampNativeFunction.getVehicleVirtualWorld(id);
     }
 
     @Override
-    public void setWorldId(int worldId) {
+    public void setWorld(int worldId) {
         if (isDestroyed()) return;
 
         SampNativeFunction.setVehicleVirtualWorld(id, worldId);
