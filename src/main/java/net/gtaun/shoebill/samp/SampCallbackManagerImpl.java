@@ -29,7 +29,15 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
     private SampCallbackHandler callbackHandler = new SampCallbackHandler() {
         @Override
         public void onProcessTick() {
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(handler::onProcessTick));
+            for (SampCallbackHandler handler : callbackHandlers) {
+                if (handler.isActive()) {
+                    try {
+                        handler.onProcessTick();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
 
         @Override
