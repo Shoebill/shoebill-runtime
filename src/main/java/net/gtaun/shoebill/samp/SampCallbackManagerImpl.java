@@ -283,9 +283,17 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
 
         @Override
         public int onPlayerUpdate(int playerid) {
-            int[] ret = {1};
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerUpdate(playerid)));
-            return ret[0];
+            int ret = 1;
+            for (SampCallbackHandler handler : callbackHandlers) {
+                if (handler.isActive()) {
+                    try {
+                        ret &= handler.onPlayerUpdate(playerid);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return ret;
         }
 
         @Override
