@@ -17,8 +17,7 @@ public class DialogEventUtils {
 
     public static int dispatchResponseEvent(EventManager eventManager, DialogId dialog, Player player, int response, int listitem, String inputtext)
     {
-		try
-		{
+		try {
 			DialogResponseEvent event = new DialogResponseEvent(dialog, player, response, listitem, inputtext);
 			if (dialog instanceof DialogIdImpl) {
 				DialogIdImpl impl = (DialogIdImpl) dialog;
@@ -27,18 +26,14 @@ public class DialogEventUtils {
 			}
 			eventManager.dispatchEvent(event, dialog, player);
 			return event.getResponse();
-		}
-		catch (Throwable ex)
-		{
+		} catch (Throwable ex) {
 			ex.printStackTrace();
 			return 0;
 		}
-    }
+	}
 
-    public static void dispatchShowEvent(EventManager eventManager, DialogId dialog, Player player)
-	{
-		try
-		{
+    public static void dispatchShowEvent(EventManager eventManager, DialogId dialog, Player player) {
+		try {
 			DialogShowEvent dialogCloseEvent = new DialogShowEvent(dialog, player);
 			if (dialog instanceof DialogIdImpl) {
 				DialogIdImpl impl = (DialogIdImpl) dialog;
@@ -47,17 +42,13 @@ public class DialogEventUtils {
 			}
 
 			eventManager.dispatchEvent(dialogCloseEvent, dialog, player);
-		}
-		catch (Throwable ex)
-		{
+		} catch (Throwable ex) {
 			ex.printStackTrace();
 		}
-    }
+	}
 
-    public static void dispatchCloseEvent(EventManager eventManager, DialogId dialog, Player player, DialogCloseType type)
-	{
-		try
-		{
+    public static void dispatchCloseEvent(EventManager eventManager, DialogId dialog, Player player, DialogCloseType type) {
+		try {
 			DialogCloseEvent dialogCloseEvent = new DialogCloseEvent(dialog, player, type);
 			if (dialog instanceof DialogIdImpl) {
 				DialogIdImpl impl = (DialogIdImpl) dialog;
@@ -66,10 +57,8 @@ public class DialogEventUtils {
 			}
 
 			eventManager.dispatchEvent(dialogCloseEvent, dialog, player);
-		}
-		catch (Throwable ex)
-		{
+		} catch (Throwable ex) {
 			ex.printStackTrace();
 		}
-    }
+	}
 }

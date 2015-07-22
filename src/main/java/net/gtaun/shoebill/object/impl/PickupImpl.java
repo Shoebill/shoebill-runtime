@@ -86,8 +86,7 @@ public class PickupImpl implements Pickup {
         id = INVALID_ID;
     }
 
-    public EventHandler<PlayerPickupEvent> getPickupHandler()
-    {
+    public EventHandler<PlayerPickupEvent> getPickupHandler() {
         return onPickupHandler;
     }
 

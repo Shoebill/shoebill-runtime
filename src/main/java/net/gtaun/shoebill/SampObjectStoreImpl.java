@@ -39,8 +39,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * @author MK124 & 123marvin123
  */
-public class SampObjectStoreImpl implements SampObjectStore
-{
+public class SampObjectStoreImpl implements SampObjectStore {
     public static final int MAX_PLAYERS = 1000;
     public static final int MAX_VEHICLES = 2000;
     public static final int MAX_OBJECTS = 1000;
@@ -94,8 +93,7 @@ public class SampObjectStoreImpl implements SampObjectStore
     private List<Reference<PickupImpl>> staticPickups = new ArrayList<>();
 
 
-    SampObjectStoreImpl(EventManager rootEventManager)
-    {
+    SampObjectStoreImpl(EventManager rootEventManager) {
         eventManagerNode = rootEventManager.createChildNode();
         setupObjectEventHandler();
     }

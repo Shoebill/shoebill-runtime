@@ -210,7 +210,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 
     @Override
     public PickupImpl createPickup(int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> handler) throws CreationFailedException {
-		return new PickupImpl(eventManagerNode, this, modelId, type, loc, handler);
+        return new PickupImpl(eventManagerNode, this, modelId, type, loc, handler);
     }
 
     @Override
@@ -259,20 +259,18 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 
     private int allocateDialogId() {
 		Integer dialogId = recycledDialogIds.poll();
-		if (dialogId == null || occupiedDialogIds.contains(dialogId))
-        {
-            while (allocatedDialogId <= MAX_DIALOG_ID && occupiedDialogIds.contains(allocatedDialogId)) allocatedDialogId++;
-			if (allocatedDialogId > MAX_DIALOG_ID)
-			{
-				System.gc();
-				if (recycledDialogIds.isEmpty()) throw new CreationFailedException();
-				dialogId = recycledDialogIds.poll();
-			}
+		if (dialogId == null || occupiedDialogIds.contains(dialogId)) {
+            while (allocatedDialogId <= MAX_DIALOG_ID && occupiedDialogIds.contains(allocatedDialogId))
+                allocatedDialogId++;
+            if (allocatedDialogId > MAX_DIALOG_ID) {
+                System.gc();
+                if (recycledDialogIds.isEmpty()) throw new CreationFailedException();
+                dialogId = recycledDialogIds.poll();
+            }
 
-			if (dialogId == null)
-			{
-				dialogId = allocatedDialogId;
-				allocatedDialogId++;
+            if (dialogId == null) {
+                dialogId = allocatedDialogId;
+                allocatedDialogId++;
 			}
 		}
 

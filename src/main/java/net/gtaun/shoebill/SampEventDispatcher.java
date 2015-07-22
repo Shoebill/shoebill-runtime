@@ -16,7 +16,10 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.amx.*;
+import net.gtaun.shoebill.amx.AmxCallEvent;
+import net.gtaun.shoebill.amx.AmxHook;
+import net.gtaun.shoebill.amx.AmxInstance;
+import net.gtaun.shoebill.amx.AmxInstanceManagerImpl;
 import net.gtaun.shoebill.constant.*;
 import net.gtaun.shoebill.data.*;
 import net.gtaun.shoebill.event.actor.ActorStreamInEvent;
@@ -460,8 +463,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
 
             PlayerPickupEvent event = new PlayerPickupEvent(player, pickup);
 
-            if (pickup instanceof PickupImpl)
-            {
+            if (pickup instanceof PickupImpl) {
                 PickupImpl pickupImpl = (PickupImpl) pickup;
                 EventHandler<PlayerPickupEvent> handler = pickupImpl.getPickupHandler();
                 if (handler != null) handler.handleEvent(event);
