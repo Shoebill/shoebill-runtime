@@ -27,7 +27,6 @@ import net.gtaun.shoebill.event.dialog.DialogShowEvent;
 import net.gtaun.shoebill.event.player.PlayerPickupEvent;
 import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.*;
-import net.gtaun.shoebill.object.Timer;
 import net.gtaun.shoebill.object.Timer.TimerCallback;
 import net.gtaun.shoebill.object.impl.*;
 import net.gtaun.shoebill.samp.SampCallbackHandler;
@@ -36,7 +35,10 @@ import net.gtaun.util.event.EventHandler;
 import net.gtaun.util.event.EventManager;
 import net.gtaun.util.event.HandlerPriority;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author MK124 & 123marvin123
@@ -203,13 +205,12 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 
     @Override
     public PickupImpl createPickup(int modelId, int type, Location loc) throws CreationFailedException {
-        return new PickupImpl(eventManagerNode, this, modelId, type, loc);
+        return new PickupImpl(eventManagerNode, this, modelId, type, loc, null);
     }
 
     @Override
     public PickupImpl createPickup(int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> handler) throws CreationFailedException {
-		PickupImpl pickup = createPickup(modelId, type, loc, handler);
-		return pickup;
+		return new PickupImpl(eventManagerNode, this, modelId, type, loc, handler);
     }
 
     @Override
@@ -259,16 +260,20 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
     private int allocateDialogId() {
 		Integer dialogId = recycledDialogIds.poll();
 		if (dialogId == null || occupiedDialogIds.contains(dialogId))
-		{
-			while (true)
+        {
+            while (allocatedDialogId <= MAX_DIALOG_ID && occupiedDialogIds.contains(allocatedDialogId)) allocatedDialogId++;
+			if (allocatedDialogId > MAX_DIALOG_ID)
 			{
-				if (allocatedDialogId > MAX_DIALOG_ID) throw new CreationFailedException();
-				if (!occupiedDialogIds.contains(allocatedDialogId)) break;
-
-				allocatedDialogId++;
+				System.gc();
+				if (recycledDialogIds.isEmpty()) throw new CreationFailedException();
+				dialogId = recycledDialogIds.poll();
 			}
 
-			dialogId = allocatedDialogId;
+			if (dialogId == null)
+			{
+				dialogId = allocatedDialogId;
+				allocatedDialogId++;
+			}
 		}
 
         return dialogId;

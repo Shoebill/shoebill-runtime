@@ -39,7 +39,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * @author MK124 & 123marvin123
  */
-public class SampObjectStoreImpl implements SampObjectStore {
+public class SampObjectStoreImpl implements SampObjectStore
+{
     public static final int MAX_PLAYERS = 1000;
     public static final int MAX_VEHICLES = 2000;
     public static final int MAX_OBJECTS = 1000;
@@ -52,30 +53,6 @@ public class SampObjectStoreImpl implements SampObjectStore {
     public static final int MAX_PICKUPS = 4096;
     public static final int MAX_CLASSES = 300;
     public static final int MAX_ACTORS = 1000;
-    protected final EventManager eventManagerNode;
-    private Server server;
-    private World world;
-    private Player[] players = new Player[MAX_PLAYERS];
-    private Vehicle[] vehicles = new Vehicle[MAX_VEHICLES];
-    private SampObject[] objects = new SampObject[MAX_OBJECTS];
-    private PlayerObject[][] playerObjectsArray = new PlayerObject[MAX_PLAYERS][];
-    private Pickup[] pickups = new Pickup[MAX_PICKUPS];
-    private Label[] labels = new Label[MAX_GLOBAL_LABELS];
-    private PlayerLabel[][] playerLabelsArray = new PlayerLabel[MAX_PLAYERS][];
-    private Textdraw[] textdraws = new Textdraw[MAX_TEXT_DRAWS];
-    private PlayerTextdraw[][] playerTextdrawsArray = new PlayerTextdraw[MAX_PLAYERS][];
-    private Zone[] zones = new Zone[MAX_ZONES];
-    private Menu[] menus = new Menu[MAX_MENUS];
-    private Actor[] actors = new Actor[MAX_ACTORS];
-    private SpawnInfo[] playerClasses = new SpawnInfo[MAX_CLASSES];
-    private Collection<Reference<TimerImpl>> timers = new ConcurrentLinkedQueue<>();
-    private Map<Integer, Reference<DialogId>> dialogs = new ConcurrentHashMap<>();
-    private List<Reference<PickupImpl>> staticPickups = new ArrayList<>();
-
-    SampObjectStoreImpl(EventManager rootEventManager) {
-        eventManagerNode = rootEventManager.createChildNode();
-        setupObjectEventHandler();
-    }
 
     private static <T> Collection<T> getNotNullInstances(T[] items) {
         Collection<T> list = new ArrayList<>();
@@ -92,6 +69,35 @@ public class SampObjectStoreImpl implements SampObjectStore {
         while (iterator.hasNext()) {
             if (iterator.next().get() == null) iterator.remove();
         }
+    }
+
+
+    protected final EventManager eventManagerNode;
+
+    private ServerImpl server;
+    private WorldImpl world;
+    private PlayerImpl[] players = new PlayerImpl[MAX_PLAYERS];
+    private VehicleImpl[] vehicles = new VehicleImpl[MAX_VEHICLES];
+    private SampObjectImpl[] objects = new SampObjectImpl[MAX_OBJECTS];
+    private PlayerObjectImpl[][] playerObjectsArray = new PlayerObjectImpl[MAX_PLAYERS][];
+    private PickupImpl[] pickups = new PickupImpl[MAX_PICKUPS];
+    private LabelImpl[] labels = new LabelImpl[MAX_GLOBAL_LABELS];
+    private PlayerLabelImpl[][] playerLabelsArray = new PlayerLabelImpl[MAX_PLAYERS][];
+    private TextdrawImpl[] textdraws = new TextdrawImpl[MAX_TEXT_DRAWS];
+    private PlayerTextdrawImpl[][] playerTextdrawsArray = new PlayerTextdrawImpl[MAX_PLAYERS][];
+    private ZoneImpl[] zones = new ZoneImpl[MAX_ZONES];
+    private MenuImpl[] menus = new MenuImpl[MAX_MENUS];
+    private ActorImpl[] actors = new ActorImpl[MAX_ACTORS];
+    private SpawnInfo[] playerClasses = new SpawnInfo[MAX_CLASSES];
+    private Collection<Reference<TimerImpl>> timers = new ConcurrentLinkedQueue<>();
+    private Map<Integer, Reference<DialogIdImpl>> dialogs = new ConcurrentHashMap<>();
+    private List<Reference<PickupImpl>> staticPickups = new ArrayList<>();
+
+
+    SampObjectStoreImpl(EventManager rootEventManager)
+    {
+        eventManagerNode = rootEventManager.createChildNode();
+        setupObjectEventHandler();
     }
 
     private void setupObjectEventHandler() {
@@ -164,7 +170,7 @@ public class SampObjectStoreImpl implements SampObjectStore {
         return server;
     }
 
-    public void setServer(Server server) {
+    public void setServer(ServerImpl server) {
         this.server = server;
     }
 
@@ -173,7 +179,7 @@ public class SampObjectStoreImpl implements SampObjectStore {
         return world;
     }
 
-    public void setWorld(World world) {
+    public void setWorld(WorldImpl world) {
         this.world = world;
     }
 
@@ -190,7 +196,7 @@ public class SampObjectStoreImpl implements SampObjectStore {
 
         for (Player player : players) {
             if (player == null) continue;
-            if (player.getName().equals(name)) return player;
+            if (player.getName().equalsIgnoreCase(name)) return player;
         }
 
         return null;
@@ -285,7 +291,7 @@ public class SampObjectStoreImpl implements SampObjectStore {
 
     @Override
     public DialogId getDialog(int id) {
-        Reference<DialogId> ref = dialogs.get(id);
+        Reference<DialogIdImpl> ref = dialogs.get(id);
         return ref != null ? ref.get() : null;
     }
 
@@ -387,7 +393,7 @@ public class SampObjectStoreImpl implements SampObjectStore {
     @Override
     public Collection<DialogId> getDialogIds() {
         Collection<DialogId> items = new ArrayList<>();
-        for (Reference<DialogId> reference : dialogs.values()) {
+        for (Reference<DialogIdImpl> reference : dialogs.values()) {
             DialogId dialog = reference.get();
             if (dialog != null) items.add(dialog);
         }
@@ -441,7 +447,7 @@ public class SampObjectStoreImpl implements SampObjectStore {
         return items;
     }
 
-    public void setPlayer(int id, Player player) {
+    public void setPlayer(int id, PlayerImpl player) {
         if (player == null && players[id] != null) {
             removePlayer(id);
             if (player == null) return;
@@ -449,9 +455,9 @@ public class SampObjectStoreImpl implements SampObjectStore {
 
         players[id] = player;
 
-        playerObjectsArray[id] = new PlayerObject[MAX_OBJECTS];
-        playerLabelsArray[id] = new PlayerLabel[MAX_PLAYER_LABELS];
-        playerTextdrawsArray[id] = new PlayerTextdraw[MAX_PLAYER_TEXT_DRAWS];
+        playerObjectsArray[id] = new PlayerObjectImpl[MAX_OBJECTS];
+        playerLabelsArray[id] = new PlayerLabelImpl[MAX_PLAYER_LABELS];
+        playerTextdrawsArray[id] = new PlayerTextdrawImpl[MAX_PLAYER_TEXT_DRAWS];
     }
 
     private void removePlayer(int id) {
@@ -469,11 +475,11 @@ public class SampObjectStoreImpl implements SampObjectStore {
         players[id] = null;
     }
 
-    public void setVehicle(int id, Vehicle vehicle) {
+    public void setVehicle(int id, VehicleImpl vehicle) {
         vehicles[id] = vehicle;
     }
 
-    public void setObject(int id, SampObject object) {
+    public void setObject(int id, SampObjectImpl object) {
         objects[id] = object;
     }
 
@@ -483,21 +489,21 @@ public class SampObjectStoreImpl implements SampObjectStore {
         playerObjects[id] = object;
     }
 
-    public void setPickup(int id, Pickup pickup) {
+    public void setPickup(int id, PickupImpl pickup) {
         pickups[id] = pickup;
     }
 
-    public void setLabel(int id, Label label) {
+    public void setLabel(int id, LabelImpl label) {
         labels[id] = label;
     }
 
-    public void setPlayerLabel(Player player, int id, PlayerLabel label) {
+    public void setPlayerLabel(Player player, int id, PlayerLabelImpl label) {
         if (!player.isOnline() || label == null) return;
         PlayerLabel[] playerLabels = playerLabelsArray[player.getId()];
         playerLabels[id] = label;
     }
 
-    public void setTextdraw(int id, Textdraw textdraw) {
+    public void setTextdraw(int id, TextdrawImpl textdraw) {
         textdraws[id] = textdraw;
     }
 
@@ -507,17 +513,17 @@ public class SampObjectStoreImpl implements SampObjectStore {
         textdraws[id] = textdraw;
     }
 
-    public void setZone(int id, Zone zone) {
+    public void setZone(int id, ZoneImpl zone) {
         zones[id] = zone;
     }
 
-    public void setMenu(int id, Menu menu) {
+    public void setMenu(int id, MenuImpl menu) {
         menus[id] = menu;
     }
 
     public void setPlayerClass(int id, SpawnInfo playerClass) { playerClasses[id] = playerClass; }
 
-    public void setActor(int id, Actor actor) {
+    public void setActor(int id, ActorImpl actor) {
         actors[id] = actor;
     }
 
@@ -534,7 +540,7 @@ public class SampObjectStoreImpl implements SampObjectStore {
         }
     }
 
-    public void putDialog(int id, DialogId dialog) {
+    public void putDialog(int id, DialogIdImpl dialog) {
         clearUnusedReferences(dialogs.values());
         dialogs.put(id, new WeakReference<>(dialog));
     }

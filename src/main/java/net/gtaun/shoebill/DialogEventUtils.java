@@ -17,59 +17,59 @@ public class DialogEventUtils {
 
     public static int dispatchResponseEvent(EventManager eventManager, DialogId dialog, Player player, int response, int listitem, String inputtext)
     {
-        try
-        {
-            DialogResponseEvent event = new DialogResponseEvent(dialog, player, response, listitem, inputtext);
-            if (dialog instanceof DialogIdImpl) {
-                DialogIdImpl impl = (DialogIdImpl) dialog;
-                EventHandler<DialogResponseEvent> onResponseHandler = impl.getOnResponseHandler();
-                if (onResponseHandler != null) onResponseHandler.handleEvent(event);
-            }
-            eventManager.dispatchEvent(event, dialog, player);
-            return event.getResponse();
-        }
-        catch (Throwable ex)
-        {
-            ex.printStackTrace();
-            return 0;
-        }
+		try
+		{
+			DialogResponseEvent event = new DialogResponseEvent(dialog, player, response, listitem, inputtext);
+			if (dialog instanceof DialogIdImpl) {
+				DialogIdImpl impl = (DialogIdImpl) dialog;
+				EventHandler<DialogResponseEvent> onResponseHandler = impl.getOnResponseHandler();
+				if (onResponseHandler != null) onResponseHandler.handleEvent(event);
+			}
+			eventManager.dispatchEvent(event, dialog, player);
+			return event.getResponse();
+		}
+		catch (Throwable ex)
+		{
+			ex.printStackTrace();
+			return 0;
+		}
     }
 
     public static void dispatchShowEvent(EventManager eventManager, DialogId dialog, Player player)
-    {
-        try
-        {
-            DialogShowEvent dialogCloseEvent = new DialogShowEvent(dialog, player);
-            if (dialog instanceof DialogIdImpl) {
-                DialogIdImpl impl = (DialogIdImpl) dialog;
-                EventHandler<DialogShowEvent> onShowHandler = impl.getOnShowHandler();
-                if (onShowHandler != null) onShowHandler.handleEvent(dialogCloseEvent);
-            }
+	{
+		try
+		{
+			DialogShowEvent dialogCloseEvent = new DialogShowEvent(dialog, player);
+			if (dialog instanceof DialogIdImpl) {
+				DialogIdImpl impl = (DialogIdImpl) dialog;
+				EventHandler<DialogShowEvent> onShowHandler = impl.getOnShowHandler();
+				if (onShowHandler != null) onShowHandler.handleEvent(dialogCloseEvent);
+			}
 
-            eventManager.dispatchEvent(dialogCloseEvent, dialog, player);
-        }
-        catch (Throwable ex)
-        {
-            ex.printStackTrace();
-        }
+			eventManager.dispatchEvent(dialogCloseEvent, dialog, player);
+		}
+		catch (Throwable ex)
+		{
+			ex.printStackTrace();
+		}
     }
 
     public static void dispatchCloseEvent(EventManager eventManager, DialogId dialog, Player player, DialogCloseType type)
-    {
-        try
-        {
-            DialogCloseEvent dialogCloseEvent = new DialogCloseEvent(dialog, player, type);
-            if (dialog instanceof DialogIdImpl) {
-                DialogIdImpl impl = (DialogIdImpl) dialog;
-                EventHandler<DialogCloseEvent> onCloseHandler = impl.getOnCloseHandler();
-                if (onCloseHandler != null) onCloseHandler.handleEvent(dialogCloseEvent);
-            }
+	{
+		try
+		{
+			DialogCloseEvent dialogCloseEvent = new DialogCloseEvent(dialog, player, type);
+			if (dialog instanceof DialogIdImpl) {
+				DialogIdImpl impl = (DialogIdImpl) dialog;
+				EventHandler<DialogCloseEvent> onCloseHandler = impl.getOnCloseHandler();
+				if (onCloseHandler != null) onCloseHandler.handleEvent(dialogCloseEvent);
+			}
 
-            eventManager.dispatchEvent(dialogCloseEvent, dialog, player);
-        }
-        catch (Throwable ex)
-        {
-            ex.printStackTrace();
-        }
+			eventManager.dispatchEvent(dialogCloseEvent, dialog, player);
+		}
+		catch (Throwable ex)
+		{
+			ex.printStackTrace();
+		}
     }
 }
