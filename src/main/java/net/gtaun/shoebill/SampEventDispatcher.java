@@ -47,6 +47,7 @@ import net.gtaun.shoebill.samp.SampCallbackHandler;
 import net.gtaun.util.event.EventHandler;
 import net.gtaun.util.event.EventManagerRoot;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -74,13 +75,16 @@ public class SampEventDispatcher implements SampCallbackHandler {
     @Override
     public void onProcessTick() {
         try {
-            long nowTick = System.currentTimeMillis();
-            int interval = (int) (nowTick - lastProcessTimeMillis);
-            lastProcessTimeMillis = nowTick;
+            Collection<TimerImpl> timerCollection = sampObjectStore.getTimerImpls();
+            if (timerCollection.size() > 0) {
+                long nowTick = System.currentTimeMillis();
+                int interval = (int) (nowTick - lastProcessTimeMillis);
+                lastProcessTimeMillis = nowTick;
 
-            for (TimerImpl timer : sampObjectStore.getTimerImpls()) {
-                timer.tick(interval);
-            }
+                for (TimerImpl timer : timerCollection) {
+                    timer.tick(interval);
+                }
+            } else lastProcessTimeMillis = System.currentTimeMillis();
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -1082,7 +1086,6 @@ public class SampEventDispatcher implements SampCallbackHandler {
                 return 0;
             } else {
                 PlayerObjectImpl playerObject = new PlayerObjectImpl(rootEventManager, sampObjectStore, player, modelid, new Location(x, y, z, interiorid, worldid), new Vector3D(rX, rY, rZ), drawdistance, false, objectid);
-
                 return 1;
             }
         } catch (Throwable e) {

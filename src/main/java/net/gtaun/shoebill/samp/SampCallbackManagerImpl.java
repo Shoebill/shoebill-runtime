@@ -349,7 +349,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         @Override
         public int onPlayerClickTextDraw(int playerid, int clickedid) {
             int[] ret = {0};
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] |= handler.onPlayerClickPlayerTextDraw(playerid, clickedid)));
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] |= handler.onPlayerClickTextDraw(playerid, clickedid)));
             return ret[0];
         }
 
@@ -454,7 +454,7 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
 
         @Override
         public int onAmxDestroyPlayerObject(int playerid, int objectid) {
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onVehicleDeath(playerid, objectid)));
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onAmxDestroyPlayerObject(playerid, objectid)));
             return 1;
         }
 
