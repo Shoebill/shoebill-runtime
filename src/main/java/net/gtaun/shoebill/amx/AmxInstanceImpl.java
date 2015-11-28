@@ -29,10 +29,11 @@ public class AmxInstanceImpl implements AmxInstance {
 
     @Override
     public AmxCallable getNative(String name) {
-        int funcHandle = SampNativeFunction.getNative(handle, name);
-        if (funcHandle == AmxCallable.INVALID_CALLABLE)
+        int id = SampNativeFunction.getNative(name);
+        if(id != 0)
+            return new AmxCallableImpl(this, id, name, AmxCallableType.NATIVE);
+        else
             return null;
-        return new AmxCallableImpl(this, funcHandle, name, AmxCallableType.NATIVE);
     }
 
     @Override

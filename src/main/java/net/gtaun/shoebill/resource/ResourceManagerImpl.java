@@ -142,8 +142,6 @@ public class ResourceManagerImpl implements ResourceManager {
         rootEventManager.dispatchEvent(event, this);
 
         plugins.remove(clazz);
-
-        System.gc();
     }
 
     @Override

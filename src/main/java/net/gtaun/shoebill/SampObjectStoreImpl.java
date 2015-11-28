@@ -448,7 +448,7 @@ public class SampObjectStoreImpl implements SampObjectStore {
     public void setPlayer(int id, PlayerImpl player) {
         if (player == null && players[id] != null) {
             removePlayer(id);
-            if (player == null) return;
+            return;
         }
 
         players[id] = player;

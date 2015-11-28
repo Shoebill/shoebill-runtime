@@ -155,23 +155,22 @@ public class ShoebillImpl implements Shoebill {
         sampCallbackManager.registerCallbackHandler(new SampCallbackHandler() {
 
             @Override
-            public int onGameModeInit() {
+            public boolean onGameModeInit() {
                 if (!initialized) {
                     try {
-                        initialize();
                         loadPluginsAndGamemode();
                         initialized = true;
-                        return 1;
+                        return true;
                     } catch (Throwable e) {
                         e.printStackTrace();
-                        return 0;
+                        return false;
                     }
                 }
-                return 1;
+                return true;
             }
 
             @Override
-            public int onGameModeExit() {
+            public boolean onGameModeExit() {
                 if (initialized) {
                     unloadPluginsAndGamemode();
                     uninitialize();
@@ -181,7 +180,7 @@ public class ShoebillImpl implements Shoebill {
                         restart = false;
                     }
                 }
-                return 1;
+                return true;
             }
 
             @Override

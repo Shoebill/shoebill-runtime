@@ -5,23 +5,19 @@ import net.gtaun.shoebill.event.amx.AmxLoadEvent;
 import net.gtaun.shoebill.event.amx.AmxUnloadEvent;
 import net.gtaun.util.event.EventManager;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.function.Consumer;
 
 public class AmxInstanceManagerImpl implements AmxInstanceManager {
-
-    private static AmxInstanceManagerImpl instance;
-
-    public static AmxInstanceManagerImpl get() {
-        return instance;
-    }
 
     private final Set<AmxInstance> instances;
     private final EventManager eventManager;
     private final List<AmxHook> hooks;
 
     public AmxInstanceManagerImpl(EventManager eventManager, int[] existedHandles) {
-        instance = this;
+        Instance.reference = new WeakReference<AmxInstanceManager>(this);
         this.eventManager = eventManager;
         instances = new HashSet<>();
         hooks = new ArrayList<>();

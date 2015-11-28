@@ -265,7 +265,7 @@ public class SampObjectImpl implements SampObject {
         if (object.isDestroyed()) return;
 
         if (object instanceof PlayerObjectImpl) throw new UnsupportedOperationException();
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.attachObjectToObject(id, object.getId(), x, y, z, rz, ry, rz, syncRotation ? 1 : 0));
+        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.attachObjectToObject(id, object.getId(), x, y, z, rx, ry, rz, syncRotation ? 1 : 0));
 
         attachWithoutExecution(object, new Vector3D(x, y, z), new Vector3D(rx, ry, rz));
     }

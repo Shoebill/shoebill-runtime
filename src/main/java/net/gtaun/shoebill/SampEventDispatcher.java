@@ -16,14 +16,13 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.amx.AmxCallEvent;
-import net.gtaun.shoebill.amx.AmxHook;
-import net.gtaun.shoebill.amx.AmxInstance;
-import net.gtaun.shoebill.amx.AmxInstanceManagerImpl;
+import net.gtaun.shoebill.amx.*;
 import net.gtaun.shoebill.constant.*;
 import net.gtaun.shoebill.data.*;
 import net.gtaun.shoebill.event.actor.ActorStreamInEvent;
 import net.gtaun.shoebill.event.actor.ActorStreamOutEvent;
+import net.gtaun.shoebill.event.amx.AmxLoadEvent;
+import net.gtaun.shoebill.event.amx.AmxUnloadEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointLeaveEvent;
 import net.gtaun.shoebill.event.checkpoint.RaceCheckpointEnterEvent;
@@ -91,17 +90,17 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onGameModeExit() {
+    public boolean onGameModeExit() {
         GameModeExitEvent exitEvent = new GameModeExitEvent();
         rootEventManager.dispatchEvent(exitEvent);
-        return 1;
+        return true;
     }
 
     @Override
-    public int onGameModeInit() {
+    public boolean onGameModeInit() {
         GameModeInitEvent initEvent = new GameModeInitEvent();
         rootEventManager.dispatchEvent(initEvent);
-        return 1;
+        return true;
     }
 
     @Override
@@ -124,25 +123,25 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onPlayerConnect(int playerId) {
+    public boolean onPlayerConnect(int playerId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
 
             PlayerConnectEvent event = new PlayerConnectEvent(player);
             rootEventManager.dispatchEvent(event, player);
 
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerDisconnect(int playerId, int reason) {
+    public boolean onPlayerDisconnect(int playerId, int reason) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
-            if (player == null) return 0;
+            if (player == null) return false;
             DialogId dialog = player.getDialog();
             if (dialog != null) {
                 DialogEventUtils.dispatchCloseEvent(rootEventManager, dialog, player, DialogCloseType.CANCEL);
@@ -152,30 +151,30 @@ public class SampEventDispatcher implements SampCallbackHandler {
             rootEventManager.dispatchEvent(event, player);
 
             sampObjectStore.setPlayer(playerId, null);
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerSpawn(int playerId) {
+    public boolean onPlayerSpawn(int playerId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
 
             PlayerSpawnEvent event = new PlayerSpawnEvent(player);
             rootEventManager.dispatchEvent(event, player);
 
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerDeath(int playerId, int killerId, int reason) {
+    public boolean onPlayerDeath(int playerId, int killerId, int reason) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Player killer = null;
@@ -189,30 +188,30 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerDeathEvent event = new PlayerDeathEvent(player, killer, WeaponModel.get(reason));
             rootEventManager.dispatchEvent(event, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onVehicleSpawn(int vehicleId) {
+    public boolean onVehicleSpawn(int vehicleId) {
         try {
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
 
             VehicleSpawnEvent event = new VehicleSpawnEvent(vehicle);
             rootEventManager.dispatchEvent(event, vehicle);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onVehicleDeath(int vehicleId, int killerId) {
+    public boolean onVehicleDeath(int vehicleId, int killerId) {
         try {
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
             Player killer = sampObjectStore.getPlayer(killerId);
@@ -220,10 +219,10 @@ public class SampEventDispatcher implements SampCallbackHandler {
             VehicleDeathEvent event = new VehicleDeathEvent(vehicle, killer);
             rootEventManager.dispatchEvent(event, vehicle, killer);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
@@ -254,17 +253,17 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onPlayerRequestClass(int playerId, int classId) {
+    public boolean onPlayerRequestClass(int playerId, int classId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
 
             PlayerRequestClassEvent event = new PlayerRequestClassEvent(player, classId);
             rootEventManager.dispatchEvent(event, player);
 
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
 
     }
@@ -302,17 +301,17 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onPlayerStateChange(int playerId, int state, int oldState) {
+    public boolean onPlayerStateChange(int playerId, int state, int oldState) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
 
             PlayerStateChangeEvent event = new PlayerStateChangeEvent(player, oldState);
             rootEventManager.dispatchEvent(event, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
@@ -336,59 +335,59 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onPlayerLeaveCheckpoint(int playerId) {
+    public boolean onPlayerLeaveCheckpoint(int playerId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Checkpoint checkpoint = player.getCheckpoint();
 
-            if (checkpoint == null) return 0;
+            if (checkpoint == null) return false;
             checkpoint.onLeave(player);
 
             CheckpointLeaveEvent event = new CheckpointLeaveEvent(player);
             rootEventManager.dispatchEvent(event, checkpoint, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerEnterRaceCheckpoint(int playerId) {
+    public boolean onPlayerEnterRaceCheckpoint(int playerId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             RaceCheckpoint checkpoint = player.getRaceCheckpoint();
 
-            if (checkpoint == null) return 0;
+            if (checkpoint == null) return false;
             checkpoint.onEnter(player);
 
             RaceCheckpointEnterEvent event = new RaceCheckpointEnterEvent(player);
             rootEventManager.dispatchEvent(event, checkpoint, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerLeaveRaceCheckpoint(int playerId) {
+    public boolean onPlayerLeaveRaceCheckpoint(int playerId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             RaceCheckpoint checkpoint = player.getRaceCheckpoint();
 
-            if (checkpoint == null) return 0;
+            if (checkpoint == null) return false;
             checkpoint.onLeave(player);
 
             RaceCheckpointLeaveEvent event = new RaceCheckpointLeaveEvent(player);
             rootEventManager.dispatchEvent(event, checkpoint, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
@@ -406,37 +405,37 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onPlayerRequestSpawn(int playerId) {
+    public boolean onPlayerRequestSpawn(int playerId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
 
             PlayerRequestSpawnEvent event = new PlayerRequestSpawnEvent(player);
             rootEventManager.dispatchEvent(event, player);
 
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onObjectMoved(int objectId) {
+    public boolean onObjectMoved(int objectId) {
         try {
             SampObject object = sampObjectStore.getObject(objectId);
 
             ObjectMovedEvent event = new ObjectMovedEvent(object);
             rootEventManager.dispatchEvent(event, object);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerObjectMoved(int playerId, int objectId) {
+    public boolean onPlayerObjectMoved(int playerId, int objectId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             PlayerObject object = sampObjectStore.getPlayerObject(player, objectId);
@@ -444,15 +443,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerObjectMovedEvent event = new PlayerObjectMovedEvent(object);
             rootEventManager.dispatchEvent(event, object, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerPickUpPickup(int playerId, int pickupId) {
+    public boolean onPlayerPickUpPickup(int playerId, int pickupId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Pickup pickup = sampObjectStore.getPickup(pickupId);
@@ -461,8 +460,8 @@ public class SampEventDispatcher implements SampCallbackHandler {
                 if (staticPickups.size() - 1 >= pickupId) {
                     pickup = sampObjectStore.getStaticPickups().get(pickupId); //AddStaticPickup won't return a id. This is the only way to get it
                     if (pickup == null) // pickup with AddStaticPickup not found
-                        return 0;
-                } else return 0;
+                        return false;
+                } else return false;
             }
 
             PlayerPickupEvent event = new PlayerPickupEvent(player, pickup);
@@ -474,15 +473,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             }
             rootEventManager.dispatchEvent(event, pickup, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onVehicleMod(int playerId, int vehicleId, int componentId) {
+    public boolean onVehicleMod(int playerId, int vehicleId, int componentId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
@@ -490,30 +489,30 @@ public class SampEventDispatcher implements SampCallbackHandler {
             VehicleModEvent event = new VehicleModEvent(vehicle, componentId);
             rootEventManager.dispatchEvent(event, vehicle, player);
 
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onEnterExitModShop(int playerId, int enterexit, int interiorId) {
+    public boolean onEnterExitModShop(int playerId, int enterexit, int interiorId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
 
             PlayerEnterExitModShopEvent event = new PlayerEnterExitModShopEvent(player, enterexit, interiorId);
             rootEventManager.dispatchEvent(event, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onVehiclePaintjob(int playerId, int vehicleId, int paintjobId) {
+    public boolean onVehiclePaintjob(int playerId, int vehicleId, int paintjobId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
@@ -521,15 +520,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             VehiclePaintjobEvent event = new VehiclePaintjobEvent(vehicle, paintjobId);
             rootEventManager.dispatchEvent(event, vehicle, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onVehicleRespray(int playerId, int vehicleId, int color1, int color2) {
+    public boolean onVehicleRespray(int playerId, int vehicleId, int color1, int color2) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
@@ -537,15 +536,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             VehicleResprayEvent event = new VehicleResprayEvent(vehicle, color1, color2);
             rootEventManager.dispatchEvent(event, vehicle, player);
 
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onVehicleDamageStatusUpdate(int vehicleId, int playerId) {
+    public boolean onVehicleDamageStatusUpdate(int vehicleId, int playerId) {
         try {
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
             Player player = sampObjectStore.getPlayer(playerId);
@@ -553,15 +552,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             VehicleUpdateDamageEvent event = new VehicleUpdateDamageEvent(vehicle, player);
             rootEventManager.dispatchEvent(event, vehicle, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat, float newX, float newY, float newZ, float vel_x, float vel_y, float vel_z) {
+    public boolean onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat, float newX, float newY, float newZ, float vel_x, float vel_y, float vel_z) {
         try {
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
             Player player = sampObjectStore.getPlayer(playerId);
@@ -570,15 +569,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             location.set(newX, newY, newZ);
             UnoccupiedVehicleUpdateEvent event = new UnoccupiedVehicleUpdateEvent(vehicle, player, location, new Vector3D(vel_x, vel_y, vel_z));
             rootEventManager.dispatchEvent(event, vehicle, player);
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerSelectedMenuRow(int playerId, int row) {
+    public boolean onPlayerSelectedMenuRow(int playerId, int row) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Menu menu = player.getCurrentMenu();
@@ -586,15 +585,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             MenuSelectedEvent event = new MenuSelectedEvent(menu, player, row);
             rootEventManager.dispatchEvent(event, menu, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerExitedMenu(int playerId) {
+    public boolean onPlayerExitedMenu(int playerId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Menu menu = player.getCurrentMenu();
@@ -602,41 +601,41 @@ public class SampEventDispatcher implements SampCallbackHandler {
             MenuExitedEvent event = new MenuExitedEvent(menu, player);
             rootEventManager.dispatchEvent(event, menu, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
 
     }
 
     @Override
-    public int onPlayerInteriorChange(int playerId, int interiorId, int oldInteriorId) {
+    public boolean onPlayerInteriorChange(int playerId, int interiorId, int oldInteriorId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
 
             PlayerInteriorChangeEvent event = new PlayerInteriorChangeEvent(player, oldInteriorId);
             rootEventManager.dispatchEvent(event, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerKeyStateChange(int playerId, int keys, int oldKeys) {
+    public boolean onPlayerKeyStateChange(int playerId, int keys, int oldKeys) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
 
             PlayerKeyStateChangeEvent event = new PlayerKeyStateChangeEvent(player, new PlayerKeyStateImpl(player, oldKeys));
             rootEventManager.dispatchEvent(event, player);
 
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
@@ -654,15 +653,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onPlayerUpdate(int playerId) {
+    public boolean onPlayerUpdate(int playerId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
 
             PlayerUpdateEvent event = new PlayerUpdateEvent(player);
             rootEventManager.dispatchEvent(event, player);
 
-            int ret = event.getResponse();
-            if (ret == 0) return ret;
+            boolean ret = event.getResponse() > 0;
+            if (!ret) return false;
 
             Vehicle vehicle = player.getVehicle();
             if (player.getState() == PlayerState.DRIVER && vehicle != null) {
@@ -670,15 +669,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
                 rootEventManager.dispatchEvent(vehicleUpdateEvent, vehicle, player);
             }
 
-            return ret;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerStreamIn(int playerId, int forPlayerId) {
+    public boolean onPlayerStreamIn(int playerId, int forPlayerId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Player forPlayer = sampObjectStore.getPlayer(forPlayerId);
@@ -686,16 +685,16 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerStreamInEvent event = new PlayerStreamInEvent(player, forPlayer);
             rootEventManager.dispatchEvent(event, player, forPlayer);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
 
     }
 
     @Override
-    public int onPlayerStreamOut(int playerId, int forPlayerId) {
+    public boolean onPlayerStreamOut(int playerId, int forPlayerId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Player forPlayer = sampObjectStore.getPlayer(forPlayerId);
@@ -703,15 +702,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerStreamOutEvent event = new PlayerStreamOutEvent(player, forPlayer);
             rootEventManager.dispatchEvent(event, player, forPlayer);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onVehicleStreamIn(int vehicleId, int forPlayerId) {
+    public boolean onVehicleStreamIn(int vehicleId, int forPlayerId) {
         try {
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
             Player player = sampObjectStore.getPlayer(forPlayerId);
@@ -719,15 +718,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             VehicleStreamInEvent event = new VehicleStreamInEvent(vehicle, player);
             rootEventManager.dispatchEvent(event, vehicle, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onVehicleStreamOut(int vehicleId, int forPlayerId) {
+    public boolean onVehicleStreamOut(int vehicleId, int forPlayerId) {
         try {
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
             Player player = sampObjectStore.getPlayer(forPlayerId);
@@ -735,10 +734,10 @@ public class SampEventDispatcher implements SampCallbackHandler {
             VehicleStreamOutEvent event = new VehicleStreamOutEvent(vehicle, player);
             rootEventManager.dispatchEvent(event, vehicle, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
@@ -762,7 +761,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onPlayerTakeDamage(int playerId, int issuerId, float amount, int weaponId, int bodypart) {
+    public boolean onPlayerTakeDamage(int playerId, int issuerId, float amount, int weaponId, int bodypart) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Player issuer = sampObjectStore.getPlayer(issuerId);
@@ -770,15 +769,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerTakeDamageEvent event = new PlayerTakeDamageEvent(player, issuer, amount, weaponId, bodypart);
             rootEventManager.dispatchEvent(event, player);
 
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId, int bodypart) {
+    public boolean onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId, int bodypart) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Player victim = sampObjectStore.getPlayer(damagedId);
@@ -786,30 +785,30 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerGiveDamageEvent event = new PlayerGiveDamageEvent(player, victim, amount, weaponId, bodypart);
             rootEventManager.dispatchEvent(event, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerClickMap(int playerId, float x, float y, float z) {
+    public boolean onPlayerClickMap(int playerId, float x, float y, float z) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
 
             PlayerClickMapEvent event = new PlayerClickMapEvent(player, x, y, z);
             rootEventManager.dispatchEvent(event, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerClickTextDraw(int playerid, int clickedid) {
+    public boolean onPlayerClickTextDraw(int playerid, int clickedid) {
         try {
             Player player = sampObjectStore.getPlayer(playerid);
             Textdraw textdraw = sampObjectStore.getTextdraw(clickedid);
@@ -817,15 +816,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerClickTextDrawEvent event = new PlayerClickTextDrawEvent(player, textdraw);
             rootEventManager.dispatchEvent(event, player, textdraw);
 
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerClickPlayerTextDraw(int playerid, int playertextid) {
+    public boolean onPlayerClickPlayerTextDraw(int playerid, int playertextid) {
         try {
             Player player = sampObjectStore.getPlayer(playerid);
             PlayerTextdraw textdraw = sampObjectStore.getPlayerTextdraw(player, playertextid);
@@ -833,15 +832,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerClickPlayerTextDrawEvent event = new PlayerClickPlayerTextDrawEvent(player, textdraw);
             rootEventManager.dispatchEvent(event, player, textdraw);
 
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerClickPlayer(int playerId, int clickedPlayerId, int source) {
+    public boolean onPlayerClickPlayer(int playerId, int clickedPlayerId, int source) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Player clickedPlayer = sampObjectStore.getPlayer(clickedPlayerId);
@@ -849,10 +848,10 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerClickPlayerEvent event = new PlayerClickPlayerEvent(player, clickedPlayer, source);
             rootEventManager.dispatchEvent(event, player, clickedPlayer);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
@@ -896,7 +895,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ) {
+    public boolean onPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ) {
         try {
             Player player = sampObjectStore.getPlayer(playerid);
             PlayerAttachSlot slot = player.getAttach().getSlotByBone(PlayerAttachBone.get(boneid));
@@ -904,15 +903,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerEditAttachedObjectEvent event = new PlayerEditAttachedObjectEvent(player, slot);
             rootEventManager.dispatchEvent(event, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ) {
+    public boolean onPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ) {
         try {
             Player player = sampObjectStore.getPlayer(playerid);
 
@@ -928,25 +927,25 @@ public class SampEventDispatcher implements SampCallbackHandler {
                 rootEventManager.dispatchEvent(event, player, object);
             }
 
-            return 1;
+            return false;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return true;
         }
     }
 
     @Override
-    public int onPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ) {
+    public boolean onPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ) {
         try {
             Player player = sampObjectStore.getPlayer(playerid);
 
             PlayerWeaponShotEvent event = new PlayerWeaponShotEvent(player, weaponid, hittype, hitid, new Vector3D(fX, fY, fZ));
             rootEventManager.dispatchEvent(event, player);
 
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
@@ -964,16 +963,16 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onTrailerUpdate(int playerid, int vehicleid) {
+    public boolean onTrailerUpdate(int playerid, int vehicleid) {
         try {
             Player player = sampObjectStore.getPlayer(playerid);
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleid);
             TrailerUpdateEvent event = new TrailerUpdateEvent(vehicle, player);
             rootEventManager.dispatchEvent(event, vehicle, player);
-            return event.getResponse();
+            return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
@@ -1008,7 +1007,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
     @Override
     public int onAmxSampObjectCreated(int object_id, int modelid, float x, float y, float z, float rX, float rY, float rZ, int world, int interior, float render_distance) {
         try {
-            SampObject object = new SampObjectImpl(rootEventManager, sampObjectStore, modelid, new Location(x, y, z, interior, world), new Vector3D(rX, rY, rZ), render_distance, false, object_id);
+            new SampObjectImpl(rootEventManager, sampObjectStore, modelid, new Location(x, y, z, interior, world), new Vector3D(rX, rY, rZ), render_distance, false, object_id);
             return 1;
         } catch (Throwable e) {
             e.printStackTrace();
@@ -2051,7 +2050,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onActorStreamIn(int actor, int playerid) {
+    public boolean onActorStreamIn(int actor, int playerid) {
         try {
             Actor actorObject = Actor.get(actor);
             Player player = Player.get(playerid);
@@ -2059,13 +2058,13 @@ public class SampEventDispatcher implements SampCallbackHandler {
             rootEventManager.dispatchEvent(event, actorObject, player);
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
-        return 1;
+        return true;
     }
 
     @Override
-    public int onActorStreamOut(int actor, int playerid) {
+    public boolean onActorStreamOut(int actor, int playerid) {
         try {
             Actor actorObject = Actor.get(actor);
             Player player = Player.get(playerid);
@@ -2073,9 +2072,9 @@ public class SampEventDispatcher implements SampCallbackHandler {
             rootEventManager.dispatchEvent(event, actorObject, player);
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
-        return 1;
+        return true;
     }
 
     @Override
@@ -2138,7 +2137,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
     public int onRegisteredFunctionCall(String name, Object[] parameters) {
         try {
             int returnValue = 0;
-            for(AmxInstance instance : AmxInstanceManagerImpl.get().getAmxInstances()) {
+            for(AmxInstance instance : AmxInstanceManager.get().getAmxInstances()) {
                 if(instance.hasRegisteredFunction(name)) {
                     returnValue = instance.callRegisteredFunction(name, parameters);
                 }

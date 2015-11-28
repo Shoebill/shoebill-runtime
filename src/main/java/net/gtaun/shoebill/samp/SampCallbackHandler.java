@@ -40,36 +40,36 @@ public interface SampCallbackHandler {
     default void onShoebillLoad() {
     }
 
-    default int onGameModeInit() {
-        return 1;
+    default boolean onGameModeInit() {
+        return true;
     }
 
-    default int onGameModeExit() {
-        return 1;
+    default boolean onGameModeExit() {
+        return true;
     }
 
-    default int onPlayerConnect(int playerId) {
-        return 1;
+    default boolean onPlayerConnect(int playerId) {
+        return true;
     }
 
-    default int onPlayerDisconnect(int playerId, int reason) {
-        return 1;
+    default boolean onPlayerDisconnect(int playerId, int reason) {
+        return false;
     }
 
-    default int onPlayerSpawn(int playerId) {
-        return 1;
+    default boolean onPlayerSpawn(int playerId) {
+        return true;
     }
 
-    default int onPlayerDeath(int playerId, int killerId, int reason) {
-        return 1;
+    default boolean onPlayerDeath(int playerId, int killerId, int reason) {
+        return true;
     }
 
-    default int onVehicleSpawn(int vehicleId) {
-        return 1;
+    default boolean onVehicleSpawn(int vehicleId) {
+        return true;
     }
 
-    default int onVehicleDeath(int vehicleId, int killerId) {
-        return 1;
+    default boolean onVehicleDeath(int vehicleId, int killerId) {
+        return true;
     }
 
     default int onPlayerText(int playerId, String text) {
@@ -80,8 +80,8 @@ public interface SampCallbackHandler {
         return 0;
     }
 
-    default int onPlayerRequestClass(int playerId, int classId) {
-        return 1;
+    default boolean onPlayerRequestClass(int playerId, int classId) {
+        return true;
     }
 
     default int onPlayerEnterVehicle(int playerId, int vehicleId, int isPassenger) {
@@ -92,160 +92,158 @@ public interface SampCallbackHandler {
         return 1;
     }
 
-    default int onPlayerStateChange(int playerId, int state, int oldState) {
-        return 1;
+    default boolean onPlayerStateChange(int playerId, int state, int oldState) {
+        return true;
     }
 
     default int onPlayerEnterCheckpoint(int playerId) {
         return 1;
     }
 
-    default int onPlayerLeaveCheckpoint(int playerId) {
-        return 1;
+    default boolean onPlayerLeaveCheckpoint(int playerId) {
+        return true;
     }
 
-    default int onPlayerEnterRaceCheckpoint(int playerId) {
-        return 1;
+    default boolean onPlayerEnterRaceCheckpoint(int playerId) {
+        return true;
     }
 
-    default int onPlayerLeaveRaceCheckpoint(int playerId) {
-        return 1;
-    }
+    default boolean onPlayerLeaveRaceCheckpoint(int playerId) { return true; }
 
     default int onRconCommand(String cmd) {
         return 0;
     }
 
-    default int onPlayerRequestSpawn(int playerId) {
-        return 1;
+    default boolean onPlayerRequestSpawn(int playerId) {
+        return true;
     }
 
-    default int onObjectMoved(int objectId) {
-        return 1;
+    default boolean onObjectMoved(int objectId) {
+        return true;
     }
 
-    default int onPlayerObjectMoved(int playerId, int objectId) {
-        return 1;
+    default boolean onPlayerObjectMoved(int playerId, int objectId) {
+        return true;
     }
 
-    default int onPlayerPickUpPickup(int playerId, int pickupId) {
-        return 1;
+    default boolean onPlayerPickUpPickup(int playerId, int pickupId) {
+        return true;
     }
 
-    default int onVehicleMod(int playerId, int vehicleId, int componentId) {
-        return 1;
+    default boolean onVehicleMod(int playerId, int vehicleId, int componentId) {
+        return true;
     }
 
-    default int onEnterExitModShop(int playerId, int enterexit, int interiorId) {
-        return 1;
+    default boolean onEnterExitModShop(int playerId, int enterexit, int interiorId) {
+        return true;
     }
 
-    default int onVehiclePaintjob(int playerId, int vehicleId, int paintjobId) {
-        return 1;
+    default boolean onVehiclePaintjob(int playerId, int vehicleId, int paintjobId) {
+        return true;
     }
 
-    default int onVehicleRespray(int playerId, int vehicleId, int color1, int color2) {
-        return 1;
+    default boolean onVehicleRespray(int playerId, int vehicleId, int color1, int color2) {
+        return true;
     }
 
-    default int onVehicleDamageStatusUpdate(int vehicleId, int playerId) {
-        return 1;
+    default boolean onVehicleDamageStatusUpdate(int vehicleId, int playerId) {
+        return true;
     }
 
-    default int onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat, float newX, float newY, float newZ, float vel_x, float vel_y, float vel_z) {
-        return 1;
+    default boolean onUnoccupiedVehicleUpdate(int vehicleId, int playerId, int passengerSeat, float newX, float newY, float newZ, float vel_x, float vel_y, float vel_z) {
+        return true;
     }
 
-    default int onPlayerSelectedMenuRow(int playerId, int row) {
-        return 1;
+    default boolean onPlayerSelectedMenuRow(int playerId, int row) {
+        return true;
     }
 
-    default int onPlayerExitedMenu(int playerId) {
-        return 1;
+    default boolean onPlayerExitedMenu(int playerId) {
+        return true;
     }
 
-    default int onPlayerInteriorChange(int playerId, int interiorId, int oldInteriorId) {
-        return 1;
+    default boolean onPlayerInteriorChange(int playerId, int interiorId, int oldInteriorId) {
+        return true;
     }
 
-    default int onPlayerKeyStateChange(int playerId, int keys, int oldKeys) {
-        return 1;
+    default boolean onPlayerKeyStateChange(int playerId, int keys, int oldKeys) {
+        return true;
     }
 
     default int onRconLoginAttempt(String ip, String password, int isSuccess) {
         return 1;
     }
 
-    default int onPlayerUpdate(int playerId) {
-        return 1;
+    default boolean onPlayerUpdate(int playerId) {
+        return true;
     }
 
-    default int onPlayerStreamIn(int playerId, int forPlayerId) {
-        return 1;
+    default boolean onPlayerStreamIn(int playerId, int forPlayerId) {
+        return true;
     }
 
-    default int onPlayerStreamOut(int playerId, int forPlayerId) {
-        return 1;
+    default boolean onPlayerStreamOut(int playerId, int forPlayerId) {
+        return true;
     }
 
-    default int onVehicleStreamIn(int vehicleId, int forPlayerId) {
-        return 1;
+    default boolean onVehicleStreamIn(int vehicleId, int forPlayerId) {
+        return true;
     }
 
-    default int onVehicleStreamOut(int vehicleId, int forPlayerId) {
-        return 1;
+    default boolean onVehicleStreamOut(int vehicleId, int forPlayerId) {
+        return true;
     }
 
     default int onDialogResponse(int playerId, int dialogId, int response, int listitem, String inputtext) {
         return 0;
     }
 
-    default int onPlayerTakeDamage(int playerid, int issuerId, float amount, int weaponid, int bodypart) {
-        return 1;
+    default boolean onPlayerTakeDamage(int playerid, int issuerId, float amount, int weaponid, int bodypart) {
+        return true;
     }
 
-    default int onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId, int bodypart) {
-        return 1;
+    default boolean onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId, int bodypart) {
+        return true;
     }
 
-    default int onPlayerClickMap(int playerId, float x, float y, float z) {
-        return 1;
+    default boolean onPlayerClickMap(int playerId, float x, float y, float z) {
+        return true;
     }
 
-    default int onPlayerClickTextDraw(int playerid, int clickedid) {
-        return 0;
+    default boolean onPlayerClickTextDraw(int playerid, int clickedid) {
+        return false;
     }
 
-    default int onPlayerClickPlayerTextDraw(int playerid, int playertextid) {
-        return 0;
+    default boolean onPlayerClickPlayerTextDraw(int playerid, int playertextid) {
+        return false;
     }
 
-    default int onPlayerClickPlayer(int playerId, int clickedPlayerId, int source) {
-        return 1;
+    default boolean onPlayerClickPlayer(int playerId, int clickedPlayerId, int source) {
+        return true;
     }
 
     default int onPlayerEditObject(int playerid, int playerobject, int objectid, int response, float fX, float fY, float fZ, float fRotX, float fRotY, float fRotZ) {
         return 1;
     }
 
-    default int onPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ) {
-        return 1;
+    default boolean onPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ) {
+        return true;
     }
 
-    default int onPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ) {
-        return 1;
+    default boolean onPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ) {
+        return true;
     }
 
-    default int onPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ) {
-        return 1;
+    default boolean onPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ) {
+        return true;
     }
 
     default int onIncomingConnection(int playerid, String ipAddress, int port) {
         return 1;
     }
 
-    default int onTrailerUpdate(int playerid, int vehicleid) {
-        return 1;
+    default boolean onTrailerUpdate(int playerid, int vehicleid) {
+        return true;
     }
 
     default int onAmxVehicleCreated(int vehicleid, int modelid, float x, float y, float z, float angle, int interiorid, int worldid, int color1, int color2, int respawn_delay, int addsiren) {
@@ -528,12 +526,12 @@ public interface SampCallbackHandler {
         return new int[]{0, 0};
     }
 
-    default int onActorStreamIn(int actor, int playerid) {
-        return 1;
+    default boolean onActorStreamIn(int actor, int playerid) {
+        return true;
     }
 
-    default int onActorStreamOut(int actor, int playerid) {
-        return 1;
+    default boolean onActorStreamOut(int actor, int playerid) {
+        return true;
     }
 
     default int onPlayerGiveDamageActor(int playerid, int actor, int amount, int weapon, int bodypart) {

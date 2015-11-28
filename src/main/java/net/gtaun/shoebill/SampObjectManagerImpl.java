@@ -65,7 +65,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
             }
 
             @Override
-            public int onPlayerConnect(int playerid) {
+            public boolean onPlayerConnect(int playerid) {
                 try {
                     PlayerImpl player = createPlayer(playerid);
                     setPlayer(playerid, player);
@@ -73,12 +73,12 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
                     e.printStackTrace();
                 }
 
-                return 1;
+                return true;
             }
 
             @Override
-            public int onPlayerDisconnect(int playerid, int reason) {
-                return 1;
+            public boolean onPlayerDisconnect(int playerid, int reason) {
+                return true;
             }
         };
     }
@@ -263,7 +263,6 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
             while (allocatedDialogId <= MAX_DIALOG_ID && occupiedDialogIds.contains(allocatedDialogId))
                 allocatedDialogId++;
             if (allocatedDialogId > MAX_DIALOG_ID) {
-                System.gc();
                 if (recycledDialogIds.isEmpty()) throw new CreationFailedException();
                 dialogId = recycledDialogIds.poll();
             }

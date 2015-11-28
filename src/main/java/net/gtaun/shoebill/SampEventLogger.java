@@ -37,15 +37,15 @@ public class SampEventLogger implements SampCallbackHandler {
     }
 
     @Override
-    public int onPlayerConnect(int playerId) {
+    public boolean onPlayerConnect(int playerId) {
         LOGGER.info("[join] " + SampNativeFunction.getPlayerName(playerId) + " has joined the server (" + playerId + ":" + SampNativeFunction.getPlayerIp(playerId) + ")");
-        return 1;
+        return true;
     }
 
     @Override
-    public int onPlayerDisconnect(int playerId, int reason) {
+    public boolean onPlayerDisconnect(int playerId, int reason) {
         LOGGER.info("[part] " + SampNativeFunction.getPlayerName(playerId) + " has left the server (" + playerId + ":" + reason + ")");
-        return 1;
+        return true;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class SampEventLogger implements SampCallbackHandler {
 
     @Override
     public int onRconCommand(String cmd) {
-        LOGGER.info("[rcon] " + " command: " + cmd);
+        LOGGER.info("[rcon] command: " + cmd);
         return 1;
     }
 

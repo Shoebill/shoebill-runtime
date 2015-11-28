@@ -66,54 +66,54 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onGameModeInit() {
+        public boolean onGameModeInit() {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(handler::onGameModeInit));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onGameModeExit() {
+        public boolean onGameModeExit() {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(handler::onGameModeExit));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerConnect(int playerid) {
-            int[] ret = {1};
+        public boolean onPlayerConnect(int playerid) {
+            boolean[] ret = {true};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerConnect(playerid)));
             return ret[0];
         }
 
         @Override
-        public int onPlayerDisconnect(int playerid, int reason) {
-            int[] ret = {1};
+        public boolean onPlayerDisconnect(int playerid, int reason) {
+            boolean[] ret = {true};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerDisconnect(playerid, reason)));
             return ret[0];
         }
 
         @Override
-        public int onPlayerSpawn(int playerid) {
-            int[] ret = {1};
+        public boolean onPlayerSpawn(int playerid) {
+            boolean[] ret = {true};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerSpawn(playerid)));
             return ret[0];
         }
 
         @Override
-        public int onPlayerDeath(int playerid, int killerid, int reason) {
+        public boolean onPlayerDeath(int playerid, int killerid, int reason) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerDeath(playerid, killerid, reason)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onVehicleSpawn(int vehicleid) {
+        public boolean onVehicleSpawn(int vehicleid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onVehicleSpawn(vehicleid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onVehicleDeath(int vehicleid, int killerid) {
+        public boolean onVehicleDeath(int vehicleid, int killerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onVehicleDeath(vehicleid, killerid)));
-            return 1;
+            return true;
         }
 
         @Override
@@ -131,8 +131,8 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onPlayerRequestClass(int playerid, int classid) {
-            int[] ret = {1};
+        public boolean onPlayerRequestClass(int playerid, int classid) {
+            boolean[] ret = {true};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerRequestClass(playerid, classid)));
             return ret[0];
         }
@@ -150,9 +150,9 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onPlayerStateChange(int playerid, int newstate, int oldstate) {
+        public boolean onPlayerStateChange(int playerid, int newstate, int oldstate) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerStateChange(playerid, newstate, oldstate)));
-            return 1;
+            return true;
         }
 
         @Override
@@ -162,21 +162,21 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onPlayerLeaveCheckpoint(int playerid) {
+        public boolean onPlayerLeaveCheckpoint(int playerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerLeaveCheckpoint(playerid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerEnterRaceCheckpoint(int playerid) {
+        public boolean onPlayerEnterRaceCheckpoint(int playerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerEnterRaceCheckpoint(playerid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerLeaveRaceCheckpoint(int playerid) {
+        public boolean onPlayerLeaveRaceCheckpoint(int playerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerLeaveRaceCheckpoint(playerid)));
-            return 1;
+            return true;
         }
 
         @Override
@@ -187,90 +187,90 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onPlayerRequestSpawn(int playerid) {
-            int[] ret = {1};
+        public boolean onPlayerRequestSpawn(int playerid) {
+            boolean[] ret = {true};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerRequestSpawn(playerid)));
             return ret[0];
         }
 
         @Override
-        public int onObjectMoved(int objectid) {
+        public boolean onObjectMoved(int objectid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onObjectMoved(objectid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerObjectMoved(int playerid, int objectid) {
+        public boolean onPlayerObjectMoved(int playerid, int objectid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerObjectMoved(playerid, objectid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerPickUpPickup(int playerid, int pickupid) {
+        public boolean onPlayerPickUpPickup(int playerid, int pickupid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerPickUpPickup(playerid, pickupid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onVehicleMod(int playerid, int vehicleid, int componentid) {
-            int[] ret = {1};
+        public boolean onVehicleMod(int playerid, int vehicleid, int componentid) {
+            boolean[] ret = {true};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onVehicleMod(playerid, vehicleid, componentid)));
             return ret[0];
         }
 
         @Override
-        public int onEnterExitModShop(int playerid, int enterexit, int interiorid) {
+        public boolean onEnterExitModShop(int playerid, int enterexit, int interiorid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onEnterExitModShop(playerid, enterexit, interiorid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onVehiclePaintjob(int playerid, int vehicleid, int paintjobid) {
+        public boolean onVehiclePaintjob(int playerid, int vehicleid, int paintjobid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onVehiclePaintjob(playerid, vehicleid, paintjobid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onVehicleRespray(int playerid, int vehicleid, int color1, int color2) {
-            int[] ret = {1};
+        public boolean onVehicleRespray(int playerid, int vehicleid, int color1, int color2) {
+            boolean[] ret = {true};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onVehicleRespray(playerid, vehicleid, color1, color2)));
             return ret[0];
         }
 
         @Override
-        public int onVehicleDamageStatusUpdate(int vehicleid, int playerid) {
+        public boolean onVehicleDamageStatusUpdate(int vehicleid, int playerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onVehicleDamageStatusUpdate(vehicleid, playerid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX, float newY, float newZ, float vel_x, float vel_y, float vel_z) {
-            int[] ret = {1};
+        public boolean onUnoccupiedVehicleUpdate(int vehicleid, int playerid, int passengerSeat, float newX, float newY, float newZ, float vel_x, float vel_y, float vel_z) {
+            boolean[] ret = {true};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onUnoccupiedVehicleUpdate(vehicleid, playerid, passengerSeat, newX, newY, newZ, vel_x, vel_y, vel_z)));
             return ret[0];
         }
 
         @Override
-        public int onPlayerSelectedMenuRow(int playerid, int row) {
+        public boolean onPlayerSelectedMenuRow(int playerid, int row) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerSelectedMenuRow(playerid, row)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerExitedMenu(int playerid) {
+        public boolean onPlayerExitedMenu(int playerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerExitedMenu(playerid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerInteriorChange(int playerid, int newinteriorid, int oldinteriorid) {
+        public boolean onPlayerInteriorChange(int playerid, int newinteriorid, int oldinteriorid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerKeyStateChange(int playerid, int newkeys, int oldkeys) {
-            int[] ret = {1};
+        public boolean onPlayerKeyStateChange(int playerid, int newkeys, int oldkeys) {
+            boolean[] ret = {true};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerKeyStateChange(playerid, newkeys, oldkeys)));
             return ret[0];
         }
@@ -282,42 +282,34 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onPlayerUpdate(int playerid) {
-            int ret = 1;
-            for (SampCallbackHandler handler : callbackHandlers) {
-                if (handler.isActive()) {
-                    try {
-                        ret &= handler.onPlayerUpdate(playerid);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            return ret;
+        public boolean onPlayerUpdate(int playerid) {
+            boolean[] ret = {true};
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerUpdate(playerid)));
+            return ret[0];
         }
 
         @Override
-        public int onPlayerStreamIn(int playerid, int forplayerid) {
+        public boolean onPlayerStreamIn(int playerid, int forplayerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerStreamIn(playerid, forplayerid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerStreamOut(int playerid, int forplayerid) {
+        public boolean onPlayerStreamOut(int playerid, int forplayerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerStreamOut(playerid, forplayerid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onVehicleStreamIn(int vehicleid, int forplayerid) {
+        public boolean onVehicleStreamIn(int vehicleid, int forplayerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onVehicleStreamIn(vehicleid, forplayerid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onVehicleStreamOut(int vehicleid, int forplayerid) {
+        public boolean onVehicleStreamOut(int vehicleid, int forplayerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onVehicleStreamOut(vehicleid, forplayerid)));
-            return 1;
+            return true;
         }
 
         @Override
@@ -328,42 +320,42 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onPlayerTakeDamage(int playerId, int issuerId, float amount, int weaponId, int bodypart) {
-            int[] ret = {0};
+        public boolean onPlayerTakeDamage(int playerId, int issuerId, float amount, int weaponId, int bodypart) {
+            boolean[] ret = {false};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerTakeDamage(playerId, issuerId, amount, weaponId, bodypart)));
             return ret[0];
         }
 
         @Override
-        public int onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId, int bodypart) {
+        public boolean onPlayerGiveDamage(int playerId, int damagedId, float amount, int weaponId, int bodypart) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerGiveDamage(playerId, damagedId, amount, weaponId, bodypart)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerClickMap(int playerId, float x, float y, float z) {
+        public boolean onPlayerClickMap(int playerId, float x, float y, float z) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerClickMap(playerId, x, y, z)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerClickTextDraw(int playerid, int clickedid) {
-            int[] ret = {0};
+        public boolean onPlayerClickTextDraw(int playerid, int clickedid) {
+            boolean[] ret = {false};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] |= handler.onPlayerClickTextDraw(playerid, clickedid)));
             return ret[0];
         }
 
         @Override
-        public int onPlayerClickPlayerTextDraw(int playerid, int playertextid) {
-            int[] ret = {0};
+        public boolean onPlayerClickPlayerTextDraw(int playerid, int playertextid) {
+            boolean[] ret = {false};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] |= handler.onPlayerClickPlayerTextDraw(playerid, playertextid)));
             return ret[0];
         }
 
         @Override
-        public int onPlayerClickPlayer(int playerid, int clickedplayerid, int source) {
+        public boolean onPlayerClickPlayer(int playerid, int clickedplayerid, int source) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerClickPlayer(playerid, clickedplayerid, source)));
-            return 1;
+            return true;
         }
 
         @Override
@@ -373,20 +365,20 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ) {
+        public boolean onPlayerEditAttachedObject(int playerid, int response, int index, int modelid, int boneid, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerEditAttachedObject(playerid, response, index, modelid, boneid, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ) {
+        public boolean onPlayerSelectObject(int playerid, int type, int objectid, int modelid, float fX, float fY, float fZ) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerSelectObject(playerid, type, objectid, modelid, fX, fY, fZ)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ) {
-            int[] ret = {1};
+        public boolean onPlayerWeaponShot(int playerid, int weaponid, int hittype, int hitid, float fX, float fY, float fZ) {
+            boolean[] ret = {true};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ)));
             return ret[0];
         }
@@ -398,8 +390,8 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onTrailerUpdate(int playerid, int vehicleid) {
-            int[] ret = {0};
+        public boolean onTrailerUpdate(int playerid, int vehicleid) {
+            boolean[] ret = {false};
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> ret[0] &= handler.onTrailerUpdate(playerid, vehicleid)));
             return ret[0];
         }
@@ -814,15 +806,15 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onActorStreamIn(int actor, int playerid) {
+        public boolean onActorStreamIn(int actor, int playerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onActorStreamIn(actor, playerid)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onActorStreamOut(int actor, int playerid) {
+        public boolean onActorStreamOut(int actor, int playerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onActorStreamOut(actor, playerid)));
-            return 1;
+            return true;
         }
 
         @Override
