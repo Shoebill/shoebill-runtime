@@ -137,7 +137,7 @@ public class WorldImpl implements World {
 
     @Override
     public float getGravity() {
-        return Float.parseFloat(SampNativeFunction.getServerVarAsString("gravity"));
+        return Float.parseFloat(SampNativeFunction.getConsoleVarAsString("gravity"));
     }
 
     @Override

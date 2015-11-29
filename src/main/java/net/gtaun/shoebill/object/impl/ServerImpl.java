@@ -60,7 +60,7 @@ public class ServerImpl implements Server {
 
     @Override
     public String getGamemodeText() {
-        return SampNativeFunction.getServerVarAsString("gamemodetext");
+        return SampNativeFunction.getConsoleVarAsString("gamemodetext");
     }
 
     @Override
@@ -78,24 +78,6 @@ public class ServerImpl implements Server {
     public void connectNPC(String name, String script) {
         if (name == null || script == null) throw new NullPointerException();
         SampNativeFunction.connectNPC(name, script);
-    }
-
-    @Override
-    public String getServerVarAsString(String varname) {
-        if (varname == null) throw new NullPointerException();
-        return SampNativeFunction.getServerVarAsString(varname);
-    }
-
-    @Override
-    public int getServerVarAsInt(String varname) {
-        if (varname == null) throw new NullPointerException();
-        return SampNativeFunction.getServerVarAsInt(varname);
-    }
-
-    @Override
-    public boolean getServerVarAsBool(String varname) {
-        if (varname == null) throw new NullPointerException();
-        return SampNativeFunction.getServerVarAsBool(varname);
     }
 
     @Override
@@ -158,7 +140,7 @@ public class ServerImpl implements Server {
 
     @Override
     public String getHostname() {
-        return SampNativeFunction.getServerVarAsString("hostname");
+        return SampNativeFunction.getConsoleVarAsString("hostname");
     }
 
     @Override
@@ -168,7 +150,7 @@ public class ServerImpl implements Server {
 
     @Override
     public String getMapname() {
-        return SampNativeFunction.getServerVarAsString("mapname");
+        return SampNativeFunction.getConsoleVarAsString("mapname");
     }
 
     @Override
@@ -178,7 +160,7 @@ public class ServerImpl implements Server {
 
     @Override
     public String getPassword() {
-        return SampNativeFunction.getServerVarAsString("password");
+        return SampNativeFunction.getConsoleVarAsString("password");
     }
 
     @Override
@@ -198,37 +180,17 @@ public class ServerImpl implements Server {
     }
 
     @Override
-    public void setIntVar(String varname, int value) {
-        SampNativeFunction.setSVarInt(varname, value);
-    }
-
-    @Override
-    public void setFloatVar(String varname, float value) {
-        SampNativeFunction.setSVarFloat(varname, value);
-    }
-
-    @Override
-    public void setStringVar(String varname, String value) {
-        SampNativeFunction.setSVarString(varname, value);
-    }
-
-    @Override
     public int getIntVar(String varname) {
-        return SampNativeFunction.getSVarInt(varname);
+        return SampNativeFunction.getConsoleVarAsInt(varname);
     }
 
     @Override
-    public float getFloatVar(String varname) {
-        return SampNativeFunction.getSVarFloat(varname);
+    public boolean getBoolVar(String varname) {
+        return SampNativeFunction.getConsoleVarAsBool(varname);
     }
 
     @Override
     public String getStringVar(String varname) {
-        return SampNativeFunction.getSVarString(varname);
-    }
-
-    @Override
-    public void deleteVar(String varname) {
-        SampNativeFunction.deleteSVar(varname);
+        return SampNativeFunction.getConsoleVarAsString(varname);
     }
 }
