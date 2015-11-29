@@ -84,12 +84,12 @@ public interface SampCallbackHandler {
         return true;
     }
 
-    default int onPlayerEnterVehicle(int playerId, int vehicleId, int isPassenger) {
-        return 1;
+    default boolean onPlayerEnterVehicle(int playerId, int vehicleId, int isPassenger) {
+        return true;
     }
 
-    default int onPlayerExitVehicle(int playerId, int vehicleId) {
-        return 1;
+    default boolean onPlayerExitVehicle(int playerId, int vehicleId) {
+        return true;
     }
 
     default boolean onPlayerStateChange(int playerId, int state, int oldState) {

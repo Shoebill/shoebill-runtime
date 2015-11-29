@@ -138,15 +138,15 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onPlayerEnterVehicle(int playerid, int vehicleid, int ispassenger) {
+        public boolean onPlayerEnterVehicle(int playerid, int vehicleid, int ispassenger) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerEnterVehicle(playerid, vehicleid, ispassenger)));
-            return 1;
+            return true;
         }
 
         @Override
-        public int onPlayerExitVehicle(int playerid, int vehicleid) {
+        public boolean onPlayerExitVehicle(int playerid, int vehicleid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerExitVehicle(playerid, vehicleid)));
-            return 1;
+            return true;
         }
 
         @Override

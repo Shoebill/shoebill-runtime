@@ -269,7 +269,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onPlayerEnterVehicle(int playerId, int vehicleId, int isPassenger) {
+    public boolean onPlayerEnterVehicle(int playerId, int vehicleId, int isPassenger) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
@@ -277,15 +277,15 @@ public class SampEventDispatcher implements SampCallbackHandler {
             VehicleEnterEvent event = new VehicleEnterEvent(vehicle, player, isPassenger != 0);
             rootEventManager.dispatchEvent(event, vehicle, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
     @Override
-    public int onPlayerExitVehicle(int playerId, int vehicleId) {
+    public boolean onPlayerExitVehicle(int playerId, int vehicleId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Vehicle vehicle = sampObjectStore.getVehicle(vehicleId);
@@ -293,10 +293,10 @@ public class SampEventDispatcher implements SampCallbackHandler {
             VehicleExitEvent event = new VehicleExitEvent(vehicle, player);
             rootEventManager.dispatchEvent(event, vehicle, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 
