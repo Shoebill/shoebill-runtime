@@ -96,8 +96,8 @@ public interface SampCallbackHandler {
         return true;
     }
 
-    default int onPlayerEnterCheckpoint(int playerId) {
-        return 1;
+    default boolean onPlayerEnterCheckpoint(int playerId) {
+        return true;
     }
 
     default boolean onPlayerLeaveCheckpoint(int playerId) {

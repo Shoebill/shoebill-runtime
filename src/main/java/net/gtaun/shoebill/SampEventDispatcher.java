@@ -316,21 +316,21 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onPlayerEnterCheckpoint(int playerId) {
+    public boolean onPlayerEnterCheckpoint(int playerId) {
         try {
             Player player = sampObjectStore.getPlayer(playerId);
             Checkpoint checkpoint = player.getCheckpoint();
 
-            if (checkpoint == null) return 0;
+            if (checkpoint == null) return false;
             checkpoint.onEnter(player);
 
             CheckpointEnterEvent event = new CheckpointEnterEvent(player);
             rootEventManager.dispatchEvent(event, checkpoint, player);
 
-            return 1;
+            return true;
         } catch (Throwable e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
 

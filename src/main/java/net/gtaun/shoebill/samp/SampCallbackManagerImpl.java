@@ -156,9 +156,9 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onPlayerEnterCheckpoint(int playerid) {
+        public boolean onPlayerEnterCheckpoint(int playerid) {
             callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> handler.onPlayerEnterCheckpoint(playerid)));
-            return 1;
+            return true;
         }
 
         @Override
