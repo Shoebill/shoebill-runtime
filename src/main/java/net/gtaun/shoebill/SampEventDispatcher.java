@@ -2134,13 +2134,13 @@ public class SampEventDispatcher implements SampCallbackHandler {
     }
 
     @Override
-    public int onRegisteredFunctionCall(String name, Object[] parameters) {
+    public int onRegisteredFunctionCall(int amx, String name, Object[] parameters) {
         try {
             int returnValue = 0;
             for(AmxInstance instance : AmxInstanceManager.get().getAmxInstances()) {
-                if(instance.hasRegisteredFunction(name)) {
-                    returnValue = instance.callRegisteredFunction(name, parameters);
-                }
+                if(instance.getHandle() != amx) continue;
+                if(!instance.hasRegisteredFunction(name)) continue;
+                returnValue = instance.callRegisteredFunction(name, parameters);
             }
             return returnValue;
         } catch (Throwable e) {

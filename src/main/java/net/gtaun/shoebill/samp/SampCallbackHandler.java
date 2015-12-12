@@ -542,5 +542,5 @@ public interface SampCallbackHandler {
         return 1;
     }
 
-    default int onRegisteredFunctionCall(String name, Object[] parameters) { return 1; }
+    default int onRegisteredFunctionCall(int amx, String name, Object[] parameters) { return 1; }
 }

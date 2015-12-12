@@ -842,9 +842,9 @@ public class SampCallbackManagerImpl implements SampCallbackManager {
         }
 
         @Override
-        public int onRegisteredFunctionCall(String name, Object[] parameters) {
+        public int onRegisteredFunctionCall(int amx, String name, Object[] parameters) {
             int[] returnValue = new int[] { -1 };
-            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> returnValue[0] = handler.onRegisteredFunctionCall(name, parameters)));
+            callbackHandlers.stream().filter(SampCallbackHandler::isActive).forEach(handler -> TryUtils.tryTo(() -> returnValue[0] = handler.onRegisteredFunctionCall(amx, name, parameters)));
             return returnValue[0];
         }
     };
