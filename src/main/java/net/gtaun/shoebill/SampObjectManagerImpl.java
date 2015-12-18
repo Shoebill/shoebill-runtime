@@ -161,6 +161,12 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
             super.removeTimer(timer);
         });
 
+        eventManagerNode.registerHandler(DestroyEvent.class, HandlerPriority.BOTTOM, Attentions.create().clazz(Actor.class), (e) ->
+        {
+            Actor actor = (Actor) e.getDestroyable();
+            super.setActor(actor.getId(), null);
+        });
+
         createServer();
         createWorld();
     }
@@ -311,9 +317,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
     @Override
     public ActorImpl createActor(int modelid, Vector3D position, float angle) throws CreationFailedException {
         try {
-            ActorImpl actor = new ActorImpl(modelid, position, angle);
-            super.setActor(actor.getId(), actor);
-            return actor;
+            return new ActorImpl(eventManagerNode, this, modelid, position, angle);
         } catch (Throwable e) {
             throw new CreationFailedException(e);
         }

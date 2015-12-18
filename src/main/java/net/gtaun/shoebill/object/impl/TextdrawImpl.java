@@ -52,19 +52,24 @@ public class TextdrawImpl implements Textdraw {
 
     public TextdrawImpl(EventManager eventManager, SampObjectStoreImpl store, float x, float y, String text, boolean doInit, int id) throws CreationFailedException {
         this.rootEventManager = eventManager;
-
-        position = new Vector2D(x, y);
-        if (StringUtils.isEmpty(text)) text = " ";
-
-        if (doInit || id < 0) {
-            final String finalText = text;
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.textDrawCreate(x, y, finalText));
-        } else this.id = id;
-        if (this.id == INVALID_ID) throw new CreationFailedException();
-        store.setTextdraw(this.id, this);
         this.text = text;
+        position = new Vector2D(x, y);
         for (int i = 0; i < isPlayerShowed.length; i++)
             isPlayerShowed[i] = false;
+
+        if (StringUtils.isEmpty(text)) this.text = " ";
+
+        if (doInit || id < 0) {
+            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.textDrawCreate(x, y, this.text)));
+        } else
+            setup(store, id);
+    }
+
+    private void setup(SampObjectStoreImpl store, int id) {
+        if (id == INVALID_ID) throw new CreationFailedException();
+
+        this.id = id;
+        store.setTextdraw(id, this);
     }
 
     @Override

@@ -64,10 +64,16 @@ public class LabelImpl implements Label {
 
         if (doInit || id < 0) {
             final String finalText = text;
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.create3DTextLabel(finalText, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, location.getWorldId(), testLOS));
-        } else this.id = id;
-        if (this.id == INVALID_ID) throw new CreationFailedException();
-        store.setLabel(this.id, this);
+            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.create3DTextLabel(finalText, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, location.getWorldId(), testLOS)));
+        } else
+            setup(store, id);
+    }
+
+    private void setup(SampObjectStoreImpl store, int id) {
+        if(id == INVALID_ID) throw new CreationFailedException();
+
+        this.id = id;
+        store.setLabel(id, this);
     }
 
     @Override

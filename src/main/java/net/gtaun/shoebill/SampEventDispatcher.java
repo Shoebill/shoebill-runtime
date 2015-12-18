@@ -16,13 +16,14 @@
 
 package net.gtaun.shoebill;
 
-import net.gtaun.shoebill.amx.*;
+import net.gtaun.shoebill.amx.AmxCallEvent;
+import net.gtaun.shoebill.amx.AmxHook;
+import net.gtaun.shoebill.amx.AmxInstance;
+import net.gtaun.shoebill.amx.AmxInstanceManager;
 import net.gtaun.shoebill.constant.*;
 import net.gtaun.shoebill.data.*;
 import net.gtaun.shoebill.event.actor.ActorStreamInEvent;
 import net.gtaun.shoebill.event.actor.ActorStreamOutEvent;
-import net.gtaun.shoebill.event.amx.AmxLoadEvent;
-import net.gtaun.shoebill.event.amx.AmxUnloadEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointEnterEvent;
 import net.gtaun.shoebill.event.checkpoint.CheckpointLeaveEvent;
 import net.gtaun.shoebill.event.checkpoint.RaceCheckpointEnterEvent;
@@ -2109,8 +2110,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
     @Override
     public int onAmxCreateActor(int id, int modelid, float x, float y, float z, float rotation) {
         try {
-            ActorImpl actor = new ActorImpl(modelid, new Vector3D(x, y, z), rotation, false, id);
-            sampObjectStore.setActor(id, actor);
+            ActorImpl actor = new ActorImpl(rootEventManager, sampObjectStore, modelid, new Vector3D(x, y, z), rotation, false, id);
         } catch (Throwable e) {
             e.printStackTrace();
             return 0;
@@ -2122,10 +2122,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
     public int onAmxDestroyActor(int id) {
         try {
             Actor actor = sampObjectStore.getActor(id);
-            if (actor != null && actor instanceof ActorImpl) {
-                ((ActorImpl) actor).destroyWithoutExec();
-                sampObjectStore.setActor(id, null);
-            }
+            if (actor != null && actor instanceof ActorImpl) ((ActorImpl) actor).destroyWithoutExec();
         } catch (Throwable e) {
             e.printStackTrace();
             return 0;

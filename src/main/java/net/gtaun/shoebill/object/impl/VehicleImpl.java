@@ -77,18 +77,25 @@ public class VehicleImpl implements Vehicle {
             case 570:
             case 590:
                 if (doInit || id < 0)
-                    SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.addStaticVehicleEx(modelId, loc.x, loc.y, loc.z, loc.angle, color1, color2, respawnDelay, addsiren));
-                else this.id = id;
+                    SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.addStaticVehicleEx(modelId, loc.x, loc.y, loc.z, loc.angle, color1, color2, respawnDelay, addsiren), loc, addsiren));
+                else
+                    setup(store, id, loc, addsiren);
                 isStatic = true;
                 break;
 
             default:
                 if (doInit || id < 0)
-                    SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createVehicle(modelId, loc.x, loc.y, loc.z, loc.angle, color1, color2, respawnDelay, addsiren));
-                else this.id = id;
+                    SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.createVehicle(modelId, loc.x, loc.y, loc.z, loc.angle, color1, color2, respawnDelay, addsiren), loc, addsiren));
+                else
+                    setup(store, id, loc, addsiren);
         }
-        if (this.id == INVALID_ID) throw new CreationFailedException();
-        store.setVehicle(this.id, this);
+    }
+
+    private void setup(SampObjectStoreImpl store, int id, Location loc, boolean addsiren) {
+        if (id == INVALID_ID) throw new CreationFailedException();
+
+        this.id = id;
+        store.setVehicle(id, this);
         initialize(modelId, interiorId, loc.getWorldId(), color1, color2, respawnDelay, addsiren);
     }
 

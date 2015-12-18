@@ -50,7 +50,7 @@ public class PlayerImpl implements Player {
     private Player spectatingPlayer;
     private Vehicle spectatingVehicle;
 
-    private int updateCount = -1;
+    private long updateCount = -1;
     private int weatherId;
 
     private Area worldBound = new Area(-20000.0f, -20000.0f, 20000.0f, 20000.0f);
@@ -122,7 +122,7 @@ public class PlayerImpl implements Player {
     }
 
     @Override
-    public int getUpdateCount() {
+    public long getUpdateCount() {
         return updateCount;
     }
 

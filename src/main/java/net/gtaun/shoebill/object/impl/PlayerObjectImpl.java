@@ -61,17 +61,22 @@ public class PlayerObjectImpl implements PlayerObject {
     public PlayerObjectImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, int modelId, Location loc, Vector3D rot, float drawDistance, boolean doInit, int id) throws CreationFailedException {
         if (!player.isOnline()) throw new CreationFailedException();
 
+        eventManagerNode = eventManager.createChildNode();
         this.player = player;
         this.modelId = modelId;
         this.location = new Location(loc);
         this.drawDistance = drawDistance;
 
         if (doInit || id < 0)
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createPlayerObject(player.getId(), modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance));
-        else this.id = id;
+            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.createPlayerObject(player.getId(), modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance)));
+        else
+            setup(store, id);
+    }
+
+    private void setup(SampObjectStoreImpl store, int id) {
+        this.id = id;
         if (this.id == INVALID_ID) throw new CreationFailedException();
-        store.setPlayerObject(player, this.id, this);
-        eventManagerNode = eventManager.createChildNode();
+        store.setPlayerObject(player, id, this);
     }
 
     public void onPlayerObjectMoved() {

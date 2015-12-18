@@ -64,13 +64,19 @@ public class SampObjectImpl implements SampObject {
         this.modelId = modelId;
         this.location = new Location(loc);
         this.drawDistance = drawDistance;
+        eventManagerNode = eventManager.createChildNode();
 
         if (doInit || id < 0)
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createObject(modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance));
-        else this.id = id;
-        if (this.id == INVALID_ID) throw new CreationFailedException();
-        store.setObject(this.id, this);
-        eventManagerNode = eventManager.createChildNode();
+            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.createObject(modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance)));
+        else
+            setup(store, id);
+    }
+
+    private void setup(SampObjectStoreImpl store, int id) {
+        if (id == INVALID_ID) throw new CreationFailedException();
+
+        this.id = id;
+        store.setObject(id, this);
     }
 
     public void onObjectMoved() {

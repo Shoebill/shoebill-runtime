@@ -52,19 +52,24 @@ public class PlayerTextdrawImpl implements PlayerTextdraw {
     public PlayerTextdrawImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, float x, float y, String text, boolean doInit, int id) throws CreationFailedException {
         this.rootEventManager = eventManager;
         this.player = player;
+        this.text = text;
 
         position = new Vector2D(x, y);
-        if (StringUtils.isEmpty(text)) text = " ";
+        if (StringUtils.isEmpty(text)) this.text = " ";
 
         if (!player.isOnline()) throw new CreationFailedException();
 
-        if (doInit || id < 0) {
-            final String finalText = text;
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createPlayerTextDraw(player.getId(), x, y, finalText));
-        } else this.id = id;
+        if (doInit || id < 0)
+            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.createPlayerTextDraw(player.getId(), x, y, this.text)));
+        else
+            setup(store, id);
+    }
+
+    private void setup(SampObjectStoreImpl store, int id) {
         if (id == INVALID_ID) throw new CreationFailedException();
-        store.setPlayerTextdraw(player, this.id, this);
-        this.text = text;
+
+        this.id = id;
+        store.setPlayerTextdraw(player, id, this);
     }
 
     @Override

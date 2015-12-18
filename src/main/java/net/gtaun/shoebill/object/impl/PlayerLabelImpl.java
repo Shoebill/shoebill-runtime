@@ -115,10 +115,16 @@ public class PlayerLabelImpl implements PlayerLabel {
             final int finalPlayerId = playerId;
             final int finalVehicleId = vehicleId;
             final String finalText = text;
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createPlayer3DTextLabel(player.getId(), finalText, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, finalPlayerId, finalVehicleId, testLOS));
-        } else this.id = id;
-        if (this.id == INVALID_ID) throw new CreationFailedException();
-        store.setPlayerLabel(player, this.id, this);
+            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.createPlayer3DTextLabel(player.getId(), finalText, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, finalPlayerId, finalVehicleId, testLOS)));
+        } else
+            setup(store, id);
+    }
+
+    private void setup(SampObjectStoreImpl store, int id) {
+        if (id == INVALID_ID) throw new CreationFailedException();
+
+        this.id = id;
+        store.setPlayerLabel(player, id, this);
     }
 
     @Override

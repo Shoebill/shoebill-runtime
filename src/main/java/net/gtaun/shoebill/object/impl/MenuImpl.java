@@ -61,9 +61,16 @@ public class MenuImpl implements Menu {
 
         if (doInit || id < 0) {
             final String finalTitle = title;
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createMenu(finalTitle, columns, position.getX(), position.getY(), col1Width, col1Width));
-        } else this.id = id;
-        if (this.id == -1) throw new CreationFailedException();
+            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.createMenu(finalTitle, columns, position.getX(), position.getY(), col1Width, col1Width)));
+        } else
+            setup(store, id);
+    }
+
+    private void setup(SampObjectStoreImpl store, int id) {
+        if(id == INVALID_ID) throw new CreationFailedException();
+
+        this.id = id;
+        store.setMenu(id, this);
     }
 
     @Override

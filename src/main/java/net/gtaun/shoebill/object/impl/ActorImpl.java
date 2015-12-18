@@ -2,29 +2,44 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.data.AngledLocation;
 import net.gtaun.shoebill.data.Location;
 import net.gtaun.shoebill.data.Vector3D;
+import net.gtaun.shoebill.event.destroyable.DestroyEvent;
+import net.gtaun.shoebill.exception.CreationFailedException;
 import net.gtaun.shoebill.object.Actor;
 import net.gtaun.shoebill.object.Player;
+import net.gtaun.util.event.EventManager;
+import net.gtaun.util.event.EventManagerNode;
 
 /**
  * Created by marvin on 01.05.15 in project shoebill-runtime.
  * Copyright (c) 2015 Marvin Haschker. All rights reserved.
  */
 public class ActorImpl implements Actor {
-    private int id, modelid;
+    private int id = INVALID_ACTOR, modelid;
+    private EventManagerNode eventManagerNode;
 
-
-    public ActorImpl(int modelid, Vector3D pos, float angle) {
-        this(modelid, pos, angle, true, -1);
+    public ActorImpl(EventManager eventManager, SampObjectStoreImpl store, int modelid, Vector3D pos, float angle) {
+        this(eventManager, store, modelid, pos, angle, true, -1);
     }
 
-    public ActorImpl(int modelid, Vector3D pos, float angle, boolean doExec, int id) {
+    public ActorImpl(EventManager eventManager, SampObjectStoreImpl store, int modelid, Vector3D pos, float angle, boolean doExec, int id) {
         this.modelid = modelid;
+        this.eventManagerNode = eventManager.createChildNode();
+
         if (doExec)
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createActor(modelid, pos.x, pos.y, pos.z, angle));
-        else this.id = id;
+            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.createActor(modelid, pos.x, pos.y, pos.z, angle)));
+        else
+            setup(store, id);
+    }
+
+    private void setup(SampObjectStoreImpl store, int id) {
+        if(id == INVALID_ACTOR) throw new CreationFailedException();
+        this.id = id;
+
+        store.setActor(id, this);
     }
 
     @Override
@@ -126,16 +141,20 @@ public class ActorImpl implements Actor {
         if (isDestroyed()) return;
 
         SampNativeFunction.destroyActor(id);
-        this.id = -1;
+        destroyWithoutExec();
     }
 
     @Override
     public boolean isDestroyed() {
-        return id < 0;
+        return id == INVALID_ACTOR;
     }
 
     public void destroyWithoutExec() {
         if (isDestroyed()) return;
-        this.id = -1;
+        DestroyEvent destroyEvent = new DestroyEvent(this);
+        eventManagerNode.dispatchEvent(destroyEvent, this);
+        eventManagerNode.destroy();
+
+        this.id = INVALID_ACTOR;
     }
 }

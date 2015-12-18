@@ -55,16 +55,21 @@ public class ZoneImpl implements Zone {
 
     private void initialize(SampObjectStoreImpl store, float minX, float minY, float maxX, float maxY, boolean doInit, int id) throws CreationFailedException {
         area = new Area(minX, minY, maxX, maxY);
-
-        if (doInit || id < 0)
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.gangZoneCreate(minX, minY, maxX, maxY));
-        else this.id = id;
-        if (this.id == INVALID_ID) throw new CreationFailedException();
-        store.setZone(this.id, this);
         for (int i = 0; i < isPlayerShowed.length; i++) {
             isPlayerShowed[i] = false;
             isPlayerFlashing[i] = false;
         }
+
+        if (doInit || id < 0)
+            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.gangZoneCreate(minX, minY, maxX, maxY)));
+        else setup(store, id);
+    }
+
+    private void setup(SampObjectStoreImpl store, int id) {
+        if (id == INVALID_ID) throw new CreationFailedException();
+
+        this.id = id;
+        store.setZone(id, this);
     }
 
     @Override

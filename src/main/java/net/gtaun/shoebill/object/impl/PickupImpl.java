@@ -57,11 +57,22 @@ public class PickupImpl implements Pickup {
 
         if (!isStatic) {
             if (doInit || id < 0)
-                SampEventDispatcher.getInstance().executeWithoutEvent(() -> this.id = SampNativeFunction.createPickup(modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId()));
-            else this.id = id;
-            if (this.id == INVALID_ID) throw new CreationFailedException();
-            store.setPickup(this.id, this);
+                SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.createPickup(modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId())));
+            else
+                setup(store, id);
+        } else {
+            if (doInit || id < 0)
+                SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.addStaticPickup(modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId())));
+            else
+                setup(store, id);
         }
+    }
+
+    private void setup(SampObjectStoreImpl store, int id) {
+        if (id == INVALID_ID) throw new CreationFailedException();
+
+        this.id = id;
+        store.setPickup(id, this);
     }
 
     @Override
