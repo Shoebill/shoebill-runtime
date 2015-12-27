@@ -59,9 +59,9 @@ public class TextdrawImpl implements Textdraw {
 
         if (StringUtils.isEmpty(text)) this.text = " ";
 
-        if (doInit || id < 0) {
+        if (doInit || id < 0)
             SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.textDrawCreate(x, y, this.text)));
-        } else
+        else
             setup(store, id);
     }
 

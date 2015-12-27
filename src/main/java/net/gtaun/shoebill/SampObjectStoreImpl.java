@@ -50,7 +50,7 @@ public class SampObjectStoreImpl implements SampObjectStore {
     public static final int MAX_GLOBAL_LABELS = 1024;
     public static final int MAX_PLAYER_LABELS = 1024;
     public static final int MAX_PICKUPS = 4096;
-    public static final int MAX_CLASSES = 300;
+    public static final int MAX_CLASSES = 312;
     public static final int MAX_ACTORS = 1000;
 
     private static <T> Collection<T> getNotNullInstances(T[] items) {
