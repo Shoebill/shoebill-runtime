@@ -901,7 +901,10 @@ public class SampEventDispatcher implements SampCallbackHandler {
             Player player = sampObjectStore.getPlayer(playerid);
             PlayerAttachSlot slot = player.getAttach().getSlotByBone(PlayerAttachBone.get(boneid));
 
-            PlayerEditAttachedObjectEvent event = new PlayerEditAttachedObjectEvent(player, slot);
+            PlayerEditAttachedObjectEvent event = new PlayerEditAttachedObjectEvent(player, slot, response == 1,
+                    new Vector3D(fOffsetX, fOffsetY, fOffsetZ),
+                    new Vector3D(fRotX, fRotY, fRotZ),
+                    new Vector3D(fScaleX, fScaleY, fScaleZ));
             rootEventManager.dispatchEvent(event, player);
 
             return true;
