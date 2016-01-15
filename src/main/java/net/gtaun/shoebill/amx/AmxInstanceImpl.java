@@ -1,6 +1,7 @@
 package net.gtaun.shoebill.amx;
 
 import net.gtaun.shoebill.SampNativeFunction;
+import net.gtaun.shoebill.amx.types.ReturnType;
 
 import java.util.HashMap;
 import java.util.function.Function;
@@ -20,27 +21,27 @@ public class AmxInstanceImpl implements AmxInstance {
     }
 
     @Override
-    public AmxCallable getPublic(String name) {
+    public AmxCallable getPublic(String name, ReturnType returnType) {
         int funcHandle = SampNativeFunction.getPublic(handle, name);
         if (funcHandle == AmxCallable.INVALID_CALLABLE)
             return null;
-        return new AmxCallableImpl(this, funcHandle, name, AmxCallableType.PUBLIC);
+        return new AmxCallableImpl(this, funcHandle, name, AmxCallableType.PUBLIC, returnType);
     }
 
     @Override
-    public AmxCallable getNative(String name) {
+    public AmxCallable getNative(String name, ReturnType returnType) {
         int id = SampNativeFunction.getNative(name);
         if(id != 0)
-            return new AmxCallableImpl(this, id, name, AmxCallableType.NATIVE);
+            return new AmxCallableImpl(this, id, name, AmxCallableType.NATIVE, returnType);
         else
             return null;
     }
 
     @Override
-    public boolean registerFunction(String s, Function<Object[], Integer> function, Class... classes) {
+    public boolean registerFunction(String s, Function<Object[], Integer> function, Class... types) {
         if(registeredFunctions.containsKey(s))
             return false;
-        boolean result = SampNativeFunction.registerFunction(handle, s, classes);
+        boolean result = SampNativeFunction.registerFunction(handle, s, types);
         if(result) registeredFunctions.put(s, function);
         return result;
     }
