@@ -151,11 +151,10 @@ public class SampEventDispatcher implements SampCallbackHandler {
             PlayerDisconnectEvent event = new PlayerDisconnectEvent(player, reason);
             rootEventManager.dispatchEvent(event, player);
 
-            sampObjectStore.setPlayer(playerId, null);
             return event.getResponse() > 0;
         } catch (Throwable e) {
             e.printStackTrace();
-            return false;
+            return true;
         }
     }
 

@@ -53,7 +53,7 @@ public interface SampCallbackHandler {
     }
 
     default boolean onPlayerDisconnect(int playerId, int reason) {
-        return false;
+        return true;
     }
 
     default boolean onPlayerSpawn(int playerId) {
