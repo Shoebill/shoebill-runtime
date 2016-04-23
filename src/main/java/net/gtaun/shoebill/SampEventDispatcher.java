@@ -1615,7 +1615,7 @@ public class SampEventDispatcher implements SampCallbackHandler {
         try {
             Player player = Player.get(playerid);
             if (player != null && player instanceof PlayerImpl) {
-                ((PlayerImpl) player).setCheckpointWithoutExec(() -> new Radius(x, y, z, size));
+                ((PlayerImpl) player).setCheckpointWithoutExec(Checkpoint.create(new Radius(x, y, z, size)));
 
             }
             return 1;
@@ -1645,41 +1645,8 @@ public class SampEventDispatcher implements SampCallbackHandler {
         try {
             Player player = Player.get(playerid);
             if (player != null && player instanceof PlayerImpl) {
-                ((PlayerImpl) player).setRaceCheckpointWithoutExec(new RaceCheckpoint() {
-                    @Override
-                    public RaceCheckpointType getType() {
-                        return RaceCheckpointType.get(type);
-                    }
-
-                    @Override
-                    public RaceCheckpoint getNext() {
-                        if (x == 0 && y == 0 && z == 0)
-                            return null;
-                        else
-                            return new RaceCheckpoint() {
-                                @Override
-                                public RaceCheckpointType getType() {
-                                    return null;
-                                }
-
-                                @Override
-                                public RaceCheckpoint getNext() {
-                                    return null;
-                                }
-
-                                @Override
-                                public Radius getLocation() {
-                                    return new Radius(nextX, nextY, nextZ, size);
-                                }
-                            };
-                    }
-
-                    @Override
-                    public Radius getLocation() {
-                        return new Radius(x, y, z, size);
-                    }
-                });
-
+                ((PlayerImpl) player).setRaceCheckpointWithoutExec(RaceCheckpoint.create(new Radius(x, y, z, size),
+                        RaceCheckpointType.get(type), () -> null, null, null));
             }
             return 1;
         } catch (Throwable e) {
