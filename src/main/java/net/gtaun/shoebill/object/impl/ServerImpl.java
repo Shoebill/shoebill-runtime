@@ -18,6 +18,7 @@ package net.gtaun.shoebill.object.impl;
 
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStore;
+import net.gtaun.shoebill.constant.ServerVarType;
 import net.gtaun.shoebill.constant.VehicleModelInfoType;
 import net.gtaun.shoebill.constant.WeaponModel;
 import net.gtaun.shoebill.data.Animation;
@@ -180,17 +181,67 @@ public class ServerImpl implements Server {
     }
 
     @Override
-    public int getIntVar(String varname) {
-        return SampNativeFunction.getConsoleVarAsInt(varname);
+    public int getConsoleIntVar(String s) {
+        return SampNativeFunction.getConsoleVarAsInt(s);
     }
 
     @Override
-    public boolean getBoolVar(String varname) {
-        return SampNativeFunction.getConsoleVarAsBool(varname);
+    public boolean getConsoleBoolVar(String s) {
+        return SampNativeFunction.getConsoleVarAsBool(s);
+    }
+
+    @Override
+    public String getConsoleStringVar(String s) {
+        return SampNativeFunction.getConsoleVarAsString(s);
+    }
+
+    @Override
+    public void setIntVar(String s, int i) {
+        SampNativeFunction.setServerVarInt(s, i);
+    }
+
+    @Override
+    public void setFloatVar(String s, float v) {
+        SampNativeFunction.setServerVarFloat(s, v);
+    }
+
+    @Override
+    public void setStringVar(String s, String s1) {
+        SampNativeFunction.setServerVarString(s, s1);
+    }
+
+    @Override
+    public int getIntVar(String varname) {
+        return SampNativeFunction.getServerVarAsInt(varname);
+    }
+
+    @Override
+    public float getFloatVar(String s) {
+        return SampNativeFunction.getServerVarAsFloat(s);
     }
 
     @Override
     public String getStringVar(String varname) {
-        return SampNativeFunction.getConsoleVarAsString(varname);
+        return SampNativeFunction.getServerVarAsString(varname);
+    }
+
+    @Override
+    public boolean deleteVar(String s) {
+        return SampNativeFunction.deleteServerVar(s);
+    }
+
+    @Override
+    public int getVarsUpperIndex() {
+        return SampNativeFunction.getServerVarsUpperIndex();
+    }
+
+    @Override
+    public String getVarNameAtIndex(int i) {
+        return SampNativeFunction.getServerVarNameAtIndex(i);
+    }
+
+    @Override
+    public ServerVarType getVarType(String s) {
+        return ServerVarType.get(SampNativeFunction.getServerVarType(s));
     }
 }
