@@ -1,6 +1,6 @@
-# shoebill-runtime
+# Shoebill Runtime
 
-[![Build Status](http://ci.gtaun.net/job/shoebill-runtime/badge/icon)](http://ci.gtaun.net/job/shoebill-runtime/)
+[![Build Status](http://ci.gtaun.net/app/rest/builds/buildType:(id:Shoebill_Runtime_Deploy)/statusIcon)](http://ci.gtaun.net/project.html?projectId=Shoebill_Runtime)
 
 # What is the shoebill-runtime?
 
