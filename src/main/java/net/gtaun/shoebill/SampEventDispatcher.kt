@@ -56,7 +56,6 @@ class SampEventDispatcher(private val sampObjectStore: SampObjectManagerImpl,
         instance = this
     }
 
-
     override fun onProcessTick() {
         sampObjectStore.timerImpls.apply {
             if(size > 0) {

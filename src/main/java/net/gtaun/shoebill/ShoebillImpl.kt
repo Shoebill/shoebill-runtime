@@ -82,6 +82,8 @@ class ShoebillImpl @Throws(IOException::class) constructor(amxHandles: IntArray)
             LOGGER.info("There's no gamemode assigned in $RESOURCES_CONFIG_FILENAME or file not found.")
             LOGGER.info("Shoebill will only use plugins!")
         }
+
+        registerRootCallbackHandler()
     }
 
     override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
@@ -216,7 +218,6 @@ class ShoebillImpl @Throws(IOException::class) constructor(amxHandles: IntArray)
 
         sampCallbackManager.registerCallbackHandler(sampObjectManager.callbackHandler)
         sampCallbackManager.registerCallbackHandler(sampEventDispatcher)
-        registerRootCallbackHandler()
     }
 
     private fun uninitialize() {

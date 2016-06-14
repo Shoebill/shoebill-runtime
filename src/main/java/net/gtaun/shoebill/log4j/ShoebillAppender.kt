@@ -36,9 +36,8 @@ internal class ShoebillAppender : FileAppender {
     private var rollOverTimestamp: Long = 0
 
     @Throws(IOException::class)
-    constructor(layout: Layout, filename: String) : super(layout, filename, true) {
-        activateOptions()
-    }
+    constructor(layout: Layout, filename: String) : super(layout, filename, true)
+    constructor()
 
     fun setPath(path: String) {
         this.path = File(path)
