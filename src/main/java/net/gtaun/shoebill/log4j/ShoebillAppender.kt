@@ -39,14 +39,6 @@ internal class ShoebillAppender : FileAppender {
     constructor(layout: Layout, filename: String) : super(layout, filename, true)
     constructor()
 
-    fun setPath(path: String) {
-        this.path = File(path)
-    }
-
-    fun setFileExtension(fileExtension: String) {
-        this.fileExtension = fileExtension
-    }
-
     override fun activateOptions() {
         if (!path!!.exists()) path!!.mkdirs()
 
