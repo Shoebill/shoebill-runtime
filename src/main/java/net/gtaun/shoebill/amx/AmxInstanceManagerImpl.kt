@@ -23,13 +23,13 @@ class AmxInstanceManagerImpl(private val eventManager: EventManager, existingHan
     fun onAmxLoad(handle: Int) {
         val instance = AmxInstanceImpl(handle)
         instances.add(instance)
-        eventManager.dispatchEvent(AmxLoadEvent(instance), this)
+        eventManager.dispatchEvent(AmxLoadEvent(instance), instance)
     }
 
     fun onAmxUnload(handle: Int) {
         val instance = AmxInstanceImpl(handle)
         instances.remove(instance)
-        eventManager.dispatchEvent(AmxUnloadEvent(instance), this)
+        eventManager.dispatchEvent(AmxUnloadEvent(instance), instance)
     }
 
     override val amxInstances: Set<AmxInstance>
@@ -38,9 +38,9 @@ class AmxInstanceManagerImpl(private val eventManager: EventManager, existingHan
     override val amxHooks: Set<AmxHook>
         get() = Collections.unmodifiableSet(HashSet(hooks))
 
-    override fun hookCallback(callbackName: String, hook: Consumer<AmxCallEvent>, types: String): Boolean {
-        if (SampNativeFunction.hookCallback(callbackName, types)) {
-            hooks.add(AmxHook(callbackName, hook, types))
+    override fun hookCallback(name: String, hook: (AmxCallEvent) -> Unit, vararg types: String): Boolean {
+        if (SampNativeFunction.hookCallback(name, *types)) {
+            hooks.add(AmxHook(name, hook, *types))
             return true
         }
         return false

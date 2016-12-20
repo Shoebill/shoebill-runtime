@@ -11,6 +11,7 @@ import net.gtaun.util.event.EventManager
 
 object DialogEventUtils {
 
+    @JvmStatic
     internal fun dispatchResponseEvent(eventManager: EventManager, dialog: DialogId, player: Player, response: Int,
                                        listitem: Int, inputtext: String): Int {
         try {
@@ -28,6 +29,7 @@ object DialogEventUtils {
 
     }
 
+    @JvmStatic
     fun dispatchShowEvent(eventManager: EventManager, dialog: DialogId, player: Player) {
         try {
             val dialogCloseEvent = DialogShowEvent(dialog, player)
@@ -43,6 +45,7 @@ object DialogEventUtils {
 
     }
 
+    @JvmStatic
     fun dispatchCloseEvent(eventManager: EventManager, dialog: DialogId, player: Player, type: DialogCloseType) {
         try {
             val dialogCloseEvent = DialogCloseEvent(dialog, player, type)

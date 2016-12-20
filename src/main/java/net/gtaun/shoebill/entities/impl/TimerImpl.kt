@@ -16,21 +16,21 @@
 
 package net.gtaun.shoebill.entities.impl
 
-import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.shoebill.entities.Timer
+import net.gtaun.shoebill.entities.TimerCallback
+import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.util.event.EventManager
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 
 /**
  * @author MK124
  * @author Marvin Haschker
  */
 class TimerImpl(private val rootEventManager: EventManager, override var interval: Int, override var count: Int,
-                override var callback: Timer.TimerCallback?) : Timer() {
+                override var callback: TimerCallback?) : Timer() {
 
     override var isRunning: Boolean = false
         private set
+
     private var counting: Int = 0
     private var factualInterval: Int = 0
 
@@ -45,12 +45,6 @@ class TimerImpl(private val rootEventManager: EventManager, override var interva
 
         isDestroyed = true
     }
-
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-            .append("interval", interval)
-            .append("count", count)
-            .append("running", isRunning)
-            .toString()
 
     override fun start() {
         if (isRunning) return
@@ -78,9 +72,14 @@ class TimerImpl(private val rootEventManager: EventManager, override var interva
         if (factualInterval < interval) return
 
         if (count > 0) counting--
-        if (callback != null)
-            callback!!.onTick(factualInterval)
+        if (callback != null) {
+            try {
+                callback!!.onTick(factualInterval)
+            } catch (e: Throwable) {
+            }
+        }
 
+        elapsedCounts += 1
         factualInterval = 0
         if (count > 0 && counting == 0) stop()
     }

@@ -52,8 +52,6 @@ class DialogIdImpl(private val rootEventManager: EventManager, id: Int,
     override val isDestroyed: Boolean
         get() = id == INVALID_ID
 
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("id", id).toString()
-
     override fun show(player: Player, style: DialogStyle, caption: String, text: String, button1: String, button2: String) {
         player.showDialog(this, style, caption, text, button1, button2)
     }

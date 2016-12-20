@@ -45,19 +45,19 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
 
     lateinit override var server: ServerImpl
     lateinit override var world: WorldImpl
-    override val players: MutableList<Player> = mutableListOf()
-    override val vehicles: MutableList<Vehicle> = mutableListOf()
-    override val objects: MutableList<SampObject> = mutableListOf()
-    private val playerObjectsArray: MutableList<MutableList<PlayerObject>> = mutableListOf()
-    override val playerClasses: MutableList<SpawnInfo> = mutableListOf()
-    override val pickups: MutableList<Pickup> = mutableListOf()
-    override val labels: MutableList<Label> = mutableListOf()
-    private val playerLabelsArray: MutableList<MutableList<PlayerLabel>> = mutableListOf()
-    override val textdraws: MutableList<Textdraw> = mutableListOf()
-    private val playerTextdrawsArray: MutableList<MutableList<PlayerTextdraw>> = mutableListOf()
-    override val menus: MutableList<Menu> = mutableListOf()
-    override val zones: MutableList<Zone> = mutableListOf()
-    override val actors: MutableList<Actor> = mutableListOf()
+    override val players: Array<Player?> = arrayOfNulls(MAX_PLAYERS)
+    override val vehicles: Array<Vehicle?> = arrayOfNulls(MAX_VEHICLES)
+    override val objects: Array<SampObject?> = arrayOfNulls(MAX_OBJECTS)
+    private val playerObjectsArray: Array<Array<PlayerObject?>?> = arrayOfNulls(MAX_PLAYERS)
+    override val playerClasses: Array<SpawnInfo?> = arrayOfNulls(MAX_CLASSES)
+    override val pickups: Array<Pickup?> = arrayOfNulls(MAX_PICKUPS)
+    override val labels: Array<Label?> = arrayOfNulls(MAX_GLOBAL_LABELS)
+    private val playerLabelsArray: Array<Array<PlayerLabel?>?> = arrayOfNulls(MAX_PLAYERS)
+    override val textdraws: Array<Textdraw?> = arrayOfNulls(MAX_TEXT_DRAWS)
+    private val playerTextdrawsArray: Array<Array<PlayerTextdraw?>?> = arrayOfNulls(MAX_PLAYERS)
+    override val menus: Array<Menu?> = arrayOfNulls(MAX_MENUS)
+    override val zones: Array<Zone?> = arrayOfNulls(MAX_ZONES)
+    override val actors: Array<Actor?> = arrayOfNulls(MAX_ACTORS)
     private val timers = ConcurrentLinkedQueue<Reference<TimerImpl>>()
     private val dialogs = ConcurrentHashMap<Int, Reference<DialogIdImpl>>()
     private val staticPickups: MutableList<Reference<PickupImpl>> = mutableListOf()
@@ -68,54 +68,40 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
     }
 
     private fun setupObjectEventHandler() {
-        eventManagerNode.registerHandler(PlayerUpdateEvent::class.java, HandlerPriority.MONITOR) { e ->
-            val primitive = e.player.primitive
-            if (primitive !is PlayerImpl) return@registerHandler
-
+        eventManagerNode.registerHandler(PlayerUpdateEvent::class, {
+            val primitive = it.player.primitive as? PlayerImpl ?: return@registerHandler
             primitive.onPlayerUpdate()
-        }
+        }, HandlerPriority.MONITOR)
 
-        eventManagerNode.registerHandler(PlayerDisconnectEvent::class.java, HandlerPriority.BOTTOM) { e ->
-            val primitive = e.player.primitive
-            if (primitive !is PlayerImpl) return@registerHandler
-
+        eventManagerNode.registerHandler(PlayerDisconnectEvent::class, {
+            val primitive = it.player.primitive as? PlayerImpl ?: return@registerHandler
             primitive.onPlayerDisconnect()
-        }
+        }, HandlerPriority.BOTTOM)
 
-        eventManagerNode.registerHandler(DialogResponseEvent::class.java, HandlerPriority.MONITOR) { e ->
-            val primitive = e.player.primitive
-            if (primitive !is PlayerImpl) return@registerHandler
-
+        eventManagerNode.registerHandler(DialogResponseEvent::class, {
+            val primitive = it.player.primitive as? PlayerImpl ?: return@registerHandler
             primitive.onDialogResponse()
-        }
+        }, HandlerPriority.MONITOR)
 
-        eventManagerNode.registerHandler(PlayerObjectMovedEvent::class.java, HandlerPriority.MONITOR) { e ->
-            val primitive = e.`object`.primitive
-            if (primitive !is PlayerObjectImpl) return@registerHandler
-
+        eventManagerNode.registerHandler(PlayerObjectMovedEvent::class, {
+            val primitive = it.`object`.primitive as? PlayerObjectImpl ?: return@registerHandler
             primitive.onPlayerObjectMoved()
-        }
+        }, HandlerPriority.MONITOR)
 
-        eventManagerNode.registerHandler(ObjectMovedEvent::class.java, HandlerPriority.MONITOR) { e ->
-            val primitive = e.`object`.primitive
-            if (primitive !is SampObjectImpl) return@registerHandler
-
+        eventManagerNode.registerHandler(ObjectMovedEvent::class, {
+            val primitive = it.`object`.primitive as? SampObjectImpl ?: return@registerHandler
             primitive.onObjectMoved()
-        }
+        }, HandlerPriority.MONITOR)
 
-        eventManagerNode.registerHandler(VehicleModEvent::class.java, HandlerPriority.MONITOR) { e ->
-            val primitive = e.vehicle.primitive
-            if (primitive !is VehicleImpl) return@registerHandler
-
+        eventManagerNode.registerHandler(VehicleModEvent::class, {
+            val primitive = it.vehicle.primitive as? VehicleImpl ?: return@registerHandler
             primitive.onVehicleMod()
-        }
+        }, HandlerPriority.MONITOR)
 
-        eventManagerNode.registerHandler(VehicleUpdateDamageEvent::class.java, HandlerPriority.MONITOR) { e ->
-            val primitive = e.vehicle.primitive
-            if (primitive !is VehicleImpl) return@registerHandler
-
+        eventManagerNode.registerHandler(VehicleUpdateDamageEvent::class, {
+            val primitive = it.vehicle.primitive as? VehicleImpl ?: return@registerHandler
             primitive.onVehicleUpdateDamage()
-        }
+        }, HandlerPriority.MONITOR)
     }
 
     override fun getPlayer(id: Int): Player? = players.getOrNull(id)
@@ -139,13 +125,13 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
     override fun getDialog(id: Int): DialogId? = dialogs[id]?.get()
 
     override val humanPlayers: Collection<Player>
-        get() = players.filter { !it.isNpc }.toList()
+        get() = players.filterNotNull().filter { !it.isNpc }
 
     override val npcPlayers: Collection<Player>
-        get() = players.filter { it.isNpc }.toList()
+        get() = players.filterNotNull().filter { it.isNpc }
 
     override val dialogIds: Collection<DialogId>
-        get() = dialogs.values.filter { it.get() != null }.map { it.get() }.toList()
+        get() = dialogs.values.filter { it.get() != null }.map { it.get() }
 
     override fun getActor(id: Int): Actor? = actors.getOrNull(id)
 
@@ -166,9 +152,9 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
     internal fun setPlayer(id: Int, player: PlayerImpl) {
         players[id] = player
 
-        playerObjectsArray[id] = mutableListOf()
-        playerLabelsArray[id] = mutableListOf()
-        playerTextdrawsArray[id] = mutableListOf()
+        playerObjectsArray[id] = arrayOfNulls(MAX_OBJECTS)
+        playerLabelsArray[id] = arrayOfNulls(MAX_PLAYER_LABELS)
+        playerTextdrawsArray[id] = arrayOfNulls(MAX_PLAYER_TEXT_DRAWS)
     }
 
     fun removePlayer(id: Int) {
@@ -176,20 +162,20 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
         val playerObjects = playerObjectsArray.getOrNull(id)
         val playerTextdraws = playerTextdrawsArray.getOrNull(id)
 
-        playerLabels?.filter { !it.isDestroyed }?.forEach { it.destroy() }
-        playerObjects?.filter { !it.isDestroyed }?.forEach { it.destroy() }
-        playerTextdraws?.filter { !it.isDestroyed }?.forEach { it.destroy() }
+        playerLabels?.filterNotNull()?.filter { !it.isDestroyed }?.forEach { it.destroy() }
+        playerObjects?.filterNotNull()?.filter { !it.isDestroyed }?.forEach { it.destroy() }
+        playerTextdraws?.filterNotNull()?.filter { !it.isDestroyed }?.forEach { it.destroy() }
 
-        playerLabelsArray.removeAt(id)
-        playerObjectsArray.removeAt(id)
-        playerTextdrawsArray.removeAt(id)
+        playerLabelsArray[id] = null
+        playerObjectsArray[id] = null
+        playerTextdrawsArray[id] = null
 
-        players.removeAt(id)
+        players[id] = null
     }
 
     fun removeVehicle(id: Int) = vehicles.tryRemoveAtIndex(id)
 
-    fun removePlayerObject(player: Player, id: Int) = playerObjectsArray[player.id].tryRemoveAtIndex(id)
+    fun removePlayerObject(player: Player, id: Int) = playerObjectsArray[player.id]?.tryRemoveAtIndex(id)
 
     fun removeObject(id: Int) = objects.tryRemoveAtIndex(id)
 
@@ -197,11 +183,11 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
 
     fun removeLabel(id: Int) = labels.tryRemoveAtIndex(id)
 
-    fun removePlayerLabel(player: Player, id: Int) = playerLabelsArray[player.id].tryRemoveAtIndex(id)
+    fun removePlayerLabel(player: Player, id: Int) = playerLabelsArray[player.id]?.tryRemoveAtIndex(id)
 
     fun removeTextdraw(id: Int) = textdraws.tryRemoveAtIndex(id)
 
-    fun removePlayerTextdraw(player: Int, id: Int) = playerTextdrawsArray[player].tryRemoveAtIndex(id)
+    fun removePlayerTextdraw(player: Int, id: Int) = playerTextdrawsArray[player]?.tryRemoveAtIndex(id)
 
     fun removeZone(id: Int) = zones.tryRemoveAtIndex(id)
 
@@ -220,7 +206,8 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
     fun setPlayerObject(player: Player, id: Int, `object`: PlayerObject) {
         if (!player.isOnline) return
 
-        playerObjectsArray[player.id][id] = `object`
+        val playerObjects = playerObjectsArray[player.id] ?: return
+        playerObjects[id] = `object`
     }
 
     fun setPickup(id: Int, pickup: PickupImpl) {
@@ -234,7 +221,8 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
     fun setPlayerLabel(player: Player, id: Int, label: PlayerLabelImpl) {
         if (!player.isOnline) return
 
-        playerLabelsArray[player.id][id] = label
+        val playerLabels = playerLabelsArray[player.id] ?: return
+        playerLabels[id] = label
     }
 
     fun setTextdraw(id: Int, textdraw: TextdrawImpl) {
@@ -244,7 +232,8 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
     fun setPlayerTextdraw(player: Player, id: Int, textdraw: PlayerTextdraw) {
         if (!player.isOnline) return
 
-        playerTextdrawsArray[player.id][id] = textdraw
+        val playerTextdraws = playerTextdrawsArray[player.id] ?: return
+        playerTextdraws[id] = textdraw
     }
 
     fun setZone(id: Int, zone: ZoneImpl) {
@@ -281,25 +270,25 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
     internal fun removeDialog(dialog: DialogId) = dialogs.remove(dialog.id)
 
     override fun getPlayerTextdraws(player: Player): Collection<PlayerTextdraw> =
-            playerTextdrawsArray[player.id].toList()
+            playerTextdrawsArray[player.id]?.filterNotNull() ?: listOf()
 
     override fun getPlayerTextdraw(player: Player, id: Int): PlayerTextdraw? =
             getPlayerTextdraws(player).filter { it.id == id }.firstOrNull()
 
     override fun getPlayerObjects(player: Player): Collection<PlayerObject> =
-            playerObjectsArray[player.id].toList()
+            playerObjectsArray[player.id]?.filterNotNull() ?: listOf()
 
     override fun getPlayerObject(player: Player, id: Int): PlayerObject? =
             getPlayerObjects(player).filter { it.id == id }.firstOrNull()
 
     override fun getPlayerLabels(player: Player): Collection<PlayerLabel> =
-            playerLabelsArray[player.id].toList()
+            playerLabelsArray[player.id]?.filterNotNull() ?: listOf()
 
     override fun getPlayerLabel(player: Player, id: Int): PlayerLabel? =
             getPlayerLabels(player).filter { it.id == id }.firstOrNull()
 
     override fun getPlayer(name: String): Player? =
-            players.filter { it.name == name }.firstOrNull()
+            players.filterNotNull().filter { it.name == name }.firstOrNull()
 
     fun addStaticPickup(pickup: PickupImpl) {
         if(!pickup.isStatic) return
@@ -360,7 +349,7 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
         private val MAX_PICKUPS = 4096
 
         @JvmStatic
-        private val MAX_CLASSES = 312
+        private val MAX_CLASSES = 320
 
         @JvmStatic
         private val MAX_ACTORS = 1000
@@ -375,12 +364,12 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
     }
 }
 
-fun <T> Collection<T>.indexExists(id: Int): Boolean {
+fun <T> Array<T>.indexExists(id: Int): Boolean {
     return id >= 0 && id < this.size
 }
 
-fun <T> MutableList<T>.tryRemoveAtIndex(index: Int): Boolean {
+fun <T> Array<T?>.tryRemoveAtIndex(index: Int): Boolean {
     if(!indexExists(index)) return false
-    removeAt(index)
+    this[index] = null
     return true
 }

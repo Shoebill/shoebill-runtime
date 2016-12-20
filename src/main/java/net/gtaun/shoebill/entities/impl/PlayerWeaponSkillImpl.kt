@@ -35,11 +35,6 @@ class PlayerWeaponSkillImpl internal constructor(override val player: Player) : 
         (0..WeaponSkill.values().size - 1).forEachIndexed { index, i -> skills[index] = i }
     }
 
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-            .append("player", player)
-            .append("skills", skills)
-            .toString()
-
     override fun setLevel(type: WeaponSkill, level: Int) {
         var newLevel = level
         if (!player.isOnline) return

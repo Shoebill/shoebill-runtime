@@ -7,9 +7,9 @@ import java.util.function.Function
 /**
  * @author Marvin Haschker
  */
-internal class AmxInstanceImpl(override val handle: Int) : AmxInstance {
+internal class AmxInstanceImpl(override val handle: Int) : AmxInstance() {
 
-    private val registeredFunctions: MutableMap<String, Function<Array<Any>, Int>> = mutableMapOf()
+    private val registeredFunctions: MutableMap<String, (Array<Any>) -> Int> = mutableMapOf()
 
     override fun getPublic(name: String, returnType: ReturnType): AmxCallable? {
         val funcHandle = SampNativeFunction.getPublic(handle, name)
@@ -34,21 +34,17 @@ internal class AmxInstanceImpl(override val handle: Int) : AmxInstance {
         return result
     }
 
-    override fun callRegisteredFunction(name: String, vararg parameters: Any): Int {
-        return registeredFunctions[name]?.apply(arrayOf(*parameters)) ?: -1
+    override fun callRegisteredFunction(name: String, parameters: Array<Any>): Int {
+        return registeredFunctions[name]?.invoke(parameters) ?: -1
     }
 
     override fun isFunctionRegistered(name: String): Boolean = registeredFunctions.containsKey(name)
 
-    @SafeVarargs
-    override fun registerFunction(name: String, callback: Function<Array<Any>, Int>,
-                                  vararg parameterTypes: Class<Any>): Boolean {
+    override fun registerFunction(name: String, callback: (Array<Any>) -> Int,
+                                  vararg types: String): Boolean {
         if (registeredFunctions.containsKey(name)) return false
-        val result = SampNativeFunction.registerFunction(handle, name, *parameterTypes)
+        val result = SampNativeFunction.registerFunction(handle, name, *types)
         if (result) registeredFunctions[name] = callback
         return result
     }
-
-    override fun getPublic(name: String): AmxCallable? = getPublic(name, ReturnType.INTEGER)
-    override fun getNative(name: String): AmxCallable? = getNative(name, ReturnType.INTEGER)
 }

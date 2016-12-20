@@ -18,9 +18,8 @@
 package net.gtaun.shoebill.entities.impl
 
 import net.gtaun.shoebill.SampNativeFunction
-import net.gtaun.shoebill.entities.*
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
+import net.gtaun.shoebill.entities.Vehicle
+import net.gtaun.shoebill.entities.VehicleParam
 
 /**
  * @author JoJLlmAn, MK124
@@ -97,15 +96,6 @@ internal class VehicleParamImpl(override val vehicle: Vehicle) : VehicleParam() 
             set(engine, lights, alarm, doors, bonnet, boot, objective)
             field = value
         }
-
-    override fun toString(): String {
-        return ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-                .append("vehicle", vehicle).append("engine", engine)
-                .append("lights", lights).append("alarm", alarm)
-                .append("doors", doors).append("bonnet", bonnet)
-                .append("boot", boot).append("objective", objective)
-                .toString()
-    }
 
     override fun set(engine: Int, lights: Int, alarm: Int, doors: Int, bonnet: Int, boot: Int, objective: Int) {
         if (vehicle.isDestroyed) return

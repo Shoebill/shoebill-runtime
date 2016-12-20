@@ -174,6 +174,6 @@ class ResourceManagerImpl(private val shoebill: Shoebill, private val rootEventM
     override fun <T : Gamemode> getGamemode(gamemodeClass: Class<T>): T? = gamemodeClass.cast(gamemode)
 
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(ResourceManagerImpl::class.java)
+        private val LOGGER = LoggerFactory.getLogger("Resource Manager")
     }
 }

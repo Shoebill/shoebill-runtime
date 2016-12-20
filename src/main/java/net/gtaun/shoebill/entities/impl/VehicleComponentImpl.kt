@@ -21,8 +21,6 @@ import net.gtaun.shoebill.SampNativeFunction
 import net.gtaun.shoebill.constant.VehicleComponentSlot
 import net.gtaun.shoebill.entities.Vehicle
 import net.gtaun.shoebill.entities.VehicleComponent
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 
 /**
  * @author MK124
@@ -36,11 +34,6 @@ class VehicleComponentImpl internal constructor(override val vehicle: Vehicle) :
     init {
         update()
     }
-
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-            .append("vehicle", vehicle)
-            .append("components", components)
-            .toString()
 
     override fun add(componentId: Int) {
         if (vehicle.isDestroyed) return

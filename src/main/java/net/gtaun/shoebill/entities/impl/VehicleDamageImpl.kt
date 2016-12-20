@@ -19,8 +19,6 @@ package net.gtaun.shoebill.entities.impl
 import net.gtaun.shoebill.SampNativeFunction
 import net.gtaun.shoebill.entities.Vehicle
 import net.gtaun.shoebill.entities.VehicleDamage
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 
 /**
  * @author JoJLlmAn
@@ -50,14 +48,6 @@ class VehicleDamageImpl(override val vehicle: Vehicle) : VehicleDamage {
             if (vehicle.isDestroyed) return
             set(panels, doors, lights, tires)
         }
-
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-            .append("vehicle", vehicle)
-            .append("panels", panels)
-            .append("doors", doors)
-            .append("lights", lights)
-            .append("tires", tires)
-            .toString()
 
     override fun set(panels: Int, doors: Int, lights: Int, tires: Int) {
         if (vehicle.isDestroyed) return

@@ -26,21 +26,28 @@ import java.util.*
 
 /**
  * @author MK124
+ * *
  * @author Marvin Haschker
  */
-internal class ShoebillAppender : FileAppender {
+class ShoebillAppender : FileAppender {
 
-    private var path: File? = null
-    private var fileExtension = "log"
+    lateinit var path: String
+    val pathFile: File
+        get() = File(path)
+    var fileExtension = "log"
 
     private var rollOverTimestamp: Long = 0
 
+    constructor() {
+    }
+
     @Throws(IOException::class)
-    constructor(layout: Layout, filename: String) : super(layout, filename, true)
-    constructor()
+    constructor(layout: Layout, filename: String) : super(layout, filename, true) {
+        activateOptions()
+    }
 
     override fun activateOptions() {
-        if (!path!!.exists()) path!!.mkdirs()
+        if (!pathFile.exists()) pathFile.mkdirs()
 
         rollOverTimestamp = System.currentTimeMillis()
         try {
@@ -63,7 +70,7 @@ internal class ShoebillAppender : FileAppender {
         super.subAppend(event)
     }
 
-    private fun generateRollOverDate() {
+    internal fun generateRollOverDate() {
         val calendar = Calendar.getInstance()
 
         calendar.set(Calendar.HOUR_OF_DAY, 0)
@@ -75,7 +82,7 @@ internal class ShoebillAppender : FileAppender {
     }
 
     @Throws(IOException::class)
-    private fun rollOver() {
+    internal fun rollOver() {
         closeFile()
 
         val date = Date(rollOverTimestamp)
@@ -90,6 +97,7 @@ internal class ShoebillAppender : FileAppender {
     }
 
     companion object {
+
         private val DATEFORMAT_FILE = SimpleDateFormat("yyyy-MM-dd")
         private val DATEFORMAT_DIR = SimpleDateFormat("yyyy-MM")
     }

@@ -26,16 +26,12 @@ import net.gtaun.shoebill.data.Color
 import net.gtaun.shoebill.data.Vector3D
 import net.gtaun.shoebill.entities.Player
 import net.gtaun.shoebill.entities.Server
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 
 /**
  * @author MK124
  * @author Marvin Haschker
  */
 class ServerImpl(private val store: SampObjectStore) : Server() {
-
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).toString()
 
     override var serverCodepage: Int
         get() = SampNativeFunction.getServerCodepage()
@@ -53,7 +49,7 @@ class ServerImpl(private val store: SampObjectStore) : Server() {
     override fun connectNPC(name: String, script: String) = SampNativeFunction.connectNPC(name, script)
 
     override fun sendMessageToAll(color: Color, message: String) =
-            store.players.forEach { it.sendMessage(color, message) }
+            store.players.filterNotNull().forEach { it.sendMessage(color, message) }
 
     override fun sendMessageToAll(color: Color, format: String, vararg args: Any) =
             sendMessageToAll(color, String.format(format, *args))

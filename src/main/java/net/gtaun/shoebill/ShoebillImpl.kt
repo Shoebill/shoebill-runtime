@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2014 MK124
+ * Copyright (C) 2011-2016 MK124
 
  * Licensed under the Apache License, Version 2.0 (the "License"){}
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package net.gtaun.shoebill
 
+import com.mindscapehq.raygun4java.core.RaygunClient
 import net.gtaun.shoebill.amx.AmxInstanceManagerImpl
 import net.gtaun.shoebill.entities.Server
 import net.gtaun.shoebill.resource.ResourceManager
@@ -27,21 +28,20 @@ import net.gtaun.shoebill.util.log.LogLevel
 import net.gtaun.shoebill.util.log.LoggerOutputStream
 import net.gtaun.util.event.EventManager
 import net.gtaun.util.event.EventManagerRoot
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 import org.apache.log4j.xml.DOMConfigurator
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileInputStream
-import java.io.IOException
 import java.io.PrintStream
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
  * @author MK124
+ * @author Marvin Haschker
  */
-class ShoebillImpl @Throws(IOException::class) constructor(amxHandles: IntArray) : Shoebill() {
+class ShoebillImpl constructor(amxHandles: IntArray) : Shoebill() {
 
     private var isInitialized: Boolean = false
     private var isRestart: Boolean = false
@@ -50,19 +50,20 @@ class ShoebillImpl @Throws(IOException::class) constructor(amxHandles: IntArray)
     val config: ShoebillConfig = ShoebillConfig(FileInputStream(SHOEBILL_CONFIG_PATH))
     val resourceConfig: ResourceConfig = ResourceConfig(FileInputStream(File(config.shoebillDir, RESOURCES_CONFIG_FILENAME)))
     val artifactLocator: ShoebillArtifactLocator = ShoebillArtifactLocator(config, resourceConfig)
-    private val eventManager: EventManagerRoot = EventManagerRoot()
+    override val eventManager: EventManagerRoot = EventManagerRoot()
     private var sampCallbackManager: SampCallbackManagerImpl = SampCallbackManagerImpl()
     override val amxInstanceManager: AmxInstanceManagerImpl = AmxInstanceManagerImpl(eventManager, amxHandles)
     lateinit override var sampObjectManager: SampObjectManagerImpl
     lateinit private var pluginManager: ResourceManagerImpl
     lateinit override var serviceStore: ServiceManagerImpl
         private set
-
     lateinit var sampEventDispatcher: SampEventDispatcher
         private set
+
     private var originOutPrintStream: PrintStream = System.out
     private var originErrPrintStream: PrintStream = System.err
     private val asyncExecQueue: Queue<Runnable> = ConcurrentLinkedQueue<Runnable>()
+    var raygunClient: RaygunClient? = null
 
     init {
         initLogger(File(config.shoebillDir, LOG4J_CONFIG_FILENAME))
@@ -84,24 +85,21 @@ class ShoebillImpl @Throws(IOException::class) constructor(amxHandles: IntArray)
         }
 
         registerRootCallbackHandler()
+        enableBugReporting()
     }
 
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-            .append("version", version)
-            .toString()
+    private fun enableBugReporting() {
+        if (config.isAutomaticBugReportingEnabled) {
+            val raygunClient = RaygunClient("Z/XT8IA1iQmAlId8eQHCrg==")
+            raygunClient.SetVersion(version.version)
+            raygunClient.LOGGER.info("Automatic Bug Reporting has been enabled.")
+            this.raygunClient = raygunClient
+        }
+    }
 
-    private fun initLogger(configFile: File) {
-        if (configFile.exists())
-            DOMConfigurator.configureAndWatch(configFile.path)
-        else
-            DOMConfigurator.configure(this.javaClass.classLoader.getResource(LOG4J_CONFIG_FILENAME))
-
-        System.setOut(PrintStream(LoggerOutputStream(LoggerFactory.getLogger("System.out"), LogLevel.INFO), true))
-        System.setErr(PrintStream(LoggerOutputStream(LoggerFactory.getLogger("System.err"), LogLevel.ERROR), true))
-
-        if (!configFile.exists())
-            LOGGER.info("Could not find " + configFile.path + " file. The default configuration will be used.")
-
+    fun reportError(e: Throwable) {
+        raygunClient?.LOGGER?.info("Exception has been sent to the Shoebill team.")
+        raygunClient?.Send(e)
     }
 
     private fun registerRootCallbackHandler() {
@@ -109,15 +107,8 @@ class ShoebillImpl @Throws(IOException::class) constructor(amxHandles: IntArray)
 
             override fun onGameModeInit(): Boolean {
                 if (!isInitialized) {
-                    try {
-                        loadPluginsAndGamemode()
-                        isInitialized = true
-                        return true
-                    } catch (e: Throwable) {
-                        e.printStackTrace()
-                        return false
-                    }
-
+                    loadPluginsAndGamemode()
+                    isInitialized = true
                 }
                 return true
             }
@@ -136,7 +127,7 @@ class ShoebillImpl @Throws(IOException::class) constructor(amxHandles: IntArray)
             }
 
             override fun onRconCommand(cmd: String): Int {
-                val splits = cmd.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                val splits = cmd.split(" ".toRegex()).dropLastWhile(String::isEmpty).toTypedArray()
                 val op = splits[0].toLowerCase()
 
                 when (op) {
@@ -172,13 +163,8 @@ class ShoebillImpl @Throws(IOException::class) constructor(amxHandles: IntArray)
             override fun onAmxLoad(handle: Int) {
                 amxInstanceManager.onAmxLoad(handle)
                 if (!isInitialized) {
-                    try {
-                        loadPluginsAndGamemode()
-                        isInitialized = true
-                    } catch (e: Throwable) {
-                        e.printStackTrace()
-                    }
-
+                    loadPluginsAndGamemode()
+                    isInitialized = true
                 }
             }
 
@@ -195,15 +181,27 @@ class ShoebillImpl @Throws(IOException::class) constructor(amxHandles: IntArray)
             }
 
             override fun onShoebillLoad() {
-                try {
-                    if (!isInitialized)
-                        initialize()
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-
+                if (!isInitialized)
+                    initialize()
             }
         })
+    }
+
+    private fun initLogger(configFile: File) {
+        if (configFile.exists())
+            DOMConfigurator.configureAndWatch(configFile.path)
+        else
+            DOMConfigurator.configure(this.javaClass.classLoader.getResource(LOG4J_CONFIG_FILENAME))
+
+
+        originOutPrintStream = System.out
+        originErrPrintStream = System.err
+        System.setOut(PrintStream(LoggerOutputStream(LoggerFactory.getLogger("System.out"), LogLevel.INFO), true))
+        System.setErr(PrintStream(LoggerOutputStream(LoggerFactory.getLogger("System.err"), LogLevel.ERROR), true))
+
+        if (!configFile.exists())
+            LOGGER.info("Could not find " + configFile.path + " file. The default configuration will be used.")
+
     }
 
     private fun initialize() {
@@ -228,6 +226,7 @@ class ShoebillImpl @Throws(IOException::class) constructor(amxHandles: IntArray)
     private fun loadPluginsAndGamemode() = pluginManager.loadAllResource()
     private fun unloadPluginsAndGamemode() = pluginManager.unloadAllResource()
 
+    @Suppress("unused")
     val callbackHandler: SampCallbackHandler
         get() = sampCallbackManager.masterCallbackHandler
 
@@ -243,18 +242,20 @@ class ShoebillImpl @Throws(IOException::class) constructor(amxHandles: IntArray)
         SampNativeFunction.sendRconCommand("gmx")
     }
 
-    override fun runOnSampThread(runnable: Runnable) = asyncExecQueue.offer(runnable)
+    override fun runOnMainThread(runnable: Runnable) = asyncExecQueue.offer(runnable)
 
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(ShoebillImpl::class.java)
-
+        private val LOGGER = LoggerFactory.getLogger("Shoebill")
+        private val LOG4J_CONFIG_FILENAME = "log4j.xml"
         private val VERSION_FILENAME = "version.yml"
 
         private val SHOEBILL_CONFIG_PATH = "./shoebill/shoebill.yml"
-        private val LOG4J_CONFIG_FILENAME = "log4j.xml"
         private val RESOURCES_CONFIG_FILENAME = "resources.yml"
 
         val instance: ShoebillImpl
             get() = Shoebill.get() as ShoebillImpl
     }
 }
+
+val RaygunClient.LOGGER: Logger
+    get() = LoggerFactory.getLogger("Automatic Bug Reporting")

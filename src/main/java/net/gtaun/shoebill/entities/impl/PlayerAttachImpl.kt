@@ -40,9 +40,6 @@ class PlayerAttachImpl internal constructor(override val player: Player) : Playe
         slots = list.toTypedArray()
     }
 
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-            .append("player", player).toString()
-
     override fun getSlotByBone(bone: PlayerAttachBone): PlayerAttach.PlayerAttachSlot? =
             slots.filter { it.bone == bone }.firstOrNull()
 
@@ -109,7 +106,6 @@ class PlayerAttachImpl internal constructor(override val player: Player) : Playe
 
         override fun edit(): Boolean {
             return player.isOnline && SampNativeFunction.editAttachedObject(player.id, slot)
-
         }
     }
 }

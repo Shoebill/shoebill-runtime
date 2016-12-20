@@ -55,9 +55,6 @@ class ZoneImpl constructor(store: SampObjectStoreImpl, eventManager: EventManage
         store.setZone(id, this)
     }
 
-    override fun toString(): String =
-            ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("id", id).toString()
-
     override fun destroy() {
         if (isDestroyed) return
 

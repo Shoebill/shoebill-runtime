@@ -31,8 +31,6 @@ import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.shoebill.exception.CreationFailedException
 import net.gtaun.util.event.EventManager
 import net.gtaun.util.event.EventManagerNode
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 
 /**
  * @author MK124
@@ -96,10 +94,6 @@ constructor(eventManager: EventManager, store: SampObjectStoreImpl, override val
         speed = 0.0f
         SampNativeFunction.getObjectPos(id, location)
     }
-
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-            .append("id", id)
-            .append("modelId", modelId).toString()
 
     override fun destroy() {
         if (isDestroyed) return

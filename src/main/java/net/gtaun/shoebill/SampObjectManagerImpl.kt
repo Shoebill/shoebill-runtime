@@ -19,7 +19,6 @@ package net.gtaun.shoebill
 import net.gtaun.shoebill.data.*
 import net.gtaun.shoebill.entities.*
 import net.gtaun.shoebill.entities.Timer
-import net.gtaun.shoebill.entities.Timer.TimerCallback
 import net.gtaun.shoebill.entities.impl.*
 import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.shoebill.event.dialog.DialogCloseEvent
@@ -57,88 +56,75 @@ class SampObjectManagerImpl(eventManager: EventManager) : SampObjectStoreImpl(ev
     }
 
     private fun init() {
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(Vehicle::class.java)) { e ->
-            val vehicle = e.destroyable as Vehicle
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val vehicle = it.destroyable as Vehicle
             removeVehicle(vehicle.id)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(Vehicle::class))
 
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(PlayerObject::class.java)) { e ->
-            val `object` = e.destroyable as PlayerObject
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val `object` = it.destroyable as PlayerObject
             removePlayerObject(`object`.player, `object`.id)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(PlayerObject::class))
 
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(SampObject::class.java)) { e ->
-            val `object` = e.destroyable as SampObject
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val `object` = it.destroyable as SampObject
             if (`object` is PlayerObject) return@registerHandler
             removeObject(`object`.id)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(SampObject::class))
 
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(Pickup::class.java)) { e ->
-            val pickup = e.destroyable as Pickup
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val pickup = it.destroyable as Pickup
             removePickup(pickup.id)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(Pickup::class))
 
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(Label::class.java)) { e ->
-            val label = e.destroyable as Label
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val label = it.destroyable as Label
             if (label is PlayerLabel) return@registerHandler
             removeLabel(label.id)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(Label::class))
 
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(PlayerLabel::class.java)) { e ->
-            val label = e.destroyable as PlayerLabel
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val label = it.destroyable as PlayerLabel
             removePlayerLabel(label.player, label.id)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(PlayerLabel::class))
 
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(Textdraw::class.java)) { e ->
-            val textdraw = e.destroyable as Textdraw
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val textdraw = it.destroyable as Textdraw
             if (textdraw.primitive is PlayerTextdraw) return@registerHandler
             removeTextdraw(textdraw.id)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(Textdraw::class))
 
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(PlayerTextdraw::class.java)) { e ->
-            val textdraw = e.destroyable as PlayerTextdraw
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val textdraw = it.destroyable as PlayerTextdraw
             removePlayerTextdraw(textdraw.player.id, textdraw.id)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(PlayerTextdraw::class))
 
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(Zone::class.java)) { e ->
-            val zone = e.destroyable as Zone
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val zone = it.destroyable as Zone
             removeZone(zone.id)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(Zone::class))
 
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(Menu::class.java)) { e ->
-            val menu = e.destroyable as Menu
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val menu = it.destroyable as Menu
             removeMenu(menu.id)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(Menu::class))
 
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(DialogId::class.java)) { e ->
-            val dialog = e.destroyable as DialogId
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val dialog = it.destroyable as DialogId
             super.removeDialog(dialog)
             val dialogId = dialog.id
             recycleDialogId(dialogId)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(DialogId::class))
 
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(Timer::class.java)) { e ->
-            val timer = e.destroyable as Timer
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val timer = it.destroyable as Timer
             super.removeTimer(timer)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(Timer::class))
 
-        eventManagerNode.registerHandler(DestroyEvent::class.java, HandlerPriority.BOTTOM,
-                Attentions.create().clazz(Actor::class.java)) { e ->
-            val actor = e.destroyable as Actor
+        eventManagerNode.registerHandler(DestroyEvent::class, {
+            val actor = it.destroyable as Actor
             removeActor(actor.id)
-        }
+        }, HandlerPriority.BOTTOM, Attentions.create().clazz(Actor::class))
 
         createServer()
         createWorld()

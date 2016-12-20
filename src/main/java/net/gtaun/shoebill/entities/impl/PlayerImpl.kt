@@ -263,11 +263,6 @@ class PlayerImpl(eventManager: EventManager, private val store: SampObjectStore,
         dialog = null
     }
 
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-            .append("id", id)
-            .append("name", name)
-            .append("state", state).toString()
-
     override var angle: Float
         get() = SampNativeFunction.getPlayerFacingAngle(id)
         set(angle) = SampNativeFunction.setPlayerFacingAngle(id, angle)
@@ -812,7 +807,7 @@ class PlayerImpl(eventManager: EventManager, private val store: SampObjectStore,
             SampNativeFunction.sendPlayerMessageToPlayer(player.id, id, message)
 
     override fun sendChatToAll(message: String) =
-            store.players.filter { it != this }.forEach { it.sendChat(this, message) }
+            store.players.filterNotNull().filter { it != this }.forEach { it.sendChat(this, message) }
 
     override fun sendDeathMessage(killer: Player?, victim: Player?, weapon: WeaponModel) =
             SampNativeFunction.sendDeathMessageToPlayer(id, killer?.id ?: INVALID_ID, victim?.id ?: INVALID_ID,

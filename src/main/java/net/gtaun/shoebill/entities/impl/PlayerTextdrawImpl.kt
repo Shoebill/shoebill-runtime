@@ -161,10 +161,6 @@ constructor(private val rootEventManager: EventManager, override val player: Pla
         store.setPlayerTextdraw(player, id, this)
     }
 
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-            .append("player", player)
-            .append("id", id).toString()
-
     override fun destroy() {
         if (isDestroyed) return
         if (player.isOnline)

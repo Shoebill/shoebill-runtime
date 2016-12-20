@@ -21,10 +21,11 @@ import net.gtaun.shoebill.SampObjectStoreImpl
 import net.gtaun.shoebill.constant.PlayerMarkerMode
 import net.gtaun.shoebill.constant.WeaponModel
 import net.gtaun.shoebill.constant.Weather
-import net.gtaun.shoebill.data.*
+import net.gtaun.shoebill.data.Location
+import net.gtaun.shoebill.data.SpawnInfo
+import net.gtaun.shoebill.data.Vector3D
+import net.gtaun.shoebill.data.WeaponData
 import net.gtaun.shoebill.entities.World
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 
 /**
  * @author MK124
@@ -67,8 +68,6 @@ class WorldImpl(private val store: SampObjectStoreImpl) : World() {
             SampNativeFunction.setTeamCount(value)
             field = value
         }
-
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).toString()
 
     override fun addPlayerClass(modelId: Int, x: Float, y: Float, z: Float, angle: Float, weapon1: Int, ammo1: Int,
                                 weapon2: Int, ammo2: Int, weapon3: Int, ammo3: Int): Int {

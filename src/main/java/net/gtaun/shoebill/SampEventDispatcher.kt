@@ -42,6 +42,7 @@ import net.gtaun.shoebill.event.server.IncomingConnectionEvent
 import net.gtaun.shoebill.event.vehicle.*
 import net.gtaun.shoebill.samp.SampCallbackHandler
 import net.gtaun.util.event.EventManagerRoot
+import net.gtaun.util.event.ThrowableHandler
 
 /**
  * @author MK124
@@ -54,6 +55,12 @@ class SampEventDispatcher(private val sampObjectStore: SampObjectManagerImpl,
 
     init {
         instance = this
+        rootEventManager.throwableHandler = object : ThrowableHandler {
+            override fun handleThrowable(throwable: Throwable) {
+                throwable.printStackTrace()
+                ShoebillImpl.instance.reportError(throwable)
+            }
+        }
     }
 
     override fun onProcessTick() {
@@ -254,9 +261,9 @@ class SampEventDispatcher(private val sampObjectStore: SampObjectManagerImpl,
     }
 
     override fun onVehicleMod(playerId: Int, vehicleId: Int, componentId: Int): Boolean {
-        val player = sampObjectStore.getPlayer(playerId)
+        val player = sampObjectStore.getPlayer(playerId) ?: return false
         val vehicle = sampObjectStore.getVehicle(vehicleId) ?: return false
-        val event = VehicleModEvent(vehicle, VehicleComponentModel.get(componentId))
+        val event = VehicleModEvent(vehicle, player, VehicleComponentModel.get(componentId))
         rootEventManager.dispatchEvent(event, vehicle, player)
         return event.response > 0
     }
@@ -419,7 +426,7 @@ class SampEventDispatcher(private val sampObjectStore: SampObjectManagerImpl,
     override fun onPlayerClickMap(playerId: Int, x: Float, y: Float, z: Float): Boolean {
         val player = sampObjectStore.getPlayer(playerId) ?: return false
 
-        val event = PlayerClickMapEvent(player, x, y, z)
+        val event = PlayerClickMapEvent(player, Vector3D(x, y, z))
         rootEventManager.dispatchEvent(event, player)
         return true
     }
@@ -539,12 +546,12 @@ class SampEventDispatcher(private val sampObjectStore: SampObjectManagerImpl,
     override fun onHookCall(name: String, vararg objects: Any): IntArray {
         val event = AmxCallEvent(name, arrayOf(*objects))
         val hooks = Shoebill.get().amxInstanceManager.amxHooks
-        hooks.filter { it.name == name }.forEach {
+        hooks.filter { it.name == name && it.isActivated }.forEach {
             try {
-                it.onCall.accept(event)
+                it.onCall.invoke(event)
             } catch(e: Exception) { e.printStackTrace() }
         }
-        return intArrayOf(event.returnValue, if (event.isDisallow) 1 else 0)
+        return intArrayOf(event.returnValue, if (event.isDisallowed) 1 else 0)
     }
 
     override fun onActorStreamIn(actor: Int, playerid: Int): Boolean {
@@ -563,21 +570,21 @@ class SampEventDispatcher(private val sampObjectStore: SampObjectManagerImpl,
         return true
     }
 
-    override fun onPlayerGiveDamageActor(playerid: Int, actor: Int, amount: Int, weapon: Int, bodypart: Int): Int {
-        val player = Player.get(playerid) ?: return 0
-        val actorObject = Actor.get(actor) ?: return 0
+    override fun onPlayerGiveDamageActor(playerid: Int, actor: Int, amount: Float, weapon: Int, bodypart: Int): Boolean {
+        val player = Player.get(playerid) ?: return false
+        val actorObject = Actor.get(actor) ?: return false
         val model = WeaponModel.get(weapon) ?: WeaponModel.UNKNOWN
         val event = PlayerDamageActorEvent(player, actorObject, amount, model, bodypart)
         rootEventManager.dispatchEvent(event, player, actorObject, model)
-        return 1
+        return true
     }
 
-    override fun onVehicleSirenStateChange(playerid: Int, vehicleid: Int, newstate: Int): Int {
-        val player = Player.get(playerid) ?: return 0
-        val vehicle = Vehicle.get(vehicleid) ?: return 0
+    override fun onVehicleSirenStateChange(playerid: Int, vehicleid: Int, newstate: Int): Boolean {
+        val player = Player.get(playerid) ?: return false
+        val vehicle = Vehicle.get(vehicleid) ?: return false
         val event = VehicleSirenStateChangeEvent(vehicle, player, newstate > 0)
         rootEventManager.dispatchEvent(event, vehicle, player, newstate > 0)
-        return 1
+        return true
     }
 
     override fun onRegisteredFunctionCall(amx: Int, name: String, parameters: Array<Any>): Int {
@@ -585,7 +592,7 @@ class SampEventDispatcher(private val sampObjectStore: SampObjectManagerImpl,
         for (instance in AmxInstanceManager.get().amxInstances) {
             if (instance.handle != amx) continue
             if (!instance.isFunctionRegistered(name)) continue
-            returnValue = instance.callRegisteredFunction(name, *parameters)
+            returnValue = instance.callRegisteredFunction(name, parameters)
         }
         return returnValue
     }

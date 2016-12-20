@@ -28,8 +28,6 @@ import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.shoebill.exception.CreationFailedException
 import net.gtaun.util.event.EventManager
 import org.apache.commons.lang3.StringUtils
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 
 /**
  * @author MK124
@@ -39,7 +37,9 @@ class LabelImpl @Throws(CreationFailedException::class)
 constructor(private val rootEventManager: EventManager, store: SampObjectStoreImpl, text: String, color: Color,
             loc: Location, override val drawDistance: Float, testLOS: Boolean) : Label() {
 
-    override val color: Color = color
+    override var color: Color = color
+        private set
+
     override val location: Location = loc
         get() {
             if (isDestroyed) return Location()
@@ -78,8 +78,6 @@ constructor(private val rootEventManager: EventManager, store: SampObjectStoreIm
         if (id == Label.INVALID_ID) throw CreationFailedException()
         store.setLabel(id, this)
     }
-
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("id", id).toString()
 
     override fun destroy() {
         if (isDestroyed) return

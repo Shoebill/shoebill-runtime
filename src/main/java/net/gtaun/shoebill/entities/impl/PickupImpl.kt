@@ -26,8 +26,6 @@ import net.gtaun.shoebill.event.player.PlayerPickupEvent
 import net.gtaun.shoebill.exception.CreationFailedException
 import net.gtaun.util.event.EventHandler
 import net.gtaun.util.event.EventManager
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 
 /**
  * @author MK124
@@ -52,11 +50,6 @@ class PickupImpl @Throws(CreationFailedException::class)
         if (id == Pickup.INVALID_ID) throw CreationFailedException()
         store.setPickup(id, this)
     }
-
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-            .append("id", id)
-            .append("modelId", modelId)
-            .append("type", type).toString()
 
     override fun destroy() {
         if (isDestroyed) return

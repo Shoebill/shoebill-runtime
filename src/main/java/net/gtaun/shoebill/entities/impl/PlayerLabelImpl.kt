@@ -75,10 +75,6 @@ constructor(val eventManager: EventManager, val store: SampObjectStoreImpl, over
         store.setPlayerLabel(player, id, this)
     }
 
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-            .append("player", player)
-            .append("id", id).toString()
-
     override fun destroy() {
         if (isDestroyed) return
 

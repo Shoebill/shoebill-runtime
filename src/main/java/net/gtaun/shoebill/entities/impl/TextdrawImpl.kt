@@ -161,8 +161,6 @@ constructor(private val rootEventManager: EventManager, store: SampObjectStoreIm
         store.setTextdraw(id, this)
     }
 
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("id", id).toString()
-
     override fun destroy() {
         if (isDestroyed) return
 

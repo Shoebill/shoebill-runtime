@@ -17,9 +17,11 @@ object CharsetUtils {
         for (page in 1250..1258) WINDOWS_CHARSETS.put(page, Charset.forName("CP" + page))
     }
 
+    @JvmStatic
     fun getCharsetByCodepage(codepage: Int): Charset? = WINDOWS_CHARSETS[codepage]
 
     @JvmOverloads
+    @JvmStatic
     fun splitStringByCharsetLength(str: String, maxBytes: Int, charset: Charset, linePrefix: String = ""): List<String> {
         val strs = ArrayList<String>()
         val encoder = charset.newEncoder()

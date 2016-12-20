@@ -124,12 +124,6 @@ constructor(eventManager: EventManager, private val store: SampObjectStoreImpl, 
         SampNativeFunction.getVehicleDamageStatus(id, damage)
     }
 
-    override fun toString(): String = ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-            .append("id", id)
-            .append("isStatic", isStatic)
-            .append("modelId", modelId)
-            .toString()
-
     override fun destroy() {
         if (isDestroyed) return
         if (isStatic) return
