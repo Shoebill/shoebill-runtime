@@ -28,10 +28,6 @@ import net.gtaun.shoebill.event.dialog.DialogCloseEvent.DialogCloseType
 import net.gtaun.shoebill.exception.AlreadyExistException
 import net.gtaun.shoebill.exception.IllegalLengthException
 import net.gtaun.util.event.EventManager
-import net.gtaun.util.event.EventManagerNode
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
-import java.util.*
 
 /**
  * @author MK124
@@ -39,6 +35,9 @@ import java.util.*
  * @author Marvin Haschker
  */
 class PlayerImpl(eventManager: EventManager, private val store: SampObjectStore, id: Int) : Player() {
+
+    override val isDestroyed: Boolean
+        get() = !isOnline
 
     override val keyState: PlayerKeyStateImpl = PlayerKeyStateImpl(this)
         get() {
@@ -49,7 +48,11 @@ class PlayerImpl(eventManager: EventManager, private val store: SampObjectStore,
     override val attach: PlayerAttach = PlayerAttachImpl(this)
     override val mapIcon: PlayerMapIcon = PlayerMapIconImpl(this)
     override var id = id
-        private set
+        private set(value) {
+            field = value
+            if (value == Player.INVALID_ID)
+                destroy()
+        }
 
     override var isControllable = true
     override var isStuntBonusEnabled = false
@@ -242,8 +245,6 @@ class PlayerImpl(eventManager: EventManager, private val store: SampObjectStore,
         }
 
     override var dialog: DialogId? = null
-
-    private val eventManagerNode: EventManagerNode = eventManager.createChildNode()
 
     init {
         SampNativeFunction.getPlayerVelocity(id, velocity)

@@ -29,10 +29,6 @@ import net.gtaun.shoebill.event.player.PlayerStateChangeEvent
 import net.gtaun.shoebill.event.vehicle.VehicleCreateEvent
 import net.gtaun.shoebill.event.vehicle.VehicleSpawnEvent
 import net.gtaun.shoebill.exception.CreationFailedException
-import net.gtaun.util.event.EventManager
-import net.gtaun.util.event.EventManagerNode
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 
 /**
  * @author MK124
@@ -40,7 +36,7 @@ import org.apache.commons.lang3.builder.ToStringStyle
  * @author Marvin Haschker
  */
 class VehicleImpl @Throws(CreationFailedException::class)
-constructor(eventManager: EventManager, private val store: SampObjectStoreImpl, modelId: Int, loc: AngledLocation,
+constructor(private val store: SampObjectStoreImpl, modelId: Int, loc: AngledLocation,
             color1: Int, color2: Int, respawnDelay: Int, addSiren: Boolean) : Vehicle() {
 
     override var isStatic = false
@@ -79,11 +75,9 @@ constructor(eventManager: EventManager, private val store: SampObjectStoreImpl, 
             SampNativeFunction.setVehicleVirtualWorld(id, worldId)
         }
 
-    private var param: VehicleParamImpl
-    lateinit override var component: VehicleComponentImpl
-    lateinit override var damage: VehicleDamageImpl
-
-    private val eventManagerNode: EventManagerNode = eventManager.createChildNode()
+    private var param: VehicleParamImpl = VehicleParamImpl(this)
+    override var component: VehicleComponentImpl = VehicleComponentImpl(this)
+    override var damage: VehicleDamageImpl = VehicleDamageImpl(this)
 
     init {
         when (modelId) {
@@ -104,10 +98,6 @@ constructor(eventManager: EventManager, private val store: SampObjectStoreImpl, 
 
         SampNativeFunction.linkVehicleToInterior(id, interior)
         SampNativeFunction.setVehicleVirtualWorld(id, world)
-
-        param = VehicleParamImpl(this)
-        component = VehicleComponentImpl(this)
-        damage = VehicleDamageImpl(this)
 
         val createEvent = VehicleCreateEvent(this)
         eventManagerNode.dispatchEvent(createEvent, this)
@@ -132,7 +122,7 @@ constructor(eventManager: EventManager, private val store: SampObjectStoreImpl, 
         val destroyEvent = DestroyEvent(this)
         eventManagerNode.dispatchEvent(destroyEvent, this)
 
-        eventManagerNode.destroy()
+        super.destroy()
         id = Vehicle.INVALID_ID
     }
 

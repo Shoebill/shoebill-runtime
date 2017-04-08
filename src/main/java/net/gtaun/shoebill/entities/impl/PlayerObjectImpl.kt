@@ -30,9 +30,6 @@ import net.gtaun.shoebill.entities.Vehicle
 import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.shoebill.exception.CreationFailedException
 import net.gtaun.util.event.EventManager
-import net.gtaun.util.event.EventManagerNode
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 
 /**
  * @author MK124
@@ -73,8 +70,6 @@ constructor(eventManager: EventManager, store: SampObjectStoreImpl, override val
     override var attachedVehicle: Vehicle? = null
         private set
 
-    private val eventManagerNode: EventManagerNode = eventManager.createChildNode()
-
     init {
         if (this.id == PlayerObject.INVALID_ID) throw CreationFailedException()
         store.setPlayerObject(player, id, this)
@@ -92,7 +87,7 @@ constructor(eventManager: EventManager, store: SampObjectStoreImpl, override val
         val destroyEvent = DestroyEvent(this)
         eventManagerNode.dispatchEvent(destroyEvent, this)
 
-        eventManagerNode.destroy()
+        super.destroy()
         id = PlayerObject.INVALID_ID
     }
 

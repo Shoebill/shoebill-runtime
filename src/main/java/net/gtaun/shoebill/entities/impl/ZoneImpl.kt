@@ -27,8 +27,6 @@ import net.gtaun.shoebill.entities.Zone
 import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.shoebill.exception.CreationFailedException
 import net.gtaun.util.event.EventManager
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 
 /**
  * @author MK124
@@ -118,7 +116,7 @@ class ZoneImpl constructor(store: SampObjectStoreImpl, eventManager: EventManage
 
     override fun flashForAll(color: Color) {
         SampNativeFunction.gangZoneFlashForAll(id, color.value)
-        isShownForPlayer.indices.filter { isShownForPlayer[it] == true }
+        isShownForPlayer.indices.filter { isShownForPlayer[it] }
                 .forEach { isFlashingForPlayer[it] = true }
     }
 

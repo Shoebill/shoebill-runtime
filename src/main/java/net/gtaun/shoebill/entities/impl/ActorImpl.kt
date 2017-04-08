@@ -9,7 +9,6 @@ import net.gtaun.shoebill.entities.Player
 import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.shoebill.exception.CreationFailedException
 import net.gtaun.util.event.EventManager
-import net.gtaun.util.event.EventManagerNode
 
 /**
  * @author Marvin Haschker
@@ -19,8 +18,6 @@ class ActorImpl constructor(eventManager: EventManager, store: SampObjectStoreIm
 
     override var id = SampNativeFunction.createActor(model, pos.x, pos.y, pos.z, angle)
         private set
-
-    private val eventManagerNode: EventManagerNode = eventManager.createChildNode()
 
     init {
         if(id == INVALID_ACTOR) throw CreationFailedException()
@@ -80,7 +77,7 @@ class ActorImpl constructor(eventManager: EventManager, store: SampObjectStoreIm
 
         val destroyEvent = DestroyEvent(this)
         eventManagerNode.dispatchEvent(destroyEvent, this)
-        eventManagerNode.destroy()
+        super.destroy()
 
         this.id = Actor.INVALID_ACTOR
     }

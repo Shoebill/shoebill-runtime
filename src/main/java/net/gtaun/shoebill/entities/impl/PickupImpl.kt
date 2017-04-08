@@ -22,9 +22,7 @@ import net.gtaun.shoebill.SampObjectStoreImpl
 import net.gtaun.shoebill.data.Location
 import net.gtaun.shoebill.entities.Pickup
 import net.gtaun.shoebill.event.destroyable.DestroyEvent
-import net.gtaun.shoebill.event.player.PlayerPickupEvent
 import net.gtaun.shoebill.exception.CreationFailedException
-import net.gtaun.util.event.EventHandler
 import net.gtaun.util.event.EventManager
 
 /**
@@ -35,7 +33,6 @@ import net.gtaun.util.event.EventManager
 class PickupImpl @Throws(CreationFailedException::class)
 @JvmOverloads constructor(private val rootEventManager: EventManager, store: SampObjectStoreImpl,
                           override val modelId: Int, override val type: Int, loc: Location,
-                          val pickupHandler: EventHandler<PlayerPickupEvent>?,
                           override val isStatic: Boolean = false) : Pickup() {
 
     override val location: Location = loc
@@ -58,6 +55,7 @@ class PickupImpl @Throws(CreationFailedException::class)
         val destroyEvent = DestroyEvent(this)
         rootEventManager.dispatchEvent(destroyEvent, this)
 
+        super.destroy()
         id = Pickup.INVALID_ID
     }
 

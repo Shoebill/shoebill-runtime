@@ -24,7 +24,6 @@ import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.shoebill.event.dialog.DialogCloseEvent
 import net.gtaun.shoebill.event.dialog.DialogResponseEvent
 import net.gtaun.shoebill.event.dialog.DialogShowEvent
-import net.gtaun.shoebill.event.player.PlayerPickupEvent
 import net.gtaun.shoebill.exception.CreationFailedException
 import net.gtaun.shoebill.samp.SampCallbackHandler
 import net.gtaun.util.event.Attentions
@@ -150,7 +149,7 @@ class SampObjectManagerImpl(eventManager: EventManager) : SampObjectStoreImpl(ev
     @Throws(CreationFailedException::class)
     override fun createVehicle(modelId: Int, loc: AngledLocation, color1: Int, color2: Int, respawnDelay: Int,
                                addSiren: Boolean): VehicleImpl =
-            VehicleImpl(eventManagerNode, this, modelId, loc, color1, color2, respawnDelay, addSiren)
+            VehicleImpl(this, modelId, loc, color1, color2, respawnDelay, addSiren)
 
     @Throws(CreationFailedException::class)
     override fun createObject(modelId: Int, loc: Location, rot: Vector3D, drawDistance: Float): SampObjectImpl =
@@ -225,8 +224,8 @@ class SampObjectManagerImpl(eventManager: EventManager) : SampObjectStoreImpl(ev
     }
 
     @Throws(CreationFailedException::class)
-    override fun createPickup(modelId: Int, type: Int, loc: Location, event: EventHandler<PlayerPickupEvent>?): Pickup {
-        return PickupImpl(eventManagerNode, this, modelId, type, loc, event)
+    override fun createPickup(modelId: Int, type: Int, loc: Location): Pickup {
+        return PickupImpl(eventManagerNode, this, modelId, type, loc)
     }
 
     @Throws(CreationFailedException::class)

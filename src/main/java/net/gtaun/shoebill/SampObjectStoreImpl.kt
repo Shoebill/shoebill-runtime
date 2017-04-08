@@ -18,21 +18,18 @@ package net.gtaun.shoebill
 
 import net.gtaun.shoebill.data.SpawnInfo
 import net.gtaun.shoebill.entities.*
-import net.gtaun.shoebill.entities.Timer
 import net.gtaun.shoebill.entities.impl.*
 import net.gtaun.shoebill.event.dialog.DialogResponseEvent
-import net.gtaun.shoebill.event.sampobject.ObjectMovedEvent
-import net.gtaun.shoebill.event.sampobject.PlayerObjectMovedEvent
 import net.gtaun.shoebill.event.player.PlayerDisconnectEvent
 import net.gtaun.shoebill.event.player.PlayerUpdateEvent
+import net.gtaun.shoebill.event.sampobject.ObjectMovedEvent
+import net.gtaun.shoebill.event.sampobject.PlayerObjectMovedEvent
 import net.gtaun.shoebill.event.vehicle.VehicleModEvent
 import net.gtaun.shoebill.event.vehicle.VehicleUpdateDamageEvent
 import net.gtaun.util.event.EventManager
 import net.gtaun.util.event.HandlerPriority
-
 import java.lang.ref.Reference
 import java.lang.ref.WeakReference
-import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -131,7 +128,7 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
         get() = players.filterNotNull().filter { it.isNpc }
 
     override val dialogIds: Collection<DialogId>
-        get() = dialogs.values.filter { it.get() != null }.map { it.get() }
+        get() = dialogs.values.filter { it.get() != null }.map { it.get()!! }
 
     override fun getActor(id: Int): Actor? = actors.getOrNull(id)
 
@@ -146,7 +143,7 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
 
     fun getTimers(): Collection<Timer> {
         clearUnusedReferences(timers)
-        return timers.map { it.get() }
+        return timers.map { it.get()!! }
     }
 
     internal fun setPlayer(id: Int, player: PlayerImpl) {
@@ -306,13 +303,13 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
 
     internal fun getStaticPickups(): List<PickupImpl> {
         clearUnusedReferences(staticPickups)
-        return staticPickups.map { it.get() }
+        return staticPickups.map { it.get()!! }
     }
 
     internal val timerImpls: Collection<TimerImpl>
         get() {
             clearUnusedReferences(timers)
-            return timers.map { it.get() }
+            return timers.map { it.get()!! }
         }
 
 

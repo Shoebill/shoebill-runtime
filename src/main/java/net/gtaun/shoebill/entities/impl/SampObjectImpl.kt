@@ -30,7 +30,6 @@ import net.gtaun.shoebill.entities.Vehicle
 import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.shoebill.exception.CreationFailedException
 import net.gtaun.util.event.EventManager
-import net.gtaun.util.event.EventManagerNode
 
 /**
  * @author MK124
@@ -83,8 +82,6 @@ constructor(eventManager: EventManager, store: SampObjectStoreImpl, override val
     override var attachedVehicle: Vehicle? = null
         private set
 
-    private val eventManagerNode: EventManagerNode = eventManager.createChildNode()
-
     init {
         if (id == SampObject.INVALID_ID) throw CreationFailedException()
         store.setObject(id, this)
@@ -103,7 +100,7 @@ constructor(eventManager: EventManager, store: SampObjectStoreImpl, override val
         val destroyEvent = DestroyEvent(this)
         eventManagerNode.dispatchEvent(destroyEvent, this)
 
-        eventManagerNode.destroy()
+        super.destroy()
         id = SampObject.INVALID_ID
     }
 
@@ -202,7 +199,7 @@ constructor(eventManager: EventManager, store: SampObjectStoreImpl, override val
 
 
     override fun setMaterial(materialIndex: Int, modelId: Int, txdName: String, textureName: String, materialColor: Color) {
-        SampNativeFunction.setObjectMaterial(id, materialIndex, modelId, txdName, textureName, materialColor.rgbaValue)
+        SampNativeFunction.setObjectMaterial(id, materialIndex, modelId, txdName, textureName, materialColor.argbValue)
     }
 
     override fun setMaterial(materialIndex: Int, modelId: Int, txdName: String, textureName: String) =
@@ -212,7 +209,7 @@ constructor(eventManager: EventManager, store: SampObjectStoreImpl, override val
                                  fontSize: Int, isBold: Boolean, fontColor: Color, backColor: Color,
                                  textAlignment: ObjectMaterialTextAlign) =
             SampNativeFunction.setObjectMaterialText(id, text, materialIndex, materialSize.value, fontFace, fontSize,
-                    if (isBold) 1 else 0, fontColor.rgbaValue, backColor.rgbaValue, textAlignment.value)
+                    if (isBold) 1 else 0, fontColor.argbValue, backColor.argbValue, textAlignment.value)
 
     override fun setMaterialText(text: String) =
             setMaterialText(text, 0, ObjectMaterialSize.SIZE_256x128, "Arial", 24, true, Color.WHITE, Color.TRANSPARENT,

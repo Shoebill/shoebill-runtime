@@ -65,8 +65,8 @@ class ServerImpl(private val store: SampObjectStore) : Server() {
             SampNativeFunction.gameTextForAll(String.format(format, *args), time, style)
 
     override fun sendDeathMessageToAll(killer: Player?, victim: Player?, reason: WeaponModel) =
-            SampNativeFunction.sendDeathMessage(if (killer != null) killer.id else Player.INVALID_ID,
-                    if (victim != null) victim.id else Player.INVALID_ID, reason.id)
+            SampNativeFunction.sendDeathMessage(killer?.id ?: Player.INVALID_ID,
+                    victim?.id ?: Player.INVALID_ID, reason.id)
 
     override fun getVehicleModelInfo(modelId: Int, infotype: VehicleModelInfoType): Vector3D {
         val vector = Vector3D()

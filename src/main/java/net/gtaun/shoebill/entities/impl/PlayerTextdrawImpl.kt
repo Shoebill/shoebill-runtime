@@ -29,8 +29,6 @@ import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.shoebill.exception.CreationFailedException
 import net.gtaun.util.event.EventManager
 import org.apache.commons.lang3.StringUtils
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
 
 /**
  * @author MK124
@@ -168,6 +166,7 @@ constructor(private val rootEventManager: EventManager, override val player: Pla
 
         val destroyEvent = DestroyEvent(this)
         rootEventManager.dispatchEvent(destroyEvent, this)
+
         id = PlayerTextdraw.INVALID_ID
     }
 

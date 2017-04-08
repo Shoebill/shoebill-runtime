@@ -18,9 +18,12 @@ package net.gtaun.shoebill
 
 import net.gtaun.shoebill.amx.AmxInstanceManager
 import net.gtaun.shoebill.constant.*
-import net.gtaun.shoebill.data.*
-import net.gtaun.shoebill.entities.*
-import net.gtaun.shoebill.entities.impl.*
+import net.gtaun.shoebill.data.Vector3D
+import net.gtaun.shoebill.entities.Actor
+import net.gtaun.shoebill.entities.Player
+import net.gtaun.shoebill.entities.Vehicle
+import net.gtaun.shoebill.entities.impl.PlayerImpl
+import net.gtaun.shoebill.entities.impl.PlayerKeyStateImpl
 import net.gtaun.shoebill.event.actor.ActorStreamInEvent
 import net.gtaun.shoebill.event.actor.ActorStreamOutEvent
 import net.gtaun.shoebill.event.amx.AmxCallEvent
@@ -255,7 +258,6 @@ class SampEventDispatcher(private val sampObjectStore: SampObjectManagerImpl,
 
         val player = sampObjectStore.getPlayer(playerId) ?: return false
         val event = PlayerPickupEvent(player, pickup)
-        if (pickup is PickupImpl) pickup.pickupHandler?.handleEvent(event)
         rootEventManager.dispatchEvent(event, pickup, player)
         return true
     }
