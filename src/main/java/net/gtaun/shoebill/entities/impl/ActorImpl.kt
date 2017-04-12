@@ -8,13 +8,12 @@ import net.gtaun.shoebill.entities.Actor
 import net.gtaun.shoebill.entities.Player
 import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.shoebill.exception.CreationFailedException
-import net.gtaun.util.event.EventManager
 
 /**
  * @author Marvin Haschker
  */
-class ActorImpl constructor(eventManager: EventManager, store: SampObjectStoreImpl,
-                                          override val model: Int, pos: Vector3D, angle: Float) : Actor() {
+class ActorImpl(store: SampObjectStoreImpl, override val model: Int,
+                pos: Vector3D, angle: Float) : Actor() {
 
     override var id = SampNativeFunction.createActor(model, pos.x, pos.y, pos.z, angle)
         private set

@@ -153,12 +153,12 @@ class SampObjectManagerImpl(eventManager: EventManager) : SampObjectStoreImpl(ev
 
     @Throws(CreationFailedException::class)
     override fun createObject(modelId: Int, loc: Location, rot: Vector3D, drawDistance: Float): SampObjectImpl =
-            SampObjectImpl(eventManagerNode, this, modelId, loc, rot, drawDistance)
+            SampObjectImpl(this, modelId, loc, rot, drawDistance)
 
     @Throws(CreationFailedException::class)
     override fun createPlayerObject(player: Player, modelId: Int, loc: Location, rot: Vector3D, drawDistance: Float): PlayerObjectImpl {
         if (!player.isOnline) throw CreationFailedException()
-        return PlayerObjectImpl(eventManagerNode, this, player, modelId, loc, rot, drawDistance)
+        return PlayerObjectImpl(this, player, modelId, loc, rot, drawDistance)
     }
 
     @Throws(CreationFailedException::class)
@@ -213,7 +213,7 @@ class SampObjectManagerImpl(eventManager: EventManager) : SampObjectStoreImpl(ev
 
     @Throws(CreationFailedException::class)
     override fun createActor(modelid: Int, location: AngledLocation): Actor =
-            ActorImpl(eventManagerNode, this, modelid, location, location.angle)
+            ActorImpl(this, modelid, location, location.angle)
 
     @Throws(CreationFailedException::class)
     override fun createDialogId(onResponse: EventHandler<DialogResponseEvent>?, onShow: EventHandler<DialogShowEvent>?,

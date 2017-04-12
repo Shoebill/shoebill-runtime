@@ -29,7 +29,6 @@ import net.gtaun.shoebill.entities.SampObject
 import net.gtaun.shoebill.entities.Vehicle
 import net.gtaun.shoebill.event.destroyable.DestroyEvent
 import net.gtaun.shoebill.exception.CreationFailedException
-import net.gtaun.util.event.EventManager
 
 /**
  * @author MK124
@@ -37,8 +36,8 @@ import net.gtaun.util.event.EventManager
  * @author Marvin Haschker
  */
 class SampObjectImpl @Throws(CreationFailedException::class)
-constructor(eventManager: EventManager, store: SampObjectStoreImpl, override val modelId: Int,
-                          loc: Location, rot: Vector3D, drawDistance: Float) : SampObject() {
+constructor(store: SampObjectStoreImpl, override val modelId: Int, loc: Location,
+            rot: Vector3D, override val drawDistance: Float) : SampObject() {
 
     override var id = SampNativeFunction.createObject(modelId, loc.x, loc.y, loc.z, rot.x, rot.y, rot.z, drawDistance)
         private set
@@ -68,8 +67,6 @@ constructor(eventManager: EventManager, store: SampObjectStoreImpl, override val
 
             return field
         }
-
-    override val drawDistance = drawDistance
 
     private var attachedOffset: Vector3D? = null
 
