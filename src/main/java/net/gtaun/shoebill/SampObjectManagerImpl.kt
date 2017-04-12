@@ -141,7 +141,7 @@ class SampObjectManagerImpl(eventManager: EventManager) : SampObjectStoreImpl(ev
 
     @Throws(UnsupportedOperationException::class)
     private fun createPlayer(playerId: Int): PlayerImpl {
-        val player = PlayerImpl(eventManagerNode, this, playerId)
+        val player = PlayerImpl(this, playerId)
         super.setPlayer(playerId, player)
         return player
     }

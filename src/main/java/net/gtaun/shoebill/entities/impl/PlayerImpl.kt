@@ -27,14 +27,13 @@ import net.gtaun.shoebill.entities.*
 import net.gtaun.shoebill.event.dialog.DialogCloseEvent.DialogCloseType
 import net.gtaun.shoebill.exception.AlreadyExistException
 import net.gtaun.shoebill.exception.IllegalLengthException
-import net.gtaun.util.event.EventManager
 
 /**
  * @author MK124
  * @author JoJLlmAn
  * @author Marvin Haschker
  */
-class PlayerImpl(eventManager: EventManager, private val store: SampObjectStore, id: Int) : Player() {
+class PlayerImpl(private val store: SampObjectStore, id: Int) : Player() {
 
     override val isDestroyed: Boolean
         get() = !isOnline
@@ -816,6 +815,8 @@ class PlayerImpl(eventManager: EventManager, private val store: SampObjectStore,
 
     override fun sendGameText(time: Int, style: Int, text: String) =
             SampNativeFunction.gameTextForPlayer(id, text, time, style)
+
+    override fun sendMessage(message: String) = sendMessage(Color.WHITE, message)
 
     override fun sendMessage(color: Color, message: String) = sendMessageInternal(color, message)
 
