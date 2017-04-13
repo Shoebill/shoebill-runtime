@@ -33,6 +33,7 @@ class ShoebillVersionImpl(`in`: InputStream) : ShoebillVersion {
     override val supportedVersion: String
     override val buildNumber: Int
     override val buildDate: String
+    override val targetApi: String
 
     init {
         val config = YamlConfiguration()
@@ -41,6 +42,7 @@ class ShoebillVersionImpl(`in`: InputStream) : ShoebillVersion {
         config.setDefault("support", "Unknown")
         config.setDefault("buildNumber", 0)
         config.setDefault("buildDate", "Unknown")
+        config.setDefault("targetApi", "Unknown")
 
         config.read(`in`)
 
@@ -49,6 +51,7 @@ class ShoebillVersionImpl(`in`: InputStream) : ShoebillVersion {
         supportedVersion = config.getString("support")
         buildNumber = config.getInt("buildNumber")
         buildDate = config.getString("buildDate")
+        targetApi = config.getString("targetApi")
     }
 
     override fun toString(): String = ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE)

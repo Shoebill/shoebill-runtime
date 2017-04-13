@@ -1,5 +1,6 @@
 name: Shoebill Runtime
-version: 2.0
+version: ${system.MAVEN_VERSION}
 support: SA-MP 0.3.7
 buildNumber: ${env.BUILD_NUMBER}
 buildDate: ${env.BUILD_START_DATE}
+targetApi: ${dep.Shoebill_Api_Deploy.maven.project.version}

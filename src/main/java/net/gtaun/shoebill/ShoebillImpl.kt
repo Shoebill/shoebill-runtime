@@ -71,7 +71,7 @@ class ShoebillImpl constructor(amxHandles: IntArray) : Shoebill() {
         var startupMessage = "${version.name} ${version.version}"
 
         if (version.buildNumber != 0) startupMessage += " Build ${version.buildNumber}"
-        startupMessage += " (for ${version.supportedVersion})"
+        startupMessage += " (for ${version.supportedVersion} and target API ${version.targetApi})"
 
         LOGGER.info(startupMessage)
         LOGGER.info("Build date: ${version.buildDate}")
