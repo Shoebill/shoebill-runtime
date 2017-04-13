@@ -1,5 +1,5 @@
 name: Shoebill Runtime
-version: ${system.MAVEN_VERSION}
+version: 2.0
 support: SA-MP 0.3.7
 buildNumber: ${env.BUILD_NUMBER}
-buildDate: Unknown
+buildDate: ${env.BUILD_START_DATE}
