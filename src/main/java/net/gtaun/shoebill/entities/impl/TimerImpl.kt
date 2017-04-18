@@ -26,7 +26,7 @@ import net.gtaun.util.event.EventManager
  * @author Marvin Haschker
  */
 class TimerImpl(private val rootEventManager: EventManager, override var interval: Int, override var count: Int,
-                override var callback: TimerCallback?) : Timer() {
+                override var callback: TimerCallback) : Timer() {
 
     override var isRunning: Boolean = false
         private set
@@ -53,16 +53,14 @@ class TimerImpl(private val rootEventManager: EventManager, override var interva
         factualInterval = 0
         isRunning = true
 
-        if (callback != null)
-            callback!!.onStart()
+        callback.onStart()
     }
 
     override fun stop() {
         if (!isRunning) return
 
         isRunning = false
-        if (callback != null)
-            callback!!.onStop()
+        callback.onStop()
     }
 
     fun tick(factualInt: Int) {
@@ -72,11 +70,9 @@ class TimerImpl(private val rootEventManager: EventManager, override var interva
         if (factualInterval < interval) return
 
         if (count > 0) counting--
-        if (callback != null) {
-            try {
-                callback!!.onTick(factualInterval)
-            } catch (e: Throwable) {
-            }
+        try {
+            callback.onTick(factualInterval)
+        } catch (e: Throwable) {
         }
 
         elapsedCounts += 1

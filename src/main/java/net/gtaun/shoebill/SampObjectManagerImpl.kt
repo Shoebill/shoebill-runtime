@@ -236,7 +236,7 @@ class SampObjectManagerImpl(eventManager: EventManager) : SampObjectStoreImpl(ev
     }
 
     @Throws(CreationFailedException::class)
-    override fun createTimer(interval: Int, count: Int, callback: TimerCallback?): Timer {
+    override fun createTimer(interval: Int, count: Int, callback: TimerCallback): Timer {
         val timer = TimerImpl(eventManagerNode, interval, count, callback)
         putTimer(timer)
         return timer
