@@ -90,7 +90,6 @@ constructor(store: SampObjectStoreImpl, override val player: Player, override va
 
     override val isDestroyed: Boolean
         get() {
-            if (!player.isOnline && id != PlayerObject.INVALID_ID) destroy()
             return id == PlayerObject.INVALID_ID
         }
 

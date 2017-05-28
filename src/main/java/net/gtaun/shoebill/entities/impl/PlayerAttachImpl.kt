@@ -64,7 +64,7 @@ class PlayerAttachImpl internal constructor(override val player: Player) : Playe
                 .append("modelId", modelId).toString()
 
         override val player: Player
-            get() = player
+            get() = this@PlayerAttachImpl.player
 
         override fun set(bone: PlayerAttachBone, modelId: Int, offset: Vector3D, rotation: Vector3D, scale: Vector3D,
                          materialColor1: Int, materialColor2: Int): Boolean {

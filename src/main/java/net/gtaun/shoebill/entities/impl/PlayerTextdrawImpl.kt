@@ -172,7 +172,6 @@ constructor(private val rootEventManager: EventManager, override val player: Pla
 
     override val isDestroyed: Boolean
         get() {
-            if (!player.isOnline && id != PlayerTextdraw.INVALID_ID) destroy()
             return id == PlayerTextdraw.INVALID_ID
         }
 
