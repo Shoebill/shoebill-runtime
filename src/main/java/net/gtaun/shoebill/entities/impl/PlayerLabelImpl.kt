@@ -86,7 +86,6 @@ constructor(val eventManager: EventManager, val store: SampObjectStoreImpl, over
 
     override val isDestroyed: Boolean
         get() {
-            if (!player.isOnline && id != PlayerLabel.INVALID_ID) destroy()
             return id == PlayerLabel.INVALID_ID
         }
 
