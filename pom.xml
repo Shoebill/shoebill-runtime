@@ -15,14 +15,14 @@
         <repository>
             <id>deployment</id>
             <name>Releases</name>
-            <url>http://repo.gtaun.net/content/repositories/releases/</url>
+            <url>http://repo.sampx.ru/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>deployment</id>
             <name>Snapshots</name>
-            <url>http://repo.gtaun.net/content/repositories/snapshots/</url>
+            <url>http://repo.sampx.ru/repository/maven-snapshots/</url>
         </snapshotRepository>
-    </distributionManagement>
+    	</distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,19 +30,12 @@
     </properties>
 
     <repositories>
-        <repository>
-            <id>gtaun-repo-snapshots</id>
-            <name>GTAUN Repo Snapshots</name>
-            <url>http://repo.gtaun.net/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
+        	<repository>
+            		<id>gtaun-public-repo</id>
+            		<name>GTAUN Public Repository</name>
+            		<url>http://repo.sampx.ru/repository/maven-public/</url>
+       		</repository>
+    	</repositories>
 
     <licenses>
         <license>
