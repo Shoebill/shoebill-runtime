@@ -148,6 +148,9 @@ public class SampEventDispatcher implements SampCallbackHandler {
                 DialogEventUtils.dispatchCloseEvent(rootEventManager, dialog, player, DialogCloseType.CANCEL);
             }
 
+            //Destroy all PlayerTextdraws related to the player when disconnecting
+            PlayerTextdraw.get(player).forEach(Destroyable::destroy);
+
             PlayerDisconnectEvent event = new PlayerDisconnectEvent(player, reason);
             rootEventManager.dispatchEvent(event, player);
 
