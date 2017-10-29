@@ -99,7 +99,11 @@ public class TimerImpl implements Timer {
         factualInterval = 0;
         running = true;
 
-        if (callback != null) callback.onStart();
+        if (callback != null) {
+            try {
+                callback.onStart();
+            } catch (Throwable ignored) {}
+        }
     }
 
     @Override
@@ -107,7 +111,11 @@ public class TimerImpl implements Timer {
         if (!running) return;
 
         running = false;
-        if (callback != null) callback.onStop();
+        if (callback != null) {
+            try {
+                callback.onStop();
+            } catch (Throwable ignored) {}
+        }
     }
 
     @Override
@@ -122,7 +130,11 @@ public class TimerImpl implements Timer {
         if (factualInterval < interval) return;
 
         if (count > 0) counting--;
-        if (callback != null) callback.onTick(factualInterval);
+        if (callback != null) {
+            try {
+                callback.onTick(factualInterval);
+            } catch (Throwable ignored) {}
+        }
 
         factualInterval = 0;
         if (count > 0 && counting == 0) stop();
