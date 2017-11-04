@@ -41,98 +41,84 @@ constructor(private val rootEventManager: EventManager, store: SampObjectStoreIm
                           y: Float, text: String) : Textdraw() {
 
     override var alignment: TextDrawAlign = TextDrawAlign.LEFT
-        get() = field
         set(value) {
             SampNativeFunction.textDrawAlignment(id, value.value)
             field = value
         }
 
     override var backgroundColor: Color = Color.BLACK
-        get() = field
         set(value) {
             SampNativeFunction.textDrawBackgroundColor(id, value.value)
             field = value
         }
 
     override var boxColor: Color = Color.BLACK
-        get() = field
         set(value) {
             SampNativeFunction.textDrawBoxColor(id, value.value)
             field = value
         }
 
     override var color: Color = Color.BLACK
-        get() = field
         set(value) {
             SampNativeFunction.textDrawColor(id, value.value)
             field = value
         }
 
     override var font: TextDrawFont = TextDrawFont.FONT2
-        get() = field
         set(value) {
             SampNativeFunction.textDrawFont(id, value.value)
             field = value
         }
 
     override var isProportional: Boolean = false
-        get() = field
         set(value) {
             SampNativeFunction.textDrawSetProportional(id, if (value) 1 else 0)
             field = value
         }
 
     override var isSelectable: Boolean = false
-        get() = field
         set(value) {
             SampNativeFunction.textDrawSetSelectable(id, if (value) 1 else 0)
             field = value
         }
 
     override var isUseBox: Boolean = false
-        get() = field
         set(value) {
             SampNativeFunction.textDrawUseBox(id, value)
             field = value
         }
 
     override var letterSize: Vector2D = Vector2D(1f, 1f)
-        get() = field
         set(value) {
             SampNativeFunction.textDrawLetterSize(id, value.x, value.y)
             field = value
         }
 
     override var outlineSize: Int = 1
-        get() = field
         set(value) {
             SampNativeFunction.textDrawSetOutline(id, value)
             field = value
         }
 
     override var previewModel: Int = 0
-        get() = field
         set(value) {
             SampNativeFunction.textDrawSetPreviewModel(id, value)
             field = value
         }
 
     override var previewModelRotation: ModelRotation = ModelRotation(0f, 0f, 0f)
-        get() = field
         set(value) {
             SampNativeFunction.textDrawSetPreviewRot(id, value.x, value.y, value.z, value.zoom)
             field = value
         }
 
     override var shadowSize: Int = 0
-        get() = field
         set(value) {
             SampNativeFunction.textDrawSetShadow(id, value)
             field = value
         }
 
     override var textSize: Vector2D = Vector2D(1f, 1f)
-        get() = field
         set(value) {
             SampNativeFunction.textDrawTextSize(id, value.x, value.y)
             field = value

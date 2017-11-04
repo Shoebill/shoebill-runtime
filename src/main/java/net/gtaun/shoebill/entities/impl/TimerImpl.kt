@@ -72,8 +72,7 @@ class TimerImpl(private val rootEventManager: EventManager, override var interva
         if (count > 0) counting--
         try {
             callback.onTick(factualInterval)
-        } catch (e: Throwable) {
-        }
+        } catch (e: Throwable) { }
 
         elapsedCounts += 1
         factualInterval = 0

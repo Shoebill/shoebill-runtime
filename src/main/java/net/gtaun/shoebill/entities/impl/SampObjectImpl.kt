@@ -44,9 +44,11 @@ constructor(store: SampObjectStoreImpl, override val modelId: Int, loc: Location
 
     override var location: Location = Location(loc)
         get() {
-            if (attachedPlayer != null) field.set(attachedPlayer!!.location)
-            else if (attachedVehicle != null) field.set(attachedVehicle!!.location)
-            else SampNativeFunction.getObjectPos(id, field)
+            when {
+                attachedPlayer != null -> field.set(attachedPlayer!!.location)
+                attachedVehicle != null -> field.set(attachedVehicle!!.location)
+                else -> SampNativeFunction.getObjectPos(id, field)
+            }
 
             return field.clone()
         }
@@ -209,8 +211,8 @@ constructor(store: SampObjectStoreImpl, override val modelId: Int, loc: Location
                     if (isBold) 1 else 0, fontColor.argbValue, backColor.argbValue, textAlignment.value)
 
     override fun setMaterialText(text: String) =
-            setMaterialText(text, 0, ObjectMaterialSize.SIZE_256x128, "Arial", 24, true, Color.WHITE, Color.TRANSPARENT,
-                    ObjectMaterialTextAlign.LEFT)
+            setMaterialText(text, 0, ObjectMaterialSize.SIZE_256x128, "Arial",
+                    24, true, Color.WHITE, Color.TRANSPARENT, ObjectMaterialTextAlign.LEFT)
 
     override fun setNoCameraCol() {
         SampNativeFunction.setObjectNoCameraCol(id)

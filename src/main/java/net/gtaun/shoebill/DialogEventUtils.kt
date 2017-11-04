@@ -14,17 +14,17 @@ object DialogEventUtils {
     @JvmStatic
     internal fun dispatchResponseEvent(eventManager: EventManager, dialog: DialogId, player: Player, response: Int,
                                        listitem: Int, inputtext: String): Int {
-        try {
+        return try {
             val event = DialogResponseEvent(dialog, player, response, listitem, inputtext)
             if (dialog is DialogIdImpl) {
                 val onResponseHandler = dialog.onResponseHandler
                 onResponseHandler?.handleEvent(event)
             }
             eventManager.dispatchEvent(event, dialog, player)
-            return event.response
+            event.response
         } catch (ex: Throwable) {
             ex.printStackTrace()
-            return 0
+            0
         }
 
     }

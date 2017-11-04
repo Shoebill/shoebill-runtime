@@ -396,7 +396,8 @@ class PlayerImpl(private val store: SampObjectStore, id: Int) : Player() {
     }
 
     private fun sendMessageInternal(color: Color, message: String) {
-        val msgs = CharsetUtils.splitStringByCharsetLength(message, 144, CharsetUtils.getCharsetByCodepage(codepage)!!, "  ")
+        val msgs = CharsetUtils.splitStringByCharsetLength(message, 144,
+                CharsetUtils.getCharsetByCodepage(codepage)!!, "  ")
         for (s in msgs) SampNativeFunction.sendClientMessage(id, color.value, s)
     }
 

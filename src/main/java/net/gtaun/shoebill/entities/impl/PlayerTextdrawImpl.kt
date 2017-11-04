@@ -39,7 +39,6 @@ constructor(private val rootEventManager: EventManager, override val player: Pla
             text: String, store: SampObjectStoreImpl) : PlayerTextdraw() {
 
     override var alignment: TextDrawAlign = TextDrawAlign.LEFT
-        get() = field
         set(value) {
             SampNativeFunction.playerTextDrawAlignment(player.id, id, value.value)
             field = value
@@ -67,28 +66,24 @@ constructor(private val rootEventManager: EventManager, override val player: Pla
         }
 
     override var font: TextDrawFont = TextDrawFont.FONT2
-        get() = field
         set(value) {
             SampNativeFunction.playerTextDrawFont(player.id, id, value.value)
             field = value
         }
 
     override var isProportional: Boolean = false
-        get() = field
         set(value) {
             SampNativeFunction.playerTextDrawSetProportional(player.id, id, if (value) 1 else 0)
             field = value
         }
 
     override var isSelectable: Boolean = false
-        get() = field
         set(value) {
             SampNativeFunction.playerTextDrawSetSelectable(player.id, id, if (value) 1 else 0)
             field = value
         }
 
     override var isUseBox: Boolean = false
-        get() = field
         set(value) {
             SampNativeFunction.playerTextDrawUseBox(player.id, id, if (value) 1 else 0)
             field = value
@@ -102,14 +97,12 @@ constructor(private val rootEventManager: EventManager, override val player: Pla
         }
 
     override var outlineSize: Int = 1
-        get() = field
         set(value) {
             SampNativeFunction.playerTextDrawSetOutline(player.id, id, value)
             field = value
         }
 
     override var previewModel: Int = 0
-        get() = field
         set(value) {
             SampNativeFunction.playerTextDrawSetPreviewModel(player.id, id, value)
             field = value
@@ -123,14 +116,12 @@ constructor(private val rootEventManager: EventManager, override val player: Pla
         }
 
     override var shadowSize: Int = 0
-        get() = field
         set(value) {
             SampNativeFunction.playerTextDrawSetShadow(player.id, id, value)
             field = value
         }
 
     override var textSize: Vector2D = Vector2D()
-        get() = field
         set(value) {
             SampNativeFunction.playerTextDrawTextSize(player.id, id, value.x, value.y)
             field = value

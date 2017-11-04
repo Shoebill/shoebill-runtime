@@ -355,7 +355,8 @@ open class SampObjectStoreImpl internal constructor(rootEventManager: EventManag
         private fun <T> clearUnusedReferences(collection: MutableCollection<Reference<T>>) {
             val iterator = collection.iterator()
             while (iterator.hasNext()) {
-                if (iterator.next().get() == null) iterator.remove()
+                if (iterator.next().get() == null)
+                    iterator.remove()
             }
         }
     }

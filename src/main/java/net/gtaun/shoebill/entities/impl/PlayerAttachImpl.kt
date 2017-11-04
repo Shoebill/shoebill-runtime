@@ -36,12 +36,12 @@ class PlayerAttachImpl internal constructor(override val player: Player) : Playe
 
     init {
         val list = mutableListOf<PlayerAttachSlot>()
-        (0..PlayerAttach.MAX_ATTACHED_OBJECTS - 1).forEach { i -> list.add(i, PlayerAttachSlotImpl(i)) }
+        (0 until PlayerAttach.MAX_ATTACHED_OBJECTS).forEach { i -> list.add(i, PlayerAttachSlotImpl(i)) }
         slots = list.toTypedArray()
     }
 
     override fun getSlotByBone(bone: PlayerAttachBone): PlayerAttach.PlayerAttachSlot? =
-            slots.filter { it.bone == bone }.firstOrNull()
+            slots.firstOrNull { it.bone == bone }
 
     override fun get(value: Int): PlayerAttachSlot? = slots[value]
 

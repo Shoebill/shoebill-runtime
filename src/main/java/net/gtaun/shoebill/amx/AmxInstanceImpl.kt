@@ -20,10 +20,10 @@ internal class AmxInstanceImpl(override val handle: Int) : AmxInstance() {
 
     override fun getNative(name: String, returnType: ReturnType): AmxCallable? {
         val id = SampNativeFunction.getNative(name)
-        if (id != 0)
-            return AmxCallableImpl(this, id, name, AmxCallableType.NATIVE, returnType)
+        return if (id != 0)
+            AmxCallableImpl(this, id, name, AmxCallableType.NATIVE, returnType)
         else
-            return null
+            null
     }
 
     override fun unregisterFunction(name: String): Boolean {

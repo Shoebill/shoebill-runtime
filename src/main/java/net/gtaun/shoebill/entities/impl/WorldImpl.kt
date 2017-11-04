@@ -34,36 +34,30 @@ import net.gtaun.shoebill.entities.World
 class WorldImpl(private val store: SampObjectStoreImpl) : World() {
 
     override var nameTagDrawDistance = 70f
-        get() = field
         set(distance) {
-            nameTagDrawDistance = distance
             SampNativeFunction.setNameTagDrawDistance(distance)
             field = distance
         }
 
     override var chatRadius = -1f
-        get() = field
         set(radius) {
             SampNativeFunction.limitGlobalChatRadius(radius)
             field = radius
         }
 
     override var playerMarkerRadius = -1f
-        get() = field
         set(radius) {
             SampNativeFunction.limitPlayerMarkerRadius(radius)
             field = radius
         }
 
     override var weather = Weather.SUNNY_VEGAS
-        get() = field
         set(value) {
             SampNativeFunction.setWeather(value.id)
             field = value
         }
 
     override var teamCount: Int = 1
-        get() = field
         set(value) {
             SampNativeFunction.setTeamCount(value)
             field = value

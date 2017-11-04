@@ -40,13 +40,13 @@ constructor(val eventManager: EventManager, val store: SampObjectStoreImpl, over
 
     override var text: String = text
         private set(value) {
-            if(StringUtils.isEmpty(value)) field = " "
-            else field = value
+            field = if(StringUtils.isEmpty(value)) " "
+                    else value
         }
 
     override var location: Location = loc
         get() {
-            var pos: Location = Location()
+            var pos = Location()
 
             if (attachedPlayer != null) pos = attachedPlayer!!.location
             if (attachedVehicle != null) pos = attachedVehicle!!.location

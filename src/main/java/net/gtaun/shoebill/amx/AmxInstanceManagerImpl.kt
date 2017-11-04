@@ -47,7 +47,7 @@ class AmxInstanceManagerImpl(private val eventManager: EventManager, existingHan
     }
 
     override fun unhookCallback(callbackName: String): Boolean {
-        val hook = hooks.filter({ it.name === callbackName }).firstOrNull()
+        val hook = hooks.firstOrNull({ it.name === callbackName })
         if (SampNativeFunction.unhookCallback(callbackName) && hook != null) {
             hooks.remove(hook)
             return true

@@ -32,7 +32,7 @@ class PlayerWeaponSkillImpl internal constructor(override val player: Player) : 
     private val skills = IntArray(WeaponSkill.values().size)
 
     init {
-        (0..WeaponSkill.values().size - 1).forEachIndexed { index, i -> skills[index] = i }
+        (0 until WeaponSkill.values().size).forEachIndexed { index, i -> skills[index] = i }
     }
 
     override fun setLevel(type: WeaponSkill, level: Int) {

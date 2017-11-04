@@ -363,6 +363,11 @@ class SampCallbackManagerImpl : SampCallbackManager {
             callbackHandlers.forEachCatched { array = it.onHookCall(name, *objects) }
             return array
         }
+
+        override fun onPlayerFinishedDownloading(playerId: Int, virtualWorld: Int): Boolean {
+            callbackHandlers.forEachCatched { it.onPlayerFinishedDownloading(playerId, virtualWorld) }
+            return true
+        }
     }
 
     override fun registerCallbackHandler(handler: SampCallbackHandler) {

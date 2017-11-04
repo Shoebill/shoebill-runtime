@@ -106,13 +106,9 @@ constructor(private val store: SampObjectStoreImpl, modelId: Int, loc: AngledLoc
         eventManagerNode.dispatchEvent(event, this)
     }
 
-    fun onVehicleMod() {
-        component.update()
-    }
+    fun onVehicleMod() = component.update()
 
-    fun onVehicleUpdateDamage() {
-        SampNativeFunction.getVehicleDamageStatus(id, damage)
-    }
+    fun onVehicleUpdateDamage() = SampNativeFunction.getVehicleDamageStatus(id, damage)
 
     override fun destroy() {
         if (isDestroyed) return
@@ -165,9 +161,7 @@ constructor(private val store: SampObjectStoreImpl, modelId: Int, loc: AngledLoc
         location = loc
     }
 
-    override fun setLocation(pos: Vector3D) {
-        setLocation(pos.x, pos.y, pos.z)
-    }
+    override fun setLocation(pos: Vector3D) = setLocation(pos.x, pos.y, pos.z)
 
     override fun setLocation(loc: Location) {
         if (isDestroyed) return

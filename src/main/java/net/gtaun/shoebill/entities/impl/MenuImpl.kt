@@ -45,8 +45,8 @@ constructor(private val rootEventManager: EventManager, store: SampObjectStoreIm
 
     override var title: String = title
         private set(value) {
-            if(StringUtils.isEmpty(value)) field = " "
-            else field = value
+            field = if(StringUtils.isEmpty(value)) " "
+                    else value
         }
 
     override val columnHeader: Array<String> = arrayOf("", "")

@@ -591,12 +591,17 @@ class SampEventDispatcher(private val sampObjectStore: SampObjectManagerImpl,
 
     override fun onRegisteredFunctionCall(amx: Int, name: String, parameters: Array<Any>): Int {
         var returnValue = 0
-        for (instance in AmxInstanceManager.get().amxInstances) {
-            if (instance.handle != amx) continue
-            if (!instance.isFunctionRegistered(name)) continue
-            returnValue = instance.callRegisteredFunction(name, parameters)
-        }
+        AmxInstanceManager.get().amxInstances
+                .filter { it.handle == amx && it.isFunctionRegistered(name) }
+                .forEach { returnValue = it.callRegisteredFunction(name, parameters) }
         return returnValue
+    }
+
+    override fun onPlayerFinishedDownloading(playerId: Int, virtualWorld: Int): Boolean {
+        val player = Player.get(playerId) ?: return false
+        val event = PlayerFinishedDownloadingEvent(player, virtualWorld)
+        rootEventManager.dispatchEvent(event, player, virtualWorld)
+        return true
     }
 
     companion object {

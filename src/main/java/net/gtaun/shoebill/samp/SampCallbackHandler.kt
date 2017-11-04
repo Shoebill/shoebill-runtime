@@ -44,6 +44,7 @@ interface SampCallbackHandler {
     fun onPlayerDisconnect(playerId: Int, reason: Int): Boolean = true
     fun onPlayerSpawn(playerId: Int): Boolean = true
     fun onPlayerDeath(playerId: Int, killerId: Int, reason: Int): Boolean = true
+    fun onPlayerFinishedDownloading(playerId: Int, virtualWorld: Int): Boolean = true
 
     fun onVehicleSpawn(vehicleId: Int): Boolean = true
     fun onVehicleDeath(vehicleId: Int, killerId: Int): Boolean = true

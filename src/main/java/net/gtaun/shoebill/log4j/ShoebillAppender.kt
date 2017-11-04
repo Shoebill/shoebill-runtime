@@ -38,8 +38,7 @@ class ShoebillAppender : FileAppender {
 
     private var rollOverTimestamp: Long = 0
 
-    constructor() {
-    }
+    constructor()
 
     @Throws(IOException::class)
     constructor(layout: Layout, filename: String) : super(layout, filename, true) {
