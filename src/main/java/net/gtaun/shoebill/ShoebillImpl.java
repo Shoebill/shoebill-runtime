@@ -221,11 +221,6 @@ public class ShoebillImpl implements Shoebill {
             }
 
             @Override
-            public boolean isActive() {
-                return true;
-            }
-
-            @Override
             public void onAmxLoad(int handle) {
                 amxInstanceManager.onAmxLoad(handle);
                 if (!initialized) {

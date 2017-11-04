@@ -43,32 +43,21 @@ public class ZoneImpl implements Zone {
     private boolean[] isPlayerShowed = new boolean[SampObjectStoreImpl.MAX_PLAYERS];
     private boolean[] isPlayerFlashing = new boolean[SampObjectStoreImpl.MAX_PLAYERS];
 
-    public ZoneImpl(SampObjectStoreImpl store, EventManager eventManager, float minX, float minY, float maxX, float maxY, boolean doInit, int id) throws CreationFailedException {
-        this.rootEventManager = eventManager;
-        initialize(store, minX, minY, maxX, maxY, doInit, id);
-    }
-
     public ZoneImpl(SampObjectStoreImpl store, EventManager eventManager, float minX, float minY, float maxX, float maxY) throws CreationFailedException {
         this.rootEventManager = eventManager;
-        initialize(store, minX, minY, maxX, maxY, true, -1);
+        initialize(store, minX, minY, maxX, maxY);
     }
 
-    private void initialize(SampObjectStoreImpl store, float minX, float minY, float maxX, float maxY, boolean doInit, int id) throws CreationFailedException {
+    private void initialize(SampObjectStoreImpl store, float minX, float minY, float maxX, float maxY) throws CreationFailedException {
         area = new Area(minX, minY, maxX, maxY);
         for (int i = 0; i < isPlayerShowed.length; i++) {
             isPlayerShowed[i] = false;
             isPlayerFlashing[i] = false;
         }
 
-        if (doInit || id < 0)
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.gangZoneCreate(minX, minY, maxX, maxY)));
-        else setup(store, id);
-    }
-
-    private void setup(SampObjectStoreImpl store, int id) {
+        this.id = SampNativeFunction.gangZoneCreate(minX, minY, maxX, maxY);
         if (id == INVALID_ID) throw new CreationFailedException();
 
-        this.id = id;
         store.setZone(id, this);
     }
 
@@ -80,12 +69,7 @@ public class ZoneImpl implements Zone {
     @Override
     public void destroy() {
         if (isDestroyed()) return;
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.gangZoneDestroy(id));
-        destroyWithoutExec();
-    }
-
-    public void destroyWithoutExec() {
-        if (isDestroyed()) return;
+        SampNativeFunction.gangZoneDestroy(id);
 
         DestroyEvent destroyEvent = new DestroyEvent(this);
         rootEventManager.dispatchEvent(destroyEvent, this);
@@ -112,18 +96,10 @@ public class ZoneImpl implements Zone {
     public void show(Player player, Color color) {
         if (isDestroyed()) return;
         if (!player.isOnline()) return;
-        int playerId = player.getId();
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.gangZoneShowForPlayer(playerId, id, color.getValue()));
-        showWithoutExec(player);
 
-    }
-
-    public void showWithoutExec(Player player) {
-        if (isDestroyed()) return;
-        if (!player.isOnline()) return;
-        int playerId = player.getId();
-        isPlayerShowed[playerId] = true;
-        isPlayerFlashing[playerId] = false;
+        SampNativeFunction.gangZoneShowForPlayer(player.getId(), id, color.getValue());
+        isPlayerShowed[player.getId()] = true;
+        isPlayerFlashing[player.getId()] = false;
     }
 
     @Override
@@ -131,17 +107,9 @@ public class ZoneImpl implements Zone {
         if (isDestroyed()) return;
         if (!player.isOnline()) return;
 
-        int playerId = player.getId();
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.gangZoneHideForPlayer(playerId, id));
-        hideWithoutExec(player);
-    }
-
-    public void hideWithoutExec(Player player) {
-        if (isDestroyed()) return;
-        if (!player.isOnline()) return;
-        int playerId = player.getId();
-        isPlayerShowed[playerId] = false;
-        isPlayerFlashing[playerId] = false;
+        SampNativeFunction.gangZoneHideForPlayer(player.getId(), id);
+        isPlayerShowed[player.getId()] = false;
+        isPlayerFlashing[player.getId()] = false;
     }
 
     @Override
@@ -149,21 +117,10 @@ public class ZoneImpl implements Zone {
         if (isDestroyed()) return;
         if (!player.isOnline()) return;
 
-        int playerId = player.getId();
-
-        if (isPlayerShowed[playerId]) {
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.gangZoneFlashForPlayer(playerId, id, color.getValue()));
-            flashWithoutExec(player);
+        if (isPlayerShowed[player.getId()]) {
+            SampNativeFunction.gangZoneFlashForPlayer(player.getId(), id, color.getValue());
+            isPlayerFlashing[player.getId()] = true;
         }
-    }
-
-    public void flashWithoutExec(Player player) {
-        if (isDestroyed()) return;
-        if (!player.isOnline()) return;
-        int playerId = player.getId();
-
-        if (isPlayerShowed[playerId])
-            isPlayerFlashing[playerId] = true;
     }
 
     @Override
@@ -171,75 +128,44 @@ public class ZoneImpl implements Zone {
         if (isDestroyed()) return;
         if (!player.isOnline()) return;
 
-        int playerId = player.getId();
-
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.gangZoneStopFlashForPlayer(playerId, id));
-        stopFlashWithoutExec(player);
-    }
-
-    public void stopFlashWithoutExec(Player player) {
-        if (isDestroyed()) return;
-        if (!player.isOnline()) return;
-        int playerId = player.getId();
-        isPlayerFlashing[playerId] = false;
+        SampNativeFunction.gangZoneStopFlashForPlayer(player.getId(), id);
+        isPlayerFlashing[player.getId()] = false;
     }
 
     @Override
     public void showForAll(Color color) {
         if (isDestroyed()) return;
 
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.gangZoneShowForAll(id, color.getValue()));
-        showForAllWithoutExec();
-    }
-
-    public void showForAllWithoutExec() {
-        if (isDestroyed()) return;
-        for (int i = 0; i < isPlayerShowed.length; i++)
-            isPlayerShowed[i] = true;
+        SampNativeFunction.gangZoneShowForAll(id, color.getValue());
+        for(Player player : Player.getHumans())
+            isPlayerShowed[player.getId()] = true;
     }
 
     @Override
     public void hideForAll() {
         if (isDestroyed()) return;
 
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.gangZoneHideForAll(id));
-
-        hideForAllWithoutExec();
-    }
-
-    public void hideForAllWithoutExec() {
-        if (isDestroyed()) return;
-        for (int i = 0; i < isPlayerShowed.length; i++) {
+        SampNativeFunction.gangZoneHideForAll(id);
+        for(int i = 0; i < isPlayerShowed.length; i++)
             isPlayerShowed[i] = false;
-            isPlayerFlashing[i] = false;
-        }
     }
 
     @Override
     public void flashForAll(Color color) {
         if (isDestroyed()) return;
 
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.gangZoneFlashForAll(id, color.getValue()));
-        flashForAllWithoutExec();
-    }
-
-    public void flashForAllWithoutExec() {
-        if (isDestroyed()) return;
-        for (int i = 0; i < isPlayerShowed.length; i++)
-            if (isPlayerShowed[i]) isPlayerFlashing[i] = true;
+        SampNativeFunction.gangZoneFlashForAll(id, color.getValue());
+        for(int i = 0; i < isPlayerShowed.length; i++)
+            if(isPlayerShowed[i])
+                isPlayerFlashing[i] = true;
     }
 
     @Override
     public void stopFlashForAll() {
         if (isDestroyed()) return;
 
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.gangZoneStopFlashForAll(id));
-        stopFlashForAllWithoutExec();
-    }
-
-    public void stopFlashForAllWithoutExec() {
-        if (isDestroyed()) return;
-        for (int i = 0; i < isPlayerFlashing.length; i++)
+        SampNativeFunction.gangZoneStopFlashForAll(id);
+        for(int i = 0; i < isPlayerFlashing.length; i++)
             isPlayerFlashing[i] = false;
     }
 

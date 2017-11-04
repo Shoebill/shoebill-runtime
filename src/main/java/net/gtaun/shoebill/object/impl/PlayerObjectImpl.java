@@ -53,12 +53,7 @@ public class PlayerObjectImpl implements PlayerObject {
 
     private EventManagerNode eventManagerNode;
 
-
-    public PlayerObjectImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, int modelId, Location loc, Vector3D rot, float drawDistance) {
-        this(eventManager, store, player, modelId, loc, rot, drawDistance, true, -1);
-    }
-
-    public PlayerObjectImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, int modelId, Location loc, Vector3D rot, float drawDistance, boolean doInit, int id) throws CreationFailedException {
+    public PlayerObjectImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, int modelId, Location loc, Vector3D rot, float drawDistance) throws CreationFailedException {
         if (!player.isOnline()) throw new CreationFailedException();
 
         eventManagerNode = eventManager.createChildNode();
@@ -67,14 +62,8 @@ public class PlayerObjectImpl implements PlayerObject {
         this.location = new Location(loc);
         this.drawDistance = drawDistance;
 
-        if (doInit || id < 0)
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.createPlayerObject(player.getId(), modelId, loc.getX(), loc.getY(), loc.getZ(), rot.getX(), rot.getY(), rot.getZ(), drawDistance)));
-        else
-            setup(store, id);
-    }
-
-    private void setup(SampObjectStoreImpl store, int id) {
-        this.id = id;
+        this.id = SampNativeFunction.createPlayerObject(player.getId(), modelId, loc.getX(), loc.getY(), loc.getZ(),
+                rot.getX(), rot.getY(), rot.getZ(), drawDistance);
         if (this.id == INVALID_ID) throw new CreationFailedException();
         store.setPlayerObject(player, id, this);
     }
@@ -92,14 +81,9 @@ public class PlayerObjectImpl implements PlayerObject {
     @Override
     public void destroy() {
         if (id == INVALID_ID) return;
-        if (player.isOnline())
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.destroyPlayerObject(player.getId(), id));
-        destroyWithoutExec();
-    }
+        if(!player.isOnline()) return;
 
-    public void destroyWithoutExec() {
-        if (id == INVALID_ID) return;
-
+        SampNativeFunction.destroyPlayerObject(player.getId(), id);
         DestroyEvent destroyEvent = new DestroyEvent(this);
         eventManagerNode.dispatchEvent(destroyEvent, this);
 

@@ -45,11 +45,8 @@ public class PlayerTextdrawImpl implements PlayerTextdraw {
 
     private boolean isShowed = false;
 
-    public PlayerTextdrawImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, float x, float y, String text) {
-        this(eventManager, store, player, x, y, text, true, -1);
-    }
-
-    public PlayerTextdrawImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, float x, float y, String text, boolean doInit, int id) throws CreationFailedException {
+    public PlayerTextdrawImpl(EventManager eventManager, SampObjectStoreImpl store, Player player, float x,
+                              float y, String text) throws CreationFailedException {
         this.rootEventManager = eventManager;
         this.player = player;
         this.text = text;
@@ -59,16 +56,8 @@ public class PlayerTextdrawImpl implements PlayerTextdraw {
 
         if (!player.isOnline()) throw new CreationFailedException();
 
-        if (doInit || id < 0)
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.createPlayerTextDraw(player.getId(), x, y, this.text)));
-        else
-            setup(store, id);
-    }
-
-    private void setup(SampObjectStoreImpl store, int id) {
+        this.id = SampNativeFunction.createPlayerTextDraw(player.getId(), x, y, this.text);
         if (id == INVALID_ID) throw new CreationFailedException();
-
-        this.id = id;
         store.setPlayerTextdraw(player, id, this);
     }
 
@@ -81,13 +70,8 @@ public class PlayerTextdrawImpl implements PlayerTextdraw {
     @Override
     public void destroy() {
         if (id == INVALID_ID) return;
-        if (player.isOnline())
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.playerTextDrawDestroy(player.getId(), id));
-        destroyWithoutExec();
-    }
-
-    public void destroyWithoutExec() {
-        if (id == INVALID_ID) return;
+        if(!player.isOnline()) return;
+        SampNativeFunction.playerTextDrawDestroy(player.getId(), id);
         DestroyEvent destroyEvent = new DestroyEvent(this);
         rootEventManager.dispatchEvent(destroyEvent, this);
         id = INVALID_ID;
@@ -123,8 +107,8 @@ public class PlayerTextdrawImpl implements PlayerTextdraw {
     public void setText(String text) {
         if (isDestroyed()) return;
         if (text == null) throw new NullPointerException();
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.playerTextDrawSetString(player.getId(), id, text));
-        setTextWithoutExec(text);
+        SampNativeFunction.playerTextDrawSetString(player.getId(), id, text);
+        this.text = text;
     }
 
     @Override
@@ -225,12 +209,6 @@ public class PlayerTextdrawImpl implements PlayerTextdraw {
         SampNativeFunction.playerTextDrawSetSelectable(player.getId(), id, set ? 1 : 0);
     }
 
-    public void setTextWithoutExec(String text) {
-        if (isDestroyed()) return;
-        if (text == null) throw new NullPointerException();
-        this.text = text;
-    }
-
     @Override
     public void setPreviewModel(int modelindex) {
         if (isDestroyed()) return;
@@ -261,12 +239,7 @@ public class PlayerTextdrawImpl implements PlayerTextdraw {
     public void show() {
         if (isDestroyed()) return;
         int playerId = player.getId();
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.playerTextDrawShow(playerId, id));
-        showWithoutExec();
-    }
-
-    public void showWithoutExec() {
-        if (isDestroyed()) return;
+        SampNativeFunction.playerTextDrawShow(playerId, id);
         isShowed = true;
     }
 
@@ -274,12 +247,7 @@ public class PlayerTextdrawImpl implements PlayerTextdraw {
     public void hide() {
         if (isDestroyed()) return;
         int playerId = player.getId();
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.playerTextDrawHide(playerId, id));
-        hideWithoutExec();
-    }
-
-    public void hideWithoutExec() {
-        if (isDestroyed()) return;
+        SampNativeFunction.playerTextDrawHide(playerId, id);
         isShowed = false;
     }
 

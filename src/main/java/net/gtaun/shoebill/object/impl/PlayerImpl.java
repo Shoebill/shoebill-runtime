@@ -134,8 +134,8 @@ public class PlayerImpl implements Player {
     @Override
     public void setWeather(int weather) {
         if (!isOnline()) return;
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerWeather(id, weather));
-        setWeatherWithoutExec(weather);
+        SampNativeFunction.setPlayerWeather(id, weather);
+        this.weatherId = weather;
     }
 
     @Override
@@ -195,7 +195,7 @@ public class PlayerImpl implements Player {
     @Override
     public void setWorldBound(Area bound) {
         if (!isOnline()) return;
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerWorldBounds(id, bound.getMaxX(), bound.getMinX(), bound.getMaxY(), bound.getMinY()));
+        SampNativeFunction.setPlayerWorldBounds(id, bound.getMaxX(), bound.getMinX(), bound.getMaxY(), bound.getMinY());
     }
 
     @Override
@@ -239,8 +239,8 @@ public class PlayerImpl implements Player {
         }
 
         Vector3D loc = checkpoint.getLocation();
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerCheckpoint(id, loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize()));
-        setCheckpointWithoutExec(checkpoint);
+        SampNativeFunction.setPlayerCheckpoint(id, loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize());
+        this.checkpoint = checkpoint;
     }
 
     @Override
@@ -262,18 +262,19 @@ public class PlayerImpl implements Player {
 
         if (next != null) {
             Vector3D nextLoc = next.getLocation();
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerRaceCheckpoint(id, checkpoint.getType().getValue(), loc.getX(), loc.getY(), loc.getZ(), nextLoc.getX(), nextLoc.getY(), nextLoc.getZ(), checkpoint.getSize()));
+            SampNativeFunction.setPlayerRaceCheckpoint(id, checkpoint.getType().getValue(), loc.getX(), loc.getY(),
+                    loc.getZ(), nextLoc.getX(), nextLoc.getY(), nextLoc.getZ(), checkpoint.getSize());
         } else {
             RaceCheckpointType type = checkpoint.getType();
 
             if (type == RaceCheckpointType.NORMAL) type = RaceCheckpointType.NORMAL_FINISH;
             else if (type == RaceCheckpointType.AIR) type = RaceCheckpointType.AIR_FINISH;
 
-            final RaceCheckpointType finalType = type;
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerRaceCheckpoint(id, finalType.getValue(), loc.getX(), loc.getY(), loc.getZ(), loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize()));
+            SampNativeFunction.setPlayerRaceCheckpoint(id, type.getValue(), loc.getX(), loc.getY(), loc.getZ(),
+                    loc.getX(), loc.getY(), loc.getZ(), checkpoint.getSize());
         }
 
-        setRaceCheckpointWithoutExec(checkpoint);
+        this.raceCheckpoint = checkpoint;
     }
 
     @Override
@@ -605,11 +606,6 @@ public class PlayerImpl implements Player {
     public void giveMoney(int money) {
         if (!isOnline()) return;
         SampNativeFunction.givePlayerMoney(id, money);
-    }
-
-    public void setWeatherWithoutExec(int weather) {
-        if (!isOnline()) return;
-        this.weatherId = weather;
     }
 
     @Override
@@ -970,47 +966,19 @@ public class PlayerImpl implements Player {
 
     }
 
-    public void setCheckpointWithoutExec(Checkpoint checkpoint) {
-        if (!isOnline()) return;
-        if (checkpoint == null) {
-            disableCheckpoint();
-            return;
-        }
-        this.checkpoint = checkpoint;
-    }
-
     @Override
     public void disableCheckpoint() {
         if (!isOnline()) return;
 
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.disablePlayerCheckpoint(id));
-        disableCheckpointWithoutExec();
-    }
-
-    public void disableCheckpointWithoutExec() {
-        if (!isOnline()) return;
+        SampNativeFunction.disablePlayerCheckpoint(id);
         checkpoint = null;
-    }
-
-    public void setRaceCheckpointWithoutExec(RaceCheckpoint checkpoint) {
-        if (!isOnline()) return;
-        if (checkpoint == null) {
-            disableRaceCheckpoint();
-            return;
-        }
-        raceCheckpoint = checkpoint;
     }
 
     @Override
     public void disableRaceCheckpoint() {
         if (!isOnline()) return;
 
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.disablePlayerRaceCheckpoint(id));
-        disableRaceCheckpointWithoutExec();
-    }
-
-    public void disableRaceCheckpointWithoutExec() {
-        if (!isOnline()) return;
+        SampNativeFunction.disablePlayerRaceCheckpoint(id);
         raceCheckpoint = null;
     }
 
@@ -1108,12 +1076,7 @@ public class PlayerImpl implements Player {
     public void toggleControllable(boolean toggle) {
         if (!isOnline()) return;
 
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.togglePlayerControllable(id, toggle));
-        toggleControllableWithoutExec(toggle);
-    }
-
-    public void toggleControllableWithoutExec(boolean toggle) {
-        if (!isOnline()) return;
+        SampNativeFunction.togglePlayerControllable(id, toggle);
         isControllable = toggle;
     }
 
@@ -1125,24 +1088,14 @@ public class PlayerImpl implements Player {
     @Override
     public void enableStuntBonus(boolean enable) {
         if (!isOnline()) return;
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.enableStuntBonusForPlayer(id, enable ? 1 : 0));
-        enableStuntBonusWithoutExec(enable);
-    }
-
-    public void enableStuntBonusWithoutExec(boolean enable) {
-        if (!isOnline()) return;
+        SampNativeFunction.enableStuntBonusForPlayer(id, enable ? 1 : 0);
         isStuntBonusEnabled = enable;
     }
 
     @Override
     public void toggleSpectating(boolean toggle) {
         if (!isOnline()) return;
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.togglePlayerSpectating(id, toggle));
-        toggleSpectatingWithoutExec(toggle);
-    }
-
-    public void toggleSpectatingWithoutExec(boolean toggle) {
-        if (!isOnline()) return;
+        SampNativeFunction.togglePlayerSpectating(id, toggle);
         isSpectating = toggle;
         if (toggle) return;
         spectatingPlayer = null;
@@ -1152,15 +1105,9 @@ public class PlayerImpl implements Player {
     @Override
     public void spectate(Player player, SpectateMode mode) {
         if (!isOnline()) return;
-
         if (!isSpectating) return;
 
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.playerSpectatePlayer(id, player.getId(), mode.getValue()));
-        spectateWithoutExec(player);
-    }
-
-    public void spectateWithoutExec(Player player) {
-        if (!isOnline()) return;
+        SampNativeFunction.playerSpectatePlayer(id, player.getId(), mode.getValue());
         if (!isSpectating) return;
         spectatingPlayer = player;
         spectatingVehicle = null;
@@ -1172,12 +1119,7 @@ public class PlayerImpl implements Player {
 
         if (!isSpectating) return;
 
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.playerSpectateVehicle(id, vehicle.getId(), mode.getValue()));
-        spectateWithoutExec(vehicle);
-    }
-
-    public void spectateWithoutExec(Vehicle vehicle) {
-        if (!isOnline()) return;
+        SampNativeFunction.playerSpectateVehicle(id, vehicle.getId(), mode.getValue());
         if (!isSpectating) return;
         spectatingPlayer = null;
         spectatingVehicle = vehicle;
@@ -1186,24 +1128,14 @@ public class PlayerImpl implements Player {
     @Override
     public void startRecord(RecordType type, String recordName) {
         if (!isOnline()) return;
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.startRecordingPlayerData(id, type.getValue(), recordName));
-        startRecordingWithoutExec();
-    }
-
-    public void startRecordingWithoutExec() {
-        if (!isOnline()) return;
+        SampNativeFunction.startRecordingPlayerData(id, type.getValue(), recordName);
         isRecording = true;
     }
 
     @Override
     public void stopRecord() {
         if (!isOnline()) return;
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.stopRecordingPlayerData(id));
-        stopRecordingWithoutExec();
-    }
-
-    public void stopRecordingWithoutExec() {
-        if (!isOnline()) return;
+        SampNativeFunction.stopRecordingPlayerData(id);
         isRecording = false;
     }
 
@@ -1316,7 +1248,7 @@ public class PlayerImpl implements Player {
             DialogEventUtils.dispatchCloseEvent(eventManagerNode, this.dialog, this, DialogCloseType.OVERRIDE);
         }
 
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.showPlayerDialog(id, dialog.getId(), style.getValue(), caption, text, button1, button2));
+        SampNativeFunction.showPlayerDialog(id, dialog.getId(), style.getValue(), caption, text, button1, button2);
         this.dialog = dialog;
 
         DialogEventUtils.dispatchShowEvent(eventManagerNode, dialog, this);

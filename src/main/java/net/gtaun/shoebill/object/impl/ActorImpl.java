@@ -1,6 +1,5 @@
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.data.AngledLocation;
@@ -22,23 +21,11 @@ public class ActorImpl implements Actor {
     private EventManagerNode eventManagerNode;
 
     public ActorImpl(EventManager eventManager, SampObjectStoreImpl store, int modelid, Vector3D pos, float angle) {
-        this(eventManager, store, modelid, pos, angle, true, -1);
-    }
-
-    public ActorImpl(EventManager eventManager, SampObjectStoreImpl store, int modelid, Vector3D pos, float angle, boolean doExec, int id) {
         this.modelid = modelid;
         this.eventManagerNode = eventManager.createChildNode();
+        this.id = SampNativeFunction.createActor(modelid, pos.x, pos.y, pos.z, angle);
 
-        if (doExec)
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.createActor(modelid, pos.x, pos.y, pos.z, angle)));
-        else
-            setup(store, id);
-    }
-
-    private void setup(SampObjectStoreImpl store, int id) {
         if(id == INVALID_ACTOR) throw new CreationFailedException();
-        this.id = id;
-
         store.setActor(id, this);
     }
 
@@ -141,20 +128,15 @@ public class ActorImpl implements Actor {
         if (isDestroyed()) return;
 
         SampNativeFunction.destroyActor(id);
-        destroyWithoutExec();
-    }
-
-    @Override
-    public boolean isDestroyed() {
-        return id == INVALID_ACTOR;
-    }
-
-    public void destroyWithoutExec() {
-        if (isDestroyed()) return;
         DestroyEvent destroyEvent = new DestroyEvent(this);
         eventManagerNode.dispatchEvent(destroyEvent, this);
         eventManagerNode.destroy();
 
         this.id = INVALID_ACTOR;
+    }
+
+    @Override
+    public boolean isDestroyed() {
+        return id == INVALID_ACTOR;
     }
 }

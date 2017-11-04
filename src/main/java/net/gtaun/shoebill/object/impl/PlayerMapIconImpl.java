@@ -1,6 +1,5 @@
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.constant.MapIconStyle;
 import net.gtaun.shoebill.data.Color;
@@ -119,12 +118,7 @@ public class PlayerMapIconImpl implements PlayerMapIcon {
         @Override
         public void destroy() {
             if (isDestroyed()) return;
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.removePlayerMapIcon(player.getId(), id));
-            destroyWithoutExec();
-        }
-
-        public void destroyWithoutExec() {
-            if (isDestroyed()) return;
+            SampNativeFunction.removePlayerMapIcon(player.getId(), id);
             emptyIds.add(id);
             id = -1;
         }
@@ -136,7 +130,8 @@ public class PlayerMapIconImpl implements PlayerMapIcon {
 
         @Override
         public void update(float x, float y, float z, int markerType, Color color, MapIconStyle style) {
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerMapIcon(player.getId(), id, x, y, z, markerType, color.getValue(), style.getValue()));
+            SampNativeFunction.setPlayerMapIcon(player.getId(), id, x, y, z, markerType, color.getValue(),
+                    style.getValue());
         }
     }
 }

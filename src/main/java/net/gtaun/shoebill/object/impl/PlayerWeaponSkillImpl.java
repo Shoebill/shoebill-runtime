@@ -57,18 +57,7 @@ public class PlayerWeaponSkillImpl implements PlayerWeaponSkill {
         else if (level < 0) level = 0;
 
         int typeData = type.getValue();
-        final int finalLevel = level;
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.setPlayerSkillLevel(player.getId(), typeData, finalLevel));
-        setLevelWithoutExec(type, level);
-    }
-
-    public void setLevelWithoutExec(WeaponSkill type, int level) {
-        if (!player.isOnline()) return;
-
-        if (level > 999) level = 999;
-        else if (level < 0) level = 0;
-
-        int typeData = type.getValue();
+        SampNativeFunction.setPlayerSkillLevel(player.getId(), typeData, level);
         skills[typeData] = level;
     }
 

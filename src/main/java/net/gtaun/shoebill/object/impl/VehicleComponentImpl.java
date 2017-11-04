@@ -53,12 +53,7 @@ public class VehicleComponentImpl implements VehicleComponent {
     public void add(int componentId) {
         if (vehicle.isDestroyed()) return;
 
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.addVehicleComponent(vehicle.getId(), componentId));
-
-        addWithoutExec(componentId);
-    }
-
-    public void addWithoutExec(int componentId) {
+        SampNativeFunction.addVehicleComponent(vehicle.getId(), componentId);
         int slot = SampNativeFunction.getVehicleComponentType(componentId);
         components[slot] = SampNativeFunction.getVehicleComponentInSlot(vehicle.getId(), slot);
     }

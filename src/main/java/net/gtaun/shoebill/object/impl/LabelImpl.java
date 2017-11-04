@@ -16,7 +16,6 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.data.Color;
@@ -48,31 +47,20 @@ public class LabelImpl implements Label {
     private Player attachedPlayer;
     private Vehicle attachedVehicle;
 
-    public LabelImpl(EventManager eventManager, SampObjectStoreImpl store, String text, Color color, Location loc, float drawDistance, boolean testLOS) {
-        this(eventManager, store, text, color, loc, drawDistance, testLOS, true, -1);
-    }
+    public LabelImpl(EventManager eventManager, SampObjectStoreImpl store, String text, Color color, Location loc,
+                     float drawDistance, boolean testLOS) throws CreationFailedException {
 
-    public LabelImpl(EventManager eventManager, SampObjectStoreImpl store, String text, Color color, Location loc, float drawDistance, boolean testLOS, boolean doInit, int id) throws CreationFailedException {
         if (StringUtils.isEmpty(text)) text = " ";
 
         this.rootEventManager = eventManager;
-
         this.text = text;
         this.color = new Color(color);
         this.location = new Location(loc);
         this.drawDistance = drawDistance;
+        this.id = SampNativeFunction.create3DTextLabel(text, color.getValue(), location.getX(), location.getY(),
+                location.getZ(), drawDistance, location.getWorldId(), testLOS);
 
-        if (doInit || id < 0) {
-            final String finalText = text;
-            SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.create3DTextLabel(finalText, color.getValue(), location.getX(), location.getY(), location.getZ(), drawDistance, location.getWorldId(), testLOS)));
-        } else
-            setup(store, id);
-    }
-
-    private void setup(SampObjectStoreImpl store, int id) {
         if(id == INVALID_ID) throw new CreationFailedException();
-
-        this.id = id;
         store.setLabel(id, this);
     }
 
@@ -85,13 +73,7 @@ public class LabelImpl implements Label {
     public void destroy() {
         if (isDestroyed()) return;
 
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.delete3DTextLabel(id));
-        destroyWithoutExec();
-    }
-
-    public void destroyWithoutExec() {
-        if (isDestroyed()) return;
-
+        SampNativeFunction.delete3DTextLabel(id);
         DestroyEvent destroyEvent = new DestroyEvent(this);
         rootEventManager.dispatchEvent(destroyEvent, this);
 
@@ -143,7 +125,8 @@ public class LabelImpl implements Label {
         if (attachedVehicle != null) loc = attachedVehicle.getLocation();
 
         if (loc != null) {
-            location.set(loc.getX() + offset.getX(), loc.getY() + offset.getY(), loc.getZ() + offset.getZ(), loc.getInteriorId(), loc.getWorldId());
+            location.set(loc.getX() + offset.getX(), loc.getY() + offset.getY(), loc.getZ() + offset.getZ(),
+                    loc.getInteriorId(), loc.getWorldId());
         }
 
         return location.clone();
@@ -151,8 +134,13 @@ public class LabelImpl implements Label {
 
     @Override
     public void attach(Player player, float x, float y, float z) {
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.attach3DTextLabelToPlayer(id, player.getId(), x, y, z));
-        attachWithoutExec(player, x, y, z);
+        if (isDestroyed()) return;
+        if (!player.isOnline()) return;
+
+        SampNativeFunction.attach3DTextLabelToPlayer(id, player.getId(), x, y, z);
+        offset = new Vector3D(x, y, z);
+        attachedPlayer = player;
+        attachedVehicle = null;
     }
 
     @Override
@@ -162,8 +150,13 @@ public class LabelImpl implements Label {
 
     @Override
     public void attach(Vehicle vehicle, float x, float y, float z) {
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.attach3DTextLabelToVehicle(id, vehicle.getId(), x, y, z));
-        attachWithoutExec(vehicle, x, y, z);
+        if (isDestroyed()) return;
+        if (vehicle.isDestroyed()) return;
+
+        SampNativeFunction.attach3DTextLabelToVehicle(id, vehicle.getId(), x, y, z);
+        offset = new Vector3D(x, y, z);
+        attachedPlayer = null;
+        attachedVehicle = vehicle;
     }
 
     @Override
@@ -171,33 +164,14 @@ public class LabelImpl implements Label {
         attach(vehicle, offset.getX(), offset.getY(), offset.getZ());
     }
 
-    public void attachWithoutExec(Vehicle vehicle, float x, float y, float z) {
-        if (isDestroyed()) return;
-        if (vehicle.isDestroyed()) return;
-        offset = new Vector3D(x, y, z);
-        attachedPlayer = null;
-        attachedVehicle = vehicle;
-    }
-
-    public void attachWithoutExec(Player player, float x, float y, float z) {
-        if (isDestroyed()) return;
-        if (!player.isOnline()) return;
-        offset = new Vector3D(x, y, z);
-        attachedPlayer = player;
-        attachedVehicle = null;
-    }
-
     @Override
     public void update(Color color, String text) {
-        updateWithoutExec(color, text);
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.update3DTextLabelText(id, color.getValue(), text));
-    }
-
-    public void updateWithoutExec(Color color, String text) {
         if (isDestroyed()) return;
         if (text == null) throw new NullPointerException();
 
         this.color.set(color);
         this.text = text;
+        SampNativeFunction.update3DTextLabelText(id, color.getValue(), text);
     }
+
 }

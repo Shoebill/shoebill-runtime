@@ -59,10 +59,6 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
         init();
 
         callbackHandler = new SampCallbackHandler() {
-            @Override
-            public boolean isActive() {
-                return true;
-            }
 
             @Override
             public boolean onPlayerConnect(int playerid) {
@@ -195,7 +191,7 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 
     @Override
     public VehicleImpl createVehicle(int modelId, AngledLocation loc, int color1, int color2, int respawnDelay, boolean addsiren) throws CreationFailedException {
-        return new VehicleImpl(eventManagerNode, this, modelId, loc, color1, color2, respawnDelay, true, -1, addsiren);
+        return new VehicleImpl(eventManagerNode, this, modelId, loc, color1, color2, respawnDelay, addsiren);
     }
 
     @Override
@@ -211,12 +207,12 @@ public class SampObjectManagerImpl extends SampObjectStoreImpl implements SampOb
 
     @Override
     public PickupImpl createPickup(int modelId, int type, Location loc) throws CreationFailedException {
-        return new PickupImpl(eventManagerNode, this, modelId, type, loc, null);
+        return new PickupImpl(eventManagerNode, this, modelId, type, loc, null, false);
     }
 
     @Override
     public PickupImpl createPickup(int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> handler) throws CreationFailedException {
-        return new PickupImpl(eventManagerNode, this, modelId, type, loc, handler);
+        return new PickupImpl(eventManagerNode, this, modelId, type, loc, handler, false);
     }
 
     @Override

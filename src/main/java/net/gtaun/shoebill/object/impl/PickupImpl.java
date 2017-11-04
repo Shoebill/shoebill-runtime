@@ -17,7 +17,6 @@
 
 package net.gtaun.shoebill.object.impl;
 
-import net.gtaun.shoebill.SampEventDispatcher;
 import net.gtaun.shoebill.SampNativeFunction;
 import net.gtaun.shoebill.SampObjectStoreImpl;
 import net.gtaun.shoebill.data.Location;
@@ -42,11 +41,8 @@ public class PickupImpl implements Pickup {
     private boolean isStatic;
     private EventHandler<PlayerPickupEvent> onPickupHandler;
 
-    public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> handler) {
-        this(eventManager, store, modelId, type, loc, handler, true, -1, false);
-    }
-
-    public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc, EventHandler<PlayerPickupEvent> handler, boolean doInit, int id, boolean isStatic) throws CreationFailedException {
+    public PickupImpl(EventManager eventManager, SampObjectStoreImpl store, int modelId, int type, Location loc,
+                      EventHandler<PlayerPickupEvent> handler, boolean isStatic) throws CreationFailedException {
         this.rootEventManager = eventManager;
 
         this.onPickupHandler = handler;
@@ -56,22 +52,13 @@ public class PickupImpl implements Pickup {
         this.isStatic = isStatic;
 
         if (!isStatic) {
-            if (doInit || id < 0)
-                SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.createPickup(modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId())));
-            else
-                setup(store, id);
+            this.id = SampNativeFunction.createPickup(modelId, type, loc.getX(), loc.getY(),
+                    loc.getZ(), loc.getWorldId());
         } else {
-            if (doInit || id < 0)
-                SampEventDispatcher.getInstance().executeWithoutEvent(() -> setup(store, SampNativeFunction.addStaticPickup(modelId, type, loc.getX(), loc.getY(), loc.getZ(), loc.getWorldId())));
-            else
-                setup(store, id);
+            this.id = SampNativeFunction.addStaticPickup(modelId, type, loc.getX(), loc.getY(),
+                    loc.getZ(), loc.getWorldId());
         }
-    }
-
-    private void setup(SampObjectStoreImpl store, int id) {
         if (id == INVALID_ID) throw new CreationFailedException();
-
-        this.id = id;
         store.setPickup(id, this);
     }
 
@@ -84,13 +71,7 @@ public class PickupImpl implements Pickup {
     @Override
     public void destroy() {
         if (isDestroyed()) return;
-        SampEventDispatcher.getInstance().executeWithoutEvent(() -> SampNativeFunction.destroyPickup(id));
-        destroyWithoutExec();
-    }
-
-    public void destroyWithoutExec() {
-        if (isDestroyed()) return;
-
+        SampNativeFunction.destroyPickup(id);
         DestroyEvent destroyEvent = new DestroyEvent(this);
         rootEventManager.dispatchEvent(destroyEvent, this);
 
