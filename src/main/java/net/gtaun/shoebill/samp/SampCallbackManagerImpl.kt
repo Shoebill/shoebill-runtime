@@ -29,8 +29,6 @@ class SampCallbackManagerImpl : SampCallbackManager {
     override val masterCallbackHandler: SampCallbackHandler = object : SampCallbackHandler {
 
         override fun onProcessTick() = callbackHandlers.forEachCatched { it.onProcessTick() }
-        override fun onShoebillUnload() = callbackHandlers.forEachCatched { it.onShoebillUnload() }
-        override fun onShoebillLoad() = callbackHandlers.forEachCatched { it.onShoebillLoad() }
         override fun onAmxLoad(handle: Int) = callbackHandlers.forEachCatched { it.onAmxLoad(handle) }
         override fun onAmxUnload(handle: Int) = callbackHandlers.forEachCatched { it.onAmxUnload(handle) }
 
@@ -387,7 +385,6 @@ private fun <E> Queue<E>.forEachCatched(any: (E) -> Unit) {
             any.invoke(it)
         } catch (e: Throwable) {
             e.printStackTrace()
-            ShoebillImpl.instance.reportError(e)
         }
     }
 }

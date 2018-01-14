@@ -58,12 +58,6 @@ class SampEventDispatcher(private val sampObjectStore: SampObjectManagerImpl,
 
     init {
         instance = this
-        rootEventManager.throwableHandler = object : ThrowableHandler {
-            override fun handleThrowable(throwable: Throwable) {
-                throwable.printStackTrace()
-                ShoebillImpl.instance.reportError(throwable)
-            }
-        }
     }
 
     override fun onProcessTick() {

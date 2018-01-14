@@ -112,7 +112,7 @@ class ResourceManagerImpl(private val shoebill: Shoebill, private val rootEventM
         val resDataDir = File(dataDir, desc.clazz!!.name)
         if (!resDataDir.exists()) resDataDir.mkdirs()
 
-        resource.setContext(desc, shoebill, rootEventManager, resDataDir)
+        resource.setContext(desc, shoebill, resDataDir)
         return resource
     }
 

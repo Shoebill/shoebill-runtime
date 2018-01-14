@@ -22,20 +22,11 @@ package net.gtaun.shoebill.samp
  */
 interface SampCallbackHandler {
 
-    fun onAmxLoad(handle: Int) {
-    }
+    fun onAmxLoad(handle: Int) {}
 
-    fun onAmxUnload(handle: Int) {
-    }
+    fun onAmxUnload(handle: Int) {}
 
-    fun onProcessTick() {
-    }
-
-    fun onShoebillUnload() {
-    }
-
-    fun onShoebillLoad() {
-    }
+    fun onProcessTick() {}
 
     fun onGameModeInit(): Boolean = true
     fun onGameModeExit(): Boolean = true

@@ -16,7 +16,6 @@
 
 package net.gtaun.shoebill
 
-import com.mindscapehq.raygun4java.core.RaygunClient
 import net.gtaun.shoebill.amx.AmxInstanceManagerImpl
 import net.gtaun.shoebill.entities.Server
 import net.gtaun.shoebill.resource.ResourceManager
@@ -29,7 +28,6 @@ import net.gtaun.shoebill.util.log.LoggerOutputStream
 import net.gtaun.util.event.EventManager
 import net.gtaun.util.event.EventManagerRoot
 import org.apache.log4j.xml.DOMConfigurator
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileInputStream
@@ -42,9 +40,6 @@ import java.util.concurrent.ConcurrentLinkedQueue
  * @author Marvin Haschker
  */
 class ShoebillImpl constructor(amxHandles: IntArray) : Shoebill() {
-
-    private var isInitialized: Boolean = false
-    private var isRestart: Boolean = false
     override val version: ShoebillVersionImpl =
             ShoebillVersionImpl(this.javaClass.classLoader.getResourceAsStream(VERSION_FILENAME))
     val config: ShoebillConfig = ShoebillConfig(FileInputStream(SHOEBILL_CONFIG_PATH))
@@ -63,7 +58,6 @@ class ShoebillImpl constructor(amxHandles: IntArray) : Shoebill() {
     private var originOutPrintStream: PrintStream = System.out
     private var originErrPrintStream: PrintStream = System.err
     private val asyncExecQueue: Queue<Runnable> = ConcurrentLinkedQueue<Runnable>()
-    var raygunClient: RaygunClient? = null
 
     init {
         initLogger(File(config.shoebillDir, LOG4J_CONFIG_FILENAME))
@@ -85,44 +79,20 @@ class ShoebillImpl constructor(amxHandles: IntArray) : Shoebill() {
         }
 
         registerRootCallbackHandler()
-        enableBugReporting()
-    }
-
-    private fun enableBugReporting() {
-        if (config.isAutomaticBugReportingEnabled) {
-            val raygunClient = RaygunClient("Z/XT8IA1iQmAlId8eQHCrg==")
-            raygunClient.SetVersion(version.version)
-            raygunClient.LOGGER.info("Automatic Bug Reporting has been enabled.")
-            this.raygunClient = raygunClient
-        }
-    }
-
-    fun reportError(e: Throwable) {
-        raygunClient?.LOGGER?.info("Exception has been sent to the Shoebill team.")
-        raygunClient?.Send(e)
     }
 
     private fun registerRootCallbackHandler() {
         sampCallbackManager.registerCallbackHandler(object : SampCallbackHandler {
 
             override fun onGameModeInit(): Boolean {
-                if (!isInitialized) {
-                    loadPluginsAndGamemode()
-                    isInitialized = true
-                }
+                initialize()
+                loadPluginsAndGamemode()
                 return true
             }
 
             override fun onGameModeExit(): Boolean {
-                if (isInitialized) {
-                    unloadPluginsAndGamemode()
-                    uninitialize()
-                    isInitialized = false
-                    if (isRestart) {
-                        SampNativeFunction.restartShoebill()
-                        isRestart = false
-                    }
-                }
+                unloadPluginsAndGamemode()
+                uninitialize()
                 return true
             }
 
@@ -132,7 +102,7 @@ class ShoebillImpl constructor(amxHandles: IntArray) : Shoebill() {
 
                 when (op) {
                     "reload" -> {
-                        reload()
+                        SampNativeFunction.sendRconCommand("gmx")
                         return 1
                     }
 
@@ -160,30 +130,8 @@ class ShoebillImpl constructor(amxHandles: IntArray) : Shoebill() {
                 while (!asyncExecQueue.isEmpty()) asyncExecQueue.poll().run()
             }
 
-            override fun onAmxLoad(handle: Int) {
-                amxInstanceManager.onAmxLoad(handle)
-                if (!isInitialized) {
-                    loadPluginsAndGamemode()
-                    isInitialized = true
-                }
-            }
-
-            override fun onAmxUnload(handle: Int) {
-                amxInstanceManager.onAmxUnload(handle)
-            }
-
-            override fun onShoebillUnload() {
-                if (isInitialized) {
-                    uninitialize()
-                    unloadPluginsAndGamemode()
-                    isInitialized = false
-                }
-            }
-
-            override fun onShoebillLoad() {
-                if (!isInitialized)
-                    initialize()
-            }
+            override fun onAmxLoad(handle: Int) = amxInstanceManager.onAmxLoad(handle)
+            override fun onAmxUnload(handle: Int) = amxInstanceManager.onAmxUnload(handle)
         })
     }
 
@@ -236,12 +184,6 @@ class ShoebillImpl constructor(amxHandles: IntArray) : Shoebill() {
     override val resourceManager: ResourceManager
         get() = pluginManager
 
-
-    override fun reload() {
-        isRestart = true
-        SampNativeFunction.sendRconCommand("gmx")
-    }
-
     override fun runOnMainThread(runnable: Runnable) = asyncExecQueue.offer(runnable)
 
     companion object {
@@ -256,6 +198,3 @@ class ShoebillImpl constructor(amxHandles: IntArray) : Shoebill() {
             get() = Shoebill.get() as ShoebillImpl
     }
 }
-
-val RaygunClient.LOGGER: Logger
-    get() = LoggerFactory.getLogger("Automatic Bug Reporting")
